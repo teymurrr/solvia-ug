@@ -29,8 +29,8 @@ const Logo: React.FC<LogoProps> = ({ size = 'md', withText = true }) => {
       </div>
       {withText && (
         <span className={`font-bold ${textSizeMap[size]} tracking-tight`}>
-          <span className="text-medical-700">Med</span>
-          <span className="text-healing-600">Connect</span>
+          <span className="text-medical-700">Sol</span>
+          <span className="text-healing-600">via</span>
         </span>
       )}
     </Link>

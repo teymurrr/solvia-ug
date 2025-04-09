@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Logo from './Logo';
@@ -86,7 +85,7 @@ const Footer: React.FC = () => {
         
         <div className="mt-12 pt-6 border-t flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-sm text-muted-foreground">
-            © {new Date().getFullYear()} MedConnect Global Hub. All rights reserved.
+            © {new Date().getFullYear()} Solvia Global Hub. All rights reserved.
           </p>
           <div className="flex gap-4">
             <a href="#" className="text-sm text-muted-foreground hover:text-medical-600 transition-colors">
