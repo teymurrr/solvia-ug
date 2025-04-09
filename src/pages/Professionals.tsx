@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import MainLayout from '@/components/MainLayout';
@@ -11,7 +10,6 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Search, SlidersHorizontal, X } from 'lucide-react';
 
 const Professionals = () => {
-  // Sample data for professionals
   const professionals = [
     {
       id: '1',
@@ -71,17 +69,15 @@ const Professionals = () => {
 
   const [filtersVisible, setFiltersVisible] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedSpecialty, setSelectedSpecialty] = useState('');
-  const [selectedLocation, setSelectedLocation] = useState('');
+  const [selectedSpecialty, setSelectedSpecialty] = useState('all');
+  const [selectedLocation, setSelectedLocation] = useState('all');
   const [minExperience, setMinExperience] = useState(0);
   const [selectedLanguages, setSelectedLanguages] = useState<string[]>([]);
 
-  // Toggle filters visibility on mobile
   const toggleFilters = () => {
     setFiltersVisible(!filtersVisible);
   };
 
-  // Handle language selection
   const toggleLanguage = (language: string) => {
     if (selectedLanguages.includes(language)) {
       setSelectedLanguages(selectedLanguages.filter(lang => lang !== language));
@@ -90,30 +86,24 @@ const Professionals = () => {
     }
   };
 
-  // Filter professionals based on criteria
   const filteredProfessionals = professionals.filter(professional => {
-    // Search query filter
     if (searchQuery && !professional.name.toLowerCase().includes(searchQuery.toLowerCase()) && 
         !professional.specialty.toLowerCase().includes(searchQuery.toLowerCase())) {
       return false;
     }
     
-    // Specialty filter
-    if (selectedSpecialty && professional.specialty !== selectedSpecialty) {
+    if (selectedSpecialty !== 'all' && professional.specialty !== selectedSpecialty) {
       return false;
     }
     
-    // Location filter
-    if (selectedLocation && !professional.location.includes(selectedLocation)) {
+    if (selectedLocation !== 'all' && !professional.location.includes(selectedLocation)) {
       return false;
     }
     
-    // Experience filter
     if (professional.experience < minExperience) {
       return false;
     }
     
-    // Languages filter
     if (selectedLanguages.length > 0 && !selectedLanguages.every(lang => professional.languages.includes(lang))) {
       return false;
     }
@@ -123,7 +113,6 @@ const Professionals = () => {
 
   return (
     <MainLayout>
-      {/* Hero Section */}
       <section className="bg-gray-50 py-12">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center space-y-4">
@@ -135,7 +124,6 @@ const Professionals = () => {
         </div>
       </section>
 
-      {/* Search Section */}
       <section className="py-8 border-b">
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row gap-4">
@@ -162,7 +150,6 @@ const Professionals = () => {
 
       <div className="container mx-auto px-4 py-8">
         <div className="flex flex-col md:flex-row gap-8">
-          {/* Filters - Desktop (always visible) and Mobile (toggled) */}
           <aside className={`md:w-64 lg:w-72 space-y-6 ${filtersVisible ? 'block' : 'hidden'} md:block`}>
             <div className="flex items-center justify-between md:justify-start">
               <h2 className="font-semibold text-lg">Filters</h2>
@@ -184,7 +171,7 @@ const Professionals = () => {
                     <SelectValue placeholder="All Specialties" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">All Specialties</SelectItem>
+                    <SelectItem value="all">All Specialties</SelectItem>
                     <SelectItem value="Cardiology">Cardiology</SelectItem>
                     <SelectItem value="Neurology">Neurology</SelectItem>
                     <SelectItem value="Emergency Care">Emergency Care</SelectItem>
@@ -202,7 +189,7 @@ const Professionals = () => {
                     <SelectValue placeholder="All Locations" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">All Locations</SelectItem>
+                    <SelectItem value="all">All Locations</SelectItem>
                     <SelectItem value="Germany">Germany</SelectItem>
                     <SelectItem value="Spain">Spain</SelectItem>
                     <SelectItem value="Sweden">Sweden</SelectItem>
@@ -252,8 +239,8 @@ const Professionals = () => {
             <div className="flex flex-col gap-2">
               <Button variant="outline" onClick={() => {
                 setSearchQuery('');
-                setSelectedSpecialty('');
-                setSelectedLocation('');
+                setSelectedSpecialty('all');
+                setSelectedLocation('all');
                 setMinExperience(0);
                 setSelectedLanguages([]);
               }}>
@@ -262,7 +249,6 @@ const Professionals = () => {
             </div>
           </aside>
           
-          {/* Results */}
           <div className="flex-1">
             <div className="flex justify-between items-center mb-6">
               <h3 className="font-medium">
@@ -297,8 +283,8 @@ const Professionals = () => {
                 <p className="text-muted-foreground mb-6">Try adjusting your search filters</p>
                 <Button onClick={() => {
                   setSearchQuery('');
-                  setSelectedSpecialty('');
-                  setSelectedLocation('');
+                  setSelectedSpecialty('all');
+                  setSelectedLocation('all');
                   setMinExperience(0);
                   setSelectedLanguages([]);
                 }}>

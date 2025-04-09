@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import MainLayout from '@/components/MainLayout';
@@ -58,8 +57,8 @@ const Institutions = () => {
 
   const [filtersVisible, setFiltersVisible] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedType, setSelectedType] = useState('');
-  const [selectedLocation, setSelectedLocation] = useState('');
+  const [selectedType, setSelectedType] = useState('all');
+  const [selectedLocation, setSelectedLocation] = useState('all');
   const [hasOpenPositions, setHasOpenPositions] = useState(false);
 
   // Toggle filters visibility on mobile
@@ -76,12 +75,12 @@ const Institutions = () => {
     }
     
     // Type filter
-    if (selectedType && institution.type !== selectedType) {
+    if (selectedType !== 'all' && institution.type !== selectedType) {
       return false;
     }
     
     // Location filter
-    if (selectedLocation && !institution.location.includes(selectedLocation)) {
+    if (selectedLocation !== 'all' && !institution.location.includes(selectedLocation)) {
       return false;
     }
     
@@ -156,7 +155,7 @@ const Institutions = () => {
                     <SelectValue placeholder="All Types" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">All Types</SelectItem>
+                    <SelectItem value="all">All Types</SelectItem>
                     <SelectItem value="Hospital">Hospital</SelectItem>
                     <SelectItem value="Specialty Clinic">Specialty Clinic</SelectItem>
                     <SelectItem value="University Hospital">University Hospital</SelectItem>
@@ -174,7 +173,7 @@ const Institutions = () => {
                     <SelectValue placeholder="All Locations" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">All Locations</SelectItem>
+                    <SelectItem value="all">All Locations</SelectItem>
                     <SelectItem value="Germany">Germany</SelectItem>
                     <SelectItem value="Spain">Spain</SelectItem>
                     <SelectItem value="Sweden">Sweden</SelectItem>
@@ -205,8 +204,8 @@ const Institutions = () => {
             <div className="flex flex-col gap-2">
               <Button variant="outline" onClick={() => {
                 setSearchQuery('');
-                setSelectedType('');
-                setSelectedLocation('');
+                setSelectedType('all');
+                setSelectedLocation('all');
                 setHasOpenPositions(false);
               }}>
                 Reset Filters
@@ -249,8 +248,8 @@ const Institutions = () => {
                 <p className="text-muted-foreground mb-6">Try adjusting your search filters</p>
                 <Button onClick={() => {
                   setSearchQuery('');
-                  setSelectedType('');
-                  setSelectedLocation('');
+                  setSelectedType('all');
+                  setSelectedLocation('all');
                   setHasOpenPositions(false);
                 }}>
                   Reset Filters
