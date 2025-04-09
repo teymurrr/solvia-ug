@@ -1,10 +1,10 @@
 
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { MapPin, Building2, Users, Briefcase } from 'lucide-react';
+import { useProtectedAction } from '@/hooks/useProtectedAction';
 
 interface InstitutionCardProps {
   id: string;
@@ -23,6 +23,17 @@ const InstitutionCard: React.FC<InstitutionCardProps> = ({
   openPositions,
   imageSrc,
 }) => {
+  const navigate = useNavigate();
+  const { handleProtectedAction } = useProtectedAction();
+  
+  const handleViewProfile = () => {
+    handleProtectedAction(() => navigate(`/institutions/${id}`));
+  };
+  
+  const handleSeePositions = () => {
+    handleProtectedAction(() => navigate(`/institutions/${id}/positions`));
+  };
+
   return (
     <Card className="overflow-hidden hover:shadow-md transition-shadow">
       <CardContent className="p-0">
@@ -67,11 +78,11 @@ const InstitutionCard: React.FC<InstitutionCardProps> = ({
       </CardContent>
       
       <CardFooter className="p-4 pt-0 flex justify-end gap-2 border-t mt-4">
-        <Button variant="outline" asChild>
-          <Link to={`/institutions/${id}`}>View Profile</Link>
+        <Button variant="outline" onClick={handleViewProfile}>
+          View Profile
         </Button>
-        <Button asChild>
-          <Link to={`/institutions/${id}/positions`}>See Positions</Link>
+        <Button onClick={handleSeePositions}>
+          See Positions
         </Button>
       </CardFooter>
     </Card>

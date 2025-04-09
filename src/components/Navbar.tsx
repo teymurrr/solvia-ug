@@ -1,15 +1,29 @@
 
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
-import { Menu, X } from 'lucide-react';
+import { Menu, X, LogOut } from 'lucide-react';
 import Logo from './Logo';
+import { useAuth } from '@/contexts/AuthContext';
+import { useToast } from '@/hooks/use-toast';
 
 const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { isLoggedIn, logout } = useAuth();
+  const navigate = useNavigate();
+  const { toast } = useToast();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+  };
+  
+  const handleLogout = () => {
+    logout();
+    toast({
+      title: "Logged out",
+      description: "You have been logged out successfully.",
+    });
+    navigate('/');
   };
 
   return (
@@ -35,12 +49,21 @@ const Navbar: React.FC = () => {
           </nav>
           
           <div className="hidden md:flex items-center gap-4">
-            <Button variant="outline" asChild>
-              <Link to="/login">Log In</Link>
-            </Button>
-            <Button asChild>
-              <Link to="/signup">Sign Up</Link>
-            </Button>
+            {isLoggedIn ? (
+              <Button variant="outline" onClick={handleLogout} className="flex items-center gap-2">
+                <LogOut size={16} />
+                Log Out
+              </Button>
+            ) : (
+              <>
+                <Button variant="outline" asChild>
+                  <Link to="/login">Log In</Link>
+                </Button>
+                <Button asChild>
+                  <Link to="/signup">Sign Up</Link>
+                </Button>
+              </>
+            )}
           </div>
           
           {/* Mobile Menu Button */}
@@ -87,12 +110,28 @@ const Navbar: React.FC = () => {
               About Us
             </Link>
             <div className="flex flex-col gap-2 mt-2">
-              <Button variant="outline" asChild className="w-full">
-                <Link to="/login" onClick={() => setIsMenuOpen(false)}>Log In</Link>
-              </Button>
-              <Button asChild className="w-full">
-                <Link to="/signup" onClick={() => setIsMenuOpen(false)}>Sign Up</Link>
-              </Button>
+              {isLoggedIn ? (
+                <Button 
+                  variant="outline" 
+                  onClick={() => {
+                    handleLogout();
+                    setIsMenuOpen(false);
+                  }}
+                  className="w-full flex items-center justify-center gap-2"
+                >
+                  <LogOut size={16} />
+                  Log Out
+                </Button>
+              ) : (
+                <>
+                  <Button variant="outline" asChild className="w-full">
+                    <Link to="/login" onClick={() => setIsMenuOpen(false)}>Log In</Link>
+                  </Button>
+                  <Button asChild className="w-full">
+                    <Link to="/signup" onClick={() => setIsMenuOpen(false)}>Sign Up</Link>
+                  </Button>
+                </>
+              )}
             </div>
           </div>
         </div>

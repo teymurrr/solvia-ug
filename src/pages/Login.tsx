@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Eye, EyeOff, Mail, Lock } from 'lucide-react';
@@ -12,6 +12,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Checkbox } from '@/components/ui/checkbox';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/contexts/AuthContext';
 
 const loginSchema = z.object({
   email: z.string().email('Please enter a valid email address'),
@@ -24,6 +25,8 @@ type LoginFormValues = z.infer<typeof loginSchema>;
 const Login = () => {
   const [showPassword, setShowPassword] = React.useState(false);
   const { toast } = useToast();
+  const { login } = useAuth();
+  const navigate = useNavigate();
   
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
@@ -38,11 +41,14 @@ const Login = () => {
     console.log('Login data:', data);
     
     // This is where you would typically handle authentication
-    // For now, just show a toast to confirm submission
+    login(); // Update auth state
+    
     toast({
-      title: "Login Attempted",
-      description: "This is a demo. Authentication will be implemented later.",
+      title: "Login Successful",
+      description: "You are now logged in.",
     });
+    
+    navigate('/professionals'); // Redirect back to professionals
   };
 
   return (

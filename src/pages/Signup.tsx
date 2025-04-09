@@ -12,6 +12,8 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Checkbox } from '@/components/ui/checkbox';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 const signupSchema = z.object({
   firstName: z.string().min(2, 'First name must be at least 2 characters'),
@@ -20,8 +22,8 @@ const signupSchema = z.object({
   password: z.string().min(8, 'Password must be at least 8 characters')
     .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/, 'Password must contain uppercase, lowercase, and a number'),
   confirmPassword: z.string(),
-  terms: z.literal(true, {
-    errorMap: () => ({ message: 'You must accept the terms and conditions' }),
+  terms: z.boolean().refine(val => val === true, {
+    message: "You must accept the terms and conditions",
   }),
 }).refine((data) => data.password === data.confirmPassword, {
   message: "Passwords don't match",
@@ -34,6 +36,8 @@ const Signup = () => {
   const [showPassword, setShowPassword] = React.useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
   const { toast } = useToast();
+  const { login } = useAuth();
+  const navigate = useNavigate();
   
   const form = useForm<SignupFormValues>({
     resolver: zodResolver(signupSchema),
@@ -51,11 +55,14 @@ const Signup = () => {
     console.log('Signup data:', data);
     
     // This is where you would typically handle user registration
-    // For now, just show a toast to confirm submission
+    login(); // Auto-login after signup
+    
     toast({
-      title: "Registration Attempted",
-      description: "This is a demo. Registration will be implemented later.",
+      title: "Account created",
+      description: "Your account has been created successfully.",
     });
+    
+    navigate('/professionals'); // Redirect back to professionals page
   };
 
   return (
