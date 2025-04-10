@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import MainLayout from '@/components/MainLayout';
@@ -6,9 +5,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { User, Briefcase, Settings, FileText, Search, Filter } from 'lucide-react';
-import ProfessionalProfileEditForm from '@/components/ProfessionalProfileEditForm';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
+import { ProfessionalProfileEditForm } from '@/components/professional-profile';
 
 const ProfessionalDashboard = () => {
   const [isEditProfileOpen, setIsEditProfileOpen] = useState(false);

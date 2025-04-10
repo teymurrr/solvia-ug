@@ -1,0 +1,76 @@
+
+import React from 'react';
+import { FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Upload, Check } from 'lucide-react';
+import { UseFormReturn } from 'react-hook-form';
+import { ProfileFormValues } from './types';
+
+interface CertificatesSectionProps {
+  form: UseFormReturn<ProfileFormValues>;
+  sfpCertificatePreview: string | null;
+  handleSfpCertificateChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}
+
+const CertificatesSection: React.FC<CertificatesSectionProps> = ({ 
+  form,
+  sfpCertificatePreview,
+  handleSfpCertificateChange 
+}) => {
+  return (
+    <>
+      <FormField
+        control={form.control}
+        name="sfpCertificate"
+        render={({ field }) => (
+          <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+            <FormControl>
+              <Checkbox
+                checked={field.value}
+                onCheckedChange={field.onChange}
+              />
+            </FormControl>
+            <div className="space-y-1 leading-none">
+              <FormLabel>SFP Certificate</FormLabel>
+              <p className="text-sm text-muted-foreground">
+                Check if you have an SFP (Swiss Foreign Physician) certificate
+              </p>
+            </div>
+          </FormItem>
+        )}
+      />
+
+      {form.watch("sfpCertificate") && (
+        <div className="border rounded-md p-4">
+          <FormLabel>SFP Certificate</FormLabel>
+          <div className="flex items-center gap-2 mt-2">
+            <Input
+              id="sfpCertificateFile"
+              type="file"
+              accept=".pdf,.jpg,.jpeg,.png"
+              className="hidden"
+              onChange={handleSfpCertificateChange}
+            />
+            <Button 
+              type="button" 
+              variant="outline" 
+              onClick={() => document.getElementById('sfpCertificateFile')?.click()}
+            >
+              <Upload className="h-4 w-4 mr-2" />
+              Upload SFP Certificate
+            </Button>
+            {sfpCertificatePreview && (
+              <span className="text-sm text-green-600 flex items-center">
+                <Check className="h-4 w-4 mr-1" /> Certificate uploaded
+              </span>
+            )}
+          </div>
+        </div>
+      )}
+    </>
+  );
+};
+
+export default CertificatesSection;
