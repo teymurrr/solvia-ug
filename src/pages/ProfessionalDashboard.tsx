@@ -1,13 +1,16 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import MainLayout from '@/components/MainLayout';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { User, Briefcase, Settings, FileText } from 'lucide-react';
+import ProfessionalProfileEditForm from '@/components/ProfessionalProfileEditForm';
 
 const ProfessionalDashboard = () => {
+  const [isEditProfileOpen, setIsEditProfileOpen] = useState(false);
+  
   return (
     <MainLayout>
       <div className="container py-8">
@@ -16,11 +19,9 @@ const ProfessionalDashboard = () => {
             <h1 className="text-3xl font-bold">Professional Dashboard</h1>
             <p className="text-muted-foreground">Manage your profile and view opportunities</p>
           </div>
-          <Button variant="outline" asChild>
-            <Link to="/profile/professional/edit">
-              <Settings className="h-4 w-4 mr-2" />
-              Edit Profile
-            </Link>
+          <Button variant="outline" onClick={() => setIsEditProfileOpen(true)}>
+            <Settings className="h-4 w-4 mr-2" />
+            Edit Profile
           </Button>
         </div>
         
@@ -79,7 +80,9 @@ const ProfessionalDashboard = () => {
                       </p>
                     </div>
                     
-                    <Button variant="default">Complete Your Profile</Button>
+                    <Button variant="default" onClick={() => setIsEditProfileOpen(true)}>
+                      Complete Your Profile
+                    </Button>
                   </div>
                 </div>
               </CardContent>
@@ -150,6 +153,11 @@ const ProfessionalDashboard = () => {
           </TabsContent>
         </Tabs>
       </div>
+      
+      <ProfessionalProfileEditForm 
+        open={isEditProfileOpen}
+        onOpenChange={setIsEditProfileOpen}
+      />
     </MainLayout>
   );
 };
