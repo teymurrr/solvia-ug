@@ -19,6 +19,7 @@ interface ProfessionalProfileEditFormProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   initialData?: Partial<ProfileFormValues>;
+  onSave?: (data: ProfileFormValues) => void;
 }
 
 const languageLevels = ["A1", "A2", "B1", "B2", "C1", "C2"];
@@ -42,7 +43,8 @@ const ProfessionalProfileEditForm: React.FC<ProfessionalProfileEditFormProps> = 
     languages: [{ language: "", level: "A1", certificate: "" }],
     sfpCertificate: false,
     sfpCertificateFile: "",
-  }
+  },
+  onSave
 }) => {
   const { toast } = useToast();
   const [savedData, setSavedData] = useState<ProfileFormValues | null>(null);
@@ -58,6 +60,11 @@ const ProfessionalProfileEditForm: React.FC<ProfessionalProfileEditFormProps> = 
     
     // Save data in local state (simulate persistence between modal opens)
     setSavedData(data);
+    
+    // Pass the data to the parent component
+    if (onSave) {
+      onSave(data);
+    }
     
     toast({
       title: "Profile Updated",

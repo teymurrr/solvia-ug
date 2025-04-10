@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import MainLayout from '@/components/MainLayout';
@@ -8,11 +9,12 @@ import { User, Briefcase, Settings, FileText, Search, Filter } from 'lucide-reac
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { ProfessionalProfileEditForm } from '@/components/professional-profile';
+import { ProfileFormValues } from '@/components/professional-profile/types';
 
 const ProfessionalDashboard = () => {
   const [isEditProfileOpen, setIsEditProfileOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [profileData, setProfileData] = useState({
+  const [profileData, setProfileData] = useState<ProfileFormValues>({
     firstName: "John",
     lastName: "Doe",
     profession: "Doctor",
@@ -25,7 +27,8 @@ const ProfessionalDashboard = () => {
     languages: [],
     activelySearching: false,
     profileImage: "",
-    sfpCertificate: false
+    sfpCertificate: false,
+    sfpCertificateFile: ""
   });
   
   // This would normally fetch from a DB
@@ -38,7 +41,7 @@ const ProfessionalDashboard = () => {
   }, []);
 
   // This simulates saving profile data
-  const handleProfileSave = (data) => {
+  const handleProfileSave = (data: ProfileFormValues) => {
     setProfileData(data);
     localStorage.setItem('profileData', JSON.stringify(data));
   };
@@ -171,7 +174,7 @@ const ProfessionalDashboard = () => {
                     </div>
                     
                     <Button variant="default" onClick={() => setIsEditProfileOpen(true)}>
-                      {Object.keys(profileData).length <= 3 ? "Complete Your Profile" : "Update Profile"}
+                      {!profileData.experiences || profileData.experiences.length === 0 ? "Complete Your Profile" : "Update Profile"}
                     </Button>
                   </div>
                 </div>
@@ -281,6 +284,7 @@ const ProfessionalDashboard = () => {
         open={isEditProfileOpen}
         onOpenChange={setIsEditProfileOpen}
         initialData={profileData}
+        onSave={handleProfileSave}
       />
     </MainLayout>
   );
