@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { z } from 'zod';
@@ -12,7 +12,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Checkbox } from '@/components/ui/checkbox';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuth, UserType } from '@/contexts/AuthContext';
 
 const loginSchema = z.object({
   email: z.string().email('Please enter a valid email address'),
@@ -24,6 +24,7 @@ type LoginFormValues = z.infer<typeof loginSchema>;
 
 const Login = () => {
   const [showPassword, setShowPassword] = React.useState(false);
+  const [userType, setUserType] = useState<UserType>('professional');
   const { toast } = useToast();
   const { login } = useAuth();
   const navigate = useNavigate();
@@ -39,16 +40,18 @@ const Login = () => {
 
   const onSubmit = (data: LoginFormValues) => {
     console.log('Login data:', data);
+    console.log('User type:', userType);
     
-    // This is where you would typically handle authentication
-    login(); // Update auth state
+    // Login with the selected user type
+    login(userType);
     
     toast({
       title: "Login Successful",
       description: "You are now logged in.",
     });
     
-    navigate('/professionals'); // Redirect back to professionals
+    // Redirect based on user type
+    navigate(userType === 'professional' ? '/dashboard/professional' : '/dashboard/institution');
   };
 
   return (
@@ -62,6 +65,25 @@ const Login = () => {
             </CardDescription>
           </CardHeader>
           <CardContent>
+            <div className="flex justify-center space-x-4 mb-6">
+              <Button 
+                type="button" 
+                variant={userType === 'professional' ? "default" : "outline"}
+                onClick={() => setUserType('professional')}
+                className="flex-1"
+              >
+                Professional
+              </Button>
+              <Button 
+                type="button" 
+                variant={userType === 'institution' ? "default" : "outline"}
+                onClick={() => setUserType('institution')}
+                className="flex-1"
+              >
+                Institution
+              </Button>
+            </div>
+            
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                 <FormField
@@ -146,7 +168,7 @@ const Login = () => {
                 </div>
                 
                 <Button type="submit" className="w-full">
-                  Log in
+                  Log in as {userType === 'professional' ? 'Professional' : 'Institution'}
                 </Button>
               </form>
             </Form>
@@ -154,7 +176,10 @@ const Login = () => {
           <CardFooter className="flex flex-col space-y-4">
             <div className="text-sm text-center text-muted-foreground">
               Don't have an account?{" "}
-              <Link to="/signup" className="text-medical-700 hover:text-medical-800 font-medium">
+              <Link 
+                to={userType === 'professional' ? '/signup/professional' : '/signup/institution'} 
+                className="text-medical-700 hover:text-medical-800 font-medium"
+              >
                 Create one
               </Link>
             </div>

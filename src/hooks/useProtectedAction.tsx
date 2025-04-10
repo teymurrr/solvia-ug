@@ -8,7 +8,7 @@ export const useProtectedAction = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   
-  const handleProtectedAction = (action?: () => void) => {
+  const handleProtectedAction = (action?: () => void, signupPath = '/signup') => {
     if (isLoggedIn) {
       if (action) action();
     } else {
@@ -17,7 +17,7 @@ export const useProtectedAction = () => {
         description: "Please sign up or log in to access this feature.",
         variant: "destructive",
       });
-      navigate('/signup');
+      navigate(signupPath);
     }
   };
   

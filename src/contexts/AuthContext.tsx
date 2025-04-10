@@ -1,9 +1,12 @@
 
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 
+export type UserType = 'professional' | 'institution' | null;
+
 interface AuthContextType {
   isLoggedIn: boolean;
-  login: () => void;
+  userType: UserType;
+  login: (type: UserType) => void;
   logout: () => void;
 }
 
@@ -11,12 +14,20 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userType, setUserType] = useState<UserType>(null);
 
-  const login = () => setIsLoggedIn(true);
-  const logout = () => setIsLoggedIn(false);
+  const login = (type: UserType) => {
+    setIsLoggedIn(true);
+    setUserType(type);
+  };
+  
+  const logout = () => {
+    setIsLoggedIn(false);
+    setUserType(null);
+  };
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, login, logout }}>
+    <AuthContext.Provider value={{ isLoggedIn, userType, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
