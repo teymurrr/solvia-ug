@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, FormEvent } from 'react';
 import MainLayout from '@/components/MainLayout';
 import VacancyCard from '@/components/VacancyCard';
@@ -147,6 +148,7 @@ const Vacancies = () => {
   
   const [savedVacancies, setSavedVacancies] = useState<string[]>([]);
 
+  // Extract unique values for filters right here in the component
   const jobTypes = getUniqueValues(sampleVacancies, 'jobType');
   const locations = getUniqueValues(sampleVacancies, 'location');
   const professions = getUniqueValues(sampleVacancies, 'profession');

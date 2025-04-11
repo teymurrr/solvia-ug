@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import MainLayout from '@/components/MainLayout';
@@ -687,17 +686,7 @@ const ProfessionalDashboard = () => {
                         {currentVacancies.map((vacancy) => (
                           <VacancyCard
                             key={vacancy.id}
-                            id={vacancy.id}
-                            title={vacancy.title}
-                            institution={vacancy.institution}
-                            location={vacancy.location}
-                            jobType={vacancy.jobType}
-                            specialty={vacancy.specialty}
-                            profession={vacancy.profession}
-                            description={vacancy.description}
-                            requirements={vacancy.requirements}
-                            postedDate={vacancy.postedDate}
-                            applicationDeadline={vacancy.applicationDeadline}
+                            {...vacancy}
                             showSaveOption={true}
                             isSaved={savedVacancies.includes(vacancy.id)}
                             onSaveToggle={toggleSaveVacancy}
@@ -806,17 +795,7 @@ const ProfessionalDashboard = () => {
                         {getSavedVacancies().map((vacancy) => (
                           <VacancyCard
                             key={vacancy.id}
-                            id={vacancy.id}
-                            title={vacancy.title}
-                            institution={vacancy.institution}
-                            location={vacancy.location}
-                            jobType={vacancy.jobType}
-                            specialty={vacancy.specialty}
-                            profession={vacancy.profession}
-                            description={vacancy.description}
-                            requirements={vacancy.requirements}
-                            postedDate={vacancy.postedDate}
-                            applicationDeadline={vacancy.applicationDeadline}
+                            {...vacancy}
                             showSaveOption={true}
                             isSaved={true}
                             onSaveToggle={toggleSaveVacancy}
@@ -849,17 +828,7 @@ const ProfessionalDashboard = () => {
                         {getAppliedVacancies().map((vacancy) => (
                           <VacancyCard
                             key={vacancy.id}
-                            id={vacancy.id}
-                            title={vacancy.title}
-                            institution={vacancy.institution}
-                            location={vacancy.location}
-                            jobType={vacancy.jobType}
-                            specialty={vacancy.specialty}
-                            profession={vacancy.profession}
-                            description={vacancy.description}
-                            requirements={vacancy.requirements}
-                            postedDate={vacancy.postedDate}
-                            applicationDeadline={vacancy.applicationDeadline}
+                            {...vacancy}
                             showSaveOption={true}
                             isSaved={savedVacancies.includes(vacancy.id)}
                             onSaveToggle={toggleSaveVacancy}
