@@ -22,6 +22,7 @@ const signupSchema = z.object({
     .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/, 'Password must contain uppercase, lowercase, and a number'),
   confirmPassword: z.string(),
   specialty: z.string().min(2, 'Specialty must be at least 2 characters'),
+  isOpenToRelocation: z.boolean().optional(),
   terms: z.boolean().refine(val => val === true, {
     message: "You must accept the terms and conditions",
   }),
@@ -48,12 +49,30 @@ const ProfessionalSignup = () => {
       password: '',
       confirmPassword: '',
       specialty: '',
+      isOpenToRelocation: false,
       terms: false,
     },
   });
 
   const onSubmit = (data: SignupFormValues) => {
     console.log('Professional Signup data:', data);
+    
+    // Save professional data to localStorage
+    const existingProfessionals = localStorage.getItem('professionals');
+    const professionals = existingProfessionals ? JSON.parse(existingProfessionals) : [];
+    
+    // Add new professional to the list
+    professionals.push({
+      firstName: data.firstName,
+      lastName: data.lastName,
+      email: data.email,
+      specialty: data.specialty,
+      isOpenToRelocation: data.isOpenToRelocation || false,
+      registeredAt: new Date().toISOString(),
+    });
+    
+    // Save back to localStorage
+    localStorage.setItem('professionals', JSON.stringify(professionals));
     
     login('professional');
     
@@ -152,6 +171,26 @@ const ProfessionalSignup = () => {
                         />
                       </FormControl>
                       <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                
+                <FormField
+                  control={form.control}
+                  name="isOpenToRelocation"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-row items-start space-x-2 space-y-0">
+                      <FormControl>
+                        <Checkbox 
+                          checked={field.value} 
+                          onCheckedChange={field.onChange}
+                        />
+                      </FormControl>
+                      <div className="space-y-1 leading-none">
+                        <FormLabel className="text-sm font-medium cursor-pointer">
+                          I am open to relocation opportunities
+                        </FormLabel>
+                      </div>
                     </FormItem>
                   )}
                 />

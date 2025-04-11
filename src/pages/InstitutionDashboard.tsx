@@ -5,19 +5,28 @@ import MainLayout from '@/components/MainLayout';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Building2, Briefcase, Settings, Search, Users, Plus, FileText } from 'lucide-react';
+import { Building2, Briefcase, Settings, Search, Users, Plus, FileText, User } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import InstitutionProfileEditForm from '@/components/InstitutionProfileEditForm';
 import VacancyForm from '@/components/VacancyForm';
 import { useToast } from '@/hooks/use-toast';
 
 const InstitutionDashboard = () => {
-  // State for search results in talents tab
-  const [talentSearchResults, setTalentSearchResults] = useState<any[]>([]);
+  // State for talent search
+  const [professionals, setProfessionals] = useState<any[]>([]);
+  const [filteredProfessionals, setFilteredProfessionals] = useState<any[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [profileFormOpen, setProfileFormOpen] = useState(false);
   const [vacancyFormOpen, setVacancyFormOpen] = useState(false);
   const { toast } = useToast();
+  
+  // Load professionals from localStorage on component mount
+  useEffect(() => {
+    const savedProfessionals = localStorage.getItem('professionals');
+    if (savedProfessionals) {
+      setProfessionals(JSON.parse(savedProfessionals));
+    }
+  }, []);
   
   // Load vacancies from localStorage on component mount
   const [vacancies, setVacancies] = useState<any[]>(() => {
@@ -32,12 +41,16 @@ const InstitutionDashboard = () => {
 
   // Handle talent search
   const handleTalentSearch = () => {
-    // This would normally call an API
-    // For demo, we'll just set some results based on the search query
     if (searchQuery.trim()) {
-      setTalentSearchResults([1, 2, 3]); // Mock results
+      const filtered = professionals.filter(prof => 
+        prof.firstName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        prof.lastName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        prof.specialty?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (prof.firstName + ' ' + prof.lastName)?.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+      setFilteredProfessionals(filtered);
     } else {
-      setTalentSearchResults([]);
+      setFilteredProfessionals(professionals);
     }
   };
 
@@ -219,44 +232,77 @@ const InstitutionDashboard = () => {
                     <Button type="button" onClick={handleTalentSearch}>Search</Button>
                   </div>
                   
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {[1, 2, 3].map((professional) => (
-                      <div key={professional} className="border rounded-lg p-4">
-                        <div className="flex items-start gap-3">
-                          <div className="h-12 w-12 bg-muted rounded-full flex items-center justify-center">
-                            <User className="h-6 w-6 text-muted-foreground" />
+                  {filteredProfessionals.length > 0 ? (
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                      {filteredProfessionals.map((professional) => (
+                        <div key={professional.email} className="border rounded-lg p-4">
+                          <div className="flex items-start gap-3">
+                            <div className="h-12 w-12 bg-muted rounded-full flex items-center justify-center">
+                              <User className="h-6 w-6 text-muted-foreground" />
+                            </div>
+                            <div>
+                              <h3 className="font-medium">Dr. {professional.firstName} {professional.lastName}</h3>
+                              <p className="text-sm text-medical-600">{professional.specialty}</p>
+                              <p className="text-xs text-muted-foreground mt-1">
+                                {professional.isOpenToRelocation ? "Open to relocation" : "Not open to relocation"}
+                              </p>
+                            </div>
                           </div>
-                          <div>
-                            <h3 className="font-medium">Dr. Jane Smith</h3>
-                            <p className="text-sm text-medical-600">Neurologist</p>
-                            <p className="text-xs text-muted-foreground mt-1">New York, USA</p>
+                          <div className="mt-4 flex justify-end">
+                            <Button variant="outline" size="sm">View Profile</Button>
                           </div>
                         </div>
-                        <div className="mt-4 flex justify-end">
-                          <Button variant="outline" size="sm">View Profile</Button>
+                      ))}
+                    </div>
+                  ) : professionals.length > 0 && searchQuery ? (
+                    <div className="text-center py-8">
+                      <h3 className="text-lg font-medium">No matching professionals found</h3>
+                      <p className="text-muted-foreground">Try adjusting your search criteria</p>
+                    </div>
+                  ) : professionals.length === 0 ? (
+                    <div className="text-center py-8">
+                      <Users className="h-12 w-12 mx-auto text-muted-foreground" />
+                      <h3 className="mt-4 text-lg font-medium">No professionals have signed up yet</h3>
+                      <p className="text-muted-foreground">
+                        Check back later as healthcare professionals join the platform
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                      {professionals.slice(0, 6).map((professional) => (
+                        <div key={professional.email} className="border rounded-lg p-4">
+                          <div className="flex items-start gap-3">
+                            <div className="h-12 w-12 bg-muted rounded-full flex items-center justify-center">
+                              <User className="h-6 w-6 text-muted-foreground" />
+                            </div>
+                            <div>
+                              <h3 className="font-medium">Dr. {professional.firstName} {professional.lastName}</h3>
+                              <p className="text-sm text-medical-600">{professional.specialty}</p>
+                              <p className="text-xs text-muted-foreground mt-1">
+                                {professional.isOpenToRelocation ? "Open to relocation" : "Not open to relocation"}
+                              </p>
+                            </div>
+                          </div>
+                          <div className="mt-4 flex justify-end">
+                            <Button variant="outline" size="sm">View Profile</Button>
+                          </div>
                         </div>
-                      </div>
-                    ))}
-                  </div>
+                      ))}
+                    </div>
+                  )}
                   
-                  <Button 
-                    variant="outline" 
-                    className="w-full"
-                    asChild={talentSearchResults.length > 0}
-                    disabled={talentSearchResults.length === 0}
-                  >
-                    {talentSearchResults.length > 0 ? (
+                  {professionals.length > 0 && (
+                    <Button 
+                      variant="outline" 
+                      className="w-full"
+                      asChild
+                    >
                       <Link to="/professionals">
                         <Users className="h-4 w-4 mr-2" />
                         View All Professionals
                       </Link>
-                    ) : (
-                      <span>
-                        <Users className="h-4 w-4 mr-2" />
-                        No Professionals Found
-                      </span>
-                    )}
-                  </Button>
+                    </Button>
+                  )}
                 </div>
               </CardContent>
             </Card>
@@ -280,22 +326,3 @@ const InstitutionDashboard = () => {
 };
 
 export default InstitutionDashboard;
-
-// Missing User icon in the above component
-const User = ({ className }: { className?: string }) => {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-    >
-      <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
-      <circle cx="12" cy="7" r="4" />
-    </svg>
-  );
-};
