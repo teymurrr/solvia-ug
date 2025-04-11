@@ -5,7 +5,7 @@ import MainLayout from '@/components/MainLayout';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { User, Briefcase, Settings, FileText, Search, Filter, ChevronDown, MapPin, Building, GraduationCap, Heart, BookmarkCheck } from 'lucide-react';
+import { User, Briefcase, Settings, FileText, Search, Filter, ChevronDown, MapPin, Building, GraduationCap, Heart, BookmarkCheck, FileCheck } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { ProfessionalProfileEditForm } from '@/components/professional-profile';
@@ -36,83 +36,98 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 
+// Sample vacancy data with complete properties
 const sampleVacancies = [
   {
     id: '1',
     title: 'Senior Cardiologist',
     institution: 'General Hospital, New York',
+    location: 'New York, USA',
     description: 'Looking for an experienced cardiologist to join our team. Must have excellent diagnostic skills and patient care abilities.',
     jobType: 'Full-time',
-    country: 'USA',
-    city: 'New York',
-    salary: '$150K - $200K',
-    requirements: ['English required', '5+ years experience']
+    specialty: 'Cardiology',
+    profession: 'Doctor',
+    postedDate: '2025-03-15',
+    applicationDeadline: '2025-05-15',
+    requirements: ['English required', '5+ years experience', 'Board certification']
   },
   {
     id: '2',
     title: 'Pediatric Nurse',
     institution: 'Children\'s Hospital, Boston',
+    location: 'Boston, USA',
     description: 'Seeking pediatric nurse with experience in intensive care unit. Compassionate care for young patients required.',
     jobType: 'Part-time',
-    country: 'USA',
-    city: 'Boston',
-    salary: '$50K - $70K',
-    requirements: ['Pediatric certification', '3+ years experience']
+    specialty: 'Pediatrics',
+    profession: 'Nurse',
+    postedDate: '2025-03-10',
+    applicationDeadline: '2025-04-30',
+    requirements: ['Pediatric certification', '3+ years experience', 'BLS certification']
   },
   {
     id: '3',
     title: 'Neurologist',
     institution: 'Medical Center, Chicago',
+    location: 'Chicago, USA',
     description: 'Neurologist needed for busy medical center. Will be responsible for patient diagnosis and treatment plans.',
     jobType: 'Full-time',
-    country: 'USA',
-    city: 'Chicago',
-    salary: '$180K - $220K',
-    requirements: ['Board certified', '7+ years experience']
+    specialty: 'Neurology',
+    profession: 'Doctor',
+    postedDate: '2025-03-05',
+    applicationDeadline: '2025-05-05',
+    requirements: ['Board certified', '7+ years experience', 'Research experience preferred']
   },
   {
     id: '4',
     title: 'Emergency Room Physician',
     institution: 'City Hospital, Los Angeles',
+    location: 'Los Angeles, USA',
     description: 'ER doctor needed for high-volume emergency department. Must excel in fast-paced environment.',
     jobType: 'Full-time',
-    country: 'USA',
-    city: 'Los Angeles',
-    salary: '$200K - $250K',
-    requirements: ['ER certification', '5+ years experience']
+    specialty: 'Emergency Medicine',
+    profession: 'Doctor',
+    postedDate: '2025-02-28',
+    applicationDeadline: '2025-04-28',
+    requirements: ['ER certification', '5+ years experience', 'ACLS certification']
   },
   {
     id: '5',
     title: 'Medical Technician',
     institution: 'Diagnostic Center, Dallas',
+    location: 'Dallas, USA',
     description: 'Medical lab tech needed for diagnostic testing. Experience with advanced equipment required.',
     jobType: 'Full-time',
-    country: 'USA',
-    city: 'Dallas',
-    salary: '$60K - $80K',
-    requirements: ['Lab certification', '2+ years experience']
+    specialty: 'Laboratory Science',
+    profession: 'Technician',
+    postedDate: '2025-03-01',
+    applicationDeadline: '2025-04-15',
+    requirements: ['Lab certification', '2+ years experience', 'Experience with PCR testing']
   },
   {
     id: '6',
     title: 'Volunteer Nurse',
     institution: 'Community Clinic, Miami',
+    location: 'Miami, USA',
     description: 'Looking for volunteer nurses to help at our community clinic serving underprivileged populations.',
     jobType: 'Volunteer',
-    country: 'USA',
-    city: 'Miami',
-    salary: 'Unpaid',
-    requirements: ['Nursing license', 'Compassionate attitude']
+    specialty: 'General Nursing',
+    profession: 'Nurse',
+    postedDate: '2025-03-08',
+    applicationDeadline: '2025-06-08',
+    requirements: ['Nursing license', 'Compassionate attitude', 'Bilingual (English/Spanish) preferred']
   },
   {
     id: '7',
     title: 'Medical Intern',
     institution: 'University Hospital, Seattle',
+    location: 'Seattle, USA',
     description: 'Medical internship position available for recent graduates looking to gain hands-on experience.',
     jobType: 'Internship',
-    country: 'USA',
-    city: 'Seattle',
-    salary: '$30K - $40K',
-    requirements: ['Medical degree', 'Recent graduate']
+    specialty: 'General Medicine',
+    profession: 'Doctor',
+    postedDate: '2025-03-12',
+    applicationDeadline: '2025-05-01',
+    requirements: ['Medical degree', 'Recent graduate', 'Strong academic record']
   },
 ];
 
@@ -160,14 +175,12 @@ const ProfessionalDashboard = () => {
   
   // Saved vacancies state
   const [savedVacancies, setSavedVacancies] = useState<string[]>([]);
+  const [appliedVacancies, setAppliedVacancies] = useState<string[]>(['1', '3']); // Sample applied vacancies
   
   // Get unique values for filters
   const jobTypes = getUniqueValues(sampleVacancies, 'jobType');
-  const countries = getUniqueValues(sampleVacancies, 'country');
-  const cities = sampleVacancies
-    .filter(v => !selectedCountry || v.country === selectedCountry)
-    .map(v => v.city)
-    .filter((value, index, self) => self.indexOf(value) === index);
+  const countries = ['USA']; // Since we're using location, we'll extract country from it
+  const cities = ['New York', 'Boston', 'Chicago', 'Los Angeles', 'Dallas', 'Miami', 'Seattle'];
   
   const defaultProfileData: ProfileFormValues = {
     firstName: "John",
@@ -187,6 +200,7 @@ const ProfessionalDashboard = () => {
   };
   
   const [profileData, setProfileData] = useState<ProfileFormValues>(defaultProfileData);
+  const [savedTabView, setSavedTabView] = useState<'saved' | 'applied'>('saved');
   
   useEffect(() => {
     const storageKey = userType ? `profileData_${userType}` : 'profileData';
@@ -292,12 +306,12 @@ const ProfessionalDashboard = () => {
     
     // Apply country filter
     if (selectedCountry) {
-      filtered = filtered.filter(vacancy => vacancy.country === selectedCountry);
+      filtered = filtered.filter(vacancy => vacancy.location.includes(selectedCountry));
     }
     
     // Apply city filter
     if (selectedCity) {
-      filtered = filtered.filter(vacancy => vacancy.city === selectedCity);
+      filtered = filtered.filter(vacancy => vacancy.location.includes(selectedCity));
     }
     
     setVacancyResults(filtered);
@@ -354,6 +368,11 @@ const ProfessionalDashboard = () => {
     return sampleVacancies.filter(vacancy => savedVacancies.includes(vacancy.id));
   };
   
+  // Get applied vacancies for display
+  const getAppliedVacancies = () => {
+    return sampleVacancies.filter(vacancy => appliedVacancies.includes(vacancy.id));
+  };
+  
   return (
     <MainLayout>
       <div className="container py-8">
@@ -372,7 +391,7 @@ const ProfessionalDashboard = () => {
           <TabsList className="grid w-full md:w-auto grid-cols-3">
             <TabsTrigger value="profile">Profile</TabsTrigger>
             <TabsTrigger value="vacancies">Vacancies</TabsTrigger>
-            <TabsTrigger value="saved">Saved</TabsTrigger>
+            <TabsTrigger value="saved">Saved & Applied</TabsTrigger>
           </TabsList>
           
           <TabsContent value="profile" className="space-y-6">
@@ -608,7 +627,6 @@ const ProfessionalDashboard = () => {
                                 <Button 
                                   variant="outline" 
                                   className="flex items-center gap-2"
-                                  disabled={!selectedCountry} // Disable if no country is selected
                                 >
                                   <Building className="h-4 w-4" />
                                   City
@@ -621,22 +639,16 @@ const ProfessionalDashboard = () => {
                               <DropdownMenuContent align="start" className="w-48">
                                 <DropdownMenuLabel>Select City</DropdownMenuLabel>
                                 <DropdownMenuSeparator />
-                                {cities.length > 0 ? (
-                                  cities.map((city) => (
-                                    <DropdownMenuCheckboxItem
-                                      key={city}
-                                      checked={selectedCity === city}
-                                      onCheckedChange={() => setSelectedCity(prev => prev === city ? '' : city)}
-                                    >
-                                      <Building className="h-4 w-4 mr-2" />
-                                      {city}
-                                    </DropdownMenuCheckboxItem>
-                                  ))
-                                ) : (
-                                  <div className="px-2 py-1.5 text-sm text-muted-foreground">
-                                    Please select a country first
-                                  </div>
-                                )}
+                                {cities.map((city) => (
+                                  <DropdownMenuCheckboxItem
+                                    key={city}
+                                    checked={selectedCity === city}
+                                    onCheckedChange={() => setSelectedCity(prev => prev === city ? '' : city)}
+                                  >
+                                    <Building className="h-4 w-4 mr-2" />
+                                    {city}
+                                  </DropdownMenuCheckboxItem>
+                                ))}
                               </DropdownMenuContent>
                             </DropdownMenu>
                           </div>
@@ -675,7 +687,17 @@ const ProfessionalDashboard = () => {
                         {currentVacancies.map((vacancy) => (
                           <VacancyCard
                             key={vacancy.id}
-                            {...vacancy}
+                            id={vacancy.id}
+                            title={vacancy.title}
+                            institution={vacancy.institution}
+                            location={vacancy.location}
+                            jobType={vacancy.jobType}
+                            specialty={vacancy.specialty}
+                            profession={vacancy.profession}
+                            description={vacancy.description}
+                            requirements={vacancy.requirements}
+                            postedDate={vacancy.postedDate}
+                            applicationDeadline={vacancy.applicationDeadline}
                             showSaveOption={true}
                             isSaved={savedVacancies.includes(vacancy.id)}
                             onSaveToggle={toggleSaveVacancy}
@@ -747,40 +769,123 @@ const ProfessionalDashboard = () => {
           <TabsContent value="saved" className="space-y-6">
             <Card>
               <CardHeader>
-                <CardTitle>Saved Vacancies</CardTitle>
-                <CardDescription>
-                  Vacancies you've saved for later
-                </CardDescription>
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
+                  <div>
+                    <CardTitle>Saved & Applied Vacancies</CardTitle>
+                    <CardDescription>
+                      Track vacancies you've saved or applied for
+                    </CardDescription>
+                  </div>
+                  <div className="flex mt-2 sm:mt-0">
+                    <Button 
+                      variant={savedTabView === 'saved' ? "default" : "outline"} 
+                      size="sm"
+                      onClick={() => setSavedTabView('saved')}
+                      className="rounded-r-none"
+                    >
+                      <BookmarkCheck className="h-4 w-4 mr-2" />
+                      Saved
+                    </Button>
+                    <Button 
+                      variant={savedTabView === 'applied' ? "default" : "outline"} 
+                      size="sm"
+                      onClick={() => setSavedTabView('applied')}
+                      className="rounded-l-none"
+                    >
+                      <FileCheck className="h-4 w-4 mr-2" />
+                      Applied
+                    </Button>
+                  </div>
+                </div>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {savedVacancies.length > 0 ? (
-                    <div className="grid grid-cols-1 gap-6">
-                      {getSavedVacancies().map((vacancy) => (
-                        <VacancyCard
-                          key={vacancy.id}
-                          {...vacancy}
-                          showSaveOption={true}
-                          isSaved={true}
-                          onSaveToggle={toggleSaveVacancy}
-                        />
-                      ))}
-                    </div>
+                  {savedTabView === 'saved' ? (
+                    savedVacancies.length > 0 ? (
+                      <div className="grid grid-cols-1 gap-6">
+                        {getSavedVacancies().map((vacancy) => (
+                          <VacancyCard
+                            key={vacancy.id}
+                            id={vacancy.id}
+                            title={vacancy.title}
+                            institution={vacancy.institution}
+                            location={vacancy.location}
+                            jobType={vacancy.jobType}
+                            specialty={vacancy.specialty}
+                            profession={vacancy.profession}
+                            description={vacancy.description}
+                            requirements={vacancy.requirements}
+                            postedDate={vacancy.postedDate}
+                            applicationDeadline={vacancy.applicationDeadline}
+                            showSaveOption={true}
+                            isSaved={true}
+                            onSaveToggle={toggleSaveVacancy}
+                          />
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="text-center py-8">
+                        <BookmarkCheck className="h-12 w-12 mx-auto text-muted-foreground" />
+                        <h3 className="mt-4 text-lg font-medium">No saved vacancies</h3>
+                        <p className="text-muted-foreground">
+                          Save vacancies you're interested in to view them later
+                        </p>
+                        <Button 
+                          variant="outline" 
+                          className="mt-4"
+                          onClick={() => {
+                            const tabsList = document.querySelector('[role="tablist"]');
+                            const vacanciesTab = tabsList?.querySelector('[value="vacancies"]') as HTMLButtonElement;
+                            if (vacanciesTab) vacanciesTab.click();
+                          }}
+                        >
+                          Browse Vacancies
+                        </Button>
+                      </div>
+                    )
                   ) : (
-                    <div className="text-center py-8">
-                      <BookmarkCheck className="h-12 w-12 mx-auto text-muted-foreground" />
-                      <h3 className="mt-4 text-lg font-medium">No saved vacancies</h3>
-                      <p className="text-muted-foreground">
-                        Save vacancies you're interested in to view them later
-                      </p>
-                      <Button 
-                        variant="outline" 
-                        className="mt-4"
-                        asChild
-                      >
-                        <Link to="/vacancies">Browse Vacancies</Link>
-                      </Button>
-                    </div>
+                    appliedVacancies.length > 0 ? (
+                      <div className="grid grid-cols-1 gap-6">
+                        {getAppliedVacancies().map((vacancy) => (
+                          <VacancyCard
+                            key={vacancy.id}
+                            id={vacancy.id}
+                            title={vacancy.title}
+                            institution={vacancy.institution}
+                            location={vacancy.location}
+                            jobType={vacancy.jobType}
+                            specialty={vacancy.specialty}
+                            profession={vacancy.profession}
+                            description={vacancy.description}
+                            requirements={vacancy.requirements}
+                            postedDate={vacancy.postedDate}
+                            applicationDeadline={vacancy.applicationDeadline}
+                            showSaveOption={true}
+                            isSaved={savedVacancies.includes(vacancy.id)}
+                            onSaveToggle={toggleSaveVacancy}
+                          />
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="text-center py-8">
+                        <FileCheck className="h-12 w-12 mx-auto text-muted-foreground" />
+                        <h3 className="mt-4 text-lg font-medium">No applications yet</h3>
+                        <p className="text-muted-foreground">
+                          When you apply for vacancies, they will appear here
+                        </p>
+                        <Button 
+                          variant="outline" 
+                          className="mt-4"
+                          onClick={() => {
+                            const tabsList = document.querySelector('[role="tablist"]');
+                            const vacanciesTab = tabsList?.querySelector('[value="vacancies"]') as HTMLButtonElement;
+                            if (vacanciesTab) vacanciesTab.click();
+                          }}
+                        >
+                          Browse Vacancies
+                        </Button>
+                      </div>
+                    )
                   )}
                 </div>
               </CardContent>

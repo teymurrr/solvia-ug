@@ -17,7 +17,6 @@ import {
   DropdownMenuCheckboxItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Checkbox } from '@/components/ui/checkbox';
 import { Search, Filter, X, ChevronDown, Briefcase, Building, MapPin, GraduationCap, Heart } from 'lucide-react';
 import {
   Pagination,
@@ -147,6 +146,11 @@ const Vacancies = () => {
   const [selectedSpecialty, setSelectedSpecialty] = useState<string>('');
   
   const [savedVacancies, setSavedVacancies] = useState<string[]>([]);
+
+  const jobTypes = getUniqueValues(sampleVacancies, 'jobType');
+  const locations = getUniqueValues(sampleVacancies, 'location');
+  const professions = getUniqueValues(sampleVacancies, 'profession');
+  const specialties = getUniqueValues(sampleVacancies, 'specialty');
 
   useEffect(() => {
     const savedVacanciesData = localStorage.getItem('savedVacancies');

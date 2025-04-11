@@ -12,17 +12,21 @@ interface VacancyCardProps {
   id: string;
   title: string;
   institution: string;
-  location: string;
+  location?: string;
   jobType: string;
-  specialty: string;
-  profession: string;
+  specialty?: string;
+  profession?: string;
   description: string;
   requirements: string[];
-  postedDate: string;
-  applicationDeadline: string;
+  postedDate?: string;
+  applicationDeadline?: string;
   showSaveOption?: boolean;
   isSaved?: boolean;
   onSaveToggle?: (id: string) => void;
+  // Optional props for backward compatibility with existing data
+  country?: string;
+  city?: string;
+  salary?: string;
 }
 
 const VacancyCard = ({
@@ -40,12 +44,18 @@ const VacancyCard = ({
   showSaveOption = false,
   isSaved = false,
   onSaveToggle,
+  country,
+  city,
 }: VacancyCardProps) => {
   const { toast } = useToast();
   const { handleProtectedAction } = useProtectedAction();
   
+  // Create a location string if individual components are provided
+  const displayLocation = location || (city && country ? `${city}, ${country}` : city || country || "Location not specified");
+  
   // Format dates
-  const formatDate = (dateString: string) => {
+  const formatDate = (dateString?: string) => {
+    if (!dateString) return "Date not specified";
     const date = new Date(dateString);
     return new Intl.DateTimeFormat('en-US', { 
       year: 'numeric', 
@@ -56,6 +66,7 @@ const VacancyCard = ({
   
   // Calculate days remaining until deadline
   const calculateDaysRemaining = () => {
+    if (!applicationDeadline) return null;
     const today = new Date();
     const deadline = new Date(applicationDeadline);
     const diffTime = deadline.getTime() - today.getTime();
@@ -137,24 +148,34 @@ const VacancyCard = ({
         <div className="grid grid-cols-1 md:grid-cols-2 gap-y-2 gap-x-4 mb-4">
           <div className="flex items-center text-sm text-muted-foreground">
             <MapPin className="h-4 w-4 mr-2" />
-            <span>{location}</span>
+            <span>{displayLocation}</span>
           </div>
-          <div className="flex items-center text-sm text-muted-foreground">
-            <Briefcase className="h-4 w-4 mr-2" />
-            <span>{profession} • {specialty}</span>
-          </div>
-          <div className="flex items-center text-sm text-muted-foreground">
-            <Calendar className="h-4 w-4 mr-2" />
-            <span>Posted: {formatDate(postedDate)}</span>
-          </div>
-          <div className="flex items-center text-sm text-muted-foreground">
-            <Calendar className="h-4 w-4 mr-2" />
-            <span className={daysRemaining < 7 ? 'text-destructive font-medium' : ''}>
-              {daysRemaining <= 0 
-                ? 'Deadline passed' 
-                : `Deadline: ${formatDate(applicationDeadline)} (${daysRemaining} days left)`}
-            </span>
-          </div>
+          {(profession || specialty) && (
+            <div className="flex items-center text-sm text-muted-foreground">
+              <Briefcase className="h-4 w-4 mr-2" />
+              <span>{profession} {specialty ? `• ${specialty}` : ''}</span>
+            </div>
+          )}
+          {postedDate && (
+            <div className="flex items-center text-sm text-muted-foreground">
+              <Calendar className="h-4 w-4 mr-2" />
+              <span>Posted: {formatDate(postedDate)}</span>
+            </div>
+          )}
+          {applicationDeadline && (
+            <div className="flex items-center text-sm text-muted-foreground">
+              <Calendar className="h-4 w-4 mr-2" />
+              <span className={daysRemaining !== null && daysRemaining < 7 ? 'text-destructive font-medium' : ''}>
+                {daysRemaining !== null ? (
+                  daysRemaining <= 0 
+                    ? 'Deadline passed' 
+                    : `Deadline: ${formatDate(applicationDeadline)} (${daysRemaining} days left)`
+                ) : (
+                  `Deadline: ${formatDate(applicationDeadline)}`
+                )}
+              </span>
+            </div>
+          )}
         </div>
         
         <p className="text-sm mb-4 line-clamp-3">{description}</p>
