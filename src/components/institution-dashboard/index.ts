@@ -1,6 +1,6 @@
 
-export * from './DashboardHeader';
-export * from './ProfessionalCard';
-export * from './ProfileTab';
-export * from './TalentsTab';
-export * from './VacanciesTab';
+export { default as DashboardHeader } from './DashboardHeader';
+export { default as ProfessionalCard } from './ProfessionalCard';
+export { default as ProfileTab } from './ProfileTab';
+export { default as TalentsTab } from './TalentsTab';
+export { default as VacanciesTab } from './VacanciesTab';
