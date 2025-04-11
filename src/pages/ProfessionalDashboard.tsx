@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import MainLayout from '@/components/MainLayout';
@@ -10,11 +9,15 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { ProfessionalProfileEditForm } from '@/components/professional-profile';
 import { ProfileFormValues } from '@/components/professional-profile/types';
+import { useAuth } from '@/contexts/AuthContext';
 
 const ProfessionalDashboard = () => {
+  const { userType } = useAuth();
   const [isEditProfileOpen, setIsEditProfileOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [profileData, setProfileData] = useState<ProfileFormValues>({
+  
+  // Default profile data
+  const defaultProfileData: ProfileFormValues = {
     firstName: "John",
     lastName: "Doe",
     profession: "Doctor",
@@ -29,21 +32,35 @@ const ProfessionalDashboard = () => {
     profileImage: "",
     sfpCertificate: false,
     sfpCertificateFile: ""
-  });
+  };
+  
+  const [profileData, setProfileData] = useState<ProfileFormValues>(defaultProfileData);
   
   // This would normally fetch from a DB
   useEffect(() => {
-    // In a real app, this would be a fetch call to get user data
-    const userData = localStorage.getItem('profileData');
+    // Use userType as part of the localStorage key to keep profile data separate per user type
+    const storageKey = userType ? `profileData_${userType}` : 'profileData';
+    const userData = localStorage.getItem(storageKey);
+    
     if (userData) {
-      setProfileData(JSON.parse(userData));
+      try {
+        const parsedData = JSON.parse(userData);
+        setProfileData(parsedData);
+      } catch (error) {
+        console.error("Error parsing profile data from localStorage:", error);
+        // Fallback to default profile if there's an error
+        setProfileData(defaultProfileData);
+      }
     }
-  }, []);
+  }, [userType]);
 
   // This simulates saving profile data
   const handleProfileSave = (data: ProfileFormValues) => {
     setProfileData(data);
-    localStorage.setItem('profileData', JSON.stringify(data));
+    
+    // Use userType as part of the localStorage key
+    const storageKey = userType ? `profileData_${userType}` : 'profileData';
+    localStorage.setItem(storageKey, JSON.stringify(data));
   };
   
   return (
