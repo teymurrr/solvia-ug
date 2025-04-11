@@ -38,6 +38,7 @@ const ProfessionalProfileEditForm: React.FC<ProfessionalProfileEditFormProps> = 
     about: "",
     profileImage: "",
     activelySearching: false,
+    openToRelocation: false,
     experiences: [{ hospital: "", location: "", role: "", startDate: "", endDate: "", current: false }],
     education: [{ institution: "", degree: "", field: "", startDate: "", endDate: "", current: false }],
     languages: [{ language: "", level: "A1", certificate: "" }],

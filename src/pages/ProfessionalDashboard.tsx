@@ -35,7 +35,6 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 
-// Sample vacancy data with complete properties
 const sampleVacancies = [
   {
     id: '1',
@@ -130,12 +129,10 @@ const sampleVacancies = [
   },
 ];
 
-// Extract unique values for filters
 const getUniqueValues = (data: any[], property: string) => {
   return [...new Set(data.map(item => item[property]))];
 };
 
-// Get job type icon
 const getJobTypeIcon = (jobType: string) => {
   switch(jobType) {
     case 'Full-time':
@@ -166,19 +163,16 @@ const ProfessionalDashboard = () => {
     currentPage * ITEMS_PER_PAGE
   );
   
-  // Filter states
   const [selectedJobTypes, setSelectedJobTypes] = useState<string[]>([]);
   const [selectedCountry, setSelectedCountry] = useState<string>('');
   const [selectedCity, setSelectedCity] = useState<string>('');
   const [activeFilters, setActiveFilters] = useState<string[]>([]);
   
-  // Saved vacancies state
   const [savedVacancies, setSavedVacancies] = useState<string[]>([]);
-  const [appliedVacancies, setAppliedVacancies] = useState<string[]>(['1', '3']); // Sample applied vacancies
+  const [appliedVacancies, setAppliedVacancies] = useState<string[]>(['1', '3']);
   
-  // Get unique values for filters
   const jobTypes = getUniqueValues(sampleVacancies, 'jobType');
-  const countries = ['USA']; // Since we're using location, we'll extract country from it
+  const countries = ['USA'];
   const cities = ['New York', 'Boston', 'Chicago', 'Los Angeles', 'Dallas', 'Miami', 'Seattle'];
   
   const defaultProfileData: ProfileFormValues = {
@@ -215,7 +209,6 @@ const ProfessionalDashboard = () => {
       }
     }
     
-    // Load saved vacancies from localStorage
     const savedVacanciesData = localStorage.getItem('savedVacancies');
     if (savedVacanciesData) {
       try {
@@ -226,7 +219,6 @@ const ProfessionalDashboard = () => {
     }
   }, [userType]);
 
-  // Save vacancies to localStorage whenever savedVacancies changes
   useEffect(() => {
     localStorage.setItem('savedVacancies', JSON.stringify(savedVacancies));
   }, [savedVacancies]);
@@ -238,7 +230,6 @@ const ProfessionalDashboard = () => {
     localStorage.setItem(storageKey, JSON.stringify(data));
   };
   
-  // Reset selectedCity when country changes
   useEffect(() => {
     setSelectedCity('');
   }, [selectedCountry]);
@@ -274,7 +265,6 @@ const ProfessionalDashboard = () => {
     return pageNumbers;
   };
 
-  // Toggle job type selection
   const toggleJobType = (jobType: string) => {
     setSelectedJobTypes(prev => {
       if (prev.includes(jobType)) {
@@ -285,11 +275,9 @@ const ProfessionalDashboard = () => {
     });
   };
 
-  // Apply filters to vacancies
   const applyFilters = () => {
     let filtered = sampleVacancies;
     
-    // Apply search filter
     if (searchQuery) {
       filtered = filtered.filter(vacancy => 
         vacancy.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -298,17 +286,14 @@ const ProfessionalDashboard = () => {
       );
     }
     
-    // Apply job type filter
     if (selectedJobTypes.length > 0) {
       filtered = filtered.filter(vacancy => selectedJobTypes.includes(vacancy.jobType));
     }
     
-    // Apply country filter
     if (selectedCountry) {
       filtered = filtered.filter(vacancy => vacancy.location.includes(selectedCountry));
     }
     
-    // Apply city filter
     if (selectedCity) {
       filtered = filtered.filter(vacancy => vacancy.location.includes(selectedCity));
     }
@@ -316,7 +301,6 @@ const ProfessionalDashboard = () => {
     setVacancyResults(filtered);
     setCurrentPage(1);
     
-    // Update active filters
     const newActiveFilters = [];
     if (selectedJobTypes.length > 0) {
       newActiveFilters.push(...selectedJobTypes);
@@ -331,7 +315,6 @@ const ProfessionalDashboard = () => {
     setActiveFilters(newActiveFilters);
   };
 
-  // Reset all filters
   const resetFilters = () => {
     setSearchQuery('');
     setSelectedJobTypes([]);
@@ -342,7 +325,6 @@ const ProfessionalDashboard = () => {
     setCurrentPage(1);
   };
 
-  // Apply filters when any filter changes
   useEffect(() => {
     applyFilters();
   }, [selectedJobTypes, selectedCountry, selectedCity]);
@@ -351,7 +333,6 @@ const ProfessionalDashboard = () => {
     applyFilters();
   };
   
-  // Toggle save/unsave vacancy
   const toggleSaveVacancy = (vacancyId: string) => {
     setSavedVacancies(prev => {
       if (prev.includes(vacancyId)) {
@@ -362,28 +343,22 @@ const ProfessionalDashboard = () => {
     });
   };
   
-  // Get saved vacancies for display
   const getSavedVacancies = () => {
     return sampleVacancies.filter(vacancy => savedVacancies.includes(vacancy.id));
   };
   
-  // Get applied vacancies for display
   const getAppliedVacancies = () => {
     return sampleVacancies.filter(vacancy => appliedVacancies.includes(vacancy.id));
   };
   
   return (
-    <MainLayout>
+    <MainLayout hideEditProfile={true}>
       <div className="container py-8">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
           <div>
             <h1 className="text-3xl font-bold">Professional Dashboard</h1>
             <p className="text-muted-foreground">Manage your profile and view opportunities</p>
           </div>
-          <Button variant="outline" onClick={() => setIsEditProfileOpen(true)}>
-            <Settings className="h-4 w-4 mr-2" />
-            Edit Profile
-          </Button>
         </div>
         
         <Tabs defaultValue="profile" className="space-y-6">
@@ -542,7 +517,6 @@ const ProfessionalDashboard = () => {
                   </div>
                   
                   <div className="flex flex-wrap gap-2">
-                    {/* Job Type Filter Dropdown */}
                     <TooltipProvider>
                       <Tooltip>
                         <TooltipTrigger asChild>
@@ -579,7 +553,6 @@ const ProfessionalDashboard = () => {
                       </Tooltip>
                     </TooltipProvider>
                     
-                    {/* Country Filter Dropdown */}
                     <TooltipProvider>
                       <Tooltip>
                         <TooltipTrigger asChild>
@@ -616,7 +589,6 @@ const ProfessionalDashboard = () => {
                       </Tooltip>
                     </TooltipProvider>
                     
-                    {/* City Filter Dropdown */}
                     <TooltipProvider>
                       <Tooltip>
                         <TooltipTrigger asChild>
@@ -656,7 +628,6 @@ const ProfessionalDashboard = () => {
                       </Tooltip>
                     </TooltipProvider>
                     
-                    {/* Reset Filters Button */}
                     {activeFilters.length > 0 && (
                       <Button 
                         variant="ghost" 
@@ -669,7 +640,6 @@ const ProfessionalDashboard = () => {
                     )}
                   </div>
                   
-                  {/* Active Filters */}
                   {activeFilters.length > 0 && (
                     <div className="flex flex-wrap gap-2">
                       {activeFilters.map((filter, index) => (

@@ -39,6 +39,7 @@ export const profileFormSchema = z.object({
   about: z.string().optional(),
   profileImage: z.string().optional(),
   activelySearching: z.boolean().optional(),
+  openToRelocation: z.boolean().optional(),
   experiences: z.array(experienceSchema),
   education: z.array(educationSchema),
   languages: z.array(languageSchema),

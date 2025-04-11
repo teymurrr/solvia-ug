@@ -139,6 +139,27 @@ const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({ form, profess
 
       <FormField
         control={form.control}
+        name="openToRelocation"
+        render={({ field }) => (
+          <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+            <FormControl>
+              <Checkbox
+                checked={field.value}
+                onCheckedChange={field.onChange}
+              />
+            </FormControl>
+            <div className="space-y-1 leading-none">
+              <FormLabel>Open to relocation</FormLabel>
+              <p className="text-sm text-muted-foreground">
+                Indicate if you're willing to relocate for a suitable position
+              </p>
+            </div>
+          </FormItem>
+        )}
+      />
+
+      <FormField
+        control={form.control}
         name="about"
         render={({ field }) => (
           <FormItem>
