@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
-import { Menu, X, LogOut, User, Settings, BookOpen, LayoutDashboard } from 'lucide-react';
+import { Menu, X, LogOut, User, Settings, BookOpen, LayoutDashboard, Globe } from 'lucide-react';
 import Logo from './Logo';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
@@ -13,10 +13,16 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
+  DropdownMenuSub,
+  DropdownMenuSubTrigger,
+  DropdownMenuSubContent,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
 } from "@/components/ui/dropdown-menu";
 
 const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [language, setLanguage] = useState("english");
   const { isLoggedIn, logout, userType } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -81,9 +87,6 @@ const Navbar: React.FC = () => {
                 <Link to="/institutions" className="text-sm font-medium hover:text-medical-600 transition-colors">
                   Institutions
                 </Link>
-                <Link to="/about" className="text-sm font-medium hover:text-medical-600 transition-colors">
-                  About Us
-                </Link>
               </>
             )}
           </nav>
@@ -101,9 +104,27 @@ const Navbar: React.FC = () => {
                   <DropdownMenuLabel>My Account</DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={navigateToDashboard} className="cursor-pointer">
-                    <Settings className="mr-2 h-4 w-4" />
+                    <LayoutDashboard className="mr-2 h-4 w-4" />
                     Dashboard
                   </DropdownMenuItem>
+                  <DropdownMenuItem className="cursor-pointer">
+                    <Settings className="mr-2 h-4 w-4" />
+                    Settings
+                  </DropdownMenuItem>
+                  <DropdownMenuSub>
+                    <DropdownMenuSubTrigger>
+                      <Globe className="mr-2 h-4 w-4" />
+                      <span>Language</span>
+                    </DropdownMenuSubTrigger>
+                    <DropdownMenuSubContent>
+                      <DropdownMenuRadioGroup value={language} onValueChange={setLanguage}>
+                        <DropdownMenuRadioItem value="english">English</DropdownMenuRadioItem>
+                        <DropdownMenuRadioItem value="german">German</DropdownMenuRadioItem>
+                        <DropdownMenuRadioItem value="spanish">Spanish</DropdownMenuRadioItem>
+                      </DropdownMenuRadioGroup>
+                    </DropdownMenuSubContent>
+                  </DropdownMenuSub>
+                  <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={handleLogout} className="cursor-pointer">
                     <LogOut className="mr-2 h-4 w-4" />
                     Logout
@@ -177,13 +198,6 @@ const Navbar: React.FC = () => {
                 >
                   Institutions
                 </Link>
-                <Link 
-                  to="/about" 
-                  className="px-4 py-2 text-sm hover:bg-muted rounded-md"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  About Us
-                </Link>
               </>
             )}
             <div className="flex flex-col gap-2 mt-2">
@@ -197,9 +211,31 @@ const Navbar: React.FC = () => {
                     }}
                     className="w-full flex items-center justify-center gap-2"
                   >
-                    <Settings size={16} />
+                    <LayoutDashboard size={16} />
                     Dashboard
                   </Button>
+                  <Button 
+                    variant="outline"
+                    className="w-full flex items-center justify-center gap-2"
+                  >
+                    <Settings size={16} />
+                    Settings
+                  </Button>
+                  <div className="flex items-center justify-between p-2 border rounded-md">
+                    <div className="flex items-center gap-2">
+                      <Globe size={16} />
+                      Language
+                    </div>
+                    <select 
+                      className="bg-transparent border-none outline-none"
+                      value={language}
+                      onChange={(e) => setLanguage(e.target.value)}
+                    >
+                      <option value="english">English</option>
+                      <option value="german">German</option>
+                      <option value="spanish">Spanish</option>
+                    </select>
+                  </div>
                   <Button 
                     variant="outline" 
                     onClick={() => {
