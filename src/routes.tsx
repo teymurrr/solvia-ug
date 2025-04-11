@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, Navigate } from 'react-router-dom';
 import Index from '@/pages/Index';
 import About from '@/pages/About';
 import NotFound from '@/pages/NotFound';
@@ -15,8 +15,14 @@ import Institutions from '@/pages/Institutions';
 import Vacancies from '@/pages/Vacancies';
 import VacancyDetail from '@/pages/VacancyDetail';
 import ProtectedRoute from '@/components/ProtectedRoute';
+import { useAuth } from '@/contexts/AuthContext';
 
 export const AppRoutes = () => {
+  const { isLoggedIn, userType } = useAuth();
+  
+  // Debug
+  console.log("Routes rendering with auth state:", { isLoggedIn, userType });
+  
   return (
     <Routes>
       <Route path="/" element={<Index />} />
@@ -46,6 +52,23 @@ export const AppRoutes = () => {
           </ProtectedRoute>
         } 
       />
+      
+      {/* Redirect to appropriate dashboard if user is already logged in */}
+      <Route 
+        path="/dashboard" 
+        element={
+          isLoggedIn ? (
+            userType === 'professional' ? (
+              <Navigate to="/dashboard/professional" replace />
+            ) : (
+              <Navigate to="/dashboard/institution" replace />
+            )
+          ) : (
+            <Navigate to="/login" replace />
+          )
+        } 
+      />
+      
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

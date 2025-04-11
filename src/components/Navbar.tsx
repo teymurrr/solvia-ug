@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Menu, X, LogOut, User, Settings } from 'lucide-react';
@@ -20,6 +20,11 @@ const Navbar: React.FC = () => {
   const { isLoggedIn, logout, userType } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
+
+  // Debug logging
+  useEffect(() => {
+    console.log("Navbar auth state:", { isLoggedIn, userType });
+  }, [isLoggedIn, userType]);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -58,6 +63,9 @@ const Navbar: React.FC = () => {
             </Link>
             <Link to="/institutions" className="text-sm font-medium hover:text-medical-600 transition-colors">
               Institutions
+            </Link>
+            <Link to="/vacancies" className="text-sm font-medium hover:text-medical-600 transition-colors">
+              Vacancies
             </Link>
             <Link to="/about" className="text-sm font-medium hover:text-medical-600 transition-colors">
               About Us
@@ -133,6 +141,13 @@ const Navbar: React.FC = () => {
               onClick={() => setIsMenuOpen(false)}
             >
               Institutions
+            </Link>
+            <Link 
+              to="/vacancies" 
+              className="px-4 py-2 text-sm hover:bg-muted rounded-md"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Vacancies
             </Link>
             <Link 
               to="/about" 
