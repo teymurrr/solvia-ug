@@ -1,10 +1,11 @@
+
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import MainLayout from '@/components/MainLayout';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { User, Briefcase, Settings, FileText, Search, Filter } from 'lucide-react';
+import { User, Briefcase, Settings, FileText, Search, Filter, ChevronDown, MapPin, Building, GraduationCap, Heart } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { ProfessionalProfileEditForm } from '@/components/professional-profile';
@@ -19,6 +20,20 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from '@/components/ui/pagination';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuCheckboxItem,
+  DropdownMenuTrigger,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+} from '@/components/ui/dropdown-menu';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 
 const sampleVacancies = [
   {
@@ -27,6 +42,8 @@ const sampleVacancies = [
     institution: 'General Hospital, New York',
     description: 'Looking for an experienced cardiologist to join our team. Must have excellent diagnostic skills and patient care abilities.',
     jobType: 'Full-time',
+    country: 'USA',
+    city: 'New York',
     salary: '$150K - $200K',
     requirements: ['English required', '5+ years experience']
   },
@@ -36,6 +53,8 @@ const sampleVacancies = [
     institution: 'Children\'s Hospital, Boston',
     description: 'Seeking pediatric nurse with experience in intensive care unit. Compassionate care for young patients required.',
     jobType: 'Part-time',
+    country: 'USA',
+    city: 'Boston',
     salary: '$50K - $70K',
     requirements: ['Pediatric certification', '3+ years experience']
   },
@@ -45,6 +64,8 @@ const sampleVacancies = [
     institution: 'Medical Center, Chicago',
     description: 'Neurologist needed for busy medical center. Will be responsible for patient diagnosis and treatment plans.',
     jobType: 'Full-time',
+    country: 'USA',
+    city: 'Chicago',
     salary: '$180K - $220K',
     requirements: ['Board certified', '7+ years experience']
   },
@@ -54,6 +75,8 @@ const sampleVacancies = [
     institution: 'City Hospital, Los Angeles',
     description: 'ER doctor needed for high-volume emergency department. Must excel in fast-paced environment.',
     jobType: 'Full-time',
+    country: 'USA',
+    city: 'Los Angeles',
     salary: '$200K - $250K',
     requirements: ['ER certification', '5+ years experience']
   },
@@ -63,10 +86,55 @@ const sampleVacancies = [
     institution: 'Diagnostic Center, Dallas',
     description: 'Medical lab tech needed for diagnostic testing. Experience with advanced equipment required.',
     jobType: 'Full-time',
+    country: 'USA',
+    city: 'Dallas',
     salary: '$60K - $80K',
     requirements: ['Lab certification', '2+ years experience']
-  }
+  },
+  {
+    id: '6',
+    title: 'Volunteer Nurse',
+    institution: 'Community Clinic, Miami',
+    description: 'Looking for volunteer nurses to help at our community clinic serving underprivileged populations.',
+    jobType: 'Volunteer',
+    country: 'USA',
+    city: 'Miami',
+    salary: 'Unpaid',
+    requirements: ['Nursing license', 'Compassionate attitude']
+  },
+  {
+    id: '7',
+    title: 'Medical Intern',
+    institution: 'University Hospital, Seattle',
+    description: 'Medical internship position available for recent graduates looking to gain hands-on experience.',
+    jobType: 'Internship',
+    country: 'USA',
+    city: 'Seattle',
+    salary: '$30K - $40K',
+    requirements: ['Medical degree', 'Recent graduate']
+  },
 ];
+
+// Extract unique values for filters
+const getUniqueValues = (data: any[], property: string) => {
+  return [...new Set(data.map(item => item[property]))];
+};
+
+// Get job type icon
+const getJobTypeIcon = (jobType: string) => {
+  switch(jobType) {
+    case 'Full-time':
+      return <Briefcase className="h-4 w-4 mr-2" />;
+    case 'Part-time':
+      return <Briefcase className="h-4 w-4 mr-2" />;
+    case 'Internship':
+      return <GraduationCap className="h-4 w-4 mr-2" />;
+    case 'Volunteer':
+      return <Heart className="h-4 w-4 mr-2" />;
+    default:
+      return <Briefcase className="h-4 w-4 mr-2" />;
+  }
+};
 
 const ProfessionalDashboard = () => {
   const { userType } = useAuth();
@@ -82,6 +150,20 @@ const ProfessionalDashboard = () => {
     (currentPage - 1) * ITEMS_PER_PAGE,
     currentPage * ITEMS_PER_PAGE
   );
+  
+  // Filter states
+  const [selectedJobTypes, setSelectedJobTypes] = useState<string[]>([]);
+  const [selectedCountry, setSelectedCountry] = useState<string>('');
+  const [selectedCity, setSelectedCity] = useState<string>('');
+  const [activeFilters, setActiveFilters] = useState<string[]>([]);
+  
+  // Get unique values for filters
+  const jobTypes = getUniqueValues(sampleVacancies, 'jobType');
+  const countries = getUniqueValues(sampleVacancies, 'country');
+  const cities = sampleVacancies
+    .filter(v => !selectedCountry || v.country === selectedCountry)
+    .map(v => v.city)
+    .filter((value, index, self) => self.indexOf(value) === index);
   
   const defaultProfileData: ProfileFormValues = {
     firstName: "John",
@@ -123,6 +205,11 @@ const ProfessionalDashboard = () => {
     const storageKey = userType ? `profileData_${userType}` : 'profileData';
     localStorage.setItem(storageKey, JSON.stringify(data));
   };
+  
+  // Reset selectedCity when country changes
+  useEffect(() => {
+    setSelectedCity('');
+  }, [selectedCountry]);
 
   const getPageNumbers = () => {
     const pageNumbers = [];
@@ -155,17 +242,83 @@ const ProfessionalDashboard = () => {
     return pageNumbers;
   };
 
-  const handleSearch = () => {
-    const filtered = sampleVacancies.filter(vacancy => 
-      vacancy.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      vacancy.institution.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      vacancy.description.toLowerCase().includes(searchQuery.toLowerCase())
-    );
+  // Toggle job type selection
+  const toggleJobType = (jobType: string) => {
+    setSelectedJobTypes(prev => {
+      if (prev.includes(jobType)) {
+        return prev.filter(type => type !== jobType);
+      } else {
+        return [...prev, jobType];
+      }
+    });
+  };
+
+  // Apply filters to vacancies
+  const applyFilters = () => {
+    let filtered = sampleVacancies;
+    
+    // Apply search filter
+    if (searchQuery) {
+      filtered = filtered.filter(vacancy => 
+        vacancy.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        vacancy.institution.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        vacancy.description.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
+    
+    // Apply job type filter
+    if (selectedJobTypes.length > 0) {
+      filtered = filtered.filter(vacancy => selectedJobTypes.includes(vacancy.jobType));
+    }
+    
+    // Apply country filter
+    if (selectedCountry) {
+      filtered = filtered.filter(vacancy => vacancy.country === selectedCountry);
+    }
+    
+    // Apply city filter
+    if (selectedCity) {
+      filtered = filtered.filter(vacancy => vacancy.city === selectedCity);
+    }
     
     setVacancyResults(filtered);
     setCurrentPage(1);
+    
+    // Update active filters
+    const newActiveFilters = [];
+    if (selectedJobTypes.length > 0) {
+      newActiveFilters.push(...selectedJobTypes);
+    }
+    if (selectedCountry) {
+      newActiveFilters.push(selectedCountry);
+    }
+    if (selectedCity) {
+      newActiveFilters.push(selectedCity);
+    }
+    
+    setActiveFilters(newActiveFilters);
   };
 
+  // Reset all filters
+  const resetFilters = () => {
+    setSearchQuery('');
+    setSelectedJobTypes([]);
+    setSelectedCountry('');
+    setSelectedCity('');
+    setActiveFilters([]);
+    setVacancyResults(sampleVacancies);
+    setCurrentPage(1);
+  };
+
+  // Apply filters when any filter changes
+  useEffect(() => {
+    applyFilters();
+  }, [selectedJobTypes, selectedCountry, selectedCity]);
+
+  const handleSearch = () => {
+    applyFilters();
+  };
+  
   return (
     <MainLayout>
       <div className="container py-8">
@@ -335,15 +488,151 @@ const ProfessionalDashboard = () => {
                     </Button>
                   </div>
                   
-                  <div className="flex gap-2 flex-wrap">
-                    <Badge variant="outline" className="hover:bg-accent cursor-pointer">Full-time</Badge>
-                    <Badge variant="outline" className="hover:bg-accent cursor-pointer">Part-time</Badge>
-                    <Badge variant="outline" className="hover:bg-accent cursor-pointer">Temporary</Badge>
-                    <Badge variant="outline" className="hover:bg-accent cursor-pointer">Permanent</Badge>
-                    <Badge variant="outline" className="hover:bg-accent cursor-pointer">New York</Badge>
-                    <Badge variant="outline" className="hover:bg-accent cursor-pointer">Cardiology</Badge>
-                    <Badge variant="outline" className="hover:bg-accent cursor-pointer">English required</Badge>
+                  <div className="flex flex-wrap gap-2">
+                    {/* Job Type Filter Dropdown */}
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <div>
+                            <DropdownMenu>
+                              <DropdownMenuTrigger asChild>
+                                <Button variant="outline" className="flex items-center gap-2">
+                                  <Briefcase className="h-4 w-4" />
+                                  Job Type
+                                  {selectedJobTypes.length > 0 && (
+                                    <Badge className="ml-1 bg-primary text-white">{selectedJobTypes.length}</Badge>
+                                  )}
+                                  <ChevronDown className="h-4 w-4 ml-1" />
+                                </Button>
+                              </DropdownMenuTrigger>
+                              <DropdownMenuContent align="start" className="w-48">
+                                <DropdownMenuLabel>Select Job Types</DropdownMenuLabel>
+                                <DropdownMenuSeparator />
+                                {jobTypes.map((jobType) => (
+                                  <DropdownMenuCheckboxItem
+                                    key={jobType}
+                                    checked={selectedJobTypes.includes(jobType)}
+                                    onCheckedChange={() => toggleJobType(jobType)}
+                                  >
+                                    {getJobTypeIcon(jobType)}
+                                    {jobType}
+                                  </DropdownMenuCheckboxItem>
+                                ))}
+                              </DropdownMenuContent>
+                            </DropdownMenu>
+                          </div>
+                        </TooltipTrigger>
+                        <TooltipContent>Filter by job type</TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                    
+                    {/* Country Filter Dropdown */}
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <div>
+                            <DropdownMenu>
+                              <DropdownMenuTrigger asChild>
+                                <Button variant="outline" className="flex items-center gap-2">
+                                  <MapPin className="h-4 w-4" />
+                                  Country
+                                  {selectedCountry && (
+                                    <Badge className="ml-1 bg-primary text-white">1</Badge>
+                                  )}
+                                  <ChevronDown className="h-4 w-4 ml-1" />
+                                </Button>
+                              </DropdownMenuTrigger>
+                              <DropdownMenuContent align="start" className="w-48">
+                                <DropdownMenuLabel>Select Country</DropdownMenuLabel>
+                                <DropdownMenuSeparator />
+                                {countries.map((country) => (
+                                  <DropdownMenuCheckboxItem
+                                    key={country}
+                                    checked={selectedCountry === country}
+                                    onCheckedChange={() => setSelectedCountry(prev => prev === country ? '' : country)}
+                                  >
+                                    <MapPin className="h-4 w-4 mr-2" />
+                                    {country}
+                                  </DropdownMenuCheckboxItem>
+                                ))}
+                              </DropdownMenuContent>
+                            </DropdownMenu>
+                          </div>
+                        </TooltipTrigger>
+                        <TooltipContent>Filter by country</TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                    
+                    {/* City Filter Dropdown */}
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <div>
+                            <DropdownMenu>
+                              <DropdownMenuTrigger asChild>
+                                <Button 
+                                  variant="outline" 
+                                  className="flex items-center gap-2"
+                                  disabled={!selectedCountry} // Disable if no country is selected
+                                >
+                                  <Building className="h-4 w-4" />
+                                  City
+                                  {selectedCity && (
+                                    <Badge className="ml-1 bg-primary text-white">1</Badge>
+                                  )}
+                                  <ChevronDown className="h-4 w-4 ml-1" />
+                                </Button>
+                              </DropdownMenuTrigger>
+                              <DropdownMenuContent align="start" className="w-48">
+                                <DropdownMenuLabel>Select City</DropdownMenuLabel>
+                                <DropdownMenuSeparator />
+                                {cities.length > 0 ? (
+                                  cities.map((city) => (
+                                    <DropdownMenuCheckboxItem
+                                      key={city}
+                                      checked={selectedCity === city}
+                                      onCheckedChange={() => setSelectedCity(prev => prev === city ? '' : city)}
+                                    >
+                                      <Building className="h-4 w-4 mr-2" />
+                                      {city}
+                                    </DropdownMenuCheckboxItem>
+                                  ))
+                                ) : (
+                                  <div className="px-2 py-1.5 text-sm text-muted-foreground">
+                                    Please select a country first
+                                  </div>
+                                )}
+                              </DropdownMenuContent>
+                            </DropdownMenu>
+                          </div>
+                        </TooltipTrigger>
+                        <TooltipContent>Filter by city</TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                    
+                    {/* Reset Filters Button */}
+                    {activeFilters.length > 0 && (
+                      <Button 
+                        variant="ghost" 
+                        size="sm"
+                        onClick={resetFilters}
+                        className="ml-auto"
+                      >
+                        Reset filters
+                      </Button>
+                    )}
                   </div>
+                  
+                  {/* Active Filters */}
+                  {activeFilters.length > 0 && (
+                    <div className="flex flex-wrap gap-2">
+                      {activeFilters.map((filter, index) => (
+                        <Badge key={index} variant="secondary" className="py-1">
+                          {filter}
+                        </Badge>
+                      ))}
+                    </div>
+                  )}
                 
                   {currentVacancies.length > 0 ? (
                     <>
@@ -362,6 +651,7 @@ const ProfessionalDashboard = () => {
                           <div className="mt-2 flex gap-2 flex-wrap">
                             <Badge variant="secondary">{vacancy.jobType}</Badge>
                             <Badge variant="outline">{vacancy.salary}</Badge>
+                            <Badge variant="outline">{vacancy.country}, {vacancy.city}</Badge>
                             {vacancy.requirements.map((req, index) => (
                               <Badge key={index} variant="outline">{req}</Badge>
                             ))}
@@ -422,11 +712,7 @@ const ProfessionalDashboard = () => {
                       <Button 
                         variant="outline" 
                         className="mt-4"
-                        onClick={() => {
-                          setSearchQuery('');
-                          setVacancyResults(sampleVacancies);
-                          setCurrentPage(1);
-                        }}
+                        onClick={resetFilters}
                       >
                         Reset Search
                       </Button>
