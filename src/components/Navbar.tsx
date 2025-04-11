@@ -59,9 +59,14 @@ const Navbar: React.FC = () => {
               Home
             </Link>
             {!isLoggedIn && (
-              <Link to="/institutions" className="text-sm font-medium hover:text-medical-600 transition-colors">
-                Institutions
-              </Link>
+              <>
+                <Link to="/professionals" className="text-sm font-medium hover:text-medical-600 transition-colors">
+                  Professionals
+                </Link>
+                <Link to="/institutions" className="text-sm font-medium hover:text-medical-600 transition-colors">
+                  Institutions
+                </Link>
+              </>
             )}
             <Link to="/about" className="text-sm font-medium hover:text-medical-600 transition-colors">
               About Us
@@ -125,13 +130,22 @@ const Navbar: React.FC = () => {
               Home
             </Link>
             {!isLoggedIn && (
-              <Link 
-                to="/institutions" 
-                className="px-4 py-2 text-sm hover:bg-muted rounded-md"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Institutions
-              </Link>
+              <>
+                <Link 
+                  to="/professionals" 
+                  className="px-4 py-2 text-sm hover:bg-muted rounded-md"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Professionals
+                </Link>
+                <Link 
+                  to="/institutions" 
+                  className="px-4 py-2 text-sm hover:bg-muted rounded-md"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Institutions
+                </Link>
+              </>
             )}
             <Link 
               to="/about" 
