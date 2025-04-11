@@ -25,7 +25,21 @@ export const AppRoutes = () => {
   
   return (
     <Routes>
-      <Route path="/" element={<Index />} />
+      {/* Redirect to dashboard if user is logged in and accessing the home page */}
+      <Route 
+        path="/" 
+        element={
+          isLoggedIn ? (
+            userType === 'professional' ? (
+              <Navigate to="/dashboard/professional" replace />
+            ) : (
+              <Navigate to="/dashboard/institution" replace />
+            )
+          ) : (
+            <Index />
+          )
+        } 
+      />
       <Route path="/about" element={<About />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
