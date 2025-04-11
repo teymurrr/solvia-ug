@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import MainLayout from '@/components/MainLayout';
@@ -22,10 +21,25 @@ const InstitutionDashboard = () => {
   
   // Load professionals from localStorage on component mount
   useEffect(() => {
-    const savedProfessionals = localStorage.getItem('professionals');
-    if (savedProfessionals) {
-      setProfessionals(JSON.parse(savedProfessionals));
-    }
+    const loadProfessionals = () => {
+      const savedProfessionals = localStorage.getItem('professionals');
+      console.log('Loaded professionals from localStorage:', savedProfessionals);
+      if (savedProfessionals) {
+        const parsedProfessionals = JSON.parse(savedProfessionals);
+        setProfessionals(parsedProfessionals);
+        // Initially display all professionals
+        setFilteredProfessionals(parsedProfessionals);
+      }
+    };
+    
+    loadProfessionals();
+    
+    // Set up an event listener to reload professionals when localStorage changes
+    window.addEventListener('storage', loadProfessionals);
+    
+    return () => {
+      window.removeEventListener('storage', loadProfessionals);
+    };
   }, []);
   
   // Load vacancies from localStorage on component mount
@@ -235,7 +249,7 @@ const InstitutionDashboard = () => {
                   {filteredProfessionals.length > 0 ? (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                       {filteredProfessionals.map((professional) => (
-                        <div key={professional.email} className="border rounded-lg p-4">
+                        <div key={professional.id || professional.email} className="border rounded-lg p-4">
                           <div className="flex items-start gap-3">
                             <div className="h-12 w-12 bg-muted rounded-full flex items-center justify-center">
                               <User className="h-6 w-6 text-muted-foreground" />
@@ -269,8 +283,8 @@ const InstitutionDashboard = () => {
                     </div>
                   ) : (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                      {professionals.slice(0, 6).map((professional) => (
-                        <div key={professional.email} className="border rounded-lg p-4">
+                      {professionals.map((professional) => (
+                        <div key={professional.id || professional.email} className="border rounded-lg p-4">
                           <div className="flex items-start gap-3">
                             <div className="h-12 w-12 bg-muted rounded-full flex items-center justify-center">
                               <User className="h-6 w-6 text-muted-foreground" />
@@ -310,7 +324,6 @@ const InstitutionDashboard = () => {
         </Tabs>
       </div>
       
-      {/* Forms */}
       <InstitutionProfileEditForm 
         open={profileFormOpen} 
         onOpenChange={setProfileFormOpen} 

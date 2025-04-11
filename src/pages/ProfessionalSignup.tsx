@@ -61,8 +61,23 @@ const ProfessionalSignup = () => {
     const existingProfessionals = localStorage.getItem('professionals');
     const professionals = existingProfessionals ? JSON.parse(existingProfessionals) : [];
     
-    // Add new professional to the list
+    // Check if professional with this email already exists
+    const professionalExists = professionals.some(
+      (prof: any) => prof.email === data.email
+    );
+    
+    if (professionalExists) {
+      toast({
+        title: "Account already exists",
+        description: "An account with this email already exists.",
+        variant: "destructive"
+      });
+      return;
+    }
+    
+    // Add new professional to the list with a unique ID
     professionals.push({
+      id: Date.now().toString(),
       firstName: data.firstName,
       lastName: data.lastName,
       email: data.email,
