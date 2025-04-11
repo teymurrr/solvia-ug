@@ -29,10 +29,11 @@ export const AppRoutes = () => {
       <Route path="/institutions" element={<Institutions />} />
       <Route path="/vacancies" element={<Vacancies />} />
       <Route path="/vacancies/:id" element={<VacancyDetail />} />
+      
       <Route 
         path="/dashboard/professional" 
         element={
-          <ProtectedRoute>
+          <ProtectedRoute userType="professional">
             <ProfessionalDashboard />
           </ProtectedRoute>
         } 
@@ -40,7 +41,7 @@ export const AppRoutes = () => {
       <Route 
         path="/dashboard/institution" 
         element={
-          <ProtectedRoute>
+          <ProtectedRoute userType="institution">
             <InstitutionDashboard />
           </ProtectedRoute>
         } 

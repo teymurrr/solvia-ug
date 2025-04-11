@@ -2,14 +2,22 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
-import { Menu, X, LogOut } from 'lucide-react';
+import { Menu, X, LogOut, User, Settings } from 'lucide-react';
 import Logo from './Logo';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { isLoggedIn, logout } = useAuth();
+  const { isLoggedIn, logout, userType } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -24,6 +32,14 @@ const Navbar: React.FC = () => {
       description: "You have been logged out successfully.",
     });
     navigate('/');
+  };
+
+  const navigateToDashboard = () => {
+    if (userType === 'professional') {
+      navigate('/dashboard/professional');
+    } else if (userType === 'institution') {
+      navigate('/dashboard/institution');
+    }
   };
 
   return (
@@ -50,10 +66,26 @@ const Navbar: React.FC = () => {
           
           <div className="hidden md:flex items-center gap-4">
             {isLoggedIn ? (
-              <Button variant="outline" onClick={handleLogout} className="flex items-center gap-2">
-                <LogOut size={16} />
-                Log Out
-              </Button>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" className="flex gap-2 items-center">
+                    <User size={16} />
+                    My Account
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={navigateToDashboard} className="cursor-pointer">
+                    <Settings className="mr-2 h-4 w-4" />
+                    Dashboard
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={handleLogout} className="cursor-pointer">
+                    <LogOut className="mr-2 h-4 w-4" />
+                    Logout
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             ) : (
               <>
                 <Button variant="outline" asChild>
@@ -111,17 +143,30 @@ const Navbar: React.FC = () => {
             </Link>
             <div className="flex flex-col gap-2 mt-2">
               {isLoggedIn ? (
-                <Button 
-                  variant="outline" 
-                  onClick={() => {
-                    handleLogout();
-                    setIsMenuOpen(false);
-                  }}
-                  className="w-full flex items-center justify-center gap-2"
-                >
-                  <LogOut size={16} />
-                  Log Out
-                </Button>
+                <>
+                  <Button 
+                    variant="outline" 
+                    onClick={() => {
+                      navigateToDashboard();
+                      setIsMenuOpen(false);
+                    }}
+                    className="w-full flex items-center justify-center gap-2"
+                  >
+                    <Settings size={16} />
+                    Dashboard
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    onClick={() => {
+                      handleLogout();
+                      setIsMenuOpen(false);
+                    }}
+                    className="w-full flex items-center justify-center gap-2"
+                  >
+                    <LogOut size={16} />
+                    Log Out
+                  </Button>
+                </>
               ) : (
                 <>
                   <Button variant="outline" asChild className="w-full">
