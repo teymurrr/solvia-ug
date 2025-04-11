@@ -20,3 +20,5 @@ export const SignupLinks: React.FC = () => {
     </>
   );
 };
+
+export default SignupLinks;
