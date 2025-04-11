@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import MainLayout from '@/components/MainLayout';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -9,6 +9,7 @@ import { Building2, Briefcase, Settings, Search, Users, Plus, FileText } from 'l
 import { Input } from '@/components/ui/input';
 import InstitutionProfileEditForm from '@/components/InstitutionProfileEditForm';
 import VacancyForm from '@/components/VacancyForm';
+import { useToast } from '@/hooks/use-toast';
 
 const InstitutionDashboard = () => {
   // State for search results in talents tab
@@ -16,7 +17,18 @@ const InstitutionDashboard = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [profileFormOpen, setProfileFormOpen] = useState(false);
   const [vacancyFormOpen, setVacancyFormOpen] = useState(false);
-  const [vacancies, setVacancies] = useState<any[]>([]);
+  const { toast } = useToast();
+  
+  // Load vacancies from localStorage on component mount
+  const [vacancies, setVacancies] = useState<any[]>(() => {
+    const savedVacancies = localStorage.getItem('institutionVacancies');
+    return savedVacancies ? JSON.parse(savedVacancies) : [];
+  });
+
+  // Save vacancies to localStorage whenever they change
+  useEffect(() => {
+    localStorage.setItem('institutionVacancies', JSON.stringify(vacancies));
+  }, [vacancies]);
 
   // Handle talent search
   const handleTalentSearch = () => {
@@ -30,17 +42,28 @@ const InstitutionDashboard = () => {
   };
 
   const handleAddVacancy = (vacancyData: any) => {
-    // In a real app, this would save to a database
-    setVacancies([...vacancies, { ...vacancyData, id: Date.now() }]);
+    // Add the new vacancy with a timestamp ID
+    const newVacancy = { ...vacancyData, id: Date.now() };
+    setVacancies([...vacancies, newVacancy]);
     setVacancyFormOpen(false);
+    
+    toast({
+      title: "Vacancy Created",
+      description: "Your vacancy has been saved and will persist even after page refresh.",
+    });
   };
 
   const handleDeleteVacancy = (id: number) => {
     setVacancies(vacancies.filter(vacancy => vacancy.id !== id));
+    
+    toast({
+      title: "Vacancy Deleted",
+      description: "The vacancy has been removed from your listings.",
+    });
   };
 
   return (
-    <MainLayout>
+    <MainLayout hideEditProfile>
       <div className="container py-8">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
           <div>
