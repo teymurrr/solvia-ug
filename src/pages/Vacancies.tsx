@@ -13,12 +13,13 @@ import {
 } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { 
-  Popover, 
-  PopoverContent, 
-  PopoverTrigger 
-} from '@/components/ui/popover';
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuCheckboxItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Search, Filter, X, ChevronDown } from 'lucide-react';
+import { Search, Filter, X, ChevronDown, Briefcase, Building, MapPin, GraduationCap, Heart } from 'lucide-react';
 
 // Sample vacancy data that would normally come from an API
 const sampleVacancies = [
@@ -105,6 +106,22 @@ const sampleVacancies = [
 // Extract unique values for filters
 const getUniqueValues = (data: any[], property: string) => {
   return [...new Set(data.map(item => item[property]))];
+};
+
+// Get job type icon
+const getJobTypeIcon = (jobType: string) => {
+  switch(jobType) {
+    case 'Full-time':
+      return <Briefcase className="h-4 w-4 mr-2" />;
+    case 'Part-time':
+      return <Briefcase className="h-4 w-4 mr-2" />;
+    case 'Internship':
+      return <GraduationCap className="h-4 w-4 mr-2" />;
+    case 'Volunteer':
+      return <Heart className="h-4 w-4 mr-2" />;
+    default:
+      return <Briefcase className="h-4 w-4 mr-2" />;
+  }
 };
 
 const Vacancies = () => {
@@ -320,26 +337,29 @@ const Vacancies = () => {
               </div>
               
               <div className="space-y-5">
-                {/* Job Type Filter */}
+                {/* Job Type Filter - Using Dropdown Menu */}
                 <div>
                   <h3 className="text-sm font-medium mb-2">Job Type</h3>
-                  <div className="space-y-2">
-                    {jobTypes.map((jobType) => (
-                      <div key={jobType} className="flex items-center space-x-2">
-                        <Checkbox 
-                          id={`job-type-${jobType}`} 
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="outline" className="w-full justify-between">
+                        <span>{selectedJobTypes.length > 0 ? `${selectedJobTypes.length} selected` : 'Select job types'}</span>
+                        <ChevronDown className="h-4 w-4 opacity-50" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent className="w-56" align="start">
+                      {jobTypes.map((jobType) => (
+                        <DropdownMenuCheckboxItem
+                          key={jobType}
                           checked={selectedJobTypes.includes(jobType)}
                           onCheckedChange={() => toggleJobType(jobType)}
-                        />
-                        <label
-                          htmlFor={`job-type-${jobType}`}
-                          className="text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                         >
+                          {getJobTypeIcon(jobType)}
                           {jobType}
-                        </label>
-                      </div>
-                    ))}
-                  </div>
+                        </DropdownMenuCheckboxItem>
+                      ))}
+                    </DropdownMenuContent>
+                  </DropdownMenu>
                 </div>
                 
                 {/* Location Filter */}

@@ -13,6 +13,7 @@ import InstitutionDashboard from '@/pages/InstitutionDashboard';
 import Professionals from '@/pages/Professionals';
 import Institutions from '@/pages/Institutions';
 import Vacancies from '@/pages/Vacancies';
+import VacancyDetail from '@/pages/VacancyDetail';
 import ProtectedRoute from '@/components/ProtectedRoute';
 
 export const AppRoutes = () => {
@@ -27,6 +28,7 @@ export const AppRoutes = () => {
       <Route path="/professionals" element={<Professionals />} />
       <Route path="/institutions" element={<Institutions />} />
       <Route path="/vacancies" element={<Vacancies />} />
+      <Route path="/vacancies/:id" element={<VacancyDetail />} />
       <Route 
         path="/dashboard/professional" 
         element={
