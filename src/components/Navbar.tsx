@@ -58,15 +58,11 @@ const Navbar: React.FC = () => {
             <Link to="/" className="text-sm font-medium hover:text-medical-600 transition-colors">
               Home
             </Link>
-            <Link to="/professionals" className="text-sm font-medium hover:text-medical-600 transition-colors">
-              Professionals
-            </Link>
-            <Link to="/institutions" className="text-sm font-medium hover:text-medical-600 transition-colors">
-              Institutions
-            </Link>
-            <Link to="/vacancies" className="text-sm font-medium hover:text-medical-600 transition-colors">
-              Vacancies
-            </Link>
+            {!isLoggedIn && (
+              <Link to="/institutions" className="text-sm font-medium hover:text-medical-600 transition-colors">
+                Institutions
+              </Link>
+            )}
             <Link to="/about" className="text-sm font-medium hover:text-medical-600 transition-colors">
               About Us
             </Link>
@@ -128,27 +124,15 @@ const Navbar: React.FC = () => {
             >
               Home
             </Link>
-            <Link 
-              to="/professionals" 
-              className="px-4 py-2 text-sm hover:bg-muted rounded-md"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Professionals
-            </Link>
-            <Link 
-              to="/institutions" 
-              className="px-4 py-2 text-sm hover:bg-muted rounded-md"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Institutions
-            </Link>
-            <Link 
-              to="/vacancies" 
-              className="px-4 py-2 text-sm hover:bg-muted rounded-md"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Vacancies
-            </Link>
+            {!isLoggedIn && (
+              <Link 
+                to="/institutions" 
+                className="px-4 py-2 text-sm hover:bg-muted rounded-md"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Institutions
+              </Link>
+            )}
             <Link 
               to="/about" 
               className="px-4 py-2 text-sm hover:bg-muted rounded-md"
