@@ -10,13 +10,79 @@ import { Badge } from '@/components/ui/badge';
 import { ProfessionalProfileEditForm } from '@/components/professional-profile';
 import { ProfileFormValues } from '@/components/professional-profile/types';
 import { useAuth } from '@/contexts/AuthContext';
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from '@/components/ui/pagination';
+
+const sampleVacancies = [
+  {
+    id: '1',
+    title: 'Senior Cardiologist',
+    institution: 'General Hospital, New York',
+    description: 'Looking for an experienced cardiologist to join our team. Must have excellent diagnostic skills and patient care abilities.',
+    jobType: 'Full-time',
+    salary: '$150K - $200K',
+    requirements: ['English required', '5+ years experience']
+  },
+  {
+    id: '2',
+    title: 'Pediatric Nurse',
+    institution: 'Children\'s Hospital, Boston',
+    description: 'Seeking pediatric nurse with experience in intensive care unit. Compassionate care for young patients required.',
+    jobType: 'Part-time',
+    salary: '$50K - $70K',
+    requirements: ['Pediatric certification', '3+ years experience']
+  },
+  {
+    id: '3',
+    title: 'Neurologist',
+    institution: 'Medical Center, Chicago',
+    description: 'Neurologist needed for busy medical center. Will be responsible for patient diagnosis and treatment plans.',
+    jobType: 'Full-time',
+    salary: '$180K - $220K',
+    requirements: ['Board certified', '7+ years experience']
+  },
+  {
+    id: '4',
+    title: 'Emergency Room Physician',
+    institution: 'City Hospital, Los Angeles',
+    description: 'ER doctor needed for high-volume emergency department. Must excel in fast-paced environment.',
+    jobType: 'Full-time',
+    salary: '$200K - $250K',
+    requirements: ['ER certification', '5+ years experience']
+  },
+  {
+    id: '5',
+    title: 'Medical Technician',
+    institution: 'Diagnostic Center, Dallas',
+    description: 'Medical lab tech needed for diagnostic testing. Experience with advanced equipment required.',
+    jobType: 'Full-time',
+    salary: '$60K - $80K',
+    requirements: ['Lab certification', '2+ years experience']
+  }
+];
 
 const ProfessionalDashboard = () => {
   const { userType } = useAuth();
   const [isEditProfileOpen, setIsEditProfileOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   
-  // Default profile data
+  const [currentPage, setCurrentPage] = useState(1);
+  const [vacancyResults, setVacancyResults] = useState(sampleVacancies);
+  const ITEMS_PER_PAGE = 3;
+  const totalPages = Math.ceil(vacancyResults.length / ITEMS_PER_PAGE);
+  
+  const currentVacancies = vacancyResults.slice(
+    (currentPage - 1) * ITEMS_PER_PAGE,
+    currentPage * ITEMS_PER_PAGE
+  );
+  
   const defaultProfileData: ProfileFormValues = {
     firstName: "John",
     lastName: "Doe",
@@ -36,9 +102,7 @@ const ProfessionalDashboard = () => {
   
   const [profileData, setProfileData] = useState<ProfileFormValues>(defaultProfileData);
   
-  // This would normally fetch from a DB
   useEffect(() => {
-    // Use userType as part of the localStorage key to keep profile data separate per user type
     const storageKey = userType ? `profileData_${userType}` : 'profileData';
     const userData = localStorage.getItem(storageKey);
     
@@ -48,21 +112,60 @@ const ProfessionalDashboard = () => {
         setProfileData(parsedData);
       } catch (error) {
         console.error("Error parsing profile data from localStorage:", error);
-        // Fallback to default profile if there's an error
         setProfileData(defaultProfileData);
       }
     }
   }, [userType]);
 
-  // This simulates saving profile data
   const handleProfileSave = (data: ProfileFormValues) => {
     setProfileData(data);
     
-    // Use userType as part of the localStorage key
     const storageKey = userType ? `profileData_${userType}` : 'profileData';
     localStorage.setItem(storageKey, JSON.stringify(data));
   };
-  
+
+  const getPageNumbers = () => {
+    const pageNumbers = [];
+    
+    if (totalPages <= 5) {
+      for (let i = 1; i <= totalPages; i++) {
+        pageNumbers.push(i);
+      }
+    } else {
+      pageNumbers.push(1);
+      
+      if (currentPage > 3) {
+        pageNumbers.push('ellipsis1');
+      }
+      
+      const startPage = Math.max(2, currentPage - 1);
+      const endPage = Math.min(totalPages - 1, currentPage + 1);
+      
+      for (let i = startPage; i <= endPage; i++) {
+        pageNumbers.push(i);
+      }
+      
+      if (currentPage < totalPages - 2) {
+        pageNumbers.push('ellipsis2');
+      }
+      
+      pageNumbers.push(totalPages);
+    }
+    
+    return pageNumbers;
+  };
+
+  const handleSearch = () => {
+    const filtered = sampleVacancies.filter(vacancy => 
+      vacancy.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      vacancy.institution.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      vacancy.description.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    
+    setVacancyResults(filtered);
+    setCurrentPage(1);
+  };
+
   return (
     <MainLayout>
       <div className="container py-8">
@@ -218,12 +321,17 @@ const ProfessionalDashboard = () => {
                           className="pl-10"
                           value={searchQuery}
                           onChange={(e) => setSearchQuery(e.target.value)}
+                          onKeyUp={(e) => e.key === 'Enter' && handleSearch()}
                         />
                       </div>
                     </div>
-                    <Button variant="outline" className="md:w-auto">
-                      <Filter className="h-4 w-4 mr-2" />
-                      Filters
+                    <Button 
+                      variant="outline" 
+                      className="md:w-auto"
+                      onClick={handleSearch}
+                    >
+                      <Search className="h-4 w-4 mr-2" />
+                      Search
                     </Button>
                   </div>
                   
@@ -237,34 +345,93 @@ const ProfessionalDashboard = () => {
                     <Badge variant="outline" className="hover:bg-accent cursor-pointer">English required</Badge>
                   </div>
                 
-                  {[1, 2, 3].map((vacancy) => (
-                    <div key={vacancy} className="border rounded-lg p-4">
-                      <div className="flex justify-between items-start">
-                        <div>
-                          <h3 className="font-medium">Senior Cardiologist</h3>
-                          <p className="text-sm text-muted-foreground">General Hospital, New York</p>
+                  {currentVacancies.length > 0 ? (
+                    <>
+                      {currentVacancies.map((vacancy) => (
+                        <div key={vacancy.id} className="border rounded-lg p-4">
+                          <div className="flex justify-between items-start">
+                            <div>
+                              <h3 className="font-medium">{vacancy.title}</h3>
+                              <p className="text-sm text-muted-foreground">{vacancy.institution}</p>
+                            </div>
+                            <Button variant="outline" size="sm">
+                              <Briefcase className="h-4 w-4 mr-2" />
+                              Apply
+                            </Button>
+                          </div>
+                          <div className="mt-2 flex gap-2 flex-wrap">
+                            <Badge variant="secondary">{vacancy.jobType}</Badge>
+                            <Badge variant="outline">{vacancy.salary}</Badge>
+                            {vacancy.requirements.map((req, index) => (
+                              <Badge key={index} variant="outline">{req}</Badge>
+                            ))}
+                          </div>
+                          <p className="mt-3 text-sm text-muted-foreground">
+                            {vacancy.description}
+                          </p>
                         </div>
-                        <Button variant="outline" size="sm">
-                          <Briefcase className="h-4 w-4 mr-2" />
-                          Apply
-                        </Button>
-                      </div>
-                      <div className="mt-2 flex gap-2 flex-wrap">
-                        <Badge variant="secondary">Full-time</Badge>
-                        <Badge variant="outline">$150K - $200K</Badge>
-                        <Badge variant="outline">English required</Badge>
-                        <Badge variant="outline">5+ years experience</Badge>
-                      </div>
-                      <p className="mt-3 text-sm text-muted-foreground">
-                        Looking for an experienced cardiologist to join our team. Must have excellent diagnostic skills and patient care abilities.
+                      ))}
+                      
+                      {totalPages > 0 && (
+                        <Pagination className="mt-6">
+                          <PaginationContent>
+                            {currentPage > 1 && (
+                              <PaginationItem>
+                                <PaginationPrevious 
+                                  onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))} 
+                                  className="cursor-pointer"
+                                />
+                              </PaginationItem>
+                            )}
+                            
+                            {getPageNumbers().map((page, index) => (
+                              <PaginationItem key={index}>
+                                {page === 'ellipsis1' || page === 'ellipsis2' ? (
+                                  <PaginationEllipsis />
+                                ) : (
+                                  <PaginationLink
+                                    isActive={page === currentPage}
+                                    onClick={() => typeof page === 'number' && setCurrentPage(page)}
+                                    className="cursor-pointer"
+                                  >
+                                    {page}
+                                  </PaginationLink>
+                                )}
+                              </PaginationItem>
+                            ))}
+                            
+                            {currentPage < totalPages && (
+                              <PaginationItem>
+                                <PaginationNext 
+                                  onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))} 
+                                  className="cursor-pointer"
+                                />
+                              </PaginationItem>
+                            )}
+                          </PaginationContent>
+                        </Pagination>
+                      )}
+                    </>
+                  ) : (
+                    <div className="text-center py-8">
+                      <FileText className="h-12 w-12 mx-auto text-muted-foreground" />
+                      <h3 className="mt-4 text-lg font-medium">No vacancies found</h3>
+                      <p className="text-muted-foreground">
+                        Try adjusting your search criteria
                       </p>
+                      <Button 
+                        variant="outline" 
+                        className="mt-4"
+                        onClick={() => {
+                          setSearchQuery('');
+                          setVacancyResults(sampleVacancies);
+                          setCurrentPage(1);
+                        }}
+                      >
+                        Reset Search
+                      </Button>
                     </div>
-                  ))}
-                  
-                  <Button variant="outline" className="w-full">
-                    <FileText className="h-4 w-4 mr-2" />
-                    View All Vacancies
-                  </Button>
+                  )}
                 </div>
               </CardContent>
             </Card>
