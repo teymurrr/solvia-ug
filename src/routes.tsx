@@ -14,6 +14,7 @@ import Professionals from '@/pages/Professionals';
 import Institutions from '@/pages/Institutions';
 import Vacancies from '@/pages/Vacancies';
 import VacancyDetail from '@/pages/VacancyDetail';
+import SolviaLearning from '@/pages/SolviaLearning';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import { useAuth } from '@/contexts/AuthContext';
 
@@ -49,6 +50,14 @@ export const AppRoutes = () => {
       <Route path="/institutions" element={<Institutions />} />
       <Route path="/vacancies" element={<Vacancies />} />
       <Route path="/vacancies/:id" element={<VacancyDetail />} />
+      <Route 
+        path="/learning" 
+        element={
+          <ProtectedRoute>
+            <SolviaLearning />
+          </ProtectedRoute>
+        } 
+      />
       
       <Route 
         path="/dashboard/professional" 

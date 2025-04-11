@@ -1,8 +1,7 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
-import { Menu, X, LogOut, User, Settings } from 'lucide-react';
+import { Menu, X, LogOut, User, Settings, BookOpen } from 'lucide-react';
 import Logo from './Logo';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
@@ -21,7 +20,6 @@ const Navbar: React.FC = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  // Debug logging
   useEffect(() => {
     console.log("Navbar auth state:", { isLoggedIn, userType });
   }, [isLoggedIn, userType]);
@@ -53,12 +51,11 @@ const Navbar: React.FC = () => {
         <div className="flex justify-between items-center">
           <Logo />
           
-          {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-6">
             <Link to="/" className="text-sm font-medium hover:text-medical-600 transition-colors">
               Home
             </Link>
-            {!isLoggedIn && (
+            {!isLoggedIn ? (
               <>
                 <Link to="/professionals" className="text-sm font-medium hover:text-medical-600 transition-colors">
                   Professionals
@@ -67,6 +64,11 @@ const Navbar: React.FC = () => {
                   Institutions
                 </Link>
               </>
+            ) : (
+              <Link to="/learning" className="text-sm font-medium hover:text-medical-600 transition-colors flex items-center gap-1">
+                <BookOpen size={16} />
+                Solvia Learning
+              </Link>
             )}
             <Link to="/about" className="text-sm font-medium hover:text-medical-600 transition-colors">
               About Us
@@ -107,7 +109,6 @@ const Navbar: React.FC = () => {
             )}
           </div>
           
-          {/* Mobile Menu Button */}
           <button 
             className="md:hidden flex items-center"
             onClick={toggleMenu}
@@ -118,7 +119,6 @@ const Navbar: React.FC = () => {
         </div>
       </div>
       
-      {/* Mobile Menu */}
       {isMenuOpen && (
         <div className="md:hidden absolute top-full left-0 right-0 bg-white border-b animate-fade-in">
           <div className="container mx-auto px-4 py-4 flex flex-col gap-4">
@@ -129,7 +129,7 @@ const Navbar: React.FC = () => {
             >
               Home
             </Link>
-            {!isLoggedIn && (
+            {!isLoggedIn ? (
               <>
                 <Link 
                   to="/professionals" 
@@ -146,6 +146,15 @@ const Navbar: React.FC = () => {
                   Institutions
                 </Link>
               </>
+            ) : (
+              <Link 
+                to="/learning" 
+                className="px-4 py-2 text-sm hover:bg-muted rounded-md flex items-center gap-2"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <BookOpen size={16} />
+                Solvia Learning
+              </Link>
             )}
             <Link 
               to="/about" 
