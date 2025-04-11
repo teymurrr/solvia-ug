@@ -7,11 +7,16 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Building2, Briefcase, Settings, Search, Users, Plus, FileText } from 'lucide-react';
 import { Input } from '@/components/ui/input';
+import InstitutionProfileEditForm from '@/components/InstitutionProfileEditForm';
+import VacancyForm from '@/components/VacancyForm';
 
 const InstitutionDashboard = () => {
   // State for search results in talents tab
   const [talentSearchResults, setTalentSearchResults] = useState<any[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
+  const [profileFormOpen, setProfileFormOpen] = useState(false);
+  const [vacancyFormOpen, setVacancyFormOpen] = useState(false);
+  const [vacancies, setVacancies] = useState<any[]>([]);
 
   // Handle talent search
   const handleTalentSearch = () => {
@@ -24,6 +29,16 @@ const InstitutionDashboard = () => {
     }
   };
 
+  const handleAddVacancy = (vacancyData: any) => {
+    // In a real app, this would save to a database
+    setVacancies([...vacancies, { ...vacancyData, id: Date.now() }]);
+    setVacancyFormOpen(false);
+  };
+
+  const handleDeleteVacancy = (id: number) => {
+    setVacancies(vacancies.filter(vacancy => vacancy.id !== id));
+  };
+
   return (
     <MainLayout>
       <div className="container py-8">
@@ -33,13 +48,11 @@ const InstitutionDashboard = () => {
             <p className="text-muted-foreground">Manage your hospital profile and job listings</p>
           </div>
           <div className="flex flex-col md:flex-row gap-2">
-            <Button variant="outline" asChild>
-              <Link to="/profile/institution/edit">
-                <Settings className="h-4 w-4 mr-2" />
-                Edit Profile
-              </Link>
+            <Button variant="outline" onClick={() => setProfileFormOpen(true)}>
+              <Settings className="h-4 w-4 mr-2" />
+              Edit Profile
             </Button>
-            <Button>
+            <Button onClick={() => setVacancyFormOpen(true)}>
               <Plus className="h-4 w-4 mr-2" />
               Post New Vacancy
             </Button>
@@ -101,7 +114,7 @@ const InstitutionDashboard = () => {
                       </p>
                     </div>
                     
-                    <Button variant="default">Complete Your Profile</Button>
+                    <Button variant="default" onClick={() => setProfileFormOpen(true)}>Complete Your Profile</Button>
                   </div>
                 </div>
               </CardContent>
@@ -117,19 +130,45 @@ const InstitutionDashboard = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="space-y-4">
+                {vacancies.length > 0 ? (
+                  <div className="space-y-4">
+                    {vacancies.map((vacancy) => (
+                      <div key={vacancy.id} className="border rounded-lg p-4">
+                        <div className="flex justify-between items-start">
+                          <div>
+                            <h3 className="font-medium">{vacancy.title}</h3>
+                            <p className="text-sm text-medical-600">{vacancy.department}</p>
+                            <p className="text-xs text-muted-foreground mt-1">{vacancy.location}</p>
+                          </div>
+                          <Button 
+                            variant="outline" 
+                            size="sm" 
+                            onClick={() => handleDeleteVacancy(vacancy.id)}
+                            className="text-destructive hover:bg-destructive/10"
+                          >
+                            Delete
+                          </Button>
+                        </div>
+                      </div>
+                    ))}
+                    <Button onClick={() => setVacancyFormOpen(true)} className="w-full">
+                      <Plus className="h-4 w-4 mr-2" />
+                      Post Another Vacancy
+                    </Button>
+                  </div>
+                ) : (
                   <div className="text-center py-8">
                     <Briefcase className="h-12 w-12 mx-auto text-muted-foreground" />
                     <h3 className="mt-4 text-lg font-medium">No vacancies posted yet</h3>
                     <p className="text-muted-foreground">
                       Post your first job listing to attract healthcare professionals
                     </p>
-                    <Button className="mt-4">
+                    <Button className="mt-4" onClick={() => setVacancyFormOpen(true)}>
                       <Plus className="h-4 w-4 mr-2" />
                       Post a Vacancy
                     </Button>
                   </div>
-                </div>
+                )}
               </CardContent>
             </Card>
           </TabsContent>
@@ -201,6 +240,18 @@ const InstitutionDashboard = () => {
           </TabsContent>
         </Tabs>
       </div>
+      
+      {/* Forms */}
+      <InstitutionProfileEditForm 
+        open={profileFormOpen} 
+        onOpenChange={setProfileFormOpen} 
+      />
+      
+      <VacancyForm 
+        open={vacancyFormOpen} 
+        onOpenChange={setVacancyFormOpen}
+        onSubmit={handleAddVacancy}
+      />
     </MainLayout>
   );
 };
