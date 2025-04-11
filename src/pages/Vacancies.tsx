@@ -29,7 +29,6 @@ import {
   PaginationPrevious,
 } from '@/components/ui/pagination';
 
-// Sample vacancy data that would normally come from an API
 const sampleVacancies = [
   {
     id: '1',
@@ -111,12 +110,10 @@ const sampleVacancies = [
   },
 ];
 
-// Extract unique values for filters
 const getUniqueValues = (data: any[], property: string) => {
   return [...new Set(data.map(item => item[property]))];
 };
 
-// Get job type icon
 const getJobTypeIcon = (jobType: string) => {
   switch(jobType) {
     case 'Full-time':
@@ -140,34 +137,50 @@ const Vacancies = () => {
   const [filtersVisible, setFiltersVisible] = useState(false);
   const [activeFilters, setActiveFilters] = useState<string[]>([]);
   
-  // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [paginatedResults, setPaginatedResults] = useState<typeof sampleVacancies>([]);
   
-  // Filter states
   const [selectedJobTypes, setSelectedJobTypes] = useState<string[]>([]);
   const [selectedLocation, setSelectedLocation] = useState<string>('');
   const [selectedProfession, setSelectedProfession] = useState<string>('');
   const [selectedSpecialty, setSelectedSpecialty] = useState<string>('');
+  
+  const [savedVacancies, setSavedVacancies] = useState<string[]>([]);
 
-  // Get unique values for filters
-  const jobTypes = getUniqueValues(sampleVacancies, 'jobType');
-  const locations = getUniqueValues(sampleVacancies, 'location');
-  const professions = getUniqueValues(sampleVacancies, 'profession');
-  const specialties = getUniqueValues(sampleVacancies, 'specialty');
+  useEffect(() => {
+    const savedVacanciesData = localStorage.getItem('savedVacancies');
+    if (savedVacanciesData) {
+      try {
+        setSavedVacancies(JSON.parse(savedVacanciesData));
+      } catch (error) {
+        console.error("Error parsing saved vacancies from localStorage:", error);
+      }
+    }
+  }, []);
 
-  // Handle search form submission
+  useEffect(() => {
+    localStorage.setItem('savedVacancies', JSON.stringify(savedVacancies));
+  }, [savedVacancies]);
+
+  const toggleSaveVacancy = (vacancyId: string) => {
+    setSavedVacancies(prev => {
+      if (prev.includes(vacancyId)) {
+        return prev.filter(id => id !== vacancyId);
+      } else {
+        return [...prev, vacancyId];
+      }
+    });
+  };
+
   const handleSearch = (e: FormEvent) => {
     e.preventDefault();
-    setCurrentPage(1); // Reset to first page on new search
+    setCurrentPage(1);
     applyFilters();
   };
 
-  // Apply filters to vacancies
   const applyFilters = () => {
     const filtered = sampleVacancies.filter(vacancy => {
-      // Search query filter
       if (searchQuery && 
           !vacancy.title.toLowerCase().includes(searchQuery.toLowerCase()) && 
           !vacancy.description.toLowerCase().includes(searchQuery.toLowerCase()) &&
@@ -175,22 +188,18 @@ const Vacancies = () => {
         return false;
       }
       
-      // Job type filter
       if (selectedJobTypes.length > 0 && !selectedJobTypes.includes(vacancy.jobType)) {
         return false;
       }
       
-      // Location filter
       if (selectedLocation && !vacancy.location.includes(selectedLocation)) {
         return false;
       }
       
-      // Profession filter
       if (selectedProfession && vacancy.profession !== selectedProfession) {
         return false;
       }
       
-      // Specialty filter
       if (selectedSpecialty && vacancy.specialty !== selectedSpecialty) {
         return false;
       }
@@ -202,7 +211,6 @@ const Vacancies = () => {
     setTotalPages(Math.ceil(filtered.length / ITEMS_PER_PAGE));
     setCurrentPage(prev => (prev > Math.ceil(filtered.length / ITEMS_PER_PAGE) ? 1 : prev));
     
-    // Update active filters for display
     const newActiveFilters = [];
     if (selectedJobTypes.length > 0) {
       newActiveFilters.push(...selectedJobTypes);
@@ -220,7 +228,6 @@ const Vacancies = () => {
     setActiveFilters(newActiveFilters);
   };
 
-  // Handle job type selection
   const toggleJobType = (jobType: string) => {
     if (selectedJobTypes.includes(jobType)) {
       setSelectedJobTypes(selectedJobTypes.filter(type => type !== jobType));
@@ -229,7 +236,6 @@ const Vacancies = () => {
     }
   };
 
-  // Reset all filters
   const resetFilters = () => {
     setSearchQuery('');
     setSelectedJobTypes([]);
@@ -240,37 +246,30 @@ const Vacancies = () => {
     setSearchResults(sampleVacancies);
   };
 
-  // Apply filters when any filter changes
   useEffect(() => {
     applyFilters();
   }, [selectedJobTypes, selectedLocation, selectedProfession, selectedSpecialty]);
 
-  // Update paginated results when searchResults or currentPage changes
   useEffect(() => {
     const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
     const endIndex = startIndex + ITEMS_PER_PAGE;
     setPaginatedResults(searchResults.slice(startIndex, endIndex));
   }, [searchResults, currentPage]);
 
-  // Generate array of page numbers for pagination
   const getPageNumbers = () => {
     const pageNumbers = [];
     
     if (totalPages <= 7) {
-      // If there are 7 or fewer pages, show all page numbers
       for (let i = 1; i <= totalPages; i++) {
         pageNumbers.push(i);
       }
     } else {
-      // Always include first page
       pageNumbers.push(1);
       
       if (currentPage > 3) {
-        // Add ellipsis if current page is away from the beginning
         pageNumbers.push('ellipsis1');
       }
       
-      // Pages around current page
       const startPage = Math.max(2, currentPage - 1);
       const endPage = Math.min(totalPages - 1, currentPage + 1);
       
@@ -279,11 +278,9 @@ const Vacancies = () => {
       }
       
       if (currentPage < totalPages - 2) {
-        // Add ellipsis if current page is away from the end
         pageNumbers.push('ellipsis2');
       }
       
-      // Always include last page
       pageNumbers.push(totalPages);
     }
     
@@ -292,7 +289,6 @@ const Vacancies = () => {
 
   return (
     <MainLayout>
-      {/* Hero Section */}
       <section className="bg-gradient-to-b from-primary/10 to-background py-12">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center space-y-4">
@@ -301,7 +297,6 @@ const Vacancies = () => {
               Find the perfect healthcare position that matches your skills and career goals
             </p>
             
-            {/* Search Box */}
             <form onSubmit={handleSearch} className="mt-8 relative">
               <div className="relative max-w-xl mx-auto">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground h-4 w-4" />
@@ -325,11 +320,9 @@ const Vacancies = () => {
         </div>
       </section>
       
-      {/* Main Content */}
       <section className="py-8">
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row gap-8">
-            {/* Filters - Mobile Toggle */}
             <div className="flex md:hidden justify-between items-center mb-4">
               <Button 
                 variant="outline" 
@@ -352,7 +345,6 @@ const Vacancies = () => {
               )}
             </div>
             
-            {/* Active Filters */}
             {activeFilters.length > 0 && (
               <div className="flex flex-wrap gap-2 mb-4">
                 {activeFilters.map((filter, index) => (
@@ -385,7 +377,6 @@ const Vacancies = () => {
               </div>
             )}
             
-            {/* Filters Sidebar - Desktop (always visible) and Mobile (toggled) */}
             <aside className={`md:w-72 space-y-6 ${filtersVisible ? 'block' : 'hidden'} md:block bg-card p-4 rounded-lg h-fit sticky top-20`}>
               <div className="flex items-center justify-between">
                 <h2 className="font-semibold text-lg">Filters</h2>
@@ -400,7 +391,6 @@ const Vacancies = () => {
               </div>
               
               <div className="space-y-5">
-                {/* Job Type Filter - Using Dropdown Menu */}
                 <div>
                   <h3 className="text-sm font-medium mb-2">Job Type</h3>
                   <DropdownMenu>
@@ -425,7 +415,6 @@ const Vacancies = () => {
                   </DropdownMenu>
                 </div>
                 
-                {/* Location Filter */}
                 <div>
                   <h3 className="text-sm font-medium mb-2">Location</h3>
                   <Select value={selectedLocation} onValueChange={setSelectedLocation}>
@@ -443,7 +432,6 @@ const Vacancies = () => {
                   </Select>
                 </div>
                 
-                {/* Profession Filter */}
                 <div>
                   <h3 className="text-sm font-medium mb-2">Profession</h3>
                   <Select value={selectedProfession} onValueChange={setSelectedProfession}>
@@ -461,7 +449,6 @@ const Vacancies = () => {
                   </Select>
                 </div>
                 
-                {/* Specialty Filter */}
                 <div>
                   <h3 className="text-sm font-medium mb-2">Specialty</h3>
                   <Select value={selectedSpecialty} onValueChange={setSelectedSpecialty}>
@@ -489,14 +476,12 @@ const Vacancies = () => {
               </div>
             </aside>
             
-            {/* Vacancies List */}
             <div className="flex-1">
               <div className="flex justify-between items-center mb-6">
                 <h3 className="font-medium">
                   {searchResults.length} {searchResults.length === 1 ? 'Vacancy' : 'Vacancies'}
                 </h3>
                 
-                {/* Sort Dropdown */}
                 <Select defaultValue="newest">
                   <SelectTrigger className="w-[180px]">
                     <SelectValue placeholder="Sort by" />
@@ -510,7 +495,6 @@ const Vacancies = () => {
                 </Select>
               </div>
               
-              {/* Results */}
               {searchResults.length > 0 ? (
                 <>
                   <div className="grid grid-cols-1 gap-6">
@@ -518,11 +502,13 @@ const Vacancies = () => {
                       <VacancyCard
                         key={vacancy.id}
                         {...vacancy}
+                        showSaveOption={true}
+                        isSaved={savedVacancies.includes(vacancy.id)}
+                        onSaveToggle={toggleSaveVacancy}
                       />
                     ))}
                   </div>
                   
-                  {/* Pagination */}
                   {totalPages > 1 && (
                     <Pagination className="my-8">
                       <PaginationContent>

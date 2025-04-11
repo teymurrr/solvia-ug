@@ -4,7 +4,9 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
-import { Briefcase, MapPin, Calendar, Building, Medal } from 'lucide-react';
+import { Briefcase, MapPin, Calendar, Building, Medal, Bookmark, BookmarkCheck } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
+import { useProtectedAction } from '@/hooks/useProtectedAction';
 
 interface VacancyCardProps {
   id: string;
@@ -18,6 +20,9 @@ interface VacancyCardProps {
   requirements: string[];
   postedDate: string;
   applicationDeadline: string;
+  showSaveOption?: boolean;
+  isSaved?: boolean;
+  onSaveToggle?: (id: string) => void;
 }
 
 const VacancyCard = ({
@@ -32,7 +37,13 @@ const VacancyCard = ({
   requirements,
   postedDate,
   applicationDeadline,
+  showSaveOption = false,
+  isSaved = false,
+  onSaveToggle,
 }: VacancyCardProps) => {
+  const { toast } = useToast();
+  const { handleProtectedAction } = useProtectedAction();
+  
   // Format dates
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -70,6 +81,22 @@ const VacancyCard = ({
     }
   };
 
+  // Handle save/unsave vacancy
+  const toggleSave = () => {
+    handleProtectedAction(() => {
+      if (onSaveToggle) {
+        onSaveToggle(id);
+        
+        toast({
+          title: isSaved ? "Vacancy removed from saved" : "Vacancy saved",
+          description: isSaved 
+            ? "The vacancy has been removed from your saved list" 
+            : "The vacancy has been saved for later",
+        });
+      }
+    });
+  };
+
   return (
     <Card className="overflow-hidden hover:shadow-md transition-shadow">
       <CardHeader className="pb-3">
@@ -83,9 +110,26 @@ const VacancyCard = ({
               <span className="text-sm">{institution}</span>
             </div>
           </div>
-          <Badge variant={getJobTypeBadgeVariant(jobType)} className="whitespace-nowrap">
-            {jobType}
-          </Badge>
+          <div className="flex items-center gap-2">
+            {showSaveOption && (
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-8 w-8"
+                onClick={toggleSave}
+                title={isSaved ? "Remove from saved" : "Save for later"}
+              >
+                {isSaved ? (
+                  <BookmarkCheck className="h-5 w-5 text-primary" />
+                ) : (
+                  <Bookmark className="h-5 w-5" />
+                )}
+              </Button>
+            )}
+            <Badge variant={getJobTypeBadgeVariant(jobType)} className="whitespace-nowrap">
+              {jobType}
+            </Badge>
+          </div>
         </div>
       </CardHeader>
       

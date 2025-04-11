@@ -5,12 +5,13 @@ import MainLayout from '@/components/MainLayout';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { User, Briefcase, Settings, FileText, Search, Filter, ChevronDown, MapPin, Building, GraduationCap, Heart } from 'lucide-react';
+import { User, Briefcase, Settings, FileText, Search, Filter, ChevronDown, MapPin, Building, GraduationCap, Heart, BookmarkCheck } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { ProfessionalProfileEditForm } from '@/components/professional-profile';
 import { ProfileFormValues } from '@/components/professional-profile/types';
 import { useAuth } from '@/contexts/AuthContext';
+import VacancyCard from '@/components/VacancyCard';
 import {
   Pagination,
   PaginationContent,
@@ -157,6 +158,9 @@ const ProfessionalDashboard = () => {
   const [selectedCity, setSelectedCity] = useState<string>('');
   const [activeFilters, setActiveFilters] = useState<string[]>([]);
   
+  // Saved vacancies state
+  const [savedVacancies, setSavedVacancies] = useState<string[]>([]);
+  
   // Get unique values for filters
   const jobTypes = getUniqueValues(sampleVacancies, 'jobType');
   const countries = getUniqueValues(sampleVacancies, 'country');
@@ -197,7 +201,22 @@ const ProfessionalDashboard = () => {
         setProfileData(defaultProfileData);
       }
     }
+    
+    // Load saved vacancies from localStorage
+    const savedVacanciesData = localStorage.getItem('savedVacancies');
+    if (savedVacanciesData) {
+      try {
+        setSavedVacancies(JSON.parse(savedVacanciesData));
+      } catch (error) {
+        console.error("Error parsing saved vacancies from localStorage:", error);
+      }
+    }
   }, [userType]);
+
+  // Save vacancies to localStorage whenever savedVacancies changes
+  useEffect(() => {
+    localStorage.setItem('savedVacancies', JSON.stringify(savedVacancies));
+  }, [savedVacancies]);
 
   const handleProfileSave = (data: ProfileFormValues) => {
     setProfileData(data);
@@ -319,6 +338,22 @@ const ProfessionalDashboard = () => {
     applyFilters();
   };
   
+  // Toggle save/unsave vacancy
+  const toggleSaveVacancy = (vacancyId: string) => {
+    setSavedVacancies(prev => {
+      if (prev.includes(vacancyId)) {
+        return prev.filter(id => id !== vacancyId);
+      } else {
+        return [...prev, vacancyId];
+      }
+    });
+  };
+  
+  // Get saved vacancies for display
+  const getSavedVacancies = () => {
+    return sampleVacancies.filter(vacancy => savedVacancies.includes(vacancy.id));
+  };
+  
   return (
     <MainLayout>
       <div className="container py-8">
@@ -337,7 +372,7 @@ const ProfessionalDashboard = () => {
           <TabsList className="grid w-full md:w-auto grid-cols-3">
             <TabsTrigger value="profile">Profile</TabsTrigger>
             <TabsTrigger value="vacancies">Vacancies</TabsTrigger>
-            <TabsTrigger value="applications">Applications</TabsTrigger>
+            <TabsTrigger value="saved">Saved</TabsTrigger>
           </TabsList>
           
           <TabsContent value="profile" className="space-y-6">
@@ -636,31 +671,17 @@ const ProfessionalDashboard = () => {
                 
                   {currentVacancies.length > 0 ? (
                     <>
-                      {currentVacancies.map((vacancy) => (
-                        <div key={vacancy.id} className="border rounded-lg p-4">
-                          <div className="flex justify-between items-start">
-                            <div>
-                              <h3 className="font-medium">{vacancy.title}</h3>
-                              <p className="text-sm text-muted-foreground">{vacancy.institution}</p>
-                            </div>
-                            <Button variant="outline" size="sm">
-                              <Briefcase className="h-4 w-4 mr-2" />
-                              Apply
-                            </Button>
-                          </div>
-                          <div className="mt-2 flex gap-2 flex-wrap">
-                            <Badge variant="secondary">{vacancy.jobType}</Badge>
-                            <Badge variant="outline">{vacancy.salary}</Badge>
-                            <Badge variant="outline">{vacancy.country}, {vacancy.city}</Badge>
-                            {vacancy.requirements.map((req, index) => (
-                              <Badge key={index} variant="outline">{req}</Badge>
-                            ))}
-                          </div>
-                          <p className="mt-3 text-sm text-muted-foreground">
-                            {vacancy.description}
-                          </p>
-                        </div>
-                      ))}
+                      <div className="grid grid-cols-1 gap-6">
+                        {currentVacancies.map((vacancy) => (
+                          <VacancyCard
+                            key={vacancy.id}
+                            {...vacancy}
+                            showSaveOption={true}
+                            isSaved={savedVacancies.includes(vacancy.id)}
+                            onSaveToggle={toggleSaveVacancy}
+                          />
+                        ))}
+                      </div>
                       
                       {totalPages > 0 && (
                         <Pagination className="mt-6">
@@ -723,26 +744,44 @@ const ProfessionalDashboard = () => {
             </Card>
           </TabsContent>
           
-          <TabsContent value="applications" className="space-y-6">
+          <TabsContent value="saved" className="space-y-6">
             <Card>
               <CardHeader>
-                <CardTitle>Your Applications</CardTitle>
+                <CardTitle>Saved Vacancies</CardTitle>
                 <CardDescription>
-                  Track the status of positions you've applied for
+                  Vacancies you've saved for later
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  <div className="text-center py-8">
-                    <FileText className="h-12 w-12 mx-auto text-muted-foreground" />
-                    <h3 className="mt-4 text-lg font-medium">No applications yet</h3>
-                    <p className="text-muted-foreground">
-                      Once you apply for positions, they will appear here
-                    </p>
-                    <Button variant="outline" className="mt-4">
-                      Browse Vacancies
-                    </Button>
-                  </div>
+                  {savedVacancies.length > 0 ? (
+                    <div className="grid grid-cols-1 gap-6">
+                      {getSavedVacancies().map((vacancy) => (
+                        <VacancyCard
+                          key={vacancy.id}
+                          {...vacancy}
+                          showSaveOption={true}
+                          isSaved={true}
+                          onSaveToggle={toggleSaveVacancy}
+                        />
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="text-center py-8">
+                      <BookmarkCheck className="h-12 w-12 mx-auto text-muted-foreground" />
+                      <h3 className="mt-4 text-lg font-medium">No saved vacancies</h3>
+                      <p className="text-muted-foreground">
+                        Save vacancies you're interested in to view them later
+                      </p>
+                      <Button 
+                        variant="outline" 
+                        className="mt-4"
+                        asChild
+                      >
+                        <Link to="/vacancies">Browse Vacancies</Link>
+                      </Button>
+                    </div>
+                  )}
                 </div>
               </CardContent>
             </Card>
