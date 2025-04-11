@@ -1,12 +1,13 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import MainLayout from '@/components/MainLayout';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Briefcase, MapPin, Calendar, Building, Medal, Clock, ArrowLeft } from 'lucide-react';
+import { Briefcase, MapPin, Calendar, Building, Medal, Clock, ArrowLeft, Heart } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { toast } from '@/hooks/use-toast';
 
 // This would come from an API in a real application
 const getVacancyById = (id: string) => {
@@ -53,6 +54,7 @@ const getVacancyById = (id: string) => {
 const VacancyDetail = () => {
   const { id } = useParams<{ id: string }>();
   const vacancy = getVacancyById(id || '');
+  const [isSaved, setIsSaved] = useState(false);
   
   // Format dates
   const formatDate = (dateString: string) => {
@@ -88,6 +90,23 @@ const VacancyDetail = () => {
         return 'destructive';
       default:
         return 'default';
+    }
+  };
+
+  // Handle save/unsave vacancy
+  const handleSaveVacancy = () => {
+    setIsSaved(!isSaved);
+    
+    if (!isSaved) {
+      toast({
+        title: "Vacancy saved",
+        description: "This vacancy has been added to your saved list",
+      });
+    } else {
+      toast({
+        title: "Vacancy removed",
+        description: "This vacancy has been removed from your saved list",
+      });
     }
   };
 
@@ -211,9 +230,14 @@ const VacancyDetail = () => {
                   Apply Now
                 </Button>
                 
-                {/* Save Button */}
-                <Button variant="outline" className="w-full">
-                  Save for Later
+                {/* Save Button - Updated with heart icon */}
+                <Button 
+                  variant="outline" 
+                  className="w-full gap-2" 
+                  onClick={handleSaveVacancy}
+                >
+                  <Heart className={`h-4 w-4 ${isSaved ? 'fill-primary text-primary' : ''}`} />
+                  {isSaved ? 'Saved' : 'Save for Later'}
                 </Button>
               </CardContent>
             </Card>
