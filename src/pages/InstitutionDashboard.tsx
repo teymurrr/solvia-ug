@@ -12,6 +12,12 @@ const InstitutionDashboard = () => {
   const [professionals, setProfessionals] = useState<any[]>([]);
   const [filteredProfessionals, setFilteredProfessionals] = useState<any[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
+  const [filters, setFilters] = useState({
+    role: '',
+    profession: '',
+    country: '',
+    language: ''
+  });
   const [profileFormOpen, setProfileFormOpen] = useState(false);
   const [vacancyFormOpen, setVacancyFormOpen] = useState(false);
   const { toast } = useToast();
@@ -74,25 +80,62 @@ const InstitutionDashboard = () => {
     localStorage.setItem('institutionVacancies', JSON.stringify(vacancies));
   }, [vacancies]);
 
-  // Handle talent search
+  // Handle talent search with filtering
   const handleTalentSearch = () => {
     console.log('Searching for:', searchQuery);
+    console.log('With filters:', filters);
     console.log('All professionals before search:', professionals);
     
+    let filtered = [...professionals];
+    
+    // Apply text search if provided
     if (searchQuery.trim()) {
-      const filtered = professionals.filter(prof => 
+      filtered = filtered.filter(prof => 
         prof.firstName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
         prof.lastName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
         prof.specialty?.toLowerCase().includes(searchQuery.toLowerCase()) ||
         (prof.firstName && prof.lastName && 
          `${prof.firstName} ${prof.lastName}`.toLowerCase().includes(searchQuery.toLowerCase()))
       );
-      console.log('Filtered professionals after search:', filtered);
-      setFilteredProfessionals(filtered);
-    } else {
-      console.log('Empty search, showing all professionals');
-      setFilteredProfessionals(professionals);
     }
+    
+    // Apply each filter if selected
+    if (filters.role) {
+      filtered = filtered.filter(prof => 
+        prof.role?.toLowerCase() === filters.role.toLowerCase()
+      );
+    }
+    
+    if (filters.profession) {
+      filtered = filtered.filter(prof => 
+        prof.profession?.toLowerCase() === filters.profession.toLowerCase() ||
+        prof.specialty?.toLowerCase() === filters.profession.toLowerCase()
+      );
+    }
+    
+    if (filters.country) {
+      filtered = filtered.filter(prof => 
+        prof.country?.toLowerCase() === filters.country.toLowerCase()
+      );
+    }
+    
+    if (filters.language) {
+      filtered = filtered.filter(prof => 
+        prof.language?.toLowerCase() === filters.language.toLowerCase()
+      );
+    }
+    
+    console.log('Filtered professionals after search and filters:', filtered);
+    setFilteredProfessionals(filtered);
+  };
+
+  // Update filters and trigger search
+  const handleFilterChange = (key: string, value: string) => {
+    const newFilters = { ...filters, [key]: value };
+    setFilters(newFilters);
+    
+    console.log('Updated filters:', newFilters);
+    // We'll let the TalentsTab component's useEffect trigger the search
   };
 
   const handleAddVacancy = (vacancyData: any) => {

@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import ProfessionalCard from './ProfessionalCard';
+import FilterDropdowns from './FilterDropdowns';
 
 interface TalentsTabProps {
   professionals: any[];
@@ -22,9 +23,33 @@ const TalentsTab: React.FC<TalentsTabProps> = ({
   onSearchQueryChange,
   onSearch
 }) => {
+  // Add filters state
+  const [filters, setFilters] = useState({
+    role: '',
+    profession: '',
+    country: '',
+    language: ''
+  });
+
   // Debug logs to check what data we're receiving
   console.log('TalentsTab - All professionals:', professionals);
   console.log('TalentsTab - Filtered professionals:', filteredProfessionals);
+  console.log('TalentsTab - Current filters:', filters);
+
+  // Handle filter changes
+  const handleFilterChange = (filterName: string, value: string) => {
+    setFilters(prev => ({
+      ...prev,
+      [filterName]: value
+    }));
+  };
+
+  // Apply filters when they change
+  useEffect(() => {
+    if (Object.values(filters).some(filter => filter !== '')) {
+      onSearch();
+    }
+  }, [filters]);
 
   return (
     <Card>
@@ -50,6 +75,11 @@ const TalentsTab: React.FC<TalentsTabProps> = ({
             <Button type="button" onClick={onSearch}>Search</Button>
           </div>
           
+          <FilterDropdowns 
+            filters={filters}
+            onFilterChange={handleFilterChange}
+          />
+          
           {filteredProfessionals.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {filteredProfessionals.map((professional) => (
@@ -59,10 +89,10 @@ const TalentsTab: React.FC<TalentsTabProps> = ({
                 />
               ))}
             </div>
-          ) : professionals.length > 0 && searchQuery ? (
+          ) : professionals.length > 0 && (searchQuery || Object.values(filters).some(f => f !== '')) ? (
             <div className="text-center py-8">
               <h3 className="text-lg font-medium">No matching professionals found</h3>
-              <p className="text-muted-foreground">Try adjusting your search criteria</p>
+              <p className="text-muted-foreground">Try adjusting your search criteria or filters</p>
             </div>
           ) : professionals.length === 0 ? (
             <div className="text-center py-8">
