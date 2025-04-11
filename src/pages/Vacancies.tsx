@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, FormEvent } from 'react';
 import MainLayout from '@/components/MainLayout';
 import VacancyCard from '@/components/VacancyCard';
@@ -20,6 +19,15 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Search, Filter, X, ChevronDown, Briefcase, Building, MapPin, GraduationCap, Heart } from 'lucide-react';
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from '@/components/ui/pagination';
 
 // Sample vacancy data that would normally come from an API
 const sampleVacancies = [
@@ -124,11 +132,18 @@ const getJobTypeIcon = (jobType: string) => {
   }
 };
 
+const ITEMS_PER_PAGE = 20;
+
 const Vacancies = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState(sampleVacancies);
   const [filtersVisible, setFiltersVisible] = useState(false);
   const [activeFilters, setActiveFilters] = useState<string[]>([]);
+  
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [paginatedResults, setPaginatedResults] = useState<typeof sampleVacancies>([]);
   
   // Filter states
   const [selectedJobTypes, setSelectedJobTypes] = useState<string[]>([]);
@@ -145,6 +160,7 @@ const Vacancies = () => {
   // Handle search form submission
   const handleSearch = (e: FormEvent) => {
     e.preventDefault();
+    setCurrentPage(1); // Reset to first page on new search
     applyFilters();
   };
 
@@ -183,6 +199,8 @@ const Vacancies = () => {
     });
     
     setSearchResults(filtered);
+    setTotalPages(Math.ceil(filtered.length / ITEMS_PER_PAGE));
+    setCurrentPage(prev => (prev > Math.ceil(filtered.length / ITEMS_PER_PAGE) ? 1 : prev));
     
     // Update active filters for display
     const newActiveFilters = [];
@@ -226,6 +244,51 @@ const Vacancies = () => {
   useEffect(() => {
     applyFilters();
   }, [selectedJobTypes, selectedLocation, selectedProfession, selectedSpecialty]);
+
+  // Update paginated results when searchResults or currentPage changes
+  useEffect(() => {
+    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+    const endIndex = startIndex + ITEMS_PER_PAGE;
+    setPaginatedResults(searchResults.slice(startIndex, endIndex));
+  }, [searchResults, currentPage]);
+
+  // Generate array of page numbers for pagination
+  const getPageNumbers = () => {
+    const pageNumbers = [];
+    
+    if (totalPages <= 7) {
+      // If there are 7 or fewer pages, show all page numbers
+      for (let i = 1; i <= totalPages; i++) {
+        pageNumbers.push(i);
+      }
+    } else {
+      // Always include first page
+      pageNumbers.push(1);
+      
+      if (currentPage > 3) {
+        // Add ellipsis if current page is away from the beginning
+        pageNumbers.push('ellipsis1');
+      }
+      
+      // Pages around current page
+      const startPage = Math.max(2, currentPage - 1);
+      const endPage = Math.min(totalPages - 1, currentPage + 1);
+      
+      for (let i = startPage; i <= endPage; i++) {
+        pageNumbers.push(i);
+      }
+      
+      if (currentPage < totalPages - 2) {
+        // Add ellipsis if current page is away from the end
+        pageNumbers.push('ellipsis2');
+      }
+      
+      // Always include last page
+      pageNumbers.push(totalPages);
+    }
+    
+    return pageNumbers;
+  };
 
   return (
     <MainLayout>
@@ -449,14 +512,57 @@ const Vacancies = () => {
               
               {/* Results */}
               {searchResults.length > 0 ? (
-                <div className="grid grid-cols-1 gap-6">
-                  {searchResults.map((vacancy) => (
-                    <VacancyCard
-                      key={vacancy.id}
-                      {...vacancy}
-                    />
-                  ))}
-                </div>
+                <>
+                  <div className="grid grid-cols-1 gap-6">
+                    {paginatedResults.map((vacancy) => (
+                      <VacancyCard
+                        key={vacancy.id}
+                        {...vacancy}
+                      />
+                    ))}
+                  </div>
+                  
+                  {/* Pagination */}
+                  {totalPages > 1 && (
+                    <Pagination className="my-8">
+                      <PaginationContent>
+                        {currentPage > 1 && (
+                          <PaginationItem>
+                            <PaginationPrevious 
+                              onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))} 
+                              className="cursor-pointer"
+                            />
+                          </PaginationItem>
+                        )}
+                        
+                        {getPageNumbers().map((page, index) => (
+                          <PaginationItem key={index}>
+                            {page === 'ellipsis1' || page === 'ellipsis2' ? (
+                              <PaginationEllipsis />
+                            ) : (
+                              <PaginationLink
+                                isActive={page === currentPage}
+                                onClick={() => typeof page === 'number' && setCurrentPage(page)}
+                                className="cursor-pointer"
+                              >
+                                {page}
+                              </PaginationLink>
+                            )}
+                          </PaginationItem>
+                        ))}
+                        
+                        {currentPage < totalPages && (
+                          <PaginationItem>
+                            <PaginationNext 
+                              onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))} 
+                              className="cursor-pointer"
+                            />
+                          </PaginationItem>
+                        )}
+                      </PaginationContent>
+                    </Pagination>
+                  )}
+                </>
               ) : (
                 <div className="text-center py-12 border rounded-lg bg-accent/10">
                   <h3 className="text-lg font-medium mb-2">No vacancies found</h3>

@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import MainLayout from '@/components/MainLayout';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -9,6 +9,21 @@ import { Building2, Briefcase, Settings, Search, Users, Plus, FileText } from 'l
 import { Input } from '@/components/ui/input';
 
 const InstitutionDashboard = () => {
+  // State for search results in talents tab
+  const [talentSearchResults, setTalentSearchResults] = useState<any[]>([]);
+  const [searchQuery, setSearchQuery] = useState('');
+
+  // Handle talent search
+  const handleTalentSearch = () => {
+    // This would normally call an API
+    // For demo, we'll just set some results based on the search query
+    if (searchQuery.trim()) {
+      setTalentSearchResults([1, 2, 3]); // Mock results
+    } else {
+      setTalentSearchResults([]);
+    }
+  };
+
   return (
     <MainLayout>
       <div className="container py-8">
@@ -132,9 +147,14 @@ const InstitutionDashboard = () => {
                   <div className="flex flex-col md:flex-row gap-4">
                     <div className="flex-1 relative">
                       <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                      <Input placeholder="Search by specialty, name, or location" className="pl-10" />
+                      <Input 
+                        placeholder="Search by specialty, name, or location" 
+                        className="pl-10" 
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                      />
                     </div>
-                    <Button type="button">Search</Button>
+                    <Button type="button" onClick={handleTalentSearch}>Search</Button>
                   </div>
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -157,9 +177,23 @@ const InstitutionDashboard = () => {
                     ))}
                   </div>
                   
-                  <Button variant="outline" className="w-full">
-                    <Users className="h-4 w-4 mr-2" />
-                    View All Professionals
+                  <Button 
+                    variant="outline" 
+                    className="w-full"
+                    asChild={talentSearchResults.length > 0}
+                    disabled={talentSearchResults.length === 0}
+                  >
+                    {talentSearchResults.length > 0 ? (
+                      <Link to="/professionals">
+                        <Users className="h-4 w-4 mr-2" />
+                        View All Professionals
+                      </Link>
+                    ) : (
+                      <span>
+                        <Users className="h-4 w-4 mr-2" />
+                        No Professionals Found
+                      </span>
+                    )}
                   </Button>
                 </div>
               </CardContent>
