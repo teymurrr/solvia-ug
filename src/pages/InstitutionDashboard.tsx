@@ -5,10 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
 import InstitutionProfileEditForm from '@/components/InstitutionProfileEditForm';
 import VacancyForm from '@/components/VacancyForm';
-import ProfileTab from '@/components/institution-dashboard/ProfileTab';
-import VacanciesTab from '@/components/institution-dashboard/VacanciesTab';
-import TalentsTab from '@/components/institution-dashboard/TalentsTab';
-import DashboardHeader from '@/components/institution-dashboard/DashboardHeader';
+import { ProfileTab, VacanciesTab, TalentsTab, DashboardHeader } from '@/components/institution-dashboard';
 
 const InstitutionDashboard = () => {
   // State for talent search
@@ -22,13 +19,32 @@ const InstitutionDashboard = () => {
   // Load professionals from localStorage on component mount
   useEffect(() => {
     const loadProfessionals = () => {
-      const savedProfessionals = localStorage.getItem('professionals');
-      console.log('Loaded professionals from localStorage:', savedProfessionals);
-      if (savedProfessionals) {
-        const parsedProfessionals = JSON.parse(savedProfessionals);
-        setProfessionals(parsedProfessionals);
-        // Initially display all professionals
-        setFilteredProfessionals(parsedProfessionals);
+      try {
+        const savedProfessionals = localStorage.getItem('professionals');
+        console.log('Raw localStorage professionals data:', savedProfessionals);
+        
+        if (savedProfessionals) {
+          const parsedProfessionals = JSON.parse(savedProfessionals);
+          console.log('Parsed professionals:', parsedProfessionals);
+          
+          if (Array.isArray(parsedProfessionals)) {
+            setProfessionals(parsedProfessionals);
+            // Initially display all professionals
+            setFilteredProfessionals(parsedProfessionals);
+          } else {
+            console.error('Professionals data is not an array:', parsedProfessionals);
+            setProfessionals([]);
+            setFilteredProfessionals([]);
+          }
+        } else {
+          console.log('No professionals found in localStorage');
+          setProfessionals([]);
+          setFilteredProfessionals([]);
+        }
+      } catch (error) {
+        console.error('Error loading professionals:', error);
+        setProfessionals([]);
+        setFilteredProfessionals([]);
       }
     };
     
@@ -44,8 +60,13 @@ const InstitutionDashboard = () => {
   
   // Load vacancies from localStorage on component mount
   const [vacancies, setVacancies] = useState<any[]>(() => {
-    const savedVacancies = localStorage.getItem('institutionVacancies');
-    return savedVacancies ? JSON.parse(savedVacancies) : [];
+    try {
+      const savedVacancies = localStorage.getItem('institutionVacancies');
+      return savedVacancies ? JSON.parse(savedVacancies) : [];
+    } catch (error) {
+      console.error('Error loading vacancies:', error);
+      return [];
+    }
   });
 
   // Save vacancies to localStorage whenever they change
@@ -55,15 +76,21 @@ const InstitutionDashboard = () => {
 
   // Handle talent search
   const handleTalentSearch = () => {
+    console.log('Searching for:', searchQuery);
+    console.log('All professionals before search:', professionals);
+    
     if (searchQuery.trim()) {
       const filtered = professionals.filter(prof => 
         prof.firstName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
         prof.lastName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
         prof.specialty?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        (prof.firstName + ' ' + prof.lastName)?.toLowerCase().includes(searchQuery.toLowerCase())
+        (prof.firstName && prof.lastName && 
+         `${prof.firstName} ${prof.lastName}`.toLowerCase().includes(searchQuery.toLowerCase()))
       );
+      console.log('Filtered professionals after search:', filtered);
       setFilteredProfessionals(filtered);
     } else {
+      console.log('Empty search, showing all professionals');
       setFilteredProfessionals(professionals);
     }
   };

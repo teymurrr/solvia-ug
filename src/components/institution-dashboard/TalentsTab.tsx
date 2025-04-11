@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Search, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -22,6 +22,10 @@ const TalentsTab: React.FC<TalentsTabProps> = ({
   onSearchQueryChange,
   onSearch
 }) => {
+  // Debug logs to check what data we're receiving
+  console.log('TalentsTab - All professionals:', professionals);
+  console.log('TalentsTab - Filtered professionals:', filteredProfessionals);
+
   return (
     <Card>
       <CardHeader>
@@ -40,6 +44,7 @@ const TalentsTab: React.FC<TalentsTabProps> = ({
                 className="pl-10" 
                 value={searchQuery}
                 onChange={onSearchQueryChange}
+                onKeyDown={(e) => e.key === 'Enter' && onSearch()}
               />
             </div>
             <Button type="button" onClick={onSearch}>Search</Button>

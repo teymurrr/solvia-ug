@@ -15,6 +15,8 @@ interface ProfessionalCardProps {
 }
 
 const ProfessionalCard: React.FC<ProfessionalCardProps> = ({ professional }) => {
+  console.log('Rendering professional card for:', professional);
+  
   return (
     <div className="border rounded-lg p-4">
       <div className="flex items-start gap-3">
@@ -22,8 +24,12 @@ const ProfessionalCard: React.FC<ProfessionalCardProps> = ({ professional }) => 
           <User className="h-6 w-6 text-muted-foreground" />
         </div>
         <div>
-          <h3 className="font-medium">Dr. {professional.firstName} {professional.lastName}</h3>
-          <p className="text-sm text-medical-600">{professional.specialty}</p>
+          <h3 className="font-medium">
+            {professional.firstName} {professional.lastName}
+          </h3>
+          {professional.specialty && (
+            <p className="text-sm text-medical-600">{professional.specialty}</p>
+          )}
           <p className="text-xs text-muted-foreground mt-1">
             {professional.isOpenToRelocation ? "Open to relocation" : "Not open to relocation"}
           </p>
