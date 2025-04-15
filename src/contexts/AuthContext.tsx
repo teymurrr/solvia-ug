@@ -28,20 +28,26 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    // Set up the auth state listener first
+    // Configure Supabase auth with session persistence
+    supabase.auth.setSession({
+      refresh_token: localStorage.getItem('sb-refresh-token') || '',
+      access_token: localStorage.getItem('sb-access-token') || '',
+    }, {
+      persistence: true // Enable session persistence by default
+    });
+
+    // Set up the auth state listener
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (_event, session) => {
         setSession(session);
         setUser(session?.user ?? null);
         setIsLoggedIn(!!session);
         
-        // If we have a user, try to determine the user type from metadata
         if (session?.user?.user_metadata) {
           const metadata = session.user.user_metadata;
           if (metadata.user_type) {
             setUserType(metadata.user_type as UserType);
           } else {
-            // Default to 'professional' if not specified
             setUserType('professional');
           }
         } else {
@@ -52,19 +58,17 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       }
     );
 
-    // Then check for existing session
+    // Check for existing session
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       setUser(session?.user ?? null);
       setIsLoggedIn(!!session);
       
-      // If we have a user, try to determine the user type from metadata
       if (session?.user?.user_metadata) {
         const metadata = session.user.user_metadata;
         if (metadata.user_type) {
           setUserType(metadata.user_type as UserType);
         } else {
-          // Default to 'professional' if not specified
           setUserType('professional');
         }
       } else {

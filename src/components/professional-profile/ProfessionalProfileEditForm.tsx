@@ -1,11 +1,11 @@
-
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Form } from '@/components/ui/form';
+import { useProfileData } from './useProfileData';
 
 import { ProfileFormValues, profileFormSchema } from './types';
 import ProfileImageSection from './ProfileImageSection';
@@ -48,6 +48,7 @@ const ProfessionalProfileEditForm: React.FC<ProfessionalProfileEditFormProps> = 
   onSave
 }) => {
   const { toast } = useToast();
+  const { saveProfileData, loadProfileData, loading } = useProfileData();
   const [savedData, setSavedData] = useState<ProfileFormValues | null>(null);
   
   const form = useForm<ProfileFormValues>({
@@ -55,23 +56,25 @@ const ProfessionalProfileEditForm: React.FC<ProfessionalProfileEditFormProps> = 
     defaultValues: savedData || initialData,
   });
 
-  const onSubmit = (data: ProfileFormValues) => {
-    // In a real application, this would save to a database
-    console.log("Profile data to save:", data);
-    
-    // Save data in local state (simulate persistence between modal opens)
+  useEffect(() => {
+    if (open) {
+      loadProfileData().then(data => {
+        if (data) {
+          Object.keys(data).forEach(key => {
+            form.setValue(key as keyof ProfileFormValues, data[key as keyof ProfileFormValues]);
+          });
+          setSavedData(data);
+        }
+      });
+    }
+  }, [open]);
+
+  const onSubmit = async (data: ProfileFormValues) => {
+    await saveProfileData(data);
     setSavedData(data);
-    
-    // Pass the data to the parent component
     if (onSave) {
       onSave(data);
     }
-    
-    toast({
-      title: "Profile Updated",
-      description: "Your profile has been successfully updated.",
-    });
-    
     onOpenChange(false);
   };
 
