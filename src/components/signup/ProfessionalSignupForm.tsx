@@ -17,7 +17,7 @@ import { TermsAgreement } from './TermsAgreement';
 
 export const ProfessionalSignupForm: React.FC = () => {
   const { toast } = useToast();
-  const { login } = useAuth();
+  const { signUp } = useAuth();
   const navigate = useNavigate();
   
   const form = useForm<ProfessionalSignupFormValues>({
@@ -34,49 +34,31 @@ export const ProfessionalSignupForm: React.FC = () => {
     },
   });
 
-  const onSubmit = (data: ProfessionalSignupFormValues) => {
-    console.log('Professional Signup data:', data);
-    
-    // Save professional data to localStorage
-    const existingProfessionals = localStorage.getItem('professionals');
-    const professionals = existingProfessionals ? JSON.parse(existingProfessionals) : [];
-    
-    // Check if professional with this email already exists
-    const professionalExists = professionals.some(
-      (prof: any) => prof.email === data.email
-    );
-    
-    if (professionalExists) {
+  const onSubmit = async (data: ProfessionalSignupFormValues) => {
+    try {
+      // Use actual Supabase authentication with metadata
+      await signUp(data.email, data.password, {
+        first_name: data.firstName,
+        last_name: data.lastName,
+        user_type: 'professional', // Set user type in metadata
+        specialty: data.specialty,
+        is_open_to_relocation: data.isOpenToRelocation || false,
+      });
+      
       toast({
-        title: "Account already exists",
-        description: "An account with this email already exists.",
+        title: "Account created",
+        description: "Your professional account has been created successfully. Please check your email to confirm your account.",
+      });
+      
+      navigate('/auth');
+    } catch (error) {
+      console.error('Signup error:', error);
+      toast({
+        title: "Account creation failed",
+        description: "An error occurred during signup. This email might already be registered.",
         variant: "destructive"
       });
-      return;
     }
-    
-    // Add new professional to the list with a unique ID
-    professionals.push({
-      id: Date.now().toString(),
-      firstName: data.firstName,
-      lastName: data.lastName,
-      email: data.email,
-      specialty: data.specialty,
-      isOpenToRelocation: data.isOpenToRelocation || false,
-      registeredAt: new Date().toISOString(),
-    });
-    
-    // Save back to localStorage
-    localStorage.setItem('professionals', JSON.stringify(professionals));
-    
-    login('professional');
-    
-    toast({
-      title: "Account created",
-      description: "Your professional account has been created successfully.",
-    });
-    
-    navigate('/dashboard/professional');
   };
 
   return (

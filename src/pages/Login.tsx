@@ -26,7 +26,7 @@ const Login = () => {
   const [showPassword, setShowPassword] = React.useState(false);
   const [userType, setUserType] = useState<UserType>('professional');
   const { toast } = useToast();
-  const { login } = useAuth();
+  const { signIn } = useAuth();
   const navigate = useNavigate();
   
   const form = useForm<LoginFormValues>({
@@ -38,20 +38,26 @@ const Login = () => {
     },
   });
 
-  const onSubmit = (data: LoginFormValues) => {
-    console.log('Login data:', data);
-    console.log('User type:', userType);
-    
-    // Login with the selected user type
-    login(userType);
-    
-    toast({
-      title: "Login Successful",
-      description: "You are now logged in.",
-    });
-    
-    // Redirect based on user type
-    navigate(userType === 'professional' ? '/dashboard/professional' : '/dashboard/institution');
+  const onSubmit = async (data: LoginFormValues) => {
+    try {
+      // Use actual Supabase authentication instead of mock
+      await signIn(data.email, data.password);
+      
+      toast({
+        title: "Login Successful",
+        description: "You are now logged in.",
+      });
+      
+      // Redirect to dashboard based on user type
+      navigate(userType === 'professional' ? '/dashboard/professional' : '/dashboard/institution');
+    } catch (error) {
+      console.error('Login error:', error);
+      toast({
+        title: "Login Failed",
+        description: "Invalid email or password. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
 
   return (
