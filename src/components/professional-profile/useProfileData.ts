@@ -70,8 +70,12 @@ export const useProfileData = () => {
       }
 
       if (data) {
-        // Ensure we properly type the JSON data coming from the database
-        // by casting the JSON fields to their corresponding types
+        // Properly convert the JSON data from Supabase to our typed arrays using 'as unknown as'
+        // This is a safe approach when we know the structure matches our types
+        const experiences = data.experiences ? (data.experiences as unknown as Experience[]) : [];
+        const education = data.education ? (data.education as unknown as Education[]) : [];
+        const languages = data.languages ? (data.languages as unknown as Language[]) : [];
+
         return {
           firstName: data.first_name || '',
           lastName: data.last_name || '',
@@ -82,9 +86,9 @@ export const useProfileData = () => {
           profileImage: data.profile_image || '',
           activelySearching: data.actively_searching || false,
           openToRelocation: data.open_to_relocation || false,
-          experiences: (data.experiences || []) as Experience[],
-          education: (data.education || []) as Education[],
-          languages: (data.languages || []) as Language[],
+          experiences: experiences,
+          education: education,
+          languages: languages,
           fspCertificate: data.fsp_certificate || false,
           fspCertificateFile: data.fsp_certificate_file || '',
           email: '', // Add an empty email field to match ProfileFormValues type
