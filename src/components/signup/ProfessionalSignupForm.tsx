@@ -11,7 +11,6 @@ import { professionalSignupSchema, ProfessionalSignupFormValues } from '@/schema
 import { NameFields } from './NameFields';
 import { EmailField } from './EmailField';
 import { SpecialtyField } from './SpecialtyField';
-import { RelocationOption } from './RelocationOption';
 import { PasswordFields } from './PasswordFields';
 import { TermsAgreement } from './TermsAgreement';
 
@@ -29,20 +28,16 @@ export const ProfessionalSignupForm: React.FC = () => {
       password: '',
       confirmPassword: '',
       specialty: '',
-      isOpenToRelocation: false,
       terms: false,
     },
   });
 
   const onSubmit = async (data: ProfessionalSignupFormValues) => {
     try {
-      // Use actual Supabase authentication with metadata
       await signUp(data.email, data.password, {
         first_name: data.firstName,
         last_name: data.lastName,
-        user_type: 'professional', // Set user type in metadata
         specialty: data.specialty,
-        is_open_to_relocation: data.isOpenToRelocation || false,
       });
       
       toast({
@@ -67,7 +62,6 @@ export const ProfessionalSignupForm: React.FC = () => {
         <NameFields form={form} />
         <EmailField form={form} />
         <SpecialtyField form={form} />
-        <RelocationOption form={form} />
         <PasswordFields form={form} />
         <TermsAgreement form={form} />
         

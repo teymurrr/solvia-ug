@@ -4,7 +4,7 @@ import MainLayout from '@/components/MainLayout';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { User, Briefcase, Settings, FileText, Search, Filter, ChevronDown, MapPin, Building, GraduationCap, Heart, BookmarkCheck, FileCheck } from 'lucide-react';
+import { User, Briefcase, Settings, FileText, Search, Filter, ChevronDown, MapPin, Building, GraduationCap, Heart, BookmarkCheck, FileCheck, MagnifyingGlass } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { ProfessionalProfileEditForm } from '@/components/professional-profile';
@@ -34,6 +34,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
+import { Progress } from "@/components/ui/progress";
 
 const sampleVacancies = [
   {
