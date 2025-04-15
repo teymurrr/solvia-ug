@@ -60,18 +60,15 @@ const ProfessionalProfileEditForm: React.FC<ProfessionalProfileEditFormProps> = 
     if (open) {
       loadProfileData().then(data => {
         if (data) {
-          Object.keys(data).forEach(key => {
-            form.setValue(key as keyof ProfileFormValues, data[key as keyof ProfileFormValues]);
-          });
+          form.reset(data);
           setSavedData(data);
         }
       });
     }
-  }, [open]);
+  }, [open, form, loadProfileData]);
 
   const onSubmit = async (data: ProfileFormValues) => {
     await saveProfileData(data);
-    setSavedData(data);
     if (onSave) {
       onSave(data);
     }

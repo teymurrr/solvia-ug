@@ -18,8 +18,8 @@ export const useProfileData = () => {
       const { error } = await supabase
         .from('professional_profiles')
         .upsert({
-          user_id: user.id,
           id: user.id,
+          user_id: user.id,
           first_name: data.firstName,
           last_name: data.lastName,
           specialty: data.specialty,
@@ -85,6 +85,7 @@ export const useProfileData = () => {
           languages: data.languages || [],
           fspCertificate: data.fsp_certificate,
           fspCertificateFile: data.fsp_certificate_file,
+          email: '',  // Add an empty email field to match ProfileFormValues type
         };
       }
       return null;

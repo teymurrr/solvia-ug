@@ -76,13 +76,12 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
     if (error) throw error;
 
-    // Set session persistence based on rememberMe
-    await supabase.auth.setSession({
-      refresh_token: session?.refresh_token || '',
-      access_token: session?.access_token || '',
-    }, {
-      persistence: rememberMe ? 'LOCAL' : 'SESSION'
-    });
+    if (rememberMe) {
+      await supabase.auth.setSession({
+        refresh_token: session?.refresh_token || '',
+        access_token: session?.access_token || '',
+      });
+    }
   };
 
   const signUp = async (email: string, password: string, metadata?: { first_name?: string; last_name?: string }) => {
