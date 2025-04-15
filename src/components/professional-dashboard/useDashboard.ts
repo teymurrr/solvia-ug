@@ -1,15 +1,13 @@
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { ProfileFormValues } from '@/components/professional-profile/types';
-import { useProfileData } from '@/components/professional-profile/useProfileData';
-import { useToast } from '@/hooks/use-toast';
 
 export const defaultProfileData: ProfileFormValues = {
-  firstName: "",
-  lastName: "",
-  profession: "",
-  specialty: "",
-  email: "",
+  firstName: "John",
+  lastName: "Doe",
+  profession: "Doctor",
+  specialty: "Cardiologist",
+  email: "john.doe@example.com",
   location: "",
   about: "",
   experiences: [],
@@ -33,48 +31,10 @@ export default function useDashboard() {
   const [appliedVacancies] = useState<string[]>(['1', '3']);
   const [profileData, setProfileData] = useState<ProfileFormValues>(defaultProfileData);
   const [savedTabView, setSavedTabView] = useState<'saved' | 'applied'>('saved');
-  const [isLoading, setIsLoading] = useState(true);
-  const { loadProfileData } = useProfileData();
-  const { toast } = useToast();
 
   const jobTypes = ['Full-time', 'Part-time', 'Internship', 'Volunteer'];
   const countries = ['USA'];
   const cities = ['New York', 'Boston', 'Chicago', 'Los Angeles', 'Dallas', 'Miami', 'Seattle'];
-
-  // Create a memoized function to fetch profile data
-  const fetchProfileData = useCallback(async () => {
-    setIsLoading(true);
-    try {
-      const data = await loadProfileData();
-      if (data) {
-        console.log('Setting profile data in dashboard:', data);
-        setProfileData({
-          ...data,
-          // Ensure we have arrays even if null values were returned
-          experiences: data.experiences || [],
-          education: data.education || [],
-          languages: data.languages || []
-        });
-      } else {
-        console.log('No profile data returned, keeping default');
-      }
-    } catch (error) {
-      console.error('Error fetching profile data:', error);
-      toast({
-        title: "Error",
-        description: "Failed to load your profile. Please try again.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  }, [loadProfileData, toast]);
-
-  // Load the actual profile data from Supabase when the dashboard is opened
-  useEffect(() => {
-    console.log('Dashboard component mounted, fetching profile data');
-    fetchProfileData();
-  }, [fetchProfileData]);
 
   useEffect(() => {
     const savedVacanciesData = localStorage.getItem('savedVacancies');
@@ -111,14 +71,7 @@ export default function useDashboard() {
   };
 
   const handleProfileSave = (data: ProfileFormValues) => {
-    console.log('Saving profile data in dashboard:', data);
     setProfileData(data);
-  };
-
-  // Function to refresh profile data (can be called after editing)
-  const refreshProfileData = () => {
-    console.log('Refreshing profile data');
-    fetchProfileData();
   };
 
   return {
@@ -144,7 +97,5 @@ export default function useDashboard() {
     toggleJobType,
     resetFilters,
     handleProfileSave,
-    refreshProfileData,
-    isLoading,
   };
 }

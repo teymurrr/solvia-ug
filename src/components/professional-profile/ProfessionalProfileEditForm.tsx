@@ -1,14 +1,13 @@
 
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Form } from '@/components/ui/form';
-import { useProfileData } from './useProfileData';
 
-import { ProfileFormValues, profileFormSchema, Experience, Education, Language } from './types';
+import { ProfileFormValues, profileFormSchema } from './types';
 import ProfileImageSection from './ProfileImageSection';
 import PersonalInfoSection from './PersonalInfoSection';
 import ExperienceSection from './ExperienceSection';
@@ -30,11 +29,11 @@ const ProfessionalProfileEditForm: React.FC<ProfessionalProfileEditFormProps> = 
   open,
   onOpenChange,
   initialData = {
-    firstName: "",
-    lastName: "",
-    profession: "",
-    specialty: "",
-    email: "",
+    firstName: "John",
+    lastName: "Doe",
+    profession: "Doctor",
+    specialty: "Cardiologist",
+    email: "john.doe@example.com",
     location: "",
     about: "",
     profileImage: "",
@@ -49,7 +48,6 @@ const ProfessionalProfileEditForm: React.FC<ProfessionalProfileEditFormProps> = 
   onSave
 }) => {
   const { toast } = useToast();
-  const { saveProfileData, loadProfileData, loading } = useProfileData();
   const [savedData, setSavedData] = useState<ProfileFormValues | null>(null);
   
   const form = useForm<ProfileFormValues>({
@@ -57,71 +55,30 @@ const ProfessionalProfileEditForm: React.FC<ProfessionalProfileEditFormProps> = 
     defaultValues: savedData || initialData,
   });
 
-  useEffect(() => {
-    if (open) {
-      // Reset the form when dialog opens
-      console.log("Loading profile data for edit form");
-      loadProfileData().then(data => {
-        if (data) {
-          console.log("Retrieved profile data for form:", data);
-          // Ensure the loaded data has the correct types for the arrays
-          const typedData: ProfileFormValues = {
-            ...data,
-            experiences: data.experiences as Experience[] || [],
-            education: data.education as Education[] || [],
-            languages: data.languages as Language[] || [],
-          };
-          form.reset(typedData);
-          setSavedData(typedData);
-        } else {
-          console.log("No profile data found, using initial data");
-          form.reset(initialData);
-        }
-      }).catch(error => {
-        console.error("Error loading profile data:", error);
-        toast({
-          title: "Error",
-          description: "Failed to load your profile data. Please try again.",
-          variant: "destructive",
-        });
-        form.reset(initialData);
-      });
+  const onSubmit = (data: ProfileFormValues) => {
+    // In a real application, this would save to a database
+    console.log("Profile data to save:", data);
+    
+    // Save data in local state (simulate persistence between modal opens)
+    setSavedData(data);
+    
+    // Pass the data to the parent component
+    if (onSave) {
+      onSave(data);
     }
-  }, [open, form, loadProfileData, initialData, toast]);
-
-  const onSubmit = async (data: ProfileFormValues) => {
-    console.log("Submitting profile data:", data);
-    try {
-      await saveProfileData(data);
-      if (onSave) {
-        onSave(data);
-      }
-      toast({
-        title: "Profile Updated",
-        description: "Your profile has been successfully updated.",
-      });
-      onOpenChange(false);
-    } catch (error) {
-      console.error("Error saving profile data:", error);
-      toast({
-        title: "Error",
-        description: "Failed to save your profile. Please try again.",
-        variant: "destructive",
-      });
-    }
+    
+    toast({
+      title: "Profile Updated",
+      description: "Your profile has been successfully updated.",
+    });
+    
+    onOpenChange(false);
   };
 
   const [imagePreview, setImagePreview] = useState<string | null>(initialData.profileImage || null);
   const [sfpCertificatePreview, setSfpCertificatePreview] = useState<string | null>(
     initialData.fspCertificateFile || null
   );
-
-  useEffect(() => {
-    // Update previews when form data changes
-    const formValues = form.getValues();
-    setImagePreview(formValues.profileImage || null);
-    setSfpCertificatePreview(formValues.fspCertificateFile || null);
-  }, [form, savedData]);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -205,8 +162,8 @@ const ProfessionalProfileEditForm: React.FC<ProfessionalProfileEditFormProps> = 
               <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
                 Cancel
               </Button>
-              <Button type="submit" disabled={loading}>
-                {loading ? "Saving..." : "Save Changes"}
+              <Button type="submit">
+                Save Changes
               </Button>
             </div>
           </form>

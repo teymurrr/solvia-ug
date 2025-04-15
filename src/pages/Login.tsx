@@ -40,13 +40,15 @@ const Login = () => {
 
   const onSubmit = async (data: LoginFormValues) => {
     try {
-      await signIn(data.email, data.password, data.rememberMe);
+      // Use actual Supabase authentication instead of mock
+      await signIn(data.email, data.password);
       
       toast({
         title: "Login Successful",
         description: "You are now logged in.",
       });
       
+      // Redirect to dashboard based on user type
       navigate(userType === 'professional' ? '/dashboard/professional' : '/dashboard/institution');
     } catch (error) {
       console.error('Login error:', error);

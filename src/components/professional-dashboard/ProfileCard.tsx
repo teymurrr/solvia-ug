@@ -1,6 +1,5 @@
-
-import React from 'react';
-import { User, MapPin, Award } from 'lucide-react';
+import React, { useState } from 'react';
+import { User, MapPin, Award, Eye, EyeOff } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
@@ -18,6 +17,8 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
   profileCompletionPercentage,
   onEdit
 }) => {
+  const [showEmail, setShowEmail] = useState(false);
+
   return (
     <div className="flex flex-col md:flex-row gap-6">
       <div className="flex-shrink-0">
@@ -80,6 +81,20 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <h3 className="text-sm font-medium text-muted-foreground">Email</h3>
+            <div className="flex items-center gap-2">
+              <p>{showEmail ? profileData.email : '••••••@••••.•••'}</p>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setShowEmail(!showEmail)}
+                className="h-6 w-6 p-0"
+              >
+                {showEmail ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+              </Button>
+            </div>
+          </div>
           <div>
             <h3 className="text-sm font-medium text-muted-foreground">Location</h3>
             <p>{profileData.location || "Not specified"}</p>
