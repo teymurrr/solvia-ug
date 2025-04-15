@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+
+import React, { useState, useEffect } from 'react';
 import MainLayout from '@/components/MainLayout';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -23,6 +24,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from '@/components/ui/pagination';
+import { useProfileData } from '@/components/professional-profile/useProfileData';
 
 const ITEMS_PER_PAGE = 3;
 
@@ -52,6 +54,22 @@ const ProfessionalDashboard: React.FC = () => {
     resetFilters,
     handleProfileSave,
   } = useDashboard();
+  
+  // Get the loadProfileData function to refresh profile data when needed
+  const { loadProfileData } = useProfileData();
+  
+  // Refresh profile data when the edit form is closed
+  useEffect(() => {
+    if (!isEditProfileOpen) {
+      const refreshProfileData = async () => {
+        const data = await loadProfileData();
+        if (data) {
+          handleProfileSave(data);
+        }
+      };
+      refreshProfileData();
+    }
+  }, [isEditProfileOpen, loadProfileData, handleProfileSave]);
 
   const calculateProfileCompletion = (profile: typeof profileData): number => {
     let totalFields = 0;

@@ -58,6 +58,7 @@ export const useProfileData = () => {
     if (!user) return null;
     
     try {
+      console.log('Loading profile data for user:', user.id);
       const { data, error } = await supabase
         .from('professional_profiles')
         .select('*')
@@ -65,11 +66,13 @@ export const useProfileData = () => {
         .single();
 
       if (error) {
+        console.error('Error loading profile from Supabase:', error);
         // If no profile exists, return null without throwing an error
         return null;
       }
 
       if (data) {
+        console.log('Profile data loaded:', data);
         // Properly convert the JSON data from Supabase to our typed arrays using 'as unknown as'
         // This is a safe approach when we know the structure matches our types
         const experiences = data.experiences ? (data.experiences as unknown as Experience[]) : [];
@@ -94,6 +97,7 @@ export const useProfileData = () => {
           email: '', // Add an empty email field to match ProfileFormValues type
         };
       }
+      console.log('No profile data found for user');
       return null;
     } catch (error) {
       console.error('Error loading profile:', error);
