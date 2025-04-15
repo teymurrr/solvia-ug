@@ -13,7 +13,7 @@ import { EmailField } from './EmailField';
 import { SpecialtyField } from './SpecialtyField';
 import { PasswordFields } from './PasswordFields';
 import { TermsAgreement } from './TermsAgreement';
-import { client as supabase } from '@/integrations/supabase/client';
+import { supabase } from '@/integrations/supabase/client';
 
 export const ProfessionalSignupForm: React.FC = () => {
   const { toast } = useToast();
