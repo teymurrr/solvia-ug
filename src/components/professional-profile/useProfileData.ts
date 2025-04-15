@@ -15,6 +15,8 @@ export const useProfileData = () => {
     
     setLoading(true);
     try {
+      console.log('Saving profile data for user:', user.id);
+      
       // Make sure the JSON data is properly structured for the database
       const { error } = await supabase
         .from('professional_profiles')
@@ -29,15 +31,16 @@ export const useProfileData = () => {
           profile_image: data.profileImage,
           actively_searching: data.activelySearching,
           open_to_relocation: data.openToRelocation,
-          experiences: data.experiences,
-          education: data.education,
-          languages: data.languages,
+          experiences: data.experiences || [],
+          education: data.education || [],
+          languages: data.languages || [],
           fsp_certificate: data.fspCertificate,
           fsp_certificate_file: data.fspCertificateFile,
         });
 
       if (error) throw error;
 
+      console.log('Profile successfully saved');
       toast({
         title: "Profile Updated",
         description: "Your profile has been successfully saved.",
@@ -55,8 +58,12 @@ export const useProfileData = () => {
   };
 
   const loadProfileData = async () => {
-    if (!user) return null;
+    if (!user) {
+      console.log('No user found, cannot load profile');
+      return null;
+    }
     
+    setLoading(true);
     try {
       console.log('Loading profile data for user:', user.id);
       const { data, error } = await supabase
@@ -73,13 +80,42 @@ export const useProfileData = () => {
 
       if (data) {
         console.log('Profile data loaded:', data);
-        // Properly convert the JSON data from Supabase to our typed arrays using 'as unknown as'
-        // This is a safe approach when we know the structure matches our types
-        const experiences = data.experiences ? (data.experiences as unknown as Experience[]) : [];
-        const education = data.education ? (data.education as unknown as Education[]) : [];
-        const languages = data.languages ? (data.languages as unknown as Language[]) : [];
+        
+        // Safely convert JSON data with null checks
+        let experiences: Experience[] = [];
+        if (data.experiences) {
+          try {
+            experiences = Array.isArray(data.experiences) 
+              ? (data.experiences as unknown as Experience[]) 
+              : [];
+          } catch (e) {
+            console.error('Error parsing experiences:', e);
+          }
+        }
+        
+        let education: Education[] = [];
+        if (data.education) {
+          try {
+            education = Array.isArray(data.education) 
+              ? (data.education as unknown as Education[]) 
+              : [];
+          } catch (e) {
+            console.error('Error parsing education:', e);
+          }
+        }
+        
+        let languages: Language[] = [];
+        if (data.languages) {
+          try {
+            languages = Array.isArray(data.languages) 
+              ? (data.languages as unknown as Language[]) 
+              : [];
+          } catch (e) {
+            console.error('Error parsing languages:', e);
+          }
+        }
 
-        return {
+        const profileData: ProfileFormValues = {
           firstName: data.first_name || '',
           lastName: data.last_name || '',
           specialty: data.specialty || '',
@@ -87,17 +123,23 @@ export const useProfileData = () => {
           profession: data.profession || '',
           about: data.about || '',
           profileImage: data.profile_image || '',
-          activelySearching: data.actively_searching || false,
-          openToRelocation: data.open_to_relocation || false,
+          activelySearching: !!data.actively_searching,
+          openToRelocation: !!data.open_to_relocation,
           experiences: experiences,
           education: education,
           languages: languages,
-          fspCertificate: data.fsp_certificate || false,
+          fspCertificate: !!data.fsp_certificate,
           fspCertificateFile: data.fsp_certificate_file || '',
           email: '', // Add an empty email field to match ProfileFormValues type
         };
+        
+        console.log('Returning formatted profile data');
+        setLoading(false);
+        return profileData;
       }
+      
       console.log('No profile data found for user');
+      setLoading(false);
       return null;
     } catch (error) {
       console.error('Error loading profile:', error);
@@ -106,6 +148,7 @@ export const useProfileData = () => {
         description: "Failed to load profile data.",
         variant: "destructive",
       });
+      setLoading(false);
       return null;
     }
   };
