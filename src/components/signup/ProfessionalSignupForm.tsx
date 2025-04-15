@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
@@ -12,6 +13,7 @@ import { EmailField } from './EmailField';
 import { SpecialtyField } from './SpecialtyField';
 import { PasswordFields } from './PasswordFields';
 import { TermsAgreement } from './TermsAgreement';
+import { client as supabase } from '@/integrations/supabase/client';
 
 export const ProfessionalSignupForm: React.FC = () => {
   const { toast } = useToast();
@@ -41,7 +43,7 @@ export const ProfessionalSignupForm: React.FC = () => {
             first_name: data.firstName,
             last_name: data.lastName,
             specialty: data.specialty,
-            open_to_relocation: data.openToRelocation
+            open_to_relocation: data.isOpenToRelocation
           }
         }
       });

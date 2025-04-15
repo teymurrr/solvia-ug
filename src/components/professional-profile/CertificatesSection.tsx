@@ -4,7 +4,7 @@ import { FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/comp
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Upload, Check } from 'lucide-react';
+import { Upload, Check, FileCheck } from 'lucide-react';
 import { UseFormReturn } from 'react-hook-form';
 import { ProfileFormValues } from './types';
 
@@ -23,31 +23,36 @@ const CertificatesSection: React.FC<CertificatesSectionProps> = ({
     <>
       <FormField
         control={form.control}
-        name="sfpCertificate"
+        name="fspCertificate"
         render={({ field }) => (
           <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
             <FormControl>
               <Checkbox
-                checked={field.value}
+                checked={field.value || false}
                 onCheckedChange={field.onChange}
               />
             </FormControl>
             <div className="space-y-1 leading-none">
-              <FormLabel>SFP Certificate</FormLabel>
+              <FormLabel>FSP Certificate</FormLabel>
               <p className="text-sm text-muted-foreground">
-                Check if you have an SFP (Swiss Foreign Physician) certificate
+                Check if you have an FSP (Foreign Specialist Physician) certificate
               </p>
             </div>
+            {field.value && (
+              <div className="ml-auto flex items-center">
+                <FileCheck className="h-5 w-5 text-green-600" />
+              </div>
+            )}
           </FormItem>
         )}
       />
 
-      {form.watch("sfpCertificate") && (
+      {form.watch("fspCertificate") && (
         <div className="border rounded-md p-4">
-          <FormLabel>SFP Certificate</FormLabel>
+          <FormLabel>FSP Certificate</FormLabel>
           <div className="flex items-center gap-2 mt-2">
             <Input
-              id="sfpCertificateFile"
+              id="fspCertificateFile"
               type="file"
               accept=".pdf,.jpg,.jpeg,.png"
               className="hidden"
@@ -56,10 +61,10 @@ const CertificatesSection: React.FC<CertificatesSectionProps> = ({
             <Button 
               type="button" 
               variant="outline" 
-              onClick={() => document.getElementById('sfpCertificateFile')?.click()}
+              onClick={() => document.getElementById('fspCertificateFile')?.click()}
             >
               <Upload className="h-4 w-4 mr-2" />
-              Upload SFP Certificate
+              Upload FSP Certificate
             </Button>
             {sfpCertificatePreview && (
               <span className="text-sm text-green-600 flex items-center">

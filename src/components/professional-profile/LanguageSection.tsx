@@ -7,7 +7,7 @@ import { Plus, Trash2, Upload, Check } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from '@/components/ui/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { UseFormReturn } from 'react-hook-form';
+import { UseFormReturn, useFieldArray } from 'react-hook-form';
 import { ProfileFormValues } from './types';
 import { availableLanguages } from '@/data/languages';
 

@@ -42,8 +42,8 @@ const ProfessionalProfileEditForm: React.FC<ProfessionalProfileEditFormProps> = 
     experiences: [{ hospital: "", location: "", role: "", startDate: "", endDate: "", current: false }],
     education: [{ institution: "", degree: "", field: "", startDate: "", endDate: "", current: false }],
     languages: [{ language: "", level: "A1", certificate: "" }],
-    sfpCertificate: false,
-    sfpCertificateFile: "",
+    fspCertificate: false,
+    fspCertificateFile: "",
   },
   onSave
 }) => {
@@ -77,7 +77,7 @@ const ProfessionalProfileEditForm: React.FC<ProfessionalProfileEditFormProps> = 
 
   const [imagePreview, setImagePreview] = useState<string | null>(initialData.profileImage || null);
   const [sfpCertificatePreview, setSfpCertificatePreview] = useState<string | null>(
-    initialData.sfpCertificateFile || null
+    initialData.fspCertificateFile || null
   );
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -100,7 +100,7 @@ const ProfessionalProfileEditForm: React.FC<ProfessionalProfileEditFormProps> = 
       reader.onloadend = () => {
         const result = reader.result as string;
         setSfpCertificatePreview(result);
-        form.setValue("sfpCertificateFile", result);
+        form.setValue("fspCertificateFile", result);
       };
       reader.readAsDataURL(file);
     }
