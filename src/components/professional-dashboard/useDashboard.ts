@@ -1,13 +1,14 @@
 
 import { useState, useEffect } from 'react';
 import { ProfileFormValues } from '@/components/professional-profile/types';
+import { useProfileData } from '@/components/professional-profile/useProfileData';
 
 export const defaultProfileData: ProfileFormValues = {
-  firstName: "John",
-  lastName: "Doe",
-  profession: "Doctor",
-  specialty: "Cardiologist",
-  email: "john.doe@example.com",
+  firstName: "",
+  lastName: "",
+  profession: "",
+  specialty: "",
+  email: "",
   location: "",
   about: "",
   experiences: [],
@@ -31,10 +32,23 @@ export default function useDashboard() {
   const [appliedVacancies] = useState<string[]>(['1', '3']);
   const [profileData, setProfileData] = useState<ProfileFormValues>(defaultProfileData);
   const [savedTabView, setSavedTabView] = useState<'saved' | 'applied'>('saved');
+  const { loadProfileData } = useProfileData();
 
   const jobTypes = ['Full-time', 'Part-time', 'Internship', 'Volunteer'];
   const countries = ['USA'];
   const cities = ['New York', 'Boston', 'Chicago', 'Los Angeles', 'Dallas', 'Miami', 'Seattle'];
+
+  // Load the actual profile data from Supabase when the dashboard is opened
+  useEffect(() => {
+    const fetchProfileData = async () => {
+      const data = await loadProfileData();
+      if (data) {
+        setProfileData(data);
+      }
+    };
+    
+    fetchProfileData();
+  }, [loadProfileData]);
 
   useEffect(() => {
     const savedVacanciesData = localStorage.getItem('savedVacancies');
