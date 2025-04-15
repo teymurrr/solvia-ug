@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
@@ -25,7 +26,7 @@ const Login = () => {
   const [showPassword, setShowPassword] = React.useState(false);
   const [userType, setUserType] = useState<UserType>('professional');
   const { toast } = useToast();
-  const { signIn, supabase } = useAuth();
+  const { signIn } = useAuth();
   const navigate = useNavigate();
   
   const form = useForm<LoginFormValues>({
@@ -39,14 +40,7 @@ const Login = () => {
 
   const onSubmit = async (data: LoginFormValues) => {
     try {
-      await signIn(data.email, data.password);
-      
-      await supabase.auth.setSession({
-        refresh_token: supabase.auth.session()?.refresh_token || '',
-        access_token: supabase.auth.session()?.access_token || '',
-      }, {
-        persistence: data.rememberMe ? true : false
-      });
+      await signIn(data.email, data.password, data.rememberMe);
       
       toast({
         title: "Login Successful",

@@ -18,6 +18,7 @@ export const useProfileData = () => {
       const { error } = await supabase
         .from('professional_profiles')
         .upsert({
+          user_id: user.id,
           id: user.id,
           first_name: data.firstName,
           last_name: data.lastName,
@@ -60,10 +61,13 @@ export const useProfileData = () => {
       const { data, error } = await supabase
         .from('professional_profiles')
         .select('*')
-        .eq('id', user.id)
+        .eq('user_id', user.id)
         .single();
 
-      if (error) throw error;
+      if (error) {
+        // If no profile exists, return null without throwing an error
+        return null;
+      }
 
       if (data) {
         return {

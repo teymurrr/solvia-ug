@@ -11,11 +11,11 @@ interface AuthContextType {
   loading: boolean;
   isLoggedIn: boolean;
   userType: UserType | null;
-  signIn: (email: string, password: string) => Promise<void>;
+  signIn: (email: string, password: string, rememberMe?: boolean) => Promise<void>;
   signUp: (email: string, password: string, metadata?: { first_name?: string; last_name?: string }) => Promise<void>;
   signOut: () => Promise<void>;
-  login: (type: UserType) => void; // For compatibility with existing code
-  logout: () => void; // For compatibility with existing code
+  login: (type: UserType) => void; 
+  logout: () => void; 
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -29,27 +29,32 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   useEffect(() => {
     // Configure Supabase auth with session persistence
-    supabase.auth.setSession({
-      refresh_token: localStorage.getItem('sb-refresh-token') || '',
-      access_token: localStorage.getItem('sb-access-token') || '',
-    }, {
-      persistence: true // Enable session persistence by default
-    });
+    const initSession = async () => {
+      const { data } = await supabase.auth.getSession();
+      setSession(data.session);
+      setUser(data.session?.user ?? null);
+      setIsLoggedIn(!!data.session);
+      
+      if (data.session?.user?.user_metadata) {
+        const metadata = data.session.user.user_metadata;
+        setUserType(metadata.user_type ?? 'professional');
+      }
+      
+      setLoading(false);
+    };
+
+    initSession();
 
     // Set up the auth state listener
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (_event, session) => {
+      async (_event, session) => {
         setSession(session);
         setUser(session?.user ?? null);
         setIsLoggedIn(!!session);
         
         if (session?.user?.user_metadata) {
           const metadata = session.user.user_metadata;
-          if (metadata.user_type) {
-            setUserType(metadata.user_type as UserType);
-          } else {
-            setUserType('professional');
-          }
+          setUserType(metadata.user_type ?? 'professional');
         } else {
           setUserType(null);
         }
@@ -58,35 +63,26 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       }
     );
 
-    // Check for existing session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setUser(session?.user ?? null);
-      setIsLoggedIn(!!session);
-      
-      if (session?.user?.user_metadata) {
-        const metadata = session.user.user_metadata;
-        if (metadata.user_type) {
-          setUserType(metadata.user_type as UserType);
-        } else {
-          setUserType('professional');
-        }
-      } else {
-        setUserType(null);
-      }
-      
-      setLoading(false);
-    });
-
-    return () => subscription.unsubscribe();
+    return () => {
+      subscription.unsubscribe();
+    };
   }, []);
 
-  const signIn = async (email: string, password: string) => {
+  const signIn = async (email: string, password: string, rememberMe = false) => {
     const { error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
+
     if (error) throw error;
+
+    // Set session persistence based on rememberMe
+    await supabase.auth.setSession({
+      refresh_token: session?.refresh_token || '',
+      access_token: session?.access_token || '',
+    }, {
+      persistence: rememberMe ? 'LOCAL' : 'SESSION'
+    });
   };
 
   const signUp = async (email: string, password: string, metadata?: { first_name?: string; last_name?: string }) => {
@@ -109,12 +105,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const login = (type: UserType) => {
     setUserType(type);
     setIsLoggedIn(true);
-    // This is a temporary function for backward compatibility
-    // In a real app, we would use Supabase signIn instead
-    console.log(`Mock login as ${type}`);
   };
 
-  // For compatibility with existing code
   const logout = () => {
     signOut().catch(error => console.error("Error signing out:", error));
   };
