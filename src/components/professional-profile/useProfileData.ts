@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
-import { ProfileFormValues } from './types';
+import { ProfileFormValues, Experience, Education, Language } from './types';
 
 export const useProfileData = () => {
   const { toast } = useToast();
@@ -15,10 +15,10 @@ export const useProfileData = () => {
     
     setLoading(true);
     try {
+      // Make sure the JSON data is properly structured for the database
       const { error } = await supabase
         .from('professional_profiles')
         .upsert({
-          id: user.id,
           user_id: user.id,
           first_name: data.firstName,
           last_name: data.lastName,
@@ -70,22 +70,24 @@ export const useProfileData = () => {
       }
 
       if (data) {
+        // Ensure we properly type the JSON data coming from the database
+        // by casting the JSON fields to their corresponding types
         return {
-          firstName: data.first_name,
-          lastName: data.last_name,
-          specialty: data.specialty,
-          location: data.location,
-          profession: data.profession,
-          about: data.about,
-          profileImage: data.profile_image,
-          activelySearching: data.actively_searching,
-          openToRelocation: data.open_to_relocation,
-          experiences: data.experiences || [],
-          education: data.education || [],
-          languages: data.languages || [],
-          fspCertificate: data.fsp_certificate,
-          fspCertificateFile: data.fsp_certificate_file,
-          email: '',  // Add an empty email field to match ProfileFormValues type
+          firstName: data.first_name || '',
+          lastName: data.last_name || '',
+          specialty: data.specialty || '',
+          location: data.location || '',
+          profession: data.profession || '',
+          about: data.about || '',
+          profileImage: data.profile_image || '',
+          activelySearching: data.actively_searching || false,
+          openToRelocation: data.open_to_relocation || false,
+          experiences: (data.experiences || []) as Experience[],
+          education: (data.education || []) as Education[],
+          languages: (data.languages || []) as Language[],
+          fspCertificate: data.fsp_certificate || false,
+          fspCertificateFile: data.fsp_certificate_file || '',
+          email: '', // Add an empty email field to match ProfileFormValues type
         };
       }
       return null;

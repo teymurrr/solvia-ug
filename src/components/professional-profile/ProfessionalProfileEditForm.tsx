@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -7,7 +8,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { Form } from '@/components/ui/form';
 import { useProfileData } from './useProfileData';
 
-import { ProfileFormValues, profileFormSchema } from './types';
+import { ProfileFormValues, profileFormSchema, Experience, Education, Language } from './types';
 import ProfileImageSection from './ProfileImageSection';
 import PersonalInfoSection from './PersonalInfoSection';
 import ExperienceSection from './ExperienceSection';
@@ -60,8 +61,15 @@ const ProfessionalProfileEditForm: React.FC<ProfessionalProfileEditFormProps> = 
     if (open) {
       loadProfileData().then(data => {
         if (data) {
-          form.reset(data);
-          setSavedData(data);
+          // Ensure the loaded data has the correct types for the arrays
+          const typedData: ProfileFormValues = {
+            ...data,
+            experiences: data.experiences as Experience[],
+            education: data.education as Education[],
+            languages: data.languages as Language[],
+          };
+          form.reset(typedData);
+          setSavedData(typedData);
         }
       });
     }
