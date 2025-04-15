@@ -37,7 +37,11 @@ export const ProfessionalSignupForm: React.FC = () => {
       await signUp(data.email, data.password, {
         first_name: data.firstName,
         last_name: data.lastName,
-        specialty: data.specialty,
+        // Store specialty in user_metadata since it's not recognized directly
+        user_metadata: {
+          specialty: data.specialty,
+          user_type: 'professional'
+        }
       });
       
       toast({

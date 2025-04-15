@@ -4,7 +4,7 @@ import MainLayout from '@/components/MainLayout';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { User, Briefcase, Settings, FileText, Search, Filter, ChevronDown, MapPin, Building, GraduationCap, Heart, BookmarkCheck, FileCheck, MagnifyingGlass } from 'lucide-react';
+import { User, Briefcase, Settings, FileText, Search, Filter, ChevronDown, MapPin, Building, GraduationCap, Heart, BookmarkCheck, FileCheck } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { ProfessionalProfileEditForm } from '@/components/professional-profile';
@@ -189,8 +189,8 @@ const ProfessionalDashboard = () => {
     languages: [],
     activelySearching: false,
     profileImage: "",
-    sfpCertificate: false,
-    sfpCertificateFile: ""
+    fspCertificate: false,
+    fspCertificateFile: ""
   };
   
   const [profileData, setProfileData] = useState<ProfileFormValues>(defaultProfileData);
@@ -352,6 +352,33 @@ const ProfessionalDashboard = () => {
     return sampleVacancies.filter(vacancy => appliedVacancies.includes(vacancy.id));
   };
   
+  const calculateProfileCompletion = (profile: ProfileFormValues): number => {
+    let totalFields = 0;
+    let completedFields = 0;
+    
+    const personalInfoFields = ['firstName', 'lastName', 'email', 'profession', 'specialty', 'location', 'about', 'profileImage'];
+    totalFields += personalInfoFields.length;
+    personalInfoFields.forEach(field => {
+      if (profile[field as keyof ProfileFormValues]) completedFields++;
+    });
+    
+    totalFields += 1; // Count as one section
+    if (profile.experiences && profile.experiences.length > 0) completedFields++;
+    
+    totalFields += 1;
+    if (profile.education && profile.education.length > 0) completedFields++;
+    
+    totalFields += 1;
+    if (profile.languages && profile.languages.length > 0) completedFields++;
+    
+    totalFields += 1;
+    if (profile.fspCertificate) completedFields++;
+    
+    return Math.round((completedFields / totalFields) * 100);
+  };
+  
+  const profileCompletionPercentage = calculateProfileCompletion(profileData);
+  
   return (
     <MainLayout hideEditProfile={true}>
       <div className="container py-8">
@@ -404,6 +431,14 @@ const ProfessionalDashboard = () => {
                       <p className="text-medical-600">{profileData.specialty}</p>
                     </div>
                     
+                    <div className="flex flex-col space-y-2">
+                      <div className="flex justify-between">
+                        <span className="text-sm font-medium">Profile completion</span>
+                        <span className="text-sm font-medium">{profileCompletionPercentage}%</span>
+                      </div>
+                      <Progress value={profileCompletionPercentage} className="h-2" />
+                    </div>
+                    
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
                         <h3 className="text-sm font-medium text-muted-foreground">Email</h3>
@@ -418,8 +453,8 @@ const ProfessionalDashboard = () => {
                         <p>{profileData.profession}</p>
                       </div>
                       <div>
-                        <h3 className="text-sm font-medium text-muted-foreground">SFP Certificate</h3>
-                        <p>{profileData.sfpCertificate ? "Yes" : "No"}</p>
+                        <h3 className="text-sm font-medium text-muted-foreground">FSP Certificate</h3>
+                        <p>{profileData.fspCertificate ? "Yes" : "No"}</p>
                       </div>
                     </div>
                     
