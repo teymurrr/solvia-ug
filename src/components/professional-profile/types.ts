@@ -1,4 +1,3 @@
-
 import { z } from 'zod';
 
 // Define the experience schema
@@ -43,8 +42,8 @@ export const profileFormSchema = z.object({
   experiences: z.array(experienceSchema),
   education: z.array(educationSchema),
   languages: z.array(languageSchema),
-  sfpCertificate: z.boolean().optional(),
-  sfpCertificateFile: z.string().optional(),
+  fspCertificate: z.boolean().optional(),
+  fspCertificateFile: z.string().optional(),
 });
 
 export type ProfileFormValues = z.infer<typeof profileFormSchema>;

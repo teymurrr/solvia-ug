@@ -1,0 +1,28 @@
+
+export const availableLanguages = [
+  "English",
+  "German",
+  "French",
+  "Italian",
+  "Spanish",
+  "Portuguese",
+  "Dutch",
+  "Swedish",
+  "Norwegian",
+  "Danish",
+  "Finnish",
+  "Russian",
+  "Polish",
+  "Czech",
+  "Slovak",
+  "Hungarian",
+  "Romanian",
+  "Bulgarian",
+  "Greek",
+  "Turkish",
+  "Arabic",
+  "Hindi",
+  "Chinese",
+  "Japanese",
+  "Korean"
+];

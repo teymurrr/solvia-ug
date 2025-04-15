@@ -1,10 +1,10 @@
-
-import React from 'react';
-import { User } from 'lucide-react';
+import React, { useState } from 'react';
+import { User, MapPin, Award, Eye, EyeOff } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { ProfileFormValues } from '@/components/professional-profile/types';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 interface ProfileCardProps {
   profileData: ProfileFormValues;
@@ -17,6 +17,8 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
   profileCompletionPercentage,
   onEdit
 }) => {
+  const [showEmail, setShowEmail] = useState(false);
+
   return (
     <div className="flex flex-col md:flex-row gap-6">
       <div className="flex-shrink-0">
@@ -37,9 +39,35 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
         <div>
           <h2 className="text-2xl font-bold flex items-center gap-2">
             {profileData.firstName} {profileData.lastName}
-            {profileData.activelySearching && (
-              <Badge className="bg-green-500">Actively searching</Badge>
-            )}
+            <div className="flex gap-2">
+              {profileData.activelySearching && (
+                <Badge className="bg-green-500">Actively searching</Badge>
+              )}
+              {profileData.openToRelocation && (
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger>
+                      <MapPin className="h-5 w-5 text-blue-500" />
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Open to relocation</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              )}
+              {profileData.fspCertificate && (
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger>
+                      <Award className="h-5 w-5 text-yellow-500" />
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>FSP Certified</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              )}
+            </div>
           </h2>
           <p className="text-medical-600">{profileData.specialty}</p>
         </div>
@@ -55,7 +83,17 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <h3 className="text-sm font-medium text-muted-foreground">Email</h3>
-            <p>{profileData.email}</p>
+            <div className="flex items-center gap-2">
+              <p>{showEmail ? profileData.email : '••••••@••••.•••'}</p>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setShowEmail(!showEmail)}
+                className="h-6 w-6 p-0"
+              >
+                {showEmail ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+              </Button>
+            </div>
           </div>
           <div>
             <h3 className="text-sm font-medium text-muted-foreground">Location</h3>
@@ -67,7 +105,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
           </div>
           <div>
             <h3 className="text-sm font-medium text-muted-foreground">FSP Certificate</h3>
-            <p>{profileData.sfpCertificate ? "Yes" : "No"}</p>
+            <p>{profileData.fspCertificate ? "Yes" : "No"}</p>
           </div>
         </div>
 

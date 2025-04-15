@@ -1,13 +1,15 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Plus, Trash2, Upload, Check } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from '@/components/ui/command';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { UseFormReturn } from 'react-hook-form';
-import { useFieldArray } from 'react-hook-form';
 import { ProfileFormValues } from './types';
+import { availableLanguages } from '@/data/languages';
 
 interface LanguageSectionProps {
   form: UseFormReturn<ProfileFormValues>;
@@ -20,6 +22,7 @@ const LanguageSection: React.FC<LanguageSectionProps> = ({
   languageLevels,
   handleLanguageCertificateChange 
 }) => {
+  const [openCommandMenus, setOpenCommandMenus] = useState<{ [key: number]: boolean }>({});
   const { fields, append, remove } = useFieldArray({
     control: form.control,
     name: "languages",
@@ -64,7 +67,43 @@ const LanguageSection: React.FC<LanguageSectionProps> = ({
                 <FormItem>
                   <FormLabel>Language</FormLabel>
                   <FormControl>
-                    <Input placeholder="English" {...field} />
+                    <Popover
+                      open={openCommandMenus[index]}
+                      onOpenChange={(open) => {
+                        setOpenCommandMenus((prev) => ({ ...prev, [index]: open }));
+                      }}
+                    >
+                      <PopoverTrigger asChild>
+                        <FormControl>
+                          <Button
+                            variant="outline"
+                            role="combobox"
+                            className="w-full justify-between"
+                          >
+                            {field.value || "Select language"}
+                          </Button>
+                        </FormControl>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-[200px] p-0">
+                        <Command>
+                          <CommandInput placeholder="Search language..." />
+                          <CommandEmpty>No language found.</CommandEmpty>
+                          <CommandGroup>
+                            {availableLanguages.map((language) => (
+                              <CommandItem
+                                key={language}
+                                onSelect={() => {
+                                  field.onChange(language);
+                                  setOpenCommandMenus((prev) => ({ ...prev, [index]: false }));
+                                }}
+                              >
+                                {language}
+                              </CommandItem>
+                            ))}
+                          </CommandGroup>
+                        </Command>
+                      </PopoverContent>
+                    </Popover>
                   </FormControl>
                   <FormMessage />
                 </FormItem>

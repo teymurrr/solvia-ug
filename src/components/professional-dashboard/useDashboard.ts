@@ -14,6 +14,7 @@ export const defaultProfileData: ProfileFormValues = {
   education: [],
   languages: [],
   activelySearching: false,
+  openToRelocation: false,
   profileImage: "",
   fspCertificate: false,
   fspCertificateFile: "",
