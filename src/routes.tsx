@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Route, Routes, Navigate } from 'react-router-dom';
 import Index from '@/pages/Index';
@@ -17,6 +16,7 @@ import VacancyDetail from '@/pages/VacancyDetail';
 import SolviaLearning from '@/pages/SolviaLearning';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import { useAuth } from '@/contexts/AuthContext';
+import Auth from '@/pages/Auth';
 
 export const AppRoutes = () => {
   const { isLoggedIn, userType } = useAuth();
@@ -93,6 +93,9 @@ export const AppRoutes = () => {
       />
       
       <Route path="*" element={<NotFound />} />
+      
+      {/* Add new auth route */}
+      <Route path="/auth" element={<Auth />} />
     </Routes>
   );
 };

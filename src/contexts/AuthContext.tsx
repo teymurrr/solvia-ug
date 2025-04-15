@@ -1,59 +1,76 @@
 
-import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
-
-export type UserType = 'professional' | 'institution' | null;
+import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { Session, User } from '@supabase/supabase-js';
+import { supabase } from '@/integrations/supabase/client';
 
 interface AuthContextType {
-  isLoggedIn: boolean;
-  userType: UserType;
-  login: (type: UserType) => void;
-  logout: () => void;
+  session: Session | null;
+  user: User | null;
+  loading: boolean;
+  signIn: (email: string, password: string) => Promise<void>;
+  signUp: (email: string, password: string, metadata?: { first_name?: string; last_name?: string }) => Promise<void>;
+  signOut: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  // Initialize from localStorage if available
-  const [isLoggedIn, setIsLoggedIn] = useState(() => {
-    const savedLoggedIn = localStorage.getItem('isLoggedIn');
-    return savedLoggedIn ? JSON.parse(savedLoggedIn) : false;
-  });
-  
-  const [userType, setUserType] = useState<UserType>(() => {
-    const savedUserType = localStorage.getItem('userType');
-    return savedUserType ? (savedUserType as UserType) : null;
-  });
+  const [session, setSession] = useState<Session | null>(null);
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  // Save to localStorage when state changes
   useEffect(() => {
-    localStorage.setItem('isLoggedIn', JSON.stringify(isLoggedIn));
-    if (userType) {
-      localStorage.setItem('userType', userType);
-    } else {
-      localStorage.removeItem('userType');
-    }
-  }, [isLoggedIn, userType]);
+    // Set up the auth state listener first
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        setSession(session);
+        setUser(session?.user ?? null);
+        setLoading(false);
+      }
+    );
 
-  const login = (type: UserType) => {
-    setIsLoggedIn(true);
-    setUserType(type);
-    console.log("Logged in as:", type);
+    // Then check for existing session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+      setUser(session?.user ?? null);
+      setLoading(false);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const signIn = async (email: string, password: string) => {
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+    if (error) throw error;
   };
-  
-  const logout = () => {
-    setIsLoggedIn(false);
-    setUserType(null);
-    console.log("Logged out");
+
+  const signUp = async (email: string, password: string, metadata?: { first_name?: string; last_name?: string }) => {
+    const { error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: metadata,
+      },
+    });
+    if (error) throw error;
+  };
+
+  const signOut = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) throw error;
   };
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, userType, login, logout }}>
+    <AuthContext.Provider value={{ session, user, loading, signIn, signUp, signOut }}>
       {children}
     </AuthContext.Provider>
   );
 };
 
-export const useAuth = (): AuthContextType => {
+export const useAuth = () => {
   const context = useContext(AuthContext);
   if (context === undefined) {
     throw new Error('useAuth must be used within an AuthProvider');
