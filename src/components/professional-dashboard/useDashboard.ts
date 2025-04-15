@@ -48,7 +48,13 @@ export default function useDashboard() {
       const data = await loadProfileData();
       if (data) {
         console.log('Setting profile data in dashboard:', data);
-        setProfileData(data);
+        setProfileData({
+          ...data,
+          // Ensure we have arrays even if null values were returned
+          experiences: data.experiences || [],
+          education: data.education || [],
+          languages: data.languages || []
+        });
       } else {
         console.log('No profile data returned, keeping default');
       }
@@ -66,6 +72,7 @@ export default function useDashboard() {
 
   // Load the actual profile data from Supabase when the dashboard is opened
   useEffect(() => {
+    console.log('Dashboard component mounted, fetching profile data');
     fetchProfileData();
   }, [fetchProfileData]);
 
@@ -110,6 +117,7 @@ export default function useDashboard() {
 
   // Function to refresh profile data (can be called after editing)
   const refreshProfileData = () => {
+    console.log('Refreshing profile data');
     fetchProfileData();
   };
 

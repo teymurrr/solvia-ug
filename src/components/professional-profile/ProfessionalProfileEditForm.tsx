@@ -30,11 +30,11 @@ const ProfessionalProfileEditForm: React.FC<ProfessionalProfileEditFormProps> = 
   open,
   onOpenChange,
   initialData = {
-    firstName: "John",
-    lastName: "Doe",
-    profession: "Doctor",
-    specialty: "Cardiologist",
-    email: "john.doe@example.com",
+    firstName: "",
+    lastName: "",
+    profession: "",
+    specialty: "",
+    email: "",
     location: "",
     about: "",
     profileImage: "",
@@ -59,34 +59,69 @@ const ProfessionalProfileEditForm: React.FC<ProfessionalProfileEditFormProps> = 
 
   useEffect(() => {
     if (open) {
+      // Reset the form when dialog opens
+      console.log("Loading profile data for edit form");
       loadProfileData().then(data => {
         if (data) {
+          console.log("Retrieved profile data for form:", data);
           // Ensure the loaded data has the correct types for the arrays
           const typedData: ProfileFormValues = {
             ...data,
-            experiences: data.experiences as Experience[],
-            education: data.education as Education[],
-            languages: data.languages as Language[],
+            experiences: data.experiences as Experience[] || [],
+            education: data.education as Education[] || [],
+            languages: data.languages as Language[] || [],
           };
           form.reset(typedData);
           setSavedData(typedData);
+        } else {
+          console.log("No profile data found, using initial data");
+          form.reset(initialData);
         }
+      }).catch(error => {
+        console.error("Error loading profile data:", error);
+        toast({
+          title: "Error",
+          description: "Failed to load your profile data. Please try again.",
+          variant: "destructive",
+        });
+        form.reset(initialData);
       });
     }
-  }, [open, form, loadProfileData]);
+  }, [open, form, loadProfileData, initialData, toast]);
 
   const onSubmit = async (data: ProfileFormValues) => {
-    await saveProfileData(data);
-    if (onSave) {
-      onSave(data);
+    console.log("Submitting profile data:", data);
+    try {
+      await saveProfileData(data);
+      if (onSave) {
+        onSave(data);
+      }
+      toast({
+        title: "Profile Updated",
+        description: "Your profile has been successfully updated.",
+      });
+      onOpenChange(false);
+    } catch (error) {
+      console.error("Error saving profile data:", error);
+      toast({
+        title: "Error",
+        description: "Failed to save your profile. Please try again.",
+        variant: "destructive",
+      });
     }
-    onOpenChange(false);
   };
 
   const [imagePreview, setImagePreview] = useState<string | null>(initialData.profileImage || null);
   const [sfpCertificatePreview, setSfpCertificatePreview] = useState<string | null>(
     initialData.fspCertificateFile || null
   );
+
+  useEffect(() => {
+    // Update previews when form data changes
+    const formValues = form.getValues();
+    setImagePreview(formValues.profileImage || null);
+    setSfpCertificatePreview(formValues.fspCertificateFile || null);
+  }, [form, savedData]);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -170,8 +205,8 @@ const ProfessionalProfileEditForm: React.FC<ProfessionalProfileEditFormProps> = 
               <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
                 Cancel
               </Button>
-              <Button type="submit">
-                Save Changes
+              <Button type="submit" disabled={loading}>
+                {loading ? "Saving..." : "Save Changes"}
               </Button>
             </div>
           </form>

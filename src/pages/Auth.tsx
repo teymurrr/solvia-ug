@@ -27,7 +27,7 @@ const Auth = () => {
               description: 'There was a problem with the authentication process.',
               variant: 'destructive',
             });
-            navigate('/login');
+            setTimeout(() => navigate('/login'), 1500);
             return;
           }
           
@@ -37,19 +37,33 @@ const Auth = () => {
               description: 'You have been successfully authenticated.',
             });
             
-            // Get user data including metadata
-            const { data: userData } = await supabase.auth.getUser();
-            const userMetadata = userData.user?.user_metadata;
-            
-            // Determine user type from metadata or default to 'professional'
-            const userType = userMetadata?.user_type || 'professional';
-            
-            // Navigate to appropriate dashboard
-            navigate(userType === 'professional' ? '/dashboard/professional' : '/dashboard/institution');
+            try {
+              // Get user data including metadata
+              const { data: userData, error: userError } = await supabase.auth.getUser();
+              
+              if (userError) {
+                console.error('Error getting user data:', userError);
+                // Still redirect to a default dashboard
+                setTimeout(() => navigate('/dashboard/professional'), 1500);
+                return;
+              }
+              
+              const userMetadata = userData.user?.user_metadata;
+              
+              // Determine user type from metadata or default to 'professional'
+              const userType = userMetadata?.user_type || 'professional';
+              
+              // Navigate to appropriate dashboard
+              setTimeout(() => navigate(userType === 'professional' ? '/dashboard/professional' : '/dashboard/institution'), 1500);
+            } catch (userDataError) {
+              console.error('Error processing user data:', userDataError);
+              // Fallback to professional dashboard
+              setTimeout(() => navigate('/dashboard/professional'), 1500);
+            }
           }
         } else {
           // No auth data in URL, redirect to login
-          navigate('/login');
+          setTimeout(() => navigate('/login'), 1500);
         }
       } catch (error) {
         console.error('Error handling auth callback:', error);
@@ -58,7 +72,7 @@ const Auth = () => {
           description: 'An unexpected error occurred during authentication.',
           variant: 'destructive',
         });
-        navigate('/login');
+        setTimeout(() => navigate('/login'), 1500);
       }
     };
 
