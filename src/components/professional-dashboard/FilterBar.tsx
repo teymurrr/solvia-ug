@@ -107,9 +107,13 @@ const FilterBar: React.FC<FilterBarProps> = ({
                     <DropdownMenuCheckboxItem
                       key={country}
                       checked={selectedCountry === country}
-                      onCheckedChange={() =>
-                        setSelectedCountry(prev => prev === country ? '' : country)
-                      }
+                      onCheckedChange={() => {
+                        if (selectedCountry === country) {
+                          setSelectedCountry('');
+                        } else {
+                          setSelectedCountry(country);
+                        }
+                      }}
                     >
                       <MapPin className="h-4 w-4 mr-2" />
                       {country}
@@ -144,9 +148,13 @@ const FilterBar: React.FC<FilterBarProps> = ({
                     <DropdownMenuCheckboxItem
                       key={city}
                       checked={selectedCity === city}
-                      onCheckedChange={() =>
-                        setSelectedCity(prev => prev === city ? '' : city)
-                      }
+                      onCheckedChange={() => {
+                        if (selectedCity === city) {
+                          setSelectedCity('');
+                        } else {
+                          setSelectedCity(city);
+                        }
+                      }}
                     >
                       <Building className="h-4 w-4 mr-2" />
                       {city}

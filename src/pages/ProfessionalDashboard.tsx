@@ -11,8 +11,9 @@ import {
   VacancySearch,
   FilterBar,
   NoResults,
-  useDashboard
+  useDashboard,
 } from '@/components/professional-dashboard';
+import SavedAndApplied from '@/components/professional-dashboard/SavedAndApplied';
 import {
   Pagination,
   PaginationContent,
@@ -72,7 +73,7 @@ const ProfessionalDashboard: React.FC = () => {
     if (profile.languages && profile.languages.length > 0) completedFields++;
     
     totalFields += 1;
-    if (profile.sfpCertificate) completedFields++;
+    if (profile.fspCertificate) completedFields++;
     
     return Math.round((completedFields / totalFields) * 100);
   };
@@ -161,14 +162,6 @@ const ProfessionalDashboard: React.FC = () => {
     }
     
     return pageNumbers;
-  };
-
-  const getSavedVacancies = () => {
-    return sampleVacancies.filter(vacancy => savedVacancies.includes(vacancy.id));
-  };
-
-  const getAppliedVacancies = () => {
-    return sampleVacancies.filter(vacancy => appliedVacancies.includes(vacancy.id));
   };
 
   const profileCompletionPercentage = calculateProfileCompletion(profileData);
@@ -310,82 +303,16 @@ const ProfessionalDashboard: React.FC = () => {
                     <CardTitle>Saved & Applied Vacancies</CardTitle>
                     <CardDescription>Track vacancies you've saved or applied for</CardDescription>
                   </div>
-                  <div className="flex mt-2 sm:mt-0">
-                    <Button 
-                      variant={savedTabView === 'saved' ? "default" : "outline"} 
-                      size="sm"
-                      onClick={() => setSavedTabView('saved')}
-                      className="rounded-r-none"
-                    >
-                      <BookmarkCheck className="h-4 w-4 mr-2" />
-                      Saved
-                    </Button>
-                    <Button 
-                      variant={savedTabView === 'applied' ? "default" : "outline"} 
-                      size="sm"
-                      onClick={() => setSavedTabView('applied')}
-                      className="rounded-l-none"
-                    >
-                      <FileCheck className="h-4 w-4 mr-2" />
-                      Applied
-                    </Button>
-                  </div>
                 </div>
               </CardHeader>
               <CardContent>
-                <div className="space-y-4">
-                  {savedTabView === 'saved' ? (
-                    savedVacancies.length > 0 ? (
-                      <div className="grid grid-cols-1 gap-6">
-                        {getSavedVacancies().map((vacancy) => (
-                          <VacancyCard
-                            key={vacancy.id}
-                            {...vacancy}
-                            showSaveOption={true}
-                            isSaved={true}
-                            onSaveToggle={toggleSaveVacancy}
-                          />
-                        ))}
-                      </div>
-                    ) : (
-                      <NoResults
-                        title="No saved vacancies"
-                        description="Save vacancies you're interested in to view them later"
-                        actionLabel="Browse Vacancies"
-                        onAction={() => {
-                          const tabsList = document.querySelector('[role="tablist"]');
-                          const vacanciesTab = tabsList?.querySelector('[value="vacancies"]') as HTMLButtonElement;
-                          if (vacanciesTab) vacanciesTab.click();
-                        }}
-                      />
-                    )
-                  ) : (
-                    appliedVacancies.length > 0 ? (
-                      <div className="grid grid-cols-1 gap-6">
-                        {getAppliedVacancies().map((vacancy) => (
-                          <VacancyCard
-                            key={vacancy.id}
-                            {...vacancy}
-                            showSaveOption={true}
-                            isSaved={savedVacancies.includes(vacancy.id)}
-                            onSaveToggle={toggleSaveVacancy}
-                          />
-                        ))}
-                      </div>
-                    ) : (
-                      <NoResults
-                        title="No applications yet"
-                        description="When you apply for vacancies, they will appear here"
-                        actionLabel="Browse Vacancies"
-                        onAction={() => {
-                          const tabsList = document.querySelector('[role="tablist"]');
-                          const vacanciesTab = tabsList?.querySelector('[value="vacancies"]') as HTMLButtonElement;
-                          if (vacanciesTab) vacanciesTab.click();
-                        }}
-                      />
-                    )
-                  )}
-                </div>
+                <SavedAndApplied
+                  savedTabView={savedTabView}
+                  setSavedTabView={setSavedTabView}
+                  savedVacancies={savedVacancies}
+                  appliedVacancies={appliedVacancies}
+                  toggleSaveVacancy={toggleSaveVacancy}
+                />
               </CardContent>
             </Card>
           </TabsContent>

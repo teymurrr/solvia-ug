@@ -15,8 +15,8 @@ export const defaultProfileData: ProfileFormValues = {
   languages: [],
   activelySearching: false,
   profileImage: "",
-  sfpCertificate: false,
-  sfpCertificateFile: "",
+  fspCertificate: false,
+  fspCertificateFile: "",
 };
 
 export default function useDashboard() {
