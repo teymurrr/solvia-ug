@@ -38,15 +38,16 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, userType }) =
         navigate('/', { replace: true });
       }
     }
-  }, [isLoggedIn, userType, currentUserType, toast, navigate]);
+  }, [isLoggedIn, userType, currentUserType, navigate]);
 
   // Simply render children if conditions are met
   if (isLoggedIn && (!userType || userType === currentUserType)) {
     return <>{children}</>;
   }
   
-  // Return null while the effect handles the redirects
-  return null;
+  // Return a loading state instead of null while the effect redirects
+  // This prevents the component from trying to re-render during redirection
+  return <div>Checking authentication...</div>;
 };
 
 export default ProtectedRoute;
