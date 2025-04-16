@@ -9,6 +9,69 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      professional_profiles: {
+        Row: {
+          about: string | null
+          actively_searching: boolean | null
+          created_at: string | null
+          education: Json | null
+          experiences: Json | null
+          first_name: string | null
+          fsp_certificate: boolean | null
+          fsp_certificate_file: string | null
+          id: number
+          languages: Json | null
+          last_name: string | null
+          location: string | null
+          open_to_relocation: boolean | null
+          profession: string | null
+          profile_image: string | null
+          specialty: string | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          about?: string | null
+          actively_searching?: boolean | null
+          created_at?: string | null
+          education?: Json | null
+          experiences?: Json | null
+          first_name?: string | null
+          fsp_certificate?: boolean | null
+          fsp_certificate_file?: string | null
+          id?: never
+          languages?: Json | null
+          last_name?: string | null
+          location?: string | null
+          open_to_relocation?: boolean | null
+          profession?: string | null
+          profile_image?: string | null
+          specialty?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          about?: string | null
+          actively_searching?: boolean | null
+          created_at?: string | null
+          education?: Json | null
+          experiences?: Json | null
+          first_name?: string | null
+          fsp_certificate?: boolean | null
+          fsp_certificate_file?: string | null
+          id?: never
+          languages?: Json | null
+          last_name?: string | null
+          location?: string | null
+          open_to_relocation?: boolean | null
+          profession?: string | null
+          profile_image?: string | null
+          specialty?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string | null

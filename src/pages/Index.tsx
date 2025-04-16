@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
@@ -7,10 +6,11 @@ import MainLayout from '@/components/MainLayout';
 import ProfessionalCard from '@/components/ProfessionalCard';
 import InstitutionCard from '@/components/InstitutionCard';
 import { ArrowRight, Users, Building2, Globe, FileCheck, Clock, HeartPulse } from 'lucide-react';
+import { ProfessionalCardInterface, InstitutionCardInterface } from '@/components/professional-dashboard/types';
 
 const Index = () => {
   // Sample data
-  const featuredProfessionals = [
+  const featuredProfessionals: ProfessionalCardInterface[] = [
     {
       id: '1',
       name: 'Dr. Sarah Johnson',
@@ -31,7 +31,7 @@ const Index = () => {
     },
   ];
 
-  const featuredInstitutions = [
+  const featuredInstitutions: InstitutionCardInterface[] = [
     {
       id: '1',
       name: 'Berlin Medical Center',
