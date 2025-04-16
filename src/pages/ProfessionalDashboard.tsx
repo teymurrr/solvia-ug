@@ -23,6 +23,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from '@/components/ui/pagination';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const ITEMS_PER_PAGE = 3;
 
@@ -43,6 +44,7 @@ const ProfessionalDashboard: React.FC = () => {
     setSavedVacancies,
     appliedVacancies,
     profileData,
+    isLoading,
     savedTabView,
     setSavedTabView,
     jobTypes,
@@ -190,11 +192,36 @@ const ProfessionalDashboard: React.FC = () => {
                 <CardDescription>This is how institutions will see you</CardDescription>
               </CardHeader>
               <CardContent>
-                <ProfileCard
-                  profileData={profileData}
-                  profileCompletionPercentage={profileCompletionPercentage}
-                  onEdit={() => setIsEditProfileOpen(true)}
-                />
+                {isLoading ? (
+                  <div className="space-y-4">
+                    <div className="flex flex-col md:flex-row gap-6">
+                      <Skeleton className="h-32 w-32 rounded-full" />
+                      <div className="space-y-4 flex-grow">
+                        <Skeleton className="h-10 w-2/3" />
+                        <Skeleton className="h-4 w-1/3" />
+                        <div className="flex flex-col space-y-2">
+                          <div className="flex justify-between">
+                            <Skeleton className="h-4 w-32" />
+                            <Skeleton className="h-4 w-12" />
+                          </div>
+                          <Skeleton className="h-2 w-full" />
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <Skeleton className="h-16 w-full" />
+                          <Skeleton className="h-16 w-full" />
+                        </div>
+                        <Skeleton className="h-28 w-full" />
+                        <Skeleton className="h-10 w-40" />
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <ProfileCard
+                    profileData={profileData}
+                    profileCompletionPercentage={profileCompletionPercentage}
+                    onEdit={() => setIsEditProfileOpen(true)}
+                  />
+                )}
               </CardContent>
             </Card>
           </TabsContent>
