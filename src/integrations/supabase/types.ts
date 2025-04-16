@@ -9,7 +9,180 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      education: {
+        Row: {
+          created_at: string | null
+          current: boolean | null
+          degree: string | null
+          end_date: string | null
+          field: string | null
+          id: string
+          institution: string | null
+          profile_id: string | null
+          start_date: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          current?: boolean | null
+          degree?: string | null
+          end_date?: string | null
+          field?: string | null
+          id?: string
+          institution?: string | null
+          profile_id?: string | null
+          start_date?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          current?: boolean | null
+          degree?: string | null
+          end_date?: string | null
+          field?: string | null
+          id?: string
+          institution?: string | null
+          profile_id?: string | null
+          start_date?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "education_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      experiences: {
+        Row: {
+          created_at: string | null
+          current: boolean | null
+          end_date: string | null
+          hospital: string | null
+          id: string
+          location: string | null
+          profile_id: string | null
+          role: string | null
+          start_date: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          current?: boolean | null
+          end_date?: string | null
+          hospital?: string | null
+          id?: string
+          location?: string | null
+          profile_id?: string | null
+          role?: string | null
+          start_date?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          current?: boolean | null
+          end_date?: string | null
+          hospital?: string | null
+          id?: string
+          location?: string | null
+          profile_id?: string | null
+          role?: string | null
+          start_date?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "experiences_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      languages: {
+        Row: {
+          certificate: string | null
+          created_at: string | null
+          id: string
+          language: string | null
+          level: string | null
+          profile_id: string | null
+        }
+        Insert: {
+          certificate?: string | null
+          created_at?: string | null
+          id?: string
+          language?: string | null
+          level?: string | null
+          profile_id?: string | null
+        }
+        Update: {
+          certificate?: string | null
+          created_at?: string | null
+          id?: string
+          language?: string | null
+          level?: string | null
+          profile_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "languages_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          about: string | null
+          actively_searching: boolean | null
+          created_at: string | null
+          first_name: string | null
+          fsp_certificate: boolean | null
+          fsp_certificate_file: string | null
+          id: string
+          last_name: string | null
+          location: string | null
+          open_to_relocation: boolean | null
+          profession: string | null
+          profile_image: string | null
+          specialty: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          about?: string | null
+          actively_searching?: boolean | null
+          created_at?: string | null
+          first_name?: string | null
+          fsp_certificate?: boolean | null
+          fsp_certificate_file?: string | null
+          id: string
+          last_name?: string | null
+          location?: string | null
+          open_to_relocation?: boolean | null
+          profession?: string | null
+          profile_image?: string | null
+          specialty?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          about?: string | null
+          actively_searching?: boolean | null
+          created_at?: string | null
+          first_name?: string | null
+          fsp_certificate?: boolean | null
+          fsp_certificate_file?: string | null
+          id?: string
+          last_name?: string | null
+          location?: string | null
+          open_to_relocation?: boolean | null
+          profession?: string | null
+          profile_image?: string | null
+          specialty?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
