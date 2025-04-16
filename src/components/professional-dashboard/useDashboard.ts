@@ -36,6 +36,18 @@ export default function useDashboard() {
   const countries = ['USA'];
   const cities = ['New York', 'Boston', 'Chicago', 'Los Angeles', 'Dallas', 'Miami', 'Seattle'];
 
+  // Load profile data from localStorage on component mount
+  useEffect(() => {
+    const savedProfileData = localStorage.getItem('profileData');
+    if (savedProfileData) {
+      try {
+        setProfileData(JSON.parse(savedProfileData));
+      } catch (error) {
+        console.error("Error parsing profile data from localStorage:", error);
+      }
+    }
+  }, []);
+
   useEffect(() => {
     const savedVacanciesData = localStorage.getItem('savedVacancies');
     if (savedVacanciesData) {
@@ -72,6 +84,8 @@ export default function useDashboard() {
 
   const handleProfileSave = (data: ProfileFormValues) => {
     setProfileData(data);
+    // Save profile data to localStorage whenever it changes
+    localStorage.setItem('profileData', JSON.stringify(data));
   };
 
   return {
