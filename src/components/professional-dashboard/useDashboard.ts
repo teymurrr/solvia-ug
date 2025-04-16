@@ -20,6 +20,10 @@ export const defaultProfileData: ProfileFormValues = {
   fspCertificateFile: "",
 };
 
+// Profile data storage key
+const PROFILE_DATA_STORAGE_KEY = 'profileData';
+const SAVED_VACANCIES_STORAGE_KEY = 'savedVacancies';
+
 export default function useDashboard() {
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
@@ -38,7 +42,7 @@ export default function useDashboard() {
 
   // Load profile data from localStorage on component mount
   useEffect(() => {
-    const savedProfileData = localStorage.getItem('profileData');
+    const savedProfileData = localStorage.getItem(PROFILE_DATA_STORAGE_KEY);
     if (savedProfileData) {
       try {
         setProfileData(JSON.parse(savedProfileData));
@@ -49,7 +53,7 @@ export default function useDashboard() {
   }, []);
 
   useEffect(() => {
-    const savedVacanciesData = localStorage.getItem('savedVacancies');
+    const savedVacanciesData = localStorage.getItem(SAVED_VACANCIES_STORAGE_KEY);
     if (savedVacanciesData) {
       try {
         setSavedVacancies(JSON.parse(savedVacanciesData));
@@ -59,8 +63,9 @@ export default function useDashboard() {
     }
   }, []);
 
+  // Automatically save savedVacancies to localStorage whenever it changes
   useEffect(() => {
-    localStorage.setItem('savedVacancies', JSON.stringify(savedVacancies));
+    localStorage.setItem(SAVED_VACANCIES_STORAGE_KEY, JSON.stringify(savedVacancies));
   }, [savedVacancies]);
 
   const toggleJobType = (jobType: string) => {
@@ -85,7 +90,8 @@ export default function useDashboard() {
   const handleProfileSave = (data: ProfileFormValues) => {
     setProfileData(data);
     // Save profile data to localStorage whenever it changes
-    localStorage.setItem('profileData', JSON.stringify(data));
+    localStorage.setItem(PROFILE_DATA_STORAGE_KEY, JSON.stringify(data));
+    console.log("Profile data saved to localStorage:", data);
   };
 
   return {

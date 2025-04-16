@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -48,20 +47,14 @@ const ProfessionalProfileEditForm: React.FC<ProfessionalProfileEditFormProps> = 
   onSave
 }) => {
   const { toast } = useToast();
-  const [savedData, setSavedData] = useState<ProfileFormValues | null>(null);
   
+  // Use the initialData directly for the form
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(profileFormSchema),
-    defaultValues: savedData || initialData,
+    defaultValues: initialData,
   });
 
   const onSubmit = (data: ProfileFormValues) => {
-    // In a real application, this would save to a database
-    console.log("Profile data to save:", data);
-    
-    // Save data in local state (simulate persistence between modal opens)
-    setSavedData(data);
-    
     // Pass the data to the parent component
     if (onSave) {
       onSave(data);
