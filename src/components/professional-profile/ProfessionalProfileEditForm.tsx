@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
+
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Form } from '@/components/ui/form';
+import { useProfileData } from './useProfileData';
 
-import { ProfileFormValues, profileFormSchema } from './types';
+import { ProfileFormValues, profileFormSchema, Experience, Education, Language } from './types';
 import ProfileImageSection from './ProfileImageSection';
 import PersonalInfoSection from './PersonalInfoSection';
 import ExperienceSection from './ExperienceSection';
@@ -47,24 +49,37 @@ const ProfessionalProfileEditForm: React.FC<ProfessionalProfileEditFormProps> = 
   onSave
 }) => {
   const { toast } = useToast();
+  const { saveProfileData, loadProfileData, loading } = useProfileData();
+  const [savedData, setSavedData] = useState<ProfileFormValues | null>(null);
   
-  // Use the initialData directly for the form
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(profileFormSchema),
-    defaultValues: initialData,
+    defaultValues: savedData || initialData,
   });
 
-  const onSubmit = (data: ProfileFormValues) => {
-    // Pass the data to the parent component
+  useEffect(() => {
+    if (open) {
+      loadProfileData().then(data => {
+        if (data) {
+          // Ensure the loaded data has the correct types for the arrays
+          const typedData: ProfileFormValues = {
+            ...data,
+            experiences: data.experiences as Experience[],
+            education: data.education as Education[],
+            languages: data.languages as Language[],
+          };
+          form.reset(typedData);
+          setSavedData(typedData);
+        }
+      });
+    }
+  }, [open, form, loadProfileData]);
+
+  const onSubmit = async (data: ProfileFormValues) => {
+    await saveProfileData(data);
     if (onSave) {
       onSave(data);
     }
-    
-    toast({
-      title: "Profile Updated",
-      description: "Your profile has been successfully updated.",
-    });
-    
     onOpenChange(false);
   };
 
