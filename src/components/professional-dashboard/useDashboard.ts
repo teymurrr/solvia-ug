@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
@@ -56,54 +55,83 @@ export default function useDashboard() {
         .eq('id', user.id)
         .single();
 
-      if (profileError) throw profileError;
+      // Initialize data with defaults but fill in user info if available
+      let combinedProfileData = {
+        ...defaultProfileData,
+        email: user.email || '',
+      };
 
-      // Fetch experiences
+      // If profile exists, use it, otherwise use default with user email
+      if (profileData && !profileError) {
+        combinedProfileData = {
+          ...combinedProfileData,
+          firstName: profileData.first_name || '',
+          lastName: profileData.last_name || '',
+          profession: profileData.profession || '',
+          specialty: profileData.specialty || '',
+          location: profileData.location || '',
+          about: profileData.about || '',
+          activelySearching: profileData.actively_searching || false,
+          openToRelocation: profileData.open_to_relocation || false,
+          profileImage: profileData.profile_image || '',
+          fspCertificate: profileData.fsp_certificate || false,
+          fspCertificateFile: profileData.fsp_certificate_file || '',
+        };
+      }
+
+      // Fetch experiences, education, languages regardless of profile existence
       const { data: experiences, error: experiencesError } = await supabase
         .from('experiences')
         .select('*')
         .eq('profile_id', user.id);
 
-      if (experiencesError) throw experiencesError;
+      if (!experiencesError && experiences) {
+        combinedProfileData.experiences = experiences.map(exp => ({
+          hospital: exp.hospital || '',
+          location: exp.location || '',
+          role: exp.role || '',
+          startDate: exp.start_date || '',
+          endDate: exp.end_date || '',
+          current: exp.current || false,
+        }));
+      }
 
-      // Fetch education
       const { data: education, error: educationError } = await supabase
         .from('education')
         .select('*')
         .eq('profile_id', user.id);
 
-      if (educationError) throw educationError;
+      if (!educationError && education) {
+        combinedProfileData.education = education.map(edu => ({
+          institution: edu.institution || '',
+          degree: edu.degree || '',
+          field: edu.field || '',
+          startDate: edu.start_date || '',
+          endDate: edu.end_date || '',
+          current: edu.current || false,
+        }));
+      }
 
-      // Fetch languages
       const { data: languages, error: languagesError } = await supabase
         .from('languages')
         .select('*')
         .eq('profile_id', user.id);
 
-      if (languagesError) throw languagesError;
+      if (!languagesError && languages) {
+        combinedProfileData.languages = languages.map(lang => ({
+          language: lang.language || '',
+          level: lang.level || '',
+          certificate: lang.certificate || '',
+        }));
+      }
 
-      // Combine all data
-      setProfileData({
-        firstName: profileData.first_name || '',
-        lastName: profileData.last_name || '',
-        profession: profileData.profession || '',
-        specialty: profileData.specialty || '',
-        email: user.email || '',
-        location: profileData.location || '',
-        about: profileData.about || '',
-        activelySearching: profileData.actively_searching || false,
-        openToRelocation: profileData.open_to_relocation || false,
-        profileImage: profileData.profile_image || '',
-        fspCertificate: profileData.fsp_certificate || false,
-        fspCertificateFile: profileData.fsp_certificate_file || '',
-        experiences: experiences || [],
-        education: education || [],
-        languages: languages || [],
-      });
+      // Set the combined profile data
+      setProfileData(combinedProfileData);
     } catch (error) {
       console.error('Error loading profile data:', error);
-      // Don't show error toast for "no rows returned" errors - this is common for new users
-      if (error.details !== "The result contains 0 rows") {
+      // Always show toast for true errors, but not for "no rows returned"
+      if (error.message !== "Cannot read properties of null (reading 'first_name')" && 
+          !error.details?.includes("0 rows")) {
         toast({
           title: "Error",
           description: "Failed to load profile data",

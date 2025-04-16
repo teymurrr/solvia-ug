@@ -10,11 +10,17 @@ interface ProtectedRouteProps {
 }
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, userType }) => {
-  const { isLoggedIn, userType: currentUserType } = useAuth();
+  const { isLoggedIn, userType: currentUserType, loading } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
 
+  // Only handle navigation when auth is finished loading and conditions aren't met
   useEffect(() => {
+    if (loading) {
+      // Do nothing while loading
+      return;
+    }
+    
     if (!isLoggedIn) {
       toast({
         title: "Authentication Required",
@@ -38,7 +44,12 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, userType }) =
         navigate('/', { replace: true });
       }
     }
-  }, [isLoggedIn, userType, currentUserType, navigate]);
+  }, [isLoggedIn, userType, currentUserType, navigate, loading, toast]);
+
+  // Show loading state while auth is loading
+  if (loading) {
+    return <div>Loading authentication...</div>;
+  }
 
   // Simply render children if conditions are met
   if (isLoggedIn && (!userType || userType === currentUserType)) {
@@ -47,7 +58,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, userType }) =
   
   // Return a loading state instead of null while the effect redirects
   // This prevents the component from trying to re-render during redirection
-  return <div>Checking authentication...</div>;
+  return <div>Checking authorization...</div>;
 };
 
 export default ProtectedRoute;
