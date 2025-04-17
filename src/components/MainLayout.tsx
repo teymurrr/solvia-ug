@@ -2,6 +2,8 @@
 import React from 'react';
 import Navbar from './Navbar';
 import Footer from './Footer';
+import ChatPopup from './ChatPopup';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface MainLayoutProps {
   children: React.ReactNode;
@@ -9,8 +11,7 @@ interface MainLayoutProps {
 }
 
 const MainLayout: React.FC<MainLayoutProps> = ({ children, hideEditProfile = false }) => {
-  // The hideEditProfile prop will be passed to the dashboard components 
-  // to control whether the Edit Profile button is displayed
+  const { isLoggedIn } = useAuth();
   
   return (
     <div className="flex flex-col min-h-screen">
@@ -19,6 +20,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children, hideEditProfile = fal
         {children}
       </main>
       <Footer />
+      {isLoggedIn && <ChatPopup />}
     </div>
   );
 };
