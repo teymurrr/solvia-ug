@@ -29,8 +29,31 @@ import {
 import { useAuth } from '@/contexts/AuthContext';
 import { Badge } from '@/components/ui/badge';
 import { availableLanguages } from '@/data/languages';
+import ChatDialog from './chat/ChatDialog';
 
 const hasUnreadMessages = false; // This should be determined by your actual unread messages state
+
+// Mock data for demonstration - in a real app, this would come from your backend
+const mockActiveChat = {
+  id: '1',
+  title: 'Berlin Medical Center',
+  messages: [
+    {
+      id: '1',
+      senderId: 'institution1',
+      senderName: 'Berlin Medical Center',
+      message: 'Hi! We were impressed by your profile.',
+      timestamp: '2025-04-17T10:30:00Z',
+    },
+    {
+      id: '2',
+      senderId: 'current-user',
+      senderName: 'You',
+      message: 'Thank you! I would love to learn more about the opportunity.',
+      timestamp: '2025-04-17T10:31:00Z',
+    },
+  ],
+};
 
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -133,6 +156,13 @@ const Navbar = () => {
     }
   };
 
+  const [isChatOpen, setIsChatOpen] = useState(false);
+
+  const handleMessagesClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setIsChatOpen(true);
+  };
+
   const renderUserDropdown = () => {
     if (!isLoggedIn) return null;
 
@@ -168,7 +198,7 @@ const Navbar = () => {
           </DropdownMenuSub>
 
           <DropdownMenuItem asChild>
-            <Link to="/messages">
+            <Link to="#" onClick={handleMessagesClick}>
               <Mail className="h-4 w-4 mr-2" />
               Messages
               {hasUnreadMessages && <Badge className="ml-2 bg-red-500 text-white">1</Badge>}
@@ -194,180 +224,188 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-white border-b">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16">
-          <div className="flex-shrink-0 flex items-center">
-            <Link to="/">
-              <Logo />
-            </Link>
-          </div>
-          
-          <div className="hidden sm:flex sm:flex-1">
-            {renderNavLinks()}
-          </div>
+    <>
+      <nav className="bg-white border-b">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between h-16">
+            <div className="flex-shrink-0 flex items-center">
+              <Link to="/">
+                <Logo />
+              </Link>
+            </div>
+            
+            <div className="hidden sm:flex sm:flex-1">
+              {renderNavLinks()}
+            </div>
 
-          <div className="hidden sm:ml-6 sm:flex sm:items-center gap-2">
-            {isLoggedIn ? (
-              renderUserDropdown()
-            ) : (
-              <>
-                <Button variant="ghost" asChild>
-                  <Link to="/login">Log in</Link>
-                </Button>
-                <Button asChild>
-                  <Link to="/signup">Sign up</Link>
-                </Button>
-              </>
-            )}
-          </div>
-
-          {/* Mobile menu button */}
-          <div className="-mr-2 flex items-center sm:hidden">
-            <Button variant="ghost" size="icon" onClick={toggleMobileMenu}>
-              <span className="sr-only">Open main menu</span>
-              {mobileMenuOpen ? (
-                <X className="block h-6 w-6" />
+            <div className="hidden sm:ml-6 sm:flex sm:items-center gap-2">
+              {isLoggedIn ? (
+                renderUserDropdown()
               ) : (
-                <Menu className="block h-6 w-6" />
+                <>
+                  <Button variant="ghost" asChild>
+                    <Link to="/login">Log in</Link>
+                  </Button>
+                  <Button asChild>
+                    <Link to="/signup">Sign up</Link>
+                  </Button>
+                </>
               )}
-            </Button>
+            </div>
+
+            {/* Mobile menu button */}
+            <div className="-mr-2 flex items-center sm:hidden">
+              <Button variant="ghost" size="icon" onClick={toggleMobileMenu}>
+                <span className="sr-only">Open main menu</span>
+                {mobileMenuOpen ? (
+                  <X className="block h-6 w-6" />
+                ) : (
+                  <Menu className="block h-6 w-6" />
+                )}
+              </Button>
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* Mobile menu */}
-      {mobileMenuOpen && (
-        <div className="sm:hidden">
-          <div className="pt-2 pb-3 space-y-1">
-            {!isLoggedIn ? (
-              <>
-                <Link
-                  to="/professionals"
-                  className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800"
-                  onClick={toggleMobileMenu}
-                >
-                  Professionals
-                </Link>
-                <Link
-                  to="/institutions"
-                  className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800"
-                  onClick={toggleMobileMenu}
-                >
-                  Institutions
-                </Link>
-                <Link
-                  to="/vacancies"
-                  className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800"
-                  onClick={toggleMobileMenu}
-                >
-                  Vacancies
-                </Link>
-                <Link
-                  to="/learning"
-                  className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800"
-                  onClick={toggleMobileMenu}
-                >
-                  Learning
-                </Link>
-                <Link
-                  to="/about"
-                  className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800"
-                  onClick={toggleMobileMenu}
-                >
-                  About
-                </Link>
-              </>
-            ) : (
-              userType === 'professional' ? (
+        {/* Mobile menu */}
+        {mobileMenuOpen && (
+          <div className="sm:hidden">
+            <div className="pt-2 pb-3 space-y-1">
+              {!isLoggedIn ? (
                 <>
                   <Link
-                    to="/dashboard/professional"
+                    to="/professionals"
                     className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800"
                     onClick={toggleMobileMenu}
                   >
-                    Dashboard
+                    Professionals
+                  </Link>
+                  <Link
+                    to="/institutions"
+                    className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800"
+                    onClick={toggleMobileMenu}
+                  >
+                    Institutions
+                  </Link>
+                  <Link
+                    to="/vacancies"
+                    className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800"
+                    onClick={toggleMobileMenu}
+                  >
+                    Vacancies
                   </Link>
                   <Link
                     to="/learning"
                     className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800"
                     onClick={toggleMobileMenu}
                   >
-                    Solvia Learning
+                    Learning
+                  </Link>
+                  <Link
+                    to="/about"
+                    className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800"
+                    onClick={toggleMobileMenu}
+                  >
+                    About
                   </Link>
                 </>
               ) : (
-                <>
+                userType === 'professional' ? (
+                  <>
+                    <Link
+                      to="/dashboard/professional"
+                      className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800"
+                      onClick={toggleMobileMenu}
+                    >
+                      Dashboard
+                    </Link>
+                    <Link
+                      to="/learning"
+                      className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800"
+                      onClick={toggleMobileMenu}
+                    >
+                      Solvia Learning
+                    </Link>
+                  </>
+                ) : (
+                  <>
+                    <Link
+                      to="/dashboard/institution"
+                      className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800"
+                      onClick={toggleMobileMenu}
+                    >
+                      Dashboard
+                    </Link>
+                    <Link
+                      to="/insights"
+                      className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800"
+                      onClick={toggleMobileMenu}
+                    >
+                      Solvia Insights
+                    </Link>
+                  </>
+                )
+              )}
+            </div>
+            <div className="pt-4 pb-3 border-t border-gray-200">
+              {isLoggedIn ? (
+                <div className="space-y-1">
                   <Link
-                    to="/dashboard/institution"
+                    to={getDashboardLink()}
                     className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800"
                     onClick={toggleMobileMenu}
                   >
                     Dashboard
                   </Link>
                   <Link
-                    to="/insights"
+                    to="/messages"
+                    className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800 flex items-center"
+                    onClick={toggleMobileMenu}
+                  >
+                    Messages
+                    {hasUnreadMessages && (
+                      <Badge className="ml-2 bg-red-500 text-white">1</Badge>
+                    )}
+                  </Link>
+                  <button
+                    onClick={() => {
+                      handleSignOut();
+                      toggleMobileMenu();
+                    }}
+                    className="block w-full text-left pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-red-500 hover:bg-gray-50 hover:border-red-300"
+                  >
+                    Sign out
+                  </button>
+                </div>
+              ) : (
+                <div className="space-y-1">
+                  <Link
+                    to="/login"
                     className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800"
                     onClick={toggleMobileMenu}
                   >
-                    Solvia Insights
+                    Log in
                   </Link>
-                </>
-              )
-            )}
+                  <Link
+                    to="/signup"
+                    className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800"
+                    onClick={toggleMobileMenu}
+                  >
+                    Sign up
+                  </Link>
+                </div>
+              )}
+            </div>
           </div>
-          <div className="pt-4 pb-3 border-t border-gray-200">
-            {isLoggedIn ? (
-              <div className="space-y-1">
-                <Link
-                  to={getDashboardLink()}
-                  className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800"
-                  onClick={toggleMobileMenu}
-                >
-                  Dashboard
-                </Link>
-                <Link
-                  to="/messages"
-                  className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800 flex items-center"
-                  onClick={toggleMobileMenu}
-                >
-                  Messages
-                  {hasUnreadMessages && (
-                    <Badge className="ml-2 bg-red-500 text-white">1</Badge>
-                  )}
-                </Link>
-                <button
-                  onClick={() => {
-                    handleSignOut();
-                    toggleMobileMenu();
-                  }}
-                  className="block w-full text-left pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-red-500 hover:bg-gray-50 hover:border-red-300"
-                >
-                  Sign out
-                </button>
-              </div>
-            ) : (
-              <div className="space-y-1">
-                <Link
-                  to="/login"
-                  className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800"
-                  onClick={toggleMobileMenu}
-                >
-                  Log in
-                </Link>
-                <Link
-                  to="/signup"
-                  className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800"
-                  onClick={toggleMobileMenu}
-                >
-                  Sign up
-                </Link>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
-    </nav>
+        )}
+      </nav>
+      
+      <ChatDialog
+        open={isChatOpen}
+        onOpenChange={setIsChatOpen}
+        activeChat={mockActiveChat}
+      />
+    </>
   );
 };
 
