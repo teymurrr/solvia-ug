@@ -11,8 +11,8 @@ interface AuthContextType {
   loading: boolean;
   isLoggedIn: boolean;
   userType: UserType | null;
-  signIn: (email: string, password: string, rememberMe?: boolean) => Promise<void>;
-  signUp: (email: string, password: string, metadata?: { first_name?: string; last_name?: string }) => Promise<void>;
+  signIn: (email: string, password: string, rememberMe?: boolean, userType?: UserType) => Promise<void>;
+  signUp: (email: string, password: string, metadata?: { first_name?: string; last_name?: string; user_type?: UserType }) => Promise<void>;
   signOut: () => Promise<void>;
   login: (type: UserType) => void; 
   logout: () => void; 
@@ -68,23 +68,30 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     };
   }, []);
 
-  const signIn = async (email: string, password: string, rememberMe = false) => {
-    const { error } = await supabase.auth.signInWithPassword({
+  const signIn = async (email: string, password: string, rememberMe = false, type?: UserType) => {
+    const { error, data } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
 
     if (error) throw error;
 
-    if (rememberMe) {
+    // If a userType is provided during login, update the user's metadata
+    if (type && data.user) {
+      await supabase.auth.updateUser({
+        data: { user_type: type }
+      });
+    }
+
+    if (rememberMe && session) {
       await supabase.auth.setSession({
-        refresh_token: session?.refresh_token || '',
-        access_token: session?.access_token || '',
+        refresh_token: session.refresh_token || '',
+        access_token: session.access_token || '',
       });
     }
   };
 
-  const signUp = async (email: string, password: string, metadata?: { first_name?: string; last_name?: string }) => {
+  const signUp = async (email: string, password: string, metadata?: { first_name?: string; last_name?: string; user_type?: UserType }) => {
     const { error } = await supabase.auth.signUp({
       email,
       password,

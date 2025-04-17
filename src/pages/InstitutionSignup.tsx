@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
@@ -37,7 +36,7 @@ const InstitutionSignup = () => {
   const [showPassword, setShowPassword] = React.useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
   const { toast } = useToast();
-  const { login } = useAuth();
+  const { signUp, login } = useAuth();
   const navigate = useNavigate();
   
   const form = useForm<SignupFormValues>({
@@ -54,17 +53,30 @@ const InstitutionSignup = () => {
     },
   });
 
-  const onSubmit = (data: SignupFormValues) => {
-    console.log('Institution Signup data:', data);
-    
-    login('institution');
-    
-    toast({
-      title: "Account created",
-      description: "Your institution account has been created successfully.",
-    });
-    
-    navigate('/dashboard/institution');
+  const onSubmit = async (data: SignupFormValues) => {
+    try {
+      await signUp(data.email, data.password, {
+        first_name: data.institutionName,
+        last_name: data.institutionType,
+        user_type: 'institution'
+      });
+      
+      login('institution');
+      
+      toast({
+        title: "Account created",
+        description: "Your institution account has been created successfully.",
+      });
+      
+      navigate('/dashboard/institution');
+    } catch (error) {
+      console.error('Institution Signup error:', error);
+      toast({
+        title: "Signup Failed",
+        description: "There was an error creating your account. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
 
   return (

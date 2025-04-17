@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
@@ -40,7 +39,7 @@ const Login = () => {
 
   const onSubmit = async (data: LoginFormValues) => {
     try {
-      await signIn(data.email, data.password, data.rememberMe);
+      await signIn(data.email, data.password, data.rememberMe, userType);
       
       toast({
         title: "Login Successful",
