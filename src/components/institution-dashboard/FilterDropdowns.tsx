@@ -38,7 +38,7 @@ const FilterDropdowns: React.FC<FilterDropdownsProps> = ({
             <SelectValue placeholder="Role" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="">All Roles</SelectItem>
+            <SelectItem value="all_roles">All Roles</SelectItem>
             <SelectItem value="doctor">Doctor</SelectItem>
             <SelectItem value="nurse">Nurse</SelectItem>
             <SelectItem value="specialist">Specialist</SelectItem>
@@ -55,7 +55,7 @@ const FilterDropdowns: React.FC<FilterDropdownsProps> = ({
             <SelectValue placeholder="Profession" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="">All Professions</SelectItem>
+            <SelectItem value="all_professions">All Professions</SelectItem>
             <SelectItem value="cardiology">Cardiology</SelectItem>
             <SelectItem value="dermatology">Dermatology</SelectItem>
             <SelectItem value="neurology">Neurology</SelectItem>
@@ -73,7 +73,7 @@ const FilterDropdowns: React.FC<FilterDropdownsProps> = ({
             <SelectValue placeholder="Country" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="">All Countries</SelectItem>
+            <SelectItem value="all_countries">All Countries</SelectItem>
             <SelectItem value="canada">Canada</SelectItem>
             <SelectItem value="germany">Germany</SelectItem>
             <SelectItem value="uk">United Kingdom</SelectItem>
@@ -89,7 +89,7 @@ const FilterDropdowns: React.FC<FilterDropdownsProps> = ({
             <SelectValue placeholder="Language" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="">All Languages</SelectItem>
+            <SelectItem value="all_languages">All Languages</SelectItem>
             <SelectItem value="english">English</SelectItem>
             <SelectItem value="french">French</SelectItem>
             <SelectItem value="german">German</SelectItem>

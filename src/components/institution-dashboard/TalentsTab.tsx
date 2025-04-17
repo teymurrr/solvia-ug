@@ -25,10 +25,10 @@ const TalentsTab: React.FC<TalentsTabProps> = ({
 }) => {
   // Add filters state
   const [filters, setFilters] = useState({
-    role: '',
-    profession: '',
-    country: '',
-    language: ''
+    role: 'all_roles',
+    profession: 'all_professions',
+    country: 'all_countries',
+    language: 'all_languages'
   });
 
   // Debug logs to check what data we're receiving
@@ -46,9 +46,7 @@ const TalentsTab: React.FC<TalentsTabProps> = ({
 
   // Apply filters when they change
   useEffect(() => {
-    if (Object.values(filters).some(filter => filter !== '')) {
-      onSearch();
-    }
+    onSearch();
   }, [filters, onSearch]);
 
   return (
@@ -89,7 +87,7 @@ const TalentsTab: React.FC<TalentsTabProps> = ({
                 />
               ))}
             </div>
-          ) : professionals && professionals.length > 0 && (searchQuery || Object.values(filters).some(f => f !== '')) ? (
+          ) : professionals && professionals.length > 0 && (searchQuery || !Object.values(filters).every(f => f.startsWith('all_'))) ? (
             <div className="text-center py-8">
               <h3 className="text-lg font-medium">No matching professionals found</h3>
               <p className="text-muted-foreground">Try adjusting your search criteria or filters</p>

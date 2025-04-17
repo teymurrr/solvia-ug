@@ -13,10 +13,10 @@ const InstitutionDashboard = () => {
   const [filteredProfessionals, setFilteredProfessionals] = useState<any[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [filters, setFilters] = useState({
-    role: '',
-    profession: '',
-    country: '',
-    language: ''
+    role: 'all_roles',
+    profession: 'all_professions',
+    country: 'all_countries',
+    language: 'all_languages'
   });
   const [profileFormOpen, setProfileFormOpen] = useState(false);
   const [vacancyFormOpen, setVacancyFormOpen] = useState(false);
@@ -139,27 +139,27 @@ const InstitutionDashboard = () => {
       );
     }
     
-    // Apply each filter if selected
-    if (filters.role) {
+    // Apply each filter if selected (and not "all")
+    if (filters.role && filters.role !== 'all_roles') {
       filtered = filtered.filter(prof => 
         prof.role && prof.role.toLowerCase() === filters.role.toLowerCase()
       );
     }
     
-    if (filters.profession) {
+    if (filters.profession && filters.profession !== 'all_professions') {
       filtered = filtered.filter(prof => 
         (prof.profession && prof.profession.toLowerCase() === filters.profession.toLowerCase()) ||
         (prof.specialty && prof.specialty.toLowerCase() === filters.profession.toLowerCase())
       );
     }
     
-    if (filters.country) {
+    if (filters.country && filters.country !== 'all_countries') {
       filtered = filtered.filter(prof => 
         prof.country && prof.country.toLowerCase() === filters.country.toLowerCase()
       );
     }
     
-    if (filters.language) {
+    if (filters.language && filters.language !== 'all_languages') {
       filtered = filtered.filter(prof => 
         prof.language && prof.language.toLowerCase() === filters.language.toLowerCase()
       );
