@@ -1,11 +1,8 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Button } from "@/components/ui/button";
-import { Menu, X, LogOut, User, Settings, BookOpen, LayoutDashboard, Globe } from 'lucide-react';
 import Logo from './Logo';
-import { useAuth } from '@/contexts/AuthContext';
-import { useToast } from '@/hooks/use-toast';
+import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,257 +10,234 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-  DropdownMenuSub,
-  DropdownMenuSubTrigger,
-  DropdownMenuSubContent,
-  DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
-} from "@/components/ui/dropdown-menu";
+} from '@/components/ui/dropdown-menu';
+import { Menu, X, User, Building, LogOut, Mail } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
+import { Badge } from '@/components/ui/badge';
 
-const Navbar: React.FC = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [language, setLanguage] = useState("english");
-  const { isLoggedIn, logout, userType } = useAuth();
+// Mock data - in a real app, this would come from your database
+const hasUnreadMessages = true; // This would be dynamically determined
+
+const Navbar = () => {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { isLoggedIn, userType, signOut } = useAuth();
   const navigate = useNavigate();
-  const { toast } = useToast();
 
-  useEffect(() => {
-    console.log("Navbar auth state:", { isLoggedIn, userType });
-  }, [isLoggedIn, userType]);
-
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
-  
-  const handleLogout = () => {
-    logout();
-    toast({
-      title: "Logged out",
-      description: "You have been logged out successfully.",
-    });
-    // Explicitly navigate to login page after logout
-    navigate('/login');
+  const toggleMobileMenu = () => {
+    setMobileMenuOpen(!mobileMenuOpen);
   };
 
-  const navigateToDashboard = () => {
-    if (userType === 'professional') {
-      navigate('/dashboard/professional');
-    } else if (userType === 'institution') {
-      navigate('/dashboard/institution');
-    }
+  const handleSignOut = () => {
+    signOut();
+    navigate('/');
+  };
+
+  const getDashboardLink = () => {
+    if (userType === 'professional') return '/dashboard/professional';
+    if (userType === 'institution') return '/dashboard/institution';
+    return '/dashboard';
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-white/80 backdrop-blur-sm border-b">
-      <div className="container mx-auto px-4 md:px-6 py-3">
-        <div className="flex justify-between items-center">
-          <Logo />
-          
-          <nav className="hidden md:flex items-center gap-6">
+    <nav className="bg-white border-b">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between h-16">
+          <div className="flex">
+            <div className="flex-shrink-0 flex items-center">
+              <Link to="/">
+                <Logo />
+              </Link>
+            </div>
+            <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
+              <Link
+                to="/professionals"
+                className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+              >
+                Professionals
+              </Link>
+              <Link
+                to="/institutions"
+                className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+              >
+                Institutions
+              </Link>
+              <Link
+                to="/vacancies"
+                className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+              >
+                Vacancies
+              </Link>
+              <Link
+                to="/learning"
+                className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+              >
+                Learning
+              </Link>
+              <Link
+                to="/about"
+                className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+              >
+                About
+              </Link>
+            </div>
+          </div>
+          <div className="hidden sm:ml-6 sm:flex sm:items-center gap-2">
             {isLoggedIn ? (
               <>
-                <Link 
-                  to="/dashboard" 
-                  className="text-sm font-medium hover:text-medical-600 transition-colors flex items-center gap-1"
-                >
-                  <LayoutDashboard size={16} />
-                  Dashboard
-                </Link>
-                <Link 
-                  to="/learning" 
-                  className="text-sm font-medium hover:text-medical-600 transition-colors flex items-center gap-1"
-                >
-                  <BookOpen size={16} />
-                  Solvia Learning
-                </Link>
+                <Button variant="outline" size="sm" asChild>
+                  <Link to="/messages" className="relative">
+                    <Mail className="h-4 w-4 mr-2" />
+                    Messages
+                    {hasUnreadMessages && (
+                      <Badge className="absolute -top-2 -right-2 bg-red-500 text-white h-5 w-5 flex items-center justify-center p-0 text-xs">
+                        1
+                      </Badge>
+                    )}
+                  </Link>
+                </Button>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="outline" size="icon">
+                      {userType === 'professional' ? (
+                        <User className="h-4 w-4" />
+                      ) : (
+                        <Building className="h-4 w-4" />
+                      )}
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                    <DropdownMenuItem asChild>
+                      <Link to={getDashboardLink()}>Dashboard</Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <Link to="/messages">
+                        Messages {hasUnreadMessages && <Badge className="ml-2 bg-red-500 text-white">1</Badge>}
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onClick={handleSignOut} className="text-red-500">
+                      <LogOut className="h-4 w-4 mr-2" />
+                      Sign out
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </>
             ) : (
               <>
-                <Link to="/" className="text-sm font-medium hover:text-medical-600 transition-colors">
-                  Home
-                </Link>
-                <Link to="/professionals" className="text-sm font-medium hover:text-medical-600 transition-colors">
-                  Professionals
-                </Link>
-                <Link to="/institutions" className="text-sm font-medium hover:text-medical-600 transition-colors">
-                  Institutions
-                </Link>
-              </>
-            )}
-          </nav>
-          
-          <div className="hidden md:flex items-center gap-4">
-            {isLoggedIn ? (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="outline" className="flex gap-2 items-center">
-                    <User size={16} />
-                    My Account
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={navigateToDashboard} className="cursor-pointer">
-                    <LayoutDashboard className="mr-2 h-4 w-4" />
-                    Dashboard
-                  </DropdownMenuItem>
-                  <DropdownMenuItem className="cursor-pointer">
-                    <Settings className="mr-2 h-4 w-4" />
-                    Settings
-                  </DropdownMenuItem>
-                  <DropdownMenuSub>
-                    <DropdownMenuSubTrigger>
-                      <Globe className="mr-2 h-4 w-4" />
-                      <span>Language</span>
-                    </DropdownMenuSubTrigger>
-                    <DropdownMenuSubContent>
-                      <DropdownMenuRadioGroup value={language} onValueChange={setLanguage}>
-                        <DropdownMenuRadioItem value="english">English</DropdownMenuRadioItem>
-                        <DropdownMenuRadioItem value="german">German</DropdownMenuRadioItem>
-                        <DropdownMenuRadioItem value="spanish">Spanish</DropdownMenuRadioItem>
-                      </DropdownMenuRadioGroup>
-                    </DropdownMenuSubContent>
-                  </DropdownMenuSub>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={handleLogout} className="cursor-pointer">
-                    <LogOut className="mr-2 h-4 w-4" />
-                    Logout
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            ) : (
-              <>
-                <Button variant="outline" asChild>
-                  <Link to="/login">Log In</Link>
+                <Button variant="ghost" asChild>
+                  <Link to="/login">Log in</Link>
                 </Button>
                 <Button asChild>
-                  <Link to="/signup">Sign Up</Link>
+                  <Link to="/signup">Sign up</Link>
                 </Button>
               </>
             )}
           </div>
-          
-          <button 
-            className="md:hidden flex items-center"
-            onClick={toggleMenu}
-            aria-label="Toggle menu"
-          >
-            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
+          <div className="-mr-2 flex items-center sm:hidden">
+            <Button variant="ghost" size="icon" onClick={toggleMobileMenu}>
+              <span className="sr-only">Open main menu</span>
+              {mobileMenuOpen ? (
+                <X className="block h-6 w-6" />
+              ) : (
+                <Menu className="block h-6 w-6" />
+              )}
+            </Button>
+          </div>
         </div>
       </div>
-      
-      {isMenuOpen && (
-        <div className="md:hidden absolute top-full left-0 right-0 bg-white border-b animate-fade-in">
-          <div className="container mx-auto px-4 py-4 flex flex-col gap-4">
+
+      {mobileMenuOpen && (
+        <div className="sm:hidden">
+          <div className="pt-2 pb-3 space-y-1">
+            <Link
+              to="/professionals"
+              className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800"
+              onClick={toggleMobileMenu}
+            >
+              Professionals
+            </Link>
+            <Link
+              to="/institutions"
+              className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800"
+              onClick={toggleMobileMenu}
+            >
+              Institutions
+            </Link>
+            <Link
+              to="/vacancies"
+              className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800"
+              onClick={toggleMobileMenu}
+            >
+              Vacancies
+            </Link>
+            <Link
+              to="/learning"
+              className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800"
+              onClick={toggleMobileMenu}
+            >
+              Learning
+            </Link>
+            <Link
+              to="/about"
+              className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800"
+              onClick={toggleMobileMenu}
+            >
+              About
+            </Link>
+          </div>
+          <div className="pt-4 pb-3 border-t border-gray-200">
             {isLoggedIn ? (
-              <>
-                <Link 
-                  to="/dashboard" 
-                  className="px-4 py-2 text-sm hover:bg-muted rounded-md flex items-center gap-2"
-                  onClick={() => setIsMenuOpen(false)}
+              <div className="space-y-1">
+                <Link
+                  to={getDashboardLink()}
+                  className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800"
+                  onClick={toggleMobileMenu}
                 >
-                  <LayoutDashboard size={16} />
                   Dashboard
                 </Link>
-                <Link 
-                  to="/learning" 
-                  className="px-4 py-2 text-sm hover:bg-muted rounded-md flex items-center gap-2"
-                  onClick={() => setIsMenuOpen(false)}
+                <Link
+                  to="/messages"
+                  className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800 flex items-center"
+                  onClick={toggleMobileMenu}
                 >
-                  <BookOpen size={16} />
-                  Solvia Learning
+                  Messages
+                  {hasUnreadMessages && (
+                    <Badge className="ml-2 bg-red-500 text-white">1</Badge>
+                  )}
                 </Link>
-              </>
+                <button
+                  onClick={() => {
+                    handleSignOut();
+                    toggleMobileMenu();
+                  }}
+                  className="block w-full text-left pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-red-500 hover:bg-gray-50 hover:border-red-300"
+                >
+                  Sign out
+                </button>
+              </div>
             ) : (
-              <>
-                <Link 
-                  to="/" 
-                  className="px-4 py-2 text-sm hover:bg-muted rounded-md"
-                  onClick={() => setIsMenuOpen(false)}
+              <div className="space-y-1">
+                <Link
+                  to="/login"
+                  className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800"
+                  onClick={toggleMobileMenu}
                 >
-                  Home
+                  Log in
                 </Link>
-                <Link 
-                  to="/professionals" 
-                  className="px-4 py-2 text-sm hover:bg-muted rounded-md"
-                  onClick={() => setIsMenuOpen(false)}
+                <Link
+                  to="/signup"
+                  className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800"
+                  onClick={toggleMobileMenu}
                 >
-                  Professionals
+                  Sign up
                 </Link>
-                <Link 
-                  to="/institutions" 
-                  className="px-4 py-2 text-sm hover:bg-muted rounded-md"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  Institutions
-                </Link>
-              </>
+              </div>
             )}
-            <div className="flex flex-col gap-2 mt-2">
-              {isLoggedIn ? (
-                <>
-                  <Button 
-                    variant="outline" 
-                    onClick={() => {
-                      navigateToDashboard();
-                      setIsMenuOpen(false);
-                    }}
-                    className="w-full flex items-center justify-center gap-2"
-                  >
-                    <LayoutDashboard size={16} />
-                    Dashboard
-                  </Button>
-                  <Button 
-                    variant="outline"
-                    className="w-full flex items-center justify-center gap-2"
-                  >
-                    <Settings size={16} />
-                    Settings
-                  </Button>
-                  <div className="flex items-center justify-between p-2 border rounded-md">
-                    <div className="flex items-center gap-2">
-                      <Globe size={16} />
-                      Language
-                    </div>
-                    <select 
-                      className="bg-transparent border-none outline-none"
-                      value={language}
-                      onChange={(e) => setLanguage(e.target.value)}
-                    >
-                      <option value="english">English</option>
-                      <option value="german">German</option>
-                      <option value="spanish">Spanish</option>
-                    </select>
-                  </div>
-                  <Button 
-                    variant="outline" 
-                    onClick={() => {
-                      handleLogout();
-                      setIsMenuOpen(false);
-                    }}
-                    className="w-full flex items-center justify-center gap-2"
-                  >
-                    <LogOut size={16} />
-                    Log Out
-                  </Button>
-                </>
-              ) : (
-                <>
-                  <Button variant="outline" asChild className="w-full">
-                    <Link to="/login" onClick={() => setIsMenuOpen(false)}>Log In</Link>
-                  </Button>
-                  <Button asChild className="w-full">
-                    <Link to="/signup" onClick={() => setIsMenuOpen(false)}>Sign Up</Link>
-                  </Button>
-                </>
-              )}
-            </div>
           </div>
         </div>
       )}
-    </header>
+    </nav>
   );
 };
 
