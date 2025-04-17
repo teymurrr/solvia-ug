@@ -77,7 +77,7 @@ const Navbar = () => {
 
     if (userType === 'professional') {
       return (
-        <>
+        <div className="flex justify-center space-x-8 flex-1">
           <Link
             to="/dashboard/professional"
             className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
@@ -92,13 +92,13 @@ const Navbar = () => {
             <BookOpen className="h-4 w-4 mr-2" />
             Solvia Learning
           </Link>
-        </>
+        </div>
       );
     }
 
     if (userType === 'institution') {
       return (
-        <>
+        <div className="flex justify-center space-x-8 flex-1">
           <Link
             to="/dashboard/institution"
             className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
@@ -113,7 +113,7 @@ const Navbar = () => {
             <LineChart className="h-4 w-4 mr-2" />
             Solvia Insights
           </Link>
-        </>
+        </div>
       );
     }
   };
@@ -122,25 +122,28 @@ const Navbar = () => {
     <nav className="bg-white border-b">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
-          <div className="flex">
-            <div className="flex-shrink-0 flex items-center">
-              <Link to="/">
-                <Logo />
-              </Link>
-            </div>
-            <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
-              {renderNavLinks()}
-            </div>
+          <div className="flex-shrink-0 flex items-center">
+            <Link to="/">
+              <Logo />
+            </Link>
           </div>
+          
+          <div className="hidden sm:flex sm:flex-1">
+            {renderNavLinks()}
+          </div>
+
           <div className="hidden sm:ml-6 sm:flex sm:items-center gap-2">
             {isLoggedIn ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="outline" size="icon">
+                  <Button variant="outline" size="icon" className="relative">
                     {userType === 'professional' ? (
                       <User className="h-4 w-4" />
                     ) : (
                       <Building className="h-4 w-4" />
+                    )}
+                    {hasUnreadMessages && (
+                      <span className="absolute -top-1 -right-1 h-3 w-3 bg-red-500 rounded-full" />
                     )}
                   </Button>
                 </DropdownMenuTrigger>
