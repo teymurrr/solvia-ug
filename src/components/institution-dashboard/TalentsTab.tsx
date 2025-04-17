@@ -23,7 +23,7 @@ const TalentsTab: React.FC<TalentsTabProps> = ({
   onSearchQueryChange,
   onSearch
 }) => {
-  // Add filters state
+  // Add filters state with non-empty default values
   const [filters, setFilters] = useState({
     role: 'all_roles',
     profession: 'all_professions',

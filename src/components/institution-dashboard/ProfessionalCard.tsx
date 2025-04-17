@@ -61,7 +61,10 @@ const ProfessionalCard: React.FC<ProfessionalCardProps> = ({ professional }) => 
               <h3 className="font-medium flex items-center gap-2">
                 {professional.firstName} {professional.lastName}
                 {professional.fspCertificate && (
-                  <Award className="h-4 w-4 text-yellow-500" title="FSP Certified" />
+                  <Award 
+                    className="h-4 w-4 text-yellow-500" 
+                    aria-label="FSP Certified"
+                  />
                 )}
               </h3>
               {professional.specialty && (

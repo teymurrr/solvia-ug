@@ -142,9 +142,9 @@ const Vacancies = () => {
   const [paginatedResults, setPaginatedResults] = useState<typeof sampleVacancies>([]);
   
   const [selectedJobTypes, setSelectedJobTypes] = useState<string[]>([]);
-  const [selectedLocation, setSelectedLocation] = useState<string>('');
-  const [selectedProfession, setSelectedProfession] = useState<string>('');
-  const [selectedSpecialty, setSelectedSpecialty] = useState<string>('');
+  const [selectedLocation, setSelectedLocation] = useState<string>('all_locations');
+  const [selectedProfession, setSelectedProfession] = useState<string>('all_professions');
+  const [selectedSpecialty, setSelectedSpecialty] = useState<string>('all_specialties');
   
   const [savedVacancies, setSavedVacancies] = useState<string[]>([]);
 
@@ -198,15 +198,15 @@ const Vacancies = () => {
         return false;
       }
       
-      if (selectedLocation && !vacancy.location.includes(selectedLocation)) {
+      if (selectedLocation !== 'all_locations' && !vacancy.location.includes(selectedLocation)) {
         return false;
       }
       
-      if (selectedProfession && vacancy.profession !== selectedProfession) {
+      if (selectedProfession !== 'all_professions' && vacancy.profession !== selectedProfession) {
         return false;
       }
       
-      if (selectedSpecialty && vacancy.specialty !== selectedSpecialty) {
+      if (selectedSpecialty !== 'all_specialties' && vacancy.specialty !== selectedSpecialty) {
         return false;
       }
       
@@ -221,13 +221,13 @@ const Vacancies = () => {
     if (selectedJobTypes.length > 0) {
       newActiveFilters.push(...selectedJobTypes);
     }
-    if (selectedLocation) {
+    if (selectedLocation !== 'all_locations') {
       newActiveFilters.push(selectedLocation);
     }
-    if (selectedProfession) {
+    if (selectedProfession !== 'all_professions') {
       newActiveFilters.push(selectedProfession);
     }
-    if (selectedSpecialty) {
+    if (selectedSpecialty !== 'all_specialties') {
       newActiveFilters.push(selectedSpecialty);
     }
     
@@ -245,9 +245,9 @@ const Vacancies = () => {
   const resetFilters = () => {
     setSearchQuery('');
     setSelectedJobTypes([]);
-    setSelectedLocation('');
-    setSelectedProfession('');
-    setSelectedSpecialty('');
+    setSelectedLocation('all_locations');
+    setSelectedProfession('all_professions');
+    setSelectedSpecialty('all_specialties');
     setActiveFilters([]);
     setSearchResults(sampleVacancies);
   };
@@ -428,7 +428,7 @@ const Vacancies = () => {
                       <SelectValue placeholder="Select location" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">All locations</SelectItem>
+                      <SelectItem value="all_locations">All locations</SelectItem>
                       {locations.map((location) => (
                         <SelectItem key={location} value={location.split(',')[1].trim()}>
                           {location}
@@ -445,7 +445,7 @@ const Vacancies = () => {
                       <SelectValue placeholder="Select profession" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">All professions</SelectItem>
+                      <SelectItem value="all_professions">All professions</SelectItem>
                       {professions.map((profession) => (
                         <SelectItem key={profession} value={profession}>
                           {profession}
@@ -462,7 +462,7 @@ const Vacancies = () => {
                       <SelectValue placeholder="Select specialty" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">All specialties</SelectItem>
+                      <SelectItem value="all_specialties">All specialties</SelectItem>
                       {specialties.map((specialty) => (
                         <SelectItem key={specialty} value={specialty}>
                           {specialty}

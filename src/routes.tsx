@@ -47,7 +47,7 @@ const AppRoutes = () => {
         <Route
           path="/dashboard/professional"
           element={
-            <ProtectedRoute requiredUserType="professional">
+            <ProtectedRoute userType="professional">
               <ProfessionalDashboard />
             </ProtectedRoute>
           }
@@ -55,7 +55,7 @@ const AppRoutes = () => {
         <Route
           path="/dashboard/institution"
           element={
-            <ProtectedRoute requiredUserType="institution">
+            <ProtectedRoute userType="institution">
               <InstitutionDashboard />
             </ProtectedRoute>
           }
