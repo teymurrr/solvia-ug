@@ -49,6 +49,7 @@ export default function useDashboard() {
         console.error("Error parsing saved vacancies from localStorage:", error);
       }
     }
+    setLoading(false);
   }, []);
 
   // Load profile data on component mount
@@ -58,15 +59,10 @@ export default function useDashboard() {
       try {
         const data = await loadProfileData();
         if (data) {
-          console.log("Dashboard loaded profile data:", data);
           setProfileData(data);
-        } else {
-          console.log("No profile data found in dashboard, using defaults");
-          setProfileData(defaultProfileData);
         }
       } catch (error) {
-        console.error("Error loading profile data in dashboard:", error);
-        setProfileData(defaultProfileData);
+        console.error("Error loading profile data:", error);
       } finally {
         setLoading(false);
       }
@@ -100,7 +96,6 @@ export default function useDashboard() {
   }, []);
 
   const handleProfileSave = useCallback((data: ProfileFormValues) => {
-    console.log("Saving profile data in dashboard:", data);
     setProfileData(data);
   }, []);
 
