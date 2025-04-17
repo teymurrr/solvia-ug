@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Logo from './Logo';
@@ -10,10 +9,14 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
+  DropdownMenuSub,
+  DropdownMenuSubTrigger,
+  DropdownMenuSubContent,
 } from '@/components/ui/dropdown-menu';
-import { LayoutDashboard, BookOpen, User, Building, LogOut, Mail, LineChart, Menu, X } from 'lucide-react';
+import { Building, LogOut, Mail, Settings, Languages } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { Badge } from '@/components/ui/badge';
+import { availableLanguages } from '@/data/languages';
 
 const hasUnreadMessages = true; // This would be dynamically determined
 
@@ -21,10 +24,6 @@ const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { isLoggedIn, userType, signOut } = useAuth();
   const navigate = useNavigate();
-
-  const toggleMobileMenu = () => {
-    setMobileMenuOpen(!mobileMenuOpen);
-  };
 
   const handleSignOut = () => {
     signOut();
@@ -118,6 +117,66 @@ const Navbar = () => {
     }
   };
 
+  const renderUserDropdown = () => {
+    if (!isLoggedIn) return null;
+
+    return (
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="outline" size="icon" className="relative">
+            {userType === 'professional' ? (
+              <User className="h-4 w-4" />
+            ) : (
+              <Building className="h-4 w-4" />
+            )}
+            {hasUnreadMessages && (
+              <span className="absolute -top-1 -right-1 h-3 w-3 bg-red-500 rounded-full" />
+            )}
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end" className="w-56">
+          <DropdownMenuLabel>My Account</DropdownMenuLabel>
+          
+          <DropdownMenuSub>
+            <DropdownMenuSubTrigger>
+              <Languages className="h-4 w-4 mr-2" />
+              <span>Language</span>
+            </DropdownMenuSubTrigger>
+            <DropdownMenuSubContent>
+              {availableLanguages.slice(0, 3).map((language) => (
+                <DropdownMenuItem key={language}>
+                  {language}
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuSubContent>
+          </DropdownMenuSub>
+
+          <DropdownMenuItem asChild>
+            <Link to="/messages">
+              <Mail className="h-4 w-4 mr-2" />
+              Messages
+              {hasUnreadMessages && <Badge className="ml-2 bg-red-500 text-white">1</Badge>}
+            </Link>
+          </DropdownMenuItem>
+
+          <DropdownMenuItem asChild>
+            <Link to="/settings">
+              <Settings className="h-4 w-4 mr-2" />
+              Settings
+            </Link>
+          </DropdownMenuItem>
+
+          <DropdownMenuSeparator />
+          
+          <DropdownMenuItem onClick={handleSignOut} className="text-red-500">
+            <LogOut className="h-4 w-4 mr-2" />
+            Sign out
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    );
+  };
+
   return (
     <nav className="bg-white border-b">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -134,36 +193,7 @@ const Navbar = () => {
 
           <div className="hidden sm:ml-6 sm:flex sm:items-center gap-2">
             {isLoggedIn ? (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="outline" size="icon" className="relative">
-                    {userType === 'professional' ? (
-                      <User className="h-4 w-4" />
-                    ) : (
-                      <Building className="h-4 w-4" />
-                    )}
-                    {hasUnreadMessages && (
-                      <span className="absolute -top-1 -right-1 h-3 w-3 bg-red-500 rounded-full" />
-                    )}
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                  <DropdownMenuItem asChild>
-                    <Link to={getDashboardLink()}>Dashboard</Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link to="/messages">
-                      Messages {hasUnreadMessages && <Badge className="ml-2 bg-red-500 text-white">1</Badge>}
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={handleSignOut} className="text-red-500">
-                    <LogOut className="h-4 w-4 mr-2" />
-                    Sign out
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+              renderUserDropdown()
             ) : (
               <>
                 <Button variant="ghost" asChild>
