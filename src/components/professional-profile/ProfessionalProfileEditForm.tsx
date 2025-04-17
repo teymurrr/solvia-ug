@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -8,7 +7,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { Form } from '@/components/ui/form';
 import { useProfileData } from './hooks/useProfileData';
 
-import { ProfileFormValues, profileFormSchema } from './types';
+import { ProfileFormValues, profileFormSchema, Experience, Education, Language } from './types';
 import ProfileImageSection from './ProfileImageSection';
 import PersonalInfoSection from './PersonalInfoSection';
 import ExperienceSection from './ExperienceSection';
@@ -26,109 +25,80 @@ interface ProfessionalProfileEditFormProps {
 const languageLevels = ["A1", "A2", "B1", "B2", "C1", "C2"];
 const professionOptions = ["Doctor", "Nurse", "Specialist", "Technician", "Therapist", "Other"];
 
-const defaultProfileData: Partial<ProfileFormValues> = {
-  firstName: "John",
-  lastName: "Doe",
-  profession: "Doctor",
-  specialty: "Cardiologist",
-  email: "john.doe@example.com",
-  location: "",
-  about: "",
-  profileImage: "",
-  activelySearching: false,
-  openToRelocation: false,
-  experiences: [{ hospital: "", location: "", role: "", startDate: "", endDate: "", current: false }],
-  education: [{ institution: "", degree: "", field: "", startDate: "", endDate: "", current: false }],
-  languages: [{ language: "", level: "A1", certificate: "" }],
-  fspCertificate: false,
-  fspCertificateFile: "",
-};
-
 const ProfessionalProfileEditForm: React.FC<ProfessionalProfileEditFormProps> = ({
   open,
   onOpenChange,
-  initialData = defaultProfileData,
+  initialData = {
+    firstName: "John",
+    lastName: "Doe",
+    profession: "Doctor",
+    specialty: "Cardiologist",
+    email: "john.doe@example.com",
+    location: "",
+    about: "",
+    profileImage: "",
+    activelySearching: false,
+    openToRelocation: false,
+    experiences: [{ hospital: "", location: "", role: "", startDate: "", endDate: "", current: false }],
+    education: [{ institution: "", degree: "", field: "", startDate: "", endDate: "", current: false }],
+    languages: [{ language: "", level: "A1", certificate: "" }],
+    fspCertificate: false,
+    fspCertificateFile: "",
+  },
   onSave
 }) => {
   const { toast } = useToast();
-  const { saveProfileData, loadProfileData, loading: profileLoading } = useProfileData();
-  const [loading, setLoading] = useState(false);
-  const [dataLoaded, setDataLoaded] = useState(false);
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
-  const [sfpCertificatePreview, setSfpCertificatePreview] = useState<string | null>(null);
+  const { saveProfileData, loadProfileData, loading } = useProfileData();
+  const [savedData, setSavedData] = useState<ProfileFormValues | null>(null);
+  const [formInitialized, setFormInitialized] = useState(false);
   
-  // Initialize form with default values
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(profileFormSchema),
     defaultValues: initialData,
     mode: "onChange"
   });
 
-  // Only load profile data when the dialog is opened and data hasn't been loaded yet
   useEffect(() => {
-    let isMounted = true;
+    form.reset(initialData);
+    setFormInitialized(true);
     
-    const fetchData = async () => {
-      if (open && !dataLoaded) {
-        console.log("Fetching profile data...");
-        setLoading(true);
-        
-        try {
-          const data = await loadProfileData();
-          
-          if (!isMounted) return;
-          
-          if (data) {
-            console.log("Setting form data from loaded profile");
-            form.reset(data);
-            
-            // Set preview images based on loaded data
-            setImagePreview(data.profileImage || null);
-            setSfpCertificatePreview(data.fspCertificateFile || null);
-          } else {
-            console.log("No profile data found, using defaults");
-            form.reset(initialData);
-          }
-          
-          setDataLoaded(true);
-        } catch (error) {
-          console.error("Error loading profile data:", error);
-          if (isMounted) {
-            toast({
-              title: "Could not load profile data",
-              description: "Using default values. You can still edit and save your profile.",
-              variant: "destructive",
-            });
-            form.reset(initialData);
-          }
-        } finally {
-          if (isMounted) {
-            setLoading(false);
-          }
+    if (open) {
+      loadProfileData().then(data => {
+        if (data) {
+          const typedData: ProfileFormValues = {
+            ...data,
+            experiences: data.experiences as Experience[],
+            education: data.education as Education[],
+            languages: data.languages as Language[],
+          };
+          form.reset(typedData);
+          setSavedData(typedData);
+        } else {
+          console.log("Using fallback data for form");
+          form.reset(initialData);
         }
-      }
-    };
-    
-    fetchData();
-    
-    return () => {
-      isMounted = false;
-    };
-  }, [open, dataLoaded, form, initialData, loadProfileData, toast]);
-
-  // Reset the dataLoaded state when the dialog is closed
-  useEffect(() => {
-    if (!open) {
-      setDataLoaded(false);
+      }).catch(error => {
+        console.error("Error loading profile data:", error);
+        form.reset(initialData);
+        toast({
+          title: "Could not load profile data",
+          description: "Using default values. You can still edit and save your profile.",
+          variant: "destructive",
+        });
+      });
     }
-  }, [open]);
+  }, [open, form, loadProfileData, initialData]);
 
   const onSubmit = async (data: ProfileFormValues) => {
     try {
-      const success = await saveProfileData(data);
-      if (success && onSave) {
+      await saveProfileData(data);
+      if (onSave) {
         onSave(data);
       }
+      toast({
+        title: "Profile Updated",
+        description: "Your profile has been successfully saved.",
+      });
       onOpenChange(false);
     } catch (error) {
       console.error("Error saving profile:", error);
@@ -139,6 +109,11 @@ const ProfessionalProfileEditForm: React.FC<ProfessionalProfileEditFormProps> = 
       });
     }
   };
+
+  const [imagePreview, setImagePreview] = useState<string | null>(initialData.profileImage || null);
+  const [sfpCertificatePreview, setSfpCertificatePreview] = useState<string | null>(
+    initialData.fspCertificateFile || null
+  );
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -180,79 +155,72 @@ const ProfessionalProfileEditForm: React.FC<ProfessionalProfileEditFormProps> = 
     }
   };
 
-  // Set up loading state
-  const isLoading = loading || profileLoading;
-
-  console.log("Dialog open state:", open);
-  console.log("Loading state:", isLoading);
+  if (!formInitialized && loading) {
+    return (
+      <Dialog open={open} onOpenChange={onOpenChange}>
+        <DialogContent className="sm:max-w-[800px]">
+          <DialogHeader>
+            <DialogTitle>Loading Profile...</DialogTitle>
+            <DialogDescription>
+              Please wait while we load your profile information.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex justify-center py-8">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+          </div>
+        </DialogContent>
+      </Dialog>
+    );
+  }
 
   return (
-    <Dialog open={open} onOpenChange={(newOpenState) => {
-      console.log("Dialog onOpenChange called with:", newOpenState);
-      onOpenChange(newOpenState);
-    }}>
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[800px] max-h-[90vh] overflow-y-auto">
-        {isLoading ? (
-          <>
-            <DialogHeader>
-              <DialogTitle>Loading Profile...</DialogTitle>
-              <DialogDescription>
-                Please wait while we load your profile information.
-              </DialogDescription>
-            </DialogHeader>
-            <div className="flex justify-center py-8">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+        <DialogHeader>
+          <DialogTitle>Edit Your Profile</DialogTitle>
+          <DialogDescription>
+            Update your profile information to help institutions find you.
+          </DialogDescription>
+        </DialogHeader>
+
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <ProfileImageSection 
+              imagePreview={imagePreview} 
+              handleImageChange={handleImageChange} 
+            />
+            
+            <PersonalInfoSection 
+              form={form} 
+              professionOptions={professionOptions} 
+            />
+            
+            <ExperienceSection form={form} />
+            
+            <EducationSection form={form} />
+            
+            <LanguageSection 
+              form={form} 
+              languageLevels={languageLevels} 
+              handleLanguageCertificateChange={handleLanguageCertificateChange} 
+            />
+            
+            <CertificatesSection 
+              form={form} 
+              sfpCertificatePreview={sfpCertificatePreview}
+              handleSfpCertificateChange={handleSfpCertificateChange}
+            />
+
+            <div className="flex justify-end gap-2">
+              <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
+                Cancel
+              </Button>
+              <Button type="submit">
+                Save Changes
+              </Button>
             </div>
-          </>
-        ) : (
-          <>
-            <DialogHeader>
-              <DialogTitle>Edit Your Profile</DialogTitle>
-              <DialogDescription>
-                Update your profile information to help institutions find you.
-              </DialogDescription>
-            </DialogHeader>
-
-            <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                <ProfileImageSection 
-                  imagePreview={imagePreview} 
-                  handleImageChange={handleImageChange} 
-                />
-                
-                <PersonalInfoSection 
-                  form={form} 
-                  professionOptions={professionOptions} 
-                />
-                
-                <ExperienceSection form={form} />
-                
-                <EducationSection form={form} />
-                
-                <LanguageSection 
-                  form={form} 
-                  languageLevels={languageLevels} 
-                  handleLanguageCertificateChange={handleLanguageCertificateChange} 
-                />
-                
-                <CertificatesSection 
-                  form={form} 
-                  sfpCertificatePreview={sfpCertificatePreview}
-                  handleSfpCertificateChange={handleSfpCertificateChange}
-                />
-
-                <div className="flex justify-end gap-2">
-                  <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
-                    Cancel
-                  </Button>
-                  <Button type="submit">
-                    Save Changes
-                  </Button>
-                </div>
-              </form>
-            </Form>
-          </>
-        )}
+          </form>
+        </Form>
       </DialogContent>
     </Dialog>
   );
