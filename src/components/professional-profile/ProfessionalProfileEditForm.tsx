@@ -51,14 +51,21 @@ const ProfessionalProfileEditForm: React.FC<ProfessionalProfileEditFormProps> = 
   const { toast } = useToast();
   const { saveProfileData, loadProfileData, loading } = useProfileData();
   const [savedData, setSavedData] = useState<ProfileFormValues | null>(null);
+  const [formInitialized, setFormInitialized] = useState(false);
   
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(profileFormSchema),
-    defaultValues: savedData || initialData,
+    defaultValues: initialData,
+    mode: "onChange"
   });
 
   useEffect(() => {
+    // Initialize form with initial data to ensure fields are interactive
+    form.reset(initialData);
+    setFormInitialized(true);
+    
     if (open) {
+      // Attempt to load profile data from backend
       loadProfileData().then(data => {
         if (data) {
           // Ensure the loaded data has the correct types for the arrays
@@ -70,17 +77,43 @@ const ProfessionalProfileEditForm: React.FC<ProfessionalProfileEditFormProps> = 
           };
           form.reset(typedData);
           setSavedData(typedData);
+        } else {
+          // If loading fails, ensure form remains usable with initial data
+          console.log("Using fallback data for form");
+          form.reset(initialData);
         }
+      }).catch(error => {
+        console.error("Error loading profile data:", error);
+        // On error, ensure form is usable with initial data
+        form.reset(initialData);
+        toast({
+          title: "Could not load profile data",
+          description: "Using default values. You can still edit and save your profile.",
+          variant: "destructive",
+        });
       });
     }
-  }, [open, form, loadProfileData]);
+  }, [open, form, loadProfileData, initialData]);
 
   const onSubmit = async (data: ProfileFormValues) => {
-    await saveProfileData(data);
-    if (onSave) {
-      onSave(data);
+    try {
+      await saveProfileData(data);
+      if (onSave) {
+        onSave(data);
+      }
+      toast({
+        title: "Profile Updated",
+        description: "Your profile has been successfully saved.",
+      });
+      onOpenChange(false);
+    } catch (error) {
+      console.error("Error saving profile:", error);
+      toast({
+        title: "Error",
+        description: "Failed to save profile. Please try again.",
+        variant: "destructive",
+      });
     }
-    onOpenChange(false);
   };
 
   const [imagePreview, setImagePreview] = useState<string | null>(initialData.profileImage || null);
@@ -127,6 +160,25 @@ const ProfessionalProfileEditForm: React.FC<ProfessionalProfileEditFormProps> = 
       reader.readAsDataURL(file);
     }
   };
+
+  // Render a loading state while form is not yet initialized
+  if (!formInitialized && loading) {
+    return (
+      <Dialog open={open} onOpenChange={onOpenChange}>
+        <DialogContent className="sm:max-w-[800px]">
+          <DialogHeader>
+            <DialogTitle>Loading Profile...</DialogTitle>
+            <DialogDescription>
+              Please wait while we load your profile information.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex justify-center py-8">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+          </div>
+        </DialogContent>
+      </Dialog>
+    );
+  }
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
