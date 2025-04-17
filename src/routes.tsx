@@ -1,4 +1,3 @@
-
 import { lazy, Suspense } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import ProtectedRoute from "@/components/ProtectedRoute";
@@ -20,7 +19,8 @@ const Vacancies = lazy(() => import("@/pages/Vacancies"));
 const VacancyDetail = lazy(() => import("@/pages/VacancyDetail"));
 const Messages = lazy(() => import("@/pages/Messages"));
 
-// Loading fallback
+const Insights = lazy(() => import("@/pages/Insights"));
+
 const LoadingFallback = () => (
   <div className="flex items-center justify-center h-screen">
     <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
@@ -38,12 +38,16 @@ const AppRoutes = () => {
         <Route path="/signup/institution" element={<InstitutionSignup />} />
         <Route path="/login" element={<Login />} />
         <Route path="/learning" element={<SolviaLearning />} />
-        <Route path="/professionals" element={<Professionals />} />
-        <Route path="/institutions" element={<Institutions />} />
-        <Route path="/vacancies" element={<Vacancies />} />
-        <Route path="/vacancies/:id" element={<VacancyDetail />} />
-        
+
         {/* Protected routes */}
+        <Route
+          path="/insights"
+          element={
+            <ProtectedRoute userType="institution">
+              <Insights />
+            </ProtectedRoute>
+          }
+        />
         <Route
           path="/dashboard/professional"
           element={
