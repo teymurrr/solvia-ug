@@ -1,10 +1,17 @@
 
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import { Search, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from '@/components/ui/pagination';
 import ProfessionalCard from './ProfessionalCard';
 import FilterDropdowns from './FilterDropdowns';
 
@@ -23,13 +30,14 @@ const TalentsTab: React.FC<TalentsTabProps> = ({
   onSearchQueryChange,
   onSearch
 }) => {
-  // Add filters state with non-empty default values
   const [filters, setFilters] = useState({
     role: 'all_roles',
     profession: 'all_professions',
     country: 'all_countries',
     language: 'all_languages'
   });
+  const [currentPage, setCurrentPage] = useState(1);
+  const professionalsPerPage = 20;
 
   // Debug logs to check what data we're receiving
   console.log('TalentsTab - All professionals:', professionals);
@@ -42,12 +50,28 @@ const TalentsTab: React.FC<TalentsTabProps> = ({
       ...prev,
       [filterName]: value
     }));
+    setCurrentPage(1); // Reset to first page when filters change
   };
 
   // Apply filters when they change
   useEffect(() => {
     onSearch();
   }, [filters, onSearch]);
+
+  // Calculate pagination values
+  const totalPages = Math.ceil(filteredProfessionals.length / professionalsPerPage);
+  const startIndex = (currentPage - 1) * professionalsPerPage;
+  const endIndex = startIndex + professionalsPerPage;
+  const currentProfessionals = filteredProfessionals.slice(startIndex, endIndex);
+
+  // Generate page numbers for pagination
+  const getPageNumbers = () => {
+    const pages = [];
+    for (let i = 1; i <= totalPages; i++) {
+      pages.push(i);
+    }
+    return pages;
+  };
 
   return (
     <Card>
@@ -78,14 +102,61 @@ const TalentsTab: React.FC<TalentsTabProps> = ({
             onFilterChange={handleFilterChange}
           />
           
-          {filteredProfessionals && filteredProfessionals.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {filteredProfessionals.map((professional) => (
-                <ProfessionalCard 
-                  key={professional.id || professional.email || Math.random().toString()} 
-                  professional={professional} 
-                />
-              ))}
+          {currentProfessionals && currentProfessionals.length > 0 ? (
+            <div className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {currentProfessionals.map((professional) => (
+                  <ProfessionalCard 
+                    key={professional.id || professional.email || Math.random().toString()} 
+                    professional={professional} 
+                  />
+                ))}
+              </div>
+              
+              {totalPages > 1 && (
+                <Pagination className="mt-6">
+                  <PaginationContent>
+                    {currentPage > 1 && (
+                      <PaginationItem>
+                        <PaginationPrevious 
+                          href="#" 
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setCurrentPage(prev => prev - 1);
+                          }} 
+                        />
+                      </PaginationItem>
+                    )}
+                    
+                    {getPageNumbers().map((page) => (
+                      <PaginationItem key={page}>
+                        <PaginationLink
+                          href="#"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setCurrentPage(page);
+                          }}
+                          isActive={currentPage === page}
+                        >
+                          {page}
+                        </PaginationLink>
+                      </PaginationItem>
+                    ))}
+                    
+                    {currentPage < totalPages && (
+                      <PaginationItem>
+                        <PaginationNext 
+                          href="#" 
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setCurrentPage(prev => prev + 1);
+                          }} 
+                        />
+                      </PaginationItem>
+                    )}
+                  </PaginationContent>
+                </Pagination>
+              )}
             </div>
           ) : professionals && professionals.length > 0 && (searchQuery || !Object.values(filters).every(f => f.startsWith('all_'))) ? (
             <div className="text-center py-8">
@@ -108,19 +179,6 @@ const TalentsTab: React.FC<TalentsTabProps> = ({
                 Please wait while we fetch the data
               </p>
             </div>
-          )}
-          
-          {professionals && professionals.length > 0 && (
-            <Button 
-              variant="outline" 
-              className="w-full"
-              asChild
-            >
-              <Link to="/professionals">
-                <Users className="h-4 w-4 mr-2" />
-                View All Professionals
-              </Link>
-            </Button>
           )}
         </div>
       </CardContent>
