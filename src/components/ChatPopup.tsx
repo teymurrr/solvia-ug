@@ -1,51 +1,40 @@
-
 import React, { useState } from 'react';
-import { MessageCircle, X, Send } from 'lucide-react';
+import { MessageCircle, Send } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
-
-const mockMessages = [
-  {
-    id: '1',
-    senderId: 'institution1',
-    recipientId: 'professional1',
-    senderName: 'Berlin Medical Center',
-    message: 'We were impressed by your profile and would like to discuss potential opportunities at our institution.',
-    timestamp: '2025-04-16T10:30:00Z',
-    read: true,
-  },
-  {
-    id: '2',
-    senderId: 'institution2',
-    recipientId: 'professional1',
-    senderName: 'Vienna General Hospital',
-    message: 'Based on your qualifications, we would like to invite you for an interview for the Cardiology position.',
-    timestamp: '2025-04-15T14:45:00Z',
-    read: false,
-  }
-];
+import { useMessages, type Message } from '@/hooks/useMessages';
+import { useAuth } from '@/contexts/AuthContext';
 
 const ChatPopup = () => {
   const [replyText, setReplyText] = useState('');
-  const [messages, setMessages] = useState(mockMessages);
-  const [activeMessage, setActiveMessage] = useState<typeof mockMessages[0] | null>(null);
+  const [activeMessage, setActiveMessage] = useState<Message | null>(null);
+  const { messages, addMessage, markAsRead } = useMessages();
+  const { user, userType } = useAuth();
   
   const unreadCount = messages.filter(m => !m.read).length;
 
-  const handleMessageClick = (message: typeof mockMessages[0]) => {
+  const handleMessageClick = (message: Message) => {
     setActiveMessage(message);
     if (!message.read) {
-      setMessages(messages.map(m => m.id === message.id ? { ...m, read: true } : m));
+      markAsRead(message.id);
     }
   };
 
   const handleSendReply = () => {
-    if (!replyText.trim() || !activeMessage) return;
+    if (!replyText.trim() || !activeMessage || !user) return;
     
-    // Add reply logic here
+    addMessage({
+      senderId: user.id,
+      recipientId: activeMessage.senderId,
+      senderName: userType === 'institution' ? 'Your Institution' : 'You',
+      subject: `Re: ${activeMessage.subject || 'No subject'}`,
+      message: replyText,
+      read: false,
+    });
+    
     setReplyText('');
   };
 

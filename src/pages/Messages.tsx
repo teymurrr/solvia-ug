@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useLocation, useParams, useNavigate } from 'react-router-dom';
 import MainLayout from '@/components/MainLayout';
@@ -10,64 +9,41 @@ import { Mail, Send, User, ArrowLeft } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
 import { Badge } from '@/components/ui/badge';
-
-const mockMessages = [
-  {
-    id: '1',
-    senderId: 'institution1',
-    recipientId: 'professional1',
-    senderName: 'Berlin Medical Center',
-    subject: 'Job Opportunity',
-    message: 'We were impressed by your profile and would like to discuss potential opportunities at our institution.',
-    timestamp: '2025-04-16T10:30:00Z',
-    read: true,
-  },
-  {
-    id: '2',
-    senderId: 'institution2',
-    recipientId: 'professional1',
-    senderName: 'Vienna General Hospital',
-    subject: 'Interview Request',
-    message: 'Based on your qualifications, we would like to invite you for an interview for the Cardiology position.',
-    timestamp: '2025-04-15T14:45:00Z',
-    read: false,
-  }
-];
+import { useMessages, type Message } from '@/hooks/useMessages';
 
 const Messages = () => {
-  const { id } = useParams();
-  const location = useLocation();
   const navigate = useNavigate();
   const { toast } = useToast();
   const { user, userType } = useAuth();
-  const [messages, setMessages] = useState(mockMessages);
-  const [activeMessage, setActiveMessage] = useState<any>(null);
+  const { messages, addMessage, markAsRead } = useMessages();
+  const [activeMessage, setActiveMessage] = useState<Message | null>(null);
   const [replyText, setReplyText] = useState('');
   const [newMessageData, setNewMessageData] = useState({
     recipientId: '',
     subject: '',
     message: '',
   });
-  
+  const { id } = useParams();
+  const location = useLocation();
+
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
     const recipientId = searchParams.get('recipientId');
     if (recipientId) {
       setNewMessageData(prev => ({ ...prev, recipientId }));
     }
-    
+
     if (id) {
       const message = messages.find(m => m.id === id);
       if (message) {
         setActiveMessage(message);
-        // Mark message as read when viewed
         if (!message.read) {
-          setMessages(messages.map(m => m.id === id ? { ...m, read: true } : m));
+          markAsRead(message.id);
         }
       }
     }
-  }, [id, location.search, messages]);
-  
+  }, [id, location.search, messages, markAsRead]);
+
   const handleSendMessage = () => {
     if (!newMessageData.recipientId || !newMessageData.subject || !newMessageData.message) {
       toast({
@@ -77,49 +53,42 @@ const Messages = () => {
       });
       return;
     }
-    
-    const newMessage = {
-      id: Date.now().toString(),
+
+    addMessage({
       senderId: user?.id || 'current-user',
       recipientId: newMessageData.recipientId,
       senderName: userType === 'institution' ? 'Your Institution' : 'You',
       subject: newMessageData.subject,
       message: newMessageData.message,
-      timestamp: new Date().toISOString(),
       read: false,
-    };
-    
-    setMessages([...messages, newMessage]);
-    
+    });
+
     toast({
       title: "Message sent",
       description: "Your message has been sent successfully",
     });
-    
+
     setNewMessageData({
       recipientId: '',
       subject: '',
       message: '',
     });
-    
+
     navigate('/messages');
   };
   
   const handleSendReply = () => {
-    if (!replyText || !activeMessage) return;
+    if (!replyText || !activeMessage || !user) return;
     
-    const replyMessage = {
-      id: Date.now().toString(),
-      senderId: user?.id || 'current-user',
+    addMessage({
+      senderId: user.id,
       recipientId: activeMessage.senderId,
       senderName: userType === 'institution' ? 'Your Institution' : 'You',
-      subject: `Re: ${activeMessage.subject}`,
+      subject: `Re: ${activeMessage.subject || 'No subject'}`,
       message: replyText,
-      timestamp: new Date().toISOString(),
       read: false,
-    };
+    });
     
-    setMessages([...messages, replyMessage]);
     setReplyText('');
     
     toast({
@@ -148,7 +117,7 @@ const Messages = () => {
                     : "Communicate with healthcare professionals"}
                 </CardDescription>
               </div>
-              {location.pathname === '/messages' && userType !== 'professional' && (
+              {!activeMessage && userType !== 'professional' && (
                 <Button onClick={() => navigate('/messages/new')}>
                   <Mail className="mr-2 h-4 w-4" />
                   New Message
@@ -246,9 +215,8 @@ const Messages = () => {
                         onClick={() => {
                           setActiveMessage(message);
                           navigate(`/messages/${message.id}`);
-                          // Mark message as read when clicked
                           if (!message.read) {
-                            setMessages(messages.map(m => m.id === message.id ? { ...m, read: true } : m));
+                            markAsRead(message.id);
                           }
                         }}
                       >
