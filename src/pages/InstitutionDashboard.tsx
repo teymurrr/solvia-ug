@@ -1,203 +1,17 @@
-import React, { useState, useEffect, useCallback } from 'react';
+
+import React, { useState } from 'react';
 import MainLayout from '@/components/MainLayout';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { useToast } from '@/hooks/use-toast';
-import InstitutionProfileEditForm from '@/components/InstitutionProfileEditForm';
 import VacancyForm from '@/components/VacancyForm';
 import { ProfileTab, VacanciesTab, TalentsTab, DashboardHeader } from '@/components/institution-dashboard';
+import { useProfessionals } from '@/hooks/useProfessionals';
+import { useVacancies } from '@/hooks/useVacancies';
 
 const InstitutionDashboard = () => {
-  // State for talent search
-  const [professionals, setProfessionals] = useState<any[]>([]);
-  const [filteredProfessionals, setFilteredProfessionals] = useState<any[]>([]);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [filters, setFilters] = useState({
-    role: 'all_roles',
-    profession: 'all_professions',
-    country: 'all_countries',
-    language: 'all_languages'
-  });
-  const [profileFormOpen, setProfileFormOpen] = useState(false);
   const [vacancyFormOpen, setVacancyFormOpen] = useState(false);
-  const { toast } = useToast();
+  const { professionals, filteredProfessionals, setFilteredProfessionals } = useProfessionals();
+  const { vacancies, handleAddVacancy, handleDeleteVacancy } = useVacancies();
   
-  // Load professionals from localStorage on component mount
-  useEffect(() => {
-    const loadProfessionals = () => {
-      try {
-        const savedProfessionals = localStorage.getItem('professionals');
-        console.log('Raw localStorage professionals data:', savedProfessionals);
-        
-        if (savedProfessionals) {
-          const parsedProfessionals = JSON.parse(savedProfessionals);
-          console.log('Parsed professionals:', parsedProfessionals);
-          
-          if (Array.isArray(parsedProfessionals)) {
-            setProfessionals(parsedProfessionals);
-            // Initially display all professionals
-            setFilteredProfessionals(parsedProfessionals);
-          } else {
-            console.error('Professionals data is not an array:', parsedProfessionals);
-            setProfessionals([]);
-            setFilteredProfessionals([]);
-          }
-        } else {
-          console.log('No professionals found in localStorage');
-          // Create some sample professionals for demonstration
-          const sampleData = [
-            {
-              id: '1',
-              firstName: 'John',
-              lastName: 'Smith',
-              specialty: 'Cardiology',
-              profession: 'Doctor',
-              country: 'Germany',
-              language: 'English',
-              isOpenToRelocation: true
-            },
-            {
-              id: '2',
-              firstName: 'Maria',
-              lastName: 'Garcia',
-              specialty: 'Neurology',
-              profession: 'Specialist',
-              country: 'Spain',
-              language: 'Spanish',
-              isOpenToRelocation: false
-            },
-            {
-              id: '3',
-              firstName: 'David',
-              lastName: 'Chen',
-              specialty: 'Pediatrics',
-              profession: 'Doctor',
-              country: 'Canada',
-              language: 'English',
-              isOpenToRelocation: true
-            }
-          ];
-          
-          setProfessionals(sampleData);
-          setFilteredProfessionals(sampleData);
-          localStorage.setItem('professionals', JSON.stringify(sampleData));
-        }
-      } catch (error) {
-        console.error('Error loading professionals:', error);
-        setProfessionals([]);
-        setFilteredProfessionals([]);
-      }
-    };
-    
-    loadProfessionals();
-    
-    // Set up an event listener to reload professionals when localStorage changes
-    window.addEventListener('storage', loadProfessionals);
-    
-    return () => {
-      window.removeEventListener('storage', loadProfessionals);
-    };
-  }, []);
-  
-  // Load vacancies from localStorage on component mount
-  const [vacancies, setVacancies] = useState<any[]>(() => {
-    try {
-      const savedVacancies = localStorage.getItem('institutionVacancies');
-      return savedVacancies ? JSON.parse(savedVacancies) : [];
-    } catch (error) {
-      console.error('Error loading vacancies:', error);
-      return [];
-    }
-  });
-
-  // Save vacancies to localStorage whenever they change
-  useEffect(() => {
-    localStorage.setItem('institutionVacancies', JSON.stringify(vacancies));
-  }, [vacancies]);
-
-  // Handle talent search with filtering
-  const handleTalentSearch = useCallback(() => {
-    console.log('Searching for:', searchQuery);
-    console.log('With filters:', filters);
-    console.log('All professionals before search:', professionals);
-    
-    if (!professionals || professionals.length === 0) {
-      setFilteredProfessionals([]);
-      return;
-    }
-    
-    let filtered = [...professionals];
-    
-    // Apply text search if provided
-    if (searchQuery.trim()) {
-      filtered = filtered.filter(prof => 
-        (prof.firstName && prof.firstName.toLowerCase().includes(searchQuery.toLowerCase())) ||
-        (prof.lastName && prof.lastName.toLowerCase().includes(searchQuery.toLowerCase())) ||
-        (prof.specialty && prof.specialty.toLowerCase().includes(searchQuery.toLowerCase())) ||
-        (prof.firstName && prof.lastName && 
-         `${prof.firstName} ${prof.lastName}`.toLowerCase().includes(searchQuery.toLowerCase()))
-      );
-    }
-    
-    // Apply each filter if selected (and not "all")
-    if (filters.role && filters.role !== 'all_roles') {
-      filtered = filtered.filter(prof => 
-        prof.role && prof.role.toLowerCase() === filters.role.toLowerCase()
-      );
-    }
-    
-    if (filters.profession && filters.profession !== 'all_professions') {
-      filtered = filtered.filter(prof => 
-        (prof.profession && prof.profession.toLowerCase() === filters.profession.toLowerCase()) ||
-        (prof.specialty && prof.specialty.toLowerCase() === filters.profession.toLowerCase())
-      );
-    }
-    
-    if (filters.country && filters.country !== 'all_countries') {
-      filtered = filtered.filter(prof => 
-        prof.country && prof.country.toLowerCase() === filters.country.toLowerCase()
-      );
-    }
-    
-    if (filters.language && filters.language !== 'all_languages') {
-      filtered = filtered.filter(prof => 
-        prof.language && prof.language.toLowerCase() === filters.language.toLowerCase()
-      );
-    }
-    
-    console.log('Filtered professionals after search and filters:', filtered);
-    setFilteredProfessionals(filtered);
-  }, [searchQuery, filters, professionals]);
-
-  // Update filters and trigger search
-  const handleFilterChange = (key: string, value: string) => {
-    const newFilters = { ...filters, [key]: value };
-    setFilters(newFilters);
-    
-    console.log('Updated filters:', newFilters);
-    // We'll let the TalentsTab component's useEffect trigger the search
-  };
-
-  const handleAddVacancy = (vacancyData: any) => {
-    // Add the new vacancy with a timestamp ID
-    const newVacancy = { ...vacancyData, id: Date.now() };
-    setVacancies([...vacancies, newVacancy]);
-    setVacancyFormOpen(false);
-    
-    toast({
-      title: "Vacancy Created",
-      description: "Your vacancy has been saved and will persist even after page refresh.",
-    });
-  };
-
-  const handleDeleteVacancy = (id: number) => {
-    setVacancies(vacancies.filter(vacancy => vacancy.id !== id));
-    
-    toast({
-      title: "Vacancy Deleted",
-      description: "The vacancy has been removed from your listings.",
-    });
-  };
-
   return (
     <MainLayout hideEditProfile>
       <div className="container py-8">
@@ -213,7 +27,7 @@ const InstitutionDashboard = () => {
           </TabsList>
           
           <TabsContent value="profile" className="space-y-6">
-            <ProfileTab onEditProfile={() => setProfileFormOpen(true)} />
+            <ProfileTab />
           </TabsContent>
           
           <TabsContent value="vacancies" className="space-y-6">
@@ -228,9 +42,9 @@ const InstitutionDashboard = () => {
             <TalentsTab 
               professionals={professionals}
               filteredProfessionals={filteredProfessionals}
-              searchQuery={searchQuery}
-              onSearchQueryChange={(e) => setSearchQuery(e.target.value)}
-              onSearch={handleTalentSearch}
+              searchQuery=""
+              onSearchQueryChange={() => {}}
+              onSearch={() => {}}
             />
           </TabsContent>
         </Tabs>
