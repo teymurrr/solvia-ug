@@ -49,7 +49,7 @@ const TalentsTab: React.FC<TalentsTabProps> = ({
     if (Object.values(filters).some(filter => filter !== '')) {
       onSearch();
     }
-  }, [filters]);
+  }, [filters, onSearch]);
 
   return (
     <Card>
@@ -80,21 +80,21 @@ const TalentsTab: React.FC<TalentsTabProps> = ({
             onFilterChange={handleFilterChange}
           />
           
-          {filteredProfessionals.length > 0 ? (
+          {filteredProfessionals && filteredProfessionals.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {filteredProfessionals.map((professional) => (
                 <ProfessionalCard 
-                  key={professional.id || professional.email} 
+                  key={professional.id || professional.email || Math.random().toString()} 
                   professional={professional} 
                 />
               ))}
             </div>
-          ) : professionals.length > 0 && (searchQuery || Object.values(filters).some(f => f !== '')) ? (
+          ) : professionals && professionals.length > 0 && (searchQuery || Object.values(filters).some(f => f !== '')) ? (
             <div className="text-center py-8">
               <h3 className="text-lg font-medium">No matching professionals found</h3>
               <p className="text-muted-foreground">Try adjusting your search criteria or filters</p>
             </div>
-          ) : professionals.length === 0 ? (
+          ) : professionals && professionals.length === 0 ? (
             <div className="text-center py-8">
               <Users className="h-12 w-12 mx-auto text-muted-foreground" />
               <h3 className="mt-4 text-lg font-medium">No professionals have signed up yet</h3>
@@ -103,17 +103,16 @@ const TalentsTab: React.FC<TalentsTabProps> = ({
               </p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {professionals.map((professional) => (
-                <ProfessionalCard 
-                  key={professional.id || professional.email} 
-                  professional={professional} 
-                />
-              ))}
+            <div className="text-center py-8">
+              <Users className="h-12 w-12 mx-auto text-muted-foreground" />
+              <h3 className="mt-4 text-lg font-medium">Loading professionals...</h3>
+              <p className="text-muted-foreground">
+                Please wait while we fetch the data
+              </p>
             </div>
           )}
           
-          {professionals.length > 0 && (
+          {professionals && professionals.length > 0 && (
             <Button 
               variant="outline" 
               className="w-full"

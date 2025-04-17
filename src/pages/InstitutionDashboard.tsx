@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import MainLayout from '@/components/MainLayout';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
@@ -44,8 +44,43 @@ const InstitutionDashboard = () => {
           }
         } else {
           console.log('No professionals found in localStorage');
-          setProfessionals([]);
-          setFilteredProfessionals([]);
+          // Create some sample professionals for demonstration
+          const sampleData = [
+            {
+              id: '1',
+              firstName: 'John',
+              lastName: 'Smith',
+              specialty: 'Cardiology',
+              profession: 'Doctor',
+              country: 'Germany',
+              language: 'English',
+              isOpenToRelocation: true
+            },
+            {
+              id: '2',
+              firstName: 'Maria',
+              lastName: 'Garcia',
+              specialty: 'Neurology',
+              profession: 'Specialist',
+              country: 'Spain',
+              language: 'Spanish',
+              isOpenToRelocation: false
+            },
+            {
+              id: '3',
+              firstName: 'David',
+              lastName: 'Chen',
+              specialty: 'Pediatrics',
+              profession: 'Doctor',
+              country: 'Canada',
+              language: 'English',
+              isOpenToRelocation: true
+            }
+          ];
+          
+          setProfessionals(sampleData);
+          setFilteredProfessionals(sampleData);
+          localStorage.setItem('professionals', JSON.stringify(sampleData));
         }
       } catch (error) {
         console.error('Error loading professionals:', error);
@@ -81,19 +116,24 @@ const InstitutionDashboard = () => {
   }, [vacancies]);
 
   // Handle talent search with filtering
-  const handleTalentSearch = () => {
+  const handleTalentSearch = useCallback(() => {
     console.log('Searching for:', searchQuery);
     console.log('With filters:', filters);
     console.log('All professionals before search:', professionals);
+    
+    if (!professionals || professionals.length === 0) {
+      setFilteredProfessionals([]);
+      return;
+    }
     
     let filtered = [...professionals];
     
     // Apply text search if provided
     if (searchQuery.trim()) {
       filtered = filtered.filter(prof => 
-        prof.firstName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        prof.lastName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        prof.specialty?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (prof.firstName && prof.firstName.toLowerCase().includes(searchQuery.toLowerCase())) ||
+        (prof.lastName && prof.lastName.toLowerCase().includes(searchQuery.toLowerCase())) ||
+        (prof.specialty && prof.specialty.toLowerCase().includes(searchQuery.toLowerCase())) ||
         (prof.firstName && prof.lastName && 
          `${prof.firstName} ${prof.lastName}`.toLowerCase().includes(searchQuery.toLowerCase()))
       );
@@ -102,32 +142,32 @@ const InstitutionDashboard = () => {
     // Apply each filter if selected
     if (filters.role) {
       filtered = filtered.filter(prof => 
-        prof.role?.toLowerCase() === filters.role.toLowerCase()
+        prof.role && prof.role.toLowerCase() === filters.role.toLowerCase()
       );
     }
     
     if (filters.profession) {
       filtered = filtered.filter(prof => 
-        prof.profession?.toLowerCase() === filters.profession.toLowerCase() ||
-        prof.specialty?.toLowerCase() === filters.profession.toLowerCase()
+        (prof.profession && prof.profession.toLowerCase() === filters.profession.toLowerCase()) ||
+        (prof.specialty && prof.specialty.toLowerCase() === filters.profession.toLowerCase())
       );
     }
     
     if (filters.country) {
       filtered = filtered.filter(prof => 
-        prof.country?.toLowerCase() === filters.country.toLowerCase()
+        prof.country && prof.country.toLowerCase() === filters.country.toLowerCase()
       );
     }
     
     if (filters.language) {
       filtered = filtered.filter(prof => 
-        prof.language?.toLowerCase() === filters.language.toLowerCase()
+        prof.language && prof.language.toLowerCase() === filters.language.toLowerCase()
       );
     }
     
     console.log('Filtered professionals after search and filters:', filtered);
     setFilteredProfessionals(filtered);
-  };
+  }, [searchQuery, filters, professionals]);
 
   // Update filters and trigger search
   const handleFilterChange = (key: string, value: string) => {
