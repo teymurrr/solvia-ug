@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useLocation, useParams, useNavigate } from 'react-router-dom';
 import MainLayout from '@/components/MainLayout';
@@ -59,6 +60,7 @@ const Messages = () => {
       const message = messages.find(m => m.id === id);
       if (message) {
         setActiveMessage(message);
+        // Mark message as read when viewed
         if (!message.read) {
           setMessages(messages.map(m => m.id === id ? { ...m, read: true } : m));
         }
@@ -146,7 +148,7 @@ const Messages = () => {
                     : "Communicate with healthcare professionals"}
                 </CardDescription>
               </div>
-              {location.pathname === '/messages' && (
+              {location.pathname === '/messages' && userType !== 'professional' && (
                 <Button onClick={() => navigate('/messages/new')}>
                   <Mail className="mr-2 h-4 w-4" />
                   New Message
@@ -170,7 +172,7 @@ const Messages = () => {
             </div>
           </CardHeader>
           <CardContent>
-            {location.pathname === '/messages/new' && (
+            {location.pathname === '/messages/new' && userType !== 'professional' && (
               <div className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium mb-1">Subject</label>
@@ -244,6 +246,10 @@ const Messages = () => {
                         onClick={() => {
                           setActiveMessage(message);
                           navigate(`/messages/${message.id}`);
+                          // Mark message as read when clicked
+                          if (!message.read) {
+                            setMessages(messages.map(m => m.id === message.id ? { ...m, read: true } : m));
+                          }
                         }}
                       >
                         <div className="flex justify-between">
