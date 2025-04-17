@@ -11,7 +11,14 @@ export const useProfileData = () => {
   const [loading, setLoading] = useState(false);
 
   const saveProfileData = async (data: ProfileFormValues) => {
-    if (!user) return;
+    if (!user) {
+      toast({
+        title: "Authentication Error",
+        description: "You must be logged in to save your profile.",
+        variant: "destructive",
+      });
+      return false;
+    }
     
     setLoading(true);
     try {
@@ -20,6 +27,7 @@ export const useProfileData = () => {
         title: "Profile Updated",
         description: "Your profile has been successfully saved.",
       });
+      return true;
     } catch (error) {
       console.error('Error saving profile:', error);
       toast({
@@ -27,18 +35,22 @@ export const useProfileData = () => {
         description: "Failed to save profile data.",
         variant: "destructive",
       });
-      throw error;
+      return false;
     } finally {
       setLoading(false);
     }
   };
 
-  const loadProfileData = async () => {
-    if (!user) return null;
+  const loadProfileData = async (): Promise<ProfileFormValues | null> => {
+    if (!user) {
+      console.log("No user found, cannot load profile");
+      return null;
+    }
     
     setLoading(true);
     try {
       const data = await loadProfileFromDb(user.id);
+      console.log("Profile data loaded successfully:", !!data);
       return data;
     } catch (error) {
       console.error('Error loading profile:', error);
