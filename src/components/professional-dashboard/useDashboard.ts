@@ -1,7 +1,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { ProfileFormValues } from '@/components/professional-profile/types';
-import { useProfileData } from '@/components/professional-profile/useProfileData';
+import { useProfileData } from '@/components/professional-profile/hooks/useProfileData';
 
 export const defaultProfileData: ProfileFormValues = {
   firstName: "John",
