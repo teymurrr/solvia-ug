@@ -17,7 +17,7 @@ export const useProfileData = () => {
         description: "You must be logged in to save your profile.",
         variant: "destructive",
       });
-      return;
+      return false;
     }
     
     setLoading(true);
@@ -35,7 +35,7 @@ export const useProfileData = () => {
         description: "Failed to save profile data.",
         variant: "destructive",
       });
-      throw error;
+      return false;
     } finally {
       setLoading(false);
     }
@@ -50,7 +50,7 @@ export const useProfileData = () => {
     setLoading(true);
     try {
       const data = await loadProfileFromDb(user.id);
-      console.log("Profile data loaded:", data);
+      console.log("Profile data loaded successfully:", !!data);
       return data;
     } catch (error) {
       console.error('Error loading profile:', error);
