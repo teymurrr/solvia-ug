@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useLocation, useParams, useNavigate } from 'react-router-dom';
 import MainLayout from '@/components/MainLayout';
@@ -11,7 +10,6 @@ import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
 import { Badge } from '@/components/ui/badge';
 
-// Mock data for messages - in a real app, this would come from a database
 const mockMessages = [
   {
     id: '1',
@@ -50,7 +48,6 @@ const Messages = () => {
     message: '',
   });
   
-  // Parse recipient ID from URL if it exists
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
     const recipientId = searchParams.get('recipientId');
@@ -58,12 +55,10 @@ const Messages = () => {
       setNewMessageData(prev => ({ ...prev, recipientId }));
     }
     
-    // If a message ID is provided, find and set the active message
     if (id) {
       const message = messages.find(m => m.id === id);
       if (message) {
         setActiveMessage(message);
-        // Mark as read
         if (!message.read) {
           setMessages(messages.map(m => m.id === id ? { ...m, read: true } : m));
         }
@@ -72,17 +67,15 @@ const Messages = () => {
   }, [id, location.search, messages]);
   
   const handleSendMessage = () => {
-    // In a real app, this would send to the database
     if (!newMessageData.recipientId || !newMessageData.subject || !newMessageData.message) {
       toast({
         title: "Missing information",
-        description: "Please fill in all fields",
+        description: "Please fill in all required fields",
         variant: "destructive",
       });
       return;
     }
     
-    // Add new message to the list (mock implementation)
     const newMessage = {
       id: Date.now().toString(),
       senderId: user?.id || 'current-user',
@@ -101,21 +94,18 @@ const Messages = () => {
       description: "Your message has been sent successfully",
     });
     
-    // Reset form
     setNewMessageData({
       recipientId: '',
       subject: '',
       message: '',
     });
     
-    // Navigate back to inbox
     navigate('/messages');
   };
   
   const handleSendReply = () => {
     if (!replyText || !activeMessage) return;
     
-    // Create a reply message
     const replyMessage = {
       id: Date.now().toString(),
       senderId: user?.id || 'current-user',
@@ -136,12 +126,10 @@ const Messages = () => {
     });
   };
   
-  // Filter messages for the current user
   const userMessages = messages.filter(message => 
     userType === 'professional' ? message.recipientId === 'professional1' : message.recipientId === user?.id
   );
   
-  // Count unread messages
   const unreadCount = userMessages.filter(message => !message.read).length;
   
   return (
@@ -182,17 +170,8 @@ const Messages = () => {
             </div>
           </CardHeader>
           <CardContent>
-            {/* New Message Form */}
             {location.pathname === '/messages/new' && (
               <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium mb-1">Recipient ID</label>
-                  <Input 
-                    value={newMessageData.recipientId}
-                    onChange={(e) => setNewMessageData({...newMessageData, recipientId: e.target.value})}
-                    placeholder="Enter recipient ID"
-                  />
-                </div>
                 <div>
                   <label className="block text-sm font-medium mb-1">Subject</label>
                   <Input 
@@ -217,7 +196,6 @@ const Messages = () => {
               </div>
             )}
             
-            {/* Message Detail */}
             {activeMessage && (
               <div className="space-y-6">
                 <div>
@@ -248,7 +226,6 @@ const Messages = () => {
               </div>
             )}
             
-            {/* Message List */}
             {location.pathname === '/messages' && !activeMessage && (
               <div>
                 {unreadCount > 0 && (
