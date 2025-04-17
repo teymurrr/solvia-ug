@@ -41,7 +41,8 @@ const Navbar: React.FC = () => {
       title: "Logged out",
       description: "You have been logged out successfully.",
     });
-    navigate('/');
+    // Explicitly navigate to login page after logout
+    navigate('/login');
   };
 
   const navigateToDashboard = () => {
