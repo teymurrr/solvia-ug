@@ -27,7 +27,7 @@ const InstitutionDashboard = () => {
           </TabsList>
           
           <TabsContent value="profile" className="space-y-6">
-            <ProfileTab />
+            <ProfileTab onEditProfile={() => {}} />
           </TabsContent>
           
           <TabsContent value="vacancies" className="space-y-6">

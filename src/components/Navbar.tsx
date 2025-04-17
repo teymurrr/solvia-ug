@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Logo from './Logo';
@@ -13,7 +14,19 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuSubContent,
 } from '@/components/ui/dropdown-menu';
-import { Building, LogOut, Mail, Settings, Languages } from 'lucide-react';
+import { 
+  Building, 
+  LogOut, 
+  Mail, 
+  Settings, 
+  Languages, 
+  LayoutDashboard, 
+  BookOpen, 
+  User, 
+  LineChart, 
+  Menu, 
+  X 
+} from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { Badge } from '@/components/ui/badge';
 import { availableLanguages } from '@/data/languages';
@@ -24,6 +37,10 @@ const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { isLoggedIn, userType, signOut } = useAuth();
   const navigate = useNavigate();
+
+  const toggleMobileMenu = () => {
+    setMobileMenuOpen(!mobileMenuOpen);
+  };
 
   const handleSignOut = () => {
     signOut();
