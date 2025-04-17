@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useCallback } from 'react';
 import MainLayout from '@/components/MainLayout';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -203,7 +202,6 @@ const InstitutionDashboard = () => {
     <MainLayout hideEditProfile>
       <div className="container py-8">
         <DashboardHeader 
-          onEditProfile={() => setProfileFormOpen(true)} 
           onAddVacancy={() => setVacancyFormOpen(true)} 
         />
         
@@ -237,11 +235,6 @@ const InstitutionDashboard = () => {
           </TabsContent>
         </Tabs>
       </div>
-      
-      <InstitutionProfileEditForm 
-        open={profileFormOpen} 
-        onOpenChange={setProfileFormOpen} 
-      />
       
       <VacancyForm 
         open={vacancyFormOpen} 

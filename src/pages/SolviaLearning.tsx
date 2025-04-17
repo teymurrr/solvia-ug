@@ -1,4 +1,3 @@
-
 import React from 'react';
 import MainLayout from '@/components/MainLayout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -21,7 +20,7 @@ const SolviaLearning = () => {
             {/* German Language Courses */}
             <Card className="relative overflow-hidden">
               <div className="absolute top-4 right-4">
-                <Badge variant="secondary" className="bg-primary/10">Coming Soon</Badge>
+                <Badge variant="comingSoon">Coming Soon</Badge>
               </div>
               <CardHeader>
                 <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
@@ -51,7 +50,7 @@ const SolviaLearning = () => {
             {/* FSP Courses */}
             <Card className="relative overflow-hidden">
               <div className="absolute top-4 right-4">
-                <Badge variant="secondary" className="bg-primary/10">Coming Soon</Badge>
+                <Badge variant="comingSoon">Coming Soon</Badge>
               </div>
               <CardHeader>
                 <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
