@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -50,6 +51,7 @@ const ProfessionalProfileEditForm: React.FC<ProfessionalProfileEditFormProps> = 
   const { toast } = useToast();
   const { saveProfileData, loadProfileData, loading } = useProfileData();
   const [savedData, setSavedData] = useState<ProfileFormValues | null>(null);
+  const [dataLoaded, setDataLoaded] = useState(false);
   const [formInitialized, setFormInitialized] = useState(false);
   
   const form = useForm<ProfileFormValues>({
@@ -58,11 +60,9 @@ const ProfessionalProfileEditForm: React.FC<ProfessionalProfileEditFormProps> = 
     mode: "onChange"
   });
 
+  // Load profile data only once when the dialog opens
   useEffect(() => {
-    form.reset(initialData);
-    setFormInitialized(true);
-    
-    if (open) {
+    if (open && !dataLoaded) {
       loadProfileData().then(data => {
         if (data) {
           const typedData: ProfileFormValues = {
@@ -77,17 +77,24 @@ const ProfessionalProfileEditForm: React.FC<ProfessionalProfileEditFormProps> = 
           console.log("Using fallback data for form");
           form.reset(initialData);
         }
+        setDataLoaded(true);
+        setFormInitialized(true);
       }).catch(error => {
         console.error("Error loading profile data:", error);
         form.reset(initialData);
+        setDataLoaded(true);
+        setFormInitialized(true);
         toast({
           title: "Could not load profile data",
           description: "Using default values. You can still edit and save your profile.",
           variant: "destructive",
         });
       });
+    } else if (!open) {
+      // Reset loaded state when dialog closes
+      setDataLoaded(false);
     }
-  }, [open, form, loadProfileData, initialData]);
+  }, [open, initialData]);
 
   const onSubmit = async (data: ProfileFormValues) => {
     try {

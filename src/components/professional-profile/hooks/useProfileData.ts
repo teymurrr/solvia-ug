@@ -36,8 +36,10 @@ export const useProfileData = () => {
   const loadProfileData = async () => {
     if (!user) return null;
     
+    setLoading(true);
     try {
-      return await loadProfileFromDb(user.id);
+      const data = await loadProfileFromDb(user.id);
+      return data;
     } catch (error) {
       console.error('Error loading profile:', error);
       toast({
@@ -46,9 +48,10 @@ export const useProfileData = () => {
         variant: "destructive",
       });
       return null;
+    } finally {
+      setLoading(false);
     }
   };
 
   return { saveProfileData, loadProfileData, loading };
 };
-
