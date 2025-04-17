@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Logo from './Logo';
@@ -31,7 +30,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { Badge } from '@/components/ui/badge';
 import { availableLanguages } from '@/data/languages';
 
-const hasUnreadMessages = true; // This would be dynamically determined
+const hasUnreadMessages = false; // This should be determined by your actual unread messages state
 
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -160,7 +159,7 @@ const Navbar = () => {
               <span>Language</span>
             </DropdownMenuSubTrigger>
             <DropdownMenuSubContent>
-              {availableLanguages.slice(0, 3).map((language) => (
+              {availableLanguages.map((language) => (
                 <DropdownMenuItem key={language}>
                   {language}
                 </DropdownMenuItem>
