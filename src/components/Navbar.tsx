@@ -11,7 +11,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { LayoutDashboard, BookOpen, User, Building, LogOut, Mail, LineChart } from 'lucide-react';
+import { LayoutDashboard, BookOpen, User, Building, LogOut, Mail, LineChart, Menu, X } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { Badge } from '@/components/ui/badge';
 
