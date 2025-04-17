@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -6,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Form } from '@/components/ui/form';
-import { useProfileData } from './useProfileData';
+import { useProfileData } from './hooks/useProfileData';
 
 import { ProfileFormValues, profileFormSchema, Experience, Education, Language } from './types';
 import ProfileImageSection from './ProfileImageSection';
@@ -60,15 +59,12 @@ const ProfessionalProfileEditForm: React.FC<ProfessionalProfileEditFormProps> = 
   });
 
   useEffect(() => {
-    // Initialize form with initial data to ensure fields are interactive
     form.reset(initialData);
     setFormInitialized(true);
     
     if (open) {
-      // Attempt to load profile data from backend
       loadProfileData().then(data => {
         if (data) {
-          // Ensure the loaded data has the correct types for the arrays
           const typedData: ProfileFormValues = {
             ...data,
             experiences: data.experiences as Experience[],
@@ -78,13 +74,11 @@ const ProfessionalProfileEditForm: React.FC<ProfessionalProfileEditFormProps> = 
           form.reset(typedData);
           setSavedData(typedData);
         } else {
-          // If loading fails, ensure form remains usable with initial data
           console.log("Using fallback data for form");
           form.reset(initialData);
         }
       }).catch(error => {
         console.error("Error loading profile data:", error);
-        // On error, ensure form is usable with initial data
         form.reset(initialData);
         toast({
           title: "Could not load profile data",
@@ -161,7 +155,6 @@ const ProfessionalProfileEditForm: React.FC<ProfessionalProfileEditFormProps> = 
     }
   };
 
-  // Render a loading state while form is not yet initialized
   if (!formInitialized && loading) {
     return (
       <Dialog open={open} onOpenChange={onOpenChange}>
