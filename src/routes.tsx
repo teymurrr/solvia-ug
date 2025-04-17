@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Route, Routes, Navigate } from 'react-router-dom';
 import Index from '@/pages/Index';
@@ -19,14 +20,23 @@ import { useAuth } from '@/contexts/AuthContext';
 import Auth from '@/pages/Auth';
 
 export const AppRoutes = () => {
-  const { isLoggedIn, userType } = useAuth();
+  const { isLoggedIn, userType, loading } = useAuth();
   
   // Debug
   console.log("Routes rendering with auth state:", { isLoggedIn, userType });
   
+  // Show loading spinner while auth state is being determined
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-medical-600"></div>
+      </div>
+    );
+  }
+  
   return (
     <Routes>
-      {/* Redirect to dashboard if user is logged in and accessing the home page */}
+      {/* Home route */}
       <Route 
         path="/" 
         element={
@@ -76,7 +86,7 @@ export const AppRoutes = () => {
         } 
       />
       
-      {/* Redirect to appropriate dashboard if user is already logged in */}
+      {/* Dashboard redirect */}
       <Route 
         path="/dashboard" 
         element={
@@ -94,7 +104,7 @@ export const AppRoutes = () => {
       
       <Route path="*" element={<NotFound />} />
       
-      {/* Add new auth route */}
+      {/* Auth route */}
       <Route path="/auth" element={<Auth />} />
     </Routes>
   );

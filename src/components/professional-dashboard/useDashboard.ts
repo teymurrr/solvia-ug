@@ -1,6 +1,7 @@
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { ProfileFormValues } from '@/components/professional-profile/types';
+import { useProfileData } from '@/components/professional-profile/useProfileData';
 
 export const defaultProfileData: ProfileFormValues = {
   firstName: "John",
@@ -31,11 +32,14 @@ export default function useDashboard() {
   const [appliedVacancies] = useState<string[]>(['1', '3']);
   const [profileData, setProfileData] = useState<ProfileFormValues>(defaultProfileData);
   const [savedTabView, setSavedTabView] = useState<'saved' | 'applied'>('saved');
+  const [loading, setLoading] = useState(true);
+  const { loadProfileData } = useProfileData();
 
   const jobTypes = ['Full-time', 'Part-time', 'Internship', 'Volunteer'];
   const countries = ['USA'];
   const cities = ['New York', 'Boston', 'Chicago', 'Los Angeles', 'Dallas', 'Miami', 'Seattle'];
 
+  // Load saved vacancies from localStorage
   useEffect(() => {
     const savedVacanciesData = localStorage.getItem('savedVacancies');
     if (savedVacanciesData) {
@@ -45,13 +49,34 @@ export default function useDashboard() {
         console.error("Error parsing saved vacancies from localStorage:", error);
       }
     }
+    setLoading(false);
   }, []);
 
+  // Load profile data on component mount
+  useEffect(() => {
+    const fetchProfileData = async () => {
+      setLoading(true);
+      try {
+        const data = await loadProfileData();
+        if (data) {
+          setProfileData(data);
+        }
+      } catch (error) {
+        console.error("Error loading profile data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    fetchProfileData();
+  }, [loadProfileData]);
+
+  // Save vacancies to localStorage when they change
   useEffect(() => {
     localStorage.setItem('savedVacancies', JSON.stringify(savedVacancies));
   }, [savedVacancies]);
 
-  const toggleJobType = (jobType: string) => {
+  const toggleJobType = useCallback((jobType: string) => {
     setSelectedJobTypes(prev => {
       if (prev.includes(jobType)) {
         return prev.filter(type => type !== jobType);
@@ -59,20 +84,20 @@ export default function useDashboard() {
         return [...prev, jobType];
       }
     });
-  };
+  }, []);
 
-  const resetFilters = () => {
+  const resetFilters = useCallback(() => {
     setSearchQuery('');
     setSelectedJobTypes([]);
     setSelectedCountry('');
     setSelectedCity('');
     setActiveFilters([]);
     setCurrentPage(1);
-  };
+  }, []);
 
-  const handleProfileSave = (data: ProfileFormValues) => {
+  const handleProfileSave = useCallback((data: ProfileFormValues) => {
     setProfileData(data);
-  };
+  }, []);
 
   return {
     searchQuery,
@@ -97,5 +122,6 @@ export default function useDashboard() {
     toggleJobType,
     resetFilters,
     handleProfileSave,
+    loading
   };
 }
