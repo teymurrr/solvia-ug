@@ -1,4 +1,8 @@
 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 @layer components {
   .feature-card {
     @apply rounded-[60px] bg-[#f1f1f1] 
