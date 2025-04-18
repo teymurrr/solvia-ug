@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Search, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -104,7 +103,7 @@ const TalentsTab: React.FC<TalentsTabProps> = ({
           
           {currentProfessionals && currentProfessionals.length > 0 ? (
             <div className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="flex flex-col space-y-4">
                 {currentProfessionals.map((professional) => (
                   <ProfessionalCard 
                     key={professional.id || professional.email || Math.random().toString()} 
