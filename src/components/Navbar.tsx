@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Logo from './Logo';
@@ -12,7 +13,7 @@ import {
   DropdownMenuSub,
   DropdownMenuSubTrigger,
   DropdownMenuSubContent,
-} from '@/components/ui/button';
+} from '@/components/ui/dropdown-menu';
 import { 
   Building, 
   LogOut, 
@@ -60,6 +61,16 @@ const Navbar = () => {
   const handleSignOut = () => {
     signOut();
     navigate('/');
+  };
+
+  // Function to get dashboard link based on user type
+  const getDashboardLink = () => {
+    if (userType === 'professional') {
+      return '/dashboard/professional';
+    } else if (userType === 'institution') {
+      return '/dashboard/institution';
+    }
+    return '/';
   };
 
   const renderNavLinks = () => {

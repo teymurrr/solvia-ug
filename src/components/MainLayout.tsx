@@ -6,9 +6,10 @@ import { Toaster } from './ui/toaster';
 
 interface MainLayoutProps {
   children: React.ReactNode;
+  hideEditProfile?: boolean;
 }
 
-const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
+const MainLayout: React.FC<MainLayoutProps> = ({ children, hideEditProfile }) => {
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
