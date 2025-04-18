@@ -1,6 +1,7 @@
 import { lazy, Suspense } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import ProtectedRoute from "@/components/ProtectedRoute";
+import { useAuth } from "@/contexts/AuthContext";
 
 // Lazy-loaded components
 const Index = lazy(() => import("@/pages/Index"));
@@ -28,10 +29,24 @@ const LoadingFallback = () => (
 );
 
 const AppRoutes = () => {
+  const { isLoggedIn, userType } = useAuth();
+
+  // Redirect logged-in users to their respective dashboards
+  const renderIndex = () => {
+    if (isLoggedIn) {
+      if (userType === 'professional') {
+        return <Navigate to="/dashboard/professional" replace />;
+      } else if (userType === 'institution') {
+        return <Navigate to="/dashboard/institution" replace />;
+      }
+    }
+    return <Index />;
+  };
+
   return (
     <Suspense fallback={<LoadingFallback />}>
       <Routes>
-        <Route path="/" element={<Index />} />
+        <Route path="/" element={renderIndex()} />
         <Route path="/about" element={<About />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/signup/professional" element={<ProfessionalSignup />} />
