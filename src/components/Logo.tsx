@@ -15,9 +15,8 @@ const Logo: React.FC<LogoProps> = ({ size = 'md' }) => {
 
   return (
     <Link to="/" className="flex items-center">
-      <span className={`font-bold ${textSizeMap[size]} tracking-tight`}>
-        <span className="text-gray-600">sol</span>
-        <span className="text-gray-400">via</span>
+      <span className={`font-bold ${textSizeMap[size]} tracking-tight text-gray-500`}>
+        solvia
       </span>
     </Link>
   );
