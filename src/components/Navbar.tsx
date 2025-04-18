@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Logo from './Logo';
 import { Button } from '@/components/ui/button';
@@ -12,7 +12,7 @@ import {
   DropdownMenuSub,
   DropdownMenuSubTrigger,
   DropdownMenuSubContent,
-} from '@/components/ui/dropdown-menu';
+} from '@/components/ui/button';
 import { 
   Building, 
   LogOut, 
@@ -21,21 +21,37 @@ import {
   Languages, 
   LayoutDashboard, 
   BookOpen, 
-  User, 
-  LineChart, 
-  Menu, 
-  X 
+  User,
+  LineChart,
+  Menu,
+  X,
+  Briefcase,
+  GraduationCap,
+  Newspaper,
+  HelpCircle
 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { Badge } from '@/components/ui/badge';
 import { availableLanguages } from '@/data/languages';
+import { cn } from '@/lib/utils';
 
 const hasUnreadMessages = false; // This should be determined by your actual unread messages state
 
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const { isLoggedIn, userType, signOut } = useAuth();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const isScrolled = window.scrollY > 20;
+      setScrolled(isScrolled);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
@@ -46,47 +62,56 @@ const Navbar = () => {
     navigate('/');
   };
 
-  const getDashboardLink = () => {
-    if (userType === 'professional') return '/dashboard/professional';
-    if (userType === 'institution') return '/dashboard/institution';
-    return '/dashboard';
-  };
-
   const renderNavLinks = () => {
     if (!isLoggedIn) {
       return (
-        <>
+        <div className="flex justify-center space-x-8">
           <Link
             to="/professionals"
-            className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+            className="flex flex-col items-center group"
           >
-            Professionals
+            <div className="p-2 rounded-full group-hover:bg-gray-100 transition-colors">
+              <User className="h-5 w-5 text-gray-600 group-hover:text-gray-900" />
+            </div>
+            <span className="text-sm text-gray-600 group-hover:text-gray-900">Professionals</span>
           </Link>
           <Link
             to="/vacancies"
-            className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+            className="flex flex-col items-center group"
           >
-            Vacancies
+            <div className="p-2 rounded-full group-hover:bg-gray-100 transition-colors">
+              <Briefcase className="h-5 w-5 text-gray-600 group-hover:text-gray-900" />
+            </div>
+            <span className="text-sm text-gray-600 group-hover:text-gray-900">Vacancies</span>
           </Link>
           <Link
             to="/learning"
-            className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+            className="flex flex-col items-center group"
           >
-            Learning
+            <div className="p-2 rounded-full group-hover:bg-gray-100 transition-colors">
+              <GraduationCap className="h-5 w-5 text-gray-600 group-hover:text-gray-900" />
+            </div>
+            <span className="text-sm text-gray-600 group-hover:text-gray-900">Learning</span>
           </Link>
           <Link
             to="/blog"
-            className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+            className="flex flex-col items-center group"
           >
-            Blog
+            <div className="p-2 rounded-full group-hover:bg-gray-100 transition-colors">
+              <Newspaper className="h-5 w-5 text-gray-600 group-hover:text-gray-900" />
+            </div>
+            <span className="text-sm text-gray-600 group-hover:text-gray-900">Blog</span>
           </Link>
           <Link
             to="/about"
-            className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+            className="flex flex-col items-center group"
           >
-            About
+            <div className="p-2 rounded-full group-hover:bg-gray-100 transition-colors">
+              <HelpCircle className="h-5 w-5 text-gray-600 group-hover:text-gray-900" />
+            </div>
+            <span className="text-sm text-gray-600 group-hover:text-gray-900">About</span>
           </Link>
-        </>
+        </div>
       );
     }
 
@@ -194,16 +219,19 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-white border-b">
+    <nav className={cn(
+      "fixed w-full top-0 z-50 transition-all duration-300",
+      scrolled ? "bg-white/80 backdrop-blur-sm shadow-sm" : "bg-white"
+    )}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16">
+        <div className="flex justify-between h-20">
           <div className="flex-shrink-0 flex items-center">
             <Link to="/">
               <Logo />
             </Link>
           </div>
           
-          <div className="hidden sm:flex sm:flex-1">
+          <div className="hidden sm:flex sm:flex-1 justify-center">
             {renderNavLinks()}
           </div>
 
@@ -238,44 +266,49 @@ const Navbar = () => {
 
       {/* Mobile menu */}
       {mobileMenuOpen && (
-        <div className="sm:hidden">
+        <div className="sm:hidden bg-white">
           <div className="pt-2 pb-3 space-y-1">
             {!isLoggedIn ? (
               <>
                 <Link
                   to="/professionals"
-                  className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800"
+                  className="flex items-center space-x-3 px-4 py-2 hover:bg-gray-50"
                   onClick={toggleMobileMenu}
                 >
-                  Professionals
+                  <User className="h-5 w-5" />
+                  <span>Professionals</span>
                 </Link>
                 <Link
                   to="/vacancies"
-                  className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800"
+                  className="flex items-center space-x-3 px-4 py-2 hover:bg-gray-50"
                   onClick={toggleMobileMenu}
                 >
-                  Vacancies
+                  <Briefcase className="h-5 w-5" />
+                  <span>Vacancies</span>
                 </Link>
                 <Link
                   to="/learning"
-                  className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800"
+                  className="flex items-center space-x-3 px-4 py-2 hover:bg-gray-50"
                   onClick={toggleMobileMenu}
                 >
-                  Learning
+                  <GraduationCap className="h-5 w-5" />
+                  <span>Learning</span>
                 </Link>
                 <Link
                   to="/blog"
-                  className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800"
+                  className="flex items-center space-x-3 px-4 py-2 hover:bg-gray-50"
                   onClick={toggleMobileMenu}
                 >
-                  Blog
+                  <Newspaper className="h-5 w-5" />
+                  <span>Blog</span>
                 </Link>
                 <Link
                   to="/about"
-                  className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800"
+                  className="flex items-center space-x-3 px-4 py-2 hover:bg-gray-50"
                   onClick={toggleMobileMenu}
                 >
-                  About
+                  <HelpCircle className="h-5 w-5" />
+                  <span>About</span>
                 </Link>
               </>
             ) : (

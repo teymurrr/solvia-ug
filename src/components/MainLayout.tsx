@@ -2,25 +2,21 @@
 import React from 'react';
 import Navbar from './Navbar';
 import Footer from './Footer';
-import ChatPopup from './ChatPopup';
-import { useAuth } from '@/contexts/AuthContext';
+import { Toaster } from './ui/toaster';
 
 interface MainLayoutProps {
   children: React.ReactNode;
-  hideEditProfile?: boolean;
 }
 
-const MainLayout: React.FC<MainLayoutProps> = ({ children, hideEditProfile = false }) => {
-  const { isLoggedIn } = useAuth();
-  
+const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="min-h-screen flex flex-col">
       <Navbar />
-      <main className="flex-1">
+      <main className="flex-grow pt-20">
         {children}
       </main>
       <Footer />
-      {isLoggedIn && <ChatPopup />}
+      <Toaster />
     </div>
   );
 };
