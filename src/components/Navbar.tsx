@@ -131,17 +131,21 @@ const Navbar = () => {
         <div className="flex justify-center space-x-8 flex-1">
           <Link
             to="/dashboard/professional"
-            className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+            className="flex flex-col items-center group"
           >
-            <LayoutDashboard className="h-4 w-4 mr-2" />
-            Dashboard
+            <div className="p-2 rounded-full group-hover:bg-gray-100 transition-colors">
+              <LayoutDashboard className="h-5 w-5 text-gray-600 group-hover:text-gray-900" />
+            </div>
+            <span className="text-sm text-gray-600 group-hover:text-gray-900">Dashboard</span>
           </Link>
           <Link
             to="/learning"
-            className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+            className="flex flex-col items-center group"
           >
-            <BookOpen className="h-4 w-4 mr-2" />
-            Solvia Learning
+            <div className="p-2 rounded-full group-hover:bg-gray-100 transition-colors">
+              <BookOpen className="h-5 w-5 text-gray-600 group-hover:text-gray-900" />
+            </div>
+            <span className="text-sm text-gray-600 group-hover:text-gray-900">Solvia Learning</span>
           </Link>
         </div>
       );
@@ -152,17 +156,21 @@ const Navbar = () => {
         <div className="flex justify-center space-x-8 flex-1">
           <Link
             to="/dashboard/institution"
-            className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+            className="flex flex-col items-center group"
           >
-            <LayoutDashboard className="h-4 w-4 mr-2" />
-            Dashboard
+            <div className="p-2 rounded-full group-hover:bg-gray-100 transition-colors">
+              <LayoutDashboard className="h-5 w-5 text-gray-600 group-hover:text-gray-900" />
+            </div>
+            <span className="text-sm text-gray-600 group-hover:text-gray-900">Dashboard</span>
           </Link>
           <Link
             to="/insights"
-            className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+            className="flex flex-col items-center group"
           >
-            <LineChart className="h-4 w-4 mr-2" />
-            Solvia Insights
+            <div className="p-2 rounded-full group-hover:bg-gray-100 transition-colors">
+              <LineChart className="h-5 w-5 text-gray-600 group-hover:text-gray-900" />
+            </div>
+            <span className="text-sm text-gray-600 group-hover:text-gray-900">Solvia Insights</span>
           </Link>
         </div>
       );
