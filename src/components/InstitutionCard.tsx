@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
@@ -13,6 +12,7 @@ interface InstitutionCardProps {
   location: string;
   openPositions: number;
   imageSrc?: string;
+  className?: string;
 }
 
 const InstitutionCard: React.FC<InstitutionCardProps> = ({
@@ -22,6 +22,7 @@ const InstitutionCard: React.FC<InstitutionCardProps> = ({
   location,
   openPositions,
   imageSrc,
+  className,
 }) => {
   const navigate = useNavigate();
   const { handleProtectedAction } = useProtectedAction();
@@ -35,7 +36,7 @@ const InstitutionCard: React.FC<InstitutionCardProps> = ({
   };
 
   return (
-    <Card className="overflow-hidden hover:shadow-md transition-shadow">
+    <Card className={`overflow-hidden hover:shadow-md transition-shadow ${className || ''}`}>
       <CardContent className="p-0">
         <div className="p-6 space-y-4">
           <div className="flex gap-4 items-start">

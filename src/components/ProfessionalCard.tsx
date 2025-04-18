@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
@@ -16,6 +15,7 @@ interface ProfessionalCardProps {
   languages: string[];
   experience: number;
   imageSrc?: string;
+  className?: string;
 }
 
 const ProfessionalCard: React.FC<ProfessionalCardProps> = ({
@@ -27,6 +27,7 @@ const ProfessionalCard: React.FC<ProfessionalCardProps> = ({
   languages,
   experience,
   imageSrc,
+  className,
 }) => {
   const navigate = useNavigate();
   const { handleProtectedAction } = useProtectedAction();
@@ -40,7 +41,7 @@ const ProfessionalCard: React.FC<ProfessionalCardProps> = ({
   };
 
   return (
-    <Card className="overflow-hidden hover:shadow-md transition-shadow">
+    <Card className={`overflow-hidden hover:shadow-md transition-shadow ${className || ''}`}>
       <CardContent className="p-0">
         <div className="p-6 space-y-4">
           <div className="flex gap-4 items-start">
