@@ -113,6 +113,9 @@
 
 @layer components {
   .feature-card {
-    @apply rounded-[30px] border border-black/5 bg-white/50 transition-all duration-300 hover:scale-[1.02] hover:shadow-lg hover:border-black/10;
+    @apply rounded-[60px] bg-gradient-to-br from-black/[0.03] to-black/[0.06] 
+    transition-all duration-500 ease-in-out 
+    hover:scale-[1.03] hover:from-black/[0.05] hover:to-black/[0.08] 
+    hover:shadow-lg border-0;
   }
 }
