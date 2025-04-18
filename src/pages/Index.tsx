@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
@@ -70,12 +69,9 @@ const Index = () => {
         <div className="hero-gradient absolute inset-0 opacity-20" />
         <div className="container mx-auto px-4 py-16 md:py-24 relative z-10">
           <div className="max-w-3xl mx-auto text-center space-y-6">
-            <div className="flex items-center justify-center gap-3 mb-4">
-              <LineChart className="h-8 w-8 text-primary" />
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight">
-                Global Healthcare Recruitment, <span className="text-gradient">Simplified</span>
-              </h1>
-            </div>
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight">
+              Global Healthcare Recruitment, <span className="text-gradient">Simplified</span>
+            </h1>
             <p className="text-xl text-muted-foreground">
               Connecting qualified medical professionals with hospitals and clinics in need of talent worldwide.
             </p>

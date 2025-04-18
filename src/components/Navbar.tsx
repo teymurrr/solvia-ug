@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Logo from './Logo';
@@ -121,6 +120,15 @@ const Navbar = () => {
               <HelpCircle className="h-5 w-5 text-gray-600 group-hover:text-gray-900" />
             </div>
             <span className="text-sm text-gray-600 group-hover:text-gray-900">About</span>
+          </Link>
+          <Link
+            to="/insights"
+            className="flex flex-col items-center group"
+          >
+            <div className="p-2 rounded-full group-hover:bg-gray-100 transition-colors">
+              <LineChart className="h-5 w-5 text-gray-600 group-hover:text-gray-900" />
+            </div>
+            <span className="text-sm text-gray-600 group-hover:text-gray-900">Insights</span>
           </Link>
         </div>
       );
@@ -328,6 +336,14 @@ const Navbar = () => {
                 >
                   <HelpCircle className="h-5 w-5" />
                   <span>About</span>
+                </Link>
+                <Link
+                  to="/insights"
+                  className="flex items-center space-x-3 px-4 py-2 hover:bg-gray-50"
+                  onClick={toggleMobileMenu}
+                >
+                  <LineChart className="h-5 w-5" />
+                  <span>Insights</span>
                 </Link>
               </>
             ) : (
