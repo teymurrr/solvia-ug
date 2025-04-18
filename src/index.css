@@ -1,4 +1,3 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -109,5 +108,11 @@
   .card-gradient {
     background: linear-gradient(to bottom right, #0974f120, #9fccfa40);
     backdrop-filter: blur(8px);
+  }
+}
+
+@layer components {
+  .feature-card {
+    @apply rounded-[30px] border border-black/5 bg-white/50 transition-all duration-300 hover:scale-[1.02] hover:shadow-lg hover:border-black/10;
   }
 }

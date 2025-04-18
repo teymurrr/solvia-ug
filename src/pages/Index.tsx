@@ -90,27 +90,15 @@ const Index = () => {
       <section className="bg-white py-12">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <Card>
-              <CardContent className="p-6 flex flex-col items-center text-center">
-                <Users className="h-12 w-12 text-medical-600 mb-4" />
-                <h3 className="text-3xl font-bold mb-2">5,000+</h3>
-                <p className="text-muted-foreground">Healthcare Professionals</p>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardContent className="p-6 flex flex-col items-center text-center">
-                <Building2 className="h-12 w-12 text-medical-600 mb-4" />
-                <h3 className="text-3xl font-bold mb-2">1,200+</h3>
-                <p className="text-muted-foreground">Healthcare Institutions</p>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardContent className="p-6 flex flex-col items-center text-center">
-                <Globe className="h-12 w-12 text-medical-600 mb-4" />
-                <h3 className="text-3xl font-bold mb-2">45+</h3>
-                <p className="text-muted-foreground">Countries Worldwide</p>
-              </CardContent>
-            </Card>
+            {[{icon: Users, title: '5,000+', description: 'Healthcare Professionals'}, {icon: Building2, title: '1,200+', description: 'Healthcare Institutions'}, {icon: Globe, title: '45+', description: 'Countries Worldwide'}].map((item, i) => (
+              <Card key={i} className="feature-card">
+                <CardContent className="p-6 flex flex-col items-center text-center">
+                  <item.icon className="h-12 w-12 text-medical-600 mb-4" />
+                  <h3 className="text-3xl font-bold mb-2">{item.title}</h3>
+                  <p className="text-muted-foreground">{item.description}</p>
+                </CardContent>
+              </Card>
+            ))}
           </div>
         </div>
       </section>
@@ -175,6 +163,7 @@ const Index = () => {
               <ProfessionalCard
                 key={professional.id}
                 {...professional}
+                className="feature-card"
               />
             ))}
           </div>
@@ -198,6 +187,7 @@ const Index = () => {
               <InstitutionCard
                 key={institution.id}
                 {...institution}
+                className="feature-card"
               />
             ))}
           </div>
@@ -218,7 +208,7 @@ const Index = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {featuredBlogs.map((blog) => (
-              <Card key={blog.id} className="hover:shadow-lg transition-shadow">
+              <Card key={blog.id} className="feature-card hover:shadow-lg transition-shadow">
                 <CardContent className="p-6">
                   <div className="flex items-center gap-2 text-sm text-muted-foreground mb-2">
                     <Clock className="h-4 w-4" />
