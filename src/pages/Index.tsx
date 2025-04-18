@@ -5,7 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import MainLayout from '@/components/MainLayout';
 import ProfessionalCard from '@/components/ProfessionalCard';
 import InstitutionCard from '@/components/InstitutionCard';
-import { ArrowRight, Users, Building2, Globe, FileCheck, Clock, HeartPulse, BookOpen, Briefcase, LineChart } from 'lucide-react';
+import { ArrowRight, Users, Building2, Globe, FileCheck, Clock, HeartPulse, BookOpen, Briefcase, LineChart, GraduationCap } from 'lucide-react';
 
 const Index = () => {
   const featuredProfessionals = [
@@ -106,42 +106,46 @@ const Index = () => {
       <section className="py-16 bg-gray-50">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">How It Works</h2>
-            <p className="text-muted-foreground">
-              A seamless process to connect healthcare professionals with institutions
+            <BookOpen className="h-12 w-12 text-primary mx-auto mb-4" />
+            <h2 className="text-3xl font-bold mb-4">Solvia Learning</h2>
+            <p className="text-lg text-muted-foreground mb-8">
+              Enhance your medical career with specialized German language and FSP courses designed for healthcare professionals
             </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-            <div className="flex flex-col items-center text-center">
-              <div className="bg-medical-100 w-16 h-16 rounded-full flex items-center justify-center mb-6">
-                <FileCheck className="h-8 w-8 text-medical-600" />
-              </div>
-              <h3 className="text-xl font-semibold mb-2">Create Your Profile</h3>
-              <p className="text-muted-foreground">
-                Showcase your qualifications, experience, and preferences to stand out.
-              </p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <Card className="text-left">
+                <CardContent className="p-6">
+                  <div className="flex items-start gap-4">
+                    <div className="bg-primary/10 p-3 rounded-lg">
+                      <Globe className="h-6 w-6 text-primary" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-semibold mb-2">German Language Courses</h3>
+                      <p className="text-muted-foreground">
+                        Master medical German with our specialized courses, from basic to advanced levels
+                      </p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+              <Card className="text-left">
+                <CardContent className="p-6">
+                  <div className="flex items-start gap-4">
+                    <div className="bg-primary/10 p-3 rounded-lg">
+                      <GraduationCap className="h-6 w-6 text-primary" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-semibold mb-2">FSP Preparation</h3>
+                      <p className="text-muted-foreground">
+                        Comprehensive preparation for your medical license examination in Germany
+                      </p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
             </div>
-            
-            <div className="flex flex-col items-center text-center">
-              <div className="bg-medical-100 w-16 h-16 rounded-full flex items-center justify-center mb-6">
-                <Globe className="h-8 w-8 text-medical-600" />
-              </div>
-              <h3 className="text-xl font-semibold mb-2">Connect Globally</h3>
-              <p className="text-muted-foreground">
-                Discover opportunities across borders and communicate directly.
-              </p>
-            </div>
-            
-            <div className="flex flex-col items-center text-center">
-              <div className="bg-medical-100 w-16 h-16 rounded-full flex items-center justify-center mb-6">
-                <HeartPulse className="h-8 w-8 text-medical-600" />
-              </div>
-              <h3 className="text-xl font-semibold mb-2">Advance Your Career</h3>
-              <p className="text-muted-foreground">
-                Find the perfect match and let us help with the transition process.
-              </p>
-            </div>
+            <Button size="lg" className="mt-8" asChild>
+              <Link to="/learning">Explore Courses</Link>
+            </Button>
           </div>
         </div>
       </section>
