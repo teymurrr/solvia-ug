@@ -89,17 +89,23 @@ const LanguageSection: React.FC<LanguageSectionProps> = ({
                           <CommandInput placeholder="Search language..." />
                           <CommandEmpty>No language found.</CommandEmpty>
                           <CommandGroup>
-                            {availableLanguages.map((language) => (
-                              <CommandItem
-                                key={language}
-                                onSelect={() => {
-                                  field.onChange(language);
-                                  setOpenCommandMenus((prev) => ({ ...prev, [index]: false }));
-                                }}
-                              >
-                                {language}
-                              </CommandItem>
-                            ))}
+                            {/* Ensure availableLanguages is defined and is an array */}
+                            {Array.isArray(availableLanguages) && availableLanguages.length > 0 ? (
+                              availableLanguages.map((language) => (
+                                <CommandItem
+                                  key={language}
+                                  value={language}
+                                  onSelect={() => {
+                                    field.onChange(language);
+                                    setOpenCommandMenus((prev) => ({ ...prev, [index]: false }));
+                                  }}
+                                >
+                                  {language}
+                                </CommandItem>
+                              ))
+                            ) : (
+                              <CommandItem disabled>No languages available</CommandItem>
+                            )}
                           </CommandGroup>
                         </Command>
                       </PopoverContent>
@@ -119,6 +125,7 @@ const LanguageSection: React.FC<LanguageSectionProps> = ({
                   <Select 
                     onValueChange={field.onChange} 
                     defaultValue={field.value}
+                    value={field.value}
                   >
                     <FormControl>
                       <SelectTrigger>
