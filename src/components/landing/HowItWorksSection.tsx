@@ -1,0 +1,61 @@
+
+import React from 'react';
+import { FileCheck, Clock, Building2, Calendar, CheckCircle2, ArrowRight } from 'lucide-react';
+
+const HowItWorksSection = () => {
+  const steps = [
+    {
+      icon: <FileCheck className="h-6 w-6 text-primary" />,
+      title: "Create Your Profile",
+      description: "Fill in your professional details, certifications, and preferences"
+    },
+    {
+      icon: <CheckCircle2 className="h-6 w-6 text-primary" />,
+      title: "Get Verified",
+      description: "Our team verifies your credentials and language proficiency"
+    },
+    {
+      icon: <Building2 className="h-6 w-6 text-primary" />,
+      title: "Match with Employers",
+      description: "Connect with healthcare institutions looking for professionals like you"
+    },
+    {
+      icon: <Calendar className="h-6 w-6 text-primary" />,
+      title: "Start Your Journey",
+      description: "Begin your new role in Germany with full support from our team"
+    }
+  ];
+
+  return (
+    <section className="py-16 bg-white">
+      <div className="container mx-auto px-4">
+        <div className="text-center mb-12">
+          <Clock className="h-12 w-12 text-primary mx-auto mb-4" />
+          <h2 className="text-3xl font-bold mb-4">How it Works</h2>
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            Your journey to working in Germany made simple and straightforward
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
+          {steps.map((step, index) => (
+            <div key={index} className="relative">
+              <div className="flex flex-col items-center text-center p-6 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                <div className="bg-primary/10 p-4 rounded-full mb-4">
+                  {step.icon}
+                </div>
+                <h3 className="text-xl font-semibold mb-2">{step.title}</h3>
+                <p className="text-muted-foreground">{step.description}</p>
+              </div>
+              {index < steps.length - 1 && (
+                <ArrowRight className="hidden lg:block absolute top-1/2 -right-4 transform -translate-y-1/2 text-primary h-8 w-8" />
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default HowItWorksSection;
