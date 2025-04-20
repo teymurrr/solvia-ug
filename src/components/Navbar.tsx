@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Logo from './Logo';
@@ -232,7 +233,7 @@ const Navbar = () => {
             </Link>
           </div>
           
-          <div className="hidden sm:flex sm:flex-1 justify-center items-end pb-4">
+          <div className="hidden sm:flex sm:flex-1 sm:justify-center sm:items-end pb-4">
             {renderNavLinks()}
           </div>
 
