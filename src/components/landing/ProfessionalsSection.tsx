@@ -105,9 +105,9 @@ const ProfessionalCard: React.FC<{ professional: Professional }> = ({ profession
 
 const ProfessionalsSection: React.FC<ProfessionalsSectionProps> = ({ professionals }) => {
   return (
-    <section className="py-8">
+    <section className="py-12 bg-gray-50">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-8">
+        <div className="text-center mb-12">
           <Users className="h-12 w-12 text-primary mx-auto mb-4" />
           <div className="flex items-center justify-between mb-4">
             <div className="flex-1" />
@@ -121,13 +121,13 @@ const ProfessionalsSection: React.FC<ProfessionalsSectionProps> = ({ professiona
               </Button>
             </div>
           </div>
-          <p className="text-lg text-muted-foreground mb-6">
+          <p className="text-lg text-muted-foreground">
             Connect with talented healthcare professionals ready for their next opportunity
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
-          {professionals.map((professional) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+          {professionals.slice(0, 4).map((professional) => (
             <ProfessionalCard
               key={professional.id}
               professional={professional}
