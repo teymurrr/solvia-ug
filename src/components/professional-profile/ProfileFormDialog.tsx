@@ -19,6 +19,10 @@ interface ProfileFormDialogProps {
   onSave?: (data: ProfileFormValues) => void;
 }
 
+// Define the profession options and language levels that will be passed to child components
+const professionOptions = ["Doctor", "Nurse", "Specialist", "Technician", "Therapist", "Other"];
+const languageLevels = ["A1", "A2", "B1", "B2", "C1", "C2"];
+
 export const ProfileFormDialog: React.FC<ProfileFormDialogProps> = ({
   open,
   onOpenChange,
@@ -69,7 +73,10 @@ export const ProfileFormDialog: React.FC<ProfileFormDialogProps> = ({
               handleImageChange={handleImageChange} 
             />
             
-            <PersonalInfoSection form={form} />
+            <PersonalInfoSection 
+              form={form} 
+              professionOptions={professionOptions} 
+            />
             
             <ExperienceSection form={form} />
             
@@ -78,6 +85,7 @@ export const ProfileFormDialog: React.FC<ProfileFormDialogProps> = ({
             <LanguageSection 
               form={form} 
               handleLanguageCertificateChange={handleLanguageCertificateChange} 
+              languageLevels={languageLevels}
             />
             
             <CertificatesSection 
