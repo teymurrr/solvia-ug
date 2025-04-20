@@ -107,7 +107,15 @@ const Index = () => {
         <div className="container mx-auto px-4">
           <div className="text-center mb-8">
             <Users className="h-12 w-12 text-primary mx-auto mb-4" />
-            <h2 className="text-3xl font-bold mb-4">Professionals</h2>
+            <div className="flex items-center justify-center gap-4 mb-4">
+              <h2 className="text-3xl font-bold">Professionals</h2>
+              <Button variant="outline" asChild className="group">
+                <Link to="/professionals" className="flex items-center">
+                  View All
+                  <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                </Link>
+              </Button>
+            </div>
             <p className="text-lg text-muted-foreground mb-6">
               Connect with talented healthcare professionals ready for their next opportunity
             </p>
@@ -122,14 +130,6 @@ const Index = () => {
               />
             ))}
           </div>
-          <div className="text-center mt-6">
-            <Button size="lg" variant="outline" asChild className="group">
-              <Link to="/professionals" className="flex items-center">
-                View All Professionals
-                <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-              </Link>
-            </Button>
-          </div>
         </div>
       </section>
 
@@ -137,7 +137,15 @@ const Index = () => {
         <div className="container mx-auto px-4">
           <div className="text-center mb-8">
             <Briefcase className="h-12 w-12 text-primary mx-auto mb-4" />
-            <h2 className="text-3xl font-bold mb-4">Vacancies</h2>
+            <div className="flex items-center justify-center gap-4 mb-4">
+              <h2 className="text-3xl font-bold">Vacancies</h2>
+              <Button variant="ghost" asChild className="group">
+                <Link to="/institutions" className="flex items-center">
+                  View All
+                  <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                </Link>
+              </Button>
+            </div>
             <p className="text-lg text-muted-foreground mb-6">
               Discover exciting opportunities at leading healthcare institutions
             </p>
@@ -151,14 +159,6 @@ const Index = () => {
                 className="feature-card"
               />
             ))}
-          </div>
-          <div className="text-center mt-6">
-            <Button variant="ghost" asChild className="group">
-              <Link to="/institutions" className="flex items-center">
-                View All Vacancies
-                <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-              </Link>
-            </Button>
           </div>
         </div>
       </section>
