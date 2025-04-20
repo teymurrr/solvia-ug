@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
@@ -15,10 +14,10 @@ const EmployersLanding = () => {
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center">
               <h1 className="text-4xl md:text-5xl font-bold mb-6">
-                Find, Connect & Hire Global Healthcare Professionals – 100% Free
+                Find, Connect & Hire Global Healthcare Professionals
               </h1>
               <p className="text-xl text-gray-600 mb-8">
-                Solvia is your go-to platform for discovering international doctors and nurses prepared for relocation to Germany – no recruitment agencies, no extra fees.
+                Solvia is your go-to platform for discovering international doctors and nurses prepared for relocation
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button size="lg" asChild>
