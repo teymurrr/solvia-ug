@@ -15,9 +15,20 @@ import {
 import ProfessionalCard from './ProfessionalCard';
 import FilterDropdowns from './FilterDropdowns';
 
+interface Professional {
+  id: string;
+  firstName: string;
+  lastName: string;
+  specialty?: string;
+  profession?: string;
+  country?: string;
+  language?: string;
+  isOpenToRelocation?: boolean;
+}
+
 interface TalentsTabProps {
-  professionals: any[];
-  filteredProfessionals: any[];
+  professionals: Professional[];
+  filteredProfessionals: Professional[];
   searchQuery: string;
   onSearchQueryChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onSearch: () => void;
@@ -96,7 +107,7 @@ const TalentsTab: React.FC<TalentsTabProps> = ({
               <div className="flex flex-col space-y-4">
                 {currentProfessionals.map((professional) => (
                   <ProfessionalCard 
-                    key={professional.id || professional.email || Math.random().toString()} 
+                    key={professional.id || Math.random().toString()} 
                     professional={professional} 
                   />
                 ))}

@@ -63,6 +63,7 @@ export const useProfessionals = () => {
         // If no profiles in either source, use sample data
         if (supabaseProfiles.length === 0 && localProfiles.length === 0) {
           console.log('No profiles found, using sample data');
+          // Update sample data to match our Professional interface with all required properties
           const sampleData: Professional[] = [
             {
               id: '1',
