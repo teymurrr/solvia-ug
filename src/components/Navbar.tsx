@@ -23,7 +23,8 @@ import {
   User,
   Menu,
   X,
-  HelpCircle
+  HelpCircle,
+  Briefcase
 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { Badge } from '@/components/ui/badge';
@@ -70,6 +71,26 @@ const Navbar = () => {
     if (!isLoggedIn) {
       return (
         <div className="flex justify-center space-x-8">
+          <Link
+            to="/signup/professional"
+            className="flex flex-col items-center group"
+          >
+            <div className="p-2 rounded-full group-hover:bg-gray-100 transition-colors">
+              <User className="h-5 w-5 text-gray-600 group-hover:text-gray-900" />
+            </div>
+            <span className="text-sm text-gray-600 group-hover:text-gray-900">For Talents</span>
+          </Link>
+          
+          <Link
+            to="/signup/institution"
+            className="flex flex-col items-center group"
+          >
+            <div className="p-2 rounded-full group-hover:bg-gray-100 transition-colors">
+              <Briefcase className="h-5 w-5 text-gray-600 group-hover:text-gray-900" />
+            </div>
+            <span className="text-sm text-gray-600 group-hover:text-gray-900">For Employers</span>
+          </Link>
+
           <Link
             to="/about"
             className="flex flex-col items-center group"
