@@ -62,6 +62,7 @@ const Navbar = () => {
     navigate('/');
   };
 
+  // Function to get dashboard link based on user type
   const getDashboardLink = () => {
     if (userType === 'professional') {
       return '/dashboard/professional';
@@ -82,7 +83,7 @@ const Navbar = () => {
             <div className="p-2 rounded-full group-hover:bg-gray-100 transition-colors">
               <User className="h-5 w-5 text-gray-600 group-hover:text-gray-900" />
             </div>
-            <span className="text-sm text-gray-600 group-hover:text-gray-900">For Talents</span>
+            <span className="text-sm text-gray-600 group-hover:text-gray-900">Professionals</span>
           </Link>
           <Link
             to="/vacancies"
@@ -91,7 +92,34 @@ const Navbar = () => {
             <div className="p-2 rounded-full group-hover:bg-gray-100 transition-colors">
               <Briefcase className="h-5 w-5 text-gray-600 group-hover:text-gray-900" />
             </div>
-            <span className="text-sm text-gray-600 group-hover:text-gray-900">Find Talent</span>
+            <span className="text-sm text-gray-600 group-hover:text-gray-900">Vacancies</span>
+          </Link>
+          <Link
+            to="/learning"
+            className="flex flex-col items-center group"
+          >
+            <div className="p-2 rounded-full group-hover:bg-gray-100 transition-colors">
+              <GraduationCap className="h-5 w-5 text-gray-600 group-hover:text-gray-900" />
+            </div>
+            <span className="text-sm text-gray-600 group-hover:text-gray-900">Learning</span>
+          </Link>
+          <Link
+            to="/insights"
+            className="flex flex-col items-center group"
+          >
+            <div className="p-2 rounded-full group-hover:bg-gray-100 transition-colors">
+              <LineChart className="h-5 w-5 text-gray-600 group-hover:text-gray-900" />
+            </div>
+            <span className="text-sm text-gray-600 group-hover:text-gray-900">Insights</span>
+          </Link>
+          <Link
+            to="/blog"
+            className="flex flex-col items-center group"
+          >
+            <div className="p-2 rounded-full group-hover:bg-gray-100 transition-colors">
+              <Newspaper className="h-5 w-5 text-gray-600 group-hover:text-gray-900" />
+            </div>
+            <span className="text-sm text-gray-600 group-hover:text-gray-900">Blog</span>
           </Link>
           <Link
             to="/about"
@@ -275,7 +303,7 @@ const Navbar = () => {
                   onClick={toggleMobileMenu}
                 >
                   <User className="h-5 w-5" />
-                  <span>For Talents</span>
+                  <span>Professionals</span>
                 </Link>
                 <Link
                   to="/vacancies"
@@ -283,7 +311,31 @@ const Navbar = () => {
                   onClick={toggleMobileMenu}
                 >
                   <Briefcase className="h-5 w-5" />
-                  <span>Find Talent</span>
+                  <span>Vacancies</span>
+                </Link>
+                <Link
+                  to="/learning"
+                  className="flex items-center space-x-3 px-4 py-2 hover:bg-gray-50"
+                  onClick={toggleMobileMenu}
+                >
+                  <GraduationCap className="h-5 w-5" />
+                  <span>Learning</span>
+                </Link>
+                <Link
+                  to="/insights"
+                  className="flex items-center space-x-3 px-4 py-2 hover:bg-gray-50"
+                  onClick={toggleMobileMenu}
+                >
+                  <LineChart className="h-5 w-5" />
+                  <span>Insights</span>
+                </Link>
+                <Link
+                  to="/blog"
+                  className="flex items-center space-x-3 px-4 py-2 hover:bg-gray-50"
+                  onClick={toggleMobileMenu}
+                >
+                  <Newspaper className="h-5 w-5" />
+                  <span>Blog</span>
                 </Link>
                 <Link
                   to="/about"

@@ -77,10 +77,10 @@ const Index = () => {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center mt-8">
               <Button size="lg" asChild>
-                <Link to="/professionals">For Talents</Link>
+                <Link to="/professionals">Find Opportunities</Link>
               </Button>
               <Button size="lg" variant="outline" asChild>
-                <Link to="/institutions">Find Talent</Link>
+                <Link to="/institutions">Post Positions</Link>
               </Button>
             </div>
           </div>
