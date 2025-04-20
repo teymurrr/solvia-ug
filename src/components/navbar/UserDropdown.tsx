@@ -13,6 +13,7 @@ import {
   DropdownMenuSub,
   DropdownMenuSubTrigger,
   DropdownMenuSubContent,
+  DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { availableLanguages } from '@/data/languages';
 
