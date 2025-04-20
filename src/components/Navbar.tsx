@@ -70,7 +70,7 @@ const Navbar = () => {
   const renderNavLinks = () => {
     if (!isLoggedIn) {
       return (
-        <div className="flex justify-center space-x-8">
+        <div className="flex justify-center space-x-8 flex-1">
           <Link
             to="/signup/professional"
             className="flex flex-col items-center group"
