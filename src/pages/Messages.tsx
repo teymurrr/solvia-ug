@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useLocation, useParams, useNavigate } from 'react-router-dom';
 import MainLayout from '@/components/MainLayout';
@@ -19,25 +20,25 @@ const Messages = () => {
   const [activeMessage, setActiveMessage] = useState<Message | null>(null);
   const [replyText, setReplyText] = useState('');
   const [newMessageData, setNewMessageData] = useState({
-    recipientId: '',
+    recipient_id: '',
     subject: '',
-    message: '',
+    content: '',
   });
   const { id } = useParams();
   const location = useLocation();
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
-    const recipientId = searchParams.get('recipientId');
-    if (recipientId) {
-      setNewMessageData(prev => ({ ...prev, recipientId }));
+    const recipient_id = searchParams.get('recipient_id');
+    if (recipient_id) {
+      setNewMessageData(prev => ({ ...prev, recipient_id }));
     }
 
     if (id) {
       const message = messages.find(m => m.id === id);
       if (message) {
         setActiveMessage(message);
-        if (!message.read) {
+        if (!message.read && message.id) {
           markAsRead(message.id);
         }
       }
@@ -45,7 +46,7 @@ const Messages = () => {
   }, [id, location.search, messages, markAsRead]);
 
   const handleSendMessage = () => {
-    if (!newMessageData.recipientId || !newMessageData.subject || !newMessageData.message) {
+    if (!newMessageData.recipient_id || !newMessageData.subject || !newMessageData.content) {
       toast({
         title: "Missing information",
         description: "Please fill in all required fields",
@@ -55,12 +56,10 @@ const Messages = () => {
     }
 
     addMessage({
-      senderId: user?.id || 'current-user',
-      recipientId: newMessageData.recipientId,
-      senderName: userType === 'institution' ? 'Your Institution' : 'You',
+      sender_id: user?.id || '',
+      recipient_id: newMessageData.recipient_id,
       subject: newMessageData.subject,
-      message: newMessageData.message,
-      read: false,
+      content: newMessageData.content,
     });
 
     toast({
@@ -69,9 +68,9 @@ const Messages = () => {
     });
 
     setNewMessageData({
-      recipientId: '',
+      recipient_id: '',
       subject: '',
-      message: '',
+      content: '',
     });
 
     navigate('/messages');
@@ -81,12 +80,10 @@ const Messages = () => {
     if (!replyText || !activeMessage || !user) return;
     
     addMessage({
-      senderId: user.id,
-      recipientId: activeMessage.senderId,
-      senderName: userType === 'institution' ? 'Your Institution' : 'You',
+      sender_id: user.id,
+      recipient_id: activeMessage.sender_id === user.id ? activeMessage.recipient_id : activeMessage.sender_id,
       subject: `Re: ${activeMessage.subject || 'No subject'}`,
-      message: replyText,
-      read: false,
+      content: replyText,
     });
     
     setReplyText('');
@@ -97,8 +94,9 @@ const Messages = () => {
     });
   };
   
+  // Filter messages for the current user
   const userMessages = messages.filter(message => 
-    userType === 'professional' ? message.recipientId === 'professional1' : message.recipientId === user?.id
+    message.sender_id === user?.id || message.recipient_id === user?.id
   );
   
   const unreadCount = userMessages.filter(message => !message.read).length;
@@ -154,8 +152,8 @@ const Messages = () => {
                 <div>
                   <label className="block text-sm font-medium mb-1">Message</label>
                   <Textarea 
-                    value={newMessageData.message}
-                    onChange={(e) => setNewMessageData({...newMessageData, message: e.target.value})}
+                    value={newMessageData.content}
+                    onChange={(e) => setNewMessageData({...newMessageData, content: e.target.value})}
                     placeholder="Type your message here"
                     rows={5}
                   />
@@ -173,13 +171,13 @@ const Messages = () => {
                   <h3 className="text-xl font-semibold">{activeMessage.subject}</h3>
                   <div className="flex items-center mt-2 text-sm text-muted-foreground">
                     <User className="h-4 w-4 mr-1" />
-                    <span>From: {activeMessage.senderName}</span>
+                    <span>From: {activeMessage.sender_id === user?.id ? 'You' : (userType === 'professional' ? 'Institution' : 'Professional')}</span>
                     <span className="mx-2">•</span>
-                    <span>{new Date(activeMessage.timestamp).toLocaleString()}</span>
+                    <span>{new Date(activeMessage.created_at || '').toLocaleString()}</span>
                   </div>
                 </div>
                 <div className="p-4 border rounded-md bg-muted/10">
-                  <p>{activeMessage.message}</p>
+                  <p>{activeMessage.content}</p>
                 </div>
                 <div className="space-y-2">
                   <h4 className="font-medium">Reply</h4>
@@ -215,7 +213,7 @@ const Messages = () => {
                         onClick={() => {
                           setActiveMessage(message);
                           navigate(`/messages/${message.id}`);
-                          if (!message.read) {
+                          if (!message.read && message.id) {
                             markAsRead(message.id);
                           }
                         }}
@@ -226,13 +224,13 @@ const Messages = () => {
                             {message.subject}
                           </h3>
                           <span className="text-xs text-muted-foreground">
-                            {new Date(message.timestamp).toLocaleDateString()}
+                            {new Date(message.created_at || '').toLocaleDateString()}
                           </span>
                         </div>
                         <div className="flex items-center text-sm text-muted-foreground mt-1">
-                          <span>From: {message.senderName}</span>
+                          <span>From: {message.sender_id === user?.id ? 'You' : (userType === 'professional' ? 'Institution' : 'Professional')}</span>
                         </div>
-                        <p className="text-sm mt-1 truncate">{message.message}</p>
+                        <p className="text-sm mt-1 truncate">{message.content}</p>
                       </div>
                     ))}
                   </div>
