@@ -3,9 +3,8 @@ import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import MainLayout from '@/components/MainLayout';
-import ProfessionalCard from '@/components/ProfessionalCard';
-import InstitutionCard from '@/components/InstitutionCard';
 import { ArrowRight, Users, Building2, Globe, FileCheck, Clock, HeartPulse, BookOpen, Briefcase, GraduationCap } from 'lucide-react';
+import { Badge } from "@/components/ui/badge";
 
 const featuredProfessionals = [
   {
@@ -124,13 +123,58 @@ const Index = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 gap-6">
             {featuredProfessionals.map((professional) => (
-              <ProfessionalCard
-                key={professional.id}
-                {...professional}
-                className="feature-card"
-              />
+              <Card key={professional.id} className="w-full">
+                <CardContent className="p-6">
+                  <div className="flex items-start gap-6">
+                    <div className="flex items-start gap-4">
+                      <div className="h-20 w-20 rounded-full overflow-hidden bg-gray-100 flex items-center justify-center flex-shrink-0">
+                        <Users className="h-10 w-10 text-gray-400" />
+                      </div>
+                      
+                      <div className="space-y-1">
+                        <h3 className="text-lg font-semibold">
+                          {professional.name}
+                        </h3>
+                        <p className="text-sm text-medical-600">{professional.specialty}</p>
+                      </div>
+                    </div>
+                    
+                    <div className="flex-1 grid grid-cols-3 gap-6">
+                      <div className="space-y-2">
+                        <div className="flex items-center gap-2 text-sm text-gray-600">
+                          <Briefcase className="h-4 w-4" />
+                          <span className="font-medium">Title</span>
+                        </div>
+                        <p className="text-sm">{professional.title}</p>
+                      </div>
+                      
+                      <div className="space-y-2">
+                        <div className="flex items-center gap-2 text-sm text-gray-600">
+                          <Globe className="h-4 w-4" />
+                          <span className="font-medium">Languages</span>
+                        </div>
+                        <div className="flex flex-wrap gap-1">
+                          {professional.languages.map((lang, idx) => (
+                            <Badge key={idx} variant="secondary" className="text-xs">
+                              {lang}
+                            </Badge>
+                          ))}
+                        </div>
+                      </div>
+                      
+                      <div className="space-y-2">
+                        <div className="flex items-center gap-2 text-sm text-gray-600">
+                          <Clock className="h-4 w-4" />
+                          <span className="font-medium">Experience</span>
+                        </div>
+                        <p className="text-sm">{professional.experience} years</p>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
             ))}
           </div>
         </div>
