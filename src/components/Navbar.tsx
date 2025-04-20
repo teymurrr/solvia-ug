@@ -20,14 +20,9 @@ import {
   Settings, 
   Languages, 
   LayoutDashboard, 
-  BookOpen, 
   User,
-  LineChart,
   Menu,
   X,
-  Briefcase,
-  GraduationCap,
-  Newspaper,
   HelpCircle
 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
@@ -35,7 +30,7 @@ import { Badge } from '@/components/ui/badge';
 import { availableLanguages } from '@/data/languages';
 import { cn } from '@/lib/utils';
 
-const hasUnreadMessages = false; // This should be determined by your actual unread messages state
+const hasUnreadMessages = false;
 
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -62,7 +57,6 @@ const Navbar = () => {
     navigate('/');
   };
 
-  // Function to get dashboard link based on user type
   const getDashboardLink = () => {
     if (userType === 'professional') {
       return '/dashboard/professional';
@@ -76,51 +70,6 @@ const Navbar = () => {
     if (!isLoggedIn) {
       return (
         <div className="flex justify-center space-x-8">
-          <Link
-            to="/professionals"
-            className="flex flex-col items-center group"
-          >
-            <div className="p-2 rounded-full group-hover:bg-gray-100 transition-colors">
-              <User className="h-5 w-5 text-gray-600 group-hover:text-gray-900" />
-            </div>
-            <span className="text-sm text-gray-600 group-hover:text-gray-900">Professionals</span>
-          </Link>
-          <Link
-            to="/vacancies"
-            className="flex flex-col items-center group"
-          >
-            <div className="p-2 rounded-full group-hover:bg-gray-100 transition-colors">
-              <Briefcase className="h-5 w-5 text-gray-600 group-hover:text-gray-900" />
-            </div>
-            <span className="text-sm text-gray-600 group-hover:text-gray-900">Vacancies</span>
-          </Link>
-          <Link
-            to="/learning"
-            className="flex flex-col items-center group"
-          >
-            <div className="p-2 rounded-full group-hover:bg-gray-100 transition-colors">
-              <GraduationCap className="h-5 w-5 text-gray-600 group-hover:text-gray-900" />
-            </div>
-            <span className="text-sm text-gray-600 group-hover:text-gray-900">Learning</span>
-          </Link>
-          <Link
-            to="/insights"
-            className="flex flex-col items-center group"
-          >
-            <div className="p-2 rounded-full group-hover:bg-gray-100 transition-colors">
-              <LineChart className="h-5 w-5 text-gray-600 group-hover:text-gray-900" />
-            </div>
-            <span className="text-sm text-gray-600 group-hover:text-gray-900">Insights</span>
-          </Link>
-          <Link
-            to="/blog"
-            className="flex flex-col items-center group"
-          >
-            <div className="p-2 rounded-full group-hover:bg-gray-100 transition-colors">
-              <Newspaper className="h-5 w-5 text-gray-600 group-hover:text-gray-900" />
-            </div>
-            <span className="text-sm text-gray-600 group-hover:text-gray-900">Blog</span>
-          </Link>
           <Link
             to="/about"
             className="flex flex-col items-center group"
@@ -146,15 +95,6 @@ const Navbar = () => {
             </div>
             <span className="text-sm text-gray-600 group-hover:text-gray-900">Dashboard</span>
           </Link>
-          <Link
-            to="/learning"
-            className="flex flex-col items-center group"
-          >
-            <div className="p-2 rounded-full group-hover:bg-gray-100 transition-colors">
-              <BookOpen className="h-5 w-5 text-gray-600 group-hover:text-gray-900" />
-            </div>
-            <span className="text-sm text-gray-600 group-hover:text-gray-900">Solvia Learning</span>
-          </Link>
         </div>
       );
     }
@@ -170,15 +110,6 @@ const Navbar = () => {
               <LayoutDashboard className="h-5 w-5 text-gray-600 group-hover:text-gray-900" />
             </div>
             <span className="text-sm text-gray-600 group-hover:text-gray-900">Dashboard</span>
-          </Link>
-          <Link
-            to="/insights"
-            className="flex flex-col items-center group"
-          >
-            <div className="p-2 rounded-full group-hover:bg-gray-100 transition-colors">
-              <LineChart className="h-5 w-5 text-gray-600 group-hover:text-gray-900" />
-            </div>
-            <span className="text-sm text-gray-600 group-hover:text-gray-900">Solvia Insights</span>
           </Link>
         </div>
       );
@@ -277,7 +208,6 @@ const Navbar = () => {
             )}
           </div>
 
-          {/* Mobile menu button */}
           <div className="-mr-2 flex items-center sm:hidden">
             <Button variant="ghost" size="icon" onClick={toggleMobileMenu}>
               <span className="sr-only">Open main menu</span>
@@ -291,52 +221,11 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile menu */}
       {mobileMenuOpen && (
         <div className="sm:hidden bg-white">
           <div className="pt-2 pb-3 space-y-1">
             {!isLoggedIn ? (
               <>
-                <Link
-                  to="/professionals"
-                  className="flex items-center space-x-3 px-4 py-2 hover:bg-gray-50"
-                  onClick={toggleMobileMenu}
-                >
-                  <User className="h-5 w-5" />
-                  <span>Professionals</span>
-                </Link>
-                <Link
-                  to="/vacancies"
-                  className="flex items-center space-x-3 px-4 py-2 hover:bg-gray-50"
-                  onClick={toggleMobileMenu}
-                >
-                  <Briefcase className="h-5 w-5" />
-                  <span>Vacancies</span>
-                </Link>
-                <Link
-                  to="/learning"
-                  className="flex items-center space-x-3 px-4 py-2 hover:bg-gray-50"
-                  onClick={toggleMobileMenu}
-                >
-                  <GraduationCap className="h-5 w-5" />
-                  <span>Learning</span>
-                </Link>
-                <Link
-                  to="/insights"
-                  className="flex items-center space-x-3 px-4 py-2 hover:bg-gray-50"
-                  onClick={toggleMobileMenu}
-                >
-                  <LineChart className="h-5 w-5" />
-                  <span>Insights</span>
-                </Link>
-                <Link
-                  to="/blog"
-                  className="flex items-center space-x-3 px-4 py-2 hover:bg-gray-50"
-                  onClick={toggleMobileMenu}
-                >
-                  <Newspaper className="h-5 w-5" />
-                  <span>Blog</span>
-                </Link>
                 <Link
                   to="/about"
                   className="flex items-center space-x-3 px-4 py-2 hover:bg-gray-50"
@@ -356,13 +245,6 @@ const Navbar = () => {
                   >
                     Dashboard
                   </Link>
-                  <Link
-                    to="/learning"
-                    className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800"
-                    onClick={toggleMobileMenu}
-                  >
-                    Solvia Learning
-                  </Link>
                 </>
               ) : (
                 <>
@@ -372,13 +254,6 @@ const Navbar = () => {
                     onClick={toggleMobileMenu}
                   >
                     Dashboard
-                  </Link>
-                  <Link
-                    to="/insights"
-                    className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800"
-                    onClick={toggleMobileMenu}
-                  >
-                    Solvia Insights
                   </Link>
                 </>
               )

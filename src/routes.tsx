@@ -1,3 +1,4 @@
+
 import { lazy, Suspense } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import ProtectedRoute from "@/components/ProtectedRoute";
@@ -13,14 +14,7 @@ const InstitutionSignup = lazy(() => import("@/pages/InstitutionSignup"));
 const Login = lazy(() => import("@/pages/Login"));
 const ProfessionalDashboard = lazy(() => import("@/pages/ProfessionalDashboard"));
 const InstitutionDashboard = lazy(() => import("@/pages/InstitutionDashboard"));
-const SolviaLearning = lazy(() => import("@/pages/SolviaLearning"));
-const Professionals = lazy(() => import("@/pages/Professionals"));
-const Institutions = lazy(() => import("@/pages/Institutions"));
-const Vacancies = lazy(() => import("@/pages/Vacancies"));
-const VacancyDetail = lazy(() => import("@/pages/VacancyDetail"));
 const Messages = lazy(() => import("@/pages/Messages"));
-
-const Insights = lazy(() => import("@/pages/Insights"));
 
 const LoadingFallback = () => (
   <div className="flex items-center justify-center h-screen">
@@ -52,17 +46,8 @@ const AppRoutes = () => {
         <Route path="/signup/professional" element={<ProfessionalSignup />} />
         <Route path="/signup/institution" element={<InstitutionSignup />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/learning" element={<SolviaLearning />} />
-
+        
         {/* Protected routes */}
-        <Route
-          path="/insights"
-          element={
-            <ProtectedRoute userType="institution">
-              <Insights />
-            </ProtectedRoute>
-          }
-        />
         <Route
           path="/dashboard/professional"
           element={
