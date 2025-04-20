@@ -9,6 +9,7 @@ export const useProfileData = () => {
   const { toast } = useToast();
   const { user } = useAuth();
   const [loading, setLoading] = useState(false);
+  const [loadingInitial, setLoadingInitial] = useState(true);
   const [profileData, setProfileData] = useState<ProfileFormValues | null>(null);
 
   const saveProfileData = async (data: ProfileFormValues) => {
@@ -30,6 +31,7 @@ export const useProfileData = () => {
         title: "Profile Updated",
         description: "Your profile has been successfully saved.",
       });
+      return true;
     } catch (error) {
       console.error('Error saving profile:', error);
       toast({
@@ -37,14 +39,17 @@ export const useProfileData = () => {
         description: "Failed to save profile data.",
         variant: "destructive",
       });
-      throw error;
+      return false;
     } finally {
       setLoading(false);
     }
   };
 
   const loadProfileData = async () => {
-    if (!user) return null;
+    if (!user) {
+      setLoadingInitial(false);
+      return null;
+    }
     
     setLoading(true);
     try {
@@ -63,6 +68,7 @@ export const useProfileData = () => {
       return null;
     } finally {
       setLoading(false);
+      setLoadingInitial(false);
     }
   };
 
@@ -70,8 +76,16 @@ export const useProfileData = () => {
   useEffect(() => {
     if (user) {
       loadProfileData();
+    } else {
+      setLoadingInitial(false);
     }
   }, [user]);
 
-  return { saveProfileData, loadProfileData, loading, profileData };
+  return { 
+    saveProfileData, 
+    loadProfileData, 
+    loading, 
+    loadingInitial,
+    profileData 
+  };
 };

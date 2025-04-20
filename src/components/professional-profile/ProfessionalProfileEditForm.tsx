@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -49,7 +50,7 @@ const ProfessionalProfileEditForm: React.FC<ProfessionalProfileEditFormProps> = 
 }) => {
   const { toast } = useToast();
   const { saveProfileData, loadProfileData, loading } = useProfileData();
-  const [formInitialized, setFormInitialized] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(profileFormSchema),
@@ -59,22 +60,27 @@ const ProfessionalProfileEditForm: React.FC<ProfessionalProfileEditFormProps> = 
 
   useEffect(() => {
     if (open) {
-      form.reset(initialData);
-      setFormInitialized(true);
+      setIsLoading(true);
       
+      // Only attempt to load data if the dialog is open
       loadProfileData().then(data => {
         if (data) {
           const typedData: ProfileFormValues = {
             ...data,
-            experiences: data.experiences as Experience[],
-            education: data.education as Education[],
-            languages: data.languages as Language[],
+            experiences: Array.isArray(data.experiences) ? data.experiences as Experience[] : [],
+            education: Array.isArray(data.education) ? data.education as Education[] : [],
+            languages: Array.isArray(data.languages) ? data.languages as Language[] : [],
           };
           form.reset(typedData);
+          
+          // Update image previews
+          setImagePreview(typedData.profileImage || null);
+          setSfpCertificatePreview(typedData.fspCertificateFile || null);
         } else {
           console.log("Using fallback data for form");
           form.reset(initialData);
         }
+        setIsLoading(false);
       }).catch(error => {
         console.error("Error loading profile data:", error);
         form.reset(initialData);
@@ -83,17 +89,20 @@ const ProfessionalProfileEditForm: React.FC<ProfessionalProfileEditFormProps> = 
           description: "Using default values. You can still edit and save your profile.",
           variant: "destructive",
         });
+        setIsLoading(false);
       });
     }
-  }, [open, form, loadProfileData, initialData]);
+  }, [open, form, loadProfileData, initialData, toast]);
 
   const onSubmit = async (data: ProfileFormValues) => {
     try {
-      await saveProfileData(data);
-      if (onSave) {
+      const success = await saveProfileData(data);
+      if (success && onSave) {
         onSave(data);
       }
-      onOpenChange(false);
+      if (success) {
+        onOpenChange(false);
+      }
     } catch (error) {
       console.error("Error saving profile:", error);
       toast({
@@ -108,11 +117,6 @@ const ProfessionalProfileEditForm: React.FC<ProfessionalProfileEditFormProps> = 
   const [sfpCertificatePreview, setSfpCertificatePreview] = useState<string | null>(
     initialData.fspCertificateFile || null
   );
-
-  useEffect(() => {
-    setImagePreview(initialData.profileImage || null);
-    setSfpCertificatePreview(initialData.fspCertificateFile || null);
-  }, [initialData]);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -154,7 +158,7 @@ const ProfessionalProfileEditForm: React.FC<ProfessionalProfileEditFormProps> = 
     }
   };
 
-  if (!formInitialized && loading) {
+  if (isLoading) {
     return (
       <Dialog open={open} onOpenChange={onOpenChange}>
         <DialogContent className="sm:max-w-[800px]">
