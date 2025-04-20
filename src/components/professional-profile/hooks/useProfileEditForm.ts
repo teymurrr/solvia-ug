@@ -75,8 +75,9 @@ export const useProfileEditForm = (
     try {
       const result = await saveProfileData(data);
       
-      if (result === true) {
-        // Handle success case when saveProfileData returns true (older behavior)
+      // Fixed type check - check for result.success instead of comparing result to boolean
+      if (result && result.success) {
+        // Handle success case
         if (onSave) {
           onSave(data);
         }
@@ -85,30 +86,11 @@ export const useProfileEditForm = (
           title: "Success",
           description: "Your profile has been updated successfully.",
         });
-      } else if (result && typeof result === 'object') {
-        // Handle new response format
-        if (result.success) {
-          if (onSave) {
-            onSave(data);
-          }
-          onOpenChange(false);
-          toast({
-            title: "Success",
-            description: "Your profile has been updated successfully.",
-          });
-        } else {
-          // Display error message
-          toast({
-            title: "Error",
-            description: result.error || "Failed to save profile. Please try again.",
-            variant: "destructive",
-          });
-        }
       } else {
-        // Handle undefined or unknown return format
+        // Display error message
         toast({
-          title: "Warning",
-          description: "Profile may not have been saved properly. Please check and try again.",
+          title: "Error",
+          description: result?.error || "Failed to save profile. Please try again.",
           variant: "destructive",
         });
       }
