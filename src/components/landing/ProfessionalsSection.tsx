@@ -25,7 +25,6 @@ const ProfessionalCard: React.FC<{ professional: Professional }> = ({ profession
     >
       <CardContent className="p-6">
         <div className="flex items-start gap-4">
-          {/* Profile image */}
           <div className="h-16 w-16 rounded-full overflow-hidden bg-medical-100 flex items-center justify-center flex-shrink-0">
             {profileImage ? (
               <img src={profileImage} alt={fullName} className="h-full w-full object-cover" />
@@ -34,7 +33,6 @@ const ProfessionalCard: React.FC<{ professional: Professional }> = ({ profession
             )}
           </div>
           
-          {/* Name and title */}
           <div className="flex-1">
             <div className="flex items-center gap-2">
               <h3 className="text-lg font-semibold">{fullName}</h3>
@@ -53,13 +51,11 @@ const ProfessionalCard: React.FC<{ professional: Professional }> = ({ profession
         </div>
         
         <div className="mt-4 space-y-3">
-          {/* Location */}
           <div className="flex items-center gap-2 text-sm">
             <MapPin className="h-4 w-4 text-muted-foreground" />
             <span>{country}</span>
           </div>
           
-          {/* Languages */}
           <div className="flex items-center gap-2">
             <Languages className="h-4 w-4 text-muted-foreground" />
             <div className="flex flex-wrap gap-1">
@@ -71,13 +67,11 @@ const ProfessionalCard: React.FC<{ professional: Professional }> = ({ profession
             </div>
           </div>
           
-          {/* Experience */}
           <div className="flex items-center gap-2 text-sm">
             <Clock className="h-4 w-4 text-muted-foreground" />
             <span>{experience} {experience === 1 ? 'year' : 'years'} experience</span>
           </div>
           
-          {/* Current role */}
           {latestExperience && (
             <div className="flex items-center gap-2 text-sm">
               <Building className="h-4 w-4 text-muted-foreground" />
@@ -85,7 +79,6 @@ const ProfessionalCard: React.FC<{ professional: Professional }> = ({ profession
             </div>
           )}
           
-          {/* Education */}
           {latestEducation && (
             <div className="flex items-center gap-2 text-sm">
               <GraduationCap className="h-4 w-4 text-muted-foreground" />
