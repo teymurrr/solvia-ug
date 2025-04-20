@@ -3,6 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import MainLayout from '@/components/MainLayout';
+import { Card, CardContent } from "@/components/ui/card";
 import { Globe, FileCheck, Clock, Users, Building2, Calendar } from 'lucide-react';
 
 const EmployersLanding = () => {
@@ -14,10 +15,10 @@ const EmployersLanding = () => {
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center">
               <h1 className="text-4xl md:text-5xl font-bold mb-6">
-                Discover, Connect & Hire Top Healthcare Talent – All in One Place
+                Find, Connect & Hire Global Healthcare Professionals – 100% Free
               </h1>
               <p className="text-xl text-gray-600 mb-8">
-                Solvia AI simplifies your recruitment process by connecting you with pre-screened, German-speaking doctors and nurses ready to integrate into your team.
+                Solvia is your go-to platform for discovering international doctors and nurses prepared for relocation to Germany – no recruitment agencies, no extra fees.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button size="lg" asChild>
