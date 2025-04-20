@@ -19,19 +19,23 @@ export const useProfileData = () => {
         description: "You must be logged in to save your profile.",
         variant: "destructive",
       });
-      return;
+      return { success: false, error: "Authentication required" };
     }
     
     setLoading(true);
     try {
-      await saveProfileToDb(user.id, data);
-      // Update local state with the saved data
-      setProfileData(data);
-      toast({
-        title: "Profile Updated",
-        description: "Your profile has been successfully saved.",
-      });
-      return true;
+      const result = await saveProfileToDb(user.id, data);
+      
+      // Update local state if save was successful
+      if (result && result.success) {
+        setProfileData(data);
+        toast({
+          title: "Profile Updated",
+          description: "Your profile has been successfully saved.",
+        });
+      }
+      
+      return result;
     } catch (error) {
       console.error('Error saving profile:', error);
       toast({
@@ -39,7 +43,7 @@ export const useProfileData = () => {
         description: "Failed to save profile data.",
         variant: "destructive",
       });
-      return false;
+      return { success: false, error: error instanceof Error ? error.message : "Unknown error" };
     } finally {
       setLoading(false);
     }

@@ -16,11 +16,18 @@ export const useProfileEditForm = (
   const [sfpCertificatePreview, setSfpCertificatePreview] = useState<string | null>(
     initialData.fspCertificateFile || null
   );
-  const { saveProfileData, loading } = useProfileData();
+  const [loading, setLoading] = useState(false);
+  const { saveProfileData } = useProfileData();
 
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(profileFormSchema),
-    defaultValues: initialData,
+    defaultValues: {
+      ...initialData,
+      // Ensure arrays are initialized properly
+      experiences: initialData.experiences || [{ hospital: "", location: "", role: "", startDate: "", endDate: "", current: false }],
+      education: initialData.education || [{ institution: "", degree: "", field: "", startDate: "", endDate: "", current: false }],
+      languages: initialData.languages || [{ language: "", level: "A1", certificate: "" }],
+    },
   });
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -64,13 +71,46 @@ export const useProfileEditForm = (
   };
 
   const onSubmit = async (data: ProfileFormValues) => {
+    setLoading(true);
     try {
-      const success = await saveProfileData(data);
-      if (success && onSave) {
-        onSave(data);
-      }
-      if (success) {
+      const result = await saveProfileData(data);
+      
+      if (result === true) {
+        // Handle success case when saveProfileData returns true (older behavior)
+        if (onSave) {
+          onSave(data);
+        }
         onOpenChange(false);
+        toast({
+          title: "Success",
+          description: "Your profile has been updated successfully.",
+        });
+      } else if (result && typeof result === 'object') {
+        // Handle new response format
+        if (result.success) {
+          if (onSave) {
+            onSave(data);
+          }
+          onOpenChange(false);
+          toast({
+            title: "Success",
+            description: "Your profile has been updated successfully.",
+          });
+        } else {
+          // Display error message
+          toast({
+            title: "Error",
+            description: result.error || "Failed to save profile. Please try again.",
+            variant: "destructive",
+          });
+        }
+      } else {
+        // Handle undefined or unknown return format
+        toast({
+          title: "Warning",
+          description: "Profile may not have been saved properly. Please check and try again.",
+          variant: "destructive",
+        });
       }
     } catch (error) {
       console.error("Error saving profile:", error);
@@ -79,6 +119,8 @@ export const useProfileEditForm = (
         description: "Failed to save profile. Please try again.",
         variant: "destructive",
       });
+    } finally {
+      setLoading(false);
     }
   };
 

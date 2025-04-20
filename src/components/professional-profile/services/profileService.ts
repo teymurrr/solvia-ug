@@ -6,6 +6,11 @@ export const saveProfileToDb = async (userId: string, data: ProfileFormValues) =
   console.log('Saving profile data for user:', userId);
   
   try {
+    // Validate userId to prevent downstream errors
+    if (!userId) {
+      throw new Error('Invalid user ID provided');
+    }
+    
     // Save main profile data
     const { error: profileError } = await supabase
       .from('profiles')
@@ -126,9 +131,14 @@ export const saveProfileToDb = async (userId: string, data: ProfileFormValues) =
     }
 
     console.log('Profile saved successfully');
+    return { success: true };
   } catch (error) {
     console.error('Error in profile save operation:', error);
-    throw error;
+    // Return a structured error response
+    return { 
+      success: false, 
+      error: error instanceof Error ? error.message : 'Unknown error occurred'
+    };
   }
 };
 
@@ -136,6 +146,11 @@ export const loadProfileFromDb = async (userId: string) => {
   console.log('Loading profile data for user:', userId);
   
   try {
+    // Validate userId to prevent downstream errors
+    if (!userId) {
+      throw new Error('Invalid user ID provided');
+    }
+    
     // Load main profile data
     const { data: profileData, error: profileError } = await supabase
       .from('profiles')
@@ -236,6 +251,7 @@ export const loadProfileFromDb = async (userId: string) => {
     return null;
   } catch (error) {
     console.error('Error in profile load operation:', error);
-    throw error;
+    // Return null to indicate loading failure
+    return null;
   }
 };
