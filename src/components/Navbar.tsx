@@ -25,7 +25,9 @@ import {
   Menu,
   X,
   HelpCircle,
-  Briefcase
+  Briefcase,
+  BookOpen, // Changed from Book to BookOpen as Book is not available in lucide-react
+  BarChart // Changed from Insights to BarChart as Insights is not available in lucide-react
 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { Badge } from '@/components/ui/badge';
@@ -123,7 +125,7 @@ const Navbar = () => {
             className="flex flex-col items-center group"
           >
             <div className="p-2 rounded-full group-hover:bg-gray-100 transition-colors">
-              <Book className="h-5 w-5 text-gray-600 group-hover:text-gray-900" />
+              <BookOpen className="h-5 w-5 text-gray-600 group-hover:text-gray-900" />
             </div>
             <span className="text-sm text-gray-600 group-hover:text-gray-900">Solvia Learning</span>
           </Link>
@@ -149,7 +151,7 @@ const Navbar = () => {
             className="flex flex-col items-center group"
           >
             <div className="p-2 rounded-full group-hover:bg-gray-100 transition-colors">
-              <Insights className="h-5 w-5 text-gray-600 group-hover:text-gray-900" />
+              <BarChart className="h-5 w-5 text-gray-600 group-hover:text-gray-900" />
             </div>
             <span className="text-sm text-gray-600 group-hover:text-gray-900">Solvia Insights</span>
           </Link>
