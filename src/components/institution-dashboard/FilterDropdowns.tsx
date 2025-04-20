@@ -1,13 +1,6 @@
 
 import React from 'react';
-import { Filter } from 'lucide-react';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 interface FilterDropdownsProps {
   filters: {
@@ -21,79 +14,117 @@ interface FilterDropdownsProps {
 
 const FilterDropdowns: React.FC<FilterDropdownsProps> = ({
   filters,
-  onFilterChange,
+  onFilterChange
 }) => {
+  // Add predefined filter options
+  const roleOptions = [
+    { value: 'all_roles', label: 'All roles' },
+    { value: 'Doctor', label: 'Doctor' },
+    { value: 'Nurse', label: 'Nurse' },
+    { value: 'Specialist', label: 'Specialist' },
+    { value: 'Therapist', label: 'Therapist' },
+    { value: 'Surgeon', label: 'Surgeon' },
+  ];
+  
+  const professionOptions = [
+    { value: 'all_professions', label: 'All professions' },
+    { value: 'Cardiology', label: 'Cardiology' },
+    { value: 'Neurology', label: 'Neurology' },
+    { value: 'Pediatrics', label: 'Pediatrics' },
+    { value: 'Emergency', label: 'Emergency Care' },
+    { value: 'Family', label: 'Family Medicine' },
+    { value: 'Orthopedics', label: 'Orthopedics' },
+  ];
+  
+  const countryOptions = [
+    { value: 'all_countries', label: 'All countries' },
+    { value: 'Germany', label: 'Germany' },
+    { value: 'Spain', label: 'Spain' },
+    { value: 'Canada', label: 'Canada' },
+    { value: 'Sweden', label: 'Sweden' },
+    { value: 'France', label: 'France' },
+    { value: 'Italy', label: 'Italy' },
+  ];
+  
+  const languageOptions = [
+    { value: 'all_languages', label: 'All languages' },
+    { value: 'English', label: 'English' },
+    { value: 'German', label: 'German' },
+    { value: 'Spanish', label: 'Spanish' },
+    { value: 'French', label: 'French' },
+    { value: 'Italian', label: 'Italian' },
+  ];
+
   return (
-    <div className="flex flex-col md:flex-row gap-3 mb-4">
-      <div className="flex items-center">
-        <Filter className="h-4 w-4 mr-2 text-muted-foreground" />
-        <span className="text-sm font-medium">Filters:</span>
-      </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 w-full">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div>
         <Select
           value={filters.role}
           onValueChange={(value) => onFilterChange('role', value)}
         >
-          <SelectTrigger className="w-full">
+          <SelectTrigger>
             <SelectValue placeholder="Role" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all_roles">All Roles</SelectItem>
-            <SelectItem value="doctor">Doctor</SelectItem>
-            <SelectItem value="nurse">Nurse</SelectItem>
-            <SelectItem value="specialist">Specialist</SelectItem>
-            <SelectItem value="surgeon">Surgeon</SelectItem>
-            <SelectItem value="technician">Technician</SelectItem>
+            {roleOptions.map((option) => (
+              <SelectItem key={option.value} value={option.value}>
+                {option.label}
+              </SelectItem>
+            ))}
           </SelectContent>
         </Select>
-
+      </div>
+      
+      <div>
         <Select
           value={filters.profession}
           onValueChange={(value) => onFilterChange('profession', value)}
         >
-          <SelectTrigger className="w-full">
+          <SelectTrigger>
             <SelectValue placeholder="Profession" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all_professions">All Professions</SelectItem>
-            <SelectItem value="cardiology">Cardiology</SelectItem>
-            <SelectItem value="dermatology">Dermatology</SelectItem>
-            <SelectItem value="neurology">Neurology</SelectItem>
-            <SelectItem value="orthopedics">Orthopedics</SelectItem>
-            <SelectItem value="pediatrics">Pediatrics</SelectItem>
-            <SelectItem value="psychiatry">Psychiatry</SelectItem>
+            {professionOptions.map((option) => (
+              <SelectItem key={option.value} value={option.value}>
+                {option.label}
+              </SelectItem>
+            ))}
           </SelectContent>
         </Select>
-
+      </div>
+      
+      <div>
         <Select
           value={filters.country}
           onValueChange={(value) => onFilterChange('country', value)}
         >
-          <SelectTrigger className="w-full">
+          <SelectTrigger>
             <SelectValue placeholder="Country" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all_countries">All Countries</SelectItem>
-            <SelectItem value="canada">Canada</SelectItem>
-            <SelectItem value="germany">Germany</SelectItem>
-            <SelectItem value="uk">United Kingdom</SelectItem>
-            <SelectItem value="usa">United States</SelectItem>
+            {countryOptions.map((option) => (
+              <SelectItem key={option.value} value={option.value}>
+                {option.label}
+              </SelectItem>
+            ))}
           </SelectContent>
         </Select>
-
+      </div>
+      
+      <div>
         <Select
           value={filters.language}
           onValueChange={(value) => onFilterChange('language', value)}
         >
-          <SelectTrigger className="w-full">
+          <SelectTrigger>
             <SelectValue placeholder="Language" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all_languages">All Languages</SelectItem>
-            <SelectItem value="english">English</SelectItem>
-            <SelectItem value="french">French</SelectItem>
-            <SelectItem value="german">German</SelectItem>
-            <SelectItem value="spanish">Spanish</SelectItem>
+            {languageOptions.map((option) => (
+              <SelectItem key={option.value} value={option.value}>
+                {option.label}
+              </SelectItem>
+            ))}
           </SelectContent>
         </Select>
       </div>

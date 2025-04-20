@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import MainLayout from '@/components/MainLayout';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import VacancyForm from '@/components/VacancyForm';
@@ -11,6 +11,31 @@ const InstitutionDashboard = () => {
   const [vacancyFormOpen, setVacancyFormOpen] = useState(false);
   const { professionals, filteredProfessionals, setFilteredProfessionals } = useProfessionals();
   const { vacancies, handleAddVacancy, handleDeleteVacancy } = useVacancies();
+  const [searchQuery, setSearchQuery] = useState('');
+  
+  const handleSearch = () => {
+    if (!professionals) return;
+    
+    const filtered = professionals.filter(prof => {
+      const fullName = `${prof.firstName} ${prof.lastName}`.toLowerCase();
+      const specialty = (prof.specialty || '').toLowerCase();
+      const profession = (prof.profession || '').toLowerCase();
+      const country = (prof.country || '').toLowerCase();
+      const query = searchQuery.toLowerCase();
+      
+      return fullName.includes(query) || 
+             specialty.includes(query) || 
+             profession.includes(query) || 
+             country.includes(query);
+    });
+    
+    setFilteredProfessionals(filtered);
+  };
+  
+  // Apply search when query changes
+  useEffect(() => {
+    handleSearch();
+  }, [searchQuery, professionals]);
   
   return (
     <MainLayout hideEditProfile>
@@ -42,9 +67,9 @@ const InstitutionDashboard = () => {
             <TalentsTab 
               professionals={professionals}
               filteredProfessionals={filteredProfessionals}
-              searchQuery=""
-              onSearchQueryChange={() => {}}
-              onSearch={() => {}}
+              searchQuery={searchQuery}
+              onSearchQueryChange={(e) => setSearchQuery(e.target.value)}
+              onSearch={handleSearch}
             />
           </TabsContent>
         </Tabs>
