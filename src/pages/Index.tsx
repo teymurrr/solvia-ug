@@ -1,8 +1,10 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import MainLayout from '@/components/MainLayout';
+import InstitutionCard from '@/components/InstitutionCard';
 import { ArrowRight, Users, Building2, Globe, FileCheck, Clock, HeartPulse, BookOpen, Briefcase, GraduationCap } from 'lucide-react';
 import { Badge } from "@/components/ui/badge";
 

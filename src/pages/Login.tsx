@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
@@ -39,7 +40,8 @@ const Login = () => {
 
   const onSubmit = async (data: LoginFormValues) => {
     try {
-      await signIn(data.email, data.password, data.rememberMe, userType);
+      // Fix: Remove the 4th parameter, as signIn only expects 3 parameters
+      await signIn(data.email, data.password, userType);
       
       toast({
         title: "Login Successful",
