@@ -233,7 +233,7 @@ const Navbar = () => {
             </Link>
           </div>
           
-          <div className="hidden sm:flex sm:flex-1 sm:justify-center sm:items-end pb-4">
+          <div className="absolute left-1/2 transform -translate-x-1/2 hidden sm:flex sm:items-end pb-4">
             {renderNavLinks()}
           </div>
 
