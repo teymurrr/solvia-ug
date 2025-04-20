@@ -12,30 +12,64 @@ const InstitutionDashboard = () => {
   const { professionals, filteredProfessionals, setFilteredProfessionals } = useProfessionals();
   const { vacancies, handleAddVacancy, handleDeleteVacancy } = useVacancies();
   const [searchQuery, setSearchQuery] = useState('');
+  const [filters, setFilters] = useState({
+    role: 'all_roles',
+    profession: 'all_professions',
+    country: 'all_countries',
+    language: 'all_languages'
+  });
   
   const handleSearch = () => {
     if (!professionals) return;
     
     const filtered = professionals.filter(prof => {
+      // Text search
       const fullName = `${prof.firstName} ${prof.lastName}`.toLowerCase();
       const specialty = (prof.specialty || '').toLowerCase();
       const profession = (prof.profession || '').toLowerCase();
       const country = (prof.country || '').toLowerCase();
       const query = searchQuery.toLowerCase();
       
-      return fullName.includes(query) || 
-             specialty.includes(query) || 
-             profession.includes(query) || 
-             country.includes(query);
+      const matchesText = !searchQuery || 
+        fullName.includes(query) || 
+        specialty.includes(query) || 
+        profession.includes(query) || 
+        country.includes(query);
+      
+      // Filter by role/profession
+      const matchesRole = filters.role === 'all_roles' || 
+        prof.profession?.toLowerCase() === filters.role.toLowerCase();
+      
+      // Filter by specialty/profession field
+      const matchesProfession = filters.profession === 'all_professions' || 
+        prof.specialty?.toLowerCase() === filters.profession.toLowerCase();
+      
+      // Filter by country
+      const matchesCountry = filters.country === 'all_countries' || 
+        prof.country?.toLowerCase() === filters.country.toLowerCase();
+      
+      // Filter by language
+      const matchesLanguage = filters.language === 'all_languages' || 
+        prof.language?.toLowerCase() === filters.language.toLowerCase();
+      
+      return matchesText && matchesRole && matchesProfession && matchesCountry && matchesLanguage;
     });
     
     setFilteredProfessionals(filtered);
   };
   
-  // Apply search when query changes
+  // Apply filters when they change
   useEffect(() => {
     handleSearch();
-  }, [searchQuery, professionals]);
+  }, [searchQuery, filters, professionals]);
+  
+  // Handle filter changes
+  const handleFilterChange = (filterName: string, value: string) => {
+    setFilters(prev => ({
+      ...prev,
+      [filterName]: value
+    }));
+  };
   
   return (
     <MainLayout hideEditProfile>
@@ -70,6 +104,8 @@ const InstitutionDashboard = () => {
               searchQuery={searchQuery}
               onSearchQueryChange={(e) => setSearchQuery(e.target.value)}
               onSearch={handleSearch}
+              filters={filters}
+              onFilterChange={handleFilterChange}
             />
           </TabsContent>
         </Tabs>

@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+
+import React, { useState } from 'react';
 import { Search, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -20,6 +21,13 @@ interface TalentsTabProps {
   searchQuery: string;
   onSearchQueryChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onSearch: () => void;
+  filters: {
+    role: string;
+    profession: string;
+    country: string;
+    language: string;
+  };
+  onFilterChange: (filterName: string, value: string) => void;
 }
 
 const TalentsTab: React.FC<TalentsTabProps> = ({
@@ -27,14 +35,10 @@ const TalentsTab: React.FC<TalentsTabProps> = ({
   filteredProfessionals,
   searchQuery,
   onSearchQueryChange,
-  onSearch
+  onSearch,
+  filters,
+  onFilterChange
 }) => {
-  const [filters, setFilters] = useState({
-    role: 'all_roles',
-    profession: 'all_professions',
-    country: 'all_countries',
-    language: 'all_languages'
-  });
   const [currentPage, setCurrentPage] = useState(1);
   const professionalsPerPage = 20;
 
@@ -42,20 +46,6 @@ const TalentsTab: React.FC<TalentsTabProps> = ({
   console.log('TalentsTab - All professionals:', professionals);
   console.log('TalentsTab - Filtered professionals:', filteredProfessionals);
   console.log('TalentsTab - Current filters:', filters);
-
-  // Handle filter changes
-  const handleFilterChange = (filterName: string, value: string) => {
-    setFilters(prev => ({
-      ...prev,
-      [filterName]: value
-    }));
-    setCurrentPage(1); // Reset to first page when filters change
-  };
-
-  // Apply filters when they change
-  useEffect(() => {
-    onSearch();
-  }, [filters, onSearch]);
 
   // Calculate pagination values
   const totalPages = Math.ceil(filteredProfessionals.length / professionalsPerPage);
@@ -98,7 +88,7 @@ const TalentsTab: React.FC<TalentsTabProps> = ({
           
           <FilterDropdowns 
             filters={filters}
-            onFilterChange={handleFilterChange}
+            onFilterChange={onFilterChange}
           />
           
           {currentProfessionals && currentProfessionals.length > 0 ? (
