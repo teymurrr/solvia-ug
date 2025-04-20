@@ -111,7 +111,7 @@ const Index = () => {
               <div className="flex-1" />
               <h2 className="text-3xl font-bold">Professionals</h2>
               <div className="flex-1 flex justify-end">
-                <Button variant="outline" asChild className="group">
+                <Button variant="ghost" asChild className="group">
                   <Link to="/professionals" className="flex items-center">
                     View All
                     <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
