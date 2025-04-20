@@ -1,59 +1,82 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/contexts/AuthContext';
 
 export type Message = {
-  id: string;
-  senderId: string;
-  recipientId: string;
-  senderName: string;
+  id?: string;
+  sender_id: string;
+  recipient_id: string;
   subject?: string;
-  message: string;
-  timestamp: string;
-  read: boolean;
+  content: string;
+  created_at?: string;
+  read?: boolean;
 };
 
 export const useMessages = () => {
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: '1',
-      senderId: 'institution1',
-      recipientId: 'professional1',
-      senderName: 'Berlin Medical Center',
-      subject: 'Job Opportunity',
-      message: 'We were impressed by your profile and would like to discuss potential opportunities at our institution.',
-      timestamp: '2025-04-16T10:30:00Z',
-      read: true,
-    },
-    {
-      id: '2',
-      senderId: 'institution2',
-      recipientId: 'professional1',
-      senderName: 'Vienna General Hospital',
-      subject: 'Interview Request',
-      message: 'Based on your qualifications, we would like to invite you for an interview for the Cardiology position.',
-      timestamp: '2025-04-15T14:45:00Z',
-      read: false,
+  const [messages, setMessages] = useState<Message[]>([]);
+  const { user, userType } = useAuth();
+
+  const fetchMessages = async () => {
+    if (!user) return;
+
+    const { data, error } = await supabase
+      .from('messages')
+      .select('*')
+      .or(`sender_id.eq.${user.id},recipient_id.eq.${user.id}`)
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      console.error('Error fetching messages:', error);
+      return;
     }
-  ]);
 
-  const addMessage = (newMessage: Omit<Message, 'id' | 'timestamp'>) => {
-    const message: Message = {
-      ...newMessage,
-      id: Date.now().toString(),
-      timestamp: new Date().toISOString(),
-    };
-    setMessages(prev => [...prev, message]);
+    setMessages(data || []);
   };
 
-  const markAsRead = (messageId: string) => {
-    setMessages(prev => 
-      prev.map(msg => msg.id === messageId ? { ...msg, read: true } : msg)
-    );
+  const addMessage = async (newMessage: Omit<Message, 'id' | 'created_at'>) => {
+    if (!user) return null;
+
+    const { data, error } = await supabase
+      .from('messages')
+      .insert(newMessage)
+      .select()
+      .single();
+
+    if (error) {
+      console.error('Error sending message:', error);
+      return null;
+    }
+
+    fetchMessages();
+    return data;
   };
 
-  return {
-    messages,
-    addMessage,
+  const markAsRead = async (messageId: string) => {
+    if (!user) return;
+
+    const { error } = await supabase
+      .from('messages')
+      .update({ read: true })
+      .eq('id', messageId)
+      .eq('recipient_id', user.id);
+
+    if (error) {
+      console.error('Error marking message as read:', error);
+      return;
+    }
+
+    fetchMessages();
+  };
+
+  useEffect(() => {
+    fetchMessages();
+  }, [user]);
+
+  return { 
+    messages, 
+    addMessage, 
     markAsRead,
+    unreadCount: messages.filter(m => !m.read).length 
   };
 };

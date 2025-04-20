@@ -132,6 +132,42 @@ export type Database = {
           },
         ]
       }
+      messages: {
+        Row: {
+          content: string
+          created_at: string | null
+          deleted_by_recipient: boolean | null
+          deleted_by_sender: boolean | null
+          id: string
+          read: boolean | null
+          recipient_id: string
+          sender_id: string
+          subject: string | null
+        }
+        Insert: {
+          content: string
+          created_at?: string | null
+          deleted_by_recipient?: boolean | null
+          deleted_by_sender?: boolean | null
+          id?: string
+          read?: boolean | null
+          recipient_id: string
+          sender_id: string
+          subject?: string | null
+        }
+        Update: {
+          content?: string
+          created_at?: string | null
+          deleted_by_recipient?: boolean | null
+          deleted_by_sender?: boolean | null
+          id?: string
+          read?: boolean | null
+          recipient_id?: string
+          sender_id?: string
+          subject?: string | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           about: string | null

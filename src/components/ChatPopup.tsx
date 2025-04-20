@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { MessageCircle, Send } from 'lucide-react';
 import { Card } from '@/components/ui/card';
@@ -11,31 +12,28 @@ import { useAuth } from '@/contexts/AuthContext';
 const ChatPopup = () => {
   const [replyText, setReplyText] = useState('');
   const [activeMessage, setActiveMessage] = useState<Message | null>(null);
-  const { messages, addMessage, markAsRead } = useMessages();
+  const { messages, addMessage, markAsRead, unreadCount } = useMessages();
   const { user, userType } = useAuth();
   
-  const unreadCount = messages.filter(m => !m.read).length;
-
   const handleMessageClick = (message: Message) => {
     setActiveMessage(message);
-    if (!message.read) {
+    if (!message.read && message.id) {
       markAsRead(message.id);
     }
   };
 
-  const handleSendReply = () => {
+  const handleSendReply = async () => {
     if (!replyText.trim() || !activeMessage || !user) return;
     
-    addMessage({
-      senderId: user.id,
-      recipientId: activeMessage.senderId,
-      senderName: userType === 'institution' ? 'Your Institution' : 'You',
+    await addMessage({
+      sender_id: user.id,
+      recipient_id: activeMessage.sender_id === user.id ? activeMessage.recipient_id : activeMessage.sender_id,
       subject: `Re: ${activeMessage.subject || 'No subject'}`,
-      message: replyText,
-      read: false,
+      content: replyText,
     });
     
     setReplyText('');
+    setActiveMessage(null);
   };
 
   return (
@@ -58,7 +56,7 @@ const ChatPopup = () => {
           <div className="flex flex-col h-full">
             <SheetHeader className="p-4 border-b">
               <SheetTitle>
-                {activeMessage ? activeMessage.senderName : 'Messages'}
+                {activeMessage ? activeMessage.subject : 'Messages'}
               </SheetTitle>
             </SheetHeader>
             
@@ -68,12 +66,17 @@ const ChatPopup = () => {
                   <Card className="p-3">
                     <div className="flex flex-col space-y-2">
                       <div className="flex justify-between items-start">
-                        <span className="font-medium">{activeMessage.senderName}</span>
+                        <span className="font-medium">
+                          {activeMessage.sender_id === user?.id 
+                            ? 'You' 
+                            : (userType === 'professional' ? 'Institution' : 'Professional')
+                          }
+                        </span>
                         <span className="text-xs text-muted-foreground">
-                          {new Date(activeMessage.timestamp).toLocaleDateString()}
+                          {new Date(activeMessage.created_at || '').toLocaleDateString()}
                         </span>
                       </div>
-                      <p className="text-sm">{activeMessage.message}</p>
+                      <p className="text-sm">{activeMessage.content}</p>
                     </div>
                   </Card>
                   <div className="flex gap-2">
@@ -101,13 +104,13 @@ const ChatPopup = () => {
                           {!message.read && (
                             <span className="inline-block w-2 h-2 bg-primary rounded-full mr-2"></span>
                           )}
-                          {message.senderName}
+                          {message.subject}
                         </span>
                         <span className="text-xs text-muted-foreground">
-                          {new Date(message.timestamp).toLocaleDateString()}
+                          {new Date(message.created_at || '').toLocaleDateString()}
                         </span>
                       </div>
-                      <p className="text-sm">{message.message}</p>
+                      <p className="text-sm truncate">{message.content}</p>
                     </div>
                   </Card>
                 ))
