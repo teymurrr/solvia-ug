@@ -22,6 +22,8 @@ const Messages = lazy(() => import("@/pages/Messages"));
 
 const Insights = lazy(() => import("@/pages/Insights"));
 
+const EmployersLanding = lazy(() => import("@/pages/EmployersLanding"));
+
 const LoadingFallback = () => (
   <div className="flex items-center justify-center h-screen">
     <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
@@ -48,6 +50,7 @@ const AppRoutes = () => {
       <Routes>
         <Route path="/" element={renderIndex()} />
         <Route path="/about" element={<About />} />
+        <Route path="/employers" element={<EmployersLanding />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/signup/professional" element={<ProfessionalSignup />} />
         <Route path="/signup/institution" element={<InstitutionSignup />} />

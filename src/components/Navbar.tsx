@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Logo from './Logo';
@@ -26,8 +25,8 @@ import {
   X,
   HelpCircle,
   Briefcase,
-  BookOpen, // Changed from Book to BookOpen as Book is not available in lucide-react
-  BarChart // Changed from Insights to BarChart as Insights is not available in lucide-react
+  BookOpen,
+  BarChart
 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { Badge } from '@/components/ui/badge';
@@ -75,7 +74,7 @@ const Navbar = () => {
       return (
         <div className="flex justify-center space-x-8 flex-1">
           <Link
-            to="/signup/professional"
+            to="/"
             className="flex flex-col items-center group"
           >
             <div className="p-2 rounded-full group-hover:bg-gray-100 transition-colors">
@@ -85,7 +84,7 @@ const Navbar = () => {
           </Link>
           
           <Link
-            to="/signup/institution"
+            to="/employers"
             className="flex flex-col items-center group"
           >
             <div className="p-2 rounded-full group-hover:bg-gray-100 transition-colors">
