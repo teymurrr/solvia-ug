@@ -1,10 +1,10 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import MainLayout from '@/components/MainLayout';
 import InstitutionCard from '@/components/InstitutionCard';
+import VacancyCard from '@/components/VacancyCard';
 import { ArrowRight, Users, Building2, Globe, FileCheck, Clock, HeartPulse, BookOpen, Briefcase, GraduationCap } from 'lucide-react';
 import { Badge } from "@/components/ui/badge";
 
@@ -60,6 +60,39 @@ const featuredBlogs = [
     excerpt: 'Essential tips for medical professionals considering international careers.',
     date: '2025-04-12',
     readTime: '4 min read',
+  }
+];
+
+const featuredVacancies = [
+  {
+    id: '1',
+    title: 'Senior Cardiologist',
+    institution: 'Berlin Medical Center',
+    location: 'Berlin, Germany',
+    jobType: 'Full-time',
+    description: 'Join our team of expert cardiologists in providing world-class cardiac care.',
+    requirements: [
+      'Board certification in Cardiology',
+      'Minimum 5 years experience',
+      'Fluent in German (C1) and English'
+    ],
+    postedDate: '2025-04-01',
+    applicationDeadline: '2025-05-15'
+  },
+  {
+    id: '2',
+    title: 'Pediatric Nurse',
+    institution: 'Madrid Health Clinic',
+    location: 'Madrid, Spain',
+    jobType: 'Part-time',
+    description: 'Seeking experienced pediatric nurses to join our growing team.',
+    requirements: [
+      'Registered Nurse certification',
+      'Pediatric care experience',
+      'Spanish language proficiency'
+    ],
+    postedDate: '2025-04-10',
+    applicationDeadline: '2025-05-20'
   }
 ];
 
@@ -203,12 +236,12 @@ const Index = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {featuredInstitutions.map((institution) => (
-              <InstitutionCard
-                key={institution.id}
-                {...institution}
-                className="feature-card"
+          <div className="grid grid-cols-1 gap-6">
+            {featuredVacancies.map((vacancy) => (
+              <VacancyCard
+                key={vacancy.id}
+                {...vacancy}
+                showSaveOption={false}
               />
             ))}
           </div>
