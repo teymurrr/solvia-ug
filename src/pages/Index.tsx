@@ -37,7 +37,8 @@ const featuredProfessionals: Professional[] = [
         degree: 'Medical Doctor',
         field: 'Cardiology'
       }
-    ]
+    ],
+    profileImage: 'https://randomuser.me/api/portraits/women/44.jpg'
   },
   {
     id: '2',
@@ -67,7 +68,69 @@ const featuredProfessionals: Professional[] = [
         degree: 'Medical Doctor',
         field: 'Neurology'
       }
-    ]
+    ],
+    profileImage: 'https://randomuser.me/api/portraits/men/22.jpg'
+  },
+  {
+    id: '3',
+    firstName: 'Elena',
+    lastName: 'Petrova',
+    specialty: 'Pediatrics',
+    country: 'Paris, France',
+    languages: [
+      { language: 'English', level: 'B2' },
+      { language: 'French', level: 'C2' },
+      { language: 'Russian', level: 'Native' }
+    ],
+    experience: 12,
+    fspCertificate: true,
+    activelySearching: false,
+    experiences: [
+      {
+        hospital: 'Paris Children\'s Hospital',
+        role: 'Head of Pediatrics',
+        startDate: '2018',
+        current: true
+      }
+    ],
+    education: [
+      {
+        institution: 'Moscow Medical Academy',
+        degree: 'Medical Doctor',
+        field: 'Pediatrics'
+      }
+    ],
+    profileImage: 'https://randomuser.me/api/portraits/women/56.jpg'
+  },
+  {
+    id: '4',
+    firstName: 'James',
+    lastName: 'Wilson',
+    specialty: 'Anesthesiology',
+    country: 'Amsterdam, Netherlands',
+    languages: [
+      { language: 'English', level: 'Native' },
+      { language: 'Dutch', level: 'B1' }
+    ],
+    experience: 7,
+    fspCertificate: true,
+    activelySearching: true,
+    experiences: [
+      {
+        hospital: 'Amsterdam Medical Center',
+        role: 'Anesthesiologist',
+        startDate: '2022',
+        current: true
+      }
+    ],
+    education: [
+      {
+        institution: 'Oxford University',
+        degree: 'Medical Doctor',
+        field: 'Anesthesiology'
+      }
+    ],
+    profileImage: 'https://randomuser.me/api/portraits/men/45.jpg'
   }
 ];
 

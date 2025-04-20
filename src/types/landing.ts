@@ -20,6 +20,7 @@ export interface Professional {
     degree: string;
     field: string;
   }[];
+  profileImage?: string;
 }
 
 export interface Institution {
