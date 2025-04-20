@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Eye, EyeOff, Mail, Lock, User } from 'lucide-react';
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuth, UserType } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
 import MainLayout from '@/components/MainLayout';
 import { Button } from '@/components/ui/button';
@@ -70,6 +70,7 @@ const Auth = () => {
       await signUp(data.email, data.password, {
         first_name: data.firstName,
         last_name: data.lastName,
+        user_type: 'professional' as UserType,
       });
       toast({
         title: 'Account created',

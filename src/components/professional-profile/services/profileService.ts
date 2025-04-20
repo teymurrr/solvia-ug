@@ -13,7 +13,7 @@ export const saveProfileToDb = async (userId: string, data: ProfileFormValues) =
     
     // Save main profile data
     const { error: profileError } = await supabase
-      .from('profiles')
+      .from('professional_profiles')
       .upsert({
         id: userId,
         first_name: data.firstName,
@@ -153,7 +153,7 @@ export const loadProfileFromDb = async (userId: string) => {
     
     // Load main profile data
     const { data: profileData, error: profileError } = await supabase
-      .from('profiles')
+      .from('professional_profiles')
       .select('*')
       .eq('id', userId)
       .single();

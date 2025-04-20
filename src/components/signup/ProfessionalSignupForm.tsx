@@ -6,7 +6,7 @@ import { Form } from '@/components/ui/form';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuth, UserType } from '@/contexts/AuthContext';
 import { professionalSignupSchema, ProfessionalSignupFormValues } from '@/schemas/professionalSignupSchema';
 import { NameFields } from './NameFields';
 import { EmailField } from './EmailField';
@@ -43,7 +43,8 @@ export const ProfessionalSignupForm: React.FC = () => {
             first_name: data.firstName,
             last_name: data.lastName,
             specialty: data.specialty,
-            open_to_relocation: data.isOpenToRelocation
+            open_to_relocation: data.isOpenToRelocation,
+            user_type: 'professional' as UserType
           }
         }
       });

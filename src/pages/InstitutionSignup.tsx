@@ -11,7 +11,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Checkbox } from '@/components/ui/checkbox';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuth, UserType } from '@/contexts/AuthContext';
 
 const signupSchema = z.object({
   institutionName: z.string().min(2, 'Institution name must be at least 2 characters'),
@@ -36,7 +36,7 @@ const InstitutionSignup = () => {
   const [showPassword, setShowPassword] = React.useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
   const { toast } = useToast();
-  const { signUp, login } = useAuth();
+  const { signUp } = useAuth();
   const navigate = useNavigate();
   
   const form = useForm<SignupFormValues>({
@@ -58,17 +58,15 @@ const InstitutionSignup = () => {
       await signUp(data.email, data.password, {
         first_name: data.institutionName,
         last_name: data.institutionType,
-        user_type: 'institution'
+        user_type: 'institution' as UserType
       });
-      
-      login('institution');
       
       toast({
         title: "Account created",
         description: "Your institution account has been created successfully.",
       });
       
-      navigate('/dashboard/institution');
+      navigate('/auth');
     } catch (error) {
       console.error('Institution Signup error:', error);
       toast({
