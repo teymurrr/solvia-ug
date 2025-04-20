@@ -43,15 +43,7 @@ export type Database = {
           profile_id?: string | null
           start_date?: string | null
         }
-        Relationships: [
-          {
-            foreignKeyName: "education_profile_id_fkey"
-            columns: ["profile_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       experiences: {
         Row: {
@@ -87,15 +79,43 @@ export type Database = {
           role?: string | null
           start_date?: string | null
         }
-        Relationships: [
-          {
-            foreignKeyName: "experiences_profile_id_fkey"
-            columns: ["profile_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
+      }
+      institution_profiles: {
+        Row: {
+          about: string | null
+          created_at: string | null
+          id: string
+          location: string | null
+          name: string | null
+          profile_image: string | null
+          type: string | null
+          updated_at: string | null
+          website: string | null
+        }
+        Insert: {
+          about?: string | null
+          created_at?: string | null
+          id: string
+          location?: string | null
+          name?: string | null
+          profile_image?: string | null
+          type?: string | null
+          updated_at?: string | null
+          website?: string | null
+        }
+        Update: {
+          about?: string | null
+          created_at?: string | null
+          id?: string
+          location?: string | null
+          name?: string | null
+          profile_image?: string | null
+          type?: string | null
+          updated_at?: string | null
+          website?: string | null
+        }
+        Relationships: []
       }
       languages: {
         Row: {
@@ -122,15 +142,7 @@ export type Database = {
           level?: string | null
           profile_id?: string | null
         }
-        Relationships: [
-          {
-            foreignKeyName: "languages_profile_id_fkey"
-            columns: ["profile_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       messages: {
         Row: {
@@ -168,7 +180,7 @@ export type Database = {
         }
         Relationships: []
       }
-      profiles: {
+      professional_profiles: {
         Row: {
           about: string | null
           actively_searching: boolean | null
@@ -227,7 +239,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      user_type: "professional" | "institution"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -342,6 +354,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      user_type: ["professional", "institution"],
+    },
   },
 } as const

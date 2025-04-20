@@ -11,11 +11,9 @@ interface AuthContextType {
   loading: boolean;
   isLoggedIn: boolean;
   userType: UserType | null;
-  signIn: (email: string, password: string, rememberMe?: boolean, userType?: UserType) => Promise<void>;
-  signUp: (email: string, password: string, metadata?: { first_name?: string; last_name?: string; user_type?: UserType }) => Promise<void>;
+  signIn: (email: string, password: string, rememberMe?: boolean) => Promise<void>;
+  signUp: (email: string, password: string, metadata?: { first_name?: string; last_name?: string; name?: string; user_type: UserType }) => Promise<void>;
   signOut: () => Promise<void>;
-  login: (type: UserType) => void; 
-  logout: () => void; 
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -36,8 +34,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       setIsLoggedIn(!!data.session);
       
       if (data.session?.user?.user_metadata) {
-        const metadata = data.session.user.user_metadata;
-        setUserType(metadata.user_type ?? 'professional');
+        setUserType(data.session.user.user_metadata.user_type);
       }
       
       setLoading(false);
@@ -45,7 +42,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
     initSession();
 
-    // Set up the auth state listener
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (_event, session) => {
         setSession(session);
@@ -53,8 +49,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         setIsLoggedIn(!!session);
         
         if (session?.user?.user_metadata) {
-          const metadata = session.user.user_metadata;
-          setUserType(metadata.user_type ?? 'professional');
+          setUserType(session.user.user_metadata.user_type);
         } else {
           setUserType(null);
         }
@@ -68,20 +63,13 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     };
   }, []);
 
-  const signIn = async (email: string, password: string, rememberMe = false, type?: UserType) => {
+  const signIn = async (email: string, password: string, rememberMe = false) => {
     const { error, data } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
 
     if (error) throw error;
-
-    // If a userType is provided during login, update the user's metadata
-    if (type && data.user) {
-      await supabase.auth.updateUser({
-        data: { user_type: type }
-      });
-    }
 
     if (rememberMe && session) {
       await supabase.auth.setSession({
@@ -91,7 +79,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     }
   };
 
-  const signUp = async (email: string, password: string, metadata?: { first_name?: string; last_name?: string; user_type?: UserType }) => {
+  const signUp = async (email: string, password: string, metadata?: { first_name?: string; last_name?: string; name?: string; user_type: UserType }) => {
     const { error } = await supabase.auth.signUp({
       email,
       password,
@@ -105,23 +93,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const signOut = async () => {
     const { error } = await supabase.auth.signOut();
     if (error) throw error;
-    // Clear state when signing out
     setIsLoggedIn(false);
     setUserType(null);
-  };
-
-  // For compatibility with existing code
-  const login = (type: UserType) => {
-    setUserType(type);
-    setIsLoggedIn(true);
-  };
-
-  const logout = () => {
-    signOut()
-      .then(() => {
-        // State is already cleared in signOut function
-      })
-      .catch(error => console.error("Error signing out:", error));
   };
 
   return (
@@ -134,8 +107,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       signIn, 
       signUp, 
       signOut,
-      login,
-      logout
     }}>
       {children}
     </AuthContext.Provider>
