@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Users, ArrowRight } from 'lucide-react';
@@ -33,7 +32,7 @@ const ProfessionalsSection: React.FC<ProfessionalsSectionProps> = ({ professiona
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {professionals.slice(0, 4).map((professional) => (
             <ProfessionalCardLanding
               key={professional.id}
