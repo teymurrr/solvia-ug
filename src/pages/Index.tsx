@@ -5,7 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import MainLayout from '@/components/MainLayout';
 import ProfessionalCard from '@/components/ProfessionalCard';
 import InstitutionCard from '@/components/InstitutionCard';
-import { ArrowRight, Users, Building2, Globe, FileCheck, Clock, HeartPulse, BookOpen, Briefcase, GraduationCap } from 'lucide-react';
+import { ArrowRight, Users, Building2, Globe, FileCheck, Clock, HeartPulse, BookOpen, Briefcase, GraduationCap, User, BriefcaseIcon, HelpCircle } from 'lucide-react';
 
 const featuredProfessionals = [
   {
@@ -75,13 +75,36 @@ const Index = () => {
             <p className="text-xl text-muted-foreground">
               Connecting qualified medical professionals with hospitals and clinics in need of talent worldwide.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center mt-8">
-              <Button size="lg" asChild>
-                <Link to="/professionals">Find Job</Link>
-              </Button>
-              <Button size="lg" variant="outline" asChild>
-                <Link to="/institutions">Find Talents</Link>
-              </Button>
+            <div className="flex justify-center space-x-8">
+              <Link
+                to="/signup/professional"
+                className="flex flex-col items-center group"
+              >
+                <div className="p-2 rounded-full group-hover:bg-gray-100 transition-colors">
+                  <User className="h-5 w-5 text-gray-600 group-hover:text-gray-900" />
+                </div>
+                <span className="text-sm text-gray-600 group-hover:text-gray-900">For Talents</span>
+              </Link>
+              
+              <Link
+                to="/signup/institution"
+                className="flex flex-col items-center group"
+              >
+                <div className="p-2 rounded-full group-hover:bg-gray-100 transition-colors">
+                  <BriefcaseIcon className="h-5 w-5 text-gray-600 group-hover:text-gray-900" />
+                </div>
+                <span className="text-sm text-gray-600 group-hover:text-gray-900">For Employers</span>
+              </Link>
+
+              <Link
+                to="/about"
+                className="flex flex-col items-center group"
+              >
+                <div className="p-2 rounded-full group-hover:bg-gray-100 transition-colors">
+                  <HelpCircle className="h-5 w-5 text-gray-600 group-hover:text-gray-900" />
+                </div>
+                <span className="text-sm text-gray-600 group-hover:text-gray-900">About</span>
+              </Link>
             </div>
           </div>
         </div>
