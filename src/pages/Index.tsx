@@ -7,26 +7,68 @@ import InstitutionCard from '@/components/InstitutionCard';
 import VacancyCard from '@/components/VacancyCard';
 import { ArrowRight, Users, Building2, Globe, FileCheck, Clock, HeartPulse, BookOpen, Briefcase, GraduationCap } from 'lucide-react';
 import { Badge } from "@/components/ui/badge";
+import { ProfessionalCard } from '@/components/institution-dashboard';
 
 const featuredProfessionals = [
   {
     id: '1',
-    name: 'Dr. Sarah Johnson',
-    title: 'Cardiologist',
-    location: 'Berlin, Germany',
+    firstName: 'Sarah',
+    lastName: 'Johnson',
     specialty: 'Cardiology',
-    languages: ['English', 'German'],
+    country: 'Berlin, Germany',
+    languages: [
+      { language: 'English', level: 'C2' },
+      { language: 'German', level: 'C1' }
+    ],
     experience: 8,
+    fspCertificate: true,
+    activelySearching: true,
+    experiences: [
+      {
+        hospital: 'Berlin Medical Center',
+        role: 'Senior Cardiologist',
+        startDate: '2020',
+        current: true
+      }
+    ],
+    education: [
+      {
+        institution: 'Charité University Hospital',
+        degree: 'Medical Doctor',
+        field: 'Cardiology'
+      }
+    ]
   },
   {
     id: '2',
-    name: 'Dr. Michael Chen',
-    title: 'Neurologist',
-    location: 'Barcelona, Spain',
+    firstName: 'Michael',
+    lastName: 'Chen',
     specialty: 'Neurology',
-    languages: ['English', 'Spanish', 'Mandarin'],
+    country: 'Barcelona, Spain',
+    languages: [
+      { language: 'English', level: 'C1' },
+      { language: 'Spanish', level: 'C1' },
+      { language: 'Mandarin', level: 'Native' }
+    ],
     experience: 5,
-  },
+    fspCertificate: false,
+    activelySearching: true,
+    experiences: [
+      {
+        hospital: 'Barcelona Neurological Institute',
+        role: 'Neurologist',
+        startDate: '2021',
+        current: true
+      }
+    ],
+    education: [
+      {
+        institution: 'University of Barcelona',
+        degree: 'Medical Doctor',
+        field: 'Neurology'
+      }
+    ]
+  }
 ];
 
 const featuredInstitutions = [
@@ -188,58 +230,12 @@ const Index = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
             {featuredProfessionals.map((professional) => (
-              <Card key={professional.id} className="w-full">
-                <CardContent className="p-6">
-                  <div className="flex items-start gap-6">
-                    <div className="flex items-start gap-4">
-                      <div className="h-20 w-20 rounded-full overflow-hidden bg-gray-100 flex items-center justify-center flex-shrink-0">
-                        <Users className="h-10 w-10 text-gray-400" />
-                      </div>
-                      
-                      <div className="space-y-1">
-                        <h3 className="text-lg font-semibold">
-                          {professional.name}
-                        </h3>
-                        <p className="text-sm text-medical-600">{professional.specialty}</p>
-                      </div>
-                    </div>
-                    
-                    <div className="flex-1 grid grid-cols-3 gap-6">
-                      <div className="space-y-2">
-                        <div className="flex items-center gap-2 text-sm text-gray-600">
-                          <Briefcase className="h-4 w-4" />
-                          <span className="font-medium">Title</span>
-                        </div>
-                        <p className="text-sm">{professional.title}</p>
-                      </div>
-                      
-                      <div className="space-y-2">
-                        <div className="flex items-center gap-2 text-sm text-gray-600">
-                          <Globe className="h-4 w-4" />
-                          <span className="font-medium">Languages</span>
-                        </div>
-                        <div className="flex flex-wrap gap-1">
-                          {professional.languages.map((lang, idx) => (
-                            <Badge key={idx} variant="secondary" className="text-xs">
-                              {lang}
-                            </Badge>
-                          ))}
-                        </div>
-                      </div>
-                      
-                      <div className="space-y-2">
-                        <div className="flex items-center gap-2 text-sm text-gray-600">
-                          <Clock className="h-4 w-4" />
-                          <span className="font-medium">Experience</span>
-                        </div>
-                        <p className="text-sm">{professional.experience} years</p>
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+              <ProfessionalCard
+                key={professional.id}
+                professional={professional}
+              />
             ))}
           </div>
         </div>
@@ -266,7 +262,7 @@ const Index = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {featuredVacancies.map((vacancy) => (
               <VacancyCard
                 key={vacancy.id}
