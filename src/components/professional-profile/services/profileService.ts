@@ -3,6 +3,8 @@ import { supabase } from '@/integrations/supabase/client';
 import { ProfileFormValues, Experience, Education, Language } from '../types';
 
 export const saveProfileToDb = async (userId: string, data: ProfileFormValues) => {
+  console.log('Saving profile data for user:', userId, data);
+  
   // Save main profile data
   const { error: profileError } = await supabase
     .from('profiles')
@@ -21,14 +23,23 @@ export const saveProfileToDb = async (userId: string, data: ProfileFormValues) =
       fsp_certificate_file: data.fspCertificateFile,
     });
 
-  if (profileError) throw profileError;
+  if (profileError) {
+    console.error('Error saving profile:', profileError);
+    throw profileError;
+  }
 
   // Handle experiences
   if (data.experiences && data.experiences.length > 0) {
-    await supabase
+    // Delete existing experiences
+    const { error: deleteExpError } = await supabase
       .from('experiences')
       .delete()
       .eq('profile_id', userId);
+      
+    if (deleteExpError) {
+      console.error('Error deleting experiences:', deleteExpError);
+      throw deleteExpError;
+    }
       
     const experiencesData = data.experiences.map(exp => ({
       profile_id: userId,
@@ -44,15 +55,24 @@ export const saveProfileToDb = async (userId: string, data: ProfileFormValues) =
       .from('experiences')
       .insert(experiencesData);
       
-    if (expError) throw expError;
+    if (expError) {
+      console.error('Error inserting experiences:', expError);
+      throw expError;
+    }
   }
   
   // Handle education
   if (data.education && data.education.length > 0) {
-    await supabase
+    // Delete existing education records
+    const { error: deleteEduError } = await supabase
       .from('education')
       .delete()
       .eq('profile_id', userId);
+      
+    if (deleteEduError) {
+      console.error('Error deleting education:', deleteEduError);
+      throw deleteEduError;
+    }
       
     const educationData = data.education.map(edu => ({
       profile_id: userId,
@@ -68,15 +88,24 @@ export const saveProfileToDb = async (userId: string, data: ProfileFormValues) =
       .from('education')
       .insert(educationData);
       
-    if (eduError) throw eduError;
+    if (eduError) {
+      console.error('Error inserting education:', eduError);
+      throw eduError;
+    }
   }
   
   // Handle languages
   if (data.languages && data.languages.length > 0) {
-    await supabase
+    // Delete existing language records
+    const { error: deleteLangError } = await supabase
       .from('languages')
       .delete()
       .eq('profile_id', userId);
+      
+    if (deleteLangError) {
+      console.error('Error deleting languages:', deleteLangError);
+      throw deleteLangError;
+    }
       
     const languagesData = data.languages.map(lang => ({
       profile_id: userId,
@@ -89,11 +118,18 @@ export const saveProfileToDb = async (userId: string, data: ProfileFormValues) =
       .from('languages')
       .insert(languagesData);
       
-    if (langError) throw langError;
+    if (langError) {
+      console.error('Error inserting languages:', langError);
+      throw langError;
+    }
   }
+
+  console.log('Profile saved successfully');
 };
 
 export const loadProfileFromDb = async (userId: string) => {
+  console.log('Loading profile data for user:', userId);
+  
   // Load main profile data
   const { data: profileData, error: profileError } = await supabase
     .from('profiles')
@@ -101,29 +137,51 @@ export const loadProfileFromDb = async (userId: string) => {
     .eq('id', userId)
     .single();
 
-  if (profileError && profileError.code !== 'PGRST116') {
+  if (profileError) {
+    if (profileError.code === 'PGRST116') {
+      console.log('Profile not found for user:', userId);
+      return null;
+    }
+    console.error('Error loading profile:', profileError);
     throw profileError;
   }
 
   // Load experiences
-  const { data: experiencesData } = await supabase
+  const { data: experiencesData, error: expError } = await supabase
     .from('experiences')
     .select('*')
     .eq('profile_id', userId);
 
+  if (expError) {
+    console.error('Error loading experiences:', expError);
+    throw expError;
+  }
+
   // Load education 
-  const { data: educationData } = await supabase
+  const { data: educationData, error: eduError } = await supabase
     .from('education')
     .select('*')
     .eq('profile_id', userId);
 
+  if (eduError) {
+    console.error('Error loading education:', eduError);
+    throw eduError;
+  }
+
   // Load languages
-  const { data: languagesData } = await supabase
+  const { data: languagesData, error: langError } = await supabase
     .from('languages')
     .select('*')
     .eq('profile_id', userId);
 
+  if (langError) {
+    console.error('Error loading languages:', langError);
+    throw langError;
+  }
+
   if (profileData) {
+    console.log('Profile data loaded successfully');
+    
     // Convert DB field names to camelCase for frontend
     const experiences: Experience[] = experiencesData ? experiencesData.map(exp => ({
       hospital: exp.hospital || '',
@@ -167,5 +225,7 @@ export const loadProfileFromDb = async (userId: string) => {
       email: '', // Add an empty email field to match ProfileFormValues type
     };
   }
+  
+  console.log('No profile data found');
   return null;
 };
