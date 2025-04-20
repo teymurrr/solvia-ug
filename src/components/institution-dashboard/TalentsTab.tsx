@@ -48,10 +48,10 @@ const TalentsTab: React.FC<TalentsTabProps> = ({
   console.log('TalentsTab - Current filters:', filters);
 
   // Calculate pagination values
-  const totalPages = Math.ceil(filteredProfessionals.length / professionalsPerPage);
+  const totalPages = Math.ceil((filteredProfessionals?.length || 0) / professionalsPerPage);
   const startIndex = (currentPage - 1) * professionalsPerPage;
   const endIndex = startIndex + professionalsPerPage;
-  const currentProfessionals = filteredProfessionals.slice(startIndex, endIndex);
+  const currentProfessionals = filteredProfessionals?.slice(startIndex, endIndex) || [];
 
   // Generate page numbers for pagination
   const getPageNumbers = () => {
@@ -91,7 +91,7 @@ const TalentsTab: React.FC<TalentsTabProps> = ({
             onFilterChange={onFilterChange}
           />
           
-          {currentProfessionals && currentProfessionals.length > 0 ? (
+          {Array.isArray(currentProfessionals) && currentProfessionals.length > 0 ? (
             <div className="space-y-6">
               <div className="flex flex-col space-y-4">
                 {currentProfessionals.map((professional) => (
@@ -147,12 +147,12 @@ const TalentsTab: React.FC<TalentsTabProps> = ({
                 </Pagination>
               )}
             </div>
-          ) : professionals && professionals.length > 0 && (searchQuery || !Object.values(filters).every(f => f.startsWith('all_'))) ? (
+          ) : Array.isArray(professionals) && professionals.length > 0 && (searchQuery || !Object.values(filters).every(f => f.startsWith('all_'))) ? (
             <div className="text-center py-8">
               <h3 className="text-lg font-medium">No matching professionals found</h3>
               <p className="text-muted-foreground">Try adjusting your search criteria or filters</p>
             </div>
-          ) : professionals && professionals.length === 0 ? (
+          ) : !Array.isArray(professionals) || professionals.length === 0 ? (
             <div className="text-center py-8">
               <Users className="h-12 w-12 mx-auto text-muted-foreground" />
               <h3 className="mt-4 text-lg font-medium">No professionals have signed up yet</h3>

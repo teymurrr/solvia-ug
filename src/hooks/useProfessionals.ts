@@ -30,7 +30,7 @@ export const useProfessionals = () => {
         }
         
         // Transform Supabase profiles to match our Professional interface
-        const supabaseProfiles = profilesData ? profilesData.map(profile => ({
+        const supabaseProfiles: Professional[] = profilesData ? profilesData.map(profile => ({
           id: profile.id,
           firstName: profile.first_name || '',
           lastName: profile.last_name || '',
@@ -63,7 +63,7 @@ export const useProfessionals = () => {
         // If no profiles in either source, use sample data
         if (supabaseProfiles.length === 0 && localProfiles.length === 0) {
           console.log('No profiles found, using sample data');
-          const sampleData = [
+          const sampleData: Professional[] = [
             {
               id: '1',
               firstName: 'John',
