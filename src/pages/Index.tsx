@@ -87,7 +87,7 @@ const Index = () => {
         </div>
       </section>
 
-      <section className="bg-white py-12">
+      <section className="bg-white py-8">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[{icon: Users, title: '5,000+', description: 'Healthcare Professionals'}, {icon: Building2, title: '1,200+', description: 'Healthcare Institutions'}, {icon: Globe, title: '45+', description: 'Countries Worldwide'}].map((item, i) => (
@@ -103,12 +103,12 @@ const Index = () => {
         </div>
       </section>
 
-      <section className="py-16">
+      <section className="py-8">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
+          <div className="text-center mb-8">
             <Users className="h-12 w-12 text-primary mx-auto mb-4" />
             <h2 className="text-3xl font-bold mb-4">Professionals</h2>
-            <p className="text-lg text-muted-foreground mb-8">
+            <p className="text-lg text-muted-foreground mb-6">
               Connect with talented healthcare professionals ready for their next opportunity
             </p>
           </div>
@@ -122,8 +122,8 @@ const Index = () => {
               />
             ))}
           </div>
-          <div className="text-center mt-8">
-            <Button variant="ghost" asChild className="group">
+          <div className="text-center mt-6">
+            <Button size="lg" variant="outline" asChild className="group">
               <Link to="/professionals" className="flex items-center">
                 View All Professionals
                 <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
@@ -133,12 +133,12 @@ const Index = () => {
         </div>
       </section>
 
-      <section className="py-16 bg-gray-50">
+      <section className="py-8 bg-gray-50">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
+          <div className="text-center mb-8">
             <Briefcase className="h-12 w-12 text-primary mx-auto mb-4" />
             <h2 className="text-3xl font-bold mb-4">Vacancies</h2>
-            <p className="text-lg text-muted-foreground mb-8">
+            <p className="text-lg text-muted-foreground mb-6">
               Discover exciting opportunities at leading healthcare institutions
             </p>
           </div>
@@ -152,7 +152,7 @@ const Index = () => {
               />
             ))}
           </div>
-          <div className="text-center mt-8">
+          <div className="text-center mt-6">
             <Button variant="ghost" asChild className="group">
               <Link to="/institutions" className="flex items-center">
                 View All Vacancies
@@ -163,12 +163,12 @@ const Index = () => {
         </div>
       </section>
 
-      <section className="py-16 bg-gray-50">
+      <section className="py-8 bg-gray-50">
         <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto text-center mb-12">
+          <div className="max-w-3xl mx-auto text-center mb-8">
             <BookOpen className="h-12 w-12 text-primary mx-auto mb-4" />
             <h2 className="text-3xl font-bold mb-4">Solvia Learning</h2>
-            <p className="text-lg text-muted-foreground mb-8">
+            <p className="text-lg text-muted-foreground mb-6">
               Enhance your medical career with specialized German language and FSP courses designed for healthcare professionals
             </p>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -203,8 +203,11 @@ const Index = () => {
                 </CardContent>
               </Card>
             </div>
-            <Button size="lg" className="mt-8" asChild>
-              <Link to="/learning">Explore Courses</Link>
+            <Button size="lg" className="mt-6" asChild>
+              <Link to="/learning" className="flex items-center">
+                Explore Courses
+                <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+              </Link>
             </Button>
           </div>
         </div>
