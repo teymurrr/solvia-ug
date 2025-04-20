@@ -1,24 +1,28 @@
-
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { Users, ArrowRight, MapPin, Languages, Clock, GraduationCap, Building, Award, Search } from 'lucide-react';
 import { Button } from "@/components/ui/button";
-import { Users, ArrowRight, MapPin, Languages, Clock, GraduationCap, Award, Building, Search } from 'lucide-react';
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Professional } from '@/types/landing';
+import { Link } from 'react-router-dom';
 
 interface ProfessionalsSectionProps {
   professionals: Professional[];
 }
 
 const ProfessionalCard: React.FC<{ professional: Professional }> = ({ professional }) => {
+  const navigate = useNavigate();
   const { firstName, lastName, specialty, country, languages, experience, fspCertificate, activelySearching, experiences, education, profileImage } = professional;
   const fullName = `${firstName} ${lastName}`;
   const latestExperience = experiences?.[0];
   const latestEducation = education?.[0];
 
   return (
-    <Card className="overflow-hidden hover:shadow-md transition-shadow">
+    <Card 
+      className="overflow-hidden hover:shadow-md transition-shadow cursor-pointer"
+      onClick={() => navigate('/signup')}
+    >
       <CardContent className="p-6">
         <div className="flex items-start gap-4">
           {/* Profile image */}
@@ -90,15 +94,6 @@ const ProfessionalCard: React.FC<{ professional: Professional }> = ({ profession
           )}
         </div>
       </CardContent>
-      
-      <CardFooter className="p-4 pt-0 flex justify-end gap-2 border-t mt-4">
-        <Button variant="outline" asChild>
-          <Link to={`/professionals/${professional.id}`}>View Profile</Link>
-        </Button>
-        <Button asChild>
-          <Link to={`/messages/new?professional=${professional.id}`}>Contact</Link>
-        </Button>
-      </CardFooter>
     </Card>
   );
 };
