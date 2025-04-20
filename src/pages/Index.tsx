@@ -80,7 +80,7 @@ const Index = () => {
                 <Link to="/professionals">For Talents</Link>
               </Button>
               <Button size="lg" variant="outline" asChild>
-                <Link to="/institutions">For Employers</Link>
+                <Link to="/institutions">Find Talent</Link>
               </Button>
             </div>
           </div>
