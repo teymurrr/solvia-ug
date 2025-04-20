@@ -39,7 +39,7 @@ const Login = () => {
 
   const onSubmit = async (data: LoginFormValues) => {
     try {
-      await signIn(data.email, data.password, userType as 'professional' | 'institution');
+      await signIn(data.email, data.password, userType === 'professional');
       
       toast({
         title: "Login Successful",

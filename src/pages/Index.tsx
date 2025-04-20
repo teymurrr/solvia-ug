@@ -93,6 +93,36 @@ const featuredVacancies = [
     ],
     postedDate: '2025-04-10',
     applicationDeadline: '2025-05-20'
+  },
+  {
+    id: '3',
+    title: 'Emergency Physician',
+    institution: 'Vienna General Hospital',
+    location: 'Vienna, Austria',
+    jobType: 'Full-time',
+    description: 'Join our emergency department team providing critical care services.',
+    requirements: [
+      'Emergency Medicine certification',
+      'Minimum 3 years experience',
+      'German language proficiency (B2)'
+    ],
+    postedDate: '2025-04-05',
+    applicationDeadline: '2025-05-25'
+  },
+  {
+    id: '4',
+    title: 'Physiotherapist',
+    institution: 'Swiss Rehab Center',
+    location: 'Zurich, Switzerland',
+    jobType: 'Full-time',
+    description: 'Experienced physiotherapist needed for our rehabilitation center.',
+    requirements: [
+      'Physiotherapy license',
+      'Sports medicine experience',
+      'German and English proficiency'
+    ],
+    postedDate: '2025-04-08',
+    applicationDeadline: '2025-05-30'
   }
 ];
 
