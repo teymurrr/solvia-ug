@@ -62,7 +62,6 @@ const Navbar = () => {
     navigate('/');
   };
 
-  // Function to get dashboard link based on user type
   const getDashboardLink = () => {
     if (userType === 'professional') {
       return '/dashboard/professional';
@@ -83,7 +82,7 @@ const Navbar = () => {
             <div className="p-2 rounded-full group-hover:bg-gray-100 transition-colors">
               <User className="h-5 w-5 text-gray-600 group-hover:text-gray-900" />
             </div>
-            <span className="text-sm text-gray-600 group-hover:text-gray-900">Professionals</span>
+            <span className="text-sm text-gray-600 group-hover:text-gray-900">For Talents</span>
           </Link>
           <Link
             to="/vacancies"
@@ -92,7 +91,7 @@ const Navbar = () => {
             <div className="p-2 rounded-full group-hover:bg-gray-100 transition-colors">
               <Briefcase className="h-5 w-5 text-gray-600 group-hover:text-gray-900" />
             </div>
-            <span className="text-sm text-gray-600 group-hover:text-gray-900">Vacancies</span>
+            <span className="text-sm text-gray-600 group-hover:text-gray-900">Find Talents</span>
           </Link>
           <Link
             to="/learning"
@@ -303,7 +302,7 @@ const Navbar = () => {
                   onClick={toggleMobileMenu}
                 >
                   <User className="h-5 w-5" />
-                  <span>Professionals</span>
+                  <span>For Talents</span>
                 </Link>
                 <Link
                   to="/vacancies"
@@ -311,7 +310,7 @@ const Navbar = () => {
                   onClick={toggleMobileMenu}
                 >
                   <Briefcase className="h-5 w-5" />
-                  <span>Vacancies</span>
+                  <span>Find Talents</span>
                 </Link>
                 <Link
                   to="/learning"
