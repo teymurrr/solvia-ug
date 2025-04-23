@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { FileCheck, Building2, Rocket } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -31,7 +30,7 @@ const HowItWorksSection = () => {
     }
   ];
 
-  // Auto-scroll through steps every 5 seconds
+  // Auto-scroll through steps every 5 seconds if no hover is active
   useEffect(() => {
     const interval = setInterval(() => {
       setActiveStep((prev) => (prev + 1) % steps.length);
@@ -39,29 +38,24 @@ const HowItWorksSection = () => {
     return () => clearInterval(interval);
   }, [steps.length]);
 
-  // Handle manual step selection
-  const handleStepClick = (index) => {
-    setActiveStep(index);
-  };
-
   return (
     <section className="py-16 bg-white overflow-hidden">
       <div className="container mx-auto px-4">
         <h2 className="text-[30px] font-bold text-black text-center mb-12">How it Works</h2>
         
         <div className="flex flex-col lg:flex-row gap-8 max-w-6xl mx-auto">
-          {/* Left section - Steps names that scroll */}
+          {/* Left section - Steps names that trigger on hover */}
           <div className="lg:w-1/2 space-y-6">
             {steps.map((step, index) => (
               <div 
                 key={index}
                 className={cn(
-                  "p-6 rounded-lg cursor-pointer transition-all duration-300 transform",
+                  "p-6 rounded-lg transition-all duration-300 transform cursor-pointer",
                   activeStep === index 
                     ? "bg-blue-50 border-l-4 border-[#006ae6] translate-x-2" 
                     : "hover:bg-gray-50"
                 )}
-                onClick={() => handleStepClick(index)}
+                onMouseEnter={() => setActiveStep(index)}
               >
                 <div className="flex items-center gap-4">
                   <div className={cn(
@@ -108,7 +102,6 @@ const HowItWorksSection = () => {
                     className="object-cover h-full w-full rounded-xl"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex flex-col justify-end p-6">
-                    {/* Add content specific to each step */}
                     {index === 0 && (
                       <div className="bg-white/90 backdrop-blur-sm rounded-lg p-4 transform animate-fade-in">
                         <h4 className="font-semibold text-lg">Healthcare Professional Profile</h4>
@@ -149,7 +142,7 @@ const HowItWorksSection = () => {
               {steps.map((_, index) => (
                 <button
                   key={index}
-                  onClick={() => handleStepClick(index)}
+                  onClick={() => setActiveStep(index)}
                   className={cn(
                     "w-2.5 h-2.5 rounded-full transition-all",
                     activeStep === index ? "bg-[#006ae6] w-5" : "bg-gray-300"
