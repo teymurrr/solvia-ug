@@ -2,7 +2,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Badge } from '@/components/ui/badge';
-import { HelpCircle, GraduationCap, Building } from 'lucide-react';
+import { User, Briefcase, HelpCircle, LayoutDashboard, BookOpen, BarChart } from 'lucide-react';
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -19,7 +19,6 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
   isLoggedIn,
   userType,
   hasUnreadMessages,
-  getDashboardLink,
   onSignOut,
   onClose,
 }) => {
@@ -31,44 +30,79 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
         {!isLoggedIn && (
           <>
             <Link
-              to="/professionals"
+              to="/"
               className="flex items-center space-x-3 px-4 py-2 hover:bg-gray-50"
               onClick={onClose}
             >
-              <GraduationCap className="h-5 w-5" />
+              <User className="h-5 w-5 text-gray-600" />
               <span>For Talents</span>
             </Link>
+            
             <Link
-              to="/institutions"
+              to="/employers"
               className="flex items-center space-x-3 px-4 py-2 hover:bg-gray-50"
               onClick={onClose}
             >
-              <Building className="h-5 w-5" />
-              <span>For Institutions</span>
+              <Briefcase className="h-5 w-5 text-gray-600" />
+              <span>For Employers</span>
             </Link>
+
             <Link
               to="/about"
               className="flex items-center space-x-3 px-4 py-2 hover:bg-gray-50"
               onClick={onClose}
             >
-              <HelpCircle className="h-5 w-5" />
+              <HelpCircle className="h-5 w-5 text-gray-600" />
               <span>About</span>
             </Link>
           </>
         )}
         
-        {isLoggedIn && (
+        {isLoggedIn && userType === 'professional' && (
           <>
             <Link
-              to={`/dashboard/${userType}`}
-              className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800"
+              to="/dashboard/professional"
+              className="flex items-center space-x-3 px-4 py-2 hover:bg-gray-50"
               onClick={onClose}
             >
-              Dashboard
+              <LayoutDashboard className="h-5 w-5 text-gray-600" />
+              <span>Dashboard</span>
+            </Link>
+
+            <Link
+              to="/learning"
+              className="flex items-center space-x-3 px-4 py-2 hover:bg-gray-50"
+              onClick={onClose}
+            >
+              <BookOpen className="h-5 w-5 text-gray-600" />
+              <span>Solvia Learning</span>
+            </Link>
+          </>
+        )}
+
+        {isLoggedIn && userType === 'institution' && (
+          <>
+            <Link
+              to="/dashboard/institution"
+              className="flex items-center space-x-3 px-4 py-2 hover:bg-gray-50"
+              onClick={onClose}
+            >
+              <LayoutDashboard className="h-5 w-5 text-gray-600" />
+              <span>Dashboard</span>
+            </Link>
+
+            <Link
+              to="/insights"
+              className="flex items-center space-x-3 px-4 py-2 hover:bg-gray-50"
+              onClick={onClose}
+            >
+              <BarChart className="h-5 w-5 text-gray-600" />
+              <span>Solvia Insights</span>
             </Link>
           </>
         )}
       </div>
+
       <div className="pt-4 pb-3 border-t border-gray-200">
         {isLoggedIn ? (
           <div className="space-y-1">
