@@ -2,7 +2,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Badge } from '@/components/ui/badge';
-import { HelpCircle } from 'lucide-react';
+import { HelpCircle, GraduationCap, Building } from 'lucide-react';
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -28,8 +28,24 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
   return (
     <div className="sm:hidden bg-white">
       <div className="pt-2 pb-3 space-y-1">
-        {!isLoggedIn ? (
+        {!isLoggedIn && (
           <>
+            <Link
+              to="/professionals"
+              className="flex items-center space-x-3 px-4 py-2 hover:bg-gray-50"
+              onClick={onClose}
+            >
+              <GraduationCap className="h-5 w-5" />
+              <span>For Talents</span>
+            </Link>
+            <Link
+              to="/institutions"
+              className="flex items-center space-x-3 px-4 py-2 hover:bg-gray-50"
+              onClick={onClose}
+            >
+              <Building className="h-5 w-5" />
+              <span>For Institutions</span>
+            </Link>
             <Link
               to="/about"
               className="flex items-center space-x-3 px-4 py-2 hover:bg-gray-50"
@@ -39,40 +55,23 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
               <span>About</span>
             </Link>
           </>
-        ) : (
-          userType === 'professional' ? (
-            <>
-              <Link
-                to="/dashboard/professional"
-                className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800"
-                onClick={onClose}
-              >
-                Dashboard
-              </Link>
-            </>
-          ) : (
-            <>
-              <Link
-                to="/dashboard/institution"
-                className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800"
-                onClick={onClose}
-              >
-                Dashboard
-              </Link>
-            </>
-          )
         )}
-      </div>
-      <div className="pt-4 pb-3 border-t border-gray-200">
-        {isLoggedIn ? (
-          <div className="space-y-1">
+        
+        {isLoggedIn && (
+          <>
             <Link
-              to={getDashboardLink()}
+              to={`/dashboard/${userType}`}
               className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800"
               onClick={onClose}
             >
               Dashboard
             </Link>
+          </>
+        )}
+      </div>
+      <div className="pt-4 pb-3 border-t border-gray-200">
+        {isLoggedIn ? (
+          <div className="space-y-1">
             <Link
               to="/messages"
               className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800 flex items-center"
