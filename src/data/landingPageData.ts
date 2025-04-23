@@ -1,23 +1,23 @@
-
 import { Professional, BlogPost } from '@/types/landing';
 
 export const featuredProfessionals: Professional[] = [
   {
     id: '1',
-    firstName: 'Sarah',
-    lastName: 'Johnson',
+    firstName: 'Isabella',
+    lastName: 'Rodríguez',
     specialty: 'Cardiology',
-    country: 'Berlin, Germany',
+    country: 'Buenos Aires, Argentina',
     languages: [
-      { language: 'English', level: 'C2' },
-      { language: 'German', level: 'C1' }
+      { language: 'Spanish', level: 'Native' },
+      { language: 'English', level: 'C1' },
+      { language: 'Portuguese', level: 'B2' }
     ],
     experience: 8,
     fspCertificate: true,
     activelySearching: true,
     experiences: [
       {
-        hospital: 'Berlin Medical Center',
+        hospital: 'Hospital Italiano de Buenos Aires',
         role: 'Senior Cardiologist',
         startDate: '2020',
         current: true
@@ -25,12 +25,12 @@ export const featuredProfessionals: Professional[] = [
     ],
     education: [
       {
-        institution: 'Charité University Hospital',
+        institution: 'Universidad de Buenos Aires',
         degree: 'Medical Doctor',
         field: 'Cardiology'
       }
     ],
-    profileImage: 'https://randomuser.me/api/portraits/women/44.jpg'
+    profileImage: 'https://randomuser.me/api/portraits/women/28.jpg'
   },
   {
     id: '2',
