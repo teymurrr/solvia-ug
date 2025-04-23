@@ -1,17 +1,20 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { BookOpen, GraduationCap, Globe, Clock } from 'lucide-react';
+import { useProtectedAction } from '@/hooks/useProtectedAction';
 
 const LearningSection = () => {
+  const { handleProtectedAction } = useProtectedAction();
+
   return (
     <section className="py-16 bg-white">
       <div className="container mx-auto px-4">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-12">
+            <BookOpen className="h-12 w-12 text-primary mx-auto mb-4" />
             <h2 className="text-4xl font-bold text-primary mb-4">Solvia Learning</h2>
             <p className="text-lg text-muted-foreground">
               Enhance your medical career with our specialized German language and FSP courses
@@ -46,7 +49,6 @@ const LearningSection = () => {
                 </ul>
               </CardContent>
             </Card>
-            {/* FSP Preparation Courses */}
             <Card className="relative overflow-hidden hover:shadow-lg hover:scale-[1.02] transition-all duration-300 border-transparent">
               <div className="absolute top-4 right-4">
                 <Badge variant="comingSoon">Coming Soon</Badge>
@@ -77,8 +79,12 @@ const LearningSection = () => {
             </Card>
           </div>
           <div className="text-center">
-            <Button size="lg" asChild>
-              <Link to="/learning" className="flex items-center justify-center">
+            <Button 
+              size="lg" 
+              asChild 
+              onClick={() => handleProtectedAction(undefined, '/signup/professional')}
+            >
+              <Link to="/signup/professional" className="flex items-center justify-center">
                 Explore Courses
               </Link>
             </Button>
@@ -90,4 +96,3 @@ const LearningSection = () => {
 };
 
 export default LearningSection;
-

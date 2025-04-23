@@ -4,36 +4,40 @@ import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Briefcase, ArrowRight } from 'lucide-react';
 import VacancyCard from '@/components/VacancyCard';
+import { useProtectedAction } from '@/hooks/useProtectedAction';
 
 interface VacanciesSectionProps {
   vacancies: any[]; // Using the existing type from VacancyCard
 }
 
 const VacanciesSection: React.FC<VacanciesSectionProps> = ({ vacancies }) => {
+  const { handleProtectedAction } = useProtectedAction();
+
   return (
     <section className="py-8 bg-gray-50">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-8">
+        <div className="text-center">
           <Briefcase className="h-12 w-12 text-primary mx-auto mb-4" />
           <h2 className="text-3xl font-bold">Vacancies</h2>
           <p className="text-lg text-muted-foreground mt-4 mb-6">
             Discover exciting opportunities at leading healthcare institutions
           </p>
-          <Button variant="ghost" asChild className="group mx-auto">
-            <Link to="/institutions" className="flex items-center">
+          <Button variant="ghost" asChild className="group" onClick={() => handleProtectedAction(undefined, '/signup/professional')}>
+            <Link to="/signup/professional" className="flex items-center">
               View All
               <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
             </Link>
           </Button>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
           {vacancies.map((vacancy) => (
             <VacancyCard
               key={vacancy.id}
               {...vacancy}
               showSaveOption={false}
               className="border-transparent hover:shadow-lg hover:scale-[1.02] transition-all duration-300"
+              onAction={() => handleProtectedAction(undefined, '/signup/professional')}
             />
           ))}
         </div>
