@@ -2,7 +2,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import MainLayout from '@/components/MainLayout';
-import { Card, CardContent } from "@/components/ui/card";
 import { Globe, FileCheck, Clock, Users, Building2, Calendar } from 'lucide-react';
 import ProfessionalsSection from '@/components/landing/ProfessionalsSection';
 import { featuredProfessionals } from '@/data/landingPageData';
@@ -21,13 +20,43 @@ const EmployersLanding = () => {
               <p className="text-xl text-gray-600 mb-8">
                 Solvia is your go-to platform for discovering international doctors and nurses prepared for relocation
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button size="lg" asChild>
-                  <Link to="/professionals">Browse Talents</Link>
-                </Button>
-                <Button size="lg" variant="outline" asChild>
-                  <Link to="/contact">Book a Call</Link>
-                </Button>
+              <Button size="lg" asChild>
+                <Link to="/professionals">Browse Talents</Link>
+              </Button>
+            </div>
+          </div>
+        </section>
+
+        {/* Professionals Section */}
+        <ProfessionalsSection professionals={featuredProfessionals} />
+
+        {/* How It Works Section */}
+        <section className="py-16 bg-gray-50">
+          <div className="container mx-auto px-4">
+            <h2 className="text-3xl font-bold text-center mb-12">How It Works</h2>
+            <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+              <div className="text-center">
+                <div className="bg-primary/10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Users className="h-8 w-8 text-primary" />
+                </div>
+                <h3 className="text-xl font-semibold mb-2">Search</h3>
+                <p className="text-gray-600">Use filters to find the exact match you need.</p>
+              </div>
+
+              <div className="text-center">
+                <div className="bg-primary/10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Building2 className="h-8 w-8 text-primary" />
+                </div>
+                <h3 className="text-xl font-semibold mb-2">Connect</h3>
+                <p className="text-gray-600">Click to view a CV or schedule an interview.</p>
+              </div>
+
+              <div className="text-center">
+                <div className="bg-primary/10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Calendar className="h-8 w-8 text-primary" />
+                </div>
+                <h3 className="text-xl font-semibold mb-2">Hire</h3>
+                <p className="text-gray-600">We assist with onboarding, relocation, and integration.</p>
               </div>
             </div>
           </div>
@@ -88,41 +117,6 @@ const EmployersLanding = () => {
             </div>
           </div>
         </section>
-
-        {/* How It Works Section */}
-        <section className="py-16 bg-gray-50">
-          <div className="container mx-auto px-4">
-            <h2 className="text-3xl font-bold text-center mb-12">How It Works</h2>
-            <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-              <div className="text-center">
-                <div className="bg-primary/10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Users className="h-8 w-8 text-primary" />
-                </div>
-                <h3 className="text-xl font-semibold mb-2">Search</h3>
-                <p className="text-gray-600">Use filters to find the exact match you need.</p>
-              </div>
-
-              <div className="text-center">
-                <div className="bg-primary/10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Building2 className="h-8 w-8 text-primary" />
-                </div>
-                <h3 className="text-xl font-semibold mb-2">Connect</h3>
-                <p className="text-gray-600">Click to view a CV or schedule an interview.</p>
-              </div>
-
-              <div className="text-center">
-                <div className="bg-primary/10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Calendar className="h-8 w-8 text-primary" />
-                </div>
-                <h3 className="text-xl font-semibold mb-2">Hire</h3>
-                <p className="text-gray-600">We assist with onboarding, relocation, and integration.</p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Professionals Section */}
-        <ProfessionalsSection professionals={featuredProfessionals} />
 
         {/* CTA Section */}
         <section className="py-20 bg-primary text-white">
