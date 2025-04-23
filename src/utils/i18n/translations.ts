@@ -51,6 +51,22 @@ export const translations = {
     },
     blog: {
       viewMore: 'View More'
+    },
+    why: {
+      title: "Why Solvia?",
+      subtitle: "Discover what makes our platform the top choice for healthcare professionals worldwide",
+      global: {
+        title: "Global Opportunities",
+        description: "Access to healthcare positions across multiple countries with full relocation support"
+      },
+      fast: {
+        title: "Fast Placement",
+        description: "Streamlined matching process to help you find the right position quickly"
+      },
+      support: {
+        title: "Comprehensive Support",
+        description: "Guidance through certification, language training, and settlement in your new country"
+      }
     }
   },
   de: {
@@ -103,6 +119,22 @@ export const translations = {
     },
     blog: {
       viewMore: 'Mehr anzeigen'
+    },
+    why: {
+      title: "Warum Solvia?",
+      subtitle: "Entdecken Sie, was unsere Plattform zur ersten Wahl für Gesundheitsfachkräfte weltweit macht",
+      global: {
+        title: "Globale Chancen",
+        description: "Zugang zu Gesundheitspositionen in mehreren Ländern mit voller Umzugsunterstützung"
+      },
+      fast: {
+        title: "Schnelle Vermittlung",
+        description: "Optimierter Matching-Prozess, um schnell die richtige Position zu finden"
+      },
+      support: {
+        title: "Umfassende Unterstützung",
+        description: "Begleitung durch Zertifizierung, Sprachtraining und Eingewöhnung in Ihrem neuen Land"
+      }
     }
   },
   es: {
@@ -155,6 +187,22 @@ export const translations = {
     },
     blog: {
       viewMore: 'Ver más'
+    },
+    why: {
+      title: "¿Por qué Solvia?",
+      subtitle: "Descubra qué hace que nuestra plataforma sea la principal opción para profesionales de la salud en todo el mundo",
+      global: {
+        title: "Oportunidades Globales",
+        description: "Acceso a puestos de salud en varios países con apoyo completo de reubicación"
+      },
+      fast: {
+        title: "Colocación Rápida",
+        description: "Proceso de coincidencia optimizado para ayudarle a encontrar el puesto adecuado rápidamente"
+      },
+      support: {
+        title: "Apoyo Integral",
+        description: "Orientación a través de la certificación, formación en idiomas y establecimiento en su nuevo país"
+      }
     }
   }
 };
