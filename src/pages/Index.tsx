@@ -14,8 +14,8 @@ const Index = () => {
   return (
     <MainLayout>
       <div className="min-h-screen">
-        <HowItWorksSection /> {/* Moved to the top */}
         <HeroSection />
+        <HowItWorksSection />
         <VacanciesSection vacancies={featuredVacancies} />
         <div className="py-8 bg-gradient-to-tr from-blue-50/50 via-white to-blue-50/50">
           <ProfessionalsSection professionals={featuredProfessionals} />
