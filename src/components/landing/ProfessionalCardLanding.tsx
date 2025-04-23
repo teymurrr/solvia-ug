@@ -47,6 +47,7 @@ const ProfessionalCardLanding: React.FC<ProfessionalCardLandingProps> = ({ profe
     });
   };
 
+  // Get first 3 languages only
   const displayLanguages = languages.slice(0, 3);
   const hasMoreLanguages = languages.length > 3;
 
@@ -106,27 +107,45 @@ const ProfessionalCardLanding: React.FC<ProfessionalCardLandingProps> = ({ profe
           </div>
         </div>
         
-        <div className="mt-6 grid grid-cols-2 gap-x-5 gap-y-3">
+        <div className="mt-4 grid grid-cols-2 gap-x-5 gap-y-2">
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <MapPin className="h-4 w-4 flex-shrink-0" />
+            <MapPin className="h-4 w-4" />
             <span className="truncate">{country}</span>
           </div>
-          
-          {fspCertificate && (
-            <div className="flex items-center gap-1 text-yellow-600 justify-end">
-              <span className="text-sm font-medium">FSP</span>
-              <Award className="h-5 w-5 text-yellow-500 flex-shrink-0" />
+          <div className="col-span-2">
+            <div className="text-sm text-muted-foreground">
+              <div className="flex items-center gap-2">
+                <Clock className="h-4 w-4" />
+                <span>
+                  {experience} {experience === 1 ? 'year' : 'years'} of experience
+                </span>
+              </div>
+            </div>
+          </div>
+          {latestExperience && (
+            <div className="flex items-center gap-2 text-sm text-muted-foreground col-span-2">
+              <Building className="h-4 w-4" />
+              <span className="truncate">{latestExperience.role} at {latestExperience.hospital}</span>
             </div>
           )}
+          {latestEducation && (
+            <div className="flex items-center gap-2 text-sm text-muted-foreground col-span-2">
+              <GraduationCap className="h-4 w-4" />
+              <span className="truncate">{latestEducation.degree} in {latestEducation.field}</span>
+            </div>
+          )}
+        </div>
 
-          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <Clock className="h-4 w-4 flex-shrink-0" />
-            <span>{experience} {experience === 1 ? 'year' : 'years'} of experience</span>
-          </div>
-
+        <div className="absolute bottom-6 right-6 flex flex-col items-end gap-2">
+          {fspCertificate && (
+            <div className="flex items-center gap-1 text-yellow-600">
+              <span className="text-sm font-medium">FSP</span>
+              <Award className="h-5 w-5 text-yellow-500" />
+            </div>
+          )}
           <div className="flex flex-col items-end gap-1">
             <div className="flex items-center gap-1 text-muted-foreground">
-              <Languages className="h-4 w-4 flex-shrink-0" />
+              <Languages className="h-4 w-4" />
             </div>
             {displayLanguages.map((lang, idx) => (
               <Badge key={idx} variant="outline" className="text-xs">
@@ -137,20 +156,6 @@ const ProfessionalCardLanding: React.FC<ProfessionalCardLandingProps> = ({ profe
               <span className="text-xs text-muted-foreground">...</span>
             )}
           </div>
-
-          {latestExperience && (
-            <div className="flex items-center gap-2 text-sm text-muted-foreground col-span-2">
-              <Building className="h-4 w-4 flex-shrink-0" />
-              <span className="truncate">{latestExperience.role} at {latestExperience.hospital}</span>
-            </div>
-          )}
-          
-          {latestEducation && (
-            <div className="flex items-center gap-2 text-sm text-muted-foreground col-span-2">
-              <GraduationCap className="h-4 w-4 flex-shrink-0" />
-              <span className="truncate">{latestEducation.degree} in {latestEducation.field}</span>
-            </div>
-          )}
         </div>
       </CardContent>
     </Card>
