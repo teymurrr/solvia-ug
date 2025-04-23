@@ -3,8 +3,8 @@ import React from 'react';
 import MainLayout from '@/components/MainLayout';
 import HeroSection from '@/components/landing/HeroSection';
 import StatsSection from '@/components/landing/StatsSection';
-import ProfessionalsSection from '@/components/landing/ProfessionalsSection';
 import VacanciesSection from '@/components/landing/VacanciesSection';
+import ProfessionalsSection from '@/components/landing/ProfessionalsSection';
 import HowItWorksSection from '@/components/landing/HowItWorksSection';
 import LearningSection from '@/components/landing/LearningSection';
 import BlogSection from '@/components/landing/BlogSection';
@@ -16,9 +16,9 @@ const Index = () => {
     <MainLayout>
       <HeroSection />
       <StatsSection />
+      <VacanciesSection vacancies={featuredVacancies} /> {/* Moved to first position after StatsSection */}
       <ProfessionalsSection professionals={featuredProfessionals} />
       <HowItWorksSection />
-      <VacanciesSection vacancies={featuredVacancies} />
       <LearningSection />
       <BlogSection posts={featuredBlogs} />
       <CTASection />
