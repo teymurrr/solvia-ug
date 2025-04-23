@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Award, MapPin, Languages, Clock, Building, GraduationCap, Search, Bookmark, MessageCircle } from 'lucide-react';
@@ -126,14 +125,12 @@ const ProfessionalCardLanding: React.FC<ProfessionalCardLandingProps> = ({ profe
               <MapPin className="h-4 w-4" />
               <span>{country}</span>
             </div>
-            <div>
-              <div className="text-sm text-muted-foreground">
-                <div className="flex items-center gap-2">
-                  <Clock className="h-4 w-4" />
-                  <span>
-                    {experience} {experience === 1 ? 'year' : 'years'} of experience
-                  </span>
-                </div>
+            <div className="text-sm text-muted-foreground">
+              <div className="flex items-center gap-2">
+                <Clock className="h-4 w-4" />
+                <span>
+                  {experience} {experience === 1 ? 'year' : 'years'} of experience
+                </span>
               </div>
             </div>
             {latestExperience && (
@@ -148,11 +145,9 @@ const ProfessionalCardLanding: React.FC<ProfessionalCardLandingProps> = ({ profe
                 <span>{latestEducation.degree} in {latestEducation.field}</span>
               </div>
             )}
-          </div>
 
-          {/* Languages section - now displayed below on mobile */}
-          {isMobile ? (
-            <div className="flex flex-wrap gap-2">
+            {/* Languages section - now always displayed in a line */}
+            <div className="flex flex-wrap gap-2 mt-2">
               {displayLanguages.map((lang, idx) => (
                 <Badge key={idx} variant="outline" className="text-xs">
                   {lang.language} ({lang.level})
@@ -162,18 +157,7 @@ const ProfessionalCardLanding: React.FC<ProfessionalCardLandingProps> = ({ profe
                 <span className="text-xs text-muted-foreground">...</span>
               )}
             </div>
-          ) : (
-            <div className="flex flex-col items-end gap-1">
-              {displayLanguages.map((lang, idx) => (
-                <Badge key={idx} variant="outline" className="text-xs">
-                  {lang.language} ({lang.level})
-                </Badge>
-              ))}
-              {hasMoreLanguages && (
-                <span className="text-xs text-muted-foreground">...</span>
-              )}
-            </div>
-          )}
+          </div>
         </div>
       </CardContent>
     </Card>

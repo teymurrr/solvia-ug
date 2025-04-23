@@ -6,7 +6,7 @@ import HeroSection from '@/components/landing/HeroSection';
 import VacanciesSection from '@/components/landing/VacanciesSection';
 import ProfessionalsSection from '@/components/landing/ProfessionalsSection';
 import WhySolviaSection from '@/components/landing/WhySolviaSection';
-import InsightsSection from '@/components/landing/InsightsSection';
+import LearningSection from '@/components/landing/LearningSection';
 import CTASection from '@/components/landing/CTASection';
 import { featuredVacancies, featuredProfessionals } from '@/data/landingPageData';
 
@@ -21,7 +21,7 @@ const Index = () => {
           <ProfessionalsSection professionals={featuredProfessionals} />
         </div>
         <WhySolviaSection />
-        <InsightsSection />
+        <LearningSection />
         <CTASection />
       </div>
     </MainLayout>
