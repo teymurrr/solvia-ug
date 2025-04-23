@@ -15,7 +15,10 @@ const StatsSection = () => {
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {statsData.map((item, i) => (
-            <Card key={i} className="feature-card">
+            <Card 
+              key={i} 
+              className="feature-card border-transparent hover:border-transparent"
+            >
               <CardContent className="p-6 flex flex-col items-center text-center">
                 <item.icon className="h-12 w-12 text-medical-600 mb-4" />
                 <h3 className="text-3xl font-bold mb-2">{item.title}</h3>
