@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
@@ -27,10 +28,7 @@ const EmployersLanding = () => {
           </div>
         </section>
 
-        {/* Professionals Section */}
-        <ProfessionalsSection professionals={featuredProfessionals} />
-
-        {/* How It Works Section */}
+        {/* How It Works Section - Now moved to be the first section after Hero */}
         <section className="py-16 bg-gray-50">
           <div className="container mx-auto px-4">
             <h2 className="text-3xl font-bold text-center mb-12">How It Works</h2>
@@ -61,6 +59,9 @@ const EmployersLanding = () => {
             </div>
           </div>
         </section>
+
+        {/* Professionals Section */}
+        <ProfessionalsSection professionals={featuredProfessionals} />
 
         {/* Why Solvia Section */}
         <section className="py-16 bg-white">
