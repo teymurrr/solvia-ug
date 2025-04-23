@@ -17,10 +17,10 @@ const HeroSection = () => {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center mt-8">
             <Button size="lg" asChild>
-              <Link to="/professionals">Find a job</Link>
+              <Link to="/signup/professional">Find a job</Link>
             </Button>
             <Button size="lg" variant="outline" asChild>
-              <Link to="/institutions">Find a Talent</Link>
+              <Link to="/signup/institution">Find a Talent</Link>
             </Button>
           </div>
         </div>
