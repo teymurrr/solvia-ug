@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { Eye, EyeOff, Mail, Lock, User } from 'lucide-react';
+import { Eye, EyeOff, Mail, Lock, User, Google } from 'lucide-react';
 import { useAuth, UserType } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
 import MainLayout from '@/components/MainLayout';
@@ -85,6 +85,26 @@ const Auth = () => {
     }
   };
 
+  const handleGoogleLogin = async () => {
+    try {
+      const { error } = await window.supabase.auth.signInWithOAuth({ provider: 'google' });
+      if (error) {
+        toast({
+          title: 'Google Sign-In Error',
+          description: error.message,
+          variant: 'destructive',
+        });
+      }
+      // Supabase handles redirect, so no navigation here
+    } catch (error) {
+      toast({
+        title: 'Google Sign-In Error',
+        description: 'Failed to sign in with Google.',
+        variant: 'destructive',
+      });
+    }
+  };
+
   return (
     <MainLayout>
       <div className="container max-w-md mx-auto py-12">
@@ -157,6 +177,12 @@ const Auth = () => {
                     </Button>
                   </form>
                 </Form>
+                <div className="text-center mt-4">
+                  <Button variant="outline" onClick={handleGoogleLogin} className="w-full flex items-center justify-center gap-2">
+                    <Google className="h-5 w-5 text-[#006ae6]" />
+                    Sign in with Google
+                  </Button>
+                </div>
               </CardContent>
             </Card>
           </TabsContent>
@@ -264,6 +290,12 @@ const Auth = () => {
                     </Button>
                   </form>
                 </Form>
+                <div className="text-center mt-4">
+                  <Button variant="outline" onClick={handleGoogleLogin} className="w-full flex items-center justify-center gap-2">
+                    <Google className="h-5 w-5 text-[#006ae6]" />
+                    Sign up with Google
+                  </Button>
+                </div>
               </CardContent>
             </Card>
           </TabsContent>
