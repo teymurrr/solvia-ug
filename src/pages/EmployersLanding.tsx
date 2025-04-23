@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 import MainLayout from '@/components/MainLayout';
 import { Card, CardContent } from "@/components/ui/card";
 import { Globe, FileCheck, Clock, Users, Building2, Calendar } from 'lucide-react';
+import ProfessionalsSection from '@/components/landing/ProfessionalsSection';
+import { featuredProfessionals } from '@/data/landingPageData';
 
 const EmployersLanding = () => {
   return (
@@ -118,6 +120,9 @@ const EmployersLanding = () => {
             </div>
           </div>
         </section>
+
+        {/* Professionals Section */}
+        <ProfessionalsSection professionals={featuredProfessionals} />
 
         {/* CTA Section */}
         <section className="py-20 bg-primary text-white">
