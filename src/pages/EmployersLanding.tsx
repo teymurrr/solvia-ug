@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
@@ -12,7 +11,7 @@ const EmployersLanding = () => {
     <MainLayout>
       <div className="min-h-screen">
         {/* Hero Section */}
-        <section className="relative py-20 bg-gradient-to-b from-white to-gray-50">
+        <section className="relative py-20 bg-gradient-to-br from-blue-50 via-white to-blue-50">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center">
               <h1 className="text-4xl md:text-5xl font-bold mb-6">
@@ -28,8 +27,8 @@ const EmployersLanding = () => {
           </div>
         </section>
 
-        {/* How It Works Section - Now moved to be the first section after Hero */}
-        <section className="py-16 bg-gray-50">
+        {/* How It Works Section */}
+        <section className="py-16 bg-gradient-to-br from-gray-50 via-white to-gray-50">
           <div className="container mx-auto px-4">
             <h2 className="text-3xl font-bold text-center mb-12">How It Works</h2>
             <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
@@ -61,10 +60,12 @@ const EmployersLanding = () => {
         </section>
 
         {/* Professionals Section */}
-        <ProfessionalsSection professionals={featuredProfessionals} />
+        <section className="py-16 bg-gradient-to-tr from-blue-50/50 via-white to-blue-50/50">
+          <ProfessionalsSection professionals={featuredProfessionals} />
+        </section>
 
         {/* Why Solvia Section */}
-        <section className="py-16 bg-white">
+        <section className="py-16 bg-gradient-to-br from-white via-gray-50 to-white">
           <div className="container mx-auto px-4">
             <h2 className="text-3xl font-bold text-center mb-12">Why Solvia?</h2>
             <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
@@ -120,7 +121,7 @@ const EmployersLanding = () => {
         </section>
 
         {/* CTA Section */}
-        <section className="py-20 bg-primary text-white">
+        <section className="py-20 bg-gradient-to-r from-primary via-primary/95 to-primary">
           <div className="container mx-auto px-4 text-center">
             <h2 className="text-3xl font-bold mb-6">Still hiring the old way?</h2>
             <p className="text-xl mb-8">Let Solvia AI do the heavy lifting.<br />We bring talent. You focus on care.</p>
