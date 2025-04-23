@@ -58,7 +58,9 @@ const InstitutionSignup = () => {
       await signUp(data.email, data.password, {
         first_name: data.institutionName,
         last_name: data.institutionType,
-        user_type: 'institution' as UserType
+        user_type: 'institution',
+        location: data.location,
+        website: data.website,
       });
       
       toast({

@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
@@ -30,40 +29,26 @@ export const ProfessionalSignupForm: React.FC = () => {
       confirmPassword: '',
       specialty: '',
       terms: false,
+      isOpenToRelocation: false,
     },
   });
 
   const onSubmit = async (data: ProfessionalSignupFormValues) => {
     try {
-      const { data: authData, error: signUpError } = await supabase.auth.signUp({
-        email: data.email,
-        password: data.password,
-        options: {
-          data: {
-            first_name: data.firstName,
-            last_name: data.lastName,
-            specialty: data.specialty,
-            open_to_relocation: data.isOpenToRelocation,
-            user_type: 'professional' as UserType
-          }
-        }
+      await signUp(data.email, data.password, {
+        first_name: data.firstName,
+        last_name: data.lastName,
+        user_type: 'professional',
+        specialty: data.specialty,
+        open_to_relocation: data.isOpenToRelocation,
       });
 
-      if (authData) {
-        toast({
-          title: "Account created",
-          description: "Your professional account has been created successfully. Please check your email to confirm your account.",
-        });
-        
-        navigate('/auth');
-      } else if (signUpError) {
-        console.error('Signup error:', signUpError);
-        toast({
-          title: "Account creation failed",
-          description: "An error occurred during signup. This email might already be registered.",
-          variant: "destructive"
-        });
-      }
+      toast({
+        title: "Account created",
+        description: "Your professional account has been created successfully. Please check your email to confirm your account.",
+      });
+      
+      navigate('/auth');
     } catch (error) {
       console.error('Signup error:', error);
       toast({
