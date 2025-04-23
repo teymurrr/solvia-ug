@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Users, ArrowRight } from 'lucide-react';
@@ -22,7 +21,7 @@ const ProfessionalsSection: React.FC<ProfessionalsSectionProps> = ({ professiona
           </p>
           <Button variant="ghost" asChild className="group mx-auto">
             <Link to="/professionals" className="flex items-center">
-              View More
+              View All
               <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
             </Link>
           </Button>
