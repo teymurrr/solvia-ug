@@ -1,4 +1,3 @@
-
 export type Language = 'en' | 'de' | 'es';
 
 export const translations = {
@@ -12,7 +11,8 @@ export const translations = {
     vacancies: {
       title: 'Vacancies',
       subtitle: 'Discover exciting opportunities at leading healthcare institutions',
-      viewAll: 'View All'
+      viewAll: 'View All',
+      viewMore: 'View More'
     },
     learning: {
       title: 'Solvia Learning',
@@ -40,13 +40,17 @@ export const translations = {
     professionals: {
       title: 'Professionals',
       subtitle: 'Connect with talented healthcare professionals ready for their next opportunity',
-      viewAll: 'View All'
+      viewAll: 'View All',
+      viewMore: 'View More'
     },
     cta: {
       title: 'Ready to Transform Healthcare Recruitment?',
       subtitle: 'Join thousands of healthcare professionals and institutions already using MedConnect.',
       createAccount: 'Create Your Account',
       talkToTeam: 'Talk to Our Team'
+    },
+    blog: {
+      viewMore: 'View More'
     }
   },
   de: {
@@ -59,7 +63,8 @@ export const translations = {
     vacancies: {
       title: 'Stellenangebote',
       subtitle: 'Entdecken Sie spannende Möglichkeiten in führenden Gesundheitseinrichtungen',
-      viewAll: 'Alle anzeigen'
+      viewAll: 'Alle anzeigen',
+      viewMore: 'Mehr anzeigen'
     },
     learning: {
       title: 'Solvia Lernen',
@@ -87,13 +92,17 @@ export const translations = {
     professionals: {
       title: 'Fachkräfte',
       subtitle: 'Vernetzen Sie sich mit talentierten Gesundheitsfachkräften, die für ihre nächste Chance bereit sind',
-      viewAll: 'Alle anzeigen'
+      viewAll: 'Alle anzeigen',
+      viewMore: 'Mehr anzeigen'
     },
     cta: {
       title: 'Bereit die Personalvermittlung im Gesundheitswesen zu transformieren?',
       subtitle: 'Schließen Sie sich Tausenden von Gesundheitsfachkräften und Einrichtungen an, die bereits MedConnect nutzen.',
       createAccount: 'Konto erstellen',
       talkToTeam: 'Mit unserem Team sprechen'
+    },
+    blog: {
+      viewMore: 'Mehr anzeigen'
     }
   },
   es: {
@@ -106,7 +115,8 @@ export const translations = {
     vacancies: {
       title: 'Vacantes',
       subtitle: 'Descubre oportunidades emocionantes en instituciones de salud líderes',
-      viewAll: 'Ver todo'
+      viewAll: 'Ver todo',
+      viewMore: 'Ver más'
     },
     learning: {
       title: 'Solvia Aprendizaje',
@@ -134,13 +144,17 @@ export const translations = {
     professionals: {
       title: 'Profesionales',
       subtitle: 'Conéctate con profesionales de la salud talentosos listos para su próxima oportunidad',
-      viewAll: 'Ver todo'
+      viewAll: 'Ver todo',
+      viewMore: 'Ver más'
     },
     cta: {
       title: '¿Listo para Transformar el Reclutamiento en Salud?',
       subtitle: 'Únete a miles de profesionales de la salud e instituciones que ya utilizan MedConnect.',
       createAccount: 'Crear cuenta',
       talkToTeam: 'Hablar con nuestro equipo'
+    },
+    blog: {
+      viewMore: 'Ver más'
     }
   }
 };

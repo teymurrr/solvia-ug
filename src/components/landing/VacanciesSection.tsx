@@ -24,7 +24,7 @@ const VacanciesSection: React.FC<VacanciesSectionProps> = ({ vacancies }) => {
           </p>
           <Button variant="ghost" asChild className="group">
             <Link to="/signup/professional" className="flex items-center">
-              {t.vacancies.viewAll}
+              {t.vacancies.viewMore}
               <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
             </Link>
           </Button>

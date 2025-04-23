@@ -1,15 +1,19 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Book } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { BlogPost } from '@/types/landing';
+import { useLanguage } from '@/hooks/useLanguage';
 
 interface BlogSectionProps {
   posts: BlogPost[];
 }
 
 const BlogSection: React.FC<BlogSectionProps> = ({ posts }) => {
+  const { t } = useLanguage();
+
   return (
     <section className="py-16 bg-gray-50">
       <div className="container mx-auto px-4">
@@ -22,7 +26,7 @@ const BlogSection: React.FC<BlogSectionProps> = ({ posts }) => {
             </p>
             <Button variant="ghost" asChild className="group mx-auto">
               <Link to="/blog" className="flex items-center">
-                View All
+                {t.blog.viewMore}
                 <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </Link>
             </Button>
