@@ -5,10 +5,11 @@ import MainLayout from '@/components/MainLayout';
 import { Globe, FileCheck, Clock, Users, Building2, Calendar, BookOpen, ArrowRight } from 'lucide-react';
 import ProfessionalsSection from '@/components/landing/ProfessionalsSection';
 import { featuredProfessionals } from '@/data/landingPageData';
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { BookOpen, Heart, ChartBar, Users, Network } from 'lucide-react';
 
 const EmployersLanding = () => {
-  // Sample insights data
   const insights = [
     {
       id: 1,
@@ -29,7 +30,6 @@ const EmployersLanding = () => {
   return (
     <MainLayout>
       <div className="min-h-screen">
-        {/* Hero Section */}
         <section className="relative py-20 bg-gradient-to-br from-blue-50 via-white to-blue-50">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center">
@@ -46,7 +46,6 @@ const EmployersLanding = () => {
           </div>
         </section>
 
-        {/* How It Works Section */}
         <section className="py-16 bg-gradient-to-br from-gray-50 via-white to-gray-50">
           <div className="container mx-auto px-4">
             <h2 className="text-3xl font-bold text-center mb-12">How It Works</h2>
@@ -78,12 +77,10 @@ const EmployersLanding = () => {
           </div>
         </section>
 
-        {/* Professionals Section */}
         <section className="py-16 bg-gradient-to-tr from-blue-50/50 via-white to-blue-50/50">
           <ProfessionalsSection professionals={featuredProfessionals} />
         </section>
 
-        {/* Why Solvia Section */}
         <section className="py-16 bg-gradient-to-br from-white via-gray-50 to-white">
           <div className="container mx-auto px-4">
             <h2 className="text-3xl font-bold text-center mb-12">Why Solvia?</h2>
@@ -139,50 +136,97 @@ const EmployersLanding = () => {
           </div>
         </section>
 
-        {/* Insights Section */}
-        <section className="py-16 bg-gradient-to-br from-blue-50/50 via-white to-blue-50/50">
+        <section className="py-16 bg-gradient-to-br from-gray-50 via-white to-gray-50">
           <div className="container mx-auto px-4">
-            <div className="text-center mb-12">
-              <div className="flex flex-col items-center justify-center">
-                <BookOpen className="h-12 w-12 text-primary mb-4" />
-                <h2 className="text-3xl font-bold mb-2">Solvia Insights</h2>
-                <p className="text-lg text-muted-foreground mb-4 max-w-xl mx-auto">
-                  Expert analysis and guidance for healthcare recruitment
+            <div className="max-w-6xl mx-auto">
+              <div className="text-center mb-12">
+                <h2 className="text-4xl font-bold text-primary mb-4">Solvia Insights</h2>
+                <p className="text-lg text-muted-foreground">
+                  Comprehensive solutions for healthcare institutions
                 </p>
-                <Button variant="ghost" asChild className="group mx-auto">
-                  <Link to="/insights" className="flex items-center">
-                    View All
-                    <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                  </Link>
-                </Button>
               </div>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {insights.map((insight) => (
-                <Card key={insight.id} className="border-transparent hover:shadow-lg hover:scale-[1.02] transition-all duration-300">
-                  <CardContent className="p-6">
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground mb-2">
-                      <span>{insight.readTime}</span>
-                      <span>•</span>
-                      <span>{new Date(insight.date).toLocaleDateString()}</span>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <Card className="relative overflow-hidden">
+                  <div className="absolute top-4 right-4">
+                    <Badge variant="comingSoon">Coming Soon</Badge>
+                  </div>
+                  <CardHeader>
+                    <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
+                      <Heart className="h-6 w-6 text-primary" />
                     </div>
-                    <h3 className="text-xl font-semibold mb-2">{insight.title}</h3>
-                    <p className="text-muted-foreground mb-4">{insight.excerpt}</p>
-                    <Link
-                      to={`/insights/${insight.id}`}
-                      className="text-primary hover:text-primary/90 font-medium inline-flex items-center group"
-                    >
-                      Read More
-                      <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                    </Link>
+                    <CardTitle>Employee Experience & Wellbeing</CardTitle>
+                    <CardDescription>Enhance workplace satisfaction and employee wellness</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-muted-foreground">
+                      Comprehensive programs designed to improve employee satisfaction, 
+                      mental health support, and work-life balance initiatives.
+                    </p>
                   </CardContent>
                 </Card>
-              ))}
+
+                <Card className="relative overflow-hidden">
+                  <div className="absolute top-4 right-4">
+                    <Badge variant="comingSoon">Coming Soon</Badge>
+                  </div>
+                  <CardHeader>
+                    <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
+                      <ChartBar className="h-6 w-6 text-primary" />
+                    </div>
+                    <CardTitle>Analytics & Strategic Services</CardTitle>
+                    <CardDescription>Data-driven healthcare workforce solutions</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-muted-foreground">
+                      Advanced analytics and strategic planning services to optimize 
+                      workforce management and operational efficiency.
+                    </p>
+                  </CardContent>
+                </Card>
+
+                <Card className="relative overflow-hidden">
+                  <div className="absolute top-4 right-4">
+                    <Badge variant="comingSoon">Coming Soon</Badge>
+                  </div>
+                  <CardHeader>
+                    <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
+                      <Users className="h-6 w-6 text-primary" />
+                    </div>
+                    <CardTitle>Talent Development Services</CardTitle>
+                    <CardDescription>Grow and nurture healthcare talent</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-muted-foreground">
+                      Customized training programs and professional development paths 
+                      to enhance healthcare workforce capabilities.
+                    </p>
+                  </CardContent>
+                </Card>
+
+                <Card className="relative overflow-hidden">
+                  <div className="absolute top-4 right-4">
+                    <Badge variant="comingSoon">Coming Soon</Badge>
+                  </div>
+                  <CardHeader>
+                    <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
+                      <Network className="h-6 w-6 text-primary" />
+                    </div>
+                    <CardTitle>Community & Networking</CardTitle>
+                    <CardDescription>Connect with healthcare professionals</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-muted-foreground">
+                      Build valuable connections within the healthcare community through 
+                      networking events and professional forums.
+                    </p>
+                  </CardContent>
+                </Card>
+              </div>
             </div>
           </div>
         </section>
 
-        {/* CTA Section */}
         <section className="py-20 bg-gradient-to-r from-primary via-primary/95 to-primary">
           <div className="container mx-auto px-4 text-center">
             <h2 className="text-3xl font-bold mb-6">Still hiring the old way?</h2>
