@@ -9,8 +9,8 @@ const InsightsSection = () => {
       <div className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
-            <Lightbulb className="h-12 w-12 text-primary mx-auto mb-4" />
-            <h2 className="text-4xl font-bold text-primary mb-4">Solvia Insights</h2>
+            <Lightbulb className="h-12 w-12 text-[#0EA5E9] mx-auto mb-4" />
+            <h2 className="text-[30px] font-bold text-black mb-4">Solvia Insights</h2>
             <p className="text-lg text-muted-foreground">
               Comprehensive solutions for healthcare institutions
             </p>
@@ -22,8 +22,8 @@ const InsightsSection = () => {
                 <Badge variant="comingSoon">Coming Soon</Badge>
               </div>
               <CardHeader>
-                <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
-                  <Heart className="h-6 w-6 text-primary" />
+                <div className="h-12 w-12 flex items-center justify-center mb-4">
+                  <Heart className="h-6 w-6 text-[#0EA5E9]" />
                 </div>
                 <CardTitle>Employee Experience & Wellbeing</CardTitle>
                 <CardDescription>Enhance workplace satisfaction and employee wellness</CardDescription>

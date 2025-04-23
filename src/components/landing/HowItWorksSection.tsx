@@ -5,22 +5,22 @@ import { FileCheck, Clock, Building2, Calendar, CheckCircle2, ArrowRight } from 
 const HowItWorksSection = () => {
   const steps = [
     {
-      icon: <FileCheck className="h-6 w-6 text-primary" />,
+      icon: <FileCheck className="h-6 w-6 text-[#0EA5E9]" />,
       title: "Create Your Profile",
       description: "Fill in your professional details, certifications, and preferences"
     },
     {
-      icon: <CheckCircle2 className="h-6 w-6 text-primary" />,
+      icon: <CheckCircle2 className="h-6 w-6 text-[#0EA5E9]" />,
       title: "Get Verified",
       description: "Our team verifies your credentials and language proficiency"
     },
     {
-      icon: <Building2 className="h-6 w-6 text-primary" />,
+      icon: <Building2 className="h-6 w-6 text-[#0EA5E9]" />,
       title: "Match with Employers",
       description: "Connect with healthcare institutions"
     },
     {
-      icon: <Calendar className="h-6 w-6 text-primary" />,
+      icon: <Calendar className="h-6 w-6 text-[#0EA5E9]" />,
       title: "Start Your Journey",
       description: "Begin your new role in a new country with full support from our team"
     }
@@ -30,8 +30,8 @@ const HowItWorksSection = () => {
     <section className="py-16 bg-white">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <Clock className="h-12 w-12 text-primary mx-auto mb-4" />
-          <h2 className="text-3xl font-bold mb-4">How it Works</h2>
+          <Clock className="h-12 w-12 text-[#0EA5E9] mx-auto mb-4" />
+          <h2 className="text-[30px] font-bold text-black mb-4">How it Works</h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             Your journey to working in a new country made simple and straightforward
           </p>
@@ -40,14 +40,14 @@ const HowItWorksSection = () => {
           {steps.map((step, index) => (
             <div key={index} className="relative h-full">
               <div className="flex flex-col items-center text-center p-6 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors h-[240px] justify-center">
-                <div className="bg-primary/10 p-4 rounded-full mb-4">
+                <div className="p-4 rounded-full mb-4">
                   {step.icon}
                 </div>
                 <h3 className="text-xl font-semibold mb-2">{step.title}</h3>
                 <p className="text-muted-foreground">{step.description}</p>
               </div>
               {index < steps.length - 1 && (
-                <ArrowRight className="hidden lg:block absolute top-1/2 -right-4 transform -translate-y-1/2 text-primary h-8 w-8" />
+                <ArrowRight className="hidden lg:block absolute top-1/2 -right-4 transform -translate-y-1/2 text-[#0EA5E9] h-8 w-8" />
               )}
             </div>
           ))}
