@@ -2,12 +2,23 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import MainLayout from '@/components/MainLayout';
-import { Globe, FileCheck, Clock, Users, Building2, Calendar, BookOpen, ArrowRight } from 'lucide-react';
+import { 
+  Globe, 
+  FileCheck, 
+  Clock, 
+  Users, 
+  Building2, 
+  Calendar, 
+  BookOpen, 
+  ArrowRight,
+  Heart, 
+  ChartBar, 
+  Network 
+} from 'lucide-react';
 import ProfessionalsSection from '@/components/landing/ProfessionalsSection';
 import { featuredProfessionals } from '@/data/landingPageData';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { BookOpen, Heart, ChartBar, Users, Network } from 'lucide-react';
 
 const EmployersLanding = () => {
   const insights = [
