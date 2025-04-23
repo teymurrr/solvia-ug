@@ -139,7 +139,7 @@ const ProfessionalCardLanding: React.FC<ProfessionalCardLandingProps> = ({ profe
         <div className="absolute bottom-6 right-6 flex flex-col items-end gap-2">
           {fspCertificate && (
             <div className="flex items-center gap-1 text-yellow-600">
-              <span className="text-sm font-medium">FSP Certified</span>
+              <span className="text-sm font-medium">FSP</span>
               <Award className="h-5 w-5 text-yellow-500" />
             </div>
           )}
@@ -149,7 +149,7 @@ const ProfessionalCardLanding: React.FC<ProfessionalCardLandingProps> = ({ profe
             </div>
             {displayLanguages.map((lang, idx) => (
               <Badge key={idx} variant="outline" className="text-xs">
-                {lang.language}
+                {lang.language} ({lang.level})
               </Badge>
             ))}
             {hasMoreLanguages && (
