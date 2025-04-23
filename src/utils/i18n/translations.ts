@@ -45,7 +45,7 @@ export const translations = {
     },
     cta: {
       title: 'Ready to Transform Healthcare Recruitment?',
-      subtitle: 'Join thousands of healthcare professionals and institutions already using MedConnect.',
+      subtitle: 'Join thousands of healthcare professionals and institutions already using Solvia.',
       createAccount: 'Create Your Account',
       talkToTeam: 'Talk to Our Team'
     },
@@ -113,7 +113,7 @@ export const translations = {
     },
     cta: {
       title: 'Bereit die Personalvermittlung im Gesundheitswesen zu transformieren?',
-      subtitle: 'Schließen Sie sich Tausenden von Gesundheitsfachkräften und Einrichtungen an, die bereits MedConnect nutzen.',
+      subtitle: 'Schließen Sie sich Tausenden von Gesundheitsfachkräften und Einrichtungen an, die bereits Solvia nutzen.',
       createAccount: 'Konto erstellen',
       talkToTeam: 'Mit unserem Team sprechen'
     },
@@ -181,7 +181,7 @@ export const translations = {
     },
     cta: {
       title: '¿Listo para Transformar el Reclutamiento en Salud?',
-      subtitle: 'Únete a miles de profesionales de la salud e instituciones que ya utilizan MedConnect.',
+      subtitle: 'Únete a miles de profesionales de la salud e instituciones que ya utilizan Solvia.',
       createAccount: 'Crear cuenta',
       talkToTeam: 'Hablar con nuestro equipo'
     },

@@ -13,7 +13,7 @@ const About = () => {
       <section className="bg-gray-50 py-16">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center space-y-6">
-            <h1 className="text-4xl font-bold">About MedConnect</h1>
+            <h1 className="text-4xl font-bold">About Solvia</h1>
             <p className="text-xl text-muted-foreground">
               Modernizing healthcare recruitment across borders, connecting talent with opportunity.
             </p>
@@ -85,7 +85,7 @@ const About = () => {
               <div className="md:w-1/2 space-y-4">
                 <h2 className="text-3xl font-bold">Our Story</h2>
                 <p className="text-muted-foreground">
-                  MedConnect was born from a simple observation: healthcare recruitment, especially across borders, 
+                  Solvia was born from a simple observation: healthcare recruitment, especially across borders, 
                   is unnecessarily complex, slow, and expensive.
                 </p>
                 <p className="text-muted-foreground">
@@ -143,7 +143,7 @@ const About = () => {
           <div className="max-w-3xl mx-auto mb-12 text-center">
             <h2 className="text-3xl font-bold mb-4">Our Values</h2>
             <p className="text-lg text-muted-foreground">
-              The principles that guide everything we do at MedConnect.
+              The principles that guide everything we do at Solvia.
             </p>
           </div>
           
@@ -203,7 +203,7 @@ const About = () => {
       <section className="hero-gradient text-white py-16">
         <div className="container mx-auto px-4 text-center">
           <div className="max-w-2xl mx-auto">
-            <h2 className="text-3xl font-bold mb-4">Join the MedConnect Community</h2>
+            <h2 className="text-3xl font-bold mb-4">Join the Solvia Community</h2>
             <p className="text-lg mb-8">
               Whether you're a healthcare professional seeking new opportunities or an institution looking for talent, 
               we're here to help.
@@ -224,3 +224,4 @@ const About = () => {
 };
 
 export default About;
+

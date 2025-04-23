@@ -13,7 +13,7 @@ const HeroSection = () => {
       <div className="container mx-auto px-4 py-16 md:py-24 relative z-10">
         <div className="max-w-3xl mx-auto text-center space-y-6">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight">
-            {t.hero.title}
+            {t.hero.title.split(', ')[0]}, <span className="text-gradient">{t.hero.title.split(', ')[1]}</span>
           </h1>
           <p className="text-xl text-muted-foreground">
             {t.hero.subtitle}
@@ -33,3 +33,4 @@ const HeroSection = () => {
 };
 
 export default HeroSection;
+
