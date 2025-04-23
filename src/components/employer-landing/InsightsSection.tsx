@@ -1,6 +1,5 @@
-
 import React from 'react';
-import { Heart, ChartBar, Users, Network } from 'lucide-react';
+import { Heart, ChartBar, Users, Network, Lightbulb } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
@@ -10,6 +9,11 @@ const InsightsSection = () => {
       <div className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
+            <div className="flex items-center justify-center gap-2 mb-4">
+              <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center">
+                <Lightbulb className="h-6 w-6 text-primary" />
+              </div>
+            </div>
             <h2 className="text-4xl font-bold text-primary mb-4">Solvia Insights</h2>
             <p className="text-lg text-muted-foreground">
               Comprehensive solutions for healthcare institutions
@@ -17,7 +21,7 @@ const InsightsSection = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <Card className="relative overflow-hidden">
+            <Card className="relative overflow-hidden border-transparent hover:shadow-lg hover:scale-[1.02] transition-all duration-300">
               <div className="absolute top-4 right-4">
                 <Badge variant="comingSoon">Coming Soon</Badge>
               </div>
@@ -36,7 +40,7 @@ const InsightsSection = () => {
               </CardContent>
             </Card>
 
-            <Card className="relative overflow-hidden">
+            <Card className="relative overflow-hidden border-transparent hover:shadow-lg hover:scale-[1.02] transition-all duration-300">
               <div className="absolute top-4 right-4">
                 <Badge variant="comingSoon">Coming Soon</Badge>
               </div>
@@ -55,7 +59,7 @@ const InsightsSection = () => {
               </CardContent>
             </Card>
 
-            <Card className="relative overflow-hidden">
+            <Card className="relative overflow-hidden border-transparent hover:shadow-lg hover:scale-[1.02] transition-all duration-300">
               <div className="absolute top-4 right-4">
                 <Badge variant="comingSoon">Coming Soon</Badge>
               </div>
@@ -74,7 +78,7 @@ const InsightsSection = () => {
               </CardContent>
             </Card>
 
-            <Card className="relative overflow-hidden">
+            <Card className="relative overflow-hidden border-transparent hover:shadow-lg hover:scale-[1.02] transition-all duration-300">
               <div className="absolute top-4 right-4">
                 <Badge variant="comingSoon">Coming Soon</Badge>
               </div>
