@@ -2,57 +2,88 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { BookOpen, Globe, GraduationCap, ArrowRight } from 'lucide-react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { BookOpen, GraduationCap, Globe, Clock } from 'lucide-react';
 
 const LearningSection = () => {
   return (
-    <section className="py-8 bg-gray-50">
+    <section className="py-16 bg-white">
       <div className="container mx-auto px-4">
-        <div className="max-w-3xl mx-auto text-center mb-8">
-          <BookOpen className="h-12 w-12 text-primary mx-auto mb-4" />
-          <h2 className="text-3xl font-bold mb-4">Solvia Learning</h2>
-          <p className="text-lg text-muted-foreground mb-6">
-            Enhance your medical career with specialized German language and FSP courses designed for healthcare professionals
-          </p>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <Card className="text-left">
-              <CardContent className="p-6">
-                <div className="flex items-start gap-4">
-                  <div className="bg-primary/10 p-3 rounded-lg">
-                    <Globe className="h-6 w-6 text-primary" />
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-semibold mb-2">German Language Courses</h3>
-                    <p className="text-muted-foreground">
-                      Master medical German with our specialized courses, from basic to advanced levels
-                    </p>
-                  </div>
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-bold text-primary mb-4">Solvia Learning</h2>
+            <p className="text-lg text-muted-foreground">
+              Enhance your medical career with our specialized German language and FSP courses
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+            {/* German Language Courses */}
+            <Card className="relative overflow-hidden hover:shadow-md transition-shadow">
+              <div className="absolute top-4 right-4">
+                <Badge variant="comingSoon">Coming Soon</Badge>
+              </div>
+              <CardHeader>
+                <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
+                  <Globe className="h-6 w-6 text-primary" />
                 </div>
+                <CardTitle>German Language Courses</CardTitle>
+                <CardDescription>Master medical German with our specialized courses</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ul className="space-y-2 mt-2">
+                  <li className="flex items-center gap-2">
+                    <BookOpen className="h-4 w-4 text-primary" />
+                    <span>Basic to Advanced Medical German</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <Clock className="h-4 w-4 text-primary" />
+                    <span>Flexible Learning Schedule</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <GraduationCap className="h-4 w-4 text-primary" />
+                    <span>Telc Medical Preparation</span>
+                  </li>
+                </ul>
               </CardContent>
             </Card>
-            <Card className="text-left">
-              <CardContent className="p-6">
-                <div className="flex items-start gap-4">
-                  <div className="bg-primary/10 p-3 rounded-lg">
-                    <GraduationCap className="h-6 w-6 text-primary" />
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-semibold mb-2">FSP Preparation</h3>
-                    <p className="text-muted-foreground">
-                      Comprehensive preparation for your medical license examination in Germany
-                    </p>
-                  </div>
+            {/* FSP Preparation Courses */}
+            <Card className="relative overflow-hidden hover:shadow-md transition-shadow">
+              <div className="absolute top-4 right-4">
+                <Badge variant="comingSoon">Coming Soon</Badge>
+              </div>
+              <CardHeader>
+                <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
+                  <GraduationCap className="h-6 w-6 text-primary" />
                 </div>
+                <CardTitle>FSP Preparation Courses</CardTitle>
+                <CardDescription>Comprehensive preparation for your medical license in Germany</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ul className="space-y-2 mt-2">
+                  <li className="flex items-center gap-2">
+                    <BookOpen className="h-4 w-4 text-primary" />
+                    <span>Complete FSP Study Materials</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <Clock className="h-4 w-4 text-primary" />
+                    <span>Practice Examinations</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <GraduationCap className="h-4 w-4 text-primary" />
+                    <span>One-on-One Mentoring</span>
+                  </li>
+                </ul>
               </CardContent>
             </Card>
           </div>
-          <Button size="lg" className="mt-6" asChild>
-            <Link to="/learning" className="flex items-center">
-              Explore Courses
-              <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-            </Link>
-          </Button>
+          <div className="text-center">
+            <Button size="lg" asChild>
+              <Link to="/learning" className="flex items-center justify-center">
+                Explore Courses
+              </Link>
+            </Button>
+          </div>
         </div>
       </div>
     </section>

@@ -5,6 +5,7 @@ import { Award, MapPin, Languages, Clock, Building, GraduationCap, Search } from
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Professional } from '@/types/landing';
+import { BadgeCheck } from 'lucide-react';
 
 interface ProfessionalCardLandingProps {
   professional: Professional;
@@ -24,14 +25,17 @@ const ProfessionalCardLanding: React.FC<ProfessionalCardLandingProps> = ({ profe
     >
       <CardContent className="p-6">
         <div className="flex items-start gap-4">
-          <div className="h-16 w-16 rounded-full overflow-hidden bg-medical-100 flex items-center justify-center flex-shrink-0">
+          <div className="relative h-16 w-16 rounded-full overflow-hidden bg-medical-100 flex items-center justify-center flex-shrink-0">
             {profileImage ? (
               <img src={profileImage} alt={fullName} className="h-full w-full object-cover" />
             ) : (
               <div className="text-2xl font-bold text-medical-500">{firstName.charAt(0)}</div>
             )}
+            {/* Verified badge */}
+            <span className="absolute -bottom-1 -right-1 bg-white rounded-full p-[2px]">
+              <BadgeCheck className="h-5 w-5 text-primary drop-shadow" />
+            </span>
           </div>
-          
           <div className="flex-1">
             <div className="flex items-center gap-2">
               <h3 className="text-lg font-semibold">{fullName}</h3>
@@ -54,7 +58,6 @@ const ProfessionalCardLanding: React.FC<ProfessionalCardLandingProps> = ({ profe
             <MapPin className="h-4 w-4 text-muted-foreground" />
             <span>{country}</span>
           </div>
-          
           <div className="flex items-center gap-2">
             <Languages className="h-4 w-4 text-muted-foreground" />
             <div className="flex flex-wrap gap-1">
@@ -65,19 +68,16 @@ const ProfessionalCardLanding: React.FC<ProfessionalCardLandingProps> = ({ profe
               ))}
             </div>
           </div>
-          
           <div className="flex items-center gap-2 text-sm">
             <Clock className="h-4 w-4 text-muted-foreground" />
             <span>{experience} {experience === 1 ? 'year' : 'years'} experience</span>
           </div>
-          
           {latestExperience && (
             <div className="flex items-center gap-2 text-sm">
               <Building className="h-4 w-4 text-muted-foreground" />
               <span>{latestExperience.role} at {latestExperience.hospital}</span>
             </div>
           )}
-          
           {latestEducation && (
             <div className="flex items-center gap-2 text-sm">
               <GraduationCap className="h-4 w-4 text-muted-foreground" />
