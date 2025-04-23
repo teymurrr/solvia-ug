@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Globe, Users, FileCheck, Clock } from 'lucide-react';
 
@@ -6,7 +5,7 @@ const WhySolviaSection = () => {
   return (
     <section className="py-16 bg-gradient-to-br from-white via-gray-50 to-white">
       <div className="container mx-auto px-4">
-        <h2 className="text-3xl font-bold text-center mb-12">Why Solvia?</h2>
+        <h2 className="text-[30px] font-bold text-black text-center mb-12">Why Solvia?</h2>
         <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
           <div className="flex gap-4 items-start">
             <div className="bg-primary/10 p-3 rounded-lg">

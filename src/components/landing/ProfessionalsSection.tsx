@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Users, ArrowRight } from 'lucide-react';
@@ -15,8 +14,8 @@ const ProfessionalsSection: React.FC<ProfessionalsSectionProps> = ({ professiona
     <section className="py-12 bg-gray-50">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <Users className="h-12 w-12 text-primary mx-auto mb-4" />
-          <h2 className="text-3xl font-bold">Professionals</h2>
+          <Users className="h-12 w-12 text-[#0EA5E9] mx-auto mb-4" />
+          <h2 className="text-[30px] font-bold text-black">Professionals</h2>
           <p className="text-lg text-muted-foreground mt-4 mb-6">
             Connect with talented healthcare professionals ready for their next opportunity
           </p>
