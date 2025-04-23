@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Award, MapPin, Languages, Clock, Building, GraduationCap, Search, Bookmark, MessageCircle } from 'lucide-react';
@@ -53,7 +52,7 @@ const ProfessionalCardLanding: React.FC<ProfessionalCardLandingProps> = ({ profe
       className={`overflow-hidden cursor-pointer border-transparent hover:shadow-lg hover:scale-[1.02] transition-all duration-300 ${className || ''}`}
       onClick={() => navigate('/signup')}
     >
-      <CardContent className="p-6">
+      <CardContent className="p-6 relative">
         <div className="flex items-start gap-4">
           {/* Avatar */}
           <div className="relative h-16 w-16 rounded-full overflow-hidden bg-medical-100 flex items-center justify-center flex-shrink-0">
@@ -66,12 +65,6 @@ const ProfessionalCardLanding: React.FC<ProfessionalCardLandingProps> = ({ profe
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 flex-wrap min-w-0">
               <h3 className="text-lg font-semibold truncate">{fullName}</h3>
-              {fspCertificate && (
-                <div className="flex items-center gap-1">
-                  <Award className="h-5 w-5 text-yellow-500 flex-shrink-0" />
-                  <span className="text-sm text-yellow-600 font-medium">FSP Certified</span>
-                </div>
-              )}
               {activelySearching && (
                 <Badge variant="secondary" className="bg-green-100 text-green-800 flex items-center gap-1 flex-shrink-0">
                   <Search className="h-3 w-3" />
@@ -114,44 +107,48 @@ const ProfessionalCardLanding: React.FC<ProfessionalCardLandingProps> = ({ profe
             <MapPin className="h-4 w-4" />
             <span className="truncate">{country}</span>
           </div>
-          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <Languages className="h-4 w-4" />
-            <div className="flex flex-wrap gap-1 truncate">
-              {languages.map((lang, idx) => (
-                <Badge key={idx} variant="outline" className="text-xs">
-                  {lang.language}
-                </Badge>
-              ))}
+          <div className="col-span-2">
+            <div className="text-sm text-muted-foreground">
+              <div className="flex items-center gap-2">
+                <Clock className="h-4 w-4" />
+                <span>
+                  {experience} {experience === 1 ? 'year' : 'years'} of experience
+                </span>
+              </div>
             </div>
           </div>
-          <div className="flex items-center gap-2 text-sm text-muted-foreground col-span-2">
-            <Clock className="h-4 w-4" />
-            <span className="whitespace-normal">
-              {experience} {experience === 1 ? 'year' : 'years'} of experience
-            </span>
-          </div>
-          {latestExperience ? (
+          {latestExperience && (
             <div className="flex items-center gap-2 text-sm text-muted-foreground col-span-2">
               <Building className="h-4 w-4" />
               <span className="truncate">{latestExperience.role} at {latestExperience.hospital}</span>
             </div>
-          ) : (
-            <div className="flex items-center gap-2 text-sm text-muted-foreground col-span-2">
-              <Building className="h-4 w-4" />
-              <span>No experience listed</span>
-            </div>
           )}
-          {latestEducation ? (
+          {latestEducation && (
             <div className="flex items-center gap-2 text-sm text-muted-foreground col-span-2">
               <GraduationCap className="h-4 w-4" />
               <span className="truncate">{latestEducation.degree} in {latestEducation.field}</span>
             </div>
-          ) : (
-            <div className="flex items-center gap-2 text-sm text-muted-foreground col-span-2">
-              <GraduationCap className="h-4 w-4" />
-              <span>No education listed</span>
+          )}
+        </div>
+
+        <div className="absolute bottom-6 right-6 flex flex-col items-end gap-2">
+          {fspCertificate && (
+            <div className="flex items-center gap-1 text-yellow-600">
+              <span className="text-sm font-medium">FSP Certified</span>
+              <Award className="h-5 w-5 text-yellow-500" />
             </div>
           )}
+          <div className="flex flex-col items-end gap-1">
+            <div className="flex items-center gap-1 text-sm text-muted-foreground">
+              <Languages className="h-4 w-4" />
+              <span>Languages:</span>
+            </div>
+            {languages.map((lang, idx) => (
+              <Badge key={idx} variant="outline" className="text-xs">
+                {lang.language}
+              </Badge>
+            ))}
+          </div>
         </div>
       </CardContent>
     </Card>
