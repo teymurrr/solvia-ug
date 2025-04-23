@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Award, MapPin, Languages, Clock, Building, GraduationCap, Search, Bookmark, MessageCircle } from 'lucide-react';
@@ -81,9 +82,17 @@ const ProfessionalCardLanding: React.FC<ProfessionalCardLandingProps> = ({ profe
                 </Badge>
               )}
             </div>
-            <p className="text-sm text-medical-600 truncate">
-              {specialty.includes('Doctor') || specialty.includes('Nurse') ? specialty : `Doctor, ${specialty}`}
-            </p>
+            <div className="flex items-center gap-2">
+              <p className="text-sm text-medical-600 truncate">
+                {specialty.includes('Doctor') || specialty.includes('Nurse') ? specialty : `Doctor, ${specialty}`}
+              </p>
+              {fspCertificate && (
+                <div className="flex items-center gap-1 text-yellow-600">
+                  <Award className="h-4 w-4 text-yellow-500" />
+                  <span className="text-xs font-medium">FSP</span>
+                </div>
+              )}
+            </div>
           </div>
           <div className="flex gap-2">
             <Button
@@ -137,12 +146,6 @@ const ProfessionalCardLanding: React.FC<ProfessionalCardLandingProps> = ({ profe
         </div>
 
         <div className="absolute bottom-6 right-6 flex flex-col items-end gap-2">
-          {fspCertificate && (
-            <div className="flex items-center gap-1 text-yellow-600">
-              <span className="text-sm font-medium">FSP</span>
-              <Award className="h-5 w-5 text-yellow-500" />
-            </div>
-          )}
           <div className="flex flex-col items-end gap-1">
             <div className="flex items-center gap-1 text-muted-foreground">
               <Languages className="h-4 w-4" />
