@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Award, MapPin, Languages, Clock, Building, GraduationCap, Search } from 'lucide-react';
@@ -31,10 +30,6 @@ const ProfessionalCardLanding: React.FC<ProfessionalCardLandingProps> = ({ profe
             ) : (
               <div className="text-2xl font-bold text-medical-500">{firstName.charAt(0)}</div>
             )}
-            {/* Verified badge */}
-            <span className="absolute -bottom-1 -right-1 bg-white rounded-full p-[2px]">
-              <BadgeCheck className="h-5 w-5 text-primary drop-shadow" />
-            </span>
           </div>
           <div className="flex-1">
             <div className="flex items-center gap-2">
