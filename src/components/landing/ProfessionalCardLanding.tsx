@@ -54,7 +54,6 @@ const ProfessionalCardLanding: React.FC<ProfessionalCardLandingProps> = ({ profe
     >
       <CardContent className="p-6 relative">
         <div className="flex items-start gap-4">
-          {/* Avatar */}
           <div className="relative h-16 w-16 rounded-full overflow-hidden bg-medical-100 flex items-center justify-center flex-shrink-0">
             {profileImage ? (
               <img src={profileImage} alt={fullName} className="h-full w-full object-cover" />
@@ -140,13 +139,15 @@ const ProfessionalCardLanding: React.FC<ProfessionalCardLandingProps> = ({ profe
               <Award className="h-5 w-5 text-yellow-500" />
             </div>
           )}
-          <div className="flex flex-col items-end gap-1">
-            <Languages className="h-4 w-4 text-muted-foreground mb-1" />
-            {languages.map((lang, idx) => (
-              <Badge key={idx} variant="outline" className="text-xs">
-                {lang.language}
-              </Badge>
-            ))}
+          <div className="flex items-center gap-2">
+            <Languages className="h-4 w-4 text-muted-foreground" />
+            <div className="flex flex-col items-end gap-1">
+              {languages.map((lang, idx) => (
+                <Badge key={idx} variant="outline" className="text-xs">
+                  {lang.language}
+                </Badge>
+              ))}
+            </div>
           </div>
         </div>
       </CardContent>
