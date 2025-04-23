@@ -16,21 +16,16 @@ const ProfessionalsSection: React.FC<ProfessionalsSectionProps> = ({ professiona
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <Users className="h-12 w-12 text-primary mx-auto mb-4" />
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex-1" />
-            <h2 className="text-3xl font-bold">Professionals</h2>
-            <div className="flex-1 flex justify-end">
-              <Button variant="ghost" asChild className="group">
-                <Link to="/professionals" className="flex items-center">
-                  View All
-                  <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                </Link>
-              </Button>
-            </div>
-          </div>
-          <p className="text-lg text-muted-foreground">
+          <h2 className="text-3xl font-bold">Professionals</h2>
+          <p className="text-lg text-muted-foreground mt-4 mb-6">
             Connect with talented healthcare professionals ready for their next opportunity
           </p>
+          <Button variant="ghost" asChild className="group mx-auto">
+            <Link to="/professionals" className="flex items-center">
+              View All
+              <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+            </Link>
+          </Button>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {professionals.slice(0, 4).map((professional) => (
