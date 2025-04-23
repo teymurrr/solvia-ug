@@ -6,9 +6,6 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Globe, FileCheck, Clock, Users, Building2, Calendar } from 'lucide-react';
 import ProfessionalsSection from '@/components/landing/ProfessionalsSection';
 import { featuredProfessionals } from '@/data/landingPageData';
-import VacanciesSection from '@/components/landing/VacanciesSection';
-import { featuredVacancies } from '@/data/landingPageData';
-import LearningSection from '@/components/landing/LearningSection';
 
 const EmployersLanding = () => {
   return (
@@ -31,44 +28,6 @@ const EmployersLanding = () => {
                 <Button size="lg" variant="outline" asChild>
                   <Link to="/contact">Book a Call</Link>
                 </Button>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Vacancies Section */}
-        <VacanciesSection vacancies={featuredVacancies} />
-
-        {/* Solvia Learning Section */}
-        <LearningSection />
-
-        {/* How It Works Section */}
-        <section className="py-16 bg-gray-50">
-          <div className="container mx-auto px-4">
-            <h2 className="text-3xl font-bold text-center mb-12">How It Works</h2>
-            <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-              <div className="text-center">
-                <div className="bg-primary/10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Users className="h-8 w-8 text-primary" />
-                </div>
-                <h3 className="text-xl font-semibold mb-2">Search</h3>
-                <p className="text-gray-600">Use filters to find the exact match you need.</p>
-              </div>
-
-              <div className="text-center">
-                <div className="bg-primary/10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Building2 className="h-8 w-8 text-primary" />
-                </div>
-                <h3 className="text-xl font-semibold mb-2">Connect</h3>
-                <p className="text-gray-600">Click to view a CV or schedule an interview.</p>
-              </div>
-
-              <div className="text-center">
-                <div className="bg-primary/10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Calendar className="h-8 w-8 text-primary" />
-                </div>
-                <h3 className="text-xl font-semibold mb-2">Hire</h3>
-                <p className="text-gray-600">We assist with onboarding, relocation, and integration.</p>
               </div>
             </div>
           </div>
@@ -125,6 +84,38 @@ const EmployersLanding = () => {
                     Browse profiles, schedule interviews directly via our calendar tool, and access CVs instantly.
                   </p>
                 </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* How It Works Section */}
+        <section className="py-16 bg-gray-50">
+          <div className="container mx-auto px-4">
+            <h2 className="text-3xl font-bold text-center mb-12">How It Works</h2>
+            <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+              <div className="text-center">
+                <div className="bg-primary/10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Users className="h-8 w-8 text-primary" />
+                </div>
+                <h3 className="text-xl font-semibold mb-2">Search</h3>
+                <p className="text-gray-600">Use filters to find the exact match you need.</p>
+              </div>
+
+              <div className="text-center">
+                <div className="bg-primary/10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Building2 className="h-8 w-8 text-primary" />
+                </div>
+                <h3 className="text-xl font-semibold mb-2">Connect</h3>
+                <p className="text-gray-600">Click to view a CV or schedule an interview.</p>
+              </div>
+
+              <div className="text-center">
+                <div className="bg-primary/10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Calendar className="h-8 w-8 text-primary" />
+                </div>
+                <h3 className="text-xl font-semibold mb-2">Hire</h3>
+                <p className="text-gray-600">We assist with onboarding, relocation, and integration.</p>
               </div>
             </div>
           </div>
