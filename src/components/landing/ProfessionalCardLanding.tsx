@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Award, MapPin, Languages, Clock, Building, GraduationCap, Search, Bookmark, MessageCircle } from 'lucide-react';
@@ -58,6 +59,7 @@ const ProfessionalCardLanding: React.FC<ProfessionalCardLandingProps> = ({ profe
       onClick={() => navigate('/signup')}
     >
       <CardContent className="p-6 relative">
+        {/* Header section with profile image and name */}
         <div className="flex items-start gap-4">
           <div className="relative h-16 w-16 rounded-full overflow-hidden bg-medical-100 flex items-center justify-center flex-shrink-0">
             {profileImage ? (
@@ -83,7 +85,7 @@ const ProfessionalCardLanding: React.FC<ProfessionalCardLandingProps> = ({ profe
               )}
             </div>
             <div className="flex items-center gap-2">
-              <p className="text-sm text-medical-600 truncate">
+              <p className="text-sm text-medical-600">
                 {specialty.includes('Doctor') || specialty.includes('Nurse') ? specialty : `Doctor, ${specialty}`}
               </p>
               {fspCertificate && (
@@ -94,7 +96,7 @@ const ProfessionalCardLanding: React.FC<ProfessionalCardLandingProps> = ({ profe
               )}
             </div>
           </div>
-          <div className="flex gap-2">
+          <div className={`flex ${isMobile ? 'flex-col' : 'gap-2'}`}>
             <Button
               variant="ghost"
               size="icon"
@@ -116,11 +118,13 @@ const ProfessionalCardLanding: React.FC<ProfessionalCardLandingProps> = ({ profe
           </div>
         </div>
         
-        <div className={`mt-4 ${isMobile ? 'flex flex-col space-y-2' : 'grid grid-cols-2 gap-x-5 gap-y-2'}`}>
-          <div className={`${isMobile ? 'order-2' : ''} space-y-2`}>
+        {/* Content section */}
+        <div className="mt-4 flex flex-col space-y-4">
+          {/* Details section */}
+          <div className="space-y-2">
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <MapPin className="h-4 w-4" />
-              <span className="truncate">{country}</span>
+              <span>{country}</span>
             </div>
             <div>
               <div className="text-sm text-muted-foreground">
@@ -135,18 +139,30 @@ const ProfessionalCardLanding: React.FC<ProfessionalCardLandingProps> = ({ profe
             {latestExperience && (
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 <Building className="h-4 w-4" />
-                <span className="truncate">{latestExperience.role} at {latestExperience.hospital}</span>
+                <span>{latestExperience.role} at {latestExperience.hospital}</span>
               </div>
             )}
             {latestEducation && (
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 <GraduationCap className="h-4 w-4" />
-                <span className="truncate">{latestEducation.degree} in {latestEducation.field}</span>
+                <span>{latestEducation.degree} in {latestEducation.field}</span>
               </div>
             )}
           </div>
 
-          <div className={`${isMobile ? 'order-1' : ''} flex flex-col items-end gap-2`}>
+          {/* Languages section - now displayed below on mobile */}
+          {isMobile ? (
+            <div className="flex flex-wrap gap-2">
+              {displayLanguages.map((lang, idx) => (
+                <Badge key={idx} variant="outline" className="text-xs">
+                  {lang.language} ({lang.level})
+                </Badge>
+              ))}
+              {hasMoreLanguages && (
+                <span className="text-xs text-muted-foreground">...</span>
+              )}
+            </div>
+          ) : (
             <div className="flex flex-col items-end gap-1">
               {displayLanguages.map((lang, idx) => (
                 <Badge key={idx} variant="outline" className="text-xs">
@@ -157,7 +173,7 @@ const ProfessionalCardLanding: React.FC<ProfessionalCardLandingProps> = ({ profe
                 <span className="text-xs text-muted-foreground">...</span>
               )}
             </div>
-          </div>
+          )}
         </div>
       </CardContent>
     </Card>
