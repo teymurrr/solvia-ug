@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Award, MapPin, Languages, Clock, Building, GraduationCap, Search, Bookmark, MessageCircle } from 'lucide-react';
@@ -111,6 +112,9 @@ const ProfessionalCardLanding: React.FC<ProfessionalCardLandingProps> = ({ profe
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <MapPin className="h-4 w-4" />
             <span className="truncate">{country}</span>
+            {fspCertificate && (
+              <Award className="h-4 w-4 text-yellow-500 ml-2" />
+            )}
           </div>
           <div className="col-span-2">
             <div className="text-sm text-muted-foreground">
