@@ -2,7 +2,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Badge } from '@/components/ui/badge';
-import { HelpCircle, GraduationCap, Building } from 'lucide-react';
+import { HelpCircle } from 'lucide-react';
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -28,24 +28,8 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
   return (
     <div className="sm:hidden bg-white">
       <div className="pt-2 pb-3 space-y-1">
-        {!isLoggedIn && (
+        {!isLoggedIn ? (
           <>
-            <Link
-              to="/professionals"
-              className="flex items-center space-x-3 px-4 py-2 hover:bg-gray-50"
-              onClick={onClose}
-            >
-              <GraduationCap className="h-5 w-5" />
-              <span>For Talents</span>
-            </Link>
-            <Link
-              to="/institutions"
-              className="flex items-center space-x-3 px-4 py-2 hover:bg-gray-50"
-              onClick={onClose}
-            >
-              <Building className="h-5 w-5" />
-              <span>For Institutions</span>
-            </Link>
             <Link
               to="/about"
               className="flex items-center space-x-3 px-4 py-2 hover:bg-gray-50"
@@ -55,9 +39,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
               <span>About</span>
             </Link>
           </>
-        )}
-        
-        {isLoggedIn && (
+        ) : (
           userType === 'professional' ? (
             <>
               <Link

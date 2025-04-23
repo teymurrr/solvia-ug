@@ -48,9 +48,9 @@ const ProfessionalCardLanding: React.FC<ProfessionalCardLandingProps> = ({ profe
     });
   };
 
-  // Get first 2 languages only to prevent overlap
-  const displayLanguages = languages.slice(0, 2);
-  const hasMoreLanguages = languages.length > 2;
+  // Get first 3 languages only
+  const displayLanguages = languages.slice(0, 3);
+  const hasMoreLanguages = languages.length > 3;
 
   return (
     <Card 
@@ -66,9 +66,8 @@ const ProfessionalCardLanding: React.FC<ProfessionalCardLandingProps> = ({ profe
               <div className="text-2xl font-bold text-medical-500">{firstName.charAt(0)}</div>
             )}
           </div>
-          
           <div className="flex-1 min-w-0">
-            <div className="flex items-start gap-2 flex-wrap min-w-0">
+            <div className="flex items-center gap-2 flex-wrap min-w-0">
               <h3 className="text-lg font-semibold truncate">{fullName}</h3>
               {activelySearching && (
                 <Badge variant="secondary" className="bg-green-100 text-green-800 flex items-center gap-1 flex-shrink-0">
@@ -83,11 +82,18 @@ const ProfessionalCardLanding: React.FC<ProfessionalCardLandingProps> = ({ profe
                 </Badge>
               )}
             </div>
-            <p className="text-sm text-medical-600 break-normal whitespace-normal">
-              {specialty.includes('Doctor') || specialty.includes('Nurse') ? specialty : `Doctor, ${specialty}`}
-            </p>
+            <div className="flex items-center gap-2">
+              <p className="text-sm text-medical-600 truncate">
+                {specialty.includes('Doctor') || specialty.includes('Nurse') ? specialty : `Doctor, ${specialty}`}
+              </p>
+              {fspCertificate && (
+                <div className="flex items-center gap-1 text-yellow-600">
+                  <Award className="h-4 w-4 text-yellow-500" />
+                  <span className="text-xs font-medium">FSP</span>
+                </div>
+              )}
+            </div>
           </div>
-          
           <div className="flex gap-2">
             <Button
               variant="ghost"
@@ -110,32 +116,36 @@ const ProfessionalCardLanding: React.FC<ProfessionalCardLandingProps> = ({ profe
           </div>
         </div>
         
-        <div className="mt-4 grid grid-cols-1 gap-y-2 max-w-[85%]">
+        <div className="mt-4 grid grid-cols-2 gap-x-5 gap-y-2">
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <MapPin className="h-4 w-4 flex-shrink-0" />
+            <MapPin className="h-4 w-4" />
             <span className="truncate">{country}</span>
           </div>
-          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <Clock className="h-4 w-4 flex-shrink-0" />
-            <span className="truncate">
-              {experience} {experience === 1 ? 'year' : 'years'} exp.
-            </span>
+          <div className="col-span-2">
+            <div className="text-sm text-muted-foreground">
+              <div className="flex items-center gap-2">
+                <Clock className="h-4 w-4" />
+                <span>
+                  {experience} {experience === 1 ? 'year' : 'years'} of experience
+                </span>
+              </div>
+            </div>
           </div>
           {latestExperience && (
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <Building className="h-4 w-4 flex-shrink-0" />
+            <div className="flex items-center gap-2 text-sm text-muted-foreground col-span-2">
+              <Building className="h-4 w-4" />
               <span className="truncate">{latestExperience.role} at {latestExperience.hospital}</span>
             </div>
           )}
           {latestEducation && (
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <GraduationCap className="h-4 w-4 flex-shrink-0" />
-              <span className="truncate">{latestEducation.degree}</span>
+            <div className="flex items-center gap-2 text-sm text-muted-foreground col-span-2">
+              <GraduationCap className="h-4 w-4" />
+              <span className="truncate">{latestEducation.degree} in {latestEducation.field}</span>
             </div>
           )}
         </div>
 
-        <div className="absolute top-6 right-6 flex flex-col items-end gap-2">
+        <div className="absolute bottom-6 right-6 flex flex-col items-end gap-2">
           <div className="flex flex-col items-end gap-1">
             <div className="flex items-center gap-1 text-muted-foreground">
               <Languages className="h-4 w-4" />
@@ -146,7 +156,7 @@ const ProfessionalCardLanding: React.FC<ProfessionalCardLandingProps> = ({ profe
               </Badge>
             ))}
             {hasMoreLanguages && (
-              <span className="text-xs text-muted-foreground">+{languages.length - 2} more</span>
+              <span className="text-xs text-muted-foreground">...</span>
             )}
           </div>
         </div>
