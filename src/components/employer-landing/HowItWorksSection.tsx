@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Users, Building2, Calendar } from 'lucide-react';
 
@@ -8,7 +9,7 @@ const HowItWorksSection = () => {
         <h2 className="text-3xl font-bold text-center mb-12">How It Works</h2>
         <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
           <div className="text-center">
-            <div className="h-16 w-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
+            <div className="bg-primary/10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
               <Users className="h-8 w-8 text-primary" />
             </div>
             <h3 className="text-xl font-semibold mb-2">Search</h3>
@@ -16,7 +17,7 @@ const HowItWorksSection = () => {
           </div>
 
           <div className="text-center">
-            <div className="h-16 w-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
+            <div className="bg-primary/10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
               <Building2 className="h-8 w-8 text-primary" />
             </div>
             <h3 className="text-xl font-semibold mb-2">Connect</h3>
@@ -24,7 +25,7 @@ const HowItWorksSection = () => {
           </div>
 
           <div className="text-center">
-            <div className="h-16 w-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
+            <div className="bg-primary/10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
               <Calendar className="h-8 w-8 text-primary" />
             </div>
             <h3 className="text-xl font-semibold mb-2">Hire</h3>

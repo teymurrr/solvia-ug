@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Globe, Users, FileCheck, Clock } from 'lucide-react';
 
@@ -8,8 +9,8 @@ const WhySolviaSection = () => {
         <h2 className="text-3xl font-bold text-center mb-12">Why Solvia?</h2>
         <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
           <div className="flex gap-4 items-start">
-            <div className="h-16 w-16 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-              <Globe className="h-8 w-8 text-primary" />
+            <div className="bg-primary/10 p-3 rounded-lg">
+              <Globe className="h-6 w-6 text-primary" />
             </div>
             <div>
               <h3 className="text-xl font-semibold mb-2">International Reach, Local Readiness</h3>
@@ -20,8 +21,8 @@ const WhySolviaSection = () => {
           </div>
           
           <div className="flex gap-4 items-start">
-            <div className="h-16 w-16 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-              <Users className="h-8 w-8 text-primary" />
+            <div className="bg-primary/10 p-3 rounded-lg">
+              <Users className="h-6 w-6 text-primary" />
             </div>
             <div>
               <h3 className="text-xl font-semibold mb-2">Language-Ready Candidates</h3>
@@ -32,8 +33,8 @@ const WhySolviaSection = () => {
           </div>
 
           <div className="flex gap-4 items-start">
-            <div className="h-16 w-16 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-              <FileCheck className="h-8 w-8 text-primary" />
+            <div className="bg-primary/10 p-3 rounded-lg">
+              <FileCheck className="h-6 w-6 text-primary" />
             </div>
             <div>
               <h3 className="text-xl font-semibold mb-2">Hassle-Free Documentation</h3>
@@ -44,8 +45,8 @@ const WhySolviaSection = () => {
           </div>
 
           <div className="flex gap-4 items-start">
-            <div className="h-16 w-16 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-              <Clock className="h-8 w-8 text-primary" />
+            <div className="bg-primary/10 p-3 rounded-lg">
+              <Clock className="h-6 w-6 text-primary" />
             </div>
             <div>
               <h3 className="text-xl font-semibold mb-2">Faster Hiring, Less Admin</h3>
