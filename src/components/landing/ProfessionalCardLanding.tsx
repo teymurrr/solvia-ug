@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Award, MapPin, Languages, Clock, Building, GraduationCap, Search, Bookmark, MessageCircle } from 'lucide-react';
@@ -7,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Professional } from '@/types/landing';
 import { useProtectedAction } from '@/hooks/useProtectedAction';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface ProfessionalCardLandingProps {
   professional: Professional & { isOpenToRelocation?: boolean };
@@ -17,6 +17,7 @@ const ProfessionalCardLanding: React.FC<ProfessionalCardLandingProps> = ({ profe
   const navigate = useNavigate();
   const [isSaved, setIsSaved] = useState(false);
   const { handleProtectedAction } = useProtectedAction();
+  const isMobile = useIsMobile();
 
   const {
     firstName,
@@ -48,7 +49,6 @@ const ProfessionalCardLanding: React.FC<ProfessionalCardLandingProps> = ({ profe
     });
   };
 
-  // Get first 3 languages only
   const displayLanguages = languages.slice(0, 3);
   const hasMoreLanguages = languages.length > 3;
 
@@ -116,48 +116,47 @@ const ProfessionalCardLanding: React.FC<ProfessionalCardLandingProps> = ({ profe
           </div>
         </div>
         
-        <div className="mt-4 grid grid-cols-2 gap-x-5 gap-y-2">
-          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <MapPin className="h-4 w-4" />
-            <span className="truncate">{country}</span>
-          </div>
-          <div className="col-span-2">
-            <div className="text-sm text-muted-foreground">
-              <div className="flex items-center gap-2">
-                <Clock className="h-4 w-4" />
-                <span>
-                  {experience} {experience === 1 ? 'year' : 'years'} of experience
-                </span>
+        <div className={`mt-4 ${isMobile ? 'flex flex-col space-y-2' : 'grid grid-cols-2 gap-x-5 gap-y-2'}`}>
+          <div className={`${isMobile ? 'order-2' : ''} space-y-2`}>
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+              <MapPin className="h-4 w-4" />
+              <span className="truncate">{country}</span>
+            </div>
+            <div>
+              <div className="text-sm text-muted-foreground">
+                <div className="flex items-center gap-2">
+                  <Clock className="h-4 w-4" />
+                  <span>
+                    {experience} {experience === 1 ? 'year' : 'years'} of experience
+                  </span>
+                </div>
               </div>
             </div>
-          </div>
-          {latestExperience && (
-            <div className="flex items-center gap-2 text-sm text-muted-foreground col-span-2">
-              <Building className="h-4 w-4" />
-              <span className="truncate">{latestExperience.role} at {latestExperience.hospital}</span>
-            </div>
-          )}
-          {latestEducation && (
-            <div className="flex items-center gap-2 text-sm text-muted-foreground col-span-2">
-              <GraduationCap className="h-4 w-4" />
-              <span className="truncate">{latestEducation.degree} in {latestEducation.field}</span>
-            </div>
-          )}
-        </div>
-
-        <div className="absolute bottom-6 right-6 flex flex-col items-end gap-2">
-          <div className="flex flex-col items-end gap-1">
-            <div className="flex items-center gap-1 text-muted-foreground">
-              <Languages className="h-4 w-4" />
-            </div>
-            {displayLanguages.map((lang, idx) => (
-              <Badge key={idx} variant="outline" className="text-xs">
-                {lang.language} ({lang.level})
-              </Badge>
-            ))}
-            {hasMoreLanguages && (
-              <span className="text-xs text-muted-foreground">...</span>
+            {latestExperience && (
+              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                <Building className="h-4 w-4" />
+                <span className="truncate">{latestExperience.role} at {latestExperience.hospital}</span>
+              </div>
             )}
+            {latestEducation && (
+              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                <GraduationCap className="h-4 w-4" />
+                <span className="truncate">{latestEducation.degree} in {latestEducation.field}</span>
+              </div>
+            )}
+          </div>
+
+          <div className={`${isMobile ? 'order-1' : ''} flex flex-col items-end gap-2`}>
+            <div className="flex flex-col items-end gap-1">
+              {displayLanguages.map((lang, idx) => (
+                <Badge key={idx} variant="outline" className="text-xs">
+                  {lang.language} ({lang.level})
+                </Badge>
+              ))}
+              {hasMoreLanguages && (
+                <span className="text-xs text-muted-foreground">...</span>
+              )}
+            </div>
           </div>
         </div>
       </CardContent>
