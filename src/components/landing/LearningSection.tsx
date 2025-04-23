@@ -18,8 +18,7 @@ const LearningSection = () => {
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-            {/* German Language Courses */}
-            <Card className="relative overflow-hidden hover:shadow-md transition-shadow">
+            <Card className="relative overflow-hidden hover:shadow-lg hover:scale-[1.02] transition-all duration-300 border-transparent">
               <div className="absolute top-4 right-4">
                 <Badge variant="comingSoon">Coming Soon</Badge>
               </div>
@@ -48,7 +47,7 @@ const LearningSection = () => {
               </CardContent>
             </Card>
             {/* FSP Preparation Courses */}
-            <Card className="relative overflow-hidden hover:shadow-md transition-shadow">
+            <Card className="relative overflow-hidden hover:shadow-lg hover:scale-[1.02] transition-all duration-300 border-transparent">
               <div className="absolute top-4 right-4">
                 <Badge variant="comingSoon">Coming Soon</Badge>
               </div>
@@ -91,3 +90,4 @@ const LearningSection = () => {
 };
 
 export default LearningSection;
+

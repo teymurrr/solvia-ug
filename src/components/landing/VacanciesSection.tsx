@@ -38,6 +38,7 @@ const VacanciesSection: React.FC<VacanciesSectionProps> = ({ vacancies }) => {
               key={vacancy.id}
               {...vacancy}
               showSaveOption={false}
+              className="border-transparent hover:shadow-lg hover:scale-[1.02] transition-all duration-300"
             />
           ))}
         </div>

@@ -37,6 +37,7 @@ const ProfessionalsSection: React.FC<ProfessionalsSectionProps> = ({ professiona
             <ProfessionalCardLanding
               key={professional.id}
               professional={professional}
+              className="border-transparent hover:shadow-lg hover:scale-[1.02] transition-all duration-300"
             />
           ))}
         </div>

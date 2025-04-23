@@ -1,16 +1,17 @@
+
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Award, MapPin, Languages, Clock, Building, GraduationCap, Search } from 'lucide-react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Professional } from '@/types/landing';
-import { BadgeCheck } from 'lucide-react';
 
 interface ProfessionalCardLandingProps {
   professional: Professional;
+  className?: string;
 }
 
-const ProfessionalCardLanding: React.FC<ProfessionalCardLandingProps> = ({ professional }) => {
+const ProfessionalCardLanding: React.FC<ProfessionalCardLandingProps> = ({ professional, className }) => {
   const navigate = useNavigate();
   const { firstName, lastName, specialty, country, languages, experience, fspCertificate, activelySearching, experiences, education, profileImage } = professional;
   const fullName = `${firstName} ${lastName}`;
@@ -19,7 +20,7 @@ const ProfessionalCardLanding: React.FC<ProfessionalCardLandingProps> = ({ profe
 
   return (
     <Card 
-      className="overflow-hidden hover:shadow-md transition-shadow cursor-pointer"
+      className={`overflow-hidden cursor-pointer ${className || ''}`}
       onClick={() => navigate('/signup')}
     >
       <CardContent className="p-6">

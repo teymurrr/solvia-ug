@@ -31,7 +31,7 @@ const BlogSection: React.FC<BlogSectionProps> = ({ posts }) => {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {posts.map((blog) => (
-            <Card key={blog.id} className="feature-card hover:shadow-lg transition-shadow">
+            <Card key={blog.id} className="border-transparent hover:shadow-lg hover:scale-[1.02] transition-all duration-300">
               <CardContent className="p-6">
                 <div className="flex items-center gap-2 text-sm text-muted-foreground mb-2">
                   <span>{blog.readTime}</span>
