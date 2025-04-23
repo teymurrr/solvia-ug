@@ -78,7 +78,9 @@ const ProfessionalCardLanding: React.FC<ProfessionalCardLandingProps> = ({ profe
                 </Badge>
               )}
             </div>
-            <p className="text-sm text-medical-600 truncate">{specialty}</p>
+            <p className="text-sm text-medical-600 truncate">
+              {specialty.includes('Doctor') || specialty.includes('Nurse') ? specialty : `Doctor, ${specialty}`}
+            </p>
           </div>
           <div className="flex gap-2">
             <Button
@@ -139,10 +141,7 @@ const ProfessionalCardLanding: React.FC<ProfessionalCardLandingProps> = ({ profe
             </div>
           )}
           <div className="flex flex-col items-end gap-1">
-            <div className="flex items-center gap-1 text-sm text-muted-foreground">
-              <Languages className="h-4 w-4" />
-              <span>Languages:</span>
-            </div>
+            <Languages className="h-4 w-4 text-muted-foreground mb-1" />
             {languages.map((lang, idx) => (
               <Badge key={idx} variant="outline" className="text-xs">
                 {lang.language}
