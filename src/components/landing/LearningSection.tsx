@@ -14,8 +14,8 @@ const LearningSection = () => {
       <div className="container mx-auto px-4">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-12">
-            <Lightbulb className="h-12 w-12 text-[#0EA5E9] mx-auto mb-4" />
-            <h2 className="text-[30px] font-bold text-black mb-4">Solvia Learning</h2>
+            <Lightbulb className="h-[30px] w-[30px] text-[#006ae6] mx-auto mb-4" />
+            <h2 className="text-[30px] font-bold text-black">Solvia Learning</h2>
             <p className="text-lg text-muted-foreground">
               Enhance your medical career with our specialized German language and FSP courses
             </p>

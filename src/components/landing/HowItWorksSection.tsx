@@ -29,8 +29,8 @@ const HowItWorksSection = () => {
     <section className="py-16 bg-white">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <Clock className="h-12 w-12 text-[#006ae6] mx-auto mb-4" />
-          <h2 className="text-[30px] font-bold text-black mb-4">How it Works</h2>
+          <Clock className="h-[30px] w-[30px] text-[#006ae6] mx-auto mb-4" />
+          <h2 className="text-[30px] font-bold text-black">How it Works</h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             Your journey to working in a new country made simple and straightforward
           </p>

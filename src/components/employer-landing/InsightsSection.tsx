@@ -10,9 +10,9 @@ const InsightsSection = () => {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <div className="flex items-center justify-center gap-2 mb-4">
-              <Lightbulb className="h-12 w-12 text-[#006ae6]" />
+              <Lightbulb className="h-[30px] w-[30px] text-[#006ae6]" />
             </div>
-            <h2 className="text-[30px] font-bold text-black mb-4">Solvia Insights</h2>
+            <h2 className="text-[30px] font-bold text-black">Solvia Insights</h2>
             <p className="text-lg text-muted-foreground">
               Comprehensive solutions for healthcare institutions
             </p>

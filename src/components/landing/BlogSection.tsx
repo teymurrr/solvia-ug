@@ -15,8 +15,8 @@ const BlogSection: React.FC<BlogSectionProps> = ({ posts }) => {
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <div className="flex flex-col items-center justify-center">
-            <Book className="h-12 w-12 text-[#0EA5E9] mb-4" />
-            <h2 className="text-[30px] font-bold text-black mb-2">Latest from Our Blog</h2>
+            <Book className="h-[30px] w-[30px] text-[#006ae6] mb-4" />
+            <h2 className="text-[30px] font-bold text-black">Latest from Our Blog</h2>
             <p className="text-lg text-muted-foreground mb-4 max-w-xl mx-auto">
               Insights, stories, and tips for healthcare professionals and recruiters
             </p>

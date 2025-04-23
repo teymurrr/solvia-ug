@@ -2,7 +2,6 @@
 import React from 'react';
 import MainLayout from '@/components/MainLayout';
 import HeroSection from '@/components/landing/HeroSection';
-import StatsSection from '@/components/landing/StatsSection';
 import VacanciesSection from '@/components/landing/VacanciesSection';
 import LearningSection from '@/components/landing/LearningSection';
 import ProfessionalsSection from '@/components/landing/ProfessionalsSection';
@@ -15,7 +14,6 @@ const Index = () => {
   return (
     <MainLayout>
       <HeroSection />
-      <StatsSection />
       <VacanciesSection vacancies={featuredVacancies} />
       <LearningSection />
       <ProfessionalsSection professionals={featuredProfessionals} />
