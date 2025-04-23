@@ -10,8 +10,8 @@ const InsightsSection = () => {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <div className="flex items-center justify-center gap-2 mb-4">
-              <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center">
-                <Lightbulb className="h-6 w-6 text-primary" />
+              <div className="h-16 w-16 rounded-full bg-primary/10 flex items-center justify-center">
+                <Lightbulb className="h-8 w-8 text-primary" />
               </div>
             </div>
             <h2 className="text-4xl font-bold text-primary mb-4">Solvia Insights</h2>
@@ -26,8 +26,8 @@ const InsightsSection = () => {
                 <Badge variant="comingSoon">Coming Soon</Badge>
               </div>
               <CardHeader>
-                <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
-                  <Heart className="h-6 w-6 text-primary" />
+                <div className="h-16 w-16 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+                  <Heart className="h-8 w-8 text-primary" />
                 </div>
                 <CardTitle>Employee Experience & Wellbeing</CardTitle>
                 <CardDescription>Enhance workplace satisfaction and employee wellness</CardDescription>
@@ -45,8 +45,8 @@ const InsightsSection = () => {
                 <Badge variant="comingSoon">Coming Soon</Badge>
               </div>
               <CardHeader>
-                <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
-                  <ChartBar className="h-6 w-6 text-primary" />
+                <div className="h-16 w-16 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+                  <ChartBar className="h-8 w-8 text-primary" />
                 </div>
                 <CardTitle>Analytics & Strategic Services</CardTitle>
                 <CardDescription>Data-driven healthcare workforce solutions</CardDescription>
@@ -64,8 +64,8 @@ const InsightsSection = () => {
                 <Badge variant="comingSoon">Coming Soon</Badge>
               </div>
               <CardHeader>
-                <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
-                  <Users className="h-6 w-6 text-primary" />
+                <div className="h-16 w-16 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+                  <Users className="h-8 w-8 text-primary" />
                 </div>
                 <CardTitle>Talent Development Services</CardTitle>
                 <CardDescription>Grow and nurture healthcare talent</CardDescription>
@@ -83,8 +83,8 @@ const InsightsSection = () => {
                 <Badge variant="comingSoon">Coming Soon</Badge>
               </div>
               <CardHeader>
-                <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
-                  <Network className="h-6 w-6 text-primary" />
+                <div className="h-16 w-16 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+                  <Network className="h-8 w-8 text-primary" />
                 </div>
                 <CardTitle>Community & Networking</CardTitle>
                 <CardDescription>Connect with healthcare professionals</CardDescription>
