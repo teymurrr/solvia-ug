@@ -47,6 +47,10 @@ const ProfessionalCardLanding: React.FC<ProfessionalCardLandingProps> = ({ profe
     });
   };
 
+  // Get first 3 languages only
+  const displayLanguages = languages.slice(0, 3);
+  const hasMoreLanguages = languages.length > 3;
+
   return (
     <Card 
       className={`overflow-hidden cursor-pointer border-transparent hover:shadow-lg hover:scale-[1.02] transition-all duration-300 ${className || ''}`}
@@ -139,15 +143,18 @@ const ProfessionalCardLanding: React.FC<ProfessionalCardLandingProps> = ({ profe
               <Award className="h-5 w-5 text-yellow-500" />
             </div>
           )}
-          <div className="flex items-center gap-2">
-            <Languages className="h-4 w-4 text-muted-foreground" />
-            <div className="flex flex-col items-end gap-1">
-              {languages.map((lang, idx) => (
-                <Badge key={idx} variant="outline" className="text-xs">
-                  {lang.language}
-                </Badge>
-              ))}
+          <div className="flex flex-col items-end gap-1">
+            <div className="flex items-center gap-1 text-muted-foreground">
+              <Languages className="h-4 w-4" />
             </div>
+            {displayLanguages.map((lang, idx) => (
+              <Badge key={idx} variant="outline" className="text-xs">
+                {lang.language}
+              </Badge>
+            ))}
+            {hasMoreLanguages && (
+              <span className="text-xs text-muted-foreground">...</span>
+            )}
           </div>
         </div>
       </CardContent>
