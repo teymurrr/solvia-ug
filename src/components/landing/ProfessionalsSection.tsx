@@ -21,7 +21,7 @@ const ProfessionalsSection: React.FC<ProfessionalsSectionProps> = ({ professiona
           </p>
           <Button variant="ghost" asChild className="group mx-auto">
             <Link to="/professionals" className="flex items-center">
-              View All
+              View More
               <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
             </Link>
           </Button>

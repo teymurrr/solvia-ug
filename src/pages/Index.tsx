@@ -14,10 +14,10 @@ const Index = () => {
   return (
     <MainLayout>
       <HeroSection />
+      <HowItWorksSection />
       <VacanciesSection vacancies={featuredVacancies} />
       <LearningSection />
       <ProfessionalsSection professionals={featuredProfessionals} />
-      <HowItWorksSection />
       <BlogSection posts={featuredBlogs} />
       <CTASection />
     </MainLayout>

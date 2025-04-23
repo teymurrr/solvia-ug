@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
@@ -20,7 +21,7 @@ const VacanciesSection: React.FC<VacanciesSectionProps> = ({ vacancies }) => {
           </p>
           <Button variant="ghost" asChild className="group">
             <Link to="/signup/professional" className="flex items-center">
-              View All
+              View More
               <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
             </Link>
           </Button>
