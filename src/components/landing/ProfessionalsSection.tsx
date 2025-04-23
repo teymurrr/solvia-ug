@@ -1,27 +1,31 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Users, ArrowRight } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Professional } from '@/types/landing';
 import ProfessionalCardLanding from './ProfessionalCardLanding';
+import { useLanguage } from '@/hooks/useLanguage';
 
 interface ProfessionalsSectionProps {
   professionals: Professional[];
 }
 
 const ProfessionalsSection: React.FC<ProfessionalsSectionProps> = ({ professionals }) => {
+  const { t } = useLanguage();
+  
   return (
     <section className="py-12 bg-gray-50">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <Users className="h-[30px] w-[30px] text-[#006ae6] mx-auto mb-4" />
-          <h2 className="text-[30px] font-bold text-black">Professionals</h2>
+          <h2 className="text-[30px] font-bold text-black">{t.professionals.title}</h2>
           <p className="text-lg text-muted-foreground mt-4 mb-6">
-            Connect with talented healthcare professionals ready for their next opportunity
+            {t.professionals.subtitle}
           </p>
           <Button variant="ghost" asChild className="group mx-auto">
             <Link to="/professionals" className="flex items-center">
-              View All
+              {t.professionals.viewAll}
               <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
             </Link>
           </Button>
