@@ -1,3 +1,4 @@
+
 import { lazy, Suspense } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import ProtectedRoute from "@/components/ProtectedRoute";
@@ -19,9 +20,7 @@ const Institutions = lazy(() => import("@/pages/Institutions"));
 const Vacancies = lazy(() => import("@/pages/Vacancies"));
 const VacancyDetail = lazy(() => import("@/pages/VacancyDetail"));
 const Messages = lazy(() => import("@/pages/Messages"));
-
 const Insights = lazy(() => import("@/pages/Insights"));
-
 const EmployersLanding = lazy(() => import("@/pages/EmployersLanding"));
 
 const LoadingFallback = () => (

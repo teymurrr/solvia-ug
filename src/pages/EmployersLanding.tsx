@@ -14,7 +14,7 @@ const EmployersLanding = () => {
     <MainLayout>
       <div className="min-h-screen">
         <HeroSection />
-        <HowItWorksSection /> {/* Now the first section */}
+        <HowItWorksSection />
         <div className="py-8 bg-gradient-to-tr from-blue-50/50 via-white to-blue-50/50">
           <ProfessionalsSection professionals={featuredProfessionals} />
         </div>
