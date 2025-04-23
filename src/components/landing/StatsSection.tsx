@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Users, Building2, Globe } from 'lucide-react';
@@ -12,10 +13,6 @@ const StatsSection = () => {
   return (
     <section className="bg-white py-8">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
-          <Users className="h-12 w-12 text-[#0EA5E9] mx-auto mb-4" />
-          <h2 className="text-[30px] font-bold text-black mb-4">Statistics</h2>
-        </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {statsData.map((item, i) => (
             <Card 
@@ -23,7 +20,7 @@ const StatsSection = () => {
               className="feature-card border-transparent hover:border-transparent"
             >
               <CardContent className="p-6 flex flex-col items-center text-center">
-                <item.icon className="h-12 w-12 text-medical-600 mb-4" />
+                <item.icon className="h-12 w-12 text-[#006ae6] mb-4" />
                 <h3 className="text-3xl font-bold mb-2">{item.title}</h3>
                 <p className="text-muted-foreground">{item.description}</p>
               </CardContent>

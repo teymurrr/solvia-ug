@@ -8,8 +8,8 @@ const WhySolviaSection = () => {
         <h2 className="text-[30px] font-bold text-black text-center mb-12">Why Solvia?</h2>
         <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
           <div className="flex gap-4 items-start">
-            <div className="bg-primary/10 p-3 rounded-lg">
-              <Globe className="h-6 w-6 text-primary" />
+            <div className="p-3 rounded-lg">
+              <Globe className="h-6 w-6 text-[#006ae6]" />
             </div>
             <div>
               <h3 className="text-xl font-semibold mb-2">International Reach, Local Readiness</h3>
@@ -20,8 +20,8 @@ const WhySolviaSection = () => {
           </div>
           
           <div className="flex gap-4 items-start">
-            <div className="bg-primary/10 p-3 rounded-lg">
-              <Users className="h-6 w-6 text-primary" />
+            <div className="p-3 rounded-lg">
+              <Users className="h-6 w-6 text-[#006ae6]" />
             </div>
             <div>
               <h3 className="text-xl font-semibold mb-2">Language-Ready Candidates</h3>
@@ -32,8 +32,8 @@ const WhySolviaSection = () => {
           </div>
 
           <div className="flex gap-4 items-start">
-            <div className="bg-primary/10 p-3 rounded-lg">
-              <FileCheck className="h-6 w-6 text-primary" />
+            <div className="p-3 rounded-lg">
+              <FileCheck className="h-6 w-6 text-[#006ae6]" />
             </div>
             <div>
               <h3 className="text-xl font-semibold mb-2">Hassle-Free Documentation</h3>
@@ -44,8 +44,8 @@ const WhySolviaSection = () => {
           </div>
 
           <div className="flex gap-4 items-start">
-            <div className="bg-primary/10 p-3 rounded-lg">
-              <Clock className="h-6 w-6 text-primary" />
+            <div className="p-3 rounded-lg">
+              <Clock className="h-6 w-6 text-[#006ae6]" />
             </div>
             <div>
               <h3 className="text-xl font-semibold mb-2">Faster Hiring, Less Admin</h3>

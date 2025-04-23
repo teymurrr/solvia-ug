@@ -15,9 +15,9 @@ const EmployersLanding = () => {
       <div className="min-h-screen">
         <HeroSection />
         <HowItWorksSection />
-        <section className="py-16 bg-gradient-to-tr from-blue-50/50 via-white to-blue-50/50">
+        <div className="py-8 bg-gradient-to-tr from-blue-50/50 via-white to-blue-50/50">
           <ProfessionalsSection professionals={featuredProfessionals} />
-        </section>
+        </div>
         <WhySolviaSection />
         <InsightsSection />
         <CTASection />

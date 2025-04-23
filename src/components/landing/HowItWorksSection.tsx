@@ -1,26 +1,25 @@
-
 import React from 'react';
 import { FileCheck, Clock, Building2, Calendar, CheckCircle2, ArrowRight } from 'lucide-react';
 
 const HowItWorksSection = () => {
   const steps = [
     {
-      icon: <FileCheck className="h-6 w-6 text-[#0EA5E9]" />,
+      icon: <FileCheck className="h-6 w-6 text-[#006ae6]" />,
       title: "Create Your Profile",
       description: "Fill in your professional details, certifications, and preferences"
     },
     {
-      icon: <CheckCircle2 className="h-6 w-6 text-[#0EA5E9]" />,
+      icon: <CheckCircle2 className="h-6 w-6 text-[#006ae6]" />,
       title: "Get Verified",
       description: "Our team verifies your credentials and language proficiency"
     },
     {
-      icon: <Building2 className="h-6 w-6 text-[#0EA5E9]" />,
+      icon: <Building2 className="h-6 w-6 text-[#006ae6]" />,
       title: "Match with Employers",
       description: "Connect with healthcare institutions"
     },
     {
-      icon: <Calendar className="h-6 w-6 text-[#0EA5E9]" />,
+      icon: <Calendar className="h-6 w-6 text-[#006ae6]" />,
       title: "Start Your Journey",
       description: "Begin your new role in a new country with full support from our team"
     }
@@ -30,7 +29,7 @@ const HowItWorksSection = () => {
     <section className="py-16 bg-white">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <Clock className="h-12 w-12 text-[#0EA5E9] mx-auto mb-4" />
+          <Clock className="h-12 w-12 text-[#006ae6] mx-auto mb-4" />
           <h2 className="text-[30px] font-bold text-black mb-4">How it Works</h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             Your journey to working in a new country made simple and straightforward

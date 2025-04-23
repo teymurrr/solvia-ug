@@ -10,7 +10,7 @@ const InsightsSection = () => {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <div className="flex items-center justify-center gap-2 mb-4">
-              <Lightbulb className="h-12 w-12 text-[#0EA5E9]" />
+              <Lightbulb className="h-12 w-12 text-[#006ae6]" />
             </div>
             <h2 className="text-[30px] font-bold text-black mb-4">Solvia Insights</h2>
             <p className="text-lg text-muted-foreground">
@@ -25,7 +25,7 @@ const InsightsSection = () => {
               </div>
               <CardHeader>
                 <div className="h-12 w-12 flex items-center justify-center mb-4">
-                  <Heart className="h-6 w-6 text-[#0EA5E9]" />
+                  <Heart className="h-6 w-6 text-[#006ae6]" />
                 </div>
                 <CardTitle>Employee Experience & Wellbeing</CardTitle>
                 <CardDescription>Enhance workplace satisfaction and employee wellness</CardDescription>
@@ -44,7 +44,7 @@ const InsightsSection = () => {
               </div>
               <CardHeader>
                 <div className="h-12 w-12 flex items-center justify-center mb-4">
-                  <ChartBar className="h-6 w-6 text-[#0EA5E9]" />
+                  <ChartBar className="h-6 w-6 text-[#006ae6]" />
                 </div>
                 <CardTitle>Analytics & Strategic Services</CardTitle>
                 <CardDescription>Data-driven healthcare workforce solutions</CardDescription>
@@ -63,7 +63,7 @@ const InsightsSection = () => {
               </div>
               <CardHeader>
                 <div className="h-12 w-12 flex items-center justify-center mb-4">
-                  <Users className="h-6 w-6 text-[#0EA5E9]" />
+                  <Users className="h-6 w-6 text-[#006ae6]" />
                 </div>
                 <CardTitle>Talent Development Services</CardTitle>
                 <CardDescription>Grow and nurture healthcare talent</CardDescription>
@@ -82,7 +82,7 @@ const InsightsSection = () => {
               </div>
               <CardHeader>
                 <div className="h-12 w-12 flex items-center justify-center mb-4">
-                  <Network className="h-6 w-6 text-[#0EA5E9]" />
+                  <Network className="h-6 w-6 text-[#006ae6]" />
                 </div>
                 <CardTitle>Community & Networking</CardTitle>
                 <CardDescription>Connect with healthcare professionals</CardDescription>
