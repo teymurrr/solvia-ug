@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Award, MapPin, Languages, Clock, Building, GraduationCap, Search, Bookmark, MessageCircle } from 'lucide-react';
@@ -47,9 +48,9 @@ const ProfessionalCardLanding: React.FC<ProfessionalCardLandingProps> = ({ profe
     });
   };
 
-  // Get first 3 languages only
-  const displayLanguages = languages.slice(0, 3);
-  const hasMoreLanguages = languages.length > 3;
+  // Get first 2 languages only to prevent overlap
+  const displayLanguages = languages.slice(0, 2);
+  const hasMoreLanguages = languages.length > 2;
 
   return (
     <Card 
@@ -82,7 +83,7 @@ const ProfessionalCardLanding: React.FC<ProfessionalCardLandingProps> = ({ profe
                 </Badge>
               )}
             </div>
-            <p className="text-sm text-medical-600 break-normal">
+            <p className="text-sm text-medical-600 break-normal whitespace-normal">
               {specialty.includes('Doctor') || specialty.includes('Nurse') ? specialty : `Doctor, ${specialty}`}
             </p>
           </div>
@@ -109,7 +110,7 @@ const ProfessionalCardLanding: React.FC<ProfessionalCardLandingProps> = ({ profe
           </div>
         </div>
         
-        <div className="mt-4 grid grid-cols-1 gap-y-2">
+        <div className="mt-4 grid grid-cols-1 gap-y-2 max-w-[85%]">
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <MapPin className="h-4 w-4 flex-shrink-0" />
             <span className="truncate">{country}</span>
@@ -117,7 +118,7 @@ const ProfessionalCardLanding: React.FC<ProfessionalCardLandingProps> = ({ profe
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <Clock className="h-4 w-4 flex-shrink-0" />
             <span className="truncate">
-              {experience} {experience === 1 ? 'year' : 'years'} of experience
+              {experience} {experience === 1 ? 'year' : 'years'} exp.
             </span>
           </div>
           {latestExperience && (
@@ -129,7 +130,7 @@ const ProfessionalCardLanding: React.FC<ProfessionalCardLandingProps> = ({ profe
           {latestEducation && (
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <GraduationCap className="h-4 w-4 flex-shrink-0" />
-              <span className="truncate">{latestEducation.degree} in {latestEducation.field}</span>
+              <span className="truncate">{latestEducation.degree}</span>
             </div>
           )}
         </div>
@@ -145,7 +146,7 @@ const ProfessionalCardLanding: React.FC<ProfessionalCardLandingProps> = ({ profe
               </Badge>
             ))}
             {hasMoreLanguages && (
-              <span className="text-xs text-muted-foreground">...</span>
+              <span className="text-xs text-muted-foreground">+{languages.length - 2} more</span>
             )}
           </div>
         </div>

@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Badge } from '@/components/ui/badge';
@@ -56,7 +57,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
           </>
         )}
         
-        {isLoggedIn ? (
+        {isLoggedIn && (
           userType === 'professional' ? (
             <>
               <Link

@@ -5,7 +5,7 @@ import ProtectedRoute from "@/components/ProtectedRoute";
 import { useAuth } from "@/contexts/AuthContext";
 
 // Lazy-loaded components
-const Index = lazy(() => import("@/pages/Index"));
+const Index = lazy(() => import("./pages/Index"));
 const About = lazy(() => import("@/pages/About"));
 const NotFound = lazy(() => import("@/pages/NotFound"));
 const Signup = lazy(() => import("@/pages/Signup"));
