@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Heart, ChartBar, Users, Network, Lightbulb } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -12,7 +13,9 @@ const InsightsSection = () => {
             <div className="flex items-center justify-center gap-2 mb-4">
               <Lightbulb className="h-[30px] w-[30px] text-[#006ae6]" />
             </div>
-            <h2 className="text-[30px] font-bold text-black">Solvia Insights</h2>
+            <h2 className="text-[30px] font-bold text-black">
+              <span className="text-gradient">Solvia</span> Insights
+            </h2>
             <p className="text-lg text-muted-foreground">
               Comprehensive solutions for healthcare institutions
             </p>
