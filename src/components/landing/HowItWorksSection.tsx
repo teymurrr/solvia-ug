@@ -1,15 +1,16 @@
 
-import React, { useState, useEffect } from 'react';
-import { UserPlus, Building, Rocket, ArrowRight, CheckCircle } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { UserPlus, Building, Rocket } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 const HowItWorksSection = () => {
   const [activeStep, setActiveStep] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const stepsRefs = useRef<(HTMLDivElement | null)[]>([]);
   const isMobile = useIsMobile();
-  
-  // Steps data with titles, descriptions, and image information
+
   const steps = [
     {
       icon: <UserPlus className="h-6 w-6 text-primary" />,
@@ -48,7 +49,7 @@ const HowItWorksSection = () => {
       { threshold: 0.2 }
     );
     
-    const section = document.getElementById("how-it-works-section");
+    const section = sectionRef.current;
     if (section) {
       observer.observe(section);
     }
@@ -60,18 +61,36 @@ const HowItWorksSection = () => {
     };
   }, []);
 
-  // Auto-scroll through steps every 5 seconds
+  // Scroll spy effect
   useEffect(() => {
-    const interval = setInterval(() => {
-      setActiveStep((prev) => (prev + 1) % steps.length);
-    }, 5000);
-    return () => clearInterval(interval);
-  }, [steps.length]);
+    const handleScroll = () => {
+      const container = sectionRef.current;
+      if (!container) return;
+
+      const containerTop = container.offsetTop;
+      const scrollPosition = window.scrollY + window.innerHeight / 2;
+
+      let newActiveStep = 0;
+      stepsRefs.current.forEach((ref, index) => {
+        if (!ref) return;
+        const elementTop = ref.offsetTop;
+        if (scrollPosition >= containerTop + elementTop) {
+          newActiveStep = index;
+        }
+      });
+
+      setActiveStep(newActiveStep);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   return (
     <section 
+      ref={sectionRef}
       id="how-it-works-section"
-      className="py-20 bg-white overflow-hidden"
+      className="py-20 bg-white overflow-hidden min-h-screen"
     >
       <div className={cn(
         "container mx-auto px-4 transition-all duration-1000 transform",
@@ -88,11 +107,12 @@ const HowItWorksSection = () => {
           "flex flex-col lg:flex-row gap-8 max-w-6xl mx-auto",
           isMobile ? "items-center" : "items-start"
         )}>
-          {/* Left section - Steps navigation */}
-          <div className="lg:w-2/5 space-y-4">
+          {/* Left section - Scrollable steps */}
+          <div className="lg:w-2/5 space-y-4 sticky top-20">
             {steps.map((step, index) => (
               <div 
                 key={index}
+                ref={el => stepsRefs.current[index] = el}
                 className={cn(
                   "p-6 rounded-xl transition-all duration-500 transform cursor-pointer relative",
                   activeStep === index 
@@ -100,7 +120,6 @@ const HowItWorksSection = () => {
                     : "hover:bg-blue-50/50",
                   activeStep === index && "after:absolute after:left-0 after:top-0 after:h-full after:w-1 after:bg-primary after:rounded-l-lg"
                 )}
-                onMouseEnter={() => setActiveStep(index)}
               >
                 <div className="flex items-start gap-4">
                   <div className={cn(
@@ -123,24 +142,25 @@ const HowItWorksSection = () => {
                       {step.description}
                     </p>
                     
-                    {activeStep === index && (
-                      <div className="mt-3 space-y-2 animate-fade-in">
-                        {step.features.map((feature, fIdx) => (
-                          <div key={fIdx} className="flex items-center text-sm text-gray-700 gap-2">
-                            <CheckCircle className="h-4 w-4 text-primary/80" />
-                            <span>{feature}</span>
-                          </div>
-                        ))}
-                      </div>
-                    )}
+                    <div className={cn(
+                      "mt-3 space-y-2",
+                      activeStep === index ? "animate-fade-in" : "opacity-0"
+                    )}>
+                      {step.features.map((feature, fIdx) => (
+                        <div key={fIdx} className="flex items-center text-sm text-gray-700 gap-2">
+                          <div className="h-1.5 w-1.5 rounded-full bg-primary"></div>
+                          <span>{feature}</span>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
             ))}
           </div>
           
-          {/* Right section - Visual representations */}
-          <div className="lg:w-3/5 relative h-[450px] mt-8 lg:mt-0 rounded-2xl overflow-hidden shadow-lg">
+          {/* Right section - Images */}
+          <div className="lg:w-3/5 relative h-[450px] mt-8 lg:mt-0 rounded-2xl overflow-hidden shadow-lg sticky top-20">
             {steps.map((step, index) => (
               <div 
                 key={index}
@@ -158,68 +178,10 @@ const HowItWorksSection = () => {
                     alt={step.alt}
                     className="object-cover h-full w-full rounded-2xl"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex flex-col justify-end p-8">
-                    {index === 0 && (
-                      <div className="bg-white/90 backdrop-blur-sm rounded-xl p-4 transform animate-fade-in shadow-lg border border-blue-100">
-                        <h4 className="font-semibold text-lg text-gray-900">Healthcare Professional Profile</h4>
-                        <div className="flex gap-2 items-center text-sm text-gray-700 mt-2">
-                          <div className="h-2 w-2 bg-green-500 rounded-full"></div>
-                          <span>Complete your profile to increase match rate by 85%</span>
-                        </div>
-                        <button className="mt-3 text-primary flex items-center text-sm font-medium hover:underline">
-                          Get started <ArrowRight className="h-4 w-4 ml-1" />
-                        </button>
-                      </div>
-                    )}
-                    
-                    {index === 1 && (
-                      <div className="bg-white/90 backdrop-blur-sm rounded-xl p-4 transform animate-fade-in shadow-lg border border-blue-100">
-                        <h4 className="font-semibold text-lg text-gray-900">Vacancy Matches</h4>
-                        <div className="mt-2 flex items-center gap-2">
-                          <span className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">10+ matches</span>
-                          <span className="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">High match rate</span>
-                        </div>
-                        <div className="mt-3 flex justify-between">
-                          <span className="text-sm text-gray-600">Match score: 92%</span>
-                          <button className="text-primary flex items-center text-sm font-medium hover:underline">
-                            View matches <ArrowRight className="h-4 w-4 ml-1" />
-                          </button>
-                        </div>
-                      </div>
-                    )}
-                    
-                    {index === 2 && (
-                      <div className="bg-white/90 backdrop-blur-sm rounded-xl p-4 transform animate-fade-in shadow-lg border border-blue-100">
-                        <h4 className="font-semibold text-lg text-center text-gray-900">Job Offer</h4>
-                        <div className="flex justify-center mt-3">
-                          <span className="inline-block bg-primary text-white px-4 py-2 rounded-lg font-semibold animate-pulse">
-                            Congratulations!
-                          </span>
-                        </div>
-                        <p className="text-center text-sm text-gray-600 mt-2">
-                          Your relocation journey begins now
-                        </p>
-                      </div>
-                    )}
-                  </div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
                 </div>
               </div>
             ))}
-            
-            {/* Navigation dots */}
-            <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-2">
-              {steps.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => setActiveStep(index)}
-                  className={cn(
-                    "w-2.5 h-2.5 rounded-full transition-all",
-                    activeStep === index ? "bg-primary w-5" : "bg-white/60"
-                  )}
-                  aria-label={`Go to step ${index + 1}`}
-                />
-              ))}
-            </div>
           </div>
         </div>
       </div>
