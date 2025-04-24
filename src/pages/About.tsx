@@ -1,4 +1,3 @@
-
 import React from 'react';
 import MainLayout from '@/components/MainLayout';
 import { Button } from '@/components/ui/button';
@@ -114,24 +113,35 @@ const About = () => {
             </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {/* Team cards would go here - simplified for this example */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             <div className="bg-gray-50 rounded-lg p-6 text-center">
-              <div className="w-24 h-24 bg-gray-200 rounded-full mx-auto mb-4" />
-              <h3 className="text-xl font-semibold">Founder & CEO</h3>
-              <p className="text-muted-foreground">Healthcare technology expert with 15+ years experience</p>
+              <div className="w-32 h-32 mx-auto mb-4 rounded-full overflow-hidden shadow-lg">
+                <img 
+                  src="/lovable-uploads/50866c4f-dae7-4f12-82b4-78f2002e281a.png" 
+                  alt="Teymur Mammadov" 
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <h3 className="text-xl font-semibold">Teymur Mammadov</h3>
+              <p className="text-muted-foreground">Co-Founder & CEO</p>
+              <p className="text-sm text-muted-foreground mt-2">
+                Healthcare technology expert with extensive international experience
+              </p>
             </div>
             
             <div className="bg-gray-50 rounded-lg p-6 text-center">
-              <div className="w-24 h-24 bg-gray-200 rounded-full mx-auto mb-4" />
-              <h3 className="text-xl font-semibold">Chief Medical Officer</h3>
-              <p className="text-muted-foreground">Former Hospital Director with global healthcare experience</p>
-            </div>
-            
-            <div className="bg-gray-50 rounded-lg p-6 text-center">
-              <div className="w-24 h-24 bg-gray-200 rounded-full mx-auto mb-4" />
-              <h3 className="text-xl font-semibold">Head of Partnerships</h3>
-              <p className="text-muted-foreground">International recruitment specialist with hospital networks</p>
+              <div className="w-32 h-32 mx-auto mb-4 rounded-full overflow-hidden shadow-lg">
+                <img 
+                  src="/lovable-uploads/6076d717-f7de-4fe6-b318-20bfcd6e2aa6.png" 
+                  alt="David Rehrl" 
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <h3 className="text-xl font-semibold">David Rehrl</h3>
+              <p className="text-muted-foreground">Co-Founder & COO</p>
+              <p className="text-sm text-muted-foreground mt-2">
+                International recruitment specialist with global healthcare networks
+              </p>
             </div>
           </div>
         </div>
@@ -224,4 +234,3 @@ const About = () => {
 };
 
 export default About;
-
