@@ -15,8 +15,8 @@ const Index = () => {
     <MainLayout>
       <div className="min-h-screen">
         <HeroSection />
-        <HowItWorksSection />
         <VacanciesSection vacancies={featuredVacancies} />
+        <HowItWorksSection />
         <div className="py-8 bg-gradient-to-tr from-blue-50/50 via-white to-blue-50/50">
           <ProfessionalsSection professionals={featuredProfessionals} />
         </div>
@@ -29,3 +29,4 @@ const Index = () => {
 };
 
 export default Index;
+
