@@ -78,7 +78,11 @@ const About = () => {
           <div className="max-w-4xl mx-auto">
             <div className="flex flex-col md:flex-row gap-12 items-center">
               <div className="md:w-1/2">
-                <div className="hero-gradient w-full h-64 md:h-96 rounded-lg" />
+                <img 
+                  src="/lovable-uploads/431c73d2-5785-4d33-8f35-d11742c829e0.png" 
+                  alt="Solvia Logo" 
+                  className="w-full rounded-lg shadow-lg"
+                />
               </div>
               
               <div className="md:w-1/2 space-y-4">
@@ -115,33 +119,27 @@ const About = () => {
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             <div className="bg-gray-50 rounded-lg p-6 text-center">
-              <div className="w-32 h-32 mx-auto mb-4 rounded-full overflow-hidden shadow-lg">
+              <div className="w-40 h-40 mx-auto mb-4 rounded-full overflow-hidden shadow-lg">
                 <img 
                   src="/lovable-uploads/50866c4f-dae7-4f12-82b4-78f2002e281a.png" 
                   alt="Teymur Mammadov" 
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover object-top"
                 />
               </div>
               <h3 className="text-xl font-semibold">Teymur Mammadov</h3>
-              <p className="text-muted-foreground">Co-Founder & CEO</p>
-              <p className="text-sm text-muted-foreground mt-2">
-                Healthcare technology expert with extensive international experience
-              </p>
+              <p className="text-muted-foreground">Co-Founder</p>
             </div>
             
             <div className="bg-gray-50 rounded-lg p-6 text-center">
-              <div className="w-32 h-32 mx-auto mb-4 rounded-full overflow-hidden shadow-lg">
+              <div className="w-40 h-40 mx-auto mb-4 rounded-full overflow-hidden shadow-lg">
                 <img 
                   src="/lovable-uploads/6076d717-f7de-4fe6-b318-20bfcd6e2aa6.png" 
                   alt="David Rehrl" 
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover object-top"
                 />
               </div>
               <h3 className="text-xl font-semibold">David Rehrl</h3>
-              <p className="text-muted-foreground">Co-Founder & COO</p>
-              <p className="text-sm text-muted-foreground mt-2">
-                International recruitment specialist with global healthcare networks
-              </p>
+              <p className="text-muted-foreground">Co-Founder</p>
             </div>
           </div>
         </div>
