@@ -4,10 +4,10 @@ import { Globe, Users, FileCheck, Clock } from 'lucide-react';
 
 const WhySolviaSection = () => {
   return (
-    <section className="py-16 bg-gradient-to-br from-white via-gray-50 to-white">
+    <section className="py-16 bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800">
       <div className="container mx-auto px-4">
-        <h2 className="text-[30px] font-bold text-black text-center mb-12">
-          Why <span className="text-gradient">Solvia</span>?
+        <h2 className="text-[30px] font-bold text-white text-center mb-12">
+          Why <span className="text-blue-400">Solvia</span>?
         </h2>
         <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
           <div className="flex gap-4 items-start">

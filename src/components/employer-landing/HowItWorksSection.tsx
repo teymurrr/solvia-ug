@@ -34,10 +34,10 @@ const HowItWorksSection = () => {
   }, [steps.length]);
 
   return (
-    <section className="py-16 bg-gradient-to-br from-gray-50 via-white to-gray-50">
+    <section className="py-16 bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800">
       <div className="container mx-auto px-4">
-        <h2 className="text-[30px] font-bold text-black text-center mb-12">
-          Partner with <span className="text-gradient">Solvia</span>
+        <h2 className="text-[30px] font-bold text-white text-center mb-12">
+          Partner with <span className="text-blue-400">Solvia</span>
         </h2>
         <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
           {steps.map((step, index) => (
@@ -51,19 +51,19 @@ const HowItWorksSection = () => {
             >
               <div className={cn(
                 "w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 transition-colors",
-                activeStep === index ? "bg-blue-100" : ""
+                activeStep === index ? "bg-blue-900" : "bg-gray-800"
               )}>
                 {step.icon}
               </div>
               <h3 className={cn(
                 "text-xl font-semibold mb-2 transition-colors",
-                activeStep === index ? "text-[#006ae6]" : "text-gray-800"
+                activeStep === index ? "text-blue-400" : "text-gray-200"
               )}>
                 {step.title}
               </h3>
               <p className={cn(
-                "text-gray-600 transition-colors",
-                activeStep === index ? "text-gray-800" : ""
+                "transition-colors",
+                activeStep === index ? "text-gray-300" : "text-gray-400"
               )}>
                 {step.description}
               </p>
