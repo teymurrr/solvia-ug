@@ -63,6 +63,7 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
+				'dark-navy': 'hsl(var(--dark-navy))',
 				medical: {
 					50: '#f0f9ff',
 					100: '#e0f2fe',

@@ -42,6 +42,8 @@
     --sidebar-accent-foreground: 240 5.9% 10%;
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
+    
+    --dark-navy: 220 40% 13%;
   }
 
   .dark {
@@ -108,6 +110,10 @@
   .card-gradient {
     background: linear-gradient(to bottom right, #0974f120, #9fccfa40);
     backdrop-filter: blur(8px);
+  }
+  
+  .employer-hero-gradient {
+    background: linear-gradient(to bottom, hsl(var(--dark-navy)) 0%, rgba(255, 255, 255, 0.05) 100%);
   }
 }
 
