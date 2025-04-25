@@ -4,7 +4,7 @@ import AppRoutes from './routes';
 import { Toaster } from './components/ui/toaster';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider } from './contexts/AuthContext';
-import { ThemeProvider } from './components/ThemeProvider';
+import { ThemeProvider } from '@/components/ThemeProvider';
 import ChatPopup from './components/ChatPopup';
 
 const queryClient = new QueryClient({
