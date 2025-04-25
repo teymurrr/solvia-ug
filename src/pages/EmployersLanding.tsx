@@ -14,7 +14,7 @@ const EmployersLanding = () => {
     <MainLayout>
       <div className="min-h-screen">
         <HeroSection />
-        <div className="py-8 bg-gradient-to-b from-[hsl(var(--dark-navy))] via-blue-50/50 to-blue-50/50">
+        <div className="py-8 bg-gradient-to-tr from-blue-50/50 via-white to-blue-50/50">
           <ProfessionalsSection professionals={featuredProfessionals} />
         </div>
         <HowItWorksSection />
@@ -27,3 +27,4 @@ const EmployersLanding = () => {
 };
 
 export default EmployersLanding;
+
