@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Mail, Send, User, ArrowLeft, Search, Inbox, MessageSquare } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { toast } from 'sonner';
+import { toast as sonnerToast } from 'sonner';
 import { useAuth } from '@/contexts/AuthContext';
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -37,7 +37,6 @@ const Messages = () => {
   const { id } = useParams();
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
-  // Set active conversation if ID is provided in URL
   useEffect(() => {
     if (id && user) {
       setActiveConversation({
@@ -50,25 +49,21 @@ const Messages = () => {
         )
       });
       
-      // Mark conversation as read
       markConversationAsRead(id);
     }
   }, [id, messages, user]);
 
-  // Scroll to bottom when messages change
   useEffect(() => {
     if (messagesEndRef.current && activeConversation) {
       messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [activeConversation]);
 
-  // Get unique conversation partners
   const conversationPartners = React.useMemo(() => {
     if (!user) return [];
     
     const partners = new Map<string, Message>();
     
-    // Group by partner and keep the latest message
     messages.forEach(message => {
       const partnerId = message.sender_id === user.id ? message.recipient_id : message.sender_id;
       
@@ -86,7 +81,6 @@ const Messages = () => {
       }))
       .filter(partner => {
         if (!searchQuery) return true;
-        // Simple filter by message content
         return partner.lastMessage.content.toLowerCase().includes(searchQuery.toLowerCase());
       });
   }, [messages, user, searchQuery]);
@@ -124,7 +118,7 @@ const Messages = () => {
   
   const handleSendReply = () => {
     if (!replyText || !activeConversation || !user) {
-      toast.error("Cannot send empty message");
+      sonnerToast.error("Cannot send empty message");
       return;
     }
     
@@ -152,10 +146,8 @@ const Messages = () => {
       messages: conversationMessages
     });
     
-    // Mark all messages from this sender as read
     markConversationAsRead(partnerId);
     
-    // Update URL without reloading
     navigate(`/messages/${partnerId}`);
   };
   
@@ -199,10 +191,8 @@ const Messages = () => {
           <CardContent className="p-0">
             <div className="grid grid-cols-1 md:grid-cols-3 h-[calc(100vh-240px)]">
               
-              {/* Conversation List Sidebar */}
               {!activeConversation && (
                 <div className="md:col-span-3">
-                  {/* Search Bar */}
                   <div className="p-4 border-b">
                     <div className="relative">
                       <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -273,7 +263,6 @@ const Messages = () => {
                 </div>
               )}
               
-              {/* Active Conversation */}
               {activeConversation && (
                 <div className="md:col-span-3 flex flex-col h-full">
                   <ScrollArea className="flex-1 p-6">
@@ -339,7 +328,6 @@ const Messages = () => {
         </Card>
       </div>
       
-      {/* New Message Dialog */}
       <Dialog open={newMessageDialog} onOpenChange={setNewMessageDialog}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
