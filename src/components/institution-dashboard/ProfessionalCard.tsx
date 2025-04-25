@@ -7,6 +7,7 @@ import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
 import { useProtectedAction } from '@/hooks/useProtectedAction';
+import { useMessages } from '@/hooks/useMessages';
 
 interface ProfessionalCardProps {
   professional: {
@@ -34,15 +35,18 @@ const ProfessionalCard: React.FC<ProfessionalCardProps> = ({ professional }) => 
   const navigate = useNavigate();
   const { toast } = useToast();
   const { handleProtectedAction } = useProtectedAction();
+  const { addMessage } = useMessages();
   
   const yearsOfExperience = professional.experience || 
     (professional.experiences && professional.experiences.length > 0 ? professional.experiences.length : 0);
   
   const handleSendMessage = () => {
     handleProtectedAction(() => {
-      navigate(`/messages/new?recipientId=${professional.id}`);
+      // Start a chat in the inbox page
+      navigate(`/messages/${professional.id}`);
+      
       toast({
-        title: "Redirecting to messages",
+        title: "Opening conversation",
         description: `You can now send a message to ${professional.firstName} ${professional.lastName}`,
       });
     });
