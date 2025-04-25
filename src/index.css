@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -114,5 +115,11 @@
 @layer components {
   .feature-card {
     @apply rounded-[30px] border border-black/5 bg-white/50 transition-all duration-300 hover:scale-[1.02] hover:shadow-lg hover:border-black/10;
+  }
+}
+
+@layer utilities {
+  .fade-bottom {
+    mask-image: linear-gradient(to bottom, black 85%, transparent 100%);
   }
 }
