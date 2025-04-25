@@ -21,12 +21,11 @@ export const Mockup = ({
 }: MockupProps) => {
   return (
     <div className={cn(
-      "w-full overflow-hidden rounded-md border border-border bg-card shadow-sm",
+      "w-full overflow-hidden border border-border bg-card shadow-sm",
       {
-        "rounded-lg": type === 'window',
+        "rounded-lg": type === 'window' || type === 'responsive',
         "rounded-[30px] max-w-[300px] mx-auto": type === 'phone',
         "rounded-t-lg": type === 'browser',
-        "rounded-lg": type === 'responsive',
       },
       className
     )}>
