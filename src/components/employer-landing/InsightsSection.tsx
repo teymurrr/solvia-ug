@@ -6,17 +6,17 @@ import { Badge } from "@/components/ui/badge";
 
 const InsightsSection = () => {
   return (
-    <section className="py-16 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
+    <section className="py-16 bg-gradient-to-br from-gray-50 via-white to-gray-50">
       <div className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <div className="flex items-center justify-center gap-2 mb-4">
-              <Lightbulb className="h-[30px] w-[30px] text-blue-400" />
+              <Lightbulb className="h-[30px] w-[30px] text-[#006ae6]" />
             </div>
-            <h2 className="text-[30px] font-bold text-white">
-              <span className="text-blue-400">Solvia</span> Insights
+            <h2 className="text-[30px] font-bold text-black">
+              <span className="text-gradient">Solvia</span> Insights
             </h2>
-            <p className="text-lg text-gray-300">
+            <p className="text-lg text-muted-foreground">
               Comprehensive solutions for healthcare institutions
             </p>
           </div>

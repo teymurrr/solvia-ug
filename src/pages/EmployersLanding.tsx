@@ -12,9 +12,9 @@ import { featuredProfessionals } from '@/data/landingPageData';
 const EmployersLanding = () => {
   return (
     <MainLayout>
-      <div className="min-h-screen bg-gray-900">
+      <div className="min-h-screen">
         <HeroSection />
-        <div className="py-8 bg-gradient-to-tr from-gray-900 via-gray-800 to-gray-900">
+        <div className="py-8 bg-gradient-to-tr from-blue-50/50 via-white to-blue-50/50">
           <ProfessionalsSection professionals={featuredProfessionals} />
         </div>
         <HowItWorksSection />
@@ -27,3 +27,4 @@ const EmployersLanding = () => {
 };
 
 export default EmployersLanding;
+
