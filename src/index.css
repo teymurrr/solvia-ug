@@ -105,6 +105,27 @@
     -webkit-text-fill-color: transparent;
   }
 
+  .shimmer-gradient {
+    background: linear-gradient(
+      to right,
+      #0974f1 20%,
+      #9fccfa 30%,
+      #0974f1 70%,
+      #9fccfa 80%
+    );
+    background-size: 200% auto;
+    color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+    animation: shine 3s linear infinite;
+  }
+
+  @keyframes shine {
+    to {
+      background-position: 200% center;
+    }
+  }
+
   .card-gradient {
     background: linear-gradient(to bottom right, #0974f120, #9fccfa40);
     backdrop-filter: blur(8px);
