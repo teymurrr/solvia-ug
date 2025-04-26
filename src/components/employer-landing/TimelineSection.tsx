@@ -9,7 +9,7 @@ const TimelineSection = () => {
       title: "Post Jobs",
       content: (
         <div className="space-y-4">
-          <p className="text-neutral-800 dark:text-neutral-200 text-xs md:text-sm font-normal">
+          <p className="text-neutral-800 dark:text-neutral-200 text-xs md:text-base font-normal">
             Create detailed job listings for your healthcare positions. Include requirements, 
             responsibilities, and benefits to attract the right candidates.
           </p>
@@ -24,7 +24,7 @@ const TimelineSection = () => {
       title: "Connect",
       content: (
         <div className="space-y-4">
-          <p className="text-neutral-800 dark:text-neutral-200 text-xs md:text-sm font-normal">
+          <p className="text-neutral-800 dark:text-neutral-200 text-xs md:text-base font-normal">
             Browse through profiles of qualified healthcare professionals. Use our advanced 
             filters to find candidates that match your requirements perfectly.
           </p>
@@ -39,7 +39,7 @@ const TimelineSection = () => {
       title: "Hire",
       content: (
         <div className="space-y-4">
-          <p className="text-neutral-800 dark:text-neutral-200 text-xs md:text-sm font-normal">
+          <p className="text-neutral-800 dark:text-neutral-200 text-xs md:text-base font-normal">
             Once you've found the perfect match, we'll help with the hiring process. 
             From contract signing to relocation assistance, we're here to support you.
           </p>
@@ -54,7 +54,11 @@ const TimelineSection = () => {
 
   return (
     <section className="w-full">
-      <Timeline data={timelineData} />
+      <Timeline 
+        data={timelineData} 
+        title="Your <span class='text-gradient'>Journey</span> with Solvia" 
+        subtitle="Follow the steps to start your recruitment journey with us"
+      />
     </section>
   );
 };

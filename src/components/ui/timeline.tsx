@@ -13,7 +13,15 @@ interface TimelineEntry {
   content: React.ReactNode;
 }
 
-export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
+export const Timeline = ({ 
+  data, 
+  title = "Your Journey with Solvia", 
+  subtitle = "Follow the steps to start your journey with us" 
+}: { 
+  data: TimelineEntry[], 
+  title?: string, 
+  subtitle?: string 
+}) => {
   const ref = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [height, setHeight] = useState(0);
@@ -39,11 +47,12 @@ export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
       ref={containerRef}
     >
       <div className="max-w-7xl mx-auto py-20 px-4 md:px-8 lg:px-10">
-        <h2 className="text-lg md:text-4xl mb-4 text-black dark:text-white max-w-4xl">
-          Your Journey with Solvia
-        </h2>
+        <h2 
+          className="text-2xl md:text-4xl mb-4 text-black dark:text-white max-w-4xl" 
+          dangerouslySetInnerHTML={{ __html: title }}
+        />
         <p className="text-neutral-700 dark:text-neutral-300 text-sm md:text-base max-w-sm">
-          Follow the steps to start your healthcare career journey with us
+          {subtitle}
         </p>
       </div>
 
