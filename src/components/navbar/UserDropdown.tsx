@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Building, LogOut, Mail, Settings, Languages, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -16,6 +16,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { availableLanguages } from '@/data/languages';
+import { useToast } from '@/hooks/use-toast';
 
 interface UserDropdownProps {
   userType: string | null;
@@ -24,6 +25,28 @@ interface UserDropdownProps {
 }
 
 const UserDropdown: React.FC<UserDropdownProps> = ({ userType, hasUnreadMessages, onSignOut }) => {
+  const { toast } = useToast();
+  const navigate = useNavigate();
+
+  const handleSignOut = async () => {
+    try {
+      await onSignOut();
+      toast({
+        title: "Sign Out Successful",
+        description: "You have been signed out successfully."
+      });
+      // Ensure we redirect to the homepage after signout
+      navigate('/', { replace: true });
+    } catch (error) {
+      console.error('Error during sign out:', error);
+      toast({
+        title: "Error signing out",
+        description: "Please try again",
+        variant: "destructive"
+      });
+    }
+  };
+  
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -72,7 +95,7 @@ const UserDropdown: React.FC<UserDropdownProps> = ({ userType, hasUnreadMessages
 
         <DropdownMenuSeparator />
         
-        <DropdownMenuItem onClick={onSignOut} className="text-red-500">
+        <DropdownMenuItem onClick={handleSignOut} className="text-red-500">
           <LogOut className="h-4 w-4 mr-2" />
           Sign out
         </DropdownMenuItem>

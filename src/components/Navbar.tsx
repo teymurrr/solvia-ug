@@ -32,7 +32,9 @@ const Navbar = () => {
 
   const handleSignOut = async () => {
     try {
+      // Call signOut method from AuthContext
       await signOut();
+      // Navigate to home page after successful signout
       navigate('/', { replace: true });
     } catch (error) {
       console.error('Error during sign out:', error);

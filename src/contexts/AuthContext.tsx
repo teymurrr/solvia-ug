@@ -1,3 +1,4 @@
+
 import * as React from 'react';
 import { Session, User } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
@@ -108,16 +109,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const signOut = async () => {
     try {
-      const { error } = await supabase.auth.signOut();
-      if (error) throw error;
-      
+      // First ensure we clear the local state regardless of API success
       setSession(null);
       setUser(null);
       setIsLoggedIn(false);
       setUserType(null);
+      
+      // Then attempt to sign out from Supabase
+      const { error } = await supabase.auth.signOut();
+      if (error) throw error;
     } catch (error) {
       console.error('Error signing out:', error);
-      throw error;
+      // We don't rethrow here to ensure the UI gets updated even if API fails
     }
   };
 
