@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Timeline } from "@/components/ui/timeline";
 import { FileText, Building2, Rocket } from "lucide-react";
@@ -56,7 +57,7 @@ const TimelineSection = () => {
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-[30px] font-bold text-black">
-            Your <span className="text-gradient">Journey</span> with Solvia
+            Your Journey with Solvia
           </h2>
           <p className="text-base text-muted-foreground mt-4 mb-6">
             Your journey to working in a new country made simple and straightforward
