@@ -4,7 +4,7 @@ import { Globe, Users, FileCheck, Clock } from 'lucide-react';
 
 const WhySolviaSection = () => {
   return (
-    <section className="py-16 bg-gradient-to-br from-white via-gray-50 to-white">
+    <section className="py-16 bg-transparent">
       <div className="container mx-auto px-4">
         <h2 className="text-[30px] font-bold text-black text-center mb-12">
           Why <span className="text-gradient">Solvia</span>?
