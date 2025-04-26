@@ -53,12 +53,20 @@ const TimelineSection = () => {
   ];
 
   return (
-    <section className="w-full">
-      <Timeline 
-        data={timelineData} 
-        title="Your <span class='text-gradient'>Journey</span> with Solvia" 
-        subtitle="Follow the steps to start your healthcare career journey with us"
-      />
+    <section className="py-12 bg-gray-50">
+      <div className="container mx-auto px-4">
+        <div className="text-center mb-12">
+          <h2 className="text-[30px] font-bold text-black">
+            Your <span className="text-gradient">Journey</span> with Solvia
+          </h2>
+          <p className="text-lg text-muted-foreground mt-4 mb-6">
+            Your journey to working in a new country made simple and straightforward
+          </p>
+        </div>
+        <Timeline 
+          data={timelineData}
+        />
+      </div>
     </section>
   );
 };
