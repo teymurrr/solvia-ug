@@ -1,8 +1,8 @@
 
 import React from 'react';
 import MainLayout from '@/components/MainLayout';
-import HowItWorksSection from '@/components/landing/HowItWorksSection';
 import HeroSection from '@/components/landing/HeroSection';
+import TimelineSection from '@/components/landing/TimelineSection';
 import VacanciesSection from '@/components/landing/VacanciesSection';
 import ProfessionalsSection from '@/components/landing/ProfessionalsSection';
 import WhySolviaSection from '@/components/landing/WhySolviaSection';
@@ -16,7 +16,7 @@ const Index = () => {
       <div className="min-h-screen">
         <HeroSection />
         <VacanciesSection vacancies={featuredVacancies} />
-        <HowItWorksSection />
+        <TimelineSection />
         <div className="py-8 bg-gradient-to-tr from-blue-50/50 via-white to-blue-50/50">
           <ProfessionalsSection professionals={featuredProfessionals} />
         </div>
@@ -29,4 +29,3 @@ const Index = () => {
 };
 
 export default Index;
-
