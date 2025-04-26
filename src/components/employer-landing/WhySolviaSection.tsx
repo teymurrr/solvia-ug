@@ -7,7 +7,7 @@ const WhySolviaSection = () => {
     <section className="py-16 bg-transparent">
       <div className="container mx-auto px-4">
         <h2 className="text-[30px] font-bold text-black text-center mb-12">
-          Why <span className="text-gradient">Solvia</span>?
+          Why Solvia?
         </h2>
         <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
           <div className="flex gap-4 items-start">

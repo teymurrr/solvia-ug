@@ -14,7 +14,7 @@ const InsightsSection = () => {
               <Lightbulb className="h-[30px] w-[30px] text-[#006ae6]" />
             </div>
             <h2 className="text-[30px] font-bold text-black">
-              <span className="text-gradient">Solvia</span> Insights
+              Solvia Insights
             </h2>
             <p className="text-lg text-muted-foreground">
               Comprehensive solutions for healthcare institutions

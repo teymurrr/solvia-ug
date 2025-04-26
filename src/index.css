@@ -145,7 +145,7 @@
   }
 
   .animate-gradient-slow {
-    animation: gradient-shift 15s ease infinite;
+    animation: gradient-shift 8s ease infinite;
     background-size: 200% 200%;
   }
 }

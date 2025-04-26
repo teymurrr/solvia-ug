@@ -57,7 +57,7 @@ const TimelineSection = () => {
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-[30px] font-bold text-black">
-            Your <span className="text-gradient">Journey</span> with Solvia
+            Your Journey with Solvia
           </h2>
           <p className="text-lg text-muted-foreground mt-4 mb-6">
             Follow the steps to start your recruitment journey with us
