@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
@@ -18,10 +19,10 @@ const HeroSection = () => {
             {t.hero.subtitle}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center mt-8">
-            <Button size="lg" className="px-8 py-6 text-lg h-auto" asChild>
+            <Button size="lg" asChild>
               <Link to="/signup/professional">{t.hero.findJob}</Link>
             </Button>
-            <Button size="lg" variant="outline" className="px-8 py-6 text-lg h-auto" asChild>
+            <Button size="lg" variant="outline" asChild>
               <Link to="/signup/institution">{t.hero.findTalent}</Link>
             </Button>
           </div>

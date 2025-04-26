@@ -14,7 +14,7 @@ const HeroSection = () => {
           <p className="text-lg md:text-xl lg:text-[22px] text-gray-600 mb-10 max-w-2xl mx-auto">
             Solvia is your go-to platform for discovering international doctors and nurses prepared for relocation
           </p>
-          <Button size="lg" className="px-8 py-6 text-lg h-auto" asChild>
+          <Button size="lg" asChild>
             <Link to="/signup/institution">Browse Talents</Link>
           </Button>
         </div>
