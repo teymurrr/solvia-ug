@@ -1,5 +1,13 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import MainLayout from '@/components/MainLayout';
+import ProfessionalCard from '@/components/ProfessionalCard';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Slider } from '@/components/ui/slider';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Search, SlidersHorizontal, X } from 'lucide-react';
 
 const Professionals = () => {
   const professionals = [
