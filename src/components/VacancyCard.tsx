@@ -103,7 +103,7 @@ const VacancyCard = ({
   };
 
   return (
-    <Card className="overflow-hidden hover:shadow-md transition-shadow border-transparent">
+    <Card className="overflow-hidden hover:shadow-xl transition-shadow shadow-md border-transparent hover:scale-[1.02]">
       <CardHeader className="pb-3">
         <div className="flex flex-wrap justify-between items-start gap-2">
           <div>

@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Award, MapPin, Languages, Clock, Building, GraduationCap, Search, Bookmark, MessageCircle } from 'lucide-react';
@@ -54,7 +55,7 @@ const ProfessionalCardLanding: React.FC<ProfessionalCardLandingProps> = ({ profe
 
   return (
     <Card 
-      className={`overflow-hidden cursor-pointer border-transparent hover:shadow-lg hover:scale-[1.02] transition-all duration-300 ${className || ''}`}
+      className={`overflow-hidden cursor-pointer border-transparent shadow-md hover:shadow-xl hover:scale-[1.02] transition-all duration-300 ${className || ''}`}
       onClick={() => navigate('/signup')}
     >
       <CardContent className="p-6 relative">
