@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
@@ -8,6 +9,7 @@ import Logo from './Logo';
 import NavLinks from './navbar/NavLinks';
 import UserDropdown from './navbar/UserDropdown';
 import MobileMenu from './navbar/MobileMenu';
+import { useToast } from '@/hooks/use-toast';
 
 const hasUnreadMessages = false;
 
@@ -16,6 +18,7 @@ const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const { isLoggedIn, userType, signOut } = useAuth();
   const navigate = useNavigate();
+  const { toast } = useToast();
 
   useEffect(() => {
     const handleScroll = () => {
