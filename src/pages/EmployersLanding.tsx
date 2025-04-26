@@ -13,8 +13,8 @@ const EmployersLanding = () => {
   return (
     <MainLayout>
       <div className="min-h-screen relative">
-        {/* Shimmering gradient background that covers the entire page */}
-        <div className="fixed inset-0 bg-gradient-to-br from-blue-50 via-white to-blue-50 animate-gradient-slow -z-10" />
+        {/* Updated gradient with increased contrast */}
+        <div className="fixed inset-0 bg-gradient-to-br from-blue-100 via-white to-blue-200 animate-gradient-slow -z-10" />
         
         {/* All sections now have transparent backgrounds to show the gradient behind them */}
         <HeroSection />
