@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Timeline } from "@/components/ui/timeline";
 import { FileText, Users, Building2 } from "lucide-react";
@@ -8,7 +9,7 @@ const TimelineSection = () => {
       title: "Post Jobs",
       content: (
         <div className="space-y-4">
-          <p className="text-base text-neutral-800 dark:text-neutral-200 font-normal leading-relaxed">
+          <p className="text-[18px] text-neutral-800 dark:text-neutral-200 font-normal leading-relaxed">
             Create detailed job listings for your healthcare positions. Include requirements, 
             responsibilities, and benefits to attract the right candidates.
           </p>
@@ -23,7 +24,7 @@ const TimelineSection = () => {
       title: "Connect",
       content: (
         <div className="space-y-4">
-          <p className="text-base text-neutral-800 dark:text-neutral-200 font-normal leading-relaxed">
+          <p className="text-[18px] text-neutral-800 dark:text-neutral-200 font-normal leading-relaxed">
             Browse through profiles of qualified healthcare professionals. Use our advanced 
             filters to find candidates that match your requirements perfectly.
           </p>
@@ -38,7 +39,7 @@ const TimelineSection = () => {
       title: "Hire",
       content: (
         <div className="space-y-4">
-          <p className="text-base text-neutral-800 dark:text-neutral-200 font-normal leading-relaxed">
+          <p className="text-[18px] text-neutral-800 dark:text-neutral-200 font-normal leading-relaxed">
             Once you've found the perfect match, we'll help with the hiring process. 
             From contract signing to relocation assistance, we're here to support you.
           </p>
