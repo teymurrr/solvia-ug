@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Timeline } from "@/components/ui/timeline";
 import { FileText, Building2, Rocket } from "lucide-react";
@@ -72,4 +71,3 @@ const TimelineSection = () => {
 };
 
 export default TimelineSection;
-
