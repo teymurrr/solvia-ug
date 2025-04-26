@@ -12,9 +12,12 @@ import { featuredProfessionals } from '@/data/landingPageData';
 const EmployersLanding = () => {
   return (
     <MainLayout>
-      <div className="min-h-screen">
+      <div className="min-h-screen relative">
+        {/* Shimmering gradient background */}
+        <div className="fixed inset-0 bg-gradient-to-br from-blue-50 via-white to-blue-50 animate-gradient-slow -z-10" />
+        
         <HeroSection />
-        <div className="py-8 bg-gradient-to-tr from-blue-50/50 via-white to-blue-50/50">
+        <div className="py-8">
           <ProfessionalsSection professionals={featuredProfessionals} />
         </div>
         <TimelineSection />
