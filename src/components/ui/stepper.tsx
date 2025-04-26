@@ -1,4 +1,3 @@
-
 "use client";
 
 import { cn } from "@/lib/utils";
@@ -192,9 +191,7 @@ const StepperIndicator = React.forwardRef<HTMLDivElement, StepperIndicatorProps>
               {step}
             </span>
             <CheckIcon
-              className="absolute scale-0 opacity-0 transition-all group-data-[state=completed]/step:scale-100 group-data-[state=completed]/step:opacity-100"
-              size={16}
-              strokeWidth={2}
+              className="absolute scale-0 opacity-0 transition-all group-data-[state=completed]/step:scale-100 group-data-[state=completed]/step:opacity-100 w-4 h-4"
               aria-hidden="true"
             />
             {isLoading && (
