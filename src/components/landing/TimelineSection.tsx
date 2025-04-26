@@ -54,7 +54,15 @@ const TimelineSection = () => {
 
   return (
     <section className="w-full">
-      <Timeline data={timelineData} />
+      <div className="container mx-auto text-center py-16">
+        <h2 className="text-[30px] font-bold text-black mb-4">
+          How <span className="text-primary">It</span> Works
+        </h2>
+        <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-12">
+          Discover a seamless journey from profile creation to your dream healthcare role
+        </p>
+        <Timeline data={timelineData} />
+      </div>
     </section>
   );
 };
