@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Users, ArrowRight } from 'lucide-react';
@@ -15,7 +14,7 @@ const ProfessionalsSection: React.FC<ProfessionalsSectionProps> = ({ professiona
   const { t } = useLanguage();
   
   return (
-    <section className="py-12 bg-gray-50">
+    <section className="py-12 bg-white">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <Users className="h-[30px] w-[30px] text-[#006ae6] mx-auto mb-4" />

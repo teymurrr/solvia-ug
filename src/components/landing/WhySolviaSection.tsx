@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Shield, Clock, Globe, Users } from 'lucide-react';
@@ -8,7 +7,7 @@ const WhySolviaSection = () => {
   const { t } = useLanguage();
   
   return (
-    <section className="py-16 bg-gradient-to-br from-white via-gray-50 to-white">
+    <section className="py-16 bg-white">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <Shield className="h-[30px] w-[30px] text-[#006ae6] mx-auto mb-4" />

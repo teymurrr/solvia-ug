@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Timeline } from "@/components/ui/timeline";
 import { FileText, Building2, Rocket } from "lucide-react";
@@ -53,7 +52,7 @@ const TimelineSection = () => {
   ];
 
   return (
-    <section className="py-12 bg-gray-50">
+    <section className="py-12 bg-white">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-[30px] font-bold text-black">
