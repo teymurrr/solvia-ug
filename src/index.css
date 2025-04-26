@@ -107,17 +107,18 @@
 
   .shimmer-gradient {
     background: linear-gradient(
-      to right,
+      65deg,
       #0974f1 20%,
-      #9fccfa 30%,
-      #0974f1 70%,
-      #9fccfa 80%
+      #4c9cf5 35%,
+      #7cb5f8 50%,
+      #4c9cf5 65%,
+      #0974f1 80%
     );
     background-size: 200% auto;
     color: transparent;
     -webkit-background-clip: text;
     background-clip: text;
-    animation: shine 8s linear infinite;
+    animation: shine 20s linear infinite;
   }
 
   @keyframes shine {
