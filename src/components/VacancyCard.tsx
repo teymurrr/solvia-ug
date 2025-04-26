@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -50,10 +49,8 @@ const VacancyCard = ({
   const { toast } = useToast();
   const { handleProtectedAction } = useProtectedAction();
   
-  // Create a location string if individual components are provided
   const displayLocation = location || (city && country ? `${city}, ${country}` : city || country || "Location not specified");
   
-  // Format dates
   const formatDate = (dateString?: string) => {
     if (!dateString) return "Date not specified";
     const date = new Date(dateString);
@@ -64,7 +61,6 @@ const VacancyCard = ({
     }).format(date);
   };
   
-  // Calculate days remaining until deadline
   const calculateDaysRemaining = () => {
     if (!applicationDeadline) return null;
     const today = new Date();
@@ -76,7 +72,6 @@ const VacancyCard = ({
   
   const daysRemaining = calculateDaysRemaining();
   
-  // Get badge variant based on job type
   const getJobTypeBadgeVariant = (type: string) => {
     switch(type) {
       case 'Full-time':
@@ -92,7 +87,6 @@ const VacancyCard = ({
     }
   };
 
-  // Handle save/unsave vacancy
   const toggleSave = () => {
     handleProtectedAction(() => {
       if (onSaveToggle) {
@@ -109,7 +103,7 @@ const VacancyCard = ({
   };
 
   return (
-    <Card className="overflow-hidden hover:shadow-md transition-shadow">
+    <Card className="overflow-hidden hover:shadow-md transition-shadow border-transparent">
       <CardHeader className="pb-3">
         <div className="flex flex-wrap justify-between items-start gap-2">
           <div>
