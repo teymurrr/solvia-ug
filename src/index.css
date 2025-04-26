@@ -108,16 +108,16 @@
   .shimmer-gradient {
     background: linear-gradient(
       to right,
-      #d3e4fd 20%,  // Soft blue from the color palette
-      #e5deff 30%,  // Soft purple 
-      #d3e4fd 70%,  // Soft blue again
-      #e5deff 80%   // Soft purple again
+      #0974f1 20%,
+      #9fccfa 30%,
+      #0974f1 70%,
+      #9fccfa 80%
     );
     background-size: 200% auto;
     color: transparent;
     -webkit-background-clip: text;
     background-clip: text;
-    animation: shine 20s linear infinite;
+    animation: shine 8s linear infinite;
   }
 
   @keyframes shine {
