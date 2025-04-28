@@ -55,7 +55,10 @@ const ProfessionalCardLanding: React.FC<ProfessionalCardLandingProps> = ({ profe
 
   return (
     <Card 
-      className={`overflow-hidden cursor-pointer border-transparent shadow-md hover:shadow-xl hover:scale-[1.02] transition-all duration-300 ${className || ''}`}
+      className={cn(
+        "overflow-hidden cursor-pointer transition-all duration-300 ease-in-out hover:scale-[1.03] shadow-[0_2px_8px_rgba(0,0,0,0.08)] hover:shadow-[0_8px_16px_rgba(0,0,0,0.12)] border-transparent",
+        className
+      )}
       onClick={() => navigate('/signup')}
     >
       <CardContent className="p-6 relative">

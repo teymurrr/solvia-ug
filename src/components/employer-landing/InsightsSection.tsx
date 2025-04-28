@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Heart, ChartBar, Users, Network, Lightbulb } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -22,7 +21,7 @@ const InsightsSection = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <Card className="relative overflow-hidden border-transparent hover:shadow-lg hover:scale-[1.02] transition-all duration-300">
+            <Card className="relative overflow-hidden border-transparent transition-all duration-300 ease-in-out hover:scale-[1.03] shadow-[0_2px_8px_rgba(0,0,0,0.08)] hover:shadow-[0_8px_16px_rgba(0,0,0,0.12)]">
               <div className="absolute top-4 right-4">
                 <Badge variant="comingSoon">Coming Soon</Badge>
               </div>
@@ -41,7 +40,7 @@ const InsightsSection = () => {
               </CardContent>
             </Card>
 
-            <Card className="relative overflow-hidden border-transparent hover:shadow-lg hover:scale-[1.02] transition-all duration-300">
+            <Card className="relative overflow-hidden border-transparent transition-all duration-300 ease-in-out hover:scale-[1.03] shadow-[0_2px_8px_rgba(0,0,0,0.08)] hover:shadow-[0_8px_16px_rgba(0,0,0,0.12)]">
               <div className="absolute top-4 right-4">
                 <Badge variant="comingSoon">Coming Soon</Badge>
               </div>
@@ -60,7 +59,7 @@ const InsightsSection = () => {
               </CardContent>
             </Card>
 
-            <Card className="relative overflow-hidden border-transparent hover:shadow-lg hover:scale-[1.02] transition-all duration-300">
+            <Card className="relative overflow-hidden border-transparent transition-all duration-300 ease-in-out hover:scale-[1.03] shadow-[0_2px_8px_rgba(0,0,0,0.08)] hover:shadow-[0_8px_16px_rgba(0,0,0,0.12)]">
               <div className="absolute top-4 right-4">
                 <Badge variant="comingSoon">Coming Soon</Badge>
               </div>
@@ -79,7 +78,7 @@ const InsightsSection = () => {
               </CardContent>
             </Card>
 
-            <Card className="relative overflow-hidden border-transparent hover:shadow-lg hover:scale-[1.02] transition-all duration-300">
+            <Card className="relative overflow-hidden border-transparent transition-all duration-300 ease-in-out hover:scale-[1.03] shadow-[0_2px_8px_rgba(0,0,0,0.08)] hover:shadow-[0_8px_16px_rgba(0,0,0,0.12)]">
               <div className="absolute top-4 right-4">
                 <Badge variant="comingSoon">Coming Soon</Badge>
               </div>

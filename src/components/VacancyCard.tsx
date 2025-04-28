@@ -65,7 +65,7 @@ const VacancyCard: React.FC<VacancyCardProps> = ({
   };
 
   return (
-    <Card className="overflow-hidden hover:shadow-xl transition-shadow shadow-md border-transparent hover:scale-[1.02]">
+    <Card className="overflow-hidden transition-all duration-300 ease-in-out hover:scale-[1.03] shadow-[0_2px_8px_rgba(0,0,0,0.08)] hover:shadow-[0_8px_16px_rgba(0,0,0,0.12)] border-transparent">
       <CardHeader className="pb-3">
         <VacancyHeader
           id={id}
