@@ -36,6 +36,9 @@ export const Timeline = ({
 
   // More direct height transform without artificial delays
   const heightTransform = useTransform(scrollYProgress, [0, 1], [0, height]);
+  
+  // Define the opacity transform that was missing
+  const opacityTransform = useTransform(scrollYProgress, [0, 0.1, 0.9, 1], [0, 1, 1, 1]);
 
   return (
     <div
