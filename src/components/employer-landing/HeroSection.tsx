@@ -2,10 +2,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
+import ThreeBackground from './ThreeBackground';
 
 const HeroSection = () => {
   return (
-    <section className="relative py-20 bg-transparent">
+    <section className="relative py-20 overflow-hidden">
+      <ThreeBackground />
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-5xl md:text-6xl lg:text-[72px] font-bold mb-8 tracking-tight leading-tight">
