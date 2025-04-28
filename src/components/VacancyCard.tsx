@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { useProtectedAction } from '@/hooks/useProtectedAction';
@@ -37,7 +36,6 @@ const VacancyCard: React.FC<VacancyCardProps> = ({
   description,
   requirements,
   postedDate,
-  applicationDeadline,
   showSaveOption = false,
   isSaved = false,
   onSaveToggle,
@@ -78,21 +76,19 @@ const VacancyCard: React.FC<VacancyCardProps> = ({
         />
       </CardHeader>
       
-      <CardContent>
+      <CardContent className="pb-16 relative">
         <VacancyDetails
           displayLocation={displayLocation}
           profession={profession}
           specialty={specialty}
           postedDate={postedDate}
-          applicationDeadline={applicationDeadline}
           description={description}
           requirements={requirements}
         />
+        <div className="absolute bottom-6 left-6 right-6">
+          <VacancyFooter id={id} />
+        </div>
       </CardContent>
-      
-      <CardFooter>
-        <VacancyFooter id={id} />
-      </CardFooter>
     </Card>
   );
 };

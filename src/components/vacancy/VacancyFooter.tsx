@@ -1,19 +1,23 @@
 
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 
 interface VacancyFooterProps {
   id: string;
 }
 
-const VacancyFooter: React.FC<VacancyFooterProps> = ({ id }) => {
+const VacancyFooter: React.FC<VacancyFooterProps> = () => {
+  const navigate = useNavigate();
+
+  const handleRedirect = () => {
+    navigate('/signup/professional');
+  };
+
   return (
     <div className="pt-2 flex justify-between">
-      <Button variant="outline" asChild>
-        <Link to={`/vacancies/${id}`}>View Details</Link>
-      </Button>
-      <Button>Apply Now</Button>
+      <Button variant="outline" onClick={handleRedirect}>View Details</Button>
+      <Button onClick={handleRedirect}>Apply Now</Button>
     </div>
   );
 };
