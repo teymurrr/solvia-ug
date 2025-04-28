@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Professional } from '@/types/landing';
 import { useProtectedAction } from '@/hooks/useProtectedAction';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { cn } from '@/lib/utils';
 
 interface ProfessionalCardLandingProps {
   professional: Professional & { isOpenToRelocation?: boolean };
