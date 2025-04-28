@@ -15,9 +15,13 @@ const VacancyFooter: React.FC<VacancyFooterProps> = () => {
   };
 
   return (
-    <div className="pt-2 flex justify-between">
-      <Button variant="outline" onClick={handleRedirect}>View Details</Button>
-      <Button onClick={handleRedirect}>Apply Now</Button>
+    <div className="pt-2 flex justify-between gap-2">
+      <Button variant="outline" onClick={handleRedirect} className="flex-shrink-0">
+        View Details
+      </Button>
+      <Button onClick={handleRedirect} className="ml-auto">
+        Apply Now
+      </Button>
     </div>
   );
 };

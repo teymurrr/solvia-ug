@@ -1,13 +1,12 @@
 
 import React from 'react';
-import { MapPin, GraduationCap, Building, Calendar } from 'lucide-react';
+import { MapPin } from 'lucide-react';
 
 interface VacancyDetailsProps {
   displayLocation: string;
   profession?: string;
   specialty?: string;
   postedDate?: string;
-  applicationDeadline?: string;
   description: string;
   requirements: string[];
 }
@@ -18,48 +17,49 @@ const VacancyDetails: React.FC<VacancyDetailsProps> = ({
   specialty,
   postedDate,
   description,
-  requirements,
+  requirements
 }) => {
   return (
     <div className="space-y-4">
-      <div className="space-y-2">
-        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-          <MapPin className="h-4 w-4" />
-          <span>{displayLocation}</span>
+      <div className="flex items-center text-muted-foreground">
+        <MapPin className="h-4 w-4 mr-1" />
+        <span className="text-sm">{displayLocation}</span>
+      </div>
+      
+      {(profession || specialty) && (
+        <div className="space-x-2">
+          {profession && (
+            <span className="inline-flex text-xs bg-primary/10 text-primary rounded-full px-2 py-1">
+              {profession}
+            </span>
+          )}
+          {specialty && (
+            <span className="inline-flex text-xs bg-primary/10 text-primary rounded-full px-2 py-1">
+              {specialty}
+            </span>
+          )}
         </div>
-        
-        {specialty && (
-          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <GraduationCap className="h-4 w-4" />
-            <span>{specialty}</span>
-          </div>
-        )}
-        
-        {profession && (
-          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <Building className="h-4 w-4" />
-            <span>{profession}</span>
-          </div>
-        )}
-        
-        {postedDate && (
-          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <Calendar className="h-4 w-4" />
-            <span>Posted: {postedDate}</span>
-          </div>
-        )}
-      </div>
-
-      <div>
-        <p className="text-sm text-muted-foreground line-clamp-2">{description}</p>
-      </div>
-
-      {requirements.length > 0 && (
+      )}
+      
+      {postedDate && (
+        <div className="text-sm text-muted-foreground">
+          Posted: {new Date(postedDate).toLocaleDateString()}
+        </div>
+      )}
+      
+      <p className="text-sm text-muted-foreground line-clamp-2">
+        {description}
+      </p>
+      
+      {requirements && requirements.length > 0 && (
         <div>
           <h4 className="text-sm font-medium mb-2">Requirements:</h4>
-          <ul className="list-disc list-inside text-sm text-muted-foreground space-y-1">
-            {requirements.slice(0, 3).map((req, index) => (
-              <li key={index} className="line-clamp-1">{req}</li>
+          <ul className="text-sm text-muted-foreground space-y-1">
+            {requirements.map((requirement, index) => (
+              <li key={index} className="flex items-start">
+                <span className="mr-2">•</span>
+                <span>{requirement}</span>
+              </li>
             ))}
           </ul>
         </div>
