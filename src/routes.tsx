@@ -1,4 +1,3 @@
-
 import { lazy, Suspense } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import ProtectedRoute from "@/components/ProtectedRoute";
@@ -7,6 +6,7 @@ import { useAuth } from "@/contexts/AuthContext";
 // Lazy-loaded components
 const Index = lazy(() => import("@/pages/Index"));
 const About = lazy(() => import("@/pages/About"));
+const Contact = lazy(() => import("@/pages/Contact"));
 const NotFound = lazy(() => import("@/pages/NotFound"));
 const Signup = lazy(() => import("@/pages/Signup"));
 const ProfessionalSignup = lazy(() => import("@/pages/ProfessionalSignup"));
@@ -49,6 +49,7 @@ const AppRoutes = () => {
       <Routes>
         <Route path="/" element={renderIndex()} />
         <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<Contact />} />
         <Route path="/employers" element={<EmployersLanding />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/signup/professional" element={<ProfessionalSignup />} />

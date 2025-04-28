@@ -23,7 +23,7 @@ const ProfessionalsSection: React.FC<ProfessionalsSectionProps> = ({ professiona
             {t.professionals.subtitle}
           </p>
           <Button variant="ghost" asChild className="group mx-auto">
-            <Link to="/professionals" className="flex items-center">
+            <Link to="/signup/institution" className="flex items-center">
               {t.professionals.viewMore}
               <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
             </Link>
