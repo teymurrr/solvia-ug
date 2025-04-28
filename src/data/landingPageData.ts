@@ -1,3 +1,4 @@
+
 import { Professional, BlogPost } from '@/types/landing';
 
 export const featuredProfessionals: Professional[] = [
@@ -189,7 +190,7 @@ export const featuredVacancies = [
   }
 ];
 
-export const featuredBlogs = [
+export const featuredBlogs: BlogPost[] = [
   {
     id: '1',
     title: 'The Future of Healthcare Recruitment',

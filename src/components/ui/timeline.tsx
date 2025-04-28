@@ -31,14 +31,14 @@ export const Timeline = ({
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ["start 85%", "end 40%"], // Start earlier and end later for smoother effect
+    offset: ["start 80%", "end 33%"], // Start earlier and end when timeline is 1/3 from the bottom
   });
 
   // Use more granular transform values for smoother animation
   const heightTransform = useTransform(
     scrollYProgress, 
-    [0, 0.2, 0.8, 1], 
-    [0, height * 0.3, height * 0.9, height]
+    [0, 1], 
+    [0, height]
   );
   
   // Adjust opacity for a more gradual transition
