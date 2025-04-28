@@ -31,22 +31,11 @@ export const Timeline = ({
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ["start 85%", "end 40%"], // Start earlier and end later for smoother effect
+    offset: ["start 70%", "end 50%"], // Adjusted to start earlier
   });
 
-  // Use more granular transform values for smoother animation
-  const heightTransform = useTransform(
-    scrollYProgress, 
-    [0, 0.2, 0.8, 1], 
-    [0, height * 0.3, height * 0.9, height]
-  );
-  
-  // Adjust opacity for a more gradual transition
-  const opacityTransform = useTransform(
-    scrollYProgress, 
-    [0, 0.1, 0.9, 1], 
-    [0, 1, 1, 1]
-  );
+  const heightTransform = useTransform(scrollYProgress, [0, 1], [0, height]);
+  const opacityTransform = useTransform(scrollYProgress, [0, 0.2], [0, 1]); // Smoother opacity transition
 
   return (
     <div
@@ -87,7 +76,7 @@ export const Timeline = ({
               height: heightTransform,
               opacity: opacityTransform,
             }}
-            className="absolute inset-x-0 top-0 w-[2px] bg-gradient-to-t from-purple-500 via-blue-500 to-transparent from-[0%] via-[10%] rounded-full transition-all duration-700 ease-in-out" // Increased transition duration
+            className="absolute inset-x-0 top-0 w-[2px] bg-gradient-to-t from-purple-500 via-blue-500 to-transparent from-[0%] via-[10%] rounded-full transition-all duration-300 ease-in-out"
           />
         </div>
       </div>
