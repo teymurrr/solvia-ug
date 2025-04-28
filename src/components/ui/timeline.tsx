@@ -39,10 +39,8 @@ export const Timeline = ({
   const heightTransform = useTransform(
     scrollYProgress,
     [0, 0.1, 0.9, 1],
-    [0, height * 0.2, height * 0.95, height],
-    {
-      ease: "linear" // Ensure smooth linear progress
-    }
+    [0, height * 0.2, height * 0.95, height]
+    // Removed the invalid ease: "linear" option that was causing the TypeScript error
   );
 
   return (
