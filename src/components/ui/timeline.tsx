@@ -71,7 +71,7 @@ export const Timeline = ({
           </div>
         ))}
 
-        {/* Progress bar with smooth animation */}
+        {/* Progress bar with smooth animation and step dots */}
         <div
           style={{
             height: height + "px",
@@ -83,8 +83,22 @@ export const Timeline = ({
               height: heightTransform,
             }}
             className="absolute inset-x-0 top-0 w-[2px] bg-gradient-to-t from-purple-500 via-blue-500 to-transparent from-[0%] via-[10%] rounded-full"
-            transition={{ duration: 0.1 }} // Quick response to scroll
+            transition={{ duration: 0.1 }}
           />
+          
+          {/* Step dots */}
+          {data.map((_, index) => {
+            const stepPosition = (index / (data.length - 1)) * 100;
+            return (
+              <div
+                key={index}
+                className="absolute w-6 h-6 -left-[10px] bg-white dark:bg-neutral-950 rounded-full border-2 border-neutral-200 dark:border-neutral-700 flex items-center justify-center"
+                style={{ top: `${stepPosition}%` }}
+              >
+                <div className="w-3 h-3 bg-neutral-200 dark:bg-neutral-700 rounded-full"></div>
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>
