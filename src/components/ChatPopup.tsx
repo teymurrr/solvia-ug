@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, lazy, Suspense } from 'react';
 import { MessageCircle, Send, X, ArrowLeft, User } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -20,10 +20,28 @@ const ChatPopup = () => {
   const [activeSenderId, setActiveSenderId] = useState<string | null>(null);
   const [isOpen, setIsOpen] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
-  const { messages, addMessage, markAsRead, markConversationAsRead, unreadCount, fetchMessages } = useMessages();
   const { user, userType, isLoggedIn } = useAuth();
   const { handleProtectedAction } = useProtectedAction();
   const navigate = useNavigate();
+  
+  // Only initialize useMessages hook when the chat is opened to prevent unnecessary data loading
+  const [hookInitialized, setHookInitialized] = useState(false);
+  const messagesHook = hookInitialized ? useMessages() : null;
+  const { messages, addMessage, markAsRead, markConversationAsRead, unreadCount, fetchMessages } = messagesHook || {
+    messages: [],
+    addMessage: async () => null,
+    markAsRead: async () => {},
+    markConversationAsRead: async () => {},
+    unreadCount: 0,
+    fetchMessages: async () => {}
+  };
+  
+  // Initialize the hook only when the component is visible
+  useEffect(() => {
+    if (isOpen && isLoggedIn && !hookInitialized) {
+      setHookInitialized(true);
+    }
+  }, [isOpen, isLoggedIn, hookInitialized]);
   
   // Scroll to bottom of messages
   useEffect(() => {
@@ -83,7 +101,7 @@ const ChatPopup = () => {
   
   // Get unique conversation partners
   const conversationPartners = React.useMemo(() => {
-    if (!user) return [];
+    if (!user || !messages.length) return [];
     
     const partners = new Map<string, Message>();
     
@@ -106,7 +124,7 @@ const ChatPopup = () => {
   
   // Get conversation messages for active sender
   const conversationMessages = React.useMemo(() => {
-    if (!user || !activeSenderId) return [];
+    if (!user || !activeSenderId || !messages.length) return [];
     
     return messages
       .filter(message => 
@@ -120,7 +138,13 @@ const ChatPopup = () => {
 
   return (
     <div className="fixed bottom-4 right-4 z-50">
-      <Sheet open={isOpen} onOpenChange={setIsOpen}>
+      <Sheet open={isOpen} onOpenChange={(open) => {
+        setIsOpen(open);
+        // Only fetch data when opening the chat
+        if (open && isLoggedIn && !hookInitialized) {
+          setHookInitialized(true);
+        }
+      }}>
         <SheetTrigger asChild>
           <Button 
             size="icon" 

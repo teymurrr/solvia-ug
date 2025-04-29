@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { toast } from 'sonner';
@@ -28,17 +28,21 @@ export const useMessages = () => {
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [loading, setLoading] = useState(false);
   const { user, userType } = useAuth();
+  const [initialized, setInitialized] = useState(false);
 
-  const fetchMessages = async () => {
+  // Use callback to memoize the fetch functions
+  const fetchMessages = useCallback(async () => {
     if (!user) return;
     
     setLoading(true);
     
+    // Limit query to most recent 50 messages to reduce egress
     const { data, error } = await supabase
       .from('messages')
       .select('*')
       .or(`sender_id.eq.${user.id},recipient_id.eq.${user.id}`)
-      .order('created_at', { ascending: false });
+      .order('created_at', { ascending: false })
+      .limit(50); // Add limit to reduce data transfer
 
     if (error) {
       console.error('Error fetching messages:', error);
@@ -49,19 +53,18 @@ export const useMessages = () => {
 
     setMessages(data || []);
     setLoading(false);
-  };
+  }, [user]);
 
-  const fetchConversations = async () => {
+  const fetchConversations = useCallback(async () => {
     if (!user) return;
     
-    // This is a simplified approach. In a production environment,
-    // you might want to use a database view or function to get conversations
-    // with participant details, last message, etc.
+    // Only fetch latest 20 messages per conversation to reduce data load
     const { data: messagesData, error: messagesError } = await supabase
       .from('messages')
       .select('*')
       .or(`sender_id.eq.${user.id},recipient_id.eq.${user.id}`)
-      .order('created_at', { ascending: false });
+      .order('created_at', { ascending: false })
+      .limit(20); // Add limit to reduce data transfer
       
     if (messagesError) {
       console.error('Error fetching conversations:', messagesError);
@@ -102,7 +105,7 @@ export const useMessages = () => {
     }
     
     setConversations(Object.values(conversationMap));
-  };
+  }, [user, userType]);
 
   const addMessage = async (newMessage: Omit<Message, 'id' | 'created_at'>) => {
     if (!user) return null;
@@ -189,15 +192,24 @@ export const useMessages = () => {
     await fetchConversations(); // Refresh conversation counts
   };
 
-  // Initial data fetch
+  // Initialize data on first mount only if user is logged in
   useEffect(() => {
-    if (user) {
+    // Only fetch data once when component mounts and user is available
+    if (user && !initialized) {
       fetchMessages();
       fetchConversations();
-      
-      // Set up real-time subscription for new messages
+      setInitialized(true);
+    }
+  }, [user, initialized, fetchMessages, fetchConversations]);
+  
+  // Set up real-time subscription only when actively using messages
+  // with specific filter to only get messages for the current user
+  useEffect(() => {
+    if (user) {
+      // Only subscribe to new messages where the current user is the recipient
+      // This significantly reduces egress by not listening to all message inserts
       const channel = supabase
-        .channel('messages-changes')
+        .channel('messages-for-user')
         .on('postgres_changes', 
           { 
             event: 'INSERT', 
@@ -208,11 +220,39 @@ export const useMessages = () => {
           (payload) => {
             const newMessage = payload.new as Message;
             
-            // Update messages
+            // Update messages locally without refetching all data
             setMessages(prev => [newMessage, ...prev]);
             
-            // Update conversations
-            fetchConversations();
+            // Update conversations locally
+            const otherUserId = newMessage.sender_id;
+            const conversationId = [user.id, otherUserId].sort().join('-');
+            
+            setConversations(prev => {
+              const existingConvoIndex = prev.findIndex(c => c.id === conversationId);
+              
+              if (existingConvoIndex >= 0) {
+                // Update existing conversation
+                const updatedConvos = [...prev];
+                updatedConvos[existingConvoIndex] = {
+                  ...updatedConvos[existingConvoIndex],
+                  last_message: newMessage.content,
+                  last_message_date: newMessage.created_at,
+                  unread_count: updatedConvos[existingConvoIndex].unread_count + 1
+                };
+                return updatedConvos;
+              } else {
+                // Create new conversation
+                const newConvo: Conversation = {
+                  id: conversationId,
+                  institution_id: userType === 'institution' ? user.id : otherUserId,
+                  professional_id: userType === 'professional' ? user.id : otherUserId,
+                  last_message: newMessage.content,
+                  last_message_date: newMessage.created_at,
+                  unread_count: 1
+                };
+                return [...prev, newConvo];
+              }
+            });
             
             // Show notification
             toast.info('New message received');
@@ -224,7 +264,7 @@ export const useMessages = () => {
         supabase.removeChannel(channel);
       };
     }
-  }, [user]);
+  }, [user, userType]);
 
   return { 
     messages, 

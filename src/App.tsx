@@ -7,6 +7,13 @@ import { BrowserRouter } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
 import AppRoutes from "./routes";
 import ChatPopup from "./components/ChatPopup";
+import { useAuth } from "./contexts/AuthContext";
+
+// Create a separate component that conditionally renders the ChatPopup
+const ConditionalChatPopup = () => {
+  const { isLoggedIn } = useAuth();
+  return isLoggedIn ? <ChatPopup /> : null;
+};
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -23,7 +30,7 @@ const App = () => (
       <AuthProvider>
         <TooltipProvider>
           <AppRoutes />
-          <ChatPopup />
+          <ConditionalChatPopup />
           <Toaster />
           <Sonner />
         </TooltipProvider>
