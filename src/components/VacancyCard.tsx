@@ -25,6 +25,7 @@ interface VacancyCardProps {
   city?: string;
   className?: string;
   isDashboardCard?: boolean;
+  applicationLink?: string;
 }
 
 const VacancyCard: React.FC<VacancyCardProps> = ({
@@ -45,6 +46,7 @@ const VacancyCard: React.FC<VacancyCardProps> = ({
   city,
   className,
   isDashboardCard = false,
+  applicationLink,
 }) => {
   const { toast } = useToast();
   const { handleProtectedAction } = useProtectedAction();
@@ -98,7 +100,11 @@ const VacancyCard: React.FC<VacancyCardProps> = ({
         </div>
         
         <div className="mt-5">
-          <VacancyFooter id={id} isDashboardCard={isDashboardCard} />
+          <VacancyFooter 
+            id={id} 
+            isDashboardCard={isDashboardCard} 
+            applicationLink={applicationLink}
+          />
         </div>
       </CardContent>
     </Card>

@@ -49,7 +49,8 @@ const VacancyDetails: React.FC<VacancyDetailsProps> = ({
         </div>
       )}
       
-      <p className={`text-sm text-muted-foreground ${isDashboardCard ? 'line-clamp-2' : 'line-clamp-3'}`}>
+      {/* Remove line clamp for dashboard cards to make them resizable based on content */}
+      <p className={`text-sm text-muted-foreground ${isDashboardCard ? '' : 'line-clamp-3'}`}>
         {description}
       </p>
       
@@ -57,14 +58,15 @@ const VacancyDetails: React.FC<VacancyDetailsProps> = ({
         <div>
           <h4 className="text-sm font-medium mb-1">Requirements:</h4>
           <ul className="text-sm text-muted-foreground space-y-1">
-            {requirements.slice(0, isDashboardCard ? 2 : 3).map((requirement, index) => (
+            {/* Show all requirements in dashboard mode */}
+            {requirements.slice(0, isDashboardCard ? requirements.length : 3).map((requirement, index) => (
               <li key={index} className="flex items-start">
                 <span className="mr-2">•</span>
                 <span>{requirement}</span>
               </li>
             ))}
-            {requirements.length > (isDashboardCard ? 2 : 3) && (
-              <li className="text-xs text-muted-foreground">+ {requirements.length - (isDashboardCard ? 2 : 3)} more requirements</li>
+            {!isDashboardCard && requirements.length > 3 && (
+              <li className="text-xs text-muted-foreground">+ {requirements.length - 3} more requirements</li>
             )}
           </ul>
         </div>
