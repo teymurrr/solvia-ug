@@ -1,3 +1,4 @@
+
 import { lazy, Suspense } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import ProtectedRoute from "@/components/ProtectedRoute";
@@ -22,6 +23,7 @@ const VacancyDetail = lazy(() => import("@/pages/VacancyDetail"));
 const Messages = lazy(() => import("@/pages/Messages"));
 const Insights = lazy(() => import("@/pages/Insights"));
 const EmployersLanding = lazy(() => import("@/pages/EmployersLanding"));
+const Privacy = lazy(() => import("@/pages/Privacy"));
 
 const LoadingFallback = () => (
   <div className="flex items-center justify-center h-screen">
@@ -50,6 +52,7 @@ const AppRoutes = () => {
         <Route path="/" element={renderIndex()} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/privacy" element={<Privacy />} />
         <Route path="/employers" element={<EmployersLanding />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/signup/professional" element={<ProfessionalSignup />} />
