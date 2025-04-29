@@ -66,13 +66,13 @@ const VacancyCard: React.FC<VacancyCardProps> = ({
     });
   };
 
-  // Set consistent card styling that matches the landing page design regardless of where it's used
-  const cardClasses = `${className || ""} border border-border shadow-sm`;
+  // Set consistent card styling for all cards
+  const cardClasses = `${className || ""} border border-border shadow-sm rounded-xl`;
 
   return (
     <Card className={cardClasses}>
-      <CardContent className="p-6 relative">
-        <div className="space-y-4">
+      <CardContent className="p-6">
+        <div className="space-y-6">
           <VacancyHeader
             id={id}
             title={title}
@@ -93,7 +93,7 @@ const VacancyCard: React.FC<VacancyCardProps> = ({
           />
         </div>
         
-        <div className="mt-6">
+        <div className="mt-8">
           <VacancyFooter id={id} />
         </div>
       </CardContent>

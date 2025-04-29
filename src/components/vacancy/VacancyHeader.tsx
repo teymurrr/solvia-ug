@@ -27,13 +27,13 @@ const VacancyHeader: React.FC<VacancyHeaderProps> = ({
 }) => {
   return (
     <div className="flex flex-wrap justify-between items-start gap-2">
-      <div>
-        <Link to={`/vacancies/${id}`} className="text-xl font-semibold hover:text-primary transition-colors">
+      <div className="flex-1">
+        <Link to={`/vacancies/${id}`} className="text-2xl font-bold text-black hover:text-primary transition-colors">
           {title}
         </Link>
-        <div className="flex items-center text-muted-foreground mt-1">
-          <Building className="h-4 w-4 mr-1" />
-          <span className="text-sm">{institution}</span>
+        <div className="flex items-center text-gray-600 mt-2">
+          <Building className="h-5 w-5 mr-2 text-gray-500" />
+          <span className="text-lg">{institution}</span>
         </div>
       </div>
       <div className="flex items-center gap-2">
@@ -52,7 +52,7 @@ const VacancyHeader: React.FC<VacancyHeaderProps> = ({
             )}
           </Button>
         )}
-        <Badge variant={getJobTypeBadgeVariant(jobType)} className="whitespace-nowrap">
+        <Badge variant={getJobTypeBadgeVariant(jobType)} className="text-sm px-4 py-1 rounded-full">
           {jobType}
         </Badge>
       </div>

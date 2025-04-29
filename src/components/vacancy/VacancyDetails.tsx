@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { MapPin } from 'lucide-react';
+import { MapPin, Calendar } from 'lucide-react';
 
 interface VacancyDetailsProps {
   displayLocation: string;
@@ -20,46 +20,28 @@ const VacancyDetails: React.FC<VacancyDetailsProps> = ({
   requirements
 }) => {
   return (
-    <div className="space-y-4">
-      <div className="flex items-center text-muted-foreground">
-        <MapPin className="h-4 w-4 mr-1" />
-        <span className="text-sm">{displayLocation}</span>
+    <div className="space-y-6">
+      <div className="flex items-center text-gray-600">
+        <MapPin className="h-5 w-5 mr-2 text-gray-500" />
+        <span className="text-lg">{displayLocation}</span>
       </div>
       
-      {(profession || specialty) && (
-        <div className="space-x-2">
-          {profession && (
-            <span className="inline-flex text-xs bg-primary/10 text-primary rounded-full px-2 py-1">
-              {profession}
-            </span>
-          )}
-          {specialty && (
-            <span className="inline-flex text-xs bg-primary/10 text-primary rounded-full px-2 py-1">
-              {specialty}
-            </span>
-          )}
-        </div>
-      )}
-      
       {postedDate && (
-        <div className="text-sm text-muted-foreground">
-          Posted: {new Date(postedDate).toLocaleDateString()}
+        <div className="text-gray-600 text-lg">
+          Posted: {postedDate}
         </div>
       )}
       
-      <p className="text-sm text-muted-foreground line-clamp-2">
+      <p className="text-lg text-gray-700">
         {description}
       </p>
       
       {requirements && requirements.length > 0 && (
         <div>
-          <h4 className="text-sm font-medium mb-2">Requirements:</h4>
-          <ul className="text-sm text-muted-foreground space-y-1">
+          <h4 className="text-xl font-bold mb-4">Requirements:</h4>
+          <ul className="text-lg text-gray-700 space-y-2 list-disc pl-6">
             {requirements.map((requirement, index) => (
-              <li key={index} className="flex items-start">
-                <span className="mr-2">•</span>
-                <span>{requirement}</span>
-              </li>
+              <li key={index}>{requirement}</li>
             ))}
           </ul>
         </div>
