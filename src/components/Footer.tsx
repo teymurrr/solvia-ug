@@ -1,9 +1,41 @@
 
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '@/contexts/AuthContext';
 import Logo from './Logo';
+import { useToast } from '@/hooks/use-toast';
 
 const Footer: React.FC = () => {
+  const { isLoggedIn } = useAuth();
+  const navigate = useNavigate();
+  const { toast } = useToast();
+
+  const handleProfessionalLink = (e: React.MouseEvent<HTMLAnchorElement>, path: string) => {
+    e.preventDefault();
+    if (isLoggedIn) {
+      navigate(path);
+    } else {
+      toast({
+        title: "Authentication Required",
+        description: "Please sign up as a professional to access this feature.",
+      });
+      navigate('/signup/professional');
+    }
+  };
+
+  const handleInstitutionLink = (e: React.MouseEvent<HTMLAnchorElement>, path: string) => {
+    e.preventDefault();
+    if (isLoggedIn) {
+      navigate(path);
+    } else {
+      toast({
+        title: "Authentication Required",
+        description: "Please sign up as an institution to access this feature.",
+      });
+      navigate('/signup/institution');
+    }
+  };
+
   return (
     <footer className="bg-white border-t">
       <div className="container mx-auto px-4 py-12 md:py-16">
@@ -19,19 +51,31 @@ const Footer: React.FC = () => {
             <h4 className="font-medium text-base">For Professionals</h4>
             <ul className="space-y-2">
               <li>
-                <Link to="/professionals" className="text-sm text-muted-foreground hover:text-medical-600 transition-colors">
+                <a 
+                  href="#" 
+                  onClick={(e) => handleProfessionalLink(e, '/professionals')}
+                  className="text-sm text-muted-foreground hover:text-medical-600 transition-colors"
+                >
                   Create Profile
-                </Link>
+                </a>
               </li>
               <li>
-                <Link to="/professionals/search" className="text-sm text-muted-foreground hover:text-medical-600 transition-colors">
+                <a 
+                  href="#" 
+                  onClick={(e) => handleProfessionalLink(e, '/professionals/search')}
+                  className="text-sm text-muted-foreground hover:text-medical-600 transition-colors"
+                >
                   Find Opportunities
-                </Link>
+                </a>
               </li>
               <li>
-                <Link to="/professionals/resources" className="text-sm text-muted-foreground hover:text-medical-600 transition-colors">
+                <a 
+                  href="#" 
+                  onClick={(e) => handleProfessionalLink(e, '/professionals/resources')}
+                  className="text-sm text-muted-foreground hover:text-medical-600 transition-colors"
+                >
                   Resources
-                </Link>
+                </a>
               </li>
             </ul>
           </div>
@@ -40,19 +84,31 @@ const Footer: React.FC = () => {
             <h4 className="font-medium text-base">For Institutions</h4>
             <ul className="space-y-2">
               <li>
-                <Link to="/institutions" className="text-sm text-muted-foreground hover:text-medical-600 transition-colors">
+                <a 
+                  href="#" 
+                  onClick={(e) => handleInstitutionLink(e, '/institutions')}
+                  className="text-sm text-muted-foreground hover:text-medical-600 transition-colors"
+                >
                   Post Positions
-                </Link>
+                </a>
               </li>
               <li>
-                <Link to="/institutions/search" className="text-sm text-muted-foreground hover:text-medical-600 transition-colors">
+                <a 
+                  href="#" 
+                  onClick={(e) => handleInstitutionLink(e, '/institutions/search')}
+                  className="text-sm text-muted-foreground hover:text-medical-600 transition-colors"
+                >
                   Search Professionals
-                </Link>
+                </a>
               </li>
               <li>
-                <Link to="/institutions/resources" className="text-sm text-muted-foreground hover:text-medical-600 transition-colors">
+                <a 
+                  href="#" 
+                  onClick={(e) => handleInstitutionLink(e, '/institutions/resources')}
+                  className="text-sm text-muted-foreground hover:text-medical-600 transition-colors"
+                >
                   Resources
-                </Link>
+                </a>
               </li>
             </ul>
           </div>
