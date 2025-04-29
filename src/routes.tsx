@@ -1,4 +1,3 @@
-
 import { lazy, Suspense, useState, useEffect } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import ProtectedRoute from "@/components/ProtectedRoute";
@@ -29,11 +28,9 @@ const authPageComponents = {
   Login: lazy(() => import("@/pages/Login")),
 };
 
-// Dashboard pages bundle - load only when needed
-const dashboardPageComponents = {
-  ProfessionalDashboard: lazy(() => import("@/pages/ProfessionalDashboard")),
-  InstitutionDashboard: lazy(() => import("@/pages/InstitutionDashboard")),
-};
+// Dashboard pages - no longer using a bundle to avoid dependency issues
+const ProfessionalDashboard = lazy(() => import("@/pages/ProfessionalDashboard"));
+const InstitutionDashboard = lazy(() => import("@/pages/InstitutionDashboard"));
 
 // Other pages - load individually as needed
 const SolviaLearning = lazy(() => import("@/pages/SolviaLearning"));
@@ -41,12 +38,10 @@ const Professionals = lazy(() => import("@/pages/Professionals"));
 const Institutions = lazy(() => import("@/pages/Institutions"));
 const NotFound = lazy(() => import("@/pages/NotFound"));
 
-// Vacancy related pages bundle
-const vacancyPageComponents = {
-  Vacancies: lazy(() => import("@/pages/Vacancies")),
-  VacancyDetail: lazy(() => import("@/pages/VacancyDetail")),
-  VacancyApply: lazy(() => import("@/pages/VacancyApply")),
-};
+// Vacancy related pages - individual imports to avoid bundle failures
+const Vacancies = lazy(() => import("@/pages/Vacancies"));
+const VacancyDetail = lazy(() => import("@/pages/VacancyDetail"));
+const VacancyApply = lazy(() => import("@/pages/VacancyApply"));
 
 // Messaging page - load only when needed
 const Messages = lazy(() => import("@/pages/Messages"));
@@ -100,13 +95,13 @@ const AppRoutes = () => {
         <Route path="/learning" element={<SolviaLearning />} />
 
         {/* Vacancy routes */}
-        <Route path="/vacancies" element={<vacancyPageComponents.Vacancies />} />
-        <Route path="/vacancies/:id" element={<vacancyPageComponents.VacancyDetail />} />
+        <Route path="/vacancies" element={<Vacancies />} />
+        <Route path="/vacancies/:id" element={<VacancyDetail />} />
         <Route
           path="/vacancies/:id/apply"
           element={
             <ProtectedRoute userType="professional">
-              <vacancyPageComponents.VacancyApply />
+              <VacancyApply />
             </ProtectedRoute>
           }
         />
@@ -124,7 +119,7 @@ const AppRoutes = () => {
           path="/dashboard/professional"
           element={
             <ProtectedRoute userType="professional">
-              <dashboardPageComponents.ProfessionalDashboard />
+              <ProfessionalDashboard />
             </ProtectedRoute>
           }
         />
@@ -132,7 +127,7 @@ const AppRoutes = () => {
           path="/dashboard/institution"
           element={
             <ProtectedRoute userType="institution">
-              <dashboardPageComponents.InstitutionDashboard />
+              <InstitutionDashboard />
             </ProtectedRoute>
           }
         />
