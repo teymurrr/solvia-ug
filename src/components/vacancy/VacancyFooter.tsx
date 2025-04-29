@@ -7,12 +7,14 @@ interface VacancyFooterProps {
   id: string;
   isDashboardCard?: boolean;
   applicationLink?: string;
+  fromDashboard?: boolean;
 }
 
 const VacancyFooter: React.FC<VacancyFooterProps> = ({ 
   id, 
   isDashboardCard = false, 
-  applicationLink 
+  applicationLink,
+  fromDashboard = false
 }) => {
   const navigate = useNavigate();
 
@@ -24,13 +26,15 @@ const VacancyFooter: React.FC<VacancyFooterProps> = ({
     } else {
       // Navigate to internal application page with state to track origin
       navigate(`/vacancies/${id}/apply`, {
-        state: { fromDashboard: isDashboardCard }
+        state: { fromDashboard }
       });
     }
   };
 
   const handleViewDetails = () => {
-    navigate(`/vacancies/${id}`);
+    navigate(`/vacancies/${id}`, {
+      state: { fromDashboard }
+    });
   };
 
   // Adjust styling based on whether it's a dashboard card

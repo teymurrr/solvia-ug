@@ -1,5 +1,6 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import MainLayout from '@/components/MainLayout';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -28,7 +29,12 @@ import {
 const ITEMS_PER_PAGE = 3;
 
 const ProfessionalDashboard: React.FC = () => {
+  const location = useLocation();
+  // Get the active tab from location state if provided
+  const defaultTab = location.state?.activeTab || 'profile';
+  
   const [isEditProfileOpen, setIsEditProfileOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState(defaultTab);
   const {
     searchQuery,
     setSearchQuery,
@@ -53,6 +59,13 @@ const ProfessionalDashboard: React.FC = () => {
     resetFilters,
     handleProfileSave,
   } = useDashboard();
+
+  // Update active tab when location state changes
+  useEffect(() => {
+    if (location.state?.activeTab) {
+      setActiveTab(location.state.activeTab);
+    }
+  }, [location.state]);
 
   const calculateProfileCompletion = (profile: typeof profileData): number => {
     let totalFields = 0;
@@ -177,7 +190,7 @@ const ProfessionalDashboard: React.FC = () => {
           </div>
         </div>
 
-        <Tabs defaultValue="profile" className="space-y-6">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
           <TabsList className="grid w-full md:w-auto grid-cols-3">
             <TabsTrigger value="profile">Profile</TabsTrigger>
             <TabsTrigger value="vacancies">Vacancies</TabsTrigger>

@@ -74,7 +74,9 @@ const VacancyCard: React.FC<VacancyCardProps> = ({
   };
 
   const handleCardClick = () => {
-    navigate(`/vacancies/${id}`);
+    navigate(`/vacancies/${id}`, {
+      state: { fromDashboard: isDashboardCard }
+    });
   };
 
   // Define card styling based on whether it's a dashboard card
@@ -113,6 +115,7 @@ const VacancyCard: React.FC<VacancyCardProps> = ({
             id={id} 
             isDashboardCard={isDashboardCard} 
             applicationLink={applicationLink}
+            fromDashboard={isDashboardCard}
           />
         </div>
       </CardContent>

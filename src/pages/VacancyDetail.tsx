@@ -1,5 +1,4 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import MainLayout from '@/components/MainLayout';
 import { Button } from '@/components/ui/button';
@@ -61,10 +60,15 @@ const VacancyDetail = () => {
   // Check if user came from the dashboard
   const fromDashboard = location.state?.fromDashboard || false;
   
+  // Enhanced navigation that respects where the user came from
   const handleGoBack = () => {
     if (fromDashboard) {
-      navigate('/dashboard/professional');
+      // Go back to the dashboard with the vacancies tab active
+      navigate('/dashboard/professional', { 
+        state: { activeTab: 'vacancies' }
+      });
     } else {
+      // Otherwise, go back to the general vacancies page
       navigate('/vacancies');
     }
   };
@@ -123,7 +127,7 @@ const VacancyDetail = () => {
     }
   };
 
-  // Handle apply button click
+  // Handle apply button click - preserve dashboard origin when applying
   const handleApply = () => {
     navigate(`/vacancies/${id}/apply`, { 
       state: { fromDashboard }
