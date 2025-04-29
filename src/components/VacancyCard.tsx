@@ -66,12 +66,14 @@ const VacancyCard: React.FC<VacancyCardProps> = ({
     });
   };
 
-  // Set consistent card styling that matches the landing page design regardless of where it's used
-  const cardClasses = `${className || ""} border border-border shadow-sm`;
+  // Define card styling based on whether it's a dashboard card
+  const cardClasses = isDashboardCard
+    ? `border border-border shadow-sm ${className || ""}`
+    : `${className || ""} border border-border shadow-sm hover:shadow-lg hover:scale-[1.03] transition-all duration-300`;
 
   return (
     <Card className={cardClasses}>
-      <CardContent className="p-6 relative">
+      <CardContent className={isDashboardCard ? "p-5" : "p-6"}>
         <div className="space-y-4">
           <VacancyHeader
             id={id}
@@ -81,6 +83,7 @@ const VacancyCard: React.FC<VacancyCardProps> = ({
             showSaveOption={showSaveOption}
             isSaved={isSaved}
             onSaveToggle={toggleSave}
+            isDashboardCard={isDashboardCard}
           />
           
           <VacancyDetails
@@ -90,11 +93,12 @@ const VacancyCard: React.FC<VacancyCardProps> = ({
             postedDate={postedDate}
             description={description}
             requirements={requirements}
+            isDashboardCard={isDashboardCard}
           />
         </div>
         
-        <div className="mt-6">
-          <VacancyFooter id={id} />
+        <div className="mt-5">
+          <VacancyFooter id={id} isDashboardCard={isDashboardCard} />
         </div>
       </CardContent>
     </Card>

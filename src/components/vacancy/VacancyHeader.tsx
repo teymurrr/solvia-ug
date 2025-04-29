@@ -14,6 +14,7 @@ interface VacancyHeaderProps {
   showSaveOption?: boolean;
   isSaved?: boolean;
   onSaveToggle?: (id: string) => void;
+  isDashboardCard?: boolean;
 }
 
 const VacancyHeader: React.FC<VacancyHeaderProps> = ({
@@ -24,11 +25,17 @@ const VacancyHeader: React.FC<VacancyHeaderProps> = ({
   showSaveOption = false,
   isSaved = false,
   onSaveToggle,
+  isDashboardCard = false,
 }) => {
+  // Adjust title size based on whether it's a dashboard card
+  const titleClasses = isDashboardCard 
+    ? "text-lg font-semibold hover:text-primary transition-colors" 
+    : "text-xl font-semibold hover:text-primary transition-colors";
+
   return (
     <div className="flex flex-wrap justify-between items-start gap-2">
       <div>
-        <Link to={`/vacancies/${id}`} className="text-xl font-semibold hover:text-primary transition-colors">
+        <Link to={`/vacancies/${id}`} className={titleClasses}>
           {title}
         </Link>
         <div className="flex items-center text-muted-foreground mt-1">

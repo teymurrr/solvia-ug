@@ -9,6 +9,7 @@ interface VacancyDetailsProps {
   postedDate?: string;
   description: string;
   requirements: string[];
+  isDashboardCard?: boolean;
 }
 
 const VacancyDetails: React.FC<VacancyDetailsProps> = ({
@@ -17,10 +18,11 @@ const VacancyDetails: React.FC<VacancyDetailsProps> = ({
   specialty,
   postedDate,
   description,
-  requirements
+  requirements,
+  isDashboardCard = false
 }) => {
   return (
-    <div className="space-y-4">
+    <div className="space-y-3">
       <div className="flex items-center text-muted-foreground">
         <MapPin className="h-4 w-4 mr-1" />
         <span className="text-sm">{displayLocation}</span>
@@ -47,20 +49,23 @@ const VacancyDetails: React.FC<VacancyDetailsProps> = ({
         </div>
       )}
       
-      <p className="text-sm text-muted-foreground line-clamp-2">
+      <p className={`text-sm text-muted-foreground ${isDashboardCard ? 'line-clamp-2' : 'line-clamp-3'}`}>
         {description}
       </p>
       
       {requirements && requirements.length > 0 && (
         <div>
-          <h4 className="text-sm font-medium mb-2">Requirements:</h4>
+          <h4 className="text-sm font-medium mb-1">Requirements:</h4>
           <ul className="text-sm text-muted-foreground space-y-1">
-            {requirements.map((requirement, index) => (
+            {requirements.slice(0, isDashboardCard ? 2 : 3).map((requirement, index) => (
               <li key={index} className="flex items-start">
                 <span className="mr-2">•</span>
                 <span>{requirement}</span>
               </li>
             ))}
+            {requirements.length > (isDashboardCard ? 2 : 3) && (
+              <li className="text-xs text-muted-foreground">+ {requirements.length - (isDashboardCard ? 2 : 3)} more requirements</li>
+            )}
           </ul>
         </div>
       )}
