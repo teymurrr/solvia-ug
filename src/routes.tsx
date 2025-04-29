@@ -1,3 +1,4 @@
+
 import { lazy, Suspense, useState, useEffect } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import ProtectedRoute from "@/components/ProtectedRoute";
@@ -44,6 +45,7 @@ const NotFound = lazy(() => import("@/pages/NotFound"));
 const vacancyPageComponents = {
   Vacancies: lazy(() => import("@/pages/Vacancies")),
   VacancyDetail: lazy(() => import("@/pages/VacancyDetail")),
+  VacancyApply: lazy(() => import("@/pages/VacancyApply")),
 };
 
 // Messaging page - load only when needed
@@ -96,6 +98,18 @@ const AppRoutes = () => {
         <Route path="/login" element={<authPageComponents.Login />} />
         
         <Route path="/learning" element={<SolviaLearning />} />
+
+        {/* Vacancy routes */}
+        <Route path="/vacancies" element={<vacancyPageComponents.Vacancies />} />
+        <Route path="/vacancies/:id" element={<vacancyPageComponents.VacancyDetail />} />
+        <Route
+          path="/vacancies/:id/apply"
+          element={
+            <ProtectedRoute userType="professional">
+              <vacancyPageComponents.VacancyApply />
+            </ProtectedRoute>
+          }
+        />
 
         {/* Protected routes */}
         <Route
