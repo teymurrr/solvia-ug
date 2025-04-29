@@ -10,6 +10,7 @@ import ChatPopup from "./components/ChatPopup";
 import { useAuth } from "./contexts/AuthContext";
 
 // Create a separate component that conditionally renders the ChatPopup
+// but doesn't use hooks conditionally
 const ConditionalChatPopup = () => {
   const { isLoggedIn } = useAuth();
   return isLoggedIn ? <ChatPopup /> : null;

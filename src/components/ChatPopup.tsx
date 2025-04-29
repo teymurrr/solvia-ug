@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, lazy, Suspense } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { MessageCircle, Send, X, ArrowLeft, User } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -14,7 +14,8 @@ import { useProtectedAction } from '@/hooks/useProtectedAction';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 
-const ChatPopup = () => {
+// Create a wrapper component that handles conditional hook usage
+const ChatPopupContent = () => {
   // State management
   const [replyText, setReplyText] = useState('');
   const [activeMessage, setActiveMessage] = useState<Message | null>(null);
@@ -25,12 +26,10 @@ const ChatPopup = () => {
   const { handleProtectedAction } = useProtectedAction();
   const navigate = useNavigate();
   
-  // IMPORTANT: Only initialize useMessages hook when the chat is opened
-  // This prevents unnecessary database connections and egress
-  const [hookInitialized, setHookInitialized] = useState(false);
-  const messagesHook = hookInitialized ? useMessages() : null;
+  // Initialize the hook safely - always initialize it but conditionally use its data
+  const messagesHook = useMessages();
   
-  // Destructure hook values with fallbacks to prevent errors
+  // Destructure hook values but only use them when the component should
   const { 
     messages = [], 
     addMessage = async () => null, 
@@ -38,14 +37,10 @@ const ChatPopup = () => {
     markConversationAsRead = async () => {},
     unreadCount = 0,
     fetchMessages = async () => {}
-  } = messagesHook || {};
-  
-  // Only initialize the hook when the component is visible and user is logged in
-  useEffect(() => {
-    if (isOpen && isLoggedIn && !hookInitialized) {
-      setHookInitialized(true);
-    }
-  }, [isOpen, isLoggedIn, hookInitialized]);
+  } = isOpen && isLoggedIn ? messagesHook : {
+    messages: [],
+    unreadCount: 0,
+  };
   
   // Scroll to bottom of messages when conversation changes
   useEffect(() => {
@@ -146,9 +141,9 @@ const ChatPopup = () => {
     <div className="fixed bottom-4 right-4 z-50">
       <Sheet open={isOpen} onOpenChange={(open) => {
         setIsOpen(open);
-        // Only fetch data when opening the chat
-        if (open && isLoggedIn && !hookInitialized) {
-          setHookInitialized(true);
+        // Fetch messages when opening
+        if (open && isLoggedIn) {
+          fetchMessages();
         }
       }}>
         <SheetTrigger asChild>
@@ -330,6 +325,11 @@ const ChatPopup = () => {
       </Sheet>
     </div>
   );
+};
+
+// Main wrapper component that safely renders the ChatPopup
+const ChatPopup = () => {
+  return <ChatPopupContent />;
 };
 
 export default ChatPopup;

@@ -29,6 +29,7 @@ export const useMessages = () => {
   const [loading, setLoading] = useState(false);
   const { user, userType } = useAuth();
   const [initialized, setInitialized] = useState(false);
+  const [subscription, setSubscription] = useState<any>(null);
   
   // Memoize the fetch functions to prevent unnecessary rerenders
   const fetchMessages = useCallback(async () => {
@@ -52,6 +53,8 @@ export const useMessages = () => {
       }
 
       setMessages(data || []);
+    } catch (err) {
+      console.error('Error in fetchMessages:', err);
     } finally {
       setLoading(false);
     }
@@ -133,146 +136,177 @@ export const useMessages = () => {
       return null;
     }
 
-    const { data, error } = await supabase
-      .from('messages')
-      .insert(newMessage)
-      .select()
-      .single();
+    try {
+      const { data, error } = await supabase
+        .from('messages')
+        .insert(newMessage)
+        .select()
+        .single();
 
-    if (error) {
-      console.error('Error sending message:', error);
+      if (error) {
+        console.error('Error sending message:', error);
+        toast.error('Failed to send message');
+        return null;
+      }
+
+      toast.success('Message sent');
+      
+      // Update local state instead of refetching all messages
+      setMessages(prev => [data, ...prev]);
+      await fetchConversations();
+      return data;
+    } catch (err) {
+      console.error('Error in addMessage:', err);
       toast.error('Failed to send message');
       return null;
     }
-
-    toast.success('Message sent');
-    
-    // Update local state instead of refetching all messages
-    setMessages(prev => [data, ...prev]);
-    await fetchConversations();
-    return data;
   };
 
   const markAsRead = async (messageId: string) => {
     if (!user) return;
 
-    const { error } = await supabase
-      .from('messages')
-      .update({ read: true })
-      .eq('id', messageId)
-      .eq('recipient_id', user.id);
+    try {
+      const { error } = await supabase
+        .from('messages')
+        .update({ read: true })
+        .eq('id', messageId)
+        .eq('recipient_id', user.id);
 
-    if (error) {
-      console.error('Error marking message as read:', error);
-      return;
+      if (error) {
+        console.error('Error marking message as read:', error);
+        return;
+      }
+
+      // Update messages locally to avoid refetching
+      setMessages(prev => prev.map(msg => 
+        msg.id === messageId ? { ...msg, read: true } : msg
+      ));
+      
+      await fetchConversations(); // Refresh conversation counts
+    } catch (err) {
+      console.error('Error in markAsRead:', err);
     }
-
-    // Update messages locally to avoid refetching
-    setMessages(prev => prev.map(msg => 
-      msg.id === messageId ? { ...msg, read: true } : msg
-    ));
-    
-    await fetchConversations(); // Refresh conversation counts
   };
   
   const markConversationAsRead = async (otherUserId: string) => {
     if (!user) return;
     
-    const { error } = await supabase
-      .from('messages')
-      .update({ read: true })
-      .eq('recipient_id', user.id)
-      .eq('sender_id', otherUserId);
+    try {
+      const { error } = await supabase
+        .from('messages')
+        .update({ read: true })
+        .eq('recipient_id', user.id)
+        .eq('sender_id', otherUserId);
+        
+      if (error) {
+        console.error('Error marking conversation as read:', error);
+        toast.error('Failed to update message status');
+        return;
+      }
       
-    if (error) {
-      console.error('Error marking conversation as read:', error);
-      toast.error('Failed to update message status');
-      return;
+      // Update messages locally
+      setMessages(prev => prev.map(msg => 
+        msg.recipient_id === user.id && msg.sender_id === otherUserId 
+          ? { ...msg, read: true } 
+          : msg
+      ));
+      
+      await fetchConversations(); // Refresh conversation counts
+    } catch (err) {
+      console.error('Error in markConversationAsRead:', err);
     }
-    
-    // Update messages locally
-    setMessages(prev => prev.map(msg => 
-      msg.recipient_id === user.id && msg.sender_id === otherUserId 
-        ? { ...msg, read: true } 
-        : msg
-    ));
-    
-    await fetchConversations(); // Refresh conversation counts
   };
 
-  // Only initialize data on demand when hook is actively used
+  // Initialize data and subscription safely
   useEffect(() => {
-    if (user && !initialized) {
-      fetchMessages();
-      fetchConversations();
-      setInitialized(true);
-    }
-  }, [user, initialized, fetchMessages, fetchConversations]);
-  
-  // Set up real-time subscription only when actively using messages
-  // with highly specific filter to only get messages for the current user
-  useEffect(() => {
-    if (!user) return;
-      
-    // Only subscribe to new messages where the current user is the recipient
-    // This significantly reduces egress by not listening to all message inserts
-    const channel = supabase
-      .channel('messages-for-user')
-      .on('postgres_changes', 
-        { 
-          event: 'INSERT', 
-          schema: 'public', 
-          table: 'messages',
-          filter: `recipient_id=eq.${user.id}` 
-        },
-        (payload) => {
-          const newMessage = payload.new as Message;
+    let mounted = true;
+    
+    // Only initialize when user is available
+    if (user && !initialized && mounted) {
+      // Function to set up subscription
+      const setupSubscription = async () => {
+        try {
+          // Fetch initial data
+          await fetchMessages();
+          await fetchConversations();
           
-          // Update messages locally without refetching all data
-          setMessages(prev => [newMessage, ...prev]);
-          
-          // Update conversations locally
-          const otherUserId = newMessage.sender_id;
-          const conversationId = [user.id, otherUserId].sort().join('-');
-          
-          setConversations(prev => {
-            const existingConvoIndex = prev.findIndex(c => c.id === conversationId);
+          // Set up real-time subscription only for this user's messages
+          const channel = supabase
+            .channel('messages-for-user')
+            .on('postgres_changes', 
+              { 
+                event: 'INSERT', 
+                schema: 'public', 
+                table: 'messages',
+                filter: `recipient_id=eq.${user.id}` 
+              },
+              (payload) => {
+                if (!mounted) return;
+                
+                const newMessage = payload.new as Message;
+                
+                // Update messages locally without refetching all data
+                setMessages(prev => [newMessage, ...prev]);
+                
+                // Update conversations locally
+                const otherUserId = newMessage.sender_id;
+                const conversationId = [user.id, otherUserId].sort().join('-');
+                
+                setConversations(prev => {
+                  const existingConvoIndex = prev.findIndex(c => c.id === conversationId);
+                  
+                  if (existingConvoIndex >= 0) {
+                    // Update existing conversation
+                    const updatedConvos = [...prev];
+                    updatedConvos[existingConvoIndex] = {
+                      ...updatedConvos[existingConvoIndex],
+                      last_message: newMessage.content,
+                      last_message_date: newMessage.created_at,
+                      unread_count: updatedConvos[existingConvoIndex].unread_count + 1
+                    };
+                    return updatedConvos;
+                  } else {
+                    // Create new conversation
+                    const newConvo: Conversation = {
+                      id: conversationId,
+                      institution_id: userType === 'institution' ? user.id : otherUserId,
+                      professional_id: userType === 'professional' ? user.id : otherUserId,
+                      last_message: newMessage.content,
+                      last_message_date: newMessage.created_at,
+                      unread_count: 1
+                    };
+                    return [...prev, newConvo];
+                  }
+                });
+                
+                // Show notification
+                toast.info('New message received');
+              }
+            )
+            .subscribe();
             
-            if (existingConvoIndex >= 0) {
-              // Update existing conversation
-              const updatedConvos = [...prev];
-              updatedConvos[existingConvoIndex] = {
-                ...updatedConvos[existingConvoIndex],
-                last_message: newMessage.content,
-                last_message_date: newMessage.created_at,
-                unread_count: updatedConvos[existingConvoIndex].unread_count + 1
-              };
-              return updatedConvos;
-            } else {
-              // Create new conversation
-              const newConvo: Conversation = {
-                id: conversationId,
-                institution_id: userType === 'institution' ? user.id : otherUserId,
-                professional_id: userType === 'professional' ? user.id : otherUserId,
-                last_message: newMessage.content,
-                last_message_date: newMessage.created_at,
-                unread_count: 1
-              };
-              return [...prev, newConvo];
-            }
-          });
-          
-          // Show notification
-          toast.info('New message received');
+          // Store subscription reference for cleanup
+          setSubscription(channel);
+        } catch (err) {
+          console.error('Error setting up messages subscription:', err);
         }
-      )
-      .subscribe();
+        
+        setInitialized(true);
+      };
       
+      setupSubscription();
+    }
+    
+    // Cleanup function
     return () => {
-      // Important: remove the channel when component unmounts
-      supabase.removeChannel(channel);
+      mounted = false;
+      
+      // Remove subscription when component unmounts
+      if (subscription) {
+        supabase.removeChannel(subscription);
+      }
     };
-  }, [user, userType]);
+  }, [user, userType, initialized, fetchMessages, fetchConversations]);
 
   return { 
     messages, 
