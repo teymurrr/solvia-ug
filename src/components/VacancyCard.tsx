@@ -27,6 +27,9 @@ interface VacancyCardProps {
   className?: string;
   isDashboardCard?: boolean;
   applicationLink?: string;
+  searchQuery?: string;
+  currentPage?: number;
+  selectedFilters?: any;
 }
 
 const VacancyCard: React.FC<VacancyCardProps> = ({
@@ -48,6 +51,9 @@ const VacancyCard: React.FC<VacancyCardProps> = ({
   className,
   isDashboardCard = false,
   applicationLink,
+  searchQuery,
+  currentPage,
+  selectedFilters,
 }) => {
   const { toast } = useToast();
   const navigate = useNavigate();
@@ -75,7 +81,12 @@ const VacancyCard: React.FC<VacancyCardProps> = ({
 
   const handleCardClick = () => {
     navigate(`/vacancies/${id}`, {
-      state: { fromDashboard: isDashboardCard }
+      state: { 
+        fromDashboard: isDashboardCard,
+        searchQuery,
+        currentPage,
+        selectedFilters
+      }
     });
   };
 
@@ -116,6 +127,9 @@ const VacancyCard: React.FC<VacancyCardProps> = ({
             isDashboardCard={isDashboardCard} 
             applicationLink={applicationLink}
             fromDashboard={isDashboardCard}
+            searchQuery={searchQuery}
+            currentPage={currentPage}
+            selectedFilters={selectedFilters}
           />
         </div>
       </CardContent>

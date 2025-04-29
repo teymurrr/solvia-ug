@@ -8,13 +8,19 @@ interface VacancyFooterProps {
   isDashboardCard?: boolean;
   applicationLink?: string;
   fromDashboard?: boolean;
+  searchQuery?: string;
+  currentPage?: number;
+  selectedFilters?: any;
 }
 
 const VacancyFooter: React.FC<VacancyFooterProps> = ({ 
   id, 
   isDashboardCard = false, 
   applicationLink,
-  fromDashboard = false
+  fromDashboard = false,
+  searchQuery,
+  currentPage,
+  selectedFilters
 }) => {
   const navigate = useNavigate();
 
@@ -26,14 +32,24 @@ const VacancyFooter: React.FC<VacancyFooterProps> = ({
     } else {
       // Navigate to internal application page with state to track origin
       navigate(`/vacancies/${id}/apply`, {
-        state: { fromDashboard }
+        state: { 
+          fromDashboard,
+          searchQuery,
+          currentPage,
+          selectedFilters
+        }
       });
     }
   };
 
   const handleViewDetails = () => {
     navigate(`/vacancies/${id}`, {
-      state: { fromDashboard }
+      state: { 
+        fromDashboard,
+        searchQuery,
+        currentPage,
+        selectedFilters
+      }
     });
   };
 

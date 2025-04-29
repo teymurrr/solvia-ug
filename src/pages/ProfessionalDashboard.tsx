@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import MainLayout from '@/components/MainLayout';
@@ -65,6 +64,25 @@ const ProfessionalDashboard: React.FC = () => {
     if (location.state?.activeTab) {
       setActiveTab(location.state.activeTab);
     }
+    
+    // Restore search state if available
+    if (location.state?.searchQuery !== undefined) {
+      setSearchQuery(location.state.searchQuery);
+    }
+    
+    if (location.state?.currentPage) {
+      setCurrentPage(location.state.currentPage);
+    }
+    
+    // If an application was just submitted, show a success toast
+    if (location.state?.applicationSubmitted) {
+      const { toast } = require('@/hooks/use-toast');
+      toast({
+        title: "Application submitted successfully",
+        description: "Your application has been recorded. You can view it in the 'Saved & Applied' tab.",
+        variant: "success",
+      });
+    }
   }, [location.state]);
 
   const calculateProfileCompletion = (profile: typeof profileData): number => {
@@ -119,6 +137,14 @@ const ProfessionalDashboard: React.FC = () => {
     (currentPage - 1) * ITEMS_PER_PAGE,
     currentPage * ITEMS_PER_PAGE
   );
+
+  const getCurrentFilters = () => {
+    return {
+      jobTypes: selectedJobTypes,
+      country: selectedCountry,
+      city: selectedCity
+    };
+  };
 
   const handleSearch = () => {
     let filtered = sampleVacancies;
@@ -179,6 +205,8 @@ const ProfessionalDashboard: React.FC = () => {
   };
 
   const profileCompletionPercentage = calculateProfileCompletion(profileData);
+
+  const selectedFilters = getCurrentFilters();
 
   return (
     <MainLayout hideEditProfile={true}>
@@ -253,6 +281,9 @@ const ProfessionalDashboard: React.FC = () => {
                             isSaved={savedVacancies.includes(vacancy.id)}
                             onSaveToggle={toggleSaveVacancy}
                             isDashboardCard={true}
+                            searchQuery={searchQuery}
+                            currentPage={currentPage}
+                            selectedFilters={selectedFilters}
                           />
                         ))}
                       </div>

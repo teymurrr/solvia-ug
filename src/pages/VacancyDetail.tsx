@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
+import { useToast } from '@/hooks/use-toast';
 import MainLayout from '@/components/MainLayout';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Briefcase, MapPin, Calendar, Building, Medal, Clock, ArrowLeft, Heart } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { toast } from '@/hooks/use-toast';
 
 // This would come from an API in a real application
 const getVacancyById = (id: string) => {
@@ -54,18 +54,28 @@ const VacancyDetail = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const location = useLocation();
+  const { toast } = useToast();
   const vacancy = getVacancyById(id || '');
   const [isSaved, setIsSaved] = useState(false);
   
   // Check if user came from the dashboard
   const fromDashboard = location.state?.fromDashboard || false;
+  // Get the search state
+  const searchQuery = location.state?.searchQuery || '';
+  const currentPage = location.state?.currentPage || 1;
+  const selectedFilters = location.state?.selectedFilters || {};
   
   // Enhanced navigation that respects where the user came from
   const handleGoBack = () => {
     if (fromDashboard) {
       // Go back to the dashboard with the vacancies tab active
       navigate('/dashboard/professional', { 
-        state: { activeTab: 'vacancies' }
+        state: { 
+          activeTab: 'vacancies',
+          searchQuery,
+          currentPage,
+          selectedFilters
+        }
       });
     } else {
       // Otherwise, go back to the general vacancies page
@@ -127,10 +137,15 @@ const VacancyDetail = () => {
     }
   };
 
-  // Handle apply button click - preserve dashboard origin when applying
+  // Handle apply button click - preserve dashboard origin and search state when applying
   const handleApply = () => {
     navigate(`/vacancies/${id}/apply`, { 
-      state: { fromDashboard }
+      state: { 
+        fromDashboard,
+        searchQuery,
+        currentPage,
+        selectedFilters
+      }
     });
   };
 

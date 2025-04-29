@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
@@ -48,6 +49,10 @@ const VacancyApply = () => {
   
   // Check if user came from the dashboard
   const fromDashboard = location.state?.fromDashboard || false;
+  // Preserve search state and pagination from the dashboard
+  const searchQuery = location.state?.searchQuery || '';
+  const currentPage = location.state?.currentPage || 1;
+  const selectedFilters = location.state?.selectedFilters || {};
 
   // Get vacancy details (in a real app this would be from an API)
   const vacancy = getVacancyById(id || '');
@@ -84,7 +89,14 @@ const VacancyApply = () => {
 
   const handleCancel = () => {
     if (fromDashboard) {
-      navigate('/dashboard/professional');
+      navigate('/dashboard/professional', {
+        state: { 
+          activeTab: 'vacancies',
+          searchQuery,
+          currentPage,
+          selectedFilters
+        }
+      });
     } else {
       navigate(`/vacancies/${id}`);
     }
@@ -109,7 +121,15 @@ const VacancyApply = () => {
       // Navigate back to the dashboard if that's where the user came from,
       // otherwise go to the vacancies page
       if (fromDashboard) {
-        navigate('/dashboard/professional');
+        navigate('/dashboard/professional', { 
+          state: { 
+            activeTab: 'vacancies',
+            searchQuery,
+            currentPage,
+            selectedFilters,
+            applicationSubmitted: true // Flag to show a success message
+          }
+        });
       } else {
         navigate('/vacancies');
       }
