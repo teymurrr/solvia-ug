@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
@@ -35,8 +36,7 @@ const VacanciesSection: React.FC<VacanciesSectionProps> = ({ vacancies }) => {
               key={vacancy.id}
               {...vacancy}
               showSaveOption={false}
-              className="border-transparent hover:shadow-lg hover:scale-[1.02] transition-all duration-300"
-              onAction={() => window.location.href = '/signup/professional'}
+              className="border-transparent"
             />
           ))}
         </div>

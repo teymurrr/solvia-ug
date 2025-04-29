@@ -66,10 +66,8 @@ const VacancyCard: React.FC<VacancyCardProps> = ({
     });
   };
 
-  // Apply different class styles depending on whether it's a dashboard card or landing page card
-  const cardClasses = isDashboardCard
-    ? "border border-border shadow-sm"
-    : `${className || ""} overflow-hidden transition-all duration-300 ease-in-out hover:scale-[1.03] shadow-[0_2px_8px_rgba(0,0,0,0.08)] hover:shadow-[0_8px_16px_rgba(0,0,0,0.12)] border-transparent`;
+  // Set consistent card styling that matches the landing page design regardless of where it's used
+  const cardClasses = `${className || ""} border border-border shadow-sm`;
 
   return (
     <Card className={cardClasses}>
