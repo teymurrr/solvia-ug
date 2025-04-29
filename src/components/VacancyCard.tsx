@@ -23,6 +23,8 @@ interface VacancyCardProps {
   onSaveToggle?: (id: string) => void;
   country?: string;
   city?: string;
+  className?: string;
+  isDashboardCard?: boolean;
 }
 
 const VacancyCard: React.FC<VacancyCardProps> = ({
@@ -41,6 +43,8 @@ const VacancyCard: React.FC<VacancyCardProps> = ({
   onSaveToggle,
   country,
   city,
+  className,
+  isDashboardCard = false,
 }) => {
   const { toast } = useToast();
   const { handleProtectedAction } = useProtectedAction();
@@ -62,8 +66,13 @@ const VacancyCard: React.FC<VacancyCardProps> = ({
     });
   };
 
+  // Apply different class styles depending on whether it's a dashboard card or landing page card
+  const cardClasses = isDashboardCard
+    ? "border border-border shadow-sm"
+    : `${className || ""} overflow-hidden transition-all duration-300 ease-in-out hover:scale-[1.03] shadow-[0_2px_8px_rgba(0,0,0,0.08)] hover:shadow-[0_8px_16px_rgba(0,0,0,0.12)] border-transparent`;
+
   return (
-    <Card className="overflow-hidden transition-all duration-300 ease-in-out hover:scale-[1.03] shadow-[0_2px_8px_rgba(0,0,0,0.08)] hover:shadow-[0_8px_16px_rgba(0,0,0,0.12)] border-transparent">
+    <Card className={cardClasses}>
       <CardContent className="p-6 relative">
         <div className="space-y-4">
           <VacancyHeader

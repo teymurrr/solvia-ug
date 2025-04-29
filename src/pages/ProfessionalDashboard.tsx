@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import MainLayout from '@/components/MainLayout';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -238,6 +239,7 @@ const ProfessionalDashboard: React.FC = () => {
                             showSaveOption={true}
                             isSaved={savedVacancies.includes(vacancy.id)}
                             onSaveToggle={toggleSaveVacancy}
+                            isDashboardCard={true}
                           />
                         ))}
                       </div>

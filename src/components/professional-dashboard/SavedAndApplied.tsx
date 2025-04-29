@@ -68,6 +68,7 @@ const SavedAndApplied: React.FC<SavedAndAppliedProps> = ({
                 showSaveOption={true}
                 isSaved={true}
                 onSaveToggle={toggleSaveVacancy}
+                isDashboardCard={true}
               />
             ))}
           </div>
@@ -89,6 +90,7 @@ const SavedAndApplied: React.FC<SavedAndAppliedProps> = ({
                 showSaveOption={true}
                 isSaved={savedVacancies.includes(vacancy.id)}
                 onSaveToggle={toggleSaveVacancy}
+                isDashboardCard={true}
               />
             ))}
           </div>
