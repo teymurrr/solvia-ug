@@ -22,9 +22,15 @@ const VacancyFooter: React.FC<VacancyFooterProps> = ({
       // Open external application link in a new tab
       window.open(applicationLink, '_blank');
     } else {
-      // Navigate to internal application page
-      navigate(`/vacancies/${id}/apply`);
+      // Navigate to internal application page with state to track origin
+      navigate(`/vacancies/${id}/apply`, {
+        state: { fromDashboard: isDashboardCard }
+      });
     }
+  };
+
+  const handleViewDetails = () => {
+    navigate(`/vacancies/${id}`);
   };
 
   // Adjust styling based on whether it's a dashboard card
@@ -36,7 +42,7 @@ const VacancyFooter: React.FC<VacancyFooterProps> = ({
       {!isDashboardCard && (
         <Button 
           variant="outline" 
-          onClick={() => navigate(`/vacancies/${id}`)} 
+          onClick={handleViewDetails} 
           className={`flex-shrink-0 ${buttonClasses}`}
           size={isDashboardCard ? "sm" : "default"}
         >

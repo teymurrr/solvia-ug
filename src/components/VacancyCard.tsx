@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
 import { useProtectedAction } from '@/hooks/useProtectedAction';
 import { Card, CardContent } from '@/components/ui/card';
@@ -49,11 +50,15 @@ const VacancyCard: React.FC<VacancyCardProps> = ({
   applicationLink,
 }) => {
   const { toast } = useToast();
+  const navigate = useNavigate();
   const { handleProtectedAction } = useProtectedAction();
   
   const displayLocation = location || (city && country ? `${city}, ${country}` : city || country || "Location not specified");
   
-  const toggleSave = () => {
+  const toggleSave = (e: React.MouseEvent) => {
+    // Stop propagation to prevent navigation when clicking save button
+    e.stopPropagation();
+    
     handleProtectedAction(() => {
       if (onSaveToggle) {
         onSaveToggle(id);
@@ -68,13 +73,17 @@ const VacancyCard: React.FC<VacancyCardProps> = ({
     });
   };
 
+  const handleCardClick = () => {
+    navigate(`/vacancies/${id}`);
+  };
+
   // Define card styling based on whether it's a dashboard card
   const cardClasses = isDashboardCard
-    ? `border border-border shadow-sm ${className || ""}`
-    : `${className || ""} border border-border shadow-sm hover:shadow-lg hover:scale-[1.03] transition-all duration-300`;
+    ? `border border-border shadow-sm ${className || ""} cursor-pointer`
+    : `${className || ""} border border-border shadow-sm hover:shadow-lg hover:scale-[1.03] transition-all duration-300 cursor-pointer`;
 
   return (
-    <Card className={cardClasses}>
+    <Card className={cardClasses} onClick={handleCardClick}>
       <CardContent className={isDashboardCard ? "p-5" : "p-6"}>
         <div className="space-y-4">
           <VacancyHeader
@@ -99,7 +108,7 @@ const VacancyCard: React.FC<VacancyCardProps> = ({
           />
         </div>
         
-        <div className="mt-5">
+        <div className="mt-5" onClick={(e) => e.stopPropagation()}>
           <VacancyFooter 
             id={id} 
             isDashboardCard={isDashboardCard} 

@@ -1,6 +1,5 @@
-
-import React, { useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
 import MainLayout from '@/components/MainLayout';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
@@ -41,10 +40,14 @@ type ApplicationFormValues = z.infer<typeof applicationSchema>;
 const VacancyApply = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const location = useLocation();
   const { toast } = useToast();
   const { profileData, loading } = useProfileData();
   const [cvFile, setCvFile] = useState<File | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  
+  // Check if user came from the dashboard
+  const fromDashboard = location.state?.fromDashboard || false;
 
   // Get vacancy details (in a real app this would be from an API)
   const vacancy = getVacancyById(id || '');
@@ -79,6 +82,14 @@ const VacancyApply = () => {
     }
   };
 
+  const handleCancel = () => {
+    if (fromDashboard) {
+      navigate('/dashboard/professional');
+    } else {
+      navigate(`/vacancies/${id}`);
+    }
+  };
+
   const onSubmit = async (data: ApplicationFormValues) => {
     setIsSubmitting(true);
     
@@ -95,8 +106,13 @@ const VacancyApply = () => {
         description: "Your application has been successfully submitted",
       });
       
-      // Navigate back to the dashboard
-      navigate('/dashboard/professional');
+      // Navigate back to the dashboard if that's where the user came from,
+      // otherwise go to the vacancies page
+      if (fromDashboard) {
+        navigate('/dashboard/professional');
+      } else {
+        navigate('/vacancies');
+      }
     } catch (error) {
       toast({
         title: "Error",
@@ -121,10 +137,13 @@ const VacancyApply = () => {
   return (
     <MainLayout>
       <div className="container mx-auto px-4 py-8">
-        <Link to={`/vacancies/${id}`} className="inline-flex items-center text-primary hover:underline mb-6">
+        <button 
+          onClick={handleCancel}
+          className="inline-flex items-center text-primary hover:underline mb-6"
+        >
           <ArrowLeft className="h-4 w-4 mr-1" />
-          Back to Vacancy
-        </Link>
+          {fromDashboard ? 'Back to Dashboard' : 'Back to Vacancy'}
+        </button>
         
         <div className="mb-6">
           <h1 className="text-3xl font-bold">Apply for Position</h1>
@@ -264,7 +283,7 @@ const VacancyApply = () => {
                   <Button
                     type="button"
                     variant="outline"
-                    onClick={() => navigate(`/vacancies/${id}`)}
+                    onClick={handleCancel}
                   >
                     Cancel
                   </Button>

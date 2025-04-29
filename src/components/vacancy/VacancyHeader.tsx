@@ -13,7 +13,7 @@ interface VacancyHeaderProps {
   jobType: string;
   showSaveOption?: boolean;
   isSaved?: boolean;
-  onSaveToggle?: (id: string) => void;
+  onSaveToggle?: (e: React.MouseEvent) => void;
   isDashboardCard?: boolean;
 }
 
@@ -32,12 +32,13 @@ const VacancyHeader: React.FC<VacancyHeaderProps> = ({
     ? "text-lg font-semibold hover:text-primary transition-colors" 
     : "text-xl font-semibold hover:text-primary transition-colors";
 
+  // Since the entire card is clickable now, we don't need a separate link
   return (
     <div className="flex flex-wrap justify-between items-start gap-2">
       <div>
-        <Link to={`/vacancies/${id}`} className={titleClasses}>
+        <div className={titleClasses.replace('hover:text-primary', '')}>
           {title}
-        </Link>
+        </div>
         <div className="flex items-center text-muted-foreground mt-1">
           <Building className="h-4 w-4 mr-1" />
           <span className="text-sm">{institution}</span>
@@ -49,7 +50,7 @@ const VacancyHeader: React.FC<VacancyHeaderProps> = ({
             variant="ghost"
             size="icon"
             className="h-8 w-8"
-            onClick={() => onSaveToggle?.(id)}
+            onClick={onSaveToggle}
             title={isSaved ? "Remove from saved" : "Save for later"}
           >
             {isSaved ? (

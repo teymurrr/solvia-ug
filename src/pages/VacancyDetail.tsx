@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import MainLayout from '@/components/MainLayout';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -53,8 +53,21 @@ const getVacancyById = (id: string) => {
 
 const VacancyDetail = () => {
   const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
+  const location = useLocation();
   const vacancy = getVacancyById(id || '');
   const [isSaved, setIsSaved] = useState(false);
+  
+  // Check if user came from the dashboard
+  const fromDashboard = location.state?.fromDashboard || false;
+  
+  const handleGoBack = () => {
+    if (fromDashboard) {
+      navigate('/dashboard/professional');
+    } else {
+      navigate('/vacancies');
+    }
+  };
   
   // Format dates
   const formatDate = (dateString: string) => {
@@ -110,13 +123,23 @@ const VacancyDetail = () => {
     }
   };
 
+  // Handle apply button click
+  const handleApply = () => {
+    navigate(`/vacancies/${id}/apply`, { 
+      state: { fromDashboard }
+    });
+  };
+
   return (
     <MainLayout>
       <div className="container mx-auto px-4 py-8">
-        <Link to="/vacancies" className="inline-flex items-center text-primary hover:underline mb-6">
+        <button 
+          onClick={handleGoBack} 
+          className="inline-flex items-center text-primary hover:underline mb-6"
+        >
           <ArrowLeft className="h-4 w-4 mr-1" />
-          Back to Vacancies
-        </Link>
+          {fromDashboard ? 'Back to Dashboard' : 'Back to Vacancies'}
+        </button>
         
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Main content */}
@@ -226,7 +249,7 @@ const VacancyDetail = () => {
                 </div>
                 
                 {/* Apply Button */}
-                <Button className="w-full mt-4" size="lg">
+                <Button className="w-full mt-4" size="lg" onClick={handleApply}>
                   Apply Now
                 </Button>
                 
