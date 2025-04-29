@@ -15,6 +15,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 
 const ChatPopup = () => {
+  // State management
   const [replyText, setReplyText] = useState('');
   const [activeMessage, setActiveMessage] = useState<Message | null>(null);
   const [activeSenderId, setActiveSenderId] = useState<string | null>(null);
@@ -24,26 +25,29 @@ const ChatPopup = () => {
   const { handleProtectedAction } = useProtectedAction();
   const navigate = useNavigate();
   
-  // Only initialize useMessages hook when the chat is opened to prevent unnecessary data loading
+  // IMPORTANT: Only initialize useMessages hook when the chat is opened
+  // This prevents unnecessary database connections and egress
   const [hookInitialized, setHookInitialized] = useState(false);
   const messagesHook = hookInitialized ? useMessages() : null;
-  const { messages, addMessage, markAsRead, markConversationAsRead, unreadCount, fetchMessages } = messagesHook || {
-    messages: [],
-    addMessage: async () => null,
-    markAsRead: async () => {},
-    markConversationAsRead: async () => {},
-    unreadCount: 0,
-    fetchMessages: async () => {}
-  };
   
-  // Initialize the hook only when the component is visible
+  // Destructure hook values with fallbacks to prevent errors
+  const { 
+    messages = [], 
+    addMessage = async () => null, 
+    markAsRead = async () => {}, 
+    markConversationAsRead = async () => {},
+    unreadCount = 0,
+    fetchMessages = async () => {}
+  } = messagesHook || {};
+  
+  // Only initialize the hook when the component is visible and user is logged in
   useEffect(() => {
     if (isOpen && isLoggedIn && !hookInitialized) {
       setHookInitialized(true);
     }
   }, [isOpen, isLoggedIn, hookInitialized]);
   
-  // Scroll to bottom of messages
+  // Scroll to bottom of messages when conversation changes
   useEffect(() => {
     if (messagesEndRef.current && isOpen) {
       messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
@@ -75,12 +79,14 @@ const ChatPopup = () => {
     setIsOpen(true);
   };
   
+  // Clean up when closing chat
   const handleCloseChat = () => {
     setActiveSenderId(null);
     setActiveMessage(null);
     setIsOpen(false);
   };
 
+  // Send message reply
   const handleSendReply = async () => {
     if (!replyText.trim() || !activeSenderId || !user) {
       toast.error("Cannot send empty message");
@@ -99,7 +105,7 @@ const ChatPopup = () => {
     }
   };
   
-  // Get unique conversation partners
+  // Get unique conversation partners with memoization to prevent recalculation
   const conversationPartners = React.useMemo(() => {
     if (!user || !messages.length) return [];
     
@@ -122,7 +128,7 @@ const ChatPopup = () => {
     }));
   }, [messages, user]);
   
-  // Get conversation messages for active sender
+  // Get conversation messages for active sender with memoization
   const conversationMessages = React.useMemo(() => {
     if (!user || !activeSenderId || !messages.length) return [];
     

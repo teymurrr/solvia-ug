@@ -29,82 +29,88 @@ export const useMessages = () => {
   const [loading, setLoading] = useState(false);
   const { user, userType } = useAuth();
   const [initialized, setInitialized] = useState(false);
-
-  // Use callback to memoize the fetch functions
+  
+  // Memoize the fetch functions to prevent unnecessary rerenders
   const fetchMessages = useCallback(async () => {
     if (!user) return;
     
     setLoading(true);
     
-    // Limit query to most recent 50 messages to reduce egress
-    const { data, error } = await supabase
-      .from('messages')
-      .select('*')
-      .or(`sender_id.eq.${user.id},recipient_id.eq.${user.id}`)
-      .order('created_at', { ascending: false })
-      .limit(50); // Add limit to reduce data transfer
+    try {
+      // Limit query to most recent 20 messages to reduce egress significantly
+      const { data, error } = await supabase
+        .from('messages')
+        .select('*')
+        .or(`sender_id.eq.${user.id},recipient_id.eq.${user.id}`)
+        .order('created_at', { ascending: false })
+        .limit(20); // Reduced from 50 to 20 to further decrease egress
 
-    if (error) {
-      console.error('Error fetching messages:', error);
-      toast.error('Failed to load messages');
+      if (error) {
+        console.error('Error fetching messages:', error);
+        toast.error('Failed to load messages');
+        return;
+      }
+
+      setMessages(data || []);
+    } finally {
       setLoading(false);
-      return;
     }
-
-    setMessages(data || []);
-    setLoading(false);
   }, [user]);
 
   const fetchConversations = useCallback(async () => {
     if (!user) return;
     
-    // Only fetch latest 20 messages per conversation to reduce data load
-    const { data: messagesData, error: messagesError } = await supabase
-      .from('messages')
-      .select('*')
-      .or(`sender_id.eq.${user.id},recipient_id.eq.${user.id}`)
-      .order('created_at', { ascending: false })
-      .limit(20); // Add limit to reduce data transfer
-      
-    if (messagesError) {
-      console.error('Error fetching conversations:', messagesError);
-      toast.error('Failed to load conversations');
-      return;
-    }
-
-    // Process messages into conversations
-    const conversationMap: Record<string, Conversation> = {};
-    
-    for (const message of messagesData || []) {
-      const otherUserId = message.sender_id === user.id ? message.recipient_id : message.sender_id;
-      const conversationKey = [user.id, otherUserId].sort().join('-');
-      
-      if (!conversationMap[conversationKey]) {
-        conversationMap[conversationKey] = {
-          id: conversationKey,
-          institution_id: userType === 'institution' ? user.id : otherUserId,
-          professional_id: userType === 'professional' ? user.id : otherUserId,
-          last_message: message.content,
-          last_message_date: message.created_at,
-          unread_count: message.recipient_id === user.id && !message.read ? 1 : 0
-        };
-      } else {
-        // Count unread messages
-        if (message.recipient_id === user.id && !message.read) {
-          conversationMap[conversationKey].unread_count += 1;
-        }
+    try {
+      // Only fetch latest 10 messages instead of 20 to reduce data load
+      const { data: messagesData, error: messagesError } = await supabase
+        .from('messages')
+        .select('*')
+        .or(`sender_id.eq.${user.id},recipient_id.eq.${user.id}`)
+        .order('created_at', { ascending: false })
+        .limit(10); // Reduced from 20 to 10
         
-        // Update last message if this one is newer
-        const lastDate = new Date(conversationMap[conversationKey].last_message_date!);
-        const currentDate = new Date(message.created_at!);
-        if (currentDate > lastDate) {
-          conversationMap[conversationKey].last_message = message.content;
-          conversationMap[conversationKey].last_message_date = message.created_at;
+      if (messagesError) {
+        console.error('Error fetching conversations:', messagesError);
+        toast.error('Failed to load conversations');
+        return;
+      }
+
+      // Process messages into conversations (with minimal data)
+      const conversationMap: Record<string, Conversation> = {};
+      
+      for (const message of messagesData || []) {
+        const otherUserId = message.sender_id === user.id ? message.recipient_id : message.sender_id;
+        const conversationKey = [user.id, otherUserId].sort().join('-');
+        
+        if (!conversationMap[conversationKey]) {
+          conversationMap[conversationKey] = {
+            id: conversationKey,
+            institution_id: userType === 'institution' ? user.id : otherUserId,
+            professional_id: userType === 'professional' ? user.id : otherUserId,
+            last_message: message.content,
+            last_message_date: message.created_at,
+            unread_count: message.recipient_id === user.id && !message.read ? 1 : 0
+          };
+        } else {
+          // Count unread messages
+          if (message.recipient_id === user.id && !message.read) {
+            conversationMap[conversationKey].unread_count += 1;
+          }
+          
+          // Update last message if this one is newer
+          const lastDate = new Date(conversationMap[conversationKey].last_message_date!);
+          const currentDate = new Date(message.created_at!);
+          if (currentDate > lastDate) {
+            conversationMap[conversationKey].last_message = message.content;
+            conversationMap[conversationKey].last_message_date = message.created_at;
+          }
         }
       }
+      
+      setConversations(Object.values(conversationMap));
+    } catch (error) {
+      console.error('Error processing conversations:', error);
     }
-    
-    setConversations(Object.values(conversationMap));
   }, [user, userType]);
 
   const addMessage = async (newMessage: Omit<Message, 'id' | 'created_at'>) => {
@@ -140,7 +146,9 @@ export const useMessages = () => {
     }
 
     toast.success('Message sent');
-    await fetchMessages();
+    
+    // Update local state instead of refetching all messages
+    setMessages(prev => [data, ...prev]);
     await fetchConversations();
     return data;
   };
@@ -192,9 +200,8 @@ export const useMessages = () => {
     await fetchConversations(); // Refresh conversation counts
   };
 
-  // Initialize data on first mount only if user is logged in
+  // Only initialize data on demand when hook is actively used
   useEffect(() => {
-    // Only fetch data once when component mounts and user is available
     if (user && !initialized) {
       fetchMessages();
       fetchConversations();
@@ -203,67 +210,68 @@ export const useMessages = () => {
   }, [user, initialized, fetchMessages, fetchConversations]);
   
   // Set up real-time subscription only when actively using messages
-  // with specific filter to only get messages for the current user
+  // with highly specific filter to only get messages for the current user
   useEffect(() => {
-    if (user) {
-      // Only subscribe to new messages where the current user is the recipient
-      // This significantly reduces egress by not listening to all message inserts
-      const channel = supabase
-        .channel('messages-for-user')
-        .on('postgres_changes', 
-          { 
-            event: 'INSERT', 
-            schema: 'public', 
-            table: 'messages',
-            filter: `recipient_id=eq.${user.id}` 
-          },
-          (payload) => {
-            const newMessage = payload.new as Message;
+    if (!user) return;
+      
+    // Only subscribe to new messages where the current user is the recipient
+    // This significantly reduces egress by not listening to all message inserts
+    const channel = supabase
+      .channel('messages-for-user')
+      .on('postgres_changes', 
+        { 
+          event: 'INSERT', 
+          schema: 'public', 
+          table: 'messages',
+          filter: `recipient_id=eq.${user.id}` 
+        },
+        (payload) => {
+          const newMessage = payload.new as Message;
+          
+          // Update messages locally without refetching all data
+          setMessages(prev => [newMessage, ...prev]);
+          
+          // Update conversations locally
+          const otherUserId = newMessage.sender_id;
+          const conversationId = [user.id, otherUserId].sort().join('-');
+          
+          setConversations(prev => {
+            const existingConvoIndex = prev.findIndex(c => c.id === conversationId);
             
-            // Update messages locally without refetching all data
-            setMessages(prev => [newMessage, ...prev]);
-            
-            // Update conversations locally
-            const otherUserId = newMessage.sender_id;
-            const conversationId = [user.id, otherUserId].sort().join('-');
-            
-            setConversations(prev => {
-              const existingConvoIndex = prev.findIndex(c => c.id === conversationId);
-              
-              if (existingConvoIndex >= 0) {
-                // Update existing conversation
-                const updatedConvos = [...prev];
-                updatedConvos[existingConvoIndex] = {
-                  ...updatedConvos[existingConvoIndex],
-                  last_message: newMessage.content,
-                  last_message_date: newMessage.created_at,
-                  unread_count: updatedConvos[existingConvoIndex].unread_count + 1
-                };
-                return updatedConvos;
-              } else {
-                // Create new conversation
-                const newConvo: Conversation = {
-                  id: conversationId,
-                  institution_id: userType === 'institution' ? user.id : otherUserId,
-                  professional_id: userType === 'professional' ? user.id : otherUserId,
-                  last_message: newMessage.content,
-                  last_message_date: newMessage.created_at,
-                  unread_count: 1
-                };
-                return [...prev, newConvo];
-              }
-            });
-            
-            // Show notification
-            toast.info('New message received');
-          }
-        )
-        .subscribe();
-        
-      return () => {
-        supabase.removeChannel(channel);
-      };
-    }
+            if (existingConvoIndex >= 0) {
+              // Update existing conversation
+              const updatedConvos = [...prev];
+              updatedConvos[existingConvoIndex] = {
+                ...updatedConvos[existingConvoIndex],
+                last_message: newMessage.content,
+                last_message_date: newMessage.created_at,
+                unread_count: updatedConvos[existingConvoIndex].unread_count + 1
+              };
+              return updatedConvos;
+            } else {
+              // Create new conversation
+              const newConvo: Conversation = {
+                id: conversationId,
+                institution_id: userType === 'institution' ? user.id : otherUserId,
+                professional_id: userType === 'professional' ? user.id : otherUserId,
+                last_message: newMessage.content,
+                last_message_date: newMessage.created_at,
+                unread_count: 1
+              };
+              return [...prev, newConvo];
+            }
+          });
+          
+          // Show notification
+          toast.info('New message received');
+        }
+      )
+      .subscribe();
+      
+    return () => {
+      // Important: remove the channel when component unmounts
+      supabase.removeChannel(channel);
+    };
   }, [user, userType]);
 
   return { 
