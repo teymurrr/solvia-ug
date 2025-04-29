@@ -55,7 +55,7 @@ const VacancyApply = () => {
       firstName: profileData?.firstName || '',
       lastName: profileData?.lastName || '',
       email: profileData?.email || '',
-      phone: profileData?.phone || '',
+      phone: '', // Default to empty string since phone might not exist in profileData
       coverLetter: '',
     },
   });
@@ -67,8 +67,7 @@ const VacancyApply = () => {
         firstName: profileData.firstName || '',
         lastName: profileData.lastName || '',
         email: profileData.email || '',
-        // Check if phone exists in profileData before using it
-        phone: profileData.phone || '',
+        phone: '', // Default to empty string since phone might not exist in profileData
         coverLetter: '',
       });
     }
