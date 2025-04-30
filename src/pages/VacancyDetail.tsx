@@ -1,5 +1,4 @@
-
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
 import MainLayout from '@/components/MainLayout';
@@ -7,7 +6,6 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Briefcase, MapPin, Calendar, Building, Medal, Clock, ArrowLeft, Heart } from 'lucide-react';
-import { Link } from 'react-router-dom';
 
 // This would come from an API in a real application
 const getVacancyById = (id: string) => {
