@@ -3,12 +3,14 @@ import React, { useState, useEffect } from 'react';
 import MainLayout from '@/components/MainLayout';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import VacancyForm from '@/components/VacancyForm';
+import InstitutionProfileEditForm from '@/components/InstitutionProfileEditForm';
 import { ProfileTab, VacanciesTab, TalentsTab, DashboardHeader } from '@/components/institution-dashboard';
 import { useProfessionals } from '@/hooks/useProfessionals';
 import { useVacancies } from '@/hooks/useVacancies';
 
 const InstitutionDashboard = () => {
   const [vacancyFormOpen, setVacancyFormOpen] = useState(false);
+  const [profileEditOpen, setProfileEditOpen] = useState(false);
   const { professionals, filteredProfessionals, setFilteredProfessionals } = useProfessionals();
   const { vacancies, handleAddVacancy, handleDeleteVacancy } = useVacancies();
   const [searchQuery, setSearchQuery] = useState('');
@@ -86,7 +88,7 @@ const InstitutionDashboard = () => {
           </TabsList>
           
           <TabsContent value="profile" className="space-y-6">
-            <ProfileTab onEditProfile={() => {}} />
+            <ProfileTab onEditProfile={() => setProfileEditOpen(true)} />
           </TabsContent>
           
           <TabsContent value="vacancies" className="space-y-6">
@@ -115,6 +117,11 @@ const InstitutionDashboard = () => {
         open={vacancyFormOpen} 
         onOpenChange={setVacancyFormOpen}
         onSubmit={handleAddVacancy}
+      />
+
+      <InstitutionProfileEditForm
+        open={profileEditOpen}
+        onOpenChange={setProfileEditOpen}
       />
     </MainLayout>
   );

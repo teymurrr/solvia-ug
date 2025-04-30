@@ -3,11 +3,13 @@ import React from 'react';
 import { Briefcase, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { getJobTypeBadgeVariant } from '@/components/vacancy/utils';
 
 interface VacanciesTabProps {
   vacancies: any[];
   onAddVacancy: () => void;
-  onDeleteVacancy: (id: number) => void;
+  onDeleteVacancy: (id: string | number) => void;
 }
 
 const VacanciesTab: React.FC<VacanciesTabProps> = ({ 
@@ -29,16 +31,36 @@ const VacanciesTab: React.FC<VacanciesTabProps> = ({
             {vacancies.map((vacancy) => (
               <div key={vacancy.id} className="border rounded-lg p-4">
                 <div className="flex justify-between items-start">
-                  <div>
-                    <h3 className="font-medium">{vacancy.title}</h3>
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <h3 className="font-medium">{vacancy.title}</h3>
+                      <Badge variant={getJobTypeBadgeVariant(vacancy.jobType)} className="ml-2">
+                        {vacancy.jobType || vacancy.contractType}
+                      </Badge>
+                    </div>
                     <p className="text-sm text-medical-600">{vacancy.department}</p>
-                    <p className="text-xs text-muted-foreground mt-1">{vacancy.location}</p>
+                    <p className="text-xs text-muted-foreground">{vacancy.location}</p>
+                    
+                    {vacancy.specialty && (
+                      <span className="inline-flex text-xs bg-primary/10 text-primary rounded-full px-2 py-1 mr-1">
+                        {vacancy.specialty}
+                      </span>
+                    )}
+                    {vacancy.profession && (
+                      <span className="inline-flex text-xs bg-primary/10 text-primary rounded-full px-2 py-1">
+                        {vacancy.profession}
+                      </span>
+                    )}
+                    
+                    <p className="text-sm text-muted-foreground line-clamp-2 mt-2">
+                      {vacancy.description}
+                    </p>
                   </div>
                   <Button 
                     variant="outline" 
                     size="sm" 
                     onClick={() => onDeleteVacancy(vacancy.id)}
-                    className="text-destructive hover:bg-destructive/10"
+                    className="text-destructive hover:bg-destructive/10 ml-4"
                   >
                     Delete
                   </Button>

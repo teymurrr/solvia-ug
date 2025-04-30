@@ -20,7 +20,24 @@ export const useVacancies = () => {
   }, [vacancies]);
 
   const handleAddVacancy = (vacancyData: any) => {
-    const newVacancy = { ...vacancyData, id: Date.now() };
+    // Ensure requirements is always an array for consistent display
+    const requirements = typeof vacancyData.requirements === 'string' 
+      ? vacancyData.requirements.split('\n').filter((line: string) => line.trim() !== '')
+      : Array.isArray(vacancyData.requirements) 
+        ? vacancyData.requirements
+        : [];
+        
+    // Process and standardize the vacancy data
+    const newVacancy = { 
+      ...vacancyData, 
+      id: Date.now().toString(),
+      requirements,
+      // Ensure jobType is set for display consistency
+      jobType: vacancyData.jobType || vacancyData.contractType || 'Full-time',
+      // Set posted date if not provided
+      postedDate: vacancyData.postedDate || new Date().toISOString(),
+    };
+    
     setVacancies([...vacancies, newVacancy]);
     
     toast({
@@ -31,7 +48,7 @@ export const useVacancies = () => {
     return newVacancy;
   };
 
-  const handleDeleteVacancy = (id: number) => {
+  const handleDeleteVacancy = (id: string | number) => {
     setVacancies(vacancies.filter(vacancy => vacancy.id !== id));
     
     toast({

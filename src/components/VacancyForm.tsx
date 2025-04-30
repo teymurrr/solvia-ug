@@ -22,12 +22,18 @@ import { Briefcase } from 'lucide-react';
 // Define the form schema
 const vacancyFormSchema = z.object({
   title: z.string().min(2, "Job title must be at least 2 characters."),
+  institution: z.string().min(2, "Institution name is required."),
   department: z.string().min(2, "Department is required."),
-  specialty: z.string().min(2, "Specialty is required."),
+  specialty: z.string().optional(),
+  profession: z.string().optional(),
   contractType: z.string().min(1, "Contract type is required."),
+  country: z.string().optional(),
+  city: z.string().optional(),
   location: z.string().min(2, "Location is required."),
   description: z.string().min(10, "Description must be at least 10 characters."),
-  requirements: z.string().optional(),
+  requirements: z.string().min(10, "Requirements must be at least 10 characters."),
+  applicationDeadline: z.string().optional(),
+  postedDate: z.string().optional(),
   salary: z.string().optional(),
 });
 
@@ -46,12 +52,17 @@ const VacancyForm: React.FC<VacancyFormProps> = ({
   onSubmit,
   initialData = {
     title: "",
+    institution: "General Hospital", // Default to institution name
     department: "",
     specialty: "",
+    profession: "",
     contractType: "",
+    country: "",
+    city: "",
     location: "",
     description: "",
     requirements: "",
+    postedDate: new Date().toISOString(),
     salary: "",
   }
 }) => {
@@ -63,10 +74,16 @@ const VacancyForm: React.FC<VacancyFormProps> = ({
   });
 
   const handleSubmit = (data: VacancyFormValues) => {
-    // In a real application, this would save to a database
-    console.log("Vacancy data to save:", data);
+    // Process requirements string into an array for consistent display
+    const processedData = {
+      ...data,
+      requirements: data.requirements.split('\n').filter(line => line.trim() !== ''),
+      jobType: data.contractType, // Map contractType to jobType for display consistency
+      postedDate: data.postedDate || new Date().toISOString(),
+    };
     
-    onSubmit(data);
+    onSubmit(processedData);
+    onOpenChange(false);
     
     toast({
       title: "Vacancy Created",
@@ -117,12 +134,12 @@ const VacancyForm: React.FC<VacancyFormProps> = ({
 
               <FormField
                 control={form.control}
-                name="specialty"
+                name="institution"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Specialty</FormLabel>
+                    <FormLabel>Institution</FormLabel>
                     <FormControl>
-                      <Input placeholder="e.g. Pediatric Neurology" {...field} />
+                      <Input {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -145,13 +162,69 @@ const VacancyForm: React.FC<VacancyFormProps> = ({
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        <SelectItem value="full-time">Full-time</SelectItem>
-                        <SelectItem value="part-time">Part-time</SelectItem>
-                        <SelectItem value="temporary">Temporary</SelectItem>
-                        <SelectItem value="contract">Contract</SelectItem>
-                        <SelectItem value="internship">Internship</SelectItem>
+                        <SelectItem value="Full-time">Full-time</SelectItem>
+                        <SelectItem value="Part-time">Part-time</SelectItem>
+                        <SelectItem value="Temporary">Temporary</SelectItem>
+                        <SelectItem value="Contract">Contract</SelectItem>
+                        <SelectItem value="Internship">Internship</SelectItem>
                       </SelectContent>
                     </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="profession"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Profession</FormLabel>
+                    <FormControl>
+                      <Input placeholder="e.g. Doctor, Nurse" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="specialty"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Specialty</FormLabel>
+                    <FormControl>
+                      <Input placeholder="e.g. Pediatric Neurology" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="city"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>City</FormLabel>
+                    <FormControl>
+                      <Input placeholder="e.g. New York" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="country"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Country</FormLabel>
+                    <FormControl>
+                      <Input placeholder="e.g. USA" {...field} />
+                    </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -162,7 +235,7 @@ const VacancyForm: React.FC<VacancyFormProps> = ({
                 name="location"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Location</FormLabel>
+                    <FormLabel>Full Location</FormLabel>
                     <FormControl>
                       <Input placeholder="e.g. New York, USA" {...field} />
                     </FormControl>
@@ -176,9 +249,23 @@ const VacancyForm: React.FC<VacancyFormProps> = ({
                 name="salary"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Salary Range (Optional)</FormLabel>
+                    <FormLabel>Salary Range</FormLabel>
                     <FormControl>
                       <Input placeholder="e.g. $80,000 - $100,000" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="applicationDeadline"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Application Deadline</FormLabel>
+                    <FormControl>
+                      <Input type="date" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -209,10 +296,10 @@ const VacancyForm: React.FC<VacancyFormProps> = ({
               name="requirements"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Requirements (Optional)</FormLabel>
+                  <FormLabel>Requirements</FormLabel>
                   <FormControl>
                     <Textarea 
-                      placeholder="List qualifications, experience, and skills needed..." 
+                      placeholder="List each requirement on a new line for better formatting..." 
                       className="min-h-[100px]"
                       {...field} 
                     />
