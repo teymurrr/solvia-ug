@@ -24,17 +24,18 @@ export interface Vacancy {
 
 // Define input type for adding a vacancy
 export interface VacancyInput {
-  title: string;
-  institution: string;
-  department: string;
+  title: string;  // Required field
+  institution: string;  // Required field
+  department: string;  // Required field
   specialty?: string;
   profession?: string;
-  contractType: string;
+  contractType: string;  // Required field
+  jobType?: string;  // Added to match usage in handleAddVacancy
   country?: string;
   city?: string;
-  location: string;
-  description: string;
-  requirements: string | string[];
+  location: string;  // Required field
+  description: string;  // Required field
+  requirements: string | string[];  // Can accept both string and array format
   applicationDeadline?: string;
   postedDate?: string;
   salary?: string;
@@ -70,8 +71,8 @@ export const useVacancies = () => {
       ...vacancyData, 
       id: Date.now().toString(),
       requirements,
-      // Ensure jobType is set for display consistency
-      jobType: vacancyData.jobType || vacancyData.contractType || 'Full-time',
+      // Ensure jobType is set from contractType if not provided
+      jobType: vacancyData.jobType || vacancyData.contractType,
       contractType: vacancyData.contractType || 'Full-time',
       // Set posted date if not provided
       postedDate: vacancyData.postedDate || new Date().toISOString(),

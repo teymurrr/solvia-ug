@@ -72,6 +72,7 @@ const InstitutionDashboard = () => {
     }));
   };
   
+  // Simple wrapper to ensure proper typing
   const handleAddVacancySubmit = (data: VacancyInput) => {
     handleAddVacancy(data);
   };

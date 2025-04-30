@@ -56,7 +56,7 @@ const VacancyForm: React.FC<VacancyFormProps> = ({
     department: "",
     specialty: "",
     profession: "",
-    contractType: "",
+    contractType: "Full-time", // Provide a default value
     country: "",
     city: "",
     location: "",
@@ -74,9 +74,19 @@ const VacancyForm: React.FC<VacancyFormProps> = ({
   });
 
   const handleSubmit = (data: VacancyFormValues) => {
-    // We now pass the data directly to onSubmit
-    // The type conversion is handled in useVacancies
-    onSubmit(data);
+    // Ensure all required fields are present before submitting
+    const vacancyInput: VacancyInput = {
+      ...data,
+      title: data.title,
+      institution: data.institution,
+      department: data.department,
+      location: data.location,
+      description: data.description,
+      requirements: data.requirements,
+      contractType: data.contractType
+    };
+    
+    onSubmit(vacancyInput);
     onOpenChange(false);
     
     toast({
@@ -148,7 +158,7 @@ const VacancyForm: React.FC<VacancyFormProps> = ({
                     <FormLabel>Contract Type</FormLabel>
                     <Select 
                       onValueChange={field.onChange} 
-                      defaultValue={field.value}
+                      defaultValue={field.value || "Full-time"}
                     >
                       <FormControl>
                         <SelectTrigger>
