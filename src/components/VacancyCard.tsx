@@ -30,6 +30,7 @@ interface VacancyCardProps {
   searchQuery?: string;
   currentPage?: number;
   selectedFilters?: any;
+  isLandingPageCard?: boolean;
 }
 
 const VacancyCard: React.FC<VacancyCardProps> = ({
@@ -54,6 +55,7 @@ const VacancyCard: React.FC<VacancyCardProps> = ({
   searchQuery,
   currentPage,
   selectedFilters,
+  isLandingPageCard = false,
 }) => {
   const { toast } = useToast();
   const navigate = useNavigate();
@@ -90,10 +92,12 @@ const VacancyCard: React.FC<VacancyCardProps> = ({
     });
   };
 
-  // Define card styling based on whether it's a dashboard card
+  // Define card styling based on whether it's a dashboard card or landing page card
   const cardClasses = isDashboardCard
     ? `border border-border shadow-sm ${className || ""} cursor-pointer`
-    : `${className || ""} border border-border shadow-sm hover:shadow-lg hover:scale-[1.03] transition-all duration-300 cursor-pointer`;
+    : isLandingPageCard 
+      ? `${className || ""} border border-border shadow-sm hover:shadow-lg hover:scale-[1.03] transition-all duration-500 ease-in-out cursor-pointer`
+      : `${className || ""} border border-border shadow-sm hover:shadow-lg hover:scale-[1.03] transition-all duration-300 cursor-pointer`;
 
   return (
     <Card className={cardClasses} onClick={handleCardClick}>
@@ -130,6 +134,7 @@ const VacancyCard: React.FC<VacancyCardProps> = ({
             searchQuery={searchQuery}
             currentPage={currentPage}
             selectedFilters={selectedFilters}
+            isLandingPageCard={isLandingPageCard}
           />
         </div>
       </CardContent>

@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -147,6 +148,19 @@
   .animate-gradient-slow {
     animation: gradient-shift 8s ease infinite;
     background-size: 200% 200%;
+  }
+  
+  /* Enhanced smooth hover animation for landing page vacancy cards */
+  .landing-vacancy-card {
+    transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1),
+                box-shadow 0.5s cubic-bezier(0.19, 1, 0.22, 1),
+                border-color 0.5s ease;
+  }
+  
+  .landing-vacancy-card:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 15px 30px rgba(9, 116, 241, 0.1);
+    border-color: rgba(9, 116, 241, 0.2);
   }
 }
 

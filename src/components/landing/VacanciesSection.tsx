@@ -36,7 +36,8 @@ const VacanciesSection: React.FC<VacanciesSectionProps> = ({ vacancies }) => {
               key={vacancy.id}
               {...vacancy}
               showSaveOption={false}
-              className="border-transparent"
+              className="border-transparent landing-vacancy-card"
+              isLandingPageCard={true}
             />
           ))}
         </div>

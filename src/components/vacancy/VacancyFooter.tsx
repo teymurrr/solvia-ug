@@ -11,6 +11,7 @@ interface VacancyFooterProps {
   searchQuery?: string;
   currentPage?: number;
   selectedFilters?: any;
+  isLandingPageCard?: boolean;
 }
 
 const VacancyFooter: React.FC<VacancyFooterProps> = ({ 
@@ -20,7 +21,8 @@ const VacancyFooter: React.FC<VacancyFooterProps> = ({
   fromDashboard = false,
   searchQuery,
   currentPage,
-  selectedFilters
+  selectedFilters,
+  isLandingPageCard = false
 }) => {
   const navigate = useNavigate();
 
@@ -56,6 +58,22 @@ const VacancyFooter: React.FC<VacancyFooterProps> = ({
   // Adjust styling based on whether it's a dashboard card
   const buttonClasses = isDashboardCard ? "px-4 py-1 h-9" : "";
 
+  // For landing page cards, only show Apply Now button
+  if (isLandingPageCard) {
+    return (
+      <div className="pt-2 flex justify-center">
+        <Button 
+          onClick={handleApply} 
+          className="w-full"
+          size={isDashboardCard ? "sm" : "default"}
+        >
+          Apply Now
+        </Button>
+      </div>
+    );
+  }
+
+  // Regular view for all other cards in the site
   return (
     <div className="pt-2 flex justify-between gap-2">
       {/* Only show View Details button if not in dashboard */}
