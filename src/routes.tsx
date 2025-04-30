@@ -10,25 +10,21 @@ const LoadingFallback = () => (
   </div>
 );
 
-// Group related components with improved code splitting
-const landingPageComponents = {
-  Index: lazy(() => import("@/pages/Index")),
-  About: lazy(() => import("@/pages/About")),
-  Contact: lazy(() => import("@/pages/Contact")),
-  Privacy: lazy(() => import("@/pages/Privacy")),
-  Terms: lazy(() => import("@/pages/Terms")),
-  EmployersLanding: lazy(() => import("@/pages/EmployersLanding")),
-};
+// Landing page components - import individually for better error handling
+const Index = lazy(() => import("@/pages/Index"));
+const About = lazy(() => import("@/pages/About"));
+const Contact = lazy(() => import("@/pages/Contact"));
+const Privacy = lazy(() => import("@/pages/Privacy"));
+const Terms = lazy(() => import("@/pages/Terms"));
+const EmployersLanding = lazy(() => import("@/pages/EmployersLanding"));
 
-// Auth pages bundle
-const authPageComponents = {
-  Signup: lazy(() => import("@/pages/Signup")),
-  ProfessionalSignup: lazy(() => import("@/pages/ProfessionalSignup")),
-  InstitutionSignup: lazy(() => import("@/pages/InstitutionSignup")),
-  Login: lazy(() => import("@/pages/Login")),
-};
+// Auth pages - import individually instead of bundling
+const Signup = lazy(() => import("@/pages/Signup"));
+const ProfessionalSignup = lazy(() => import("@/pages/ProfessionalSignup"));
+const InstitutionSignup = lazy(() => import("@/pages/InstitutionSignup"));
+const Login = lazy(() => import("@/pages/Login"));
 
-// Dashboard pages - no longer using a bundle to avoid dependency issues
+// Dashboard pages
 const ProfessionalDashboard = lazy(() => import("@/pages/ProfessionalDashboard"));
 const InstitutionDashboard = lazy(() => import("@/pages/InstitutionDashboard"));
 
@@ -38,15 +34,15 @@ const Professionals = lazy(() => import("@/pages/Professionals"));
 const Institutions = lazy(() => import("@/pages/Institutions"));
 const NotFound = lazy(() => import("@/pages/NotFound"));
 
-// Vacancy related pages - individual imports to avoid bundle failures
+// Vacancy related pages
 const Vacancies = lazy(() => import("@/pages/Vacancies"));
 const VacancyDetail = lazy(() => import("@/pages/VacancyDetail"));
 const VacancyApply = lazy(() => import("@/pages/VacancyApply"));
 
-// Messaging page - load only when needed
+// Messaging page
 const Messages = lazy(() => import("@/pages/Messages"));
 
-// Insights page - load only when needed
+// Insights page
 const Insights = lazy(() => import("@/pages/Insights"));
 
 const AppRoutes = () => {
@@ -69,7 +65,7 @@ const AppRoutes = () => {
         return <Navigate to="/dashboard/institution" replace />;
       }
     }
-    return <landingPageComponents.Index />;
+    return <Index />;
   };
   
   if (!isInitialized) {
@@ -80,17 +76,17 @@ const AppRoutes = () => {
     <Suspense fallback={<LoadingFallback />}>
       <Routes>
         <Route path="/" element={renderIndex()} />
-        <Route path="/about" element={<landingPageComponents.About />} />
-        <Route path="/contact" element={<landingPageComponents.Contact />} />
-        <Route path="/privacy" element={<landingPageComponents.Privacy />} />
-        <Route path="/terms" element={<landingPageComponents.Terms />} />
-        <Route path="/employers" element={<landingPageComponents.EmployersLanding />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/privacy" element={<Privacy />} />
+        <Route path="/terms" element={<Terms />} />
+        <Route path="/employers" element={<EmployersLanding />} />
         
-        {/* Auth routes - grouped for better code splitting */}
-        <Route path="/signup" element={<authPageComponents.Signup />} />
-        <Route path="/signup/professional" element={<authPageComponents.ProfessionalSignup />} />
-        <Route path="/signup/institution" element={<authPageComponents.InstitutionSignup />} />
-        <Route path="/login" element={<authPageComponents.Login />} />
+        {/* Auth routes */}
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/signup/professional" element={<ProfessionalSignup />} />
+        <Route path="/signup/institution" element={<InstitutionSignup />} />
+        <Route path="/login" element={<Login />} />
         
         <Route path="/learning" element={<SolviaLearning />} />
 
@@ -132,7 +128,7 @@ const AppRoutes = () => {
           }
         />
         
-        {/* Messages routes - only load if user navigates to them */}
+        {/* Messages routes */}
         <Route
           path="/messages"
           element={
@@ -158,7 +154,7 @@ const AppRoutes = () => {
           }
         />
         
-        {/* Fallback routes */}
+        {/* Fallback route */}
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Suspense>
