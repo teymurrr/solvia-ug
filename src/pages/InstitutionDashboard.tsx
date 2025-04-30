@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import MainLayout from '@/components/MainLayout';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -6,7 +5,7 @@ import VacancyForm from '@/components/VacancyForm';
 import InstitutionProfileEditForm from '@/components/InstitutionProfileEditForm';
 import { ProfileTab, VacanciesTab, TalentsTab, DashboardHeader } from '@/components/institution-dashboard';
 import { useProfessionals } from '@/hooks/useProfessionals';
-import { useVacancies } from '@/hooks/useVacancies';
+import { useVacancies, VacancyInput } from '@/hooks/useVacancies';
 
 const InstitutionDashboard = () => {
   const [vacancyFormOpen, setVacancyFormOpen] = useState(false);
@@ -73,6 +72,10 @@ const InstitutionDashboard = () => {
     }));
   };
   
+  const handleAddVacancySubmit = (data: VacancyInput) => {
+    handleAddVacancy(data);
+  };
+  
   return (
     <MainLayout hideEditProfile>
       <div className="container py-8">
@@ -116,7 +119,7 @@ const InstitutionDashboard = () => {
       <VacancyForm 
         open={vacancyFormOpen} 
         onOpenChange={setVacancyFormOpen}
-        onSubmit={handleAddVacancy}
+        onSubmit={handleAddVacancySubmit}
       />
 
       <InstitutionProfileEditForm

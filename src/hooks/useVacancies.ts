@@ -2,10 +2,48 @@
 import { useState, useEffect } from 'react';
 import { useToast } from '@/hooks/use-toast';
 
+// Define proper types for vacancy
+export interface Vacancy {
+  id: string;
+  title: string;
+  institution: string;
+  department: string;
+  specialty?: string;
+  profession?: string;
+  jobType: string;
+  contractType: string;
+  country?: string;
+  city?: string;
+  location: string;
+  description: string;
+  requirements: string[];
+  applicationDeadline?: string;
+  postedDate: string;
+  salary?: string;
+}
+
+// Define input type for adding a vacancy
+export interface VacancyInput {
+  title: string;
+  institution: string;
+  department: string;
+  specialty?: string;
+  profession?: string;
+  contractType: string;
+  country?: string;
+  city?: string;
+  location: string;
+  description: string;
+  requirements: string | string[];
+  applicationDeadline?: string;
+  postedDate?: string;
+  salary?: string;
+}
+
 export const useVacancies = () => {
   const { toast } = useToast();
   
-  const [vacancies, setVacancies] = useState<any[]>(() => {
+  const [vacancies, setVacancies] = useState<Vacancy[]>(() => {
     try {
       const savedVacancies = localStorage.getItem('institutionVacancies');
       return savedVacancies ? JSON.parse(savedVacancies) : [];
@@ -19,8 +57,8 @@ export const useVacancies = () => {
     localStorage.setItem('institutionVacancies', JSON.stringify(vacancies));
   }, [vacancies]);
 
-  const handleAddVacancy = (vacancyData: any) => {
-    // Ensure requirements is always an array for consistent display
+  const handleAddVacancy = (vacancyData: VacancyInput) => {
+    // Process requirements to ensure it's always an array
     const requirements = typeof vacancyData.requirements === 'string' 
       ? vacancyData.requirements.split('\n').filter((line: string) => line.trim() !== '')
       : Array.isArray(vacancyData.requirements) 
@@ -28,12 +66,13 @@ export const useVacancies = () => {
         : [];
         
     // Process and standardize the vacancy data
-    const newVacancy = { 
+    const newVacancy: Vacancy = { 
       ...vacancyData, 
       id: Date.now().toString(),
       requirements,
       // Ensure jobType is set for display consistency
       jobType: vacancyData.jobType || vacancyData.contractType || 'Full-time',
+      contractType: vacancyData.contractType || 'Full-time',
       // Set posted date if not provided
       postedDate: vacancyData.postedDate || new Date().toISOString(),
     };

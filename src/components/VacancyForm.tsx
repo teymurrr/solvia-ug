@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -18,6 +17,7 @@ import {
 } from '@/components/ui/form';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Briefcase } from 'lucide-react';
+import { VacancyInput } from '@/hooks/useVacancies';
 
 // Define the form schema
 const vacancyFormSchema = z.object({
@@ -42,7 +42,7 @@ type VacancyFormValues = z.infer<typeof vacancyFormSchema>;
 interface VacancyFormProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onSubmit: (data: VacancyFormValues) => void;
+  onSubmit: (data: VacancyInput) => void;
   initialData?: Partial<VacancyFormValues>;
 }
 
@@ -74,15 +74,9 @@ const VacancyForm: React.FC<VacancyFormProps> = ({
   });
 
   const handleSubmit = (data: VacancyFormValues) => {
-    // Process requirements string into an array for consistent display
-    const processedData = {
-      ...data,
-      requirements: data.requirements.split('\n').filter(line => line.trim() !== ''),
-      jobType: data.contractType, // Map contractType to jobType for display consistency
-      postedDate: data.postedDate || new Date().toISOString(),
-    };
-    
-    onSubmit(processedData);
+    // We now pass the data directly to onSubmit
+    // The type conversion is handled in useVacancies
+    onSubmit(data);
     onOpenChange(false);
     
     toast({
