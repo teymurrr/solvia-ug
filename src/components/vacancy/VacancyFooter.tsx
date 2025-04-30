@@ -8,6 +8,7 @@ interface VacancyFooterProps {
   isDashboardCard?: boolean;
   applicationLink?: string;
   fromDashboard?: boolean;
+  fromLandingPage?: boolean;
   searchQuery?: string;
   currentPage?: number;
   selectedFilters?: any;
@@ -19,6 +20,7 @@ const VacancyFooter: React.FC<VacancyFooterProps> = ({
   isDashboardCard = false, 
   applicationLink,
   fromDashboard = false,
+  fromLandingPage = false,
   searchQuery,
   currentPage,
   selectedFilters,
@@ -36,6 +38,7 @@ const VacancyFooter: React.FC<VacancyFooterProps> = ({
       navigate(`/vacancies/${id}/apply`, {
         state: { 
           fromDashboard,
+          fromLandingPage,
           searchQuery,
           currentPage,
           selectedFilters
@@ -48,6 +51,7 @@ const VacancyFooter: React.FC<VacancyFooterProps> = ({
     navigate(`/vacancies/${id}`, {
       state: { 
         fromDashboard,
+        fromLandingPage,
         searchQuery,
         currentPage,
         selectedFilters

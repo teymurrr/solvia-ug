@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
@@ -58,9 +59,9 @@ const VacancyDetail = () => {
   const vacancy = getVacancyById(id || '');
   const [isSaved, setIsSaved] = useState(false);
   
-  // Check if user came from the dashboard
+  // Enhanced navigation state tracking
   const fromDashboard = location.state?.fromDashboard || false;
-  // Get the search state
+  const fromLandingPage = location.state?.fromLandingPage || false;
   const searchQuery = location.state?.searchQuery || '';
   const currentPage = location.state?.currentPage || 1;
   const selectedFilters = location.state?.selectedFilters || {};
@@ -72,6 +73,15 @@ const VacancyDetail = () => {
       navigate('/dashboard/professional', { 
         state: { 
           activeTab: 'vacancies',
+          searchQuery,
+          currentPage,
+          selectedFilters
+        }
+      });
+    } else if (fromLandingPage) {
+      // Go back to the landing page
+      navigate('/', {
+        state: { 
           searchQuery,
           currentPage,
           selectedFilters
@@ -137,11 +147,12 @@ const VacancyDetail = () => {
     }
   };
 
-  // Handle apply button click - preserve dashboard origin and search state when applying
+  // Handle apply button click - preserve source origin and search state when applying
   const handleApply = () => {
     navigate(`/vacancies/${id}/apply`, { 
       state: { 
         fromDashboard,
+        fromLandingPage,
         searchQuery,
         currentPage,
         selectedFilters
@@ -157,7 +168,7 @@ const VacancyDetail = () => {
           className="inline-flex items-center text-primary hover:underline mb-6"
         >
           <ArrowLeft className="h-4 w-4 mr-1" />
-          {fromDashboard ? 'Back to Dashboard' : 'Back to Vacancies'}
+          {fromDashboard ? 'Back to Dashboard' : fromLandingPage ? 'Back to Home' : 'Back to Vacancies'}
         </button>
         
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">

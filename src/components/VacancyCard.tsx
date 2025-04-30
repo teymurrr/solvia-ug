@@ -82,9 +82,11 @@ const VacancyCard: React.FC<VacancyCardProps> = ({
   };
 
   const handleCardClick = () => {
+    // Pass source information to know where to navigate back to
     navigate(`/vacancies/${id}`, {
       state: { 
         fromDashboard: isDashboardCard,
+        fromLandingPage: isLandingPageCard,
         searchQuery,
         currentPage,
         selectedFilters
@@ -131,6 +133,7 @@ const VacancyCard: React.FC<VacancyCardProps> = ({
             isDashboardCard={isDashboardCard} 
             applicationLink={applicationLink}
             fromDashboard={isDashboardCard}
+            fromLandingPage={isLandingPageCard}
             searchQuery={searchQuery}
             currentPage={currentPage}
             selectedFilters={selectedFilters}
