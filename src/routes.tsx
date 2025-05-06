@@ -93,6 +93,9 @@ const AppRoutes = () => {
         <Route path="/confirm-email" element={<EmailConfirmationRequired />} />
         <Route path="/auth/callback" element={<AuthCallback />} />
         
+        {/* Make sure we have a wildcard handler for the auth paths */}
+        <Route path="/auth/*" element={<AuthCallback />} />
+        
         <Route path="/learning" element={<SolviaLearning />} />
 
         {/* Vacancy routes */}

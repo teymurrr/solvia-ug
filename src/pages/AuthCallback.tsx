@@ -15,6 +15,11 @@ const AuthCallback = () => {
   useEffect(() => {
     const handleAuthCallback = async () => {
       try {
+        console.log("Auth callback handling started");
+        console.log("Current location:", location.pathname);
+        console.log("URL hash:", location.hash);
+        console.log("URL search params:", location.search);
+        
         setIsProcessing(true);
         
         // Process the callback URL which has the access_token and refresh_token as hash parameters
@@ -31,6 +36,7 @@ const AuthCallback = () => {
         if (sessionError) throw sessionError;
         
         if (session) {
+          console.log("Session found:", session);
           toast({
             title: "Email confirmed",
             description: "Your email has been successfully verified.",
@@ -41,6 +47,9 @@ const AuthCallback = () => {
           const accessToken = hashParams.get('access_token');
           const refreshToken = hashParams.get('refresh_token');
           
+          console.log("No session found, checking for tokens");
+          console.log("Access token present:", !!accessToken);
+          
           if (accessToken) {
             const { data, error: setSessionError } = await supabase.auth.setSession({
               access_token: accessToken,
@@ -50,6 +59,7 @@ const AuthCallback = () => {
             if (setSessionError) throw setSessionError;
             
             if (data.session) {
+              console.log("Session created from tokens:", data.session);
               toast({
                 title: "Email confirmed",
                 description: "Your email has been successfully verified.",
@@ -57,11 +67,32 @@ const AuthCallback = () => {
               
               // Redirect to appropriate dashboard based on user type
               const userType = data.session.user.user_metadata.user_type;
+              console.log("User type:", userType);
               navigate(userType === 'professional' ? '/dashboard/professional' : '/dashboard/institution');
             }
           } else {
-            // No tokens available, might need to sign in
-            throw new Error("No authentication tokens found.");
+            // Try to recover the session from URL parameters (email confirmation flow)
+            const searchParams = new URLSearchParams(location.search);
+            const token = searchParams.get('token') || searchParams.get('access_token');
+            const type = searchParams.get('type');
+            
+            console.log("Trying to recover from search params - token present:", !!token, "type:", type);
+            
+            if (token && type === 'email_confirmation') {
+              // This means we're in the email confirmation flow
+              toast({
+                title: "Processing confirmation",
+                description: "Please wait while we verify your email...",
+              });
+              
+              // Wait a moment before redirecting to let Supabase process the confirmation
+              setTimeout(() => {
+                navigate('/login');
+              }, 3000);
+            } else {
+              // No tokens available, might need to sign in
+              throw new Error("No authentication tokens found. Please try signing in again.");
+            }
           }
         }
       } catch (error: any) {
