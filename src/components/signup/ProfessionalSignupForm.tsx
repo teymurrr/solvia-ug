@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
@@ -5,14 +6,14 @@ import { Form } from '@/components/ui/form';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { useNavigate } from 'react-router-dom';
-import { useAuth, UserType } from '@/contexts/AuthContext';
+import { useAuth } from '@/contexts/AuthContext';
 import { professionalSignupSchema, ProfessionalSignupFormValues } from '@/schemas/professionalSignupSchema';
 import { NameFields } from './NameFields';
 import { EmailField } from './EmailField';
 import { SpecialtyField } from './SpecialtyField';
 import { PasswordFields } from './PasswordFields';
 import { TermsAgreement } from './TermsAgreement';
-import { supabase } from '@/integrations/supabase/client';
+import { RelocationOption } from './RelocationOption';
 
 export const ProfessionalSignupForm: React.FC = () => {
   const { toast } = useToast();
@@ -65,6 +66,7 @@ export const ProfessionalSignupForm: React.FC = () => {
         <NameFields form={form} />
         <EmailField form={form} />
         <SpecialtyField form={form} />
+        <RelocationOption form={form} />
         <PasswordFields form={form} />
         <TermsAgreement form={form} />
         

@@ -11,7 +11,7 @@ interface AuthContextType {
   loading: boolean;
   isLoggedIn: boolean;
   userType: UserType | null;
-  signIn: (email: string, password: string, rememberMe?: boolean) => Promise<void>;
+  signIn: (email: string, password: string) => Promise<void>;
   signUp: (
     email: string, 
     password: string, 
@@ -22,6 +22,9 @@ interface AuthContextType {
       user_type: UserType;
       specialty?: string;
       open_to_relocation?: boolean;
+      institution_type?: string;
+      location?: string;
+      website?: string;
     }
   ) => Promise<void>;
   signOut: () => Promise<void>;
@@ -38,6 +41,24 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   React.useEffect(() => {
     const initSession = async () => {
+      // Set up auth state listener FIRST
+      const { data: { subscription } } = supabase.auth.onAuthStateChange(
+        (event, session) => {
+          setSession(session);
+          setUser(session?.user ?? null);
+          setIsLoggedIn(!!session);
+          
+          if (session?.user?.user_metadata) {
+            setUserType(session.user.user_metadata.user_type);
+          } else {
+            setUserType(null);
+          }
+          
+          setLoading(false);
+        }
+      );
+
+      // THEN check for existing session
       const { data } = await supabase.auth.getSession();
       setSession(data.session);
       setUser(data.session?.user ?? null);
@@ -48,45 +69,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
       
       setLoading(false);
+
+      return () => {
+        subscription.unsubscribe();
+      };
     };
 
     initSession();
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (_event, session) => {
-        setSession(session);
-        setUser(session?.user ?? null);
-        setIsLoggedIn(!!session);
-        
-        if (session?.user?.user_metadata) {
-          setUserType(session.user.user_metadata.user_type);
-        } else {
-          setUserType(null);
-        }
-        
-        setLoading(false);
-      }
-    );
-
-    return () => {
-      subscription.unsubscribe();
-    };
   }, []);
 
-  const signIn = async (email: string, password: string, rememberMe = false) => {
-    const { error, data } = await supabase.auth.signInWithPassword({
+  const signIn = async (email: string, password: string) => {
+    const { error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
 
     if (error) throw error;
-
-    if (rememberMe && session) {
-      await supabase.auth.setSession({
-        refresh_token: session.refresh_token || '',
-        access_token: session.access_token || '',
-      });
-    }
   };
 
   const signUp = async (email: string, password: string, metadata?: { 
@@ -96,6 +94,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     user_type: UserType;
     specialty?: string;
     open_to_relocation?: boolean;
+    institution_type?: string;
+    location?: string;
+    website?: string;
   }) => {
     const { error } = await supabase.auth.signUp({
       email,

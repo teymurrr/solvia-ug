@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
@@ -25,7 +26,7 @@ const Login = () => {
   const [showPassword, setShowPassword] = React.useState(false);
   const [userType, setUserType] = useState<UserType>('professional');
   const { toast } = useToast();
-  const { signIn } = useAuth();
+  const { signIn, userType: authUserType } = useAuth();
   const navigate = useNavigate();
   
   const form = useForm<LoginFormValues>({
@@ -39,14 +40,19 @@ const Login = () => {
 
   const onSubmit = async (data: LoginFormValues) => {
     try {
-      await signIn(data.email, data.password, userType === 'professional');
+      await signIn(data.email, data.password);
       
       toast({
         title: "Login Successful",
         description: "You are now logged in.",
       });
       
-      navigate(userType === 'professional' ? '/dashboard/professional' : '/dashboard/institution');
+      // Wait a bit to let the auth state update before determining where to navigate
+      setTimeout(() => {
+        const actualUserType = authUserType || userType;
+        navigate(actualUserType === 'professional' ? '/dashboard/professional' : '/dashboard/institution');
+      }, 100);
+      
     } catch (error) {
       console.error('Login error:', error);
       toast({

@@ -35,10 +35,11 @@ export const InstitutionSignupForm = () => {
   const onSubmit = async (data: InstitutionSignupFormValues) => {
     try {
       await signUp(data.email, data.password, {
-        first_name: data.institutionName,
-        last_name: data.institutionType,
-        user_type: 'institution',
         name: data.institutionName,
+        user_type: 'institution',
+        institution_type: data.institutionType,
+        location: data.location,
+        website: data.website,
       });
       
       toast({
