@@ -1,3 +1,4 @@
+
 import { lazy, Suspense, useState, useEffect } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import ProtectedRoute from "@/components/ProtectedRoute";
@@ -23,6 +24,7 @@ const Signup = lazy(() => import("@/pages/Signup"));
 const ProfessionalSignup = lazy(() => import("@/pages/ProfessionalSignup"));
 const InstitutionSignup = lazy(() => import("@/pages/InstitutionSignup"));
 const Login = lazy(() => import("@/pages/Login"));
+const EmailConfirmationRequired = lazy(() => import("@/pages/EmailConfirmationRequired"));
 
 // Dashboard pages
 const ProfessionalDashboard = lazy(() => import("@/pages/ProfessionalDashboard"));
@@ -87,6 +89,7 @@ const AppRoutes = () => {
         <Route path="/signup/professional" element={<ProfessionalSignup />} />
         <Route path="/signup/institution" element={<InstitutionSignup />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/confirm-email" element={<EmailConfirmationRequired />} />
         
         <Route path="/learning" element={<SolviaLearning />} />
 

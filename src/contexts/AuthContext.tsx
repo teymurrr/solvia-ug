@@ -105,6 +105,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       if (error) {
         console.error("Sign-in error:", error);
+        
+        // Check specifically for email confirmation errors
+        if (error.message.includes('Email not confirmed')) {
+          // Store the email for the confirmation page
+          localStorage.setItem('pendingConfirmationEmail', email);
+          throw new Error("Email not confirmed. Please check your inbox and confirm your email address.");
+        }
+        
         throw error;
       }
       
@@ -140,8 +148,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         console.error("Sign-up error:", error);
         throw error;
       }
+
+      // Store the email for the confirmation page
+      localStorage.setItem('pendingConfirmationEmail', email);
       
       console.log("Sign-up successful:", data.user ? "User created" : "No user");
+      
+      // Return the user and session data
+      return data;
     } catch (error) {
       console.error("Unexpected error during sign-up:", error);
       throw error;

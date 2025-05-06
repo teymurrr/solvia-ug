@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useNavigate } from 'react-router-dom';
@@ -17,6 +17,7 @@ export const InstitutionSignupForm = () => {
   const { toast } = useToast();
   const { signUp } = useAuth();
   const navigate = useNavigate();
+  const [isSubmitting, setIsSubmitting] = useState(false);
   
   const form = useForm<InstitutionSignupFormValues>({
     resolver: zodResolver(institutionSignupSchema),
@@ -34,6 +35,8 @@ export const InstitutionSignupForm = () => {
 
   const onSubmit = async (data: InstitutionSignupFormValues) => {
     try {
+      setIsSubmitting(true);
+      
       await signUp(data.email, data.password, {
         name: data.institutionName,
         user_type: 'institution',
@@ -44,10 +47,10 @@ export const InstitutionSignupForm = () => {
       
       toast({
         title: "Account created",
-        description: "Your institution account has been created successfully.",
+        description: "Your institution account has been created successfully. Please check your email to confirm your account.",
       });
       
-      navigate('/auth');
+      navigate('/confirm-email');
     } catch (error) {
       console.error('Institution Signup error:', error);
       toast({
@@ -55,6 +58,8 @@ export const InstitutionSignupForm = () => {
         description: "There was an error creating your account. Please try again.",
         variant: "destructive",
       });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -66,8 +71,8 @@ export const InstitutionSignupForm = () => {
         <PasswordFields form={form} />
         <TermsAgreement form={form} />
         
-        <Button type="submit" className="w-full">
-          Create institution account
+        <Button type="submit" className="w-full" disabled={isSubmitting}>
+          {isSubmitting ? "Creating account..." : "Create institution account"}
         </Button>
       </form>
     </Form>

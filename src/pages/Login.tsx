@@ -63,29 +63,31 @@ const Login = () => {
         navigate(targetPath);
       }, 500);
       
-    } catch (error) {
+    } catch (error: any) {
       console.error('Login error:', error);
-      toast({
-        title: "Login Failed",
-        description: "Please check your email and password and try again.",
-        variant: "destructive",
-      });
+      
+      if (error.message && error.message.includes('Email not confirmed')) {
+        // Store email for confirmation page
+        localStorage.setItem('pendingConfirmationEmail', data.email);
+        
+        toast({
+          title: "Email Not Confirmed",
+          description: "Please check your inbox and confirm your email before logging in.",
+          variant: "destructive",
+        });
+        
+        navigate('/confirm-email');
+      } else {
+        toast({
+          title: "Login Failed",
+          description: "Please check your email and password and try again.",
+          variant: "destructive",
+        });
+      }
     } finally {
       setIsSubmitting(false);
     }
   };
-
-  React.useEffect(() => {
-    // Diagnostic check for localStorage availability
-    try {
-      localStorage.setItem('loginTest', 'test');
-      const test = localStorage.getItem('loginTest');
-      console.log("LocalStorage test:", test === 'test' ? "working properly" : "not working properly");
-      localStorage.removeItem('loginTest');
-    } catch (e) {
-      console.error("LocalStorage not available:", e);
-    }
-  }, []);
 
   return (
     <MainLayout>
@@ -218,6 +220,14 @@ const Login = () => {
                 className="text-medical-700 hover:text-medical-800 font-medium"
               >
                 Create one
+              </Link>
+            </div>
+            <div className="text-sm text-center text-muted-foreground">
+              <Link 
+                to="/confirm-email" 
+                className="text-medical-700 hover:text-medical-800 font-medium"
+              >
+                Need to confirm your email?
               </Link>
             </div>
           </CardFooter>

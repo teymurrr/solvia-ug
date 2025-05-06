@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { Form } from '@/components/ui/form';
@@ -19,6 +19,7 @@ export const ProfessionalSignupForm: React.FC = () => {
   const { toast } = useToast();
   const { signUp } = useAuth();
   const navigate = useNavigate();
+  const [isSubmitting, setIsSubmitting] = useState(false);
   
   const form = useForm<ProfessionalSignupFormValues>({
     resolver: zodResolver(professionalSignupSchema),
@@ -36,6 +37,8 @@ export const ProfessionalSignupForm: React.FC = () => {
 
   const onSubmit = async (data: ProfessionalSignupFormValues) => {
     try {
+      setIsSubmitting(true);
+      
       await signUp(data.email, data.password, {
         first_name: data.firstName,
         last_name: data.lastName,
@@ -49,7 +52,7 @@ export const ProfessionalSignupForm: React.FC = () => {
         description: "Your professional account has been created successfully. Please check your email to confirm your account.",
       });
       
-      navigate('/auth');
+      navigate('/confirm-email');
     } catch (error) {
       console.error('Signup error:', error);
       toast({
@@ -57,6 +60,8 @@ export const ProfessionalSignupForm: React.FC = () => {
         description: "An error occurred during signup. This email might already be registered.",
         variant: "destructive"
       });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -70,8 +75,8 @@ export const ProfessionalSignupForm: React.FC = () => {
         <PasswordFields form={form} />
         <TermsAgreement form={form} />
         
-        <Button type="submit" className="w-full">
-          Create professional account
+        <Button type="submit" className="w-full" disabled={isSubmitting}>
+          {isSubmitting ? "Creating account..." : "Create professional account"}
         </Button>
       </form>
     </Form>
