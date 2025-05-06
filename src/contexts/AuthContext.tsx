@@ -1,4 +1,3 @@
-
 import * as React from 'react';
 import { Session, User } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
@@ -154,8 +153,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       
       console.log("Sign-up successful:", data.user ? "User created" : "No user");
       
-      // Return the user and session data
-      return data;
+      // Return void to match the expected return type
     } catch (error) {
       console.error("Unexpected error during sign-up:", error);
       throw error;

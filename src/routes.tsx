@@ -25,6 +25,7 @@ const ProfessionalSignup = lazy(() => import("@/pages/ProfessionalSignup"));
 const InstitutionSignup = lazy(() => import("@/pages/InstitutionSignup"));
 const Login = lazy(() => import("@/pages/Login"));
 const EmailConfirmationRequired = lazy(() => import("@/pages/EmailConfirmationRequired"));
+const AuthCallback = lazy(() => import("@/pages/AuthCallback"));
 
 // Dashboard pages
 const ProfessionalDashboard = lazy(() => import("@/pages/ProfessionalDashboard"));
@@ -90,6 +91,7 @@ const AppRoutes = () => {
         <Route path="/signup/institution" element={<InstitutionSignup />} />
         <Route path="/login" element={<Login />} />
         <Route path="/confirm-email" element={<EmailConfirmationRequired />} />
+        <Route path="/auth/callback" element={<AuthCallback />} />
         
         <Route path="/learning" element={<SolviaLearning />} />
 
