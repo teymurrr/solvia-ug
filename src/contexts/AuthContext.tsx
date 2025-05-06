@@ -41,14 +41,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   React.useEffect(() => {
     const initSession = async () => {
+      console.log("Initializing auth session...");
+      
       // Set up auth state listener FIRST
       const { data: { subscription } } = supabase.auth.onAuthStateChange(
         (event, session) => {
+          console.log("Auth state change event:", event);
           setSession(session);
           setUser(session?.user ?? null);
           setIsLoggedIn(!!session);
           
           if (session?.user?.user_metadata) {
+            console.log("User metadata:", session.user.user_metadata);
             setUserType(session.user.user_metadata.user_type);
           } else {
             setUserType(null);
@@ -59,16 +63,29 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       );
 
       // THEN check for existing session
-      const { data } = await supabase.auth.getSession();
-      setSession(data.session);
-      setUser(data.session?.user ?? null);
-      setIsLoggedIn(!!data.session);
-      
-      if (data.session?.user?.user_metadata) {
-        setUserType(data.session.user.user_metadata.user_type);
+      try {
+        console.log("Checking for existing session...");
+        const { data, error } = await supabase.auth.getSession();
+        
+        if (error) {
+          console.error("Error getting session:", error);
+        }
+        
+        console.log("Got session data:", data.session ? "Session exists" : "No session");
+        
+        setSession(data.session);
+        setUser(data.session?.user ?? null);
+        setIsLoggedIn(!!data.session);
+        
+        if (data.session?.user?.user_metadata) {
+          console.log("User metadata from session:", data.session.user.user_metadata);
+          setUserType(data.session.user.user_metadata.user_type);
+        }
+      } catch (error) {
+        console.error("Unexpected error during session initialization:", error);
+      } finally {
+        setLoading(false);
       }
-      
-      setLoading(false);
 
       return () => {
         subscription.unsubscribe();
@@ -79,12 +96,23 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, []);
 
   const signIn = async (email: string, password: string) => {
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
+    console.log(`Attempting to sign in with email: ${email}`);
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
 
-    if (error) throw error;
+      if (error) {
+        console.error("Sign-in error:", error);
+        throw error;
+      }
+      
+      console.log("Sign-in successful:", data.user ? "User authenticated" : "No user");
+    } catch (error) {
+      console.error("Unexpected error during sign-in:", error);
+      throw error;
+    }
   };
 
   const signUp = async (email: string, password: string, metadata?: { 
@@ -98,17 +126,30 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     location?: string;
     website?: string;
   }) => {
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: metadata,
-      },
-    });
-    if (error) throw error;
+    console.log(`Attempting to sign up with email: ${email}`);
+    try {
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: metadata,
+        },
+      });
+      
+      if (error) {
+        console.error("Sign-up error:", error);
+        throw error;
+      }
+      
+      console.log("Sign-up successful:", data.user ? "User created" : "No user");
+    } catch (error) {
+      console.error("Unexpected error during sign-up:", error);
+      throw error;
+    }
   };
 
   const signOut = async () => {
+    console.log("Attempting to sign out");
     try {
       // First ensure we clear the local state regardless of API success
       setSession(null);
@@ -118,7 +159,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       
       // Then attempt to sign out from Supabase
       const { error } = await supabase.auth.signOut();
-      if (error) throw error;
+      if (error) {
+        console.error("Sign-out error:", error);
+        throw error;
+      }
+      
+      console.log("Sign-out successful");
     } catch (error) {
       console.error('Error signing out:', error);
       // We don't rethrow here to ensure the UI gets updated even if API fails

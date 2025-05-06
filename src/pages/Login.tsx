@@ -25,6 +25,7 @@ type LoginFormValues = z.infer<typeof loginSchema>;
 const Login = () => {
   const [showPassword, setShowPassword] = React.useState(false);
   const [userType, setUserType] = useState<UserType>('professional');
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
   const { signIn, userType: authUserType } = useAuth();
   const navigate = useNavigate();
@@ -39,7 +40,11 @@ const Login = () => {
   });
 
   const onSubmit = async (data: LoginFormValues) => {
+    console.log("Login attempt:", { email: data.email, userType });
+    setIsSubmitting(true);
+    
     try {
+      console.log("Calling signIn function...");
       await signIn(data.email, data.password);
       
       toast({
@@ -50,18 +55,37 @@ const Login = () => {
       // Wait a bit to let the auth state update before determining where to navigate
       setTimeout(() => {
         const actualUserType = authUserType || userType;
-        navigate(actualUserType === 'professional' ? '/dashboard/professional' : '/dashboard/institution');
-      }, 100);
+        const targetPath = actualUserType === 'professional' 
+          ? '/dashboard/professional' 
+          : '/dashboard/institution';
+          
+        console.log(`Redirecting to: ${targetPath}`);
+        navigate(targetPath);
+      }, 500);
       
     } catch (error) {
       console.error('Login error:', error);
       toast({
         title: "Login Failed",
-        description: "Invalid email or password. Please try again.",
+        description: "Please check your email and password and try again.",
         variant: "destructive",
       });
+    } finally {
+      setIsSubmitting(false);
     }
   };
+
+  React.useEffect(() => {
+    // Diagnostic check for localStorage availability
+    try {
+      localStorage.setItem('loginTest', 'test');
+      const test = localStorage.getItem('loginTest');
+      console.log("LocalStorage test:", test === 'test' ? "working properly" : "not working properly");
+      localStorage.removeItem('loginTest');
+    } catch (e) {
+      console.error("LocalStorage not available:", e);
+    }
+  }, []);
 
   return (
     <MainLayout>
@@ -176,8 +200,12 @@ const Login = () => {
                   </Link>
                 </div>
                 
-                <Button type="submit" className="w-full">
-                  Log in as {userType === 'professional' ? 'Professional' : 'Institution'}
+                <Button 
+                  type="submit" 
+                  className="w-full"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? 'Logging in...' : `Log in as ${userType === 'professional' ? 'Professional' : 'Institution'}`}
                 </Button>
               </form>
             </Form>
