@@ -11,6 +11,9 @@ import { UseFormReturn, useFieldArray } from 'react-hook-form';
 import { ProfileFormValues } from './types';
 import { availableLanguages } from '@/data/languages';
 
+// Ensure availableLanguages is always an array
+const DEFAULT_LANGUAGES = ["English", "French", "German", "Spanish", "Italian", "Portuguese", "Dutch", "Russian", "Chinese", "Arabic", "Japanese"];
+
 interface LanguageSectionProps {
   form: UseFormReturn<ProfileFormValues>;
   languageLevels: string[];
@@ -27,6 +30,11 @@ const LanguageSection: React.FC<LanguageSectionProps> = ({
     control: form.control,
     name: "languages",
   });
+
+  // Ensure we always have a valid array of languages
+  const languageOptions = Array.isArray(availableLanguages) && availableLanguages.length > 0 
+    ? availableLanguages 
+    : DEFAULT_LANGUAGES;
 
   return (
     <div className="space-y-4">
@@ -89,23 +97,18 @@ const LanguageSection: React.FC<LanguageSectionProps> = ({
                           <CommandInput placeholder="Search language..." />
                           <CommandEmpty>No language found.</CommandEmpty>
                           <CommandGroup>
-                            {/* Ensure availableLanguages is defined and is an array */}
-                            {Array.isArray(availableLanguages) && availableLanguages.length > 0 ? (
-                              availableLanguages.map((language) => (
-                                <CommandItem
-                                  key={language}
-                                  value={language}
-                                  onSelect={() => {
-                                    field.onChange(language);
-                                    setOpenCommandMenus((prev) => ({ ...prev, [index]: false }));
-                                  }}
-                                >
-                                  {language}
-                                </CommandItem>
-                              ))
-                            ) : (
-                              <CommandItem disabled>No languages available</CommandItem>
-                            )}
+                            {languageOptions.map((language) => (
+                              <CommandItem
+                                key={language}
+                                value={language}
+                                onSelect={() => {
+                                  field.onChange(language);
+                                  setOpenCommandMenus((prev) => ({ ...prev, [index]: false }));
+                                }}
+                              >
+                                {language}
+                              </CommandItem>
+                            ))}
                           </CommandGroup>
                         </Command>
                       </PopoverContent>

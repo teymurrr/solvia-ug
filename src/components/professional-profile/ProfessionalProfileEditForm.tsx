@@ -22,16 +22,21 @@ const ProfessionalProfileEditForm: React.FC<ProfessionalProfileEditFormProps> = 
   // Always refresh profile data when the dialog opens
   useEffect(() => {
     if (open) {
-      refreshProfileData();
+      console.log("ProfessionalProfileEditForm: Dialog opened, refreshing profile data");
+      refreshProfileData().catch(error => {
+        console.error("Error refreshing profile data:", error);
+      });
     }
   }, [open, refreshProfileData]);
   
-  return <ProfileFormDialog 
-    open={open} 
-    onOpenChange={onOpenChange} 
-    initialData={initialData}
-    onSave={onSave}
-  />;
+  return (
+    <ProfileFormDialog 
+      open={open} 
+      onOpenChange={onOpenChange} 
+      initialData={initialData}
+      onSave={onSave}
+    />
+  );
 };
 
 export default ProfessionalProfileEditForm;

@@ -109,10 +109,11 @@ const CommandSeparator = React.forwardRef<
 ))
 CommandSeparator.displayName = CommandPrimitive.Separator.displayName
 
+// Fix to make the CommandItem more robust against undefined values
 const CommandItem = React.forwardRef<
   React.ElementRef<typeof CommandPrimitive.Item>,
   React.ComponentPropsWithoutRef<typeof CommandPrimitive.Item> & { value?: string }
->(({ className, value, ...props }, ref) => (
+>(({ className, value = "", ...props }, ref) => (
   <CommandPrimitive.Item
     ref={ref}
     className={cn(
