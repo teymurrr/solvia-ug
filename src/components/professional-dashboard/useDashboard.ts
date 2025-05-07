@@ -33,7 +33,7 @@ export default function useDashboard() {
   const [profileData, setProfileData] = useState<ProfileFormValues>(defaultProfileData);
   const [savedTabView, setSavedTabView] = useState<'saved' | 'applied'>('saved');
   const [loading, setLoading] = useState(true);
-  const { loadProfileData } = useProfileData();
+  const { loadProfileData, profileData: hookProfileData, lastUpdated, refreshProfileData } = useProfileData();
 
   const jobTypes = ['Full-time', 'Part-time', 'Internship', 'Volunteer'];
   const countries = ['USA'];
@@ -52,24 +52,29 @@ export default function useDashboard() {
     setLoading(false);
   }, []);
 
+  // Update profile data when it changes in the hook
+  useEffect(() => {
+    if (hookProfileData) {
+      console.log("Updating dashboard with fresh profile data:", hookProfileData);
+      setProfileData(hookProfileData);
+    }
+  }, [hookProfileData, lastUpdated]);
+
   // Load profile data on component mount
   useEffect(() => {
     const fetchProfileData = async () => {
       setLoading(true);
       try {
-        const data = await loadProfileData();
-        if (data) {
-          setProfileData(data);
-        }
+        await refreshProfileData();
       } catch (error) {
-        console.error("Error loading profile data:", error);
+        console.error("Error refreshing profile data:", error);
       } finally {
         setLoading(false);
       }
     };
     
     fetchProfileData();
-  }, [loadProfileData]);
+  }, [refreshProfileData]);
 
   // Save vacancies to localStorage when they change
   useEffect(() => {
@@ -95,9 +100,11 @@ export default function useDashboard() {
     setCurrentPage(1);
   }, []);
 
-  const handleProfileSave = useCallback((data: ProfileFormValues) => {
+  const handleProfileSave = useCallback(async (data: ProfileFormValues) => {
     setProfileData(data);
-  }, []);
+    // After profile save, ensure we refresh the data from the database
+    await refreshProfileData();
+  }, [refreshProfileData]);
 
   return {
     searchQuery,
@@ -122,6 +129,7 @@ export default function useDashboard() {
     toggleJobType,
     resetFilters,
     handleProfileSave,
-    loading
+    loading,
+    refreshProfileData
   };
 }

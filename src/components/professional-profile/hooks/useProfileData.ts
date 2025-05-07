@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
 import { ProfileFormValues } from '../types';
@@ -11,6 +11,7 @@ export const useProfileData = () => {
   const [loading, setLoading] = useState(false);
   const [loadingInitial, setLoadingInitial] = useState(true);
   const [profileData, setProfileData] = useState<ProfileFormValues | null>(null);
+  const [lastUpdated, setLastUpdated] = useState<number>(Date.now());
 
   const saveProfileData = async (data: ProfileFormValues) => {
     if (!user) {
@@ -29,6 +30,7 @@ export const useProfileData = () => {
       // Update local state if save was successful
       if (result && result.success) {
         setProfileData(data);
+        setLastUpdated(Date.now()); // Update the timestamp to trigger refreshes
         toast({
           title: "Profile Updated",
           description: "Your profile has been successfully saved.",
@@ -49,7 +51,7 @@ export const useProfileData = () => {
     }
   };
 
-  const loadProfileData = async () => {
+  const loadProfileData = useCallback(async (forceRefresh = false) => {
     if (!user) {
       setLoadingInitial(false);
       return null;
@@ -57,6 +59,7 @@ export const useProfileData = () => {
     
     setLoading(true);
     try {
+      console.log('Loading fresh profile data for user:', user.id);
       const data = await loadProfileFromDb(user.id);
       if (data) {
         setProfileData(data);
@@ -74,22 +77,29 @@ export const useProfileData = () => {
       setLoading(false);
       setLoadingInitial(false);
     }
-  };
+  }, [user, toast]);
 
-  // Load profile data on mount
+  // Force refresh of profile data 
+  const refreshProfileData = useCallback(() => {
+    return loadProfileData(true);
+  }, [loadProfileData]);
+
+  // Load profile data on mount or when user changes
   useEffect(() => {
     if (user) {
       loadProfileData();
     } else {
       setLoadingInitial(false);
     }
-  }, [user]);
+  }, [user, loadProfileData]);
 
   return { 
     saveProfileData, 
-    loadProfileData, 
+    loadProfileData,
+    refreshProfileData,
     loading, 
     loadingInitial,
-    profileData 
+    profileData,
+    lastUpdated
   };
 };

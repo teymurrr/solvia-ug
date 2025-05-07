@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useToast } from '@/hooks/use-toast';
@@ -17,7 +17,7 @@ export const useProfileEditForm = (
     initialData.fspCertificateFile || null
   );
   const [loading, setLoading] = useState(false);
-  const { saveProfileData } = useProfileData();
+  const { saveProfileData, refreshProfileData } = useProfileData();
 
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(profileFormSchema),
@@ -29,6 +29,22 @@ export const useProfileEditForm = (
       languages: initialData.languages || [{ language: "", level: "A1", certificate: "" }],
     },
   });
+
+  // Update form when initialData changes (e.g., when fresh data is loaded)
+  useEffect(() => {
+    if (initialData) {
+      form.reset({
+        ...initialData,
+        experiences: initialData.experiences || [{ hospital: "", location: "", role: "", startDate: "", endDate: "", current: false }],
+        education: initialData.education || [{ institution: "", degree: "", field: "", startDate: "", endDate: "", current: false }],
+        languages: initialData.languages || [{ language: "", level: "A1", certificate: "" }],
+      });
+      
+      // Also update previews
+      setImagePreview(initialData.profileImage || null);
+      setSfpCertificatePreview(initialData.fspCertificateFile || null);
+    }
+  }, [initialData, form]);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -77,6 +93,9 @@ export const useProfileEditForm = (
       
       // Fixed type check - check for result.success instead of comparing result to boolean
       if (result && result.success) {
+        // Refresh profile data after saving
+        await refreshProfileData();
+        
         // Handle success case
         if (onSave) {
           onSave(data);
