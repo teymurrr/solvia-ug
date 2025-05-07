@@ -5,8 +5,6 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Plus, Trash2, Upload, Check } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from '@/components/ui/command';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { UseFormReturn, useFieldArray } from 'react-hook-form';
 import { ProfileFormValues } from './types';
 import { availableLanguages, DEFAULT_LANGUAGES, getSafeLanguages } from '@/data/languages';
@@ -22,7 +20,6 @@ const LanguageSection: React.FC<LanguageSectionProps> = ({
   languageLevels,
   handleLanguageCertificateChange 
 }) => {
-  const [openCommandMenus, setOpenCommandMenus] = useState<{ [key: number]: boolean }>({});
   const { fields, append, remove } = useFieldArray({
     control: form.control,
     name: "languages",
@@ -77,52 +74,30 @@ const LanguageSection: React.FC<LanguageSectionProps> = ({
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Language</FormLabel>
-                  <FormControl>
-                    <Popover
-                      open={openCommandMenus[index]}
-                      onOpenChange={(open) => {
-                        setOpenCommandMenus((prev) => ({ ...prev, [index]: open }));
-                      }}
-                    >
-                      <PopoverTrigger asChild>
-                        <FormControl>
-                          <Button
-                            variant="outline"
-                            role="combobox"
-                            className="w-full justify-between"
-                          >
-                            {field.value || "Select language"}
-                          </Button>
-                        </FormControl>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-[200px] p-0">
-                        <Command>
-                          <CommandInput placeholder="Search language..." />
-                          <CommandEmpty>No language found.</CommandEmpty>
-                          <CommandGroup>
-                            {languageOptions.length > 0 ? (
-                              languageOptions.map((language) => (
-                                <CommandItem
-                                  key={language}
-                                  value={language}
-                                  onSelect={() => {
-                                    field.onChange(language);
-                                    setOpenCommandMenus((prev) => ({ ...prev, [index]: false }));
-                                  }}
-                                >
-                                  {language}
-                                </CommandItem>
-                              ))
-                            ) : (
-                              <CommandItem value="no-options">
-                                No languages available
-                              </CommandItem>
-                            )}
-                          </CommandGroup>
-                        </Command>
-                      </PopoverContent>
-                    </Popover>
-                  </FormControl>
+                  <Select
+                    onValueChange={field.onChange}
+                    value={field.value || ""}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select language" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent className="max-h-[300px]">
+                      {languageOptions.length > 0 ? (
+                        languageOptions.map((language) => (
+                          <SelectItem key={language} value={language}>
+                            {language}
+                          </SelectItem>
+                        ))
+                      ) : (
+                        <SelectItem value="no-options" disabled>
+                          No languages available
+                        </SelectItem>
+                      )}
+                    </SelectContent>
+                  </Select>
                   <FormMessage />
                 </FormItem>
               )}

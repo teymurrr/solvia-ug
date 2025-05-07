@@ -4,10 +4,15 @@ import { Language, translations } from '@/utils/i18n/translations';
 import { availableLanguages, DEFAULT_LANGUAGES, getSafeLanguages } from '@/data/languages';
 
 const mapBrowserLangToSupported = (browserLang: string): Language => {
-  const lang = browserLang.split('-')[0];
-  if (lang === 'de') return 'de';
-  if (lang === 'es') return 'es';
-  return 'en';
+  try {
+    const lang = browserLang.split('-')[0];
+    if (lang === 'de') return 'de';
+    if (lang === 'es') return 'es';
+    return 'en';
+  } catch (error) {
+    console.error("Error mapping browser language:", error);
+    return 'en';  // Default to English on error
+  }
 };
 
 export const useLanguage = () => {
@@ -18,6 +23,11 @@ export const useLanguage = () => {
     // Log warning if language data is missing or invalid
     if (!Array.isArray(availableLanguages) || availableLanguages.length === 0) {
       console.warn("Warning: availableLanguages is not properly defined, using defaults");
+    }
+
+    // Validate translations exist for each language
+    if (!translations || typeof translations !== 'object') {
+      console.error("Error: translations object is invalid");
     }
   }, []);
 
@@ -33,11 +43,20 @@ export const useLanguage = () => {
     }
   }, []);
 
+  // Ensure we have valid translations even if there's an error
+  const getTranslations = () => {
+    if (!translations || !translations[currentLanguage]) {
+      console.error(`Missing translations for ${currentLanguage}, falling back to English`);
+      return translations?.en || {};
+    }
+    return translations[currentLanguage];
+  };
+
   // Use the safe helper function to always return a valid array
   const safeLanguages = getSafeLanguages();
 
   return {
-    t: translations[currentLanguage],
+    t: getTranslations(),
     currentLanguage,
     setLanguage: setCurrentLanguage,
     availableLanguages: safeLanguages

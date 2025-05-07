@@ -114,27 +114,33 @@ const CommandItem = React.forwardRef<
   React.ElementRef<typeof CommandPrimitive.Item>,
   React.ComponentPropsWithoutRef<typeof CommandPrimitive.Item> & { value?: string }
 >(({ className, value = "", children, ...props }, ref) => {
-  // Ensure we have a string value to prevent the "undefined is not iterable" error
-  const safeValue = value != null ? String(value) : "";
-  
-  // Prevent rendering if value is null or undefined
-  if (value == null) {
-    console.warn("CommandItem received null or undefined value, using empty string instead");
+  try {
+    // Ensure we have a string value to prevent the "undefined is not iterable" error
+    const safeValue = value != null ? String(value) : "";
+    
+    // Prevent rendering if value is null or undefined
+    if (value == null) {
+      console.warn("CommandItem received null or undefined value, using empty string instead");
+    }
+    
+    return (
+      <CommandPrimitive.Item
+        ref={ref}
+        className={cn(
+          "relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none data-[disabled=true]:pointer-events-none data-[selected='true']:bg-accent data-[selected=true]:text-accent-foreground data-[disabled=true]:opacity-50",
+          className
+        )}
+        value={safeValue}
+        {...props}
+      >
+        {children}
+      </CommandPrimitive.Item>
+    );
+  } catch (error) {
+    console.error("Error rendering CommandItem:", error);
+    // Return a fallback empty div to prevent complete UI crash
+    return <div className="px-2 py-1.5 text-sm opacity-50">Error rendering item</div>;
   }
-  
-  return (
-    <CommandPrimitive.Item
-      ref={ref}
-      className={cn(
-        "relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none data-[disabled=true]:pointer-events-none data-[selected='true']:bg-accent data-[selected=true]:text-accent-foreground data-[disabled=true]:opacity-50",
-        className
-      )}
-      value={safeValue}
-      {...props}
-    >
-      {children}
-    </CommandPrimitive.Item>
-  );
 })
 
 CommandItem.displayName = CommandPrimitive.Item.displayName
