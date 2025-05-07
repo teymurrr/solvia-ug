@@ -109,13 +109,18 @@ const CommandSeparator = React.forwardRef<
 ))
 CommandSeparator.displayName = CommandPrimitive.Separator.displayName
 
-// Enhanced CommandItem to handle undefined values more robustly
+// Enhanced CommandItem with robust undefined handling
 const CommandItem = React.forwardRef<
   React.ElementRef<typeof CommandPrimitive.Item>,
   React.ComponentPropsWithoutRef<typeof CommandPrimitive.Item> & { value?: string }
 >(({ className, value = "", children, ...props }, ref) => {
   // Ensure we have a string value to prevent the "undefined is not iterable" error
-  const safeValue = value || "";
+  const safeValue = value != null ? String(value) : "";
+  
+  // Prevent rendering if value is null or undefined
+  if (value == null) {
+    console.warn("CommandItem received null or undefined value, using empty string instead");
+  }
   
   return (
     <CommandPrimitive.Item

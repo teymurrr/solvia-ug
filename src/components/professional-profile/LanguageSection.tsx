@@ -9,7 +9,7 @@ import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from '
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { UseFormReturn, useFieldArray } from 'react-hook-form';
 import { ProfileFormValues } from './types';
-import { availableLanguages, DEFAULT_LANGUAGES } from '@/data/languages';
+import { availableLanguages, DEFAULT_LANGUAGES, getSafeLanguages } from '@/data/languages';
 
 interface LanguageSectionProps {
   form: UseFormReturn<ProfileFormValues>;
@@ -30,12 +30,13 @@ const LanguageSection: React.FC<LanguageSectionProps> = ({
 
   // Create a memoized safe language options array
   const languageOptions = useMemo(() => {
-    // Make sure we always have a valid array, even if availableLanguages is somehow undefined
-    if (!Array.isArray(availableLanguages) || availableLanguages.length === 0) {
-      console.warn("availableLanguages is not a valid array, using defaults");
+    try {
+      // Make sure we always have a valid array, even if availableLanguages is somehow undefined
+      return getSafeLanguages();
+    } catch (error) {
+      console.error("Error loading language options:", error);
       return DEFAULT_LANGUAGES;
     }
-    return availableLanguages;
   }, []);
 
   return (
@@ -99,18 +100,24 @@ const LanguageSection: React.FC<LanguageSectionProps> = ({
                           <CommandInput placeholder="Search language..." />
                           <CommandEmpty>No language found.</CommandEmpty>
                           <CommandGroup>
-                            {languageOptions.map((language) => (
-                              <CommandItem
-                                key={language}
-                                value={language}
-                                onSelect={() => {
-                                  field.onChange(language);
-                                  setOpenCommandMenus((prev) => ({ ...prev, [index]: false }));
-                                }}
-                              >
-                                {language}
+                            {languageOptions.length > 0 ? (
+                              languageOptions.map((language) => (
+                                <CommandItem
+                                  key={language}
+                                  value={language}
+                                  onSelect={() => {
+                                    field.onChange(language);
+                                    setOpenCommandMenus((prev) => ({ ...prev, [index]: false }));
+                                  }}
+                                >
+                                  {language}
+                                </CommandItem>
+                              ))
+                            ) : (
+                              <CommandItem value="no-options">
+                                No languages available
                               </CommandItem>
-                            ))}
+                            )}
                           </CommandGroup>
                         </Command>
                       </PopoverContent>

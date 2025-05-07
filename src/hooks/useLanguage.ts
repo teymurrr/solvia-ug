@@ -1,7 +1,7 @@
 
 import { useEffect, useState } from 'react';
 import { Language, translations } from '@/utils/i18n/translations';
-import { availableLanguages, DEFAULT_LANGUAGES } from '@/data/languages';
+import { availableLanguages, DEFAULT_LANGUAGES, getSafeLanguages } from '@/data/languages';
 
 const mapBrowserLangToSupported = (browserLang: string): Language => {
   const lang = browserLang.split('-')[0];
@@ -33,10 +33,13 @@ export const useLanguage = () => {
     }
   }, []);
 
+  // Use the safe helper function to always return a valid array
+  const safeLanguages = getSafeLanguages();
+
   return {
     t: translations[currentLanguage],
     currentLanguage,
     setLanguage: setCurrentLanguage,
-    availableLanguages: Array.isArray(availableLanguages) ? availableLanguages : DEFAULT_LANGUAGES
+    availableLanguages: safeLanguages
   };
 };

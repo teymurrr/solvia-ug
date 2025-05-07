@@ -45,3 +45,11 @@ export const availableLanguages = [
 
 // Provide a default languages list as fallback
 export const DEFAULT_LANGUAGES = ["English", "French", "German", "Spanish", "Italian"];
+
+// Helper function to ensure we always get a valid language array
+export const getSafeLanguages = () => {
+  if (Array.isArray(availableLanguages) && availableLanguages.length > 0) {
+    return availableLanguages;
+  }
+  return DEFAULT_LANGUAGES;
+};
