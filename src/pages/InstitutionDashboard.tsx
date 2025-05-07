@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import MainLayout from '@/components/MainLayout';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -6,11 +7,19 @@ import InstitutionProfileEditForm from '@/components/InstitutionProfileEditForm'
 import { ProfileTab, VacanciesTab, TalentsTab, DashboardHeader } from '@/components/institution-dashboard';
 import { useProfessionals } from '@/hooks/useProfessionals';
 import { useVacancies, VacancyInput } from '@/hooks/useVacancies';
+import { useToast } from '@/hooks/use-toast';
 
 const InstitutionDashboard = () => {
   const [vacancyFormOpen, setVacancyFormOpen] = useState(false);
   const [profileEditOpen, setProfileEditOpen] = useState(false);
-  const { professionals, filteredProfessionals, setFilteredProfessionals } = useProfessionals();
+  const { 
+    professionals, 
+    filteredProfessionals, 
+    setFilteredProfessionals,
+    loading: professionalsLoading,
+    error: professionalsError,
+    refreshProfessionals
+  } = useProfessionals();
   const { vacancies, handleAddVacancy, handleDeleteVacancy } = useVacancies();
   const [searchQuery, setSearchQuery] = useState('');
   const [filters, setFilters] = useState({
@@ -19,6 +28,7 @@ const InstitutionDashboard = () => {
     country: 'all_countries',
     language: 'all_languages'
   });
+  const { toast } = useToast();
   
   const handleSearch = () => {
     if (!professionals) return;
@@ -51,12 +61,22 @@ const InstitutionDashboard = () => {
       
       // Filter by language
       const matchesLanguage = filters.language === 'all_languages' || 
-        prof.language?.toLowerCase() === filters.language.toLowerCase();
+        (prof.languages && prof.languages.some(lang => 
+          lang.language.toLowerCase() === filters.language.toLowerCase()
+        ));
       
       return matchesText && matchesRole && matchesProfession && matchesCountry && matchesLanguage;
     });
     
     setFilteredProfessionals(filtered);
+    
+    // Show toast with result count
+    if (filtered.length === 0) {
+      toast({
+        title: "No matching professionals",
+        description: "Try adjusting your search criteria or filters",
+      });
+    }
   };
   
   // Apply filters when they change
@@ -107,11 +127,14 @@ const InstitutionDashboard = () => {
             <TalentsTab 
               professionals={professionals}
               filteredProfessionals={filteredProfessionals}
+              loading={professionalsLoading}
+              error={professionalsError}
               searchQuery={searchQuery}
               onSearchQueryChange={(e) => setSearchQuery(e.target.value)}
               onSearch={handleSearch}
               filters={filters}
               onFilterChange={handleFilterChange}
+              refreshProfessionals={refreshProfessionals}
             />
           </TabsContent>
         </Tabs>

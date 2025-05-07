@@ -10,11 +10,13 @@ interface FilterDropdownsProps {
     language: string;
   };
   onFilterChange: (filterName: string, value: string) => void;
+  disabled?: boolean;
 }
 
 const FilterDropdowns: React.FC<FilterDropdownsProps> = ({
   filters,
-  onFilterChange
+  onFilterChange,
+  disabled = false
 }) => {
   // Add predefined filter options
   const roleOptions = [
@@ -61,6 +63,7 @@ const FilterDropdowns: React.FC<FilterDropdownsProps> = ({
         <Select
           value={filters.role}
           onValueChange={(value) => onFilterChange('role', value)}
+          disabled={disabled}
         >
           <SelectTrigger>
             <SelectValue placeholder="Role" />
@@ -79,6 +82,7 @@ const FilterDropdowns: React.FC<FilterDropdownsProps> = ({
         <Select
           value={filters.profession}
           onValueChange={(value) => onFilterChange('profession', value)}
+          disabled={disabled}
         >
           <SelectTrigger>
             <SelectValue placeholder="Profession" />
@@ -97,6 +101,7 @@ const FilterDropdowns: React.FC<FilterDropdownsProps> = ({
         <Select
           value={filters.country}
           onValueChange={(value) => onFilterChange('country', value)}
+          disabled={disabled}
         >
           <SelectTrigger>
             <SelectValue placeholder="Country" />
@@ -115,6 +120,7 @@ const FilterDropdowns: React.FC<FilterDropdownsProps> = ({
         <Select
           value={filters.language}
           onValueChange={(value) => onFilterChange('language', value)}
+          disabled={disabled}
         >
           <SelectTrigger>
             <SelectValue placeholder="Language" />

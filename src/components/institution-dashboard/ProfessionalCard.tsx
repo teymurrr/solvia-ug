@@ -11,23 +11,36 @@ import { useMessages } from '@/hooks/useMessages';
 
 interface ProfessionalCardProps {
   professional: {
-    id?: string | number;
-    email?: string;
+    id: string;
     firstName: string;
     lastName: string;
     specialty?: string;
-    role?: string;
     profession?: string;
     country?: string;
-    language?: string;
-    languages?: { language: string; level: string }[];
     isOpenToRelocation?: boolean;
-    fspCertificate?: boolean;
-    experience?: number;
-    experiences?: { hospital: string; role: string; startDate: string; endDate?: string; current?: boolean }[];
-    education?: { institution: string; degree: string; field: string }[];
-    activelySearching?: boolean;
     profileImage?: string;
+    activelySearching?: boolean;
+    fspCertificate?: boolean;
+    experiences?: {
+      hospital: string;
+      location: string;
+      role: string;
+      startDate: string;
+      endDate?: string;
+      current?: boolean;
+    }[];
+    education?: {
+      institution: string;
+      degree: string;
+      field: string;
+      startDate: string;
+      endDate?: string;
+      current?: boolean;
+    }[];
+    languages?: {
+      language: string;
+      level: string;
+    }[];
   };
 }
 
@@ -37,8 +50,15 @@ const ProfessionalCard: React.FC<ProfessionalCardProps> = ({ professional }) => 
   const { handleProtectedAction } = useProtectedAction();
   const { addMessage } = useMessages();
   
-  const yearsOfExperience = professional.experience || 
-    (professional.experiences && professional.experiences.length > 0 ? professional.experiences.length : 0);
+  // Calculate years of experience
+  const getYearsOfExperience = () => {
+    if (!professional.experiences || professional.experiences.length === 0) return 0;
+    
+    // Simple calculation: count the number of experiences
+    return professional.experiences.length;
+  };
+  
+  const yearsOfExperience = getYearsOfExperience();
   
   const handleSendMessage = () => {
     handleProtectedAction(() => {
@@ -58,9 +78,9 @@ const ProfessionalCard: React.FC<ProfessionalCardProps> = ({ professional }) => 
   return (
     <Card className="w-full mb-4">
       <CardContent className="p-6">
-        <div className="flex items-start gap-6">
+        <div className="flex flex-col md:flex-row items-start gap-6">
           {/* Profile Image and Basic Info */}
-          <div className="flex items-start gap-4">
+          <div className="flex items-start gap-4 w-full md:w-auto">
             <div className="h-20 w-20 rounded-full overflow-hidden bg-gray-100 flex items-center justify-center flex-shrink-0">
               {professional.profileImage ? (
                 <img 
@@ -74,12 +94,14 @@ const ProfessionalCard: React.FC<ProfessionalCardProps> = ({ professional }) => 
             </div>
             
             <div className="space-y-1">
-              <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center gap-2">
                 <h3 className="text-lg font-semibold">
                   {professional.firstName} {professional.lastName}
                 </h3>
                 {professional.fspCertificate && (
-                  <Award className="h-5 w-5 text-yellow-500" aria-label="FSP Certified" />
+                  <span title="FSP Certified">
+                    <Award className="h-5 w-5 text-yellow-500" />
+                  </span>
                 )}
                 {professional.activelySearching && (
                   <Badge variant="secondary" className="bg-green-100 text-green-800">
@@ -91,17 +113,17 @@ const ProfessionalCard: React.FC<ProfessionalCardProps> = ({ professional }) => 
               
               <div className="flex flex-col gap-1">
                 {professional.specialty && (
-                  <p className="text-sm text-medical-600">{professional.specialty}</p>
+                  <p className="text-sm text-blue-600 font-medium">{professional.specialty}</p>
                 )}
-                {professional.role && (
-                  <p className="text-sm text-gray-600">{professional.role}</p>
+                {professional.profession && (
+                  <p className="text-sm text-gray-600">{professional.profession}</p>
                 )}
               </div>
             </div>
           </div>
           
           {/* Experience & Current Role */}
-          <div className="flex-1 grid grid-cols-3 gap-6">
+          <div className="flex-1 grid grid-cols-1 md:grid-cols-3 gap-6 mt-4 md:mt-0 w-full">
             {/* Experience */}
             <div className="space-y-2">
               <div className="flex items-center gap-2 text-sm text-gray-600">
@@ -154,8 +176,8 @@ const ProfessionalCard: React.FC<ProfessionalCardProps> = ({ professional }) => 
         </div>
       </CardContent>
       
-      <CardFooter className="px-6 py-4 bg-gray-50 flex justify-between items-center">
-        <div className="flex items-center gap-4 text-sm text-gray-600">
+      <CardFooter className="px-6 py-4 bg-gray-50 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-4 text-sm text-gray-600 w-full sm:w-auto">
           <div className="flex items-center gap-1">
             <Clock className="h-4 w-4" />
             <span>{yearsOfExperience} {yearsOfExperience === 1 ? 'year' : 'years'} experience</span>
@@ -173,11 +195,11 @@ const ProfessionalCard: React.FC<ProfessionalCardProps> = ({ professional }) => 
           )}
         </div>
         
-        <div className="flex gap-2">
-          <Button variant="outline" onClick={() => navigate(`/professionals/${professional.id}`)}>
+        <div className="flex gap-2 w-full sm:w-auto">
+          <Button variant="outline" onClick={() => navigate(`/professionals/${professional.id}`)} className="flex-1 sm:flex-none">
             View Profile
           </Button>
-          <Button onClick={handleSendMessage} className="flex items-center gap-2">
+          <Button onClick={handleSendMessage} className="flex items-center gap-2 flex-1 sm:flex-none">
             <Mail className="h-4 w-4" />
             Contact
           </Button>
