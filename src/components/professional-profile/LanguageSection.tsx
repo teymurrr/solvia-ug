@@ -12,7 +12,10 @@ import { ProfileFormValues } from './types';
 import { availableLanguages } from '@/data/languages';
 
 // Ensure availableLanguages is always an array
-const DEFAULT_LANGUAGES = ["English", "French", "German", "Spanish", "Italian", "Portuguese", "Dutch", "Russian", "Chinese", "Arabic", "Japanese"];
+const DEFAULT_LANGUAGES = ["English", "French", "German", "Spanish", "Italian"];
+const languageOptions = Array.isArray(availableLanguages) && availableLanguages.length > 0 
+  ? availableLanguages 
+  : DEFAULT_LANGUAGES;
 
 interface LanguageSectionProps {
   form: UseFormReturn<ProfileFormValues>;
@@ -30,11 +33,6 @@ const LanguageSection: React.FC<LanguageSectionProps> = ({
     control: form.control,
     name: "languages",
   });
-
-  // Ensure we always have a valid array of languages
-  const languageOptions = Array.isArray(availableLanguages) && availableLanguages.length > 0 
-    ? availableLanguages 
-    : DEFAULT_LANGUAGES;
 
   return (
     <div className="space-y-4">
