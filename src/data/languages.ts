@@ -42,3 +42,6 @@ export const availableLanguages = [
   "Filipino",
   "Swahili"
 ];
+
+// Provide a default languages list as fallback
+export const DEFAULT_LANGUAGES = ["English", "French", "German", "Spanish", "Italian"];

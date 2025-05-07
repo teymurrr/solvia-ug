@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -9,13 +9,7 @@ import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from '
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { UseFormReturn, useFieldArray } from 'react-hook-form';
 import { ProfileFormValues } from './types';
-import { availableLanguages } from '@/data/languages';
-
-// Ensure availableLanguages is always an array
-const DEFAULT_LANGUAGES = ["English", "French", "German", "Spanish", "Italian"];
-const languageOptions = Array.isArray(availableLanguages) && availableLanguages.length > 0 
-  ? availableLanguages 
-  : DEFAULT_LANGUAGES;
+import { availableLanguages, DEFAULT_LANGUAGES } from '@/data/languages';
 
 interface LanguageSectionProps {
   form: UseFormReturn<ProfileFormValues>;
@@ -33,6 +27,16 @@ const LanguageSection: React.FC<LanguageSectionProps> = ({
     control: form.control,
     name: "languages",
   });
+
+  // Create a memoized safe language options array
+  const languageOptions = useMemo(() => {
+    // Make sure we always have a valid array, even if availableLanguages is somehow undefined
+    if (!Array.isArray(availableLanguages) || availableLanguages.length === 0) {
+      console.warn("availableLanguages is not a valid array, using defaults");
+      return DEFAULT_LANGUAGES;
+    }
+    return availableLanguages;
+  }, []);
 
   return (
     <div className="space-y-4">

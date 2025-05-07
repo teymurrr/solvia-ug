@@ -109,21 +109,28 @@ const CommandSeparator = React.forwardRef<
 ))
 CommandSeparator.displayName = CommandPrimitive.Separator.displayName
 
-// Fix to make the CommandItem more robust against undefined values
+// Enhanced CommandItem to handle undefined values more robustly
 const CommandItem = React.forwardRef<
   React.ElementRef<typeof CommandPrimitive.Item>,
   React.ComponentPropsWithoutRef<typeof CommandPrimitive.Item> & { value?: string }
->(({ className, value = "", ...props }, ref) => (
-  <CommandPrimitive.Item
-    ref={ref}
-    className={cn(
-      "relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none data-[disabled=true]:pointer-events-none data-[selected='true']:bg-accent data-[selected=true]:text-accent-foreground data-[disabled=true]:opacity-50",
-      className
-    )}
-    value={value}
-    {...props}
-  />
-))
+>(({ className, value = "", children, ...props }, ref) => {
+  // Ensure we have a string value to prevent the "undefined is not iterable" error
+  const safeValue = value || "";
+  
+  return (
+    <CommandPrimitive.Item
+      ref={ref}
+      className={cn(
+        "relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none data-[disabled=true]:pointer-events-none data-[selected='true']:bg-accent data-[selected=true]:text-accent-foreground data-[disabled=true]:opacity-50",
+        className
+      )}
+      value={safeValue}
+      {...props}
+    >
+      {children}
+    </CommandPrimitive.Item>
+  );
+})
 
 CommandItem.displayName = CommandPrimitive.Item.displayName
 
