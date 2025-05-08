@@ -8,10 +8,12 @@ import { ProfileTab, VacanciesTab, TalentsTab, DashboardHeader } from '@/compone
 import { useProfessionals } from '@/hooks/useProfessionals';
 import { useVacancies, VacancyInput } from '@/hooks/useVacancies';
 import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/providers/AuthProvider';
 
 const InstitutionDashboard = () => {
   const [vacancyFormOpen, setVacancyFormOpen] = useState(false);
   const [profileEditOpen, setProfileEditOpen] = useState(false);
+  const { session } = useAuth();
   const { 
     professionals, 
     filteredProfessionals, 
@@ -20,7 +22,7 @@ const InstitutionDashboard = () => {
     error: professionalsError,
     refreshProfessionals
   } = useProfessionals();
-  const { vacancies, handleAddVacancy, handleDeleteVacancy } = useVacancies();
+  const { vacancies, handleAddVacancy, handleDeleteVacancy, loading: vacanciesLoading } = useVacancies();
   const [searchQuery, setSearchQuery] = useState('');
   const [filters, setFilters] = useState({
     role: 'all_roles',
@@ -29,6 +31,11 @@ const InstitutionDashboard = () => {
     language: 'all_languages'
   });
   const { toast } = useToast();
+  
+  // Filter to show only this institution's vacancies
+  const institutionVacancies = session?.user ? 
+    vacancies.filter(vacancy => vacancy.institution_id === session.user.id) : 
+    [];
   
   const handleSearch = () => {
     if (!professionals) return;
@@ -95,6 +102,7 @@ const InstitutionDashboard = () => {
   // Simple wrapper to ensure proper typing
   const handleAddVacancySubmit = (data: VacancyInput) => {
     handleAddVacancy(data);
+    setVacancyFormOpen(false);
   };
   
   return (
@@ -117,9 +125,10 @@ const InstitutionDashboard = () => {
           
           <TabsContent value="vacancies" className="space-y-6">
             <VacanciesTab 
-              vacancies={vacancies} 
+              vacancies={institutionVacancies} 
               onAddVacancy={() => setVacancyFormOpen(true)} 
-              onDeleteVacancy={handleDeleteVacancy} 
+              onDeleteVacancy={handleDeleteVacancy}
+              loading={vacanciesLoading}
             />
           </TabsContent>
           

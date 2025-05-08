@@ -1,6 +1,8 @@
 
 import { useState, useEffect } from 'react';
 import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/providers/AuthProvider';
 
 // Define proper types for vacancy
 export interface Vacancy {
@@ -10,92 +12,170 @@ export interface Vacancy {
   department: string;
   specialty?: string;
   profession?: string;
-  jobType: string;
-  contractType: string;
+  job_type: string;
+  contract_type: string;
   country?: string;
   city?: string;
   location: string;
   description: string;
   requirements: string[];
-  applicationDeadline?: string;
-  postedDate: string;
+  application_deadline?: string;
+  posted_date: string;
   salary?: string;
+  institution_id?: string;
 }
 
 // Define input type for adding a vacancy
 export interface VacancyInput {
-  title: string;  // Required field
-  institution: string;  // Required field
-  department: string;  // Required field
+  title: string;
+  institution: string;
+  department: string;
   specialty?: string;
   profession?: string;
-  contractType: string;  // Required field
-  jobType?: string;  // Added to match usage in handleAddVacancy
+  contract_type: string;
+  job_type?: string;
   country?: string;
   city?: string;
-  location: string;  // Required field
-  description: string;  // Required field
-  requirements: string | string[];  // Can accept both string and array format
-  applicationDeadline?: string;
-  postedDate?: string;
+  location: string;
+  description: string;
+  requirements: string | string[];
+  application_deadline?: string;
   salary?: string;
 }
 
 export const useVacancies = () => {
   const { toast } = useToast();
-  
-  const [vacancies, setVacancies] = useState<Vacancy[]>(() => {
-    try {
-      const savedVacancies = localStorage.getItem('institutionVacancies');
-      return savedVacancies ? JSON.parse(savedVacancies) : [];
-    } catch (error) {
-      console.error('Error loading vacancies:', error);
-      return [];
-    }
-  });
+  const { session } = useAuth();
+  const [vacancies, setVacancies] = useState<Vacancy[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
+  // Fetch all vacancies on component mount
   useEffect(() => {
-    localStorage.setItem('institutionVacancies', JSON.stringify(vacancies));
-  }, [vacancies]);
-
-  const handleAddVacancy = (vacancyData: VacancyInput) => {
-    // Process requirements to ensure it's always an array
-    const requirements = typeof vacancyData.requirements === 'string' 
-      ? vacancyData.requirements.split('\n').filter((line: string) => line.trim() !== '')
-      : Array.isArray(vacancyData.requirements) 
-        ? vacancyData.requirements
-        : [];
+    const fetchVacancies = async () => {
+      try {
+        setLoading(true);
         
-    // Process and standardize the vacancy data
-    const newVacancy: Vacancy = { 
-      ...vacancyData, 
-      id: Date.now().toString(),
-      requirements,
-      // Ensure jobType is set from contractType if not provided
-      jobType: vacancyData.jobType || vacancyData.contractType,
-      contractType: vacancyData.contractType || 'Full-time',
-      // Set posted date if not provided
-      postedDate: vacancyData.postedDate || new Date().toISOString(),
+        const { data, error } = await supabase
+          .from('vacancies')
+          .select('*')
+          .order('posted_date', { ascending: false });
+          
+        if (error) {
+          throw error;
+        }
+        
+        // Format data to match Vacancy interface
+        const formattedVacancies = data.map((vacancy) => ({
+          ...vacancy,
+          job_type: vacancy.job_type || vacancy.contract_type,
+          posted_date: vacancy.posted_date || new Date().toISOString(),
+        }));
+        
+        setVacancies(formattedVacancies);
+      } catch (error) {
+        console.error('Error fetching vacancies:', error);
+        setError('Failed to load vacancies');
+      } finally {
+        setLoading(false);
+      }
     };
     
-    setVacancies([...vacancies, newVacancy]);
+    fetchVacancies();
+  }, []);
+
+  const handleAddVacancy = async (vacancyData: VacancyInput) => {
+    if (!session?.user) {
+      toast({
+        title: "Authentication required",
+        description: "You need to be logged in as an institution to post vacancies.",
+        variant: "destructive",
+      });
+      return null;
+    }
     
-    toast({
-      title: "Vacancy Created",
-      description: "Your vacancy has been saved and will persist even after page refresh.",
-    });
-    
-    return newVacancy;
+    try {
+      // Process requirements to ensure it's always an array
+      const requirements = typeof vacancyData.requirements === 'string' 
+        ? vacancyData.requirements.split('\n').filter((line: string) => line.trim() !== '')
+        : Array.isArray(vacancyData.requirements) 
+          ? vacancyData.requirements
+          : [];
+          
+      // Process and standardize the vacancy data
+      const newVacancy = { 
+        ...vacancyData, 
+        requirements,
+        // Ensure jobType is set from contractType if not provided
+        job_type: vacancyData.job_type || vacancyData.contract_type,
+        institution_id: session.user.id,
+      };
+      
+      const { data, error } = await supabase
+        .from('vacancies')
+        .insert(newVacancy)
+        .select()
+        .single();
+      
+      if (error) {
+        throw error;
+      }
+      
+      // Add the new vacancy to state
+      setVacancies([data, ...vacancies]);
+      
+      toast({
+        title: "Vacancy Created",
+        description: "Your vacancy has been published successfully.",
+      });
+      
+      return data;
+      
+    } catch (error: any) {
+      console.error('Error adding vacancy:', error);
+      toast({
+        title: "Error Creating Vacancy",
+        description: error.message || "Something went wrong. Please try again.",
+        variant: "destructive",
+      });
+      return null;
+    }
   };
 
-  const handleDeleteVacancy = (id: string | number) => {
-    setVacancies(vacancies.filter(vacancy => vacancy.id !== id));
-    
-    toast({
-      title: "Vacancy Deleted",
-      description: "The vacancy has been removed from your listings.",
-    });
+  const handleDeleteVacancy = async (id: string | number) => {
+    try {
+      const { error } = await supabase
+        .from('vacancies')
+        .delete()
+        .eq('id', id);
+      
+      if (error) {
+        throw error;
+      }
+      
+      // Remove the deleted vacancy from state
+      setVacancies(vacancies.filter(vacancy => vacancy.id !== id));
+      
+      toast({
+        title: "Vacancy Deleted",
+        description: "The vacancy has been removed from your listings.",
+      });
+      
+    } catch (error: any) {
+      console.error('Error deleting vacancy:', error);
+      toast({
+        title: "Error Deleting Vacancy",
+        description: error.message || "Something went wrong. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
 
-  return { vacancies, handleAddVacancy, handleDeleteVacancy };
+  return { 
+    vacancies, 
+    handleAddVacancy, 
+    handleDeleteVacancy, 
+    loading,
+    error 
+  };
 };

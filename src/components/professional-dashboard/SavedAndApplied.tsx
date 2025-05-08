@@ -1,10 +1,11 @@
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Button } from '@/components/ui/button';
 import { BookmarkCheck, FileCheck } from 'lucide-react';
 import VacancyCard from '@/components/VacancyCard';
 import { NoResults } from '@/components/professional-dashboard';
 import { Vacancy } from '@/hooks/useVacancies';
+import { Skeleton } from '@/components/ui/skeleton';
 
 interface SavedAndAppliedProps {
   savedTabView: 'saved' | 'applied';
@@ -13,6 +14,7 @@ interface SavedAndAppliedProps {
   appliedVacancies: string[];
   toggleSaveVacancy: (id: string) => void;
   availableVacancies: Vacancy[];
+  loading?: boolean;
 }
 
 const SavedAndApplied: React.FC<SavedAndAppliedProps> = ({
@@ -21,21 +23,37 @@ const SavedAndApplied: React.FC<SavedAndAppliedProps> = ({
   savedVacancies,
   appliedVacancies,
   toggleSaveVacancy,
-  availableVacancies
+  availableVacancies,
+  loading = false
 }) => {
-  const getSavedVacancies = () => {
+  // Use memoization to avoid recalculating these lists unnecessarily
+  const savedVacanciesList = useMemo(() => {
     return availableVacancies.filter(vacancy => savedVacancies.includes(vacancy.id));
-  };
+  }, [availableVacancies, savedVacancies]);
 
-  const getAppliedVacancies = () => {
+  const appliedVacanciesList = useMemo(() => {
     return availableVacancies.filter(vacancy => appliedVacancies.includes(vacancy.id));
-  };
+  }, [availableVacancies, appliedVacancies]);
 
   const navigateToVacancies = () => {
     const tabsList = document.querySelector('[role="tablist"]');
     const vacanciesTab = tabsList?.querySelector('[value="vacancies"]') as HTMLButtonElement;
     if (vacanciesTab) vacanciesTab.click();
   };
+  
+  if (loading) {
+    return (
+      <div className="space-y-4">
+        <div className="flex justify-end">
+          <Skeleton className="h-9 w-32 rounded-lg" />
+        </div>
+        <div className="space-y-4">
+          <Skeleton className="h-48 w-full rounded-lg" />
+          <Skeleton className="h-48 w-full rounded-lg" />
+        </div>
+      </div>
+    );
+  }
   
   return (
     <div className="space-y-4">
@@ -61,9 +79,9 @@ const SavedAndApplied: React.FC<SavedAndAppliedProps> = ({
       </div>
       
       {savedTabView === 'saved' ? (
-        savedVacancies.length > 0 && getSavedVacancies().length > 0 ? (
+        savedVacancies.length > 0 && savedVacanciesList.length > 0 ? (
           <div className="grid grid-cols-1 gap-6">
-            {getSavedVacancies().map((vacancy) => (
+            {savedVacanciesList.map((vacancy) => (
               <VacancyCard
                 key={vacancy.id}
                 {...vacancy}
@@ -83,9 +101,9 @@ const SavedAndApplied: React.FC<SavedAndAppliedProps> = ({
           />
         )
       ) : (
-        appliedVacancies.length > 0 && getAppliedVacancies().length > 0 ? (
+        appliedVacancies.length > 0 && appliedVacanciesList.length > 0 ? (
           <div className="grid grid-cols-1 gap-6">
-            {getAppliedVacancies().map((vacancy) => (
+            {appliedVacanciesList.map((vacancy) => (
               <VacancyCard
                 key={vacancy.id}
                 {...vacancy}

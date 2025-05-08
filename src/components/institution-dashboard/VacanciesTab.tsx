@@ -5,17 +5,20 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { getJobTypeBadgeVariant } from '@/components/vacancy/utils';
+import { Skeleton } from '@/components/ui/skeleton';
 
 interface VacanciesTabProps {
   vacancies: any[];
   onAddVacancy: () => void;
   onDeleteVacancy: (id: string | number) => void;
+  loading?: boolean;
 }
 
 const VacanciesTab: React.FC<VacanciesTabProps> = ({ 
   vacancies, 
   onAddVacancy, 
-  onDeleteVacancy 
+  onDeleteVacancy,
+  loading = false
 }) => {
   return (
     <Card>
@@ -26,7 +29,13 @@ const VacanciesTab: React.FC<VacanciesTabProps> = ({
         </CardDescription>
       </CardHeader>
       <CardContent>
-        {vacancies.length > 0 ? (
+        {loading ? (
+          <div className="space-y-4">
+            <Skeleton className="h-24 w-full rounded-lg" />
+            <Skeleton className="h-24 w-full rounded-lg" />
+            <Skeleton className="h-10 w-full rounded-lg" />
+          </div>
+        ) : vacancies.length > 0 ? (
           <div className="space-y-4">
             {vacancies.map((vacancy) => (
               <div key={vacancy.id} className="border rounded-lg p-4">
@@ -34,8 +43,8 @@ const VacanciesTab: React.FC<VacanciesTabProps> = ({
                   <div className="space-y-2">
                     <div className="flex items-center justify-between">
                       <h3 className="font-medium">{vacancy.title}</h3>
-                      <Badge variant={getJobTypeBadgeVariant(vacancy.jobType)} className="ml-2">
-                        {vacancy.jobType || vacancy.contractType}
+                      <Badge variant={getJobTypeBadgeVariant(vacancy.job_type)} className="ml-2">
+                        {vacancy.job_type || vacancy.contract_type}
                       </Badge>
                     </div>
                     <p className="text-sm text-medical-600">{vacancy.department}</p>

@@ -9,6 +9,44 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      applied_vacancies: {
+        Row: {
+          application_date: string
+          created_at: string
+          id: string
+          status: string
+          updated_at: string
+          user_id: string
+          vacancy_id: string
+        }
+        Insert: {
+          application_date?: string
+          created_at?: string
+          id?: string
+          status?: string
+          updated_at?: string
+          user_id: string
+          vacancy_id: string
+        }
+        Update: {
+          application_date?: string
+          created_at?: string
+          id?: string
+          status?: string
+          updated_at?: string
+          user_id?: string
+          vacancy_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "applied_vacancies_vacancy_id_fkey"
+            columns: ["vacancy_id"]
+            isOneToOne: false
+            referencedRelation: "vacancies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       education: {
         Row: {
           current: boolean | null
@@ -207,6 +245,101 @@ export type Database = {
           profile_image?: string | null
           specialty?: string | null
           updated_at?: string | null
+        }
+        Relationships: []
+      }
+      saved_vacancies: {
+        Row: {
+          created_at: string
+          id: string
+          user_id: string
+          vacancy_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          user_id: string
+          vacancy_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          user_id?: string
+          vacancy_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "saved_vacancies_vacancy_id_fkey"
+            columns: ["vacancy_id"]
+            isOneToOne: false
+            referencedRelation: "vacancies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      vacancies: {
+        Row: {
+          application_deadline: string | null
+          city: string | null
+          contract_type: string
+          country: string | null
+          created_at: string
+          department: string
+          description: string
+          id: string
+          institution: string
+          institution_id: string | null
+          job_type: string
+          location: string
+          posted_date: string
+          profession: string | null
+          requirements: string[]
+          salary: string | null
+          specialty: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          application_deadline?: string | null
+          city?: string | null
+          contract_type: string
+          country?: string | null
+          created_at?: string
+          department: string
+          description: string
+          id?: string
+          institution: string
+          institution_id?: string | null
+          job_type: string
+          location: string
+          posted_date?: string
+          profession?: string | null
+          requirements: string[]
+          salary?: string | null
+          specialty?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          application_deadline?: string | null
+          city?: string | null
+          contract_type?: string
+          country?: string | null
+          created_at?: string
+          department?: string
+          description?: string
+          id?: string
+          institution?: string
+          institution_id?: string | null
+          job_type?: string
+          location?: string
+          posted_date?: string
+          profession?: string | null
+          requirements?: string[]
+          salary?: string | null
+          specialty?: string | null
+          title?: string
+          updated_at?: string
         }
         Relationships: []
       }
