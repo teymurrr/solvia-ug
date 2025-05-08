@@ -1,15 +1,16 @@
 
+// InstitutionDashboard.tsx
+
 import React, { useState, useEffect } from 'react';
 import MainLayout from '@/components/MainLayout';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import VacancyForm from '@/components/VacancyForm';
+import VacancyForm from '@/components/VacancyForm';  // Default import
 import InstitutionProfileEditForm from '@/components/InstitutionProfileEditForm';
 import { ProfileTab, VacanciesTab, TalentsTab, DashboardHeader } from '@/components/institution-dashboard';
 import { useProfessionals } from '@/hooks/useProfessionals';
 import { useVacancies, VacancyInput } from '@/hooks/useVacancies';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/providers/AuthProvider';
-import { adaptVacancyFormData } from '@/components/VacancyForm'; // <-- Added import for adapter
 
 const InstitutionDashboard = () => {
   const [vacancyFormOpen, setVacancyFormOpen] = useState(false);
@@ -33,16 +34,14 @@ const InstitutionDashboard = () => {
   });
   const { toast } = useToast();
   
-  // Filter to show only this institution's vacancies
   const institutionVacancies = session?.user ? 
     vacancies.filter(vacancy => vacancy.institution_id === session.user.id) : 
     [];
-  
+
   const handleSearch = () => {
     if (!professionals) return;
     
     const filtered = professionals.filter(prof => {
-      // Text search
       const fullName = `${prof.firstName} ${prof.lastName}`.toLowerCase();
       const specialty = (prof.specialty || '').toLowerCase();
       const profession = (prof.profession || '').toLowerCase();
@@ -55,19 +54,15 @@ const InstitutionDashboard = () => {
         profession.includes(query) || 
         country.includes(query);
       
-      // Filter by role/profession
       const matchesRole = filters.role === 'all_roles' || 
         prof.profession?.toLowerCase() === filters.role.toLowerCase();
       
-      // Filter by specialty/profession field
       const matchesProfession = filters.profession === 'all_professions' || 
         prof.specialty?.toLowerCase() === filters.profession.toLowerCase();
       
-      // Filter by country
       const matchesCountry = filters.country === 'all_countries' || 
         prof.country?.toLowerCase() === filters.country.toLowerCase();
       
-      // Filter by language
       const matchesLanguage = filters.language === 'all_languages' || 
         (prof.languages && prof.languages.some(lang => 
           lang.language.toLowerCase() === filters.language.toLowerCase()
@@ -77,8 +72,7 @@ const InstitutionDashboard = () => {
     });
     
     setFilteredProfessionals(filtered);
-    
-    // Show toast with result count
+
     if (filtered.length === 0) {
       toast({
         title: "No matching professionals",
@@ -86,27 +80,23 @@ const InstitutionDashboard = () => {
       });
     }
   };
-  
-  // Apply filters when they change
+
   useEffect(() => {
     handleSearch();
   }, [searchQuery, filters, professionals]);
-  
-  // Handle filter changes
+
   const handleFilterChange = (filterName: string, value: string) => {
     setFilters(prev => ({
       ...prev,
       [filterName]: value
     }));
   };
-  
-  // Handle vacancy form submit with adapter
+
   const handleAddVacancySubmit = (data: VacancyInput) => {
-    const adaptedData = adaptVacancyFormData(data); // Apply adapter to handle contract type issue
-    handleAddVacancy(adaptedData);
+    handleAddVacancy(data);
     setVacancyFormOpen(false);
   };
-  
+
   return (
     <MainLayout hideEditProfile>
       <div className="container py-8">
@@ -154,7 +144,7 @@ const InstitutionDashboard = () => {
       <VacancyForm 
         open={vacancyFormOpen} 
         onOpenChange={setVacancyFormOpen}
-        onSubmit={handleAddVacancySubmit} // <-- Pass the adapted data
+        onSubmit={handleAddVacancySubmit}
       />
 
       <InstitutionProfileEditForm
