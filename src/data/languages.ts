@@ -18,5 +18,4 @@ export const getSafeLanguages = () => {
     return DEFAULT_LANGUAGES.slice(0, 10); // Return at least some languages
   }
 };
-
 export const availableLanguages = DEFAULT_LANGUAGES;
