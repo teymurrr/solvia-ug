@@ -85,6 +85,7 @@ const SavedAndApplied: React.FC<SavedAndAppliedProps> = ({
               <VacancyCard
                 key={vacancy.id}
                 {...vacancy}
+                jobType={vacancy.job_type}
                 showSaveOption={true}
                 isSaved={true}
                 onSaveToggle={toggleSaveVacancy}
@@ -107,6 +108,7 @@ const SavedAndApplied: React.FC<SavedAndAppliedProps> = ({
               <VacancyCard
                 key={vacancy.id}
                 {...vacancy}
+                jobType={vacancy.job_type}
                 showSaveOption={true}
                 isSaved={savedVacancies.includes(vacancy.id)}
                 onSaveToggle={toggleSaveVacancy}

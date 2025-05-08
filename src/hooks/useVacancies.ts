@@ -142,7 +142,7 @@ export const useVacancies = () => {
     }
   };
 
-  const handleDeleteVacancy = async (id: string | number) => {
+  const handleDeleteVacancy = async (id: string) => {
     try {
       const { error } = await supabase
         .from('vacancies')
