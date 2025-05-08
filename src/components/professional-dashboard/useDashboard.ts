@@ -2,6 +2,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { ProfileFormValues } from '@/components/professional-profile/types';
 import { useProfileData } from '@/components/professional-profile/hooks/useProfileData';
+import { useVacancies, Vacancy } from '@/hooks/useVacancies';
 
 export const defaultProfileData: ProfileFormValues = {
   firstName: "John",
@@ -33,7 +34,9 @@ export default function useDashboard() {
   const [profileData, setProfileData] = useState<ProfileFormValues>(defaultProfileData);
   const [savedTabView, setSavedTabView] = useState<'saved' | 'applied'>('saved');
   const [loading, setLoading] = useState(true);
+  const [vacancyResults, setVacancyResults] = useState<Vacancy[]>([]);
   const { loadProfileData, profileData: hookProfileData, lastUpdated, refreshProfileData } = useProfileData();
+  const { vacancies: institutionVacancies } = useVacancies();
 
   const jobTypes = ['Full-time', 'Part-time', 'Internship', 'Volunteer'];
   const countries = ['USA'];
@@ -59,6 +62,11 @@ export default function useDashboard() {
       setProfileData(hookProfileData);
     }
   }, [hookProfileData, lastUpdated]);
+
+  // Set real vacancies as the default vacancies
+  useEffect(() => {
+    setVacancyResults(institutionVacancies);
+  }, [institutionVacancies]);
 
   // Load profile data on component mount
   useEffect(() => {
@@ -106,6 +114,39 @@ export default function useDashboard() {
     await refreshProfileData();
   }, [refreshProfileData]);
 
+  const handleSearch = useCallback(() => {
+    let filtered = [...institutionVacancies];
+    
+    if (searchQuery) {
+      filtered = filtered.filter(vacancy => 
+        vacancy.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        vacancy.institution.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        vacancy.description.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
+    
+    if (selectedJobTypes.length > 0) {
+      filtered = filtered.filter(vacancy => selectedJobTypes.includes(vacancy.jobType));
+    }
+    
+    if (selectedCountry) {
+      filtered = filtered.filter(vacancy => 
+        vacancy.country?.includes(selectedCountry) || 
+        vacancy.location.includes(selectedCountry)
+      );
+    }
+    
+    if (selectedCity) {
+      filtered = filtered.filter(vacancy => 
+        vacancy.city?.includes(selectedCity) || 
+        vacancy.location.includes(selectedCity)
+      );
+    }
+    
+    setVacancyResults(filtered);
+    setCurrentPage(1);
+  }, [searchQuery, selectedJobTypes, selectedCountry, selectedCity, institutionVacancies]);
+
   return {
     searchQuery,
     setSearchQuery,
@@ -130,6 +171,9 @@ export default function useDashboard() {
     resetFilters,
     handleProfileSave,
     loading,
-    refreshProfileData
+    refreshProfileData,
+    vacancyResults,
+    setVacancyResults,
+    handleSearch
   };
 }

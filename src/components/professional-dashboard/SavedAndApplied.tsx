@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { BookmarkCheck, FileCheck } from 'lucide-react';
 import VacancyCard from '@/components/VacancyCard';
 import { NoResults } from '@/components/professional-dashboard';
-import { sampleVacancies } from '@/data/sampleData';
+import { Vacancy } from '@/hooks/useVacancies';
 
 interface SavedAndAppliedProps {
   savedTabView: 'saved' | 'applied';
@@ -12,6 +12,7 @@ interface SavedAndAppliedProps {
   savedVacancies: string[];
   appliedVacancies: string[];
   toggleSaveVacancy: (id: string) => void;
+  availableVacancies: Vacancy[];
 }
 
 const SavedAndApplied: React.FC<SavedAndAppliedProps> = ({
@@ -20,13 +21,14 @@ const SavedAndApplied: React.FC<SavedAndAppliedProps> = ({
   savedVacancies,
   appliedVacancies,
   toggleSaveVacancy,
+  availableVacancies
 }) => {
   const getSavedVacancies = () => {
-    return sampleVacancies.filter(vacancy => savedVacancies.includes(vacancy.id));
+    return availableVacancies.filter(vacancy => savedVacancies.includes(vacancy.id));
   };
 
   const getAppliedVacancies = () => {
-    return sampleVacancies.filter(vacancy => appliedVacancies.includes(vacancy.id));
+    return availableVacancies.filter(vacancy => appliedVacancies.includes(vacancy.id));
   };
 
   const navigateToVacancies = () => {
@@ -59,7 +61,7 @@ const SavedAndApplied: React.FC<SavedAndAppliedProps> = ({
       </div>
       
       {savedTabView === 'saved' ? (
-        savedVacancies.length > 0 ? (
+        savedVacancies.length > 0 && getSavedVacancies().length > 0 ? (
           <div className="grid grid-cols-1 gap-6">
             {getSavedVacancies().map((vacancy) => (
               <VacancyCard
@@ -81,7 +83,7 @@ const SavedAndApplied: React.FC<SavedAndAppliedProps> = ({
           />
         )
       ) : (
-        appliedVacancies.length > 0 ? (
+        appliedVacancies.length > 0 && getAppliedVacancies().length > 0 ? (
           <div className="grid grid-cols-1 gap-6">
             {getAppliedVacancies().map((vacancy) => (
               <VacancyCard

@@ -6,7 +6,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Briefcase, GraduationCap, Heart } from 'lucide-react';
 import { ProfessionalProfileEditForm } from '@/components/professional-profile';
 import VacancyCard from '@/components/VacancyCard';
-import { sampleVacancies } from '@/data/sampleData';
 import {
   ProfileCard,
   VacancySearch,
@@ -57,6 +56,8 @@ const ProfessionalDashboard: React.FC = () => {
     toggleJobType,
     resetFilters,
     handleProfileSave,
+    vacancyResults,
+    handleSearch,
   } = useDashboard();
 
   // Update active tab when location state changes
@@ -131,7 +132,6 @@ const ProfessionalDashboard: React.FC = () => {
     });
   };
 
-  const [vacancyResults, setVacancyResults] = useState(sampleVacancies);
   const totalPages = Math.ceil(vacancyResults.length / ITEMS_PER_PAGE);
   const currentVacancies = vacancyResults.slice(
     (currentPage - 1) * ITEMS_PER_PAGE,
@@ -144,33 +144,6 @@ const ProfessionalDashboard: React.FC = () => {
       country: selectedCountry,
       city: selectedCity
     };
-  };
-
-  const handleSearch = () => {
-    let filtered = sampleVacancies;
-    
-    if (searchQuery) {
-      filtered = filtered.filter(vacancy => 
-        vacancy.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        vacancy.institution.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        vacancy.description.toLowerCase().includes(searchQuery.toLowerCase())
-      );
-    }
-    
-    if (selectedJobTypes.length > 0) {
-      filtered = filtered.filter(vacancy => selectedJobTypes.includes(vacancy.jobType));
-    }
-    
-    if (selectedCountry) {
-      filtered = filtered.filter(vacancy => vacancy.location.includes(selectedCountry));
-    }
-    
-    if (selectedCity) {
-      filtered = filtered.filter(vacancy => vacancy.location.includes(selectedCity));
-    }
-    
-    setVacancyResults(filtered);
-    setCurrentPage(1);
   };
 
   const getPageNumbers = () => {
@@ -358,6 +331,7 @@ const ProfessionalDashboard: React.FC = () => {
                   savedVacancies={savedVacancies}
                   appliedVacancies={appliedVacancies}
                   toggleSaveVacancy={toggleSaveVacancy}
+                  availableVacancies={vacancyResults}
                 />
               </CardContent>
             </Card>
