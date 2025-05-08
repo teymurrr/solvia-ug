@@ -9,6 +9,7 @@ import { useProfessionals } from '@/hooks/useProfessionals';
 import { useVacancies, VacancyInput } from '@/hooks/useVacancies';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/providers/AuthProvider';
+import { adaptVacancyFormData } from '@/components/VacancyForm'; // <-- Added import for adapter
 
 const InstitutionDashboard = () => {
   const [vacancyFormOpen, setVacancyFormOpen] = useState(false);
@@ -99,9 +100,10 @@ const InstitutionDashboard = () => {
     }));
   };
   
-  // Simple wrapper to ensure proper typing
+  // Handle vacancy form submit with adapter
   const handleAddVacancySubmit = (data: VacancyInput) => {
-    handleAddVacancy(data);
+    const adaptedData = adaptVacancyFormData(data); // Apply adapter to handle contract type issue
+    handleAddVacancy(adaptedData);
     setVacancyFormOpen(false);
   };
   
@@ -152,7 +154,7 @@ const InstitutionDashboard = () => {
       <VacancyForm 
         open={vacancyFormOpen} 
         onOpenChange={setVacancyFormOpen}
-        onSubmit={handleAddVacancySubmit}
+        onSubmit={handleAddVacancySubmit} // <-- Pass the adapted data
       />
 
       <InstitutionProfileEditForm
