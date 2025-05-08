@@ -13,7 +13,7 @@ import ProfessionalSignup from '@/pages/ProfessionalSignup';
 import Vacancies from '@/pages/Vacancies';
 import VacancyDetail from '@/pages/VacancyDetail';
 import VacancyApply from '@/pages/VacancyApply';
-import { AuthProvider } from '@/providers/AuthProvider';
+import { AuthProvider } from '@/contexts/AuthContext'; // Import from contexts not providers
 import Professionals from '@/pages/Professionals';
 import Institutions from '@/pages/Institutions';
 import Login from '@/pages/Login';

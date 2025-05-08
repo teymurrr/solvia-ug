@@ -7,7 +7,7 @@ import { Plus, Trash2, Upload, Check } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { UseFormReturn, useFieldArray } from 'react-hook-form';
 import { ProfileFormValues } from './types';
-import { availableLanguages, DEFAULT_LANGUAGES, getSafeLanguages } from '@/data/languages';
+import { DEFAULT_LANGUAGES } from '@/data/languages';
 
 interface LanguageSectionProps {
   form: UseFormReturn<ProfileFormValues>;
@@ -28,11 +28,19 @@ const LanguageSection: React.FC<LanguageSectionProps> = ({
   // Create a memoized safe language options array
   const languageOptions = useMemo(() => {
     try {
-      // Make sure we always have a valid array, even if availableLanguages is somehow undefined
-      return getSafeLanguages();
+      // Define a fallback list of languages in case there's an issue
+      return DEFAULT_LANGUAGES || [
+        "English", "Spanish", "French", "German", "Italian", 
+        "Portuguese", "Dutch", "Russian", "Chinese", "Japanese", 
+        "Arabic", "Hindi", "Bengali", "Polish", "Ukrainian", 
+        "Romanian", "Greek", "Swedish", "Norwegian", "Finnish"
+      ];
     } catch (error) {
       console.error("Error loading language options:", error);
-      return DEFAULT_LANGUAGES;
+      return [
+        "English", "Spanish", "French", "German", "Italian", 
+        "Portuguese", "Dutch", "Russian", "Chinese", "Japanese"
+      ];
     }
   }, []);
 
@@ -85,7 +93,7 @@ const LanguageSection: React.FC<LanguageSectionProps> = ({
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent className="max-h-[300px]">
-                      {languageOptions.length > 0 ? (
+                      {languageOptions && languageOptions.length > 0 ? (
                         languageOptions.map((language) => (
                           <SelectItem key={language} value={language}>
                             {language}

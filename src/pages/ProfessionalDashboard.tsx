@@ -250,6 +250,7 @@ const ProfessionalDashboard: React.FC = () => {
                           <VacancyCard
                             key={vacancy.id}
                             {...vacancy}
+                            jobType={vacancy.job_type}
                             showSaveOption={true}
                             isSaved={savedVacancies.includes(vacancy.id)}
                             onSaveToggle={toggleSaveVacancy}
