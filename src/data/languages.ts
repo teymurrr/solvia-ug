@@ -1,4 +1,3 @@
-
 // Default list of languages
 export const DEFAULT_LANGUAGES = [
   "English", "Spanish", "French", "German", "Italian", 
@@ -18,4 +17,6 @@ export const getSafeLanguages = () => {
     return DEFAULT_LANGUAGES.slice(0, 10); // Return at least some languages
   }
 };
+
+// ✅ Add this below
 export const availableLanguages = DEFAULT_LANGUAGES;
