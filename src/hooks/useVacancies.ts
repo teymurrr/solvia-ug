@@ -41,6 +41,7 @@ export interface VacancyInput {
   requirements: string | string[];
   application_deadline?: string;
   salary?: string;
+  institution_id?: string;
 }
 
 export const useVacancies = () => {
@@ -56,14 +57,18 @@ export const useVacancies = () => {
       try {
         setLoading(true);
         
+        console.log("Fetching vacancies from Supabase");
         const { data, error } = await supabase
           .from('vacancies')
           .select('*')
           .order('posted_date', { ascending: false });
           
         if (error) {
+          console.error("Supabase error fetching vacancies:", error);
           throw error;
         }
+        
+        console.log("Vacancies fetched from Supabase:", data);
         
         // Format data to match Vacancy interface
         const formattedVacancies = data.map((vacancy) => ({
@@ -73,6 +78,7 @@ export const useVacancies = () => {
         }));
         
         setVacancies(formattedVacancies);
+        console.log("Vacancies set in state:", formattedVacancies);
       } catch (error) {
         console.error('Error fetching vacancies:', error);
         setError('Failed to load vacancies');
@@ -82,19 +88,41 @@ export const useVacancies = () => {
     };
     
     fetchVacancies();
+    
+    // Set up realtime subscription to vacancies table
+    const channel = supabase
+      .channel('table-db-changes')
+      .on('postgres_changes', {
+        event: '*',
+        schema: 'public',
+        table: 'vacancies',
+      }, (payload) => {
+        console.log('Realtime change received:', payload);
+        fetchVacancies();
+      })
+      .subscribe();
+      
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, []);
 
   const handleAddVacancy = async (vacancyData: VacancyInput) => {
+    console.log("Starting handleAddVacancy with data:", vacancyData);
+    
     if (!session?.user) {
       toast({
         title: "Authentication required",
         description: "You need to be logged in as an institution to post vacancies.",
         variant: "destructive",
       });
+      console.error("No user session found when trying to add vacancy");
       return null;
     }
     
     try {
+      console.log("Processing vacancy data before submission");
+      
       // Process requirements to ensure it's always an array
       const requirements = typeof vacancyData.requirements === 'string' 
         ? vacancyData.requirements.split('\n').filter((line: string) => line.trim() !== '')
@@ -106,10 +134,13 @@ export const useVacancies = () => {
       const newVacancy = { 
         ...vacancyData, 
         requirements,
-        // Ensure jobType is set from contractType if not provided
+        // Ensure job_type is set from contract_type if not provided
         job_type: vacancyData.job_type || vacancyData.contract_type,
-        institution_id: session.user.id,
+        institution_id: vacancyData.institution_id || session.user.id,
+        posted_date: new Date().toISOString()
       };
+      
+      console.log("Submitting vacancy to Supabase:", newVacancy);
       
       const { data, error } = await supabase
         .from('vacancies')
@@ -118,11 +149,14 @@ export const useVacancies = () => {
         .single();
       
       if (error) {
+        console.error("Supabase error adding vacancy:", error);
         throw error;
       }
       
+      console.log("Vacancy added successfully in Supabase:", data);
+      
       // Add the new vacancy to state
-      setVacancies([data, ...vacancies]);
+      setVacancies(prev => [data, ...prev]);
       
       toast({
         title: "Vacancy Created",
@@ -144,14 +178,19 @@ export const useVacancies = () => {
 
   const handleDeleteVacancy = async (id: string) => {
     try {
+      console.log("Deleting vacancy with ID:", id);
+      
       const { error } = await supabase
         .from('vacancies')
         .delete()
         .eq('id', id);
       
       if (error) {
+        console.error("Supabase error deleting vacancy:", error);
         throw error;
       }
+      
+      console.log("Vacancy deleted successfully");
       
       // Remove the deleted vacancy from state
       setVacancies(vacancies.filter(vacancy => vacancy.id !== id));

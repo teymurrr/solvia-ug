@@ -91,7 +91,9 @@ const VacancyForm = ({ open, onOpenChange, onSubmit }) => {
 
   const handleSubmit = (values) => {
     try {
+      console.log("Form values before adapting:", values);
       const adaptedData = adaptVacancyFormData(values);
+      console.log("Adapted data being submitted:", adaptedData);
       onSubmit(adaptedData);
       form.reset();
       

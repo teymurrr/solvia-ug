@@ -1,10 +1,9 @@
-
 // InstitutionDashboard.tsx
 
 import React, { useState, useEffect } from 'react';
 import MainLayout from '@/components/MainLayout';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import VacancyForm from '@/components/VacancyForm';  // Default import
+import VacancyForm from '@/components/VacancyForm';
 import InstitutionProfileEditForm from '@/components/InstitutionProfileEditForm';
 import { ProfileTab, VacanciesTab, TalentsTab, DashboardHeader } from '@/components/institution-dashboard';
 import { useProfessionals } from '@/hooks/useProfessionals';
@@ -34,9 +33,14 @@ const InstitutionDashboard = () => {
   });
   const { toast } = useToast();
   
+  // Filter vacancies to show only those created by the current institution
   const institutionVacancies = session?.user ? 
     vacancies.filter(vacancy => vacancy.institution_id === session.user.id) : 
     [];
+
+  console.log("Current user ID:", session?.user?.id);
+  console.log("All vacancies:", vacancies);
+  console.log("Filtered institution vacancies:", institutionVacancies);
 
   const handleSearch = () => {
     if (!professionals) return;
@@ -92,9 +96,30 @@ const InstitutionDashboard = () => {
     }));
   };
 
-  const handleAddVacancySubmit = (data: VacancyInput) => {
-    handleAddVacancy(data);
-    setVacancyFormOpen(false);
+  const handleAddVacancySubmit = async (data: VacancyInput) => {
+    console.log("Handling vacancy submission with data:", data);
+    
+    if (!session?.user?.id) {
+      toast({
+        title: "Authentication required",
+        description: "You must be logged in to post vacancies.",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    // Make sure institution_id is set
+    const vacancyWithInstitutionId = {
+      ...data,
+      institution_id: session.user.id,
+    };
+    
+    console.log("Submitting vacancy with institution ID:", vacancyWithInstitutionId);
+    
+    const result = await handleAddVacancy(vacancyWithInstitutionId);
+    if (result) {
+      setVacancyFormOpen(false);
+    }
   };
 
   return (
