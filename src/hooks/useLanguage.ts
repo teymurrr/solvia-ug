@@ -1,7 +1,7 @@
 
 import { useEffect, useState } from 'react';
 import { Language, translations } from '@/utils/i18n/translations';
-import { availableLanguages, DEFAULT_LANGUAGES, getSafeLanguages } from '@/data/languages';
+import { DEFAULT_LANGUAGES, getSafeLanguages, availableLanguages } from '@/data/languages';
 
 const mapBrowserLangToSupported = (browserLang: string): Language => {
   try {

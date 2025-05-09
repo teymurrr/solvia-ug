@@ -1,3 +1,4 @@
+
 // Default list of languages
 export const DEFAULT_LANGUAGES = [
   "English", "Spanish", "French", "German", "Italian", 
@@ -18,5 +19,5 @@ export const getSafeLanguages = () => {
   }
 };
 
-// ✅ Add this below
+// Export the available languages for use in components
 export const availableLanguages = DEFAULT_LANGUAGES;

@@ -1,3 +1,4 @@
+
 // VacancyForm.tsx
 
 import React, { useState } from 'react';
@@ -43,4 +44,5 @@ const VacancyForm = ({ open, onOpenChange, onSubmit }: any) => {
   );
 };
 
+// Add this default export
 export default VacancyForm;
