@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -24,6 +23,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from '@/hooks/use-toast';
+import { Loader2 } from 'lucide-react';
 
 // Define validation schema
 const formSchema = z.object({
@@ -45,6 +45,8 @@ const formSchema = z.object({
 
 // Adapter function to handle the contractType to contract_type transformation
 export const adaptVacancyFormData = (formData) => {
+  console.log("Adapting form data:", formData);
+  
   // Format requirements into an array if it's a string
   if (typeof formData.requirements === 'string') {
     formData.requirements = formData.requirements
@@ -63,11 +65,27 @@ export const adaptVacancyFormData = (formData) => {
     delete formData.contractType;
   }
   
+  console.log("Adapted form data:", formData);
   return formData;
 };
 
-const VacancyForm = ({ open, onOpenChange, onSubmit }) => {
+interface VacancyFormProps {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  onSubmit: (data: any) => Promise<any>;
+  isSubmitting?: boolean;
+  userId?: string;
+}
+
+const VacancyForm: React.FC<VacancyFormProps> = ({ 
+  open, 
+  onOpenChange, 
+  onSubmit, 
+  isSubmitting = false,
+  userId 
+}) => {
   const { toast } = useToast();
+  const [internalSubmitting, setInternalSubmitting] = useState(false);
   
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -89,27 +107,47 @@ const VacancyForm = ({ open, onOpenChange, onSubmit }) => {
     },
   });
 
-  const handleSubmit = (values) => {
+  const handleSubmit = async (values) => {
     try {
       console.log("Form values before adapting:", values);
+      console.log("Current user ID:", userId);
+      
+      if (!userId) {
+        console.error("No user ID available when submitting vacancy");
+        toast({
+          title: "Authentication error",
+          description: "You need to be logged in to post vacancies. Please try signing in again.",
+          variant: "destructive",
+        });
+        return;
+      }
+      
+      setInternalSubmitting(true);
       const adaptedData = adaptVacancyFormData(values);
       console.log("Adapted data being submitted:", adaptedData);
-      onSubmit(adaptedData);
-      form.reset();
       
-      toast({
-        title: "Vacancy created",
-        description: "Your vacancy has been posted successfully.",
-      });
+      const result = await onSubmit(adaptedData);
+      
+      if (result) {
+        form.reset();
+        toast({
+          title: "Vacancy created",
+          description: "Your vacancy has been posted successfully.",
+        });
+      }
     } catch (error) {
+      console.error("Error submitting vacancy:", error);
       toast({
         title: "Error",
         description: "Failed to create vacancy. Please try again.",
         variant: "destructive",
       });
-      console.error("Error submitting vacancy:", error);
+    } finally {
+      setInternalSubmitting(false);
     }
   };
+
+  const submitting = isSubmitting || internalSubmitting;
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -340,10 +378,19 @@ const VacancyForm = ({ open, onOpenChange, onSubmit }) => {
             />
 
             <DialogFooter>
-              <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
+              <Button type="button" variant="outline" onClick={() => onOpenChange(false)} disabled={submitting}>
                 Cancel
               </Button>
-              <Button type="submit">Create Vacancy</Button>
+              <Button type="submit" disabled={submitting}>
+                {submitting ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Creating...
+                  </>
+                ) : (
+                  "Create Vacancy"
+                )}
+              </Button>
             </DialogFooter>
           </form>
         </Form>

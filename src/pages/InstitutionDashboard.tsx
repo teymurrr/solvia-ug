@@ -1,3 +1,4 @@
+
 // InstitutionDashboard.tsx
 
 import React, { useState, useEffect } from 'react';
@@ -14,7 +15,7 @@ import { useAuth } from '@/providers/AuthProvider';
 const InstitutionDashboard = () => {
   const [vacancyFormOpen, setVacancyFormOpen] = useState(false);
   const [profileEditOpen, setProfileEditOpen] = useState(false);
-  const { session } = useAuth();
+  const { session, user, loading: authLoading } = useAuth();
   const { 
     professionals, 
     filteredProfessionals, 
@@ -23,7 +24,16 @@ const InstitutionDashboard = () => {
     error: professionalsError,
     refreshProfessionals
   } = useProfessionals();
-  const { vacancies, handleAddVacancy, handleDeleteVacancy, loading: vacanciesLoading } = useVacancies();
+  
+  const { 
+    vacancies, 
+    handleAddVacancy, 
+    handleDeleteVacancy, 
+    loading: vacanciesLoading, 
+    refreshVacancies,
+    submitting: vacancySubmitting 
+  } = useVacancies();
+  
   const [searchQuery, setSearchQuery] = useState('');
   const [filters, setFilters] = useState({
     role: 'all_roles',
@@ -34,13 +44,23 @@ const InstitutionDashboard = () => {
   const { toast } = useToast();
   
   // Filter vacancies to show only those created by the current institution
-  const institutionVacancies = session?.user ? 
-    vacancies.filter(vacancy => vacancy.institution_id === session.user.id) : 
+  const institutionVacancies = user?.id ? 
+    vacancies.filter(vacancy => vacancy.institution_id === user.id) : 
     [];
 
-  console.log("Current user ID:", session?.user?.id);
-  console.log("All vacancies:", vacancies);
-  console.log("Filtered institution vacancies:", institutionVacancies);
+  useEffect(() => {
+    // Log information about current authentication state
+    console.log("Current user ID:", user?.id);
+    console.log("All vacancies:", vacancies);
+    console.log("Filtered institution vacancies:", institutionVacancies);
+  }, [user, vacancies, institutionVacancies]);
+
+  // If authentication state changes, refresh vacancies
+  useEffect(() => {
+    if (user?.id) {
+      refreshVacancies();
+    }
+  }, [user]);
 
   const handleSearch = () => {
     if (!professionals) return;
@@ -99,7 +119,7 @@ const InstitutionDashboard = () => {
   const handleAddVacancySubmit = async (data: VacancyInput) => {
     console.log("Handling vacancy submission with data:", data);
     
-    if (!session?.user?.id) {
+    if (!user?.id) {
       toast({
         title: "Authentication required",
         description: "You must be logged in to post vacancies.",
@@ -111,7 +131,7 @@ const InstitutionDashboard = () => {
     // Make sure institution_id is set
     const vacancyWithInstitutionId = {
       ...data,
-      institution_id: session.user.id,
+      institution_id: user.id,
     };
     
     console.log("Submitting vacancy with institution ID:", vacancyWithInstitutionId);
@@ -119,6 +139,10 @@ const InstitutionDashboard = () => {
     const result = await handleAddVacancy(vacancyWithInstitutionId);
     if (result) {
       setVacancyFormOpen(false);
+      // Force refresh vacancies to ensure we see the new one
+      setTimeout(() => {
+        refreshVacancies();
+      }, 500);
     }
   };
 
@@ -129,47 +153,61 @@ const InstitutionDashboard = () => {
           onAddVacancy={() => setVacancyFormOpen(true)} 
         />
         
-        <Tabs defaultValue="profile" className="space-y-6">
-          <TabsList className="grid w-full md:w-auto grid-cols-3">
-            <TabsTrigger value="profile">Profile</TabsTrigger>
-            <TabsTrigger value="vacancies">Your Vacancies</TabsTrigger>
-            <TabsTrigger value="talents">Talent Search</TabsTrigger>
-          </TabsList>
-          
-          <TabsContent value="profile" className="space-y-6">
-            <ProfileTab onEditProfile={() => setProfileEditOpen(true)} />
-          </TabsContent>
-          
-          <TabsContent value="vacancies" className="space-y-6">
-            <VacanciesTab 
-              vacancies={institutionVacancies} 
-              onAddVacancy={() => setVacancyFormOpen(true)} 
-              onDeleteVacancy={handleDeleteVacancy}
-              loading={vacanciesLoading}
-            />
-          </TabsContent>
-          
-          <TabsContent value="talents" className="space-y-6">
-            <TalentsTab 
-              professionals={professionals}
-              filteredProfessionals={filteredProfessionals}
-              loading={professionalsLoading}
-              error={professionalsError}
-              searchQuery={searchQuery}
-              onSearchQueryChange={(e) => setSearchQuery(e.target.value)}
-              onSearch={handleSearch}
-              filters={filters}
-              onFilterChange={handleFilterChange}
-              refreshProfessionals={refreshProfessionals}
-            />
-          </TabsContent>
-        </Tabs>
+        {authLoading ? (
+          <div className="flex items-center justify-center p-8">
+            <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-primary"></div>
+            <span className="ml-3">Loading authentication...</span>
+          </div>
+        ) : !user ? (
+          <div className="p-8 text-center">
+            <h3 className="text-lg font-semibold text-destructive">Authentication Required</h3>
+            <p className="mt-2">You need to be logged in to access this dashboard.</p>
+          </div>
+        ) : (
+          <Tabs defaultValue="profile" className="space-y-6">
+            <TabsList className="grid w-full md:w-auto grid-cols-3">
+              <TabsTrigger value="profile">Profile</TabsTrigger>
+              <TabsTrigger value="vacancies">Your Vacancies</TabsTrigger>
+              <TabsTrigger value="talents">Talent Search</TabsTrigger>
+            </TabsList>
+            
+            <TabsContent value="profile" className="space-y-6">
+              <ProfileTab onEditProfile={() => setProfileEditOpen(true)} />
+            </TabsContent>
+            
+            <TabsContent value="vacancies" className="space-y-6">
+              <VacanciesTab 
+                vacancies={institutionVacancies} 
+                onAddVacancy={() => setVacancyFormOpen(true)} 
+                onDeleteVacancy={handleDeleteVacancy}
+                loading={vacanciesLoading}
+              />
+            </TabsContent>
+            
+            <TabsContent value="talents" className="space-y-6">
+              <TalentsTab 
+                professionals={professionals}
+                filteredProfessionals={filteredProfessionals}
+                loading={professionalsLoading}
+                error={professionalsError}
+                searchQuery={searchQuery}
+                onSearchQueryChange={(e) => setSearchQuery(e.target.value)}
+                onSearch={handleSearch}
+                filters={filters}
+                onFilterChange={handleFilterChange}
+                refreshProfessionals={refreshProfessionals}
+              />
+            </TabsContent>
+          </Tabs>
+        )}
       </div>
       
       <VacancyForm 
         open={vacancyFormOpen} 
         onOpenChange={setVacancyFormOpen}
         onSubmit={handleAddVacancySubmit}
+        isSubmitting={vacancySubmitting}
+        userId={user?.id}
       />
 
       <InstitutionProfileEditForm

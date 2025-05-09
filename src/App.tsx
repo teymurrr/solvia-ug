@@ -2,6 +2,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Toaster } from '@/components/ui/toaster';
 import { LanguageProvider } from '@/hooks/useLanguage';
+import { AuthProvider } from '@/providers/AuthProvider'; // Use our updated AuthProvider
 
 import Index from '@/pages/Index';
 import About from '@/pages/About';
@@ -14,7 +15,6 @@ import ProfessionalSignup from '@/pages/ProfessionalSignup';
 import Vacancies from '@/pages/Vacancies';
 import VacancyDetail from '@/pages/VacancyDetail';
 import VacancyApply from '@/pages/VacancyApply';
-import { AuthProvider } from '@/contexts/AuthContext'; // Import from contexts not providers
 import Professionals from '@/pages/Professionals';
 import Institutions from '@/pages/Institutions';
 import Login from '@/pages/Login';

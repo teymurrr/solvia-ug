@@ -46,47 +46,49 @@ export interface VacancyInput {
 
 export const useVacancies = () => {
   const { toast } = useToast();
-  const { session } = useAuth();
+  const { session, user } = useAuth();
   const [vacancies, setVacancies] = useState<Vacancy[]>([]);
   const [loading, setLoading] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const fetchVacancies = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      
+      console.log("Fetching vacancies from Supabase");
+      const { data, error } = await supabase
+        .from('vacancies')
+        .select('*')
+        .order('posted_date', { ascending: false });
+        
+      if (error) {
+        console.error("Supabase error fetching vacancies:", error);
+        throw error;
+      }
+      
+      console.log("Vacancies fetched from Supabase:", data);
+      
+      // Format data to match Vacancy interface
+      const formattedVacancies = data.map((vacancy) => ({
+        ...vacancy,
+        job_type: vacancy.job_type || vacancy.contract_type,
+        posted_date: vacancy.posted_date || new Date().toISOString(),
+      }));
+      
+      setVacancies(formattedVacancies);
+      console.log("Vacancies set in state:", formattedVacancies);
+    } catch (error) {
+      console.error('Error fetching vacancies:', error);
+      setError('Failed to load vacancies');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   // Fetch all vacancies on component mount
   useEffect(() => {
-    const fetchVacancies = async () => {
-      try {
-        setLoading(true);
-        
-        console.log("Fetching vacancies from Supabase");
-        const { data, error } = await supabase
-          .from('vacancies')
-          .select('*')
-          .order('posted_date', { ascending: false });
-          
-        if (error) {
-          console.error("Supabase error fetching vacancies:", error);
-          throw error;
-        }
-        
-        console.log("Vacancies fetched from Supabase:", data);
-        
-        // Format data to match Vacancy interface
-        const formattedVacancies = data.map((vacancy) => ({
-          ...vacancy,
-          job_type: vacancy.job_type || vacancy.contract_type,
-          posted_date: vacancy.posted_date || new Date().toISOString(),
-        }));
-        
-        setVacancies(formattedVacancies);
-        console.log("Vacancies set in state:", formattedVacancies);
-      } catch (error) {
-        console.error('Error fetching vacancies:', error);
-        setError('Failed to load vacancies');
-      } finally {
-        setLoading(false);
-      }
-    };
-    
     fetchVacancies();
     
     // Set up realtime subscription to vacancies table
@@ -110,17 +112,19 @@ export const useVacancies = () => {
   const handleAddVacancy = async (vacancyData: VacancyInput) => {
     console.log("Starting handleAddVacancy with data:", vacancyData);
     
-    if (!session?.user) {
+    if (!user || !session) {
+      console.error("No authenticated user found:", { user, session });
       toast({
         title: "Authentication required",
         description: "You need to be logged in as an institution to post vacancies.",
         variant: "destructive",
       });
-      console.error("No user session found when trying to add vacancy");
       return null;
     }
     
     try {
+      setSubmitting(true);
+      console.log("Current user ID:", user.id);
       console.log("Processing vacancy data before submission");
       
       // Process requirements to ensure it's always an array
@@ -136,7 +140,7 @@ export const useVacancies = () => {
         requirements,
         // Ensure job_type is set from contract_type if not provided
         job_type: vacancyData.job_type || vacancyData.contract_type,
-        institution_id: vacancyData.institution_id || session.user.id,
+        institution_id: user.id,
         posted_date: new Date().toISOString()
       };
       
@@ -173,6 +177,8 @@ export const useVacancies = () => {
         variant: "destructive",
       });
       return null;
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -215,6 +221,8 @@ export const useVacancies = () => {
     handleAddVacancy, 
     handleDeleteVacancy, 
     loading,
-    error 
+    submitting,
+    error,
+    refreshVacancies: fetchVacancies
   };
 };
