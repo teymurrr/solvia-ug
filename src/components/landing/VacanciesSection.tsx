@@ -14,9 +14,9 @@ const VacanciesSection: React.FC<VacanciesSectionProps> = ({ vacancies }) => {
   const { t } = useLanguage();
   
   // Default values in case translations aren't loaded yet
-  const title = t.vacancies?.title || "Vacancies";
-  const subtitle = t.vacancies?.subtitle || "Discover exciting opportunities at leading healthcare institutions";
-  const viewMore = t.vacancies?.viewMore || "View More";
+  const title = t?.vacancies?.title || "Vacancies";
+  const subtitle = t?.vacancies?.subtitle || "Discover exciting opportunities at leading healthcare institutions";
+  const viewMore = t?.vacancies?.viewMore || "View More";
   
   return (
     <section className="py-8 bg-white">

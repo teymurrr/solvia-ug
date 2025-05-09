@@ -15,7 +15,7 @@ const BlogSection: React.FC<BlogSectionProps> = ({ posts }) => {
   const { t } = useLanguage();
 
   // Default values in case translations aren't loaded yet
-  const viewMore = t.blog?.viewMore || "View More";
+  const viewMore = t?.blog?.viewMore || "View More";
 
   return (
     <section className="py-16 bg-gray-50">

@@ -8,17 +8,17 @@ const WhySolviaSection = () => {
   const { t } = useLanguage();
   
   // Default values in case translations aren't loaded yet
-  const title = t.why?.title || "Why Solvia?";
-  const subtitle = t.why?.subtitle || "Discover what makes our platform the top choice for healthcare professionals worldwide";
+  const title = t?.why?.title || "Why Solvia?";
+  const subtitle = t?.why?.subtitle || "Discover what makes our platform the top choice for healthcare professionals worldwide";
   
-  const globalTitle = t.why?.global?.title || "Global Opportunities";
-  const globalDescription = t.why?.global?.description || "Access to healthcare positions across multiple countries with full relocation support";
+  const globalTitle = t?.why?.global?.title || "Global Opportunities";
+  const globalDescription = t?.why?.global?.description || "Access to healthcare positions across multiple countries with full relocation support";
   
-  const fastTitle = t.why?.fast?.title || "Fast Placement";
-  const fastDescription = t.why?.fast?.description || "Streamlined matching process to help you find the right position quickly";
+  const fastTitle = t?.why?.fast?.title || "Fast Placement";
+  const fastDescription = t?.why?.fast?.description || "Streamlined matching process to help you find the right position quickly";
   
-  const supportTitle = t.why?.support?.title || "Comprehensive Support";
-  const supportDescription = t.why?.support?.description || "Guidance through certification, language training, and settlement in your new country";
+  const supportTitle = t?.why?.support?.title || "Comprehensive Support";
+  const supportDescription = t?.why?.support?.description || "Guidance through certification, language training, and settlement in your new country";
   
   return (
     <section className="py-16 bg-white">

@@ -8,10 +8,10 @@ const HeroSection = () => {
   const { t } = useLanguage();
   
   // Default values in case translations aren't loaded yet
-  const title = t.hero?.title || "Global Healthcare Recruitment, Simplified";
-  const subtitle = t.hero?.subtitle || "Connecting qualified medical professionals with hospitals and clinics in need of talent worldwide.";
-  const findJob = t.hero?.findJob || "Find a job";
-  const findTalent = t.hero?.findTalent || "Find a Talent";
+  const title = t?.hero?.title || "Global Healthcare Recruitment, Simplified";
+  const subtitle = t?.hero?.subtitle || "Connecting qualified medical professionals with hospitals and clinics in need of talent worldwide.";
+  const findJob = t?.hero?.findJob || "Find a job";
+  const findTalent = t?.hero?.findTalent || "Find a Talent";
   
   // Split title for styling if it exists and contains a comma
   const titleParts = title.split(', ');

@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
@@ -5,9 +6,33 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { BookOpen, GraduationCap, Globe, Clock, Lightbulb } from 'lucide-react';
 import { useProtectedAction } from '@/hooks/useProtectedAction';
+import { useLanguage } from '@/hooks/useLanguage';
 
 const LearningSection = () => {
   const { handleProtectedAction } = useProtectedAction();
+  const { t } = useLanguage();
+  
+  // Default values in case translations aren't loaded yet
+  const title = t?.learning?.title || "Solvia Learning";
+  const subtitle = t?.learning?.subtitle || "Enhance your medical career with our specialized German language and FSP courses";
+  
+  const germanCoursesTitle = t?.learning?.germanCourses?.title || "German Language Courses";
+  const germanCoursesSubtitle = t?.learning?.germanCourses?.subtitle || "Master medical German with our specialized courses";
+  const germanCoursesFeatures = t?.learning?.germanCourses?.features || [
+    'Basic to Advanced Medical German',
+    'Flexible Learning Schedule',
+    'Telc Medical Preparation'
+  ];
+  
+  const fspCoursesTitle = t?.learning?.fspCourses?.title || "FSP Preparation Courses";
+  const fspCoursesSubtitle = t?.learning?.fspCourses?.subtitle || "Comprehensive preparation for your medical license in Germany";
+  const fspCoursesFeatures = t?.learning?.fspCourses?.features || [
+    'Complete FSP Study Materials',
+    'Practice Examinations',
+    'One-on-One Mentoring'
+  ];
+  
+  const exploreCourses = t?.learning?.exploreCourses || "Explore Courses";
 
   return (
     <section className="py-16 bg-white">
@@ -15,9 +40,9 @@ const LearningSection = () => {
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-12">
             <Lightbulb className="h-[30px] w-[30px] text-[#006ae6] mx-auto mb-4" />
-            <h2 className="text-[30px] font-bold text-black">Solvia Learning</h2>
+            <h2 className="text-[30px] font-bold text-black">{title}</h2>
             <p className="text-lg text-muted-foreground">
-              Enhance your medical career with our specialized German language and FSP courses
+              {subtitle}
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
@@ -29,23 +54,17 @@ const LearningSection = () => {
                 <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
                   <Globe className="h-6 w-6 text-primary" />
                 </div>
-                <CardTitle>German Language Courses</CardTitle>
-                <CardDescription>Master medical German with our specialized courses</CardDescription>
+                <CardTitle>{germanCoursesTitle}</CardTitle>
+                <CardDescription>{germanCoursesSubtitle}</CardDescription>
               </CardHeader>
               <CardContent>
                 <ul className="space-y-2 mt-2">
-                  <li className="flex items-center gap-2">
-                    <BookOpen className="h-4 w-4 text-primary" />
-                    <span>Basic to Advanced Medical German</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <Clock className="h-4 w-4 text-primary" />
-                    <span>Flexible Learning Schedule</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <GraduationCap className="h-4 w-4 text-primary" />
-                    <span>Telc Medical Preparation</span>
-                  </li>
+                  {germanCoursesFeatures.map((feature, index) => (
+                    <li key={index} className="flex items-center gap-2">
+                      <BookOpen className="h-4 w-4 text-primary" />
+                      <span>{feature}</span>
+                    </li>
+                  ))}
                 </ul>
               </CardContent>
             </Card>
@@ -57,23 +76,17 @@ const LearningSection = () => {
                 <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
                   <GraduationCap className="h-6 w-6 text-primary" />
                 </div>
-                <CardTitle>FSP Preparation Courses</CardTitle>
-                <CardDescription>Comprehensive preparation for your medical license in Germany</CardDescription>
+                <CardTitle>{fspCoursesTitle}</CardTitle>
+                <CardDescription>{fspCoursesSubtitle}</CardDescription>
               </CardHeader>
               <CardContent>
                 <ul className="space-y-2 mt-2">
-                  <li className="flex items-center gap-2">
-                    <BookOpen className="h-4 w-4 text-primary" />
-                    <span>Complete FSP Study Materials</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <Clock className="h-4 w-4 text-primary" />
-                    <span>Practice Examinations</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <GraduationCap className="h-4 w-4 text-primary" />
-                    <span>One-on-One Mentoring</span>
-                  </li>
+                  {fspCoursesFeatures.map((feature, index) => (
+                    <li key={index} className="flex items-center gap-2">
+                      <BookOpen className="h-4 w-4 text-primary" />
+                      <span>{feature}</span>
+                    </li>
+                  ))}
                 </ul>
               </CardContent>
             </Card>
@@ -85,7 +98,7 @@ const LearningSection = () => {
               onClick={() => handleProtectedAction(undefined, '/signup/professional')}
             >
               <Link to="/signup/professional" className="flex items-center justify-center">
-                Explore Courses
+                {exploreCourses}
               </Link>
             </Button>
           </div>

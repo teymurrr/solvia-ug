@@ -15,9 +15,9 @@ const ProfessionalsSection: React.FC<ProfessionalsSectionProps> = ({ professiona
   const { t } = useLanguage();
   
   // Default values in case translations aren't loaded yet
-  const title = t.professionals?.title || "Professionals";
-  const subtitle = t.professionals?.subtitle || "Connect with talented healthcare professionals ready for their next opportunity";
-  const viewMore = t.professionals?.viewMore || "View More";
+  const title = t?.professionals?.title || "Professionals";
+  const subtitle = t?.professionals?.subtitle || "Connect with talented healthcare professionals ready for their next opportunity";
+  const viewMore = t?.professionals?.viewMore || "View More";
   
   return (
     <section className="py-12 bg-white">
