@@ -1,4 +1,3 @@
-
 // InstitutionDashboard.tsx
 
 import React, { useState, useEffect } from 'react';
@@ -10,7 +9,7 @@ import { ProfileTab, VacanciesTab, TalentsTab, DashboardHeader } from '@/compone
 import { useProfessionals } from '@/hooks/useProfessionals';
 import { useVacancies, VacancyInput } from '@/hooks/useVacancies';
 import { useToast } from '@/hooks/use-toast';
-import { useAuth } from '@/providers/AuthProvider';
+import { useAuth } from '@/contexts/AuthContext';
 
 const InstitutionDashboard = () => {
   const [vacancyFormOpen, setVacancyFormOpen] = useState(false);

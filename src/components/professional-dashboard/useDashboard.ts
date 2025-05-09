@@ -1,11 +1,9 @@
-
-import { useState, useEffect, useCallback } from 'react';
-import { ProfileFormValues } from '@/components/professional-profile/types';
-import { useProfileData } from '@/components/professional-profile/hooks/useProfileData';
-import { useVacancies, Vacancy } from '@/hooks/useVacancies';
-import { supabase } from '@/integrations/supabase/client';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
-import { useAuth } from '@/providers/AuthProvider';
+import { Vacancy } from '@/hooks/useVacancies';
+import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/contexts/AuthContext';
 
 export const defaultProfileData: ProfileFormValues = {
   firstName: "John",
@@ -28,6 +26,7 @@ export const defaultProfileData: ProfileFormValues = {
 export default function useDashboard() {
   const { toast } = useToast();
   const { session } = useAuth();
+  const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedJobTypes, setSelectedJobTypes] = useState<string[]>([]);

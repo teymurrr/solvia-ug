@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Building, LogOut, Mail, Settings, Languages, User } from 'lucide-react';
+import { Building, LogOut, Mail, Languages, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import {
@@ -83,13 +83,6 @@ const UserDropdown: React.FC<UserDropdownProps> = ({ userType, hasUnreadMessages
             <Mail className="h-4 w-4 mr-2" />
             Messages
             {hasUnreadMessages && <Badge className="ml-2 bg-red-500 text-white">1</Badge>}
-          </Link>
-        </DropdownMenuItem>
-
-        <DropdownMenuItem asChild>
-          <Link to="/settings">
-            <Settings className="h-4 w-4 mr-2" />
-            Settings
           </Link>
         </DropdownMenuItem>
 

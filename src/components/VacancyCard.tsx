@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
@@ -7,6 +6,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import VacancyHeader from './vacancy/VacancyHeader';
 import VacancyDetails from './vacancy/VacancyDetails';
 import VacancyFooter from './vacancy/VacancyFooter';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface VacancyCardProps {
   id: string;
@@ -31,6 +31,7 @@ interface VacancyCardProps {
   currentPage?: number;
   selectedFilters?: any;
   isLandingPageCard?: boolean;
+  fromLandingPage?: boolean;
 }
 
 const VacancyCard: React.FC<VacancyCardProps> = ({
@@ -56,10 +57,12 @@ const VacancyCard: React.FC<VacancyCardProps> = ({
   currentPage,
   selectedFilters,
   isLandingPageCard = false,
+  fromLandingPage = false,
 }) => {
   const { toast } = useToast();
   const navigate = useNavigate();
   const { handleProtectedAction } = useProtectedAction();
+  const { isLoggedIn } = useAuth();
   
   const displayLocation = location || (city && country ? `${city}, ${country}` : city || country || "Location not specified");
   
@@ -82,7 +85,17 @@ const VacancyCard: React.FC<VacancyCardProps> = ({
   };
 
   const handleCardClick = () => {
-    // Pass source information to know where to navigate back to
+    // For landing page cards, redirect to signup if not logged in
+    if ((isLandingPageCard || fromLandingPage) && !isLoggedIn) {
+      toast({
+        title: "Sign up required",
+        description: "Please sign up or log in to view vacancy details",
+      });
+      navigate('/signup');
+      return;
+    }
+    
+    // Otherwise proceed with normal navigation
     navigate(`/vacancies/${id}`, {
       state: { 
         fromDashboard: isDashboardCard,
@@ -138,6 +151,7 @@ const VacancyCard: React.FC<VacancyCardProps> = ({
             currentPage={currentPage}
             selectedFilters={selectedFilters}
             isLandingPageCard={isLandingPageCard}
+            isLoggedIn={isLoggedIn}
           />
         </div>
       </CardContent>

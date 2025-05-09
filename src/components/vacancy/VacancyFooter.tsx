@@ -2,6 +2,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
+import { useToast } from '@/hooks/use-toast';
 
 interface VacancyFooterProps {
   id: string;
@@ -13,6 +14,7 @@ interface VacancyFooterProps {
   currentPage?: number;
   selectedFilters?: any;
   isLandingPageCard?: boolean;
+  isLoggedIn?: boolean;
 }
 
 const VacancyFooter: React.FC<VacancyFooterProps> = ({ 
@@ -24,11 +26,23 @@ const VacancyFooter: React.FC<VacancyFooterProps> = ({
   searchQuery,
   currentPage,
   selectedFilters,
-  isLandingPageCard = false
+  isLandingPageCard = false,
+  isLoggedIn = false
 }) => {
   const navigate = useNavigate();
+  const { toast } = useToast();
 
   const handleApply = () => {
+    // Redirect to signup if user is not logged in
+    if (!isLoggedIn && (isLandingPageCard || fromLandingPage)) {
+      toast({
+        title: "Sign up required",
+        description: "Please sign up or log in to apply for this vacancy",
+      });
+      navigate('/signup');
+      return;
+    }
+    
     // Handle different application scenarios
     if (applicationLink) {
       // Open external application link in a new tab
@@ -48,6 +62,16 @@ const VacancyFooter: React.FC<VacancyFooterProps> = ({
   };
 
   const handleViewDetails = () => {
+    // Redirect to signup if user is not logged in
+    if (!isLoggedIn && (isLandingPageCard || fromLandingPage)) {
+      toast({
+        title: "Sign up required",
+        description: "Please sign up or log in to view vacancy details",
+      });
+      navigate('/signup');
+      return;
+    }
+    
     navigate(`/vacancies/${id}`, {
       state: { 
         fromDashboard,
