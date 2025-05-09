@@ -14,6 +14,9 @@ interface BlogSectionProps {
 const BlogSection: React.FC<BlogSectionProps> = ({ posts }) => {
   const { t } = useLanguage();
 
+  // Default values in case translations aren't loaded yet
+  const viewMore = t.blog?.viewMore || "View More";
+
   return (
     <section className="py-16 bg-gray-50">
       <div className="container mx-auto px-4">
@@ -26,7 +29,7 @@ const BlogSection: React.FC<BlogSectionProps> = ({ posts }) => {
             </p>
             <Button variant="ghost" asChild className="group mx-auto">
               <Link to="/blog" className="flex items-center">
-                {t.blog.viewMore}
+                {viewMore}
                 <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </Link>
             </Button>

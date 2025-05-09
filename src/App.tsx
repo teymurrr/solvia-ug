@@ -1,6 +1,7 @@
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Toaster } from '@/components/ui/toaster';
+import { LanguageProvider } from '@/hooks/useLanguage';
 
 import Index from '@/pages/Index';
 import About from '@/pages/About';
@@ -29,49 +30,51 @@ import Insights from '@/pages/Insights';
 function App() {
   return (
     <AuthProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/privacy" element={<Privacy />} />
-          <Route path="/terms" element={<Terms />} />
-          <Route path="/employers" element={<EmployersLanding />} />
-          
-          {/* Auth routes */}
-          <Route path="/signup" element={<ProfessionalSignup />} />
-          <Route path="/signup/professional" element={<ProfessionalSignup />} />
-          <Route path="/signup/institution" element={<InstitutionSignup />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/confirm-email" element={<EmailConfirmationRequired />} />
-          <Route path="/auth/callback" element={<AuthCallback />} />
-          <Route path="/auth/*" element={<AuthCallback />} />
-          
-          {/* Main routes */}
-          <Route path="/learning" element={<SolviaLearning />} />
-          <Route path="/dashboard/institution" element={<InstitutionDashboard />} />
-          <Route path="/institutions" element={<Institutions />} />
-          <Route path="/dashboard/professional" element={<ProfessionalDashboard />} />
-          <Route path="/professionals" element={<Professionals />} />
-          
-          {/* Vacancy routes */}
-          <Route path="/vacancies" element={<Vacancies />} />
-          <Route path="/vacancies/:id" element={<VacancyDetail />} />
-          <Route path="/vacancies/:id/apply" element={<VacancyApply />} />
-          
-          {/* Messages routes */}
-          <Route path="/messages" element={<Messages />} />
-          <Route path="/messages/new" element={<Messages />} />
-          <Route path="/messages/:id" element={<Messages />} />
-          
-          {/* Insights route */}
-          <Route path="/insights" element={<Insights />} />
-          
-          {/* Fallback route */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-        <Toaster />
-      </BrowserRouter>
+      <LanguageProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/privacy" element={<Privacy />} />
+            <Route path="/terms" element={<Terms />} />
+            <Route path="/employers" element={<EmployersLanding />} />
+            
+            {/* Auth routes */}
+            <Route path="/signup" element={<ProfessionalSignup />} />
+            <Route path="/signup/professional" element={<ProfessionalSignup />} />
+            <Route path="/signup/institution" element={<InstitutionSignup />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/confirm-email" element={<EmailConfirmationRequired />} />
+            <Route path="/auth/callback" element={<AuthCallback />} />
+            <Route path="/auth/*" element={<AuthCallback />} />
+            
+            {/* Main routes */}
+            <Route path="/learning" element={<SolviaLearning />} />
+            <Route path="/dashboard/institution" element={<InstitutionDashboard />} />
+            <Route path="/institutions" element={<Institutions />} />
+            <Route path="/dashboard/professional" element={<ProfessionalDashboard />} />
+            <Route path="/professionals" element={<Professionals />} />
+            
+            {/* Vacancy routes */}
+            <Route path="/vacancies" element={<Vacancies />} />
+            <Route path="/vacancies/:id" element={<VacancyDetail />} />
+            <Route path="/vacancies/:id/apply" element={<VacancyApply />} />
+            
+            {/* Messages routes */}
+            <Route path="/messages" element={<Messages />} />
+            <Route path="/messages/new" element={<Messages />} />
+            <Route path="/messages/:id" element={<Messages />} />
+            
+            {/* Insights route */}
+            <Route path="/insights" element={<Insights />} />
+            
+            {/* Fallback route */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+          <Toaster />
+        </BrowserRouter>
+      </LanguageProvider>
     </AuthProvider>
   );
 }
