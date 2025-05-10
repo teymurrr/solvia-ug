@@ -1,9 +1,12 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
 import { Vacancy } from '@/hooks/useVacancies';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
+import { ProfileFormValues } from '@/components/professional-profile/types';
+import { useProfileData } from '@/components/professional-profile/hooks/useProfileData';
+import { useVacancies } from '@/hooks/useVacancies';
 
 export const defaultProfileData: ProfileFormValues = {
   firstName: "John",
