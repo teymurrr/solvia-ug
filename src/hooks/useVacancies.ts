@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
@@ -22,6 +21,7 @@ export interface Vacancy {
   posted_date: string;
   salary?: string;
   institution_id?: string;
+  application_link?: string;
 }
 
 // Define input type for adding a vacancy
@@ -40,6 +40,7 @@ export interface VacancyInput {
   requirements: string | string[];
   salary?: string;
   institution_id?: string;
+  application_link?: string;
 }
 
 export const useVacancies = () => {
@@ -139,7 +140,9 @@ export const useVacancies = () => {
         // Ensure job_type is set from contract_type if not provided
         job_type: vacancyData.job_type || vacancyData.contract_type,
         institution_id: user.id,
-        posted_date: new Date().toISOString()
+        posted_date: new Date().toISOString(),
+        // Ensure application_link is properly handled
+        application_link: vacancyData.application_link || null
       };
       
       console.log("Submitting vacancy to Supabase:", newVacancy);
@@ -213,7 +216,9 @@ export const useVacancies = () => {
         ...vacancyData,
         requirements,
         // Ensure job_type is set from contract_type if not provided
-        job_type: vacancyData.job_type || vacancyData.contract_type
+        job_type: vacancyData.job_type || vacancyData.contract_type,
+        // Ensure application_link is properly handled
+        application_link: vacancyData.application_link || null
       };
       
       console.log("Updating vacancy in Supabase:", updatedVacancy);

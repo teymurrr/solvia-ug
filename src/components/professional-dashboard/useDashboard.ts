@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
@@ -28,7 +29,7 @@ export const defaultProfileData: ProfileFormValues = {
 
 export default function useDashboard() {
   const { toast } = useToast();
-  const { session } = useAuth();
+  const { session, user } = useAuth();
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
@@ -38,7 +39,7 @@ export default function useDashboard() {
   const [activeFilters, setActiveFilters] = useState<string[]>([]);
   const [savedVacancies, setSavedVacancies] = useState<string[]>([]);
   const [appliedVacancies, setAppliedVacancies] = useState<string[]>([]);
-  const [profileData, setProfileData] = useState<ProfileFormValues | null>(null); // Initialize as null instead of defaultProfileData
+  const [profileData, setProfileData] = useState<ProfileFormValues | null>(null);
   const [savedTabView, setSavedTabView] = useState<'saved' | 'applied'>('saved');
   const [loading, setLoading] = useState(true);
   const [vacancyResults, setVacancyResults] = useState<Vacancy[]>([]);
@@ -50,55 +51,67 @@ export default function useDashboard() {
   const cities = ['New York', 'Boston', 'Chicago', 'Los Angeles', 'Dallas', 'Miami', 'Seattle'];
 
   // Load saved vacancies from Supabase
-  useEffect(() => {
-    const fetchSavedVacancies = async () => {
-      if (!session?.user) return;
-      
-      try {
-        const { data, error } = await supabase
-          .from('saved_vacancies')
-          .select('vacancy_id')
-          .eq('user_id', session.user.id);
-          
-        if (error) {
-          throw error;
-        }
-        
-        // Extract just the vacancy IDs
-        const savedIds = data.map(item => item.vacancy_id);
-        setSavedVacancies(savedIds);
-      } catch (error) {
-        console.error("Error fetching saved vacancies:", error);
-      }
-    };
+  const fetchSavedVacancies = useCallback(async () => {
+    if (!session?.user) return;
     
-    // Fetch applied vacancies
-    const fetchAppliedVacancies = async () => {
-      if (!session?.user) return;
-      
-      try {
-        const { data, error } = await supabase
-          .from('applied_vacancies')
-          .select('vacancy_id')
-          .eq('user_id', session.user.id);
-          
-        if (error) {
-          throw error;
-        }
+    try {
+      const { data, error } = await supabase
+        .from('saved_vacancies')
+        .select('vacancy_id')
+        .eq('user_id', session.user.id);
         
-        // Extract just the vacancy IDs
-        const appliedIds = data.map(item => item.vacancy_id);
-        setAppliedVacancies(appliedIds);
-      } catch (error) {
-        console.error("Error fetching applied vacancies:", error);
+      if (error) {
+        throw error;
       }
-    };
-    
-    setLoading(true);
-    fetchSavedVacancies();
-    fetchAppliedVacancies();
-    setLoading(false);
+      
+      // Extract just the vacancy IDs
+      const savedIds = data.map(item => item.vacancy_id);
+      setSavedVacancies(savedIds);
+      return savedIds;
+    } catch (error) {
+      console.error("Error fetching saved vacancies:", error);
+      return [];
+    }
   }, [session]);
+  
+  // Fetch applied vacancies
+  const fetchAppliedVacancies = useCallback(async () => {
+    if (!session?.user) return;
+    
+    try {
+      const { data, error } = await supabase
+        .from('applied_vacancies')
+        .select('vacancy_id')
+        .eq('user_id', session.user.id);
+        
+      if (error) {
+        throw error;
+      }
+      
+      // Extract just the vacancy IDs
+      const appliedIds = data.map(item => item.vacancy_id);
+      setAppliedVacancies(appliedIds);
+      return appliedIds;
+    } catch (error) {
+      console.error("Error fetching applied vacancies:", error);
+      return [];
+    }
+  }, [session]);
+
+  useEffect(() => {
+    const loadData = async () => {
+      setLoading(true);
+      await Promise.all([
+        fetchSavedVacancies(),
+        fetchAppliedVacancies()
+      ]);
+      setLoading(false);
+    };
+    
+    if (session?.user) {
+      loadData();
+    }
+  }, [session, fetchSavedVacancies, fetchAppliedVacancies]);
 
   // Update profile data when it changes in the hook
   useEffect(() => {
@@ -327,6 +340,8 @@ export default function useDashboard() {
     setVacancyResults,
     handleSearch,
     toggleSaveVacancy,
-    applyToVacancy
+    applyToVacancy,
+    refreshSavedVacancies: fetchSavedVacancies,
+    refreshAppliedVacancies: fetchAppliedVacancies
   };
 }

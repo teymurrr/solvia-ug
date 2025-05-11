@@ -15,17 +15,9 @@ import { ArrowLeft, Upload, FileUp, Check } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-
-// This would come from an API in a real application
-const getVacancyById = (id: string) => {
-  return {
-    id,
-    title: 'Neurologist',
-    institution: 'Berlin Medical Center',
-    location: 'Berlin, Germany',
-    jobType: 'Full-time',
-  };
-};
+import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/contexts/AuthContext';
+import { Vacancy } from '@/hooks/useVacancies';
 
 // Create schema for form validation
 const applicationSchema = z.object({
@@ -44,8 +36,11 @@ const VacancyApply = () => {
   const location = useLocation();
   const { toast } = useToast();
   const { profileData, loading } = useProfileData();
+  const { user, session } = useAuth();
   const [cvFile, setCvFile] = useState<File | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [vacancy, setVacancy] = useState<Vacancy | null>(null);
+  const [loadingVacancy, setLoadingVacancy] = useState(true);
   
   // Check if user came from the dashboard
   const fromDashboard = location.state?.fromDashboard || false;
@@ -54,8 +49,33 @@ const VacancyApply = () => {
   const currentPage = location.state?.currentPage || 1;
   const selectedFilters = location.state?.selectedFilters || {};
 
-  // Get vacancy details (in a real app this would be from an API)
-  const vacancy = getVacancyById(id || '');
+  // Fetch the vacancy details from Supabase
+  useEffect(() => {
+    const fetchVacancy = async () => {
+      if (id) {
+        setLoadingVacancy(true);
+        const { data, error } = await supabase
+          .from('vacancies')
+          .select('*')
+          .eq('id', id)
+          .single();
+          
+        if (error) {
+          console.error('Error fetching vacancy:', error);
+          toast({
+            title: "Error",
+            description: "Failed to load vacancy details",
+            variant: "destructive",
+          });
+        } else {
+          setVacancy(data as Vacancy);
+        }
+        setLoadingVacancy(false);
+      }
+    };
+    
+    fetchVacancy();
+  }, [id, toast]);
 
   const form = useForm<ApplicationFormValues>({
     resolver: zodResolver(applicationSchema),
@@ -103,15 +123,45 @@ const VacancyApply = () => {
   };
 
   const onSubmit = async (data: ApplicationFormValues) => {
+    if (!user || !session) {
+      toast({
+        title: "Authentication required",
+        description: "You need to be logged in to apply for vacancies",
+        variant: "destructive",
+      });
+      return;
+    }
+    
     setIsSubmitting(true);
     
     try {
-      // In a real application, this would send the data to an API
       console.log('Application data:', data);
       console.log('CV file:', cvFile);
       
-      // Simulate API call delay
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      // Save the application in the database
+      const { error } = await supabase
+        .from('applied_vacancies')
+        .insert({
+          user_id: user.id,
+          vacancy_id: id,
+          status: 'pending',
+          application_data: {
+            firstName: data.firstName,
+            lastName: data.lastName,
+            email: data.email,
+            phone: data.phone || '',
+            coverLetter: data.coverLetter || '',
+            cvFileName: cvFile ? cvFile.name : null
+          }
+        });
+      
+      if (error) {
+        console.error('Error submitting application:', error);
+        throw error;
+      }
+      
+      // Future enhancement: Upload CV file to Supabase storage
+      // This would require setting up storage buckets
       
       toast({
         title: "Application submitted",
@@ -123,7 +173,8 @@ const VacancyApply = () => {
       if (fromDashboard) {
         navigate('/dashboard/professional', { 
           state: { 
-            activeTab: 'vacancies',
+            activeTab: 'saved',
+            savedTabView: 'applied',
             searchQuery,
             currentPage,
             selectedFilters,
@@ -133,10 +184,10 @@ const VacancyApply = () => {
       } else {
         navigate('/vacancies');
       }
-    } catch (error) {
+    } catch (error: any) {
       toast({
         title: "Error",
-        description: "Failed to submit application. Please try again.",
+        description: error.message || "Failed to submit application. Please try again.",
         variant: "destructive",
       });
     } finally {
@@ -144,7 +195,7 @@ const VacancyApply = () => {
     }
   };
 
-  if (loading) {
+  if (loading || loadingVacancy) {
     return (
       <MainLayout>
         <div className="container py-8 flex justify-center items-center min-h-[500px]">
@@ -152,6 +203,24 @@ const VacancyApply = () => {
         </div>
       </MainLayout>
     );
+  }
+
+  // Redirect to external application if provided
+  useEffect(() => {
+    if (vacancy?.application_link) {
+      window.open(vacancy.application_link, '_blank');
+      // Redirect back to vacancies list after opening external link
+      navigate('/vacancies', {
+        state: { 
+          externalApplication: true,
+          vacancyTitle: vacancy.title
+        }
+      });
+    }
+  }, [vacancy, navigate]);
+
+  if (vacancy?.application_link) {
+    return null; // Don't render anything as we're redirecting
   }
 
   return (
@@ -168,7 +237,7 @@ const VacancyApply = () => {
         <div className="mb-6">
           <h1 className="text-3xl font-bold">Apply for Position</h1>
           <p className="text-muted-foreground mt-1">
-            {vacancy.title} at {vacancy.institution} ({vacancy.location})
+            {vacancy?.title || 'Job Position'} at {vacancy?.institution || 'Institution'} ({vacancy?.location || 'Location'})
           </p>
         </div>
         

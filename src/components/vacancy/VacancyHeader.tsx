@@ -1,10 +1,9 @@
 
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { Building, Bookmark, BookmarkCheck } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { getJobTypeBadgeVariant } from './utils';
+import { Bookmark, BookmarkCheck, FileCheck } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 
 interface VacancyHeaderProps {
   id: string;
@@ -13,7 +12,8 @@ interface VacancyHeaderProps {
   jobType: string;
   showSaveOption?: boolean;
   isSaved?: boolean;
-  onSaveToggle?: (e: React.MouseEvent) => void;
+  isApplied?: boolean;
+  onSaveToggle?: (id: string) => void;
   isDashboardCard?: boolean;
 }
 
@@ -24,45 +24,76 @@ const VacancyHeader: React.FC<VacancyHeaderProps> = ({
   jobType,
   showSaveOption = false,
   isSaved = false,
+  isApplied = false,
   onSaveToggle,
-  isDashboardCard = false,
+  isDashboardCard = false
 }) => {
-  // Adjust title size based on whether it's a dashboard card
-  const titleClasses = isDashboardCard 
-    ? "text-lg font-semibold hover:text-primary transition-colors" 
-    : "text-xl font-semibold hover:text-primary transition-colors";
-
-  // Since the entire card is clickable now, we don't need a separate link
+  const getJobTypeBadgeVariant = (type: string) => {
+    switch(type.toLowerCase()) {
+      case 'full-time':
+        return 'default';
+      case 'part-time':
+        return 'secondary';
+      case 'temporary':
+      case 'locum': 
+        return 'outline';
+      case 'internship':
+        return 'destructive';
+      default:
+        return 'default';
+    }
+  };
+  
   return (
-    <div className="flex flex-wrap justify-between items-start gap-2">
-      <div>
-        <div className={titleClasses.replace('hover:text-primary', '')}>
-          {title}
+    <div className="space-y-1">
+      <div className="flex justify-between items-start">
+        <div>
+          <h3 className={cn("font-bold", {
+            "text-lg": isDashboardCard,
+            "text-xl": !isDashboardCard
+          })}>
+            {title}
+          </h3>
+          <p className={cn("text-muted-foreground", {
+            "text-sm": isDashboardCard
+          })}>
+            {institution}
+          </p>
         </div>
-        <div className="flex items-center text-muted-foreground mt-1">
-          <Building className="h-4 w-4 mr-1" />
-          <span className="text-sm">{institution}</span>
+        
+        <div className="flex items-center space-x-2">
+          {isApplied && (
+            <Badge className="bg-blue-500">
+              <FileCheck className="h-3 w-3 mr-1" />
+              Applied
+            </Badge>
+          )}
+          
+          <Badge variant={getJobTypeBadgeVariant(jobType)}>
+            {jobType}
+          </Badge>
+          
+          {showSaveOption && onSaveToggle && (
+            <Button
+              variant="ghost"
+              size="sm"
+              className="h-8 w-8 p-0"
+              onClick={(e) => {
+                e.stopPropagation();
+                onSaveToggle(id);
+              }}
+            >
+              {isSaved ? (
+                <BookmarkCheck className="h-5 w-5 text-primary" />
+              ) : (
+                <Bookmark className="h-5 w-5 text-muted-foreground" />
+              )}
+              <span className="sr-only">
+                {isSaved ? 'Remove from saved' : 'Save vacancy'}
+              </span>
+            </Button>
+          )}
         </div>
-      </div>
-      <div className="flex items-center gap-2">
-        {showSaveOption && (
-          <Button
-            variant="ghost"
-            size="icon"
-            className="h-8 w-8"
-            onClick={onSaveToggle}
-            title={isSaved ? "Remove from saved" : "Save for later"}
-          >
-            {isSaved ? (
-              <BookmarkCheck className="h-5 w-5 text-primary" />
-            ) : (
-              <Bookmark className="h-5 w-5" />
-            )}
-          </Button>
-        )}
-        <Badge variant={getJobTypeBadgeVariant(jobType)} className="whitespace-nowrap">
-          {jobType}
-        </Badge>
       </div>
     </div>
   );

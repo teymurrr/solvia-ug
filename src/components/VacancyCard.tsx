@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
@@ -21,6 +22,7 @@ interface VacancyCardProps {
   postedDate?: string;
   showSaveOption?: boolean;
   isSaved?: boolean;
+  isApplied?: boolean;
   onSaveToggle?: (id: string) => void;
   country?: string;
   city?: string;
@@ -32,6 +34,7 @@ interface VacancyCardProps {
   selectedFilters?: any;
   isLandingPageCard?: boolean;
   fromLandingPage?: boolean;
+  application_link?: string;
 }
 
 const VacancyCard: React.FC<VacancyCardProps> = ({
@@ -47,6 +50,7 @@ const VacancyCard: React.FC<VacancyCardProps> = ({
   postedDate,
   showSaveOption = false,
   isSaved = false,
+  isApplied = false,
   onSaveToggle,
   country,
   city,
@@ -58,6 +62,7 @@ const VacancyCard: React.FC<VacancyCardProps> = ({
   selectedFilters,
   isLandingPageCard = false,
   fromLandingPage = false,
+  application_link,
 }) => {
   const { toast } = useToast();
   const navigate = useNavigate();
@@ -125,6 +130,7 @@ const VacancyCard: React.FC<VacancyCardProps> = ({
             jobType={jobType}
             showSaveOption={showSaveOption}
             isSaved={isSaved}
+            isApplied={isApplied}
             onSaveToggle={toggleSave}
             isDashboardCard={isDashboardCard}
           />
@@ -144,7 +150,7 @@ const VacancyCard: React.FC<VacancyCardProps> = ({
           <VacancyFooter 
             id={id} 
             isDashboardCard={isDashboardCard} 
-            applicationLink={applicationLink}
+            applicationLink={applicationLink || application_link}
             fromDashboard={isDashboardCard}
             fromLandingPage={isLandingPageCard}
             searchQuery={searchQuery}
@@ -152,6 +158,7 @@ const VacancyCard: React.FC<VacancyCardProps> = ({
             selectedFilters={selectedFilters}
             isLandingPageCard={isLandingPageCard}
             isLoggedIn={isLoggedIn}
+            isApplied={isApplied}
           />
         </div>
       </CardContent>

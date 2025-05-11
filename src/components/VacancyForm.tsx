@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -24,7 +23,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from '@/hooks/use-toast';
-import { Loader2 } from 'lucide-react';
+import { Loader2, Link as LinkIcon } from 'lucide-react';
 
 // Define validation schema
 const formSchema = z.object({
@@ -41,6 +40,7 @@ const formSchema = z.object({
   description: z.string().min(10, { message: "Description is required and must be at least 10 characters" }),
   requirements: z.string().min(5, { message: "Requirements are required" }),
   salary: z.string().optional(),
+  application_link: z.string().url({ message: "Please enter a valid URL" }).optional().or(z.literal('')),
 });
 
 // Adapter function to handle the contractType to contract_type transformation
@@ -64,6 +64,11 @@ export const adaptVacancyFormData = (formData) => {
     formData.contract_type = formData.contractType;
     delete formData.contractType;
   }
+
+  // Clean up empty application link
+  if (formData.application_link === '') {
+    formData.application_link = null;
+  }
   
   console.log("Adapted form data:", formData);
   return formData;
@@ -83,7 +88,8 @@ const prepareVacancyForForm = (vacancy) => {
 
   return {
     ...vacancy,
-    requirements: requirementsString
+    requirements: requirementsString,
+    application_link: vacancy.application_link || ''
   };
 };
 
@@ -126,6 +132,7 @@ const VacancyForm: React.FC<VacancyFormProps> = ({
       description: "",
       requirements: "",
       salary: "",
+      application_link: "",
     },
   });
 
@@ -152,6 +159,7 @@ const VacancyForm: React.FC<VacancyFormProps> = ({
         description: "",
         requirements: "",
         salary: "",
+        application_link: "",
       });
     }
   }, [editVacancy, isEditMode, form, open]);
@@ -377,6 +385,30 @@ const VacancyForm: React.FC<VacancyFormProps> = ({
                 )}
               />
             </div>
+            
+            {/* External Application Link */}
+            <FormField
+              control={form.control}
+              name="application_link"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="flex items-center">
+                    <LinkIcon className="h-4 w-4 mr-2" />
+                    External Application Link
+                  </FormLabel>
+                  <FormControl>
+                    <Input 
+                      placeholder="https://your-company-careers.com/job/12345" 
+                      {...field} 
+                    />
+                  </FormControl>
+                  <FormMessage />
+                  <p className="text-sm text-muted-foreground">
+                    If provided, applicants will be redirected to this URL instead of using the Solvia application form.
+                  </p>
+                </FormItem>
+              )}
+            />
             
             <FormField
               control={form.control}

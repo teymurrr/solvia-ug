@@ -1,18 +1,19 @@
 
-// InstitutionDashboard.tsx
-
 import React, { useState, useEffect } from 'react';
 import MainLayout from '@/components/MainLayout';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import VacancyForm from '@/components/VacancyForm';
 import InstitutionProfileEditForm from '@/components/InstitutionProfileEditForm';
 import { ProfileTab, VacanciesTab, TalentsTab, DashboardHeader } from '@/components/institution-dashboard';
+import ApplicationsTab from '@/components/institution-dashboard/ApplicationsTab';
 import { useProfessionals } from '@/hooks/useProfessionals';
 import { useVacancies, VacancyInput } from '@/hooks/useVacancies';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
+import { useLocation } from 'react-router-dom';
 
 const InstitutionDashboard = () => {
+  const location = useLocation();
   const [vacancyFormOpen, setVacancyFormOpen] = useState(false);
   const [vacancyFormMode, setVacancyFormMode] = useState<'create' | 'edit'>('create');
   const [currentVacancy, setCurrentVacancy] = useState(null);
@@ -44,7 +45,15 @@ const InstitutionDashboard = () => {
     country: 'all_countries',
     language: 'all_languages'
   });
+  const [activeTab, setActiveTab] = useState('profile');
   const { toast } = useToast();
+  
+  // Get active tab from location state if available
+  useEffect(() => {
+    if (location.state?.activeTab) {
+      setActiveTab(location.state.activeTab);
+    }
+  }, [location.state]);
   
   // Filter vacancies to show only those created by the current institution
   const institutionVacancies = user?.id ? 
@@ -193,10 +202,11 @@ const InstitutionDashboard = () => {
             <p className="mt-2">You need to be logged in to access this dashboard.</p>
           </div>
         ) : (
-          <Tabs defaultValue="profile" className="space-y-6">
-            <TabsList className="grid w-full md:w-auto grid-cols-3">
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+            <TabsList className="grid w-full md:w-auto grid-cols-4">
               <TabsTrigger value="profile">Profile</TabsTrigger>
               <TabsTrigger value="vacancies">Your Vacancies</TabsTrigger>
+              <TabsTrigger value="applications">Applications</TabsTrigger>
               <TabsTrigger value="talents">Talent Search</TabsTrigger>
             </TabsList>
             
@@ -212,6 +222,10 @@ const InstitutionDashboard = () => {
                 onDeleteVacancy={handleDeleteVacancy}
                 loading={vacanciesLoading}
               />
+            </TabsContent>
+            
+            <TabsContent value="applications" className="space-y-6">
+              <ApplicationsTab />
             </TabsContent>
             
             <TabsContent value="talents" className="space-y-6">

@@ -1,7 +1,8 @@
 
-import React, { useMemo } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { BookmarkCheck, FileCheck } from 'lucide-react';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import VacancyCard from '@/components/VacancyCard';
 import { NoResults } from '@/components/professional-dashboard';
 import { Vacancy } from '@/hooks/useVacancies';
@@ -15,6 +16,8 @@ interface SavedAndAppliedProps {
   toggleSaveVacancy: (id: string) => void;
   availableVacancies: Vacancy[];
   loading?: boolean;
+  refreshSaved?: () => void;
+  refreshApplied?: () => void;
 }
 
 const SavedAndApplied: React.FC<SavedAndAppliedProps> = ({
@@ -24,8 +27,33 @@ const SavedAndApplied: React.FC<SavedAndAppliedProps> = ({
   appliedVacancies,
   toggleSaveVacancy,
   availableVacancies,
-  loading = false
+  loading = false,
+  refreshSaved,
+  refreshApplied
 }) => {
+  const [initialLoad, setInitialLoad] = useState(true);
+
+  // Auto-refresh data when component mounts
+  useEffect(() => {
+    if (initialLoad) {
+      if (savedTabView === 'saved' && refreshSaved) {
+        refreshSaved();
+      } else if (savedTabView === 'applied' && refreshApplied) {
+        refreshApplied();
+      }
+      setInitialLoad(false);
+    }
+  }, [initialLoad, savedTabView, refreshSaved, refreshApplied]);
+
+  // When tab changes, refresh the appropriate data
+  useEffect(() => {
+    if (savedTabView === 'saved' && refreshSaved) {
+      refreshSaved();
+    } else if (savedTabView === 'applied' && refreshApplied) {
+      refreshApplied();
+    }
+  }, [savedTabView, refreshSaved, refreshApplied]);
+
   // Use memoization to avoid recalculating these lists unnecessarily
   const savedVacanciesList = useMemo(() => {
     return availableVacancies.filter(vacancy => savedVacancies.includes(vacancy.id));
@@ -58,24 +86,18 @@ const SavedAndApplied: React.FC<SavedAndAppliedProps> = ({
   return (
     <div className="space-y-4">
       <div className="flex mt-2 sm:mt-0 justify-end">
-        <Button 
-          variant={savedTabView === 'saved' ? "default" : "outline"} 
-          size="sm"
-          onClick={() => setSavedTabView('saved')}
-          className="rounded-r-none"
-        >
-          <BookmarkCheck className="h-4 w-4 mr-2" />
-          Saved
-        </Button>
-        <Button 
-          variant={savedTabView === 'applied' ? "default" : "outline"} 
-          size="sm"
-          onClick={() => setSavedTabView('applied')}
-          className="rounded-l-none"
-        >
-          <FileCheck className="h-4 w-4 mr-2" />
-          Applied
-        </Button>
+        <Tabs value={savedTabView} onValueChange={(value: 'saved' | 'applied') => setSavedTabView(value)}>
+          <TabsList>
+            <TabsTrigger value="saved">
+              <BookmarkCheck className="h-4 w-4 mr-2" />
+              Saved
+            </TabsTrigger>
+            <TabsTrigger value="applied">
+              <FileCheck className="h-4 w-4 mr-2" />
+              Applied
+            </TabsTrigger>
+          </TabsList>
+        </Tabs>
       </div>
       
       {savedTabView === 'saved' ? (
@@ -113,6 +135,7 @@ const SavedAndApplied: React.FC<SavedAndAppliedProps> = ({
                 isSaved={savedVacancies.includes(vacancy.id)}
                 onSaveToggle={toggleSaveVacancy}
                 isDashboardCard={true}
+                isApplied={true}
               />
             ))}
           </div>

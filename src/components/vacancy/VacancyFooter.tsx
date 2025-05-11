@@ -3,6 +3,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
+import { FileCheck } from 'lucide-react';
 
 interface VacancyFooterProps {
   id: string;
@@ -15,6 +16,7 @@ interface VacancyFooterProps {
   selectedFilters?: any;
   isLandingPageCard?: boolean;
   isLoggedIn?: boolean;
+  isApplied?: boolean;
 }
 
 const VacancyFooter: React.FC<VacancyFooterProps> = ({ 
@@ -27,12 +29,22 @@ const VacancyFooter: React.FC<VacancyFooterProps> = ({
   currentPage,
   selectedFilters,
   isLandingPageCard = false,
-  isLoggedIn = false
+  isLoggedIn = false,
+  isApplied = false
 }) => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
   const handleApply = () => {
+    // If already applied, don't do anything
+    if (isApplied) {
+      toast({
+        title: "Already applied",
+        description: "You have already applied for this vacancy",
+      });
+      return;
+    }
+    
     // Redirect to signup if user is not logged in
     if (!isLoggedIn && (isLandingPageCard || fromLandingPage)) {
       toast({
@@ -94,8 +106,17 @@ const VacancyFooter: React.FC<VacancyFooterProps> = ({
           onClick={handleApply} 
           className="w-full"
           size={isDashboardCard ? "sm" : "default"}
+          variant={isApplied ? "outline" : "default"}
+          disabled={isApplied}
         >
-          Apply Now
+          {isApplied ? (
+            <>
+              <FileCheck className="mr-2 h-4 w-4" />
+              Applied
+            </>
+          ) : (
+            "Apply Now"
+          )}
         </Button>
       </div>
     );
@@ -119,8 +140,17 @@ const VacancyFooter: React.FC<VacancyFooterProps> = ({
         onClick={handleApply} 
         className={`${!isDashboardCard ? 'ml-auto' : 'w-full'} ${buttonClasses}`}
         size={isDashboardCard ? "sm" : "default"}
+        variant={isApplied ? "outline" : "default"}
+        disabled={isApplied}
       >
-        Apply Now
+        {isApplied ? (
+          <>
+            <FileCheck className="mr-2 h-4 w-4" />
+            Applied
+          </>
+        ) : (
+          "Apply Now"
+        )}
       </Button>
     </div>
   );
