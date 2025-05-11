@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+
+import React, { useState, useEffect } from 'react';
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -39,13 +40,6 @@ const formSchema = z.object({
   city: z.string().optional(),
   description: z.string().min(10, { message: "Description is required and must be at least 10 characters" }),
   requirements: z.string().min(5, { message: "Requirements are required" }),
-  application_deadline: z.string().optional().refine(val => {
-    // Empty string is valid (will be converted to null)
-    if (!val || val.trim() === '') return true;
-    // Otherwise check if it's a valid date
-    const date = new Date(val);
-    return !isNaN(date.getTime());
-  }, { message: "Invalid date format" }),
   salary: z.string().optional(),
 });
 
@@ -58,11 +52,6 @@ export const adaptVacancyFormData = (formData) => {
     formData.requirements = formData.requirements
       .split('\n')
       .filter(line => line.trim() !== '');
-  }
-
-  // Handle empty application_deadline
-  if (formData.application_deadline === '') {
-    formData.application_deadline = null;
   }
 
   // Copy contract_type to job_type if job_type is missing
@@ -80,12 +69,32 @@ export const adaptVacancyFormData = (formData) => {
   return formData;
 };
 
+// Function to prepare vacancy data for the form
+const prepareVacancyForForm = (vacancy) => {
+  if (!vacancy) return null;
+
+  // Convert requirements array to string for the form textarea
+  let requirementsString = '';
+  if (vacancy.requirements && Array.isArray(vacancy.requirements)) {
+    requirementsString = vacancy.requirements.join('\n');
+  } else if (typeof vacancy.requirements === 'string') {
+    requirementsString = vacancy.requirements;
+  }
+
+  return {
+    ...vacancy,
+    requirements: requirementsString
+  };
+};
+
 interface VacancyFormProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onSubmit: (data: any) => Promise<any>;
   isSubmitting?: boolean;
   userId?: string;
+  editVacancy?: any;
+  mode?: 'create' | 'edit';
 }
 
 const VacancyForm: React.FC<VacancyFormProps> = ({ 
@@ -93,10 +102,13 @@ const VacancyForm: React.FC<VacancyFormProps> = ({
   onOpenChange, 
   onSubmit, 
   isSubmitting = false,
-  userId 
+  userId,
+  editVacancy = null,
+  mode = 'create'
 }) => {
   const { toast } = useToast();
   const [internalSubmitting, setInternalSubmitting] = useState(false);
+  const isEditMode = mode === 'edit' && editVacancy;
   
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -113,10 +125,36 @@ const VacancyForm: React.FC<VacancyFormProps> = ({
       city: "",
       description: "",
       requirements: "",
-      application_deadline: "",
       salary: "",
     },
   });
+
+  // Set form values when editing an existing vacancy
+  useEffect(() => {
+    if (isEditMode && editVacancy) {
+      const formattedVacancy = prepareVacancyForForm(editVacancy);
+      if (formattedVacancy) {
+        form.reset(formattedVacancy);
+      }
+    } else {
+      // Reset form to defaults when not in edit mode
+      form.reset({
+        title: "",
+        institution: "",
+        department: "",
+        specialty: "",
+        profession: "",
+        contract_type: "full-time",
+        job_type: "",
+        location: "",
+        country: "",
+        city: "",
+        description: "",
+        requirements: "",
+        salary: "",
+      });
+    }
+  }, [editVacancy, isEditMode, form, open]);
 
   const handleSubmit = async (values) => {
     try {
@@ -135,22 +173,33 @@ const VacancyForm: React.FC<VacancyFormProps> = ({
       
       setInternalSubmitting(true);
       const adaptedData = adaptVacancyFormData(values);
+      
+      // Include the ID when editing
+      if (isEditMode && editVacancy) {
+        adaptedData.id = editVacancy.id;
+      }
+
       console.log("Adapted data being submitted:", adaptedData);
       
       const result = await onSubmit(adaptedData);
       
       if (result) {
-        form.reset();
+        if (!isEditMode) {
+          form.reset(); // Only reset if not editing
+        }
+        
         toast({
-          title: "Vacancy created",
-          description: "Your vacancy has been posted successfully.",
+          title: isEditMode ? "Vacancy updated" : "Vacancy created",
+          description: isEditMode 
+            ? "Your vacancy has been updated successfully."
+            : "Your vacancy has been posted successfully.",
         });
       }
     } catch (error) {
       console.error("Error submitting vacancy:", error);
       toast({
         title: "Error",
-        description: "Failed to create vacancy. Please try again.",
+        description: `Failed to ${isEditMode ? 'update' : 'create'} vacancy. Please try again.`,
         variant: "destructive",
       });
     } finally {
@@ -159,14 +208,21 @@ const VacancyForm: React.FC<VacancyFormProps> = ({
   };
 
   const submitting = isSubmitting || internalSubmitting;
+  const dialogTitle = isEditMode ? "Edit Vacancy" : "Post a New Vacancy";
+  const dialogDescription = isEditMode 
+    ? "Update the information for this job vacancy. Fields marked with * are required."
+    : "Fill out the form below to create a new job vacancy. Fields marked with * are required.";
+  const submitButtonText = isEditMode 
+    ? (submitting ? "Updating..." : "Update Vacancy")
+    : (submitting ? "Creating..." : "Create Vacancy");
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Post a New Vacancy</DialogTitle>
+          <DialogTitle>{dialogTitle}</DialogTitle>
           <DialogDescription>
-            Fill out the form below to create a new job vacancy. Fields marked with * are required.
+            {dialogDescription}
           </DialogDescription>
         </DialogHeader>
         
@@ -256,6 +312,7 @@ const VacancyForm: React.FC<VacancyFormProps> = ({
                     <Select 
                       onValueChange={field.onChange} 
                       defaultValue={field.value}
+                      value={field.value}
                     >
                       <FormControl>
                         <SelectTrigger>
@@ -337,27 +394,6 @@ const VacancyForm: React.FC<VacancyFormProps> = ({
             
             <FormField
               control={form.control}
-              name="application_deadline"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Application Deadline</FormLabel>
-                  <FormControl>
-                    <Input 
-                      type="date" 
-                      {...field} 
-                      onChange={(e) => {
-                        // Allow clearing the field (empty string will be handled appropriately)
-                        field.onChange(e.target.value);
-                      }}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            
-            <FormField
-              control={form.control}
               name="description"
               render={({ field }) => (
                 <FormItem>
@@ -403,10 +439,10 @@ const VacancyForm: React.FC<VacancyFormProps> = ({
                 {submitting ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Creating...
+                    {isEditMode ? "Updating..." : "Creating..."}
                   </>
                 ) : (
-                  "Create Vacancy"
+                  submitButtonText
                 )}
               </Button>
             </DialogFooter>

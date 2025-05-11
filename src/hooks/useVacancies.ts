@@ -19,7 +19,6 @@ export interface Vacancy {
   location: string;
   description: string;
   requirements: string[];
-  application_deadline?: string;
   posted_date: string;
   salary?: string;
   institution_id?: string;
@@ -39,7 +38,6 @@ export interface VacancyInput {
   location: string;
   description: string;
   requirements: string | string[];
-  application_deadline?: string;
   salary?: string;
   institution_id?: string;
 }
@@ -133,19 +131,10 @@ export const useVacancies = () => {
         : Array.isArray(vacancyData.requirements) 
           ? vacancyData.requirements
           : [];
-          
-      // Process application_deadline: convert empty string to null
-      const application_deadline = 
-        !vacancyData.application_deadline || vacancyData.application_deadline.trim() === '' 
-        ? null 
-        : vacancyData.application_deadline;
       
-      console.log("Processed application_deadline:", application_deadline);
-          
       // Process and standardize the vacancy data
       const newVacancy = { 
         ...vacancyData,
-        application_deadline,
         requirements,
         // Ensure job_type is set from contract_type if not provided
         job_type: vacancyData.job_type || vacancyData.contract_type,
@@ -191,6 +180,81 @@ export const useVacancies = () => {
     }
   };
 
+  const handleUpdateVacancy = async (vacancyData: VacancyInput & { id: string }) => {
+    console.log("Starting handleUpdateVacancy with data:", vacancyData);
+    
+    if (!user || !session) {
+      console.error("No authenticated user found:", { user, session });
+      toast({
+        title: "Authentication required",
+        description: "You need to be logged in as an institution to update vacancies.",
+        variant: "destructive",
+      });
+      return null;
+    }
+    
+    try {
+      setSubmitting(true);
+      
+      // Make sure we have the vacancy ID
+      if (!vacancyData.id) {
+        throw new Error("Vacancy ID is required for updates");
+      }
+      
+      // Process requirements to ensure it's always an array
+      const requirements = typeof vacancyData.requirements === 'string' 
+        ? vacancyData.requirements.split('\n').filter((line: string) => line.trim() !== '')
+        : Array.isArray(vacancyData.requirements) 
+          ? vacancyData.requirements
+          : [];
+          
+      // Process and standardize the vacancy data
+      const updatedVacancy = { 
+        ...vacancyData,
+        requirements,
+        // Ensure job_type is set from contract_type if not provided
+        job_type: vacancyData.job_type || vacancyData.contract_type
+      };
+      
+      console.log("Updating vacancy in Supabase:", updatedVacancy);
+      
+      const { data, error } = await supabase
+        .from('vacancies')
+        .update(updatedVacancy)
+        .eq('id', vacancyData.id)
+        .select()
+        .single();
+      
+      if (error) {
+        console.error("Supabase error updating vacancy:", error);
+        throw error;
+      }
+      
+      console.log("Vacancy updated successfully in Supabase:", data);
+      
+      // Update the vacancy in state
+      setVacancies(prev => prev.map(v => v.id === data.id ? data : v));
+      
+      toast({
+        title: "Vacancy Updated",
+        description: "Your vacancy has been updated successfully.",
+      });
+      
+      return data;
+      
+    } catch (error: any) {
+      console.error('Error updating vacancy:', error);
+      toast({
+        title: "Error Updating Vacancy",
+        description: error.message || "Something went wrong. Please try again.",
+        variant: "destructive",
+      });
+      return null;
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
   const handleDeleteVacancy = async (id: string) => {
     try {
       console.log("Deleting vacancy with ID:", id);
@@ -227,7 +291,8 @@ export const useVacancies = () => {
 
   return { 
     vacancies, 
-    handleAddVacancy, 
+    handleAddVacancy,
+    handleUpdateVacancy,
     handleDeleteVacancy, 
     loading,
     submitting,

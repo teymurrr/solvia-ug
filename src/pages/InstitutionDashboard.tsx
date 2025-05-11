@@ -1,3 +1,4 @@
+
 // InstitutionDashboard.tsx
 
 import React, { useState, useEffect } from 'react';
@@ -13,6 +14,8 @@ import { useAuth } from '@/contexts/AuthContext';
 
 const InstitutionDashboard = () => {
   const [vacancyFormOpen, setVacancyFormOpen] = useState(false);
+  const [vacancyFormMode, setVacancyFormMode] = useState<'create' | 'edit'>('create');
+  const [currentVacancy, setCurrentVacancy] = useState(null);
   const [profileEditOpen, setProfileEditOpen] = useState(false);
   const { session, user, loading: authLoading } = useAuth();
   const { 
@@ -26,7 +29,8 @@ const InstitutionDashboard = () => {
   
   const { 
     vacancies, 
-    handleAddVacancy, 
+    handleAddVacancy,
+    handleUpdateVacancy,
     handleDeleteVacancy, 
     loading: vacanciesLoading, 
     refreshVacancies,
@@ -135,9 +139,23 @@ const InstitutionDashboard = () => {
     
     console.log("Submitting vacancy with institution ID:", vacancyWithInstitutionId);
     
-    const result = await handleAddVacancy(vacancyWithInstitutionId);
+    let result;
+    if (vacancyFormMode === 'edit' && currentVacancy) {
+      // Update existing vacancy
+      result = await handleUpdateVacancy({
+        ...vacancyWithInstitutionId,
+        id: currentVacancy.id
+      });
+    } else {
+      // Create new vacancy
+      result = await handleAddVacancy(vacancyWithInstitutionId);
+    }
+    
     if (result) {
       setVacancyFormOpen(false);
+      // Reset form state
+      setVacancyFormMode('create');
+      setCurrentVacancy(null);
       // Force refresh vacancies to ensure we see the new one
       setTimeout(() => {
         refreshVacancies();
@@ -145,11 +163,23 @@ const InstitutionDashboard = () => {
     }
   };
 
+  const handleOpenAddVacancy = () => {
+    setVacancyFormMode('create');
+    setCurrentVacancy(null);
+    setVacancyFormOpen(true);
+  };
+
+  const handleOpenEditVacancy = (vacancy) => {
+    setVacancyFormMode('edit');
+    setCurrentVacancy(vacancy);
+    setVacancyFormOpen(true);
+  };
+
   return (
     <MainLayout hideEditProfile>
       <div className="container py-8">
         <DashboardHeader 
-          onAddVacancy={() => setVacancyFormOpen(true)} 
+          onAddVacancy={handleOpenAddVacancy} 
         />
         
         {authLoading ? (
@@ -177,7 +207,8 @@ const InstitutionDashboard = () => {
             <TabsContent value="vacancies" className="space-y-6">
               <VacanciesTab 
                 vacancies={institutionVacancies} 
-                onAddVacancy={() => setVacancyFormOpen(true)} 
+                onAddVacancy={handleOpenAddVacancy} 
+                onEditVacancy={handleOpenEditVacancy}
                 onDeleteVacancy={handleDeleteVacancy}
                 loading={vacanciesLoading}
               />
@@ -207,6 +238,8 @@ const InstitutionDashboard = () => {
         onSubmit={handleAddVacancySubmit}
         isSubmitting={vacancySubmitting}
         userId={user?.id}
+        editVacancy={currentVacancy}
+        mode={vacancyFormMode}
       />
 
       <InstitutionProfileEditForm

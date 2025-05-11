@@ -279,7 +279,6 @@ export type Database = {
       }
       vacancies: {
         Row: {
-          application_deadline: string | null
           city: string | null
           contract_type: string
           country: string | null
@@ -300,7 +299,6 @@ export type Database = {
           updated_at: string
         }
         Insert: {
-          application_deadline?: string | null
           city?: string | null
           contract_type: string
           country?: string | null
@@ -321,7 +319,6 @@ export type Database = {
           updated_at?: string
         }
         Update: {
-          application_deadline?: string | null
           city?: string | null
           contract_type?: string
           country?: string | null

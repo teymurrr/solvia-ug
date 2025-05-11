@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Briefcase, Plus } from 'lucide-react';
+import { Briefcase, Plus, Edit, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -10,6 +10,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 interface VacanciesTabProps {
   vacancies: any[];
   onAddVacancy: () => void;
+  onEditVacancy: (vacancy: any) => void;
   onDeleteVacancy: (id: string | number) => void;
   loading?: boolean;
 }
@@ -17,6 +18,7 @@ interface VacanciesTabProps {
 const VacanciesTab: React.FC<VacanciesTabProps> = ({ 
   vacancies, 
   onAddVacancy, 
+  onEditVacancy,
   onDeleteVacancy,
   loading = false
 }) => {
@@ -65,14 +67,26 @@ const VacanciesTab: React.FC<VacanciesTabProps> = ({
                       {vacancy.description}
                     </p>
                   </div>
-                  <Button 
-                    variant="outline" 
-                    size="sm" 
-                    onClick={() => onDeleteVacancy(vacancy.id)}
-                    className="text-destructive hover:bg-destructive/10 ml-4"
-                  >
-                    Delete
-                  </Button>
+                  <div className="flex space-x-2 ml-4">
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      onClick={() => onEditVacancy(vacancy)}
+                      className="text-primary hover:bg-primary/10"
+                    >
+                      <Edit className="h-4 w-4 mr-1" />
+                      Edit
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      onClick={() => onDeleteVacancy(vacancy.id)}
+                      className="text-destructive hover:bg-destructive/10"
+                    >
+                      <Trash2 className="h-4 w-4 mr-1" />
+                      Delete
+                    </Button>
+                  </div>
                 </div>
               </div>
             ))}
