@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -125,37 +126,6 @@
     to {
       background-position: 200% center;
     }
-  }
-
-  /* Enhanced animation for rotating phrases */
-  @keyframes fadeOutUp {
-    from {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    to {
-      opacity: 0;
-      transform: translateY(-20px);
-    }
-  }
-
-  @keyframes fadeInDown {
-    from {
-      opacity: 0;
-      transform: translateY(-20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  .fade-exit {
-    animation: fadeOutUp 0.5s forwards;
-  }
-
-  .fade-enter {
-    animation: fadeInDown 0.5s forwards;
   }
 
   .card-gradient {
