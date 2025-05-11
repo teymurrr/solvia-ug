@@ -18,6 +18,17 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
   profileCompletionPercentage,
   onEdit
 }) => {
+  if (!profileData) {
+    return (
+      <div className="text-center py-6">
+        <p>Loading profile data...</p>
+        <Button variant="outline" className="mt-4" onClick={onEdit}>
+          Create Profile
+        </Button>
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col md:flex-row gap-6">
       <div className="flex-shrink-0">

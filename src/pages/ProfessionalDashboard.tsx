@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import MainLayout from '@/components/MainLayout';
@@ -25,6 +24,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from '@/components/ui/pagination';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const ITEMS_PER_PAGE = 3;
 
@@ -61,6 +61,7 @@ const ProfessionalDashboard: React.FC = () => {
     handleProfileSave,
     vacancyResults,
     handleSearch,
+    loading,
   } = useDashboard();
 
   // Update active tab when location state changes
@@ -89,6 +90,8 @@ const ProfessionalDashboard: React.FC = () => {
   }, [location.state, setSearchQuery, setCurrentPage, toast]);
 
   const calculateProfileCompletion = (profile: typeof profileData): number => {
+    if (!profile) return 0;
+    
     let totalFields = 0;
     let completedFields = 0;
     
@@ -179,9 +182,48 @@ const ProfessionalDashboard: React.FC = () => {
     return pageNumbers;
   };
 
-  const profileCompletionPercentage = calculateProfileCompletion(profileData);
+  const profileCompletionPercentage = profileData ? calculateProfileCompletion(profileData) : 0;
 
   const selectedFilters = getCurrentFilters();
+
+  // ProfileSkeleton component for loading state
+  const ProfileSkeleton = () => (
+    <div className="flex flex-col md:flex-row gap-6">
+      <div className="flex-shrink-0">
+        <Skeleton className="h-32 w-32 rounded-full" />
+      </div>
+      <div className="space-y-4 flex-grow w-full">
+        <div>
+          <Skeleton className="h-8 w-48 mb-2" />
+          <Skeleton className="h-4 w-32" />
+        </div>
+        
+        <div className="flex flex-col space-y-2 w-full">
+          <div className="flex justify-between">
+            <Skeleton className="h-4 w-24" />
+            <Skeleton className="h-4 w-8" />
+          </div>
+          <Skeleton className="h-2 w-full" />
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {[1, 2, 3, 4].map(i => (
+            <div key={i}>
+              <Skeleton className="h-4 w-24 mb-2" />
+              <Skeleton className="h-4 w-32" />
+            </div>
+          ))}
+        </div>
+        
+        <div>
+          <Skeleton className="h-4 w-24 mb-2" />
+          <Skeleton className="h-16 w-full" />
+        </div>
+        
+        <Skeleton className="h-10 w-40" />
+      </div>
+    </div>
+  );
 
   return (
     <MainLayout hideEditProfile={true}>
@@ -207,11 +249,25 @@ const ProfessionalDashboard: React.FC = () => {
                 <CardDescription>This is how institutions will see you</CardDescription>
               </CardHeader>
               <CardContent>
-                <ProfileCard
-                  profileData={profileData}
-                  profileCompletionPercentage={profileCompletionPercentage}
-                  onEdit={() => setIsEditProfileOpen(true)}
-                />
+                {loading ? (
+                  <ProfileSkeleton />
+                ) : profileData ? (
+                  <ProfileCard
+                    profileData={profileData}
+                    profileCompletionPercentage={profileCompletionPercentage}
+                    onEdit={() => setIsEditProfileOpen(true)}
+                  />
+                ) : (
+                  <div className="text-center py-8">
+                    <p className="text-muted-foreground">No profile data found. Click below to create your profile.</p>
+                    <button 
+                      onClick={() => setIsEditProfileOpen(true)}
+                      className="mt-4 inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background bg-primary text-primary-foreground hover:bg-primary/90 h-10 py-2 px-4"
+                    >
+                      Create Profile
+                    </button>
+                  </div>
+                )}
               </CardContent>
             </Card>
           </TabsContent>
@@ -245,7 +301,23 @@ const ProfessionalDashboard: React.FC = () => {
                     getJobTypeIcon={getJobTypeIcon}
                   />
 
-                  {currentVacancies.length > 0 ? (
+                  {loading ? (
+                    <div className="space-y-4">
+                      {[1, 2, 3].map((i) => (
+                        <div key={i} className="border rounded-lg p-4">
+                          <div className="flex flex-col gap-2">
+                            <Skeleton className="h-6 w-1/3" />
+                            <Skeleton className="h-4 w-1/4" />
+                            <Skeleton className="h-16 w-full mt-2" />
+                            <div className="flex justify-between mt-2">
+                              <Skeleton className="h-8 w-24" />
+                              <Skeleton className="h-8 w-24" />
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  ) : currentVacancies.length > 0 ? (
                     <>
                       <div className="grid grid-cols-1 gap-6">
                         {currentVacancies.map((vacancy) => (
@@ -328,14 +400,28 @@ const ProfessionalDashboard: React.FC = () => {
                 </div>
               </CardHeader>
               <CardContent>
-                <SavedAndApplied
-                  savedTabView={savedTabView}
-                  setSavedTabView={setSavedTabView}
-                  savedVacancies={savedVacancies}
-                  appliedVacancies={appliedVacancies}
-                  toggleSaveVacancy={toggleSaveVacancy}
-                  availableVacancies={vacancyResults}
-                />
+                {loading ? (
+                  <div className="space-y-4">
+                    {[1, 2].map((i) => (
+                      <div key={i} className="border rounded-lg p-4">
+                        <div className="flex flex-col gap-2">
+                          <Skeleton className="h-6 w-1/3" />
+                          <Skeleton className="h-4 w-1/4" />
+                          <Skeleton className="h-12 w-full mt-2" />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <SavedAndApplied
+                    savedTabView={savedTabView}
+                    setSavedTabView={setSavedTabView}
+                    savedVacancies={savedVacancies}
+                    appliedVacancies={appliedVacancies}
+                    toggleSaveVacancy={toggleSaveVacancy}
+                    availableVacancies={vacancyResults}
+                  />
+                )}
               </CardContent>
             </Card>
           </TabsContent>
@@ -345,7 +431,7 @@ const ProfessionalDashboard: React.FC = () => {
       <ProfessionalProfileEditForm
         open={isEditProfileOpen}
         onOpenChange={setIsEditProfileOpen}
-        initialData={profileData}
+        initialData={profileData || undefined}
         onSave={handleProfileSave}
       />
     </MainLayout>

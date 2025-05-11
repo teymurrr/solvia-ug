@@ -38,7 +38,7 @@ export default function useDashboard() {
   const [activeFilters, setActiveFilters] = useState<string[]>([]);
   const [savedVacancies, setSavedVacancies] = useState<string[]>([]);
   const [appliedVacancies, setAppliedVacancies] = useState<string[]>([]);
-  const [profileData, setProfileData] = useState<ProfileFormValues>(defaultProfileData);
+  const [profileData, setProfileData] = useState<ProfileFormValues | null>(null); // Initialize as null instead of defaultProfileData
   const [savedTabView, setSavedTabView] = useState<'saved' | 'applied'>('saved');
   const [loading, setLoading] = useState(true);
   const [vacancyResults, setVacancyResults] = useState<Vacancy[]>([]);
