@@ -14,9 +14,9 @@ const Index = () => {
     <MainLayout>
       <div className="min-h-screen">
         <HeroSection />
+        <WhySolviaSection />
         <VacanciesSection vacancies={featuredVacancies} />
         <TimelineSection />
-        <WhySolviaSection />
         <LearningSection />
         <CTASection />
       </div>
