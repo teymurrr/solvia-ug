@@ -7,9 +7,6 @@ import { useLanguage } from '@/hooks/useLanguage';
 const HeroSection = () => {
   const { t } = useLanguage();
   const [currentPhraseIndex, setCurrentPhraseIndex] = useState(0);
-  const [isAnimating, setIsAnimating] = useState(false);
-  const [displayedPhrase, setDisplayedPhrase] = useState("");
-  const [exitingPhrase, setExitingPhrase] = useState("");
   const rotatingPhrases = ["no agencies", "no hidden fees", "no delays"];
   
   // Default values in case translations aren't loaded yet
@@ -19,25 +16,12 @@ const HeroSection = () => {
   const findTalent = t?.hero?.findTalent || "Find a Talent";
   
   useEffect(() => {
-    // Set initial phrase
-    setDisplayedPhrase(rotatingPhrases[0]);
-    
     const interval = setInterval(() => {
-      setIsAnimating(true);
-      setExitingPhrase(rotatingPhrases[currentPhraseIndex]);
-      
-      // Wait for exit animation to complete before updating the displayed phrase
-      setTimeout(() => {
-        const nextIndex = (currentPhraseIndex + 1) % rotatingPhrases.length;
-        setCurrentPhraseIndex(nextIndex);
-        setDisplayedPhrase(rotatingPhrases[nextIndex]);
-        setIsAnimating(false);
-      }, 1000); // Half of the total animation time
-      
+      setCurrentPhraseIndex((prevIndex) => (prevIndex + 1) % rotatingPhrases.length);
     }, 3000); // Change every 3 seconds
     
     return () => clearInterval(interval);
-  }, [currentPhraseIndex]);
+  }, []);
   
   return (
     <section className="relative overflow-hidden">
@@ -45,17 +29,7 @@ const HeroSection = () => {
       <div className="container mx-auto px-4 py-16 md:py-24 relative z-10">
         <div className="max-w-3xl mx-auto text-center space-y-6">
           <h1 className="text-5xl md:text-6xl lg:text-[72px] font-bold tracking-tight">
-            {title}{" "}
-            <span className="relative inline-block">
-              {isAnimating && (
-                <span className="phrase-rotate phrase-exit font-extrabold">
-                  {exitingPhrase}
-                </span>
-              )}
-              <span className="phrase-rotate phrase-enter font-extrabold">
-                {displayedPhrase}
-              </span>
-            </span>
+            {title} <span className="phrase-rotate font-extrabold">{rotatingPhrases[currentPhraseIndex]}</span>
           </h1>
           <p className="text-lg md:text-xl lg:text-[22px] text-muted-foreground">
             {subtitle}
