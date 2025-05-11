@@ -1,39 +1,40 @@
 
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useToast } from '@/hooks/use-toast';
+import { useProtectedAction } from '@/hooks/useProtectedAction';
 import { Card, CardContent } from '@/components/ui/card';
-import { Link } from 'react-router-dom';
-import { Badge } from '@/components/ui/badge';
-import { BookmarkIcon } from '@radix-ui/react-icons';
-import { Building2, MapPin, Calendar } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { Button } from './ui/button';
+import VacancyHeader from './vacancy/VacancyHeader';
+import VacancyDetails from './vacancy/VacancyDetails';
 import VacancyFooter from './vacancy/VacancyFooter';
+import { useAuth } from '@/contexts/AuthContext';
 
-export interface VacancyCardProps {
+interface VacancyCardProps {
   id: string;
   title: string;
   institution: string;
-  location: string;
+  location?: string;
   jobType: string;
-  specialty: string;
+  specialty?: string;
   profession?: string;
-  department?: string;
-  salary?: string;
-  benefits?: string[];
-  createdAt?: string;
-  expiresAt?: string;
-  applicationCount?: number;
-  description?: string;
-  status?: 'active' | 'draft' | 'expired' | 'closed';
-  isDashboardCard?: boolean;
+  description: string;
+  requirements: string[];
+  postedDate?: string;
+  showSaveOption?: boolean;
   isSaved?: boolean;
   isApplied?: boolean;
-  className?: string;
-  showSaveOption?: boolean;
   onSaveToggle?: (id: string) => void;
-  fromLandingPage?: boolean;
+  country?: string;
+  city?: string;
+  className?: string;
+  isDashboardCard?: boolean;
+  applicationLink?: string;
+  searchQuery?: string;
+  currentPage?: number;
+  selectedFilters?: any;
   isLandingPageCard?: boolean;
-  isLoggedIn?: boolean;
+  fromLandingPage?: boolean;
+  application_link?: string;
 }
 
 const VacancyCard: React.FC<VacancyCardProps> = ({
@@ -44,111 +45,122 @@ const VacancyCard: React.FC<VacancyCardProps> = ({
   jobType,
   specialty,
   profession,
-  department,
-  salary,
-  benefits,
-  createdAt,
-  applicationCount,
-  isDashboardCard = false,
+  description,
+  requirements,
+  postedDate,
+  showSaveOption = false,
   isSaved = false,
   isApplied = false,
-  className,
-  showSaveOption = true,
   onSaveToggle,
-  fromLandingPage = false,
+  country,
+  city,
+  className,
+  isDashboardCard = false,
+  applicationLink,
+  searchQuery,
+  currentPage,
+  selectedFilters,
   isLandingPageCard = false,
-  isLoggedIn = false,
+  fromLandingPage = false,
+  application_link,
 }) => {
-  const handleSaveClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
+  const { toast } = useToast();
+  const navigate = useNavigate();
+  const { handleProtectedAction } = useProtectedAction();
+  const { isLoggedIn } = useAuth();
+  
+  const displayLocation = location || (city && country ? `${city}, ${country}` : city || country || "Location not specified");
+  
+  const toggleSave = (e: React.MouseEvent) => {
+    // Stop propagation to prevent navigation when clicking save button
     e.stopPropagation();
-    if (onSaveToggle) {
-      onSaveToggle(id);
-    }
+    
+    handleProtectedAction(() => {
+      if (onSaveToggle) {
+        onSaveToggle(id);
+        
+        toast({
+          title: isSaved ? "Vacancy removed from saved" : "Vacancy saved",
+          description: isSaved 
+            ? "The vacancy has been removed from your saved list" 
+            : "The vacancy has been saved for later",
+        });
+      }
+    });
   };
 
+  const handleCardClick = () => {
+    // For landing page cards, redirect to signup if not logged in
+    if ((isLandingPageCard || fromLandingPage) && !isLoggedIn) {
+      toast({
+        title: "Sign up required",
+        description: "Please sign up or log in to view vacancy details",
+      });
+      navigate('/signup');
+      return;
+    }
+    
+    // Otherwise proceed with normal navigation
+    navigate(`/vacancies/${id}`, {
+      state: { 
+        fromDashboard: isDashboardCard,
+        fromLandingPage: isLandingPageCard,
+        searchQuery,
+        currentPage,
+        selectedFilters
+      }
+    });
+  };
+
+  // Define card styling based on whether it's a dashboard card or landing page card
+  const cardClasses = isDashboardCard
+    ? `border border-border shadow-sm ${className || ""} cursor-pointer`
+    : isLandingPageCard 
+      ? `${className || ""} border border-border shadow-sm hover:shadow-lg hover:scale-[1.03] transition-all duration-500 ease-in-out cursor-pointer`
+      : `${className || ""} border border-border shadow-sm hover:shadow-lg hover:scale-[1.03] transition-all duration-300 cursor-pointer`;
+
   return (
-    <Card className={cn("h-full border hover:shadow-md transition-shadow", className)}>
-      <CardContent className="p-0">
-        <Link to={`/vacancies/${id}`} className="block h-full">
-          <div className="p-5">
-            <div className="flex justify-between items-start">
-              <div>
-                <h3 className="text-lg font-semibold line-clamp-2">{title}</h3>
-                <div className="flex items-center mt-1 text-sm text-gray-600">
-                  <Building2 className="mr-1 h-4 w-4" />
-                  <span>{institution}</span>
-                </div>
-                <div className="flex items-center mt-1 text-sm text-gray-600">
-                  <MapPin className="mr-1 h-4 w-4" />
-                  <span>{location}</span>
-                </div>
-              </div>
-              
-              {showSaveOption && (
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  aria-label={isSaved ? "Remove from saved" : "Save vacancy"}
-                  className="h-8 w-8"
-                  onClick={handleSaveClick}
-                >
-                  {isSaved ? (
-                    <BookmarkIcon className="h-5 w-5 text-primary" />
-                  ) : (
-                    <BookmarkIcon className="h-5 w-5" />
-                  )}
-                </Button>
-              )}
-            </div>
-
-            <div className="flex flex-wrap gap-2 mt-3">
-              <Badge variant="outline" className="bg-gray-50">
-                {specialty}
-              </Badge>
-              <Badge variant="outline" className="bg-gray-50">
-                {jobType}
-              </Badge>
-              {salary && (
-                <Badge variant="outline" className="bg-gray-50">
-                  {salary}
-                </Badge>
-              )}
-              {profession && (
-                <Badge variant="outline" className="bg-gray-50">
-                  {profession}
-                </Badge>
-              )}
-              {isApplied && (
-                <Badge variant="secondary" className="bg-green-50 text-green-700 border-green-200">
-                  Applied
-                </Badge>
-              )}
-            </div>
-
-            {createdAt && !isDashboardCard && (
-              <div className="mt-4 flex items-center text-xs text-gray-500">
-                <Calendar className="mr-1 h-3.5 w-3.5" />
-                <span>Posted {createdAt}</span>
-              </div>
-            )}
-
-            {isDashboardCard && applicationCount !== undefined && (
-              <div className="mt-4 text-sm text-gray-600">
-                {applicationCount} {applicationCount === 1 ? 'application' : 'applications'}
-              </div>
-            )}
-            
-            <VacancyFooter 
-              id={id}
-              isDashboardCard={isDashboardCard}
-              isApplied={isApplied}
-              fromLandingPage={fromLandingPage}
-              isLandingPageCard={isLandingPageCard}
-              isLoggedIn={isLoggedIn}
-            />
-          </div>
-        </Link>
+    <Card className={cardClasses} onClick={handleCardClick}>
+      <CardContent className={isDashboardCard ? "p-5" : "p-6"}>
+        <div className="space-y-4">
+          <VacancyHeader
+            id={id}
+            title={title}
+            institution={institution}
+            jobType={jobType}
+            showSaveOption={showSaveOption}
+            isSaved={isSaved}
+            isApplied={isApplied}
+            onSaveToggle={toggleSave}
+            isDashboardCard={isDashboardCard}
+          />
+          
+          <VacancyDetails
+            displayLocation={displayLocation}
+            profession={profession}
+            specialty={specialty}
+            postedDate={postedDate}
+            description={description}
+            requirements={requirements}
+            isDashboardCard={isDashboardCard}
+          />
+        </div>
+        
+        <div className="mt-5" onClick={(e) => e.stopPropagation()}>
+          <VacancyFooter 
+            id={id} 
+            isDashboardCard={isDashboardCard} 
+            applicationLink={applicationLink || application_link}
+            fromDashboard={isDashboardCard}
+            fromLandingPage={isLandingPageCard}
+            searchQuery={searchQuery}
+            currentPage={currentPage}
+            selectedFilters={selectedFilters}
+            isLandingPageCard={isLandingPageCard}
+            isLoggedIn={isLoggedIn}
+            isApplied={isApplied}
+          />
+        </div>
       </CardContent>
     </Card>
   );

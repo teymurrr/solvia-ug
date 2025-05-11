@@ -9,7 +9,6 @@ import About from '@/pages/About';
 import Contact from '@/pages/Contact';
 import NotFound from '@/pages/NotFound';
 import InstitutionDashboard from '@/pages/InstitutionDashboard';
-import Signup from '@/pages/Signup';
 import InstitutionSignup from '@/pages/InstitutionSignup';
 import ProfessionalDashboard from '@/pages/ProfessionalDashboard';
 import ProfessionalSignup from '@/pages/ProfessionalSignup';
@@ -42,7 +41,7 @@ function App() {
             <Route path="/employers" element={<EmployersLanding />} />
             
             {/* Auth routes */}
-            <Route path="/signup" element={<Signup />} />
+            <Route path="/signup" element={<ProfessionalSignup />} />
             <Route path="/signup/professional" element={<ProfessionalSignup />} />
             <Route path="/signup/institution" element={<InstitutionSignup />} />
             <Route path="/login" element={<Login />} />

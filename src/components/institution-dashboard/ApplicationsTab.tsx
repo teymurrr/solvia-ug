@@ -1,250 +1,337 @@
 
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { useToast } from '@/hooks/use-toast';
-import { Loader2 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
-import { 
+import {
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableHeader,
-  TableRow 
+  TableRow,
 } from '@/components/ui/table';
+import { 
+  Select, 
+  SelectContent, 
+  SelectItem, 
+  SelectTrigger, 
+  SelectValue 
+} from '@/components/ui/select';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { 
+  Card, 
+  CardContent, 
+  CardDescription, 
+  CardHeader, 
+  CardTitle 
+} from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
+import { useToast } from '@/hooks/use-toast';
+import { formatDate } from '@/vacancy/utils';
 
-interface Application {
+type Application = {
   id: string;
+  status: string;
+  application_date: string;
   vacancy_id: string;
   user_id: string;
-  created_at: string;
-  status: string;
-  resume_url?: string;
-  cover_letter?: string;
-  vacancy: {
+  application_data?: {
+    firstName?: string;
+    lastName?: string;
+    email?: string;
+    phone?: string;
+    coverLetter?: string;
+    cvFileName?: string;
+  };
+  vacancy?: {
     title: string;
     department: string;
-    specialty: string;
   };
-  professional: {
+  professionalProfile?: {
     first_name: string;
     last_name: string;
     specialty: string;
-    email: string;
+    profile_image?: string;
   };
-}
-
-// Simplified professional data structure to avoid type issues
-interface ProfessionalData {
-  first_name: string;
-  last_name: string;
-  specialty: string;
-  email: string;
-}
+};
 
 const ApplicationsTab = () => {
-  const [applications, setApplications] = useState<Application[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
   const { user } = useAuth();
   const { toast } = useToast();
+  const [loading, setLoading] = useState(true);
+  const [applications, setApplications] = useState<Application[]>([]);
+  const [vacancies, setVacancies] = useState<any[]>([]);
+  const [selectedVacancy, setSelectedVacancy] = useState<string>('all');
   
   useEffect(() => {
     const fetchApplications = async () => {
       if (!user?.id) return;
       
-      setIsLoading(true);
+      setLoading(true);
       try {
-        // Using applied_vacancies table instead of applications
-        const { data, error } = await supabase
-          .from('applied_vacancies')
-          .select(`
-            id,
-            vacancy_id,
-            user_id,
-            created_at,
-            status,
-            application_data,
-            vacancy:vacancies(title, department, specialty)
-          `)
+        // First get all vacancies owned by this institution
+        const { data: institutionVacancies, error: vacancyError } = await supabase
+          .from('vacancies')
+          .select('id, title, department')
           .eq('institution_id', user.id);
           
-        if (error) throw error;
+        if (vacancyError) throw vacancyError;
         
-        // Since we can't do complex joins, we'll fetch professional data separately
-        const formattedApplications = await Promise.all(data.map(async (app) => {
-          // Get professional profile data
-          const { data: profileData, error: profileError } = await supabase
-            .from('professional_profiles')
-            .select('first_name, last_name, specialty')
-            .eq('id', app.user_id)
-            .single();
-            
-          if (profileError) {
-            console.error('Error fetching professional profile:', profileError);
-          }
+        setVacancies(institutionVacancies || []);
+        
+        if (institutionVacancies?.length === 0) {
+          setApplications([]);
+          setLoading(false);
+          return;
+        }
+        
+        // Get vacancy IDs
+        const vacancyIds = institutionVacancies.map(v => v.id);
+        
+        // Get applications for these vacancies
+        const { data: applicationData, error: applicationError } = await supabase
+          .from('applied_vacancies')
+          .select(`
+            id, 
+            status, 
+            application_date, 
+            vacancy_id, 
+            user_id, 
+            application_data,
+            vacancy:vacancies(title, department)
+          `)
+          .in('vacancy_id', vacancyIds)
+          .order('application_date', { ascending: false });
           
-          // Get user email
-          const { data: userData, error: userError } = await supabase
-            .from('auth.users')
-            .select('email')
-            .eq('id', app.user_id)
-            .single();
-            
-          const professional: ProfessionalData = {
-            first_name: profileData?.first_name || 'Unknown',
-            last_name: profileData?.last_name || 'User',
-            specialty: profileData?.specialty || 'Not specified',
-            email: userData?.email || 'no-email@example.com'
-          };
+        if (applicationError) throw applicationError;
+        
+        // Get professional profiles for these applications
+        const userIds = applicationData.map(app => app.user_id);
+        
+        const { data: profileData, error: profileError } = await supabase
+          .from('professional_profiles')
+          .select('id, first_name, last_name, specialty, profile_image')
+          .in('id', userIds);
           
+        if (profileError) {
+          console.warn("Could not fetch professional profiles:", profileError);
+        }
+        
+        // Combine the data
+        const combinedApplications = applicationData.map(app => {
+          const profile = profileData?.find(p => p.id === app.user_id);
           return {
             ...app,
-            professional
+            professionalProfile: profile
           };
-        }));
+        });
         
-        setApplications(formattedApplications);
-      } catch (error: any) {
-        console.error('Error fetching applications:', error);
+        setApplications(combinedApplications);
+      } catch (error) {
+        console.error("Error fetching applications:", error);
         toast({
-          title: 'Failed to load applications',
-          description: error.message,
-          variant: 'destructive',
+          title: "Error",
+          description: "Failed to load application data",
+          variant: "destructive",
         });
       } finally {
-        setIsLoading(false);
+        setLoading(false);
       }
     };
     
     fetchApplications();
   }, [user, toast]);
-
-  const updateApplicationStatus = async (id: string, status: string) => {
+  
+  const updateApplicationStatus = async (applicationId: string, newStatus: string) => {
     try {
       const { error } = await supabase
         .from('applied_vacancies')
-        .update({ status })
-        .eq('id', id);
+        .update({ status: newStatus })
+        .eq('id', applicationId);
         
       if (error) throw error;
       
       // Update local state
       setApplications(prev => 
-        prev.map(app => app.id === id ? { ...app, status } : app)
+        prev.map(app => 
+          app.id === applicationId 
+            ? { ...app, status: newStatus } 
+            : app
+        )
       );
       
       toast({
-        title: 'Status updated',
-        description: `Application status set to ${status}`,
+        title: "Status updated",
+        description: `Application status changed to ${newStatus}`,
       });
-    } catch (error: any) {
-      console.error('Error updating application status:', error);
+    } catch (error) {
+      console.error("Error updating application status:", error);
       toast({
-        title: 'Failed to update status',
-        description: error.message,
-        variant: 'destructive',
+        title: "Error",
+        description: "Failed to update application status",
+        variant: "destructive",
       });
     }
   };
-
-  if (isLoading) {
+  
+  const filteredApplications = selectedVacancy === 'all'
+    ? applications
+    : applications.filter(app => app.vacancy_id === selectedVacancy);
+  
+  const getStatusColor = (status: string) => {
+    switch (status.toLowerCase()) {
+      case 'pending':
+        return 'bg-yellow-500 text-white';
+      case 'approved':
+      case 'accepted':
+        return 'bg-green-500 text-white';
+      case 'rejected':
+        return 'bg-red-500 text-white';
+      case 'interview':
+        return 'bg-blue-500 text-white';
+      default:
+        return 'bg-gray-500 text-white';
+    }
+  };
+  
+  if (loading) {
     return (
-      <div className="flex justify-center items-center h-64">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      <div className="space-y-4">
+        <Skeleton className="h-10 w-full max-w-sm" />
+        <Skeleton className="h-96 w-full" />
       </div>
     );
   }
-
+  
+  if (vacancies.length === 0) {
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle>No Vacancies Posted</CardTitle>
+          <CardDescription>
+            You haven't posted any job vacancies yet. Create a vacancy to start receiving applications.
+          </CardDescription>
+        </CardHeader>
+      </Card>
+    );
+  }
+  
   if (applications.length === 0) {
     return (
-      <div className="text-center py-12">
-        <h3 className="text-lg font-medium">No applications yet</h3>
-        <p className="text-muted-foreground mt-2">
-          When healthcare professionals apply to your vacancies, they will appear here.
-        </p>
-      </div>
+      <Card>
+        <CardHeader>
+          <CardTitle>No Applications Yet</CardTitle>
+          <CardDescription>
+            You haven't received any applications for your vacancies yet.
+          </CardDescription>
+        </CardHeader>
+      </Card>
     );
   }
 
   return (
-    <div className="overflow-x-auto">
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Applicant</TableHead>
-            <TableHead>Position</TableHead>
-            <TableHead>Specialty</TableHead>
-            <TableHead>Applied on</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead className="text-right">Actions</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {applications.map((application) => (
-            <TableRow key={application.id}>
-              <TableCell>
-                <div>
-                  <div className="font-medium">
-                    {application.professional.first_name} {application.professional.last_name}
-                  </div>
-                  <div className="text-sm text-muted-foreground">
-                    {application.professional.specialty}
-                  </div>
-                </div>
-              </TableCell>
-              <TableCell>{application.vacancy.title}</TableCell>
-              <TableCell>{application.vacancy.specialty}</TableCell>
-              <TableCell>
-                {new Date(application.created_at).toLocaleDateString()}
-              </TableCell>
-              <TableCell>
-                <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
-                  ${
-                    application.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
-                    application.status === 'approved' ? 'bg-green-100 text-green-800' :
-                    application.status === 'rejected' ? 'bg-red-100 text-red-800' :
-                    'bg-gray-100 text-gray-800'
-                  }
-                `}>
-                  {application.status.charAt(0).toUpperCase() + application.status.slice(1)}
-                </span>
-              </TableCell>
-              <TableCell className="text-right space-x-2">
-                {application.status === 'pending' && (
-                  <>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="text-green-600 border-green-600 hover:bg-green-50"
-                      onClick={() => updateApplicationStatus(application.id, 'approved')}
-                    >
-                      Approve
-                    </Button>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="text-red-600 border-red-600 hover:bg-red-50"
-                      onClick={() => updateApplicationStatus(application.id, 'rejected')}
-                    >
-                      Reject
-                    </Button>
-                  </>
-                )}
-                {application.resume_url && (
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => window.open(application.resume_url, '_blank')}
-                  >
-                    View Resume
-                  </Button>
-                )}
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+    <div className="space-y-6">
+      <div className="flex justify-between items-center">
+        <h2 className="text-2xl font-bold">Applications</h2>
+        
+        <div className="flex items-center gap-2">
+          <span className="text-sm text-muted-foreground">Filter by vacancy:</span>
+          <Select 
+            value={selectedVacancy} 
+            onValueChange={(value) => setSelectedVacancy(value)}
+          >
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="All Vacancies" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Vacancies</SelectItem>
+              {vacancies.map((vacancy) => (
+                <SelectItem key={vacancy.id} value={vacancy.id}>
+                  {vacancy.title}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+      </div>
+      
+      {filteredApplications.length === 0 ? (
+        <Card>
+          <CardContent className="pt-6">
+            <p className="text-center text-muted-foreground">
+              No applications match your filter criteria.
+            </p>
+          </CardContent>
+        </Card>
+      ) : (
+        <div className="rounded-md border">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Applicant</TableHead>
+                <TableHead>Position</TableHead>
+                <TableHead>Applied Date</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead className="text-right">Actions</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {filteredApplications.map((application) => {
+                // Check if professional profile exists first, then fall back to application data
+                const fullName = application.professionalProfile
+                  ? `${application.professionalProfile.first_name} ${application.professionalProfile.last_name}`
+                  : application.application_data 
+                    ? `${application.application_data.firstName || ''} ${application.application_data.lastName || ''}`
+                    : 'Anonymous Applicant';
+                  
+                const appliedDate = formatDate(application.application_date);
+                
+                return (
+                  <TableRow key={application.id}>
+                    <TableCell className="font-medium">
+                      {fullName}
+                      {application.professionalProfile?.specialty && (
+                        <div className="text-xs text-muted-foreground mt-1">
+                          {application.professionalProfile.specialty}
+                        </div>
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      {application.vacancy?.title}
+                      <div className="text-xs text-muted-foreground mt-1">
+                        {application.vacancy?.department}
+                      </div>
+                    </TableCell>
+                    <TableCell>{appliedDate}</TableCell>
+                    <TableCell>
+                      <Badge className={getStatusColor(application.status)}>
+                        {application.status}
+                      </Badge>
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <Select 
+                        value={application.status}
+                        onValueChange={(value) => updateApplicationStatus(application.id, value)}
+                      >
+                        <SelectTrigger className="w-[120px]">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="pending">Pending</SelectItem>
+                          <SelectItem value="interview">Interview</SelectItem>
+                          <SelectItem value="accepted">Accepted</SelectItem>
+                          <SelectItem value="rejected">Rejected</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
+        </div>
+      )}
     </div>
   );
 };

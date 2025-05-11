@@ -41,10 +41,10 @@ const HeroSection = () => {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center mt-8">
             <Button size="lg" asChild>
-              <Link to="/signup">{findJob}</Link>
+              <Link to="/signup/professional">{findJob}</Link>
             </Button>
             <Button size="lg" variant="outline" asChild>
-              <Link to="/signup">{findTalent}</Link>
+              <Link to="/signup/institution">{findTalent}</Link>
             </Button>
           </div>
         </div>
