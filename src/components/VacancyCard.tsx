@@ -3,7 +3,8 @@ import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Link } from 'react-router-dom';
 import { Badge } from '@/components/ui/badge';
-import { BookmarkIcon, BookmarkFilledIcon, MapPinIcon, CalendarIcon, Building2Icon } from '@radix-ui/react-icons';
+import { BookmarkIcon } from '@radix-ui/react-icons';
+import { Building2, MapPin, Calendar } from 'lucide-react'; // Replace with lucide icons
 import { cn } from '@/lib/utils';
 import { Button } from './ui/button';
 
@@ -68,11 +69,11 @@ const VacancyCard: React.FC<VacancyCardProps> = ({
               <div>
                 <h3 className="text-lg font-semibold line-clamp-2">{title}</h3>
                 <div className="flex items-center mt-1 text-sm text-gray-600">
-                  <Building2Icon className="mr-1 h-4 w-4" />
+                  <Building2 className="mr-1 h-4 w-4" /> {/* Changed to lucide icon */}
                   <span>{institution}</span>
                 </div>
                 <div className="flex items-center mt-1 text-sm text-gray-600">
-                  <MapPinIcon className="mr-1 h-4 w-4" />
+                  <MapPin className="mr-1 h-4 w-4" /> {/* Changed to lucide icon */}
                   <span>{location}</span>
                 </div>
               </div>
@@ -86,7 +87,7 @@ const VacancyCard: React.FC<VacancyCardProps> = ({
                   onClick={handleSaveClick}
                 >
                   {isSaved ? (
-                    <BookmarkFilledIcon className="h-5 w-5 text-primary" />
+                    <BookmarkIcon className="h-5 w-5 text-primary" />
                   ) : (
                     <BookmarkIcon className="h-5 w-5" />
                   )}
@@ -120,7 +121,7 @@ const VacancyCard: React.FC<VacancyCardProps> = ({
 
             {createdAt && !isDashboardCard && (
               <div className="mt-4 flex items-center text-xs text-gray-500">
-                <CalendarIcon className="mr-1 h-3.5 w-3.5" />
+                <Calendar className="mr-1 h-3.5 w-3.5" /> {/* Changed to lucide icon */}
                 <span>Posted {createdAt}</span>
               </div>
             )}

@@ -35,6 +35,14 @@ interface Application {
   };
 }
 
+// Simplified professional data structure to avoid type issues
+interface ProfessionalData {
+  first_name: string;
+  last_name: string;
+  specialty: string;
+  email: string;
+}
+
 const ApplicationsTab = () => {
   const [applications, setApplications] = useState<Application[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -47,40 +55,56 @@ const ApplicationsTab = () => {
       
       setIsLoading(true);
       try {
+        // Using applied_vacancies table instead of applications
         const { data, error } = await supabase
-          .from('applications')
+          .from('applied_vacancies')
           .select(`
             id,
             vacancy_id,
             user_id,
             created_at,
             status,
-            resume_url,
-            cover_letter,
-            vacancy:vacancies(title, department, specialty),
-            professional:user_id(
-              first_name:professional_profiles(first_name),
-              last_name:professional_profiles(last_name),
-              specialty:professional_profiles(specialty),
-              email:auth.users(email)
-            )
+            application_data,
+            vacancy:vacancies(title, department, specialty)
           `)
           .eq('institution_id', user.id);
           
         if (error) throw error;
         
-        // Transform the data structure to match our Application interface
-        const formattedData = data.map(app => ({
-          ...app,
-          professional: {
-            first_name: app.professional?.first_name?.first_name || 'Unknown',
-            last_name: app.professional?.last_name?.last_name || 'User',
-            specialty: app.professional?.specialty?.specialty || 'Not specified',
-            email: app.professional?.email?.email || 'no-email@example.com'
+        // Since we can't do complex joins, we'll fetch professional data separately
+        const formattedApplications = await Promise.all(data.map(async (app) => {
+          // Get professional profile data
+          const { data: profileData, error: profileError } = await supabase
+            .from('professional_profiles')
+            .select('first_name, last_name, specialty')
+            .eq('id', app.user_id)
+            .single();
+            
+          if (profileError) {
+            console.error('Error fetching professional profile:', profileError);
           }
+          
+          // Get user email
+          const { data: userData, error: userError } = await supabase
+            .from('auth.users')
+            .select('email')
+            .eq('id', app.user_id)
+            .single();
+            
+          const professional: ProfessionalData = {
+            first_name: profileData?.first_name || 'Unknown',
+            last_name: profileData?.last_name || 'User',
+            specialty: profileData?.specialty || 'Not specified',
+            email: userData?.email || 'no-email@example.com'
+          };
+          
+          return {
+            ...app,
+            professional
+          };
         }));
         
-        setApplications(formattedData);
+        setApplications(formattedApplications);
       } catch (error: any) {
         console.error('Error fetching applications:', error);
         toast({
@@ -99,7 +123,7 @@ const ApplicationsTab = () => {
   const updateApplicationStatus = async (id: string, status: string) => {
     try {
       const { error } = await supabase
-        .from('applications')
+        .from('applied_vacancies')
         .update({ status })
         .eq('id', id);
         

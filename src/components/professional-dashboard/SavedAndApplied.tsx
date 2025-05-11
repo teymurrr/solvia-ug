@@ -6,7 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { supabase } from '@/integrations/supabase/client';
 import { Loader2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { useDashboard } from './useDashboard';
+import useDashboard from './useDashboard'; // Fixed import
 
 interface SavedAndAppliedProps {
   userId: string;
