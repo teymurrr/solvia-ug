@@ -14,6 +14,7 @@ import {
   useDashboard,
 } from '@/components/professional-dashboard';
 import SavedAndApplied from '@/components/professional-dashboard/SavedAndApplied';
+import { useToast } from '@/hooks/use-toast';
 import {
   Pagination,
   PaginationContent,
@@ -28,6 +29,7 @@ const ITEMS_PER_PAGE = 3;
 
 const ProfessionalDashboard: React.FC = () => {
   const location = useLocation();
+  const { toast } = useToast();
   // Get the active tab from location state if provided
   const defaultTab = location.state?.activeTab || 'profile';
   
@@ -77,14 +79,13 @@ const ProfessionalDashboard: React.FC = () => {
     
     // If an application was just submitted, show a success toast
     if (location.state?.applicationSubmitted) {
-      const { toast } = require('@/hooks/use-toast');
       toast({
         title: "Application submitted successfully",
         description: "Your application has been recorded. You can view it in the 'Saved & Applied' tab.",
         variant: "success",
       });
     }
-  }, [location.state]);
+  }, [location.state, setSearchQuery, setCurrentPage, toast]);
 
   const calculateProfileCompletion = (profile: typeof profileData): number => {
     let totalFields = 0;
