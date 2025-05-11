@@ -4,9 +4,10 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Link } from 'react-router-dom';
 import { Badge } from '@/components/ui/badge';
 import { BookmarkIcon } from '@radix-ui/react-icons';
-import { Building2, MapPin, Calendar } from 'lucide-react'; // Replace with lucide icons
+import { Building2, MapPin, Calendar } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from './ui/button';
+import VacancyFooter from './vacancy/VacancyFooter';
 
 export interface VacancyCardProps {
   id: string;
@@ -30,6 +31,9 @@ export interface VacancyCardProps {
   className?: string;
   showSaveOption?: boolean;
   onSaveToggle?: (id: string) => void;
+  fromLandingPage?: boolean;
+  isLandingPageCard?: boolean;
+  isLoggedIn?: boolean;
 }
 
 const VacancyCard: React.FC<VacancyCardProps> = ({
@@ -51,6 +55,9 @@ const VacancyCard: React.FC<VacancyCardProps> = ({
   className,
   showSaveOption = true,
   onSaveToggle,
+  fromLandingPage = false,
+  isLandingPageCard = false,
+  isLoggedIn = false,
 }) => {
   const handleSaveClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -69,11 +76,11 @@ const VacancyCard: React.FC<VacancyCardProps> = ({
               <div>
                 <h3 className="text-lg font-semibold line-clamp-2">{title}</h3>
                 <div className="flex items-center mt-1 text-sm text-gray-600">
-                  <Building2 className="mr-1 h-4 w-4" /> {/* Changed to lucide icon */}
+                  <Building2 className="mr-1 h-4 w-4" />
                   <span>{institution}</span>
                 </div>
                 <div className="flex items-center mt-1 text-sm text-gray-600">
-                  <MapPin className="mr-1 h-4 w-4" /> {/* Changed to lucide icon */}
+                  <MapPin className="mr-1 h-4 w-4" />
                   <span>{location}</span>
                 </div>
               </div>
@@ -121,7 +128,7 @@ const VacancyCard: React.FC<VacancyCardProps> = ({
 
             {createdAt && !isDashboardCard && (
               <div className="mt-4 flex items-center text-xs text-gray-500">
-                <Calendar className="mr-1 h-3.5 w-3.5" /> {/* Changed to lucide icon */}
+                <Calendar className="mr-1 h-3.5 w-3.5" />
                 <span>Posted {createdAt}</span>
               </div>
             )}
@@ -131,6 +138,15 @@ const VacancyCard: React.FC<VacancyCardProps> = ({
                 {applicationCount} {applicationCount === 1 ? 'application' : 'applications'}
               </div>
             )}
+            
+            <VacancyFooter 
+              id={id}
+              isDashboardCard={isDashboardCard}
+              isApplied={isApplied}
+              fromLandingPage={fromLandingPage}
+              isLandingPageCard={isLandingPageCard}
+              isLoggedIn={isLoggedIn}
+            />
           </div>
         </Link>
       </CardContent>

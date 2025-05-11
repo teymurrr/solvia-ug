@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Briefcase, ArrowRight } from 'lucide-react';
 import VacancyCard from '@/components/VacancyCard';
 import { useLanguage } from '@/hooks/useLanguage';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface VacanciesSectionProps {
   vacancies: any[];
@@ -12,6 +13,7 @@ interface VacanciesSectionProps {
 
 const VacanciesSection: React.FC<VacanciesSectionProps> = ({ vacancies }) => {
   const { t } = useLanguage();
+  const { isLoggedIn } = useAuth();
   
   // Default values in case translations aren't loaded yet
   const title = t?.vacancies?.title || "Vacancies";
@@ -44,6 +46,7 @@ const VacanciesSection: React.FC<VacanciesSectionProps> = ({ vacancies }) => {
               className="border-transparent landing-vacancy-card"
               isLandingPageCard={true}
               fromLandingPage={true}
+              isLoggedIn={isLoggedIn}
             />
           ))}
         </div>

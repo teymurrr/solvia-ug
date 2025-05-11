@@ -35,7 +35,10 @@ const VacancyFooter: React.FC<VacancyFooterProps> = ({
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  const handleApply = () => {
+  const handleApply = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
     // If already applied, don't do anything
     if (isApplied) {
       toast({
@@ -73,7 +76,10 @@ const VacancyFooter: React.FC<VacancyFooterProps> = ({
     }
   };
 
-  const handleViewDetails = () => {
+  const handleViewDetails = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
     // Redirect to signup if user is not logged in
     if (!isLoggedIn && (isLandingPageCard || fromLandingPage)) {
       toast({
