@@ -44,6 +44,14 @@ const VacancyHeader: React.FC<VacancyHeaderProps> = ({
     }
   };
   
+  // Updated handle function to match required signature
+  const handleSaveToggle = (e: React.MouseEvent) => {
+    if (onSaveToggle) {
+      e.stopPropagation();
+      onSaveToggle(id);
+    }
+  };
+  
   return (
     <div className="space-y-1">
       <div className="flex justify-between items-start">
@@ -78,10 +86,7 @@ const VacancyHeader: React.FC<VacancyHeaderProps> = ({
               variant="ghost"
               size="sm"
               className="h-8 w-8 p-0"
-              onClick={(e) => {
-                e.stopPropagation();
-                onSaveToggle(id);
-              }}
+              onClick={handleSaveToggle}
             >
               {isSaved ? (
                 <BookmarkCheck className="h-5 w-5 text-primary" />

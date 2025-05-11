@@ -26,7 +26,6 @@ import {
   CardHeader, 
   CardTitle 
 } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useToast } from '@/hooks/use-toast';
 import { formatDate } from '@/vacancy/utils';
@@ -37,10 +36,10 @@ type Application = {
   application_date: string;
   vacancy_id: string;
   user_id: string;
-  application_data: {
-    firstName: string;
-    lastName: string;
-    email: string;
+  application_data?: {
+    firstName?: string;
+    lastName?: string;
+    email?: string;
     phone?: string;
     coverLetter?: string;
     cvFileName?: string;
@@ -279,9 +278,12 @@ const ApplicationsTab = () => {
             </TableHeader>
             <TableBody>
               {filteredApplications.map((application) => {
+                // Check if professional profile exists first, then fall back to application data
                 const fullName = application.professionalProfile
                   ? `${application.professionalProfile.first_name} ${application.professionalProfile.last_name}`
-                  : `${application.application_data?.firstName || ''} ${application.application_data?.lastName || ''}`;
+                  : application.application_data 
+                    ? `${application.application_data.firstName || ''} ${application.application_data.lastName || ''}`
+                    : 'Anonymous Applicant';
                   
                 const appliedDate = formatDate(application.application_date);
                 

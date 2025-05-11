@@ -11,6 +11,7 @@ export type Database = {
     Tables: {
       applied_vacancies: {
         Row: {
+          application_data: Json | null
           application_date: string
           created_at: string
           id: string
@@ -20,6 +21,7 @@ export type Database = {
           vacancy_id: string
         }
         Insert: {
+          application_data?: Json | null
           application_date?: string
           created_at?: string
           id?: string
@@ -29,6 +31,7 @@ export type Database = {
           vacancy_id: string
         }
         Update: {
+          application_data?: Json | null
           application_date?: string
           created_at?: string
           id?: string
@@ -279,6 +282,7 @@ export type Database = {
       }
       vacancies: {
         Row: {
+          application_link: string | null
           city: string | null
           contract_type: string
           country: string | null
@@ -299,6 +303,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          application_link?: string | null
           city?: string | null
           contract_type: string
           country?: string | null
@@ -319,6 +324,7 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          application_link?: string | null
           city?: string | null
           contract_type?: string
           country?: string | null
