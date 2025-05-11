@@ -7,6 +7,7 @@ import { useLanguage } from '@/hooks/useLanguage';
 const HeroSection = () => {
   const { t } = useLanguage();
   const [currentPhraseIndex, setCurrentPhraseIndex] = useState(0);
+  const [isAnimating, setIsAnimating] = useState(false);
   const rotatingPhrases = ["no agencies", "no hidden fees", "no delays"];
   
   // Default values in case translations aren't loaded yet
@@ -17,7 +18,11 @@ const HeroSection = () => {
   
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentPhraseIndex((prevIndex) => (prevIndex + 1) % rotatingPhrases.length);
+      setIsAnimating(true);
+      setTimeout(() => {
+        setCurrentPhraseIndex((prevIndex) => (prevIndex + 1) % rotatingPhrases.length);
+        setIsAnimating(false);
+      }, 500); // Wait for exit animation to complete before changing the phrase
     }, 3000); // Change every 3 seconds
     
     return () => clearInterval(interval);
@@ -29,7 +34,7 @@ const HeroSection = () => {
       <div className="container mx-auto px-4 py-16 md:py-24 relative z-10">
         <div className="max-w-3xl mx-auto text-center space-y-6">
           <h1 className="text-5xl md:text-6xl lg:text-[72px] font-bold tracking-tight">
-            {title} <span className="phrase-rotate font-extrabold">{rotatingPhrases[currentPhraseIndex]}</span>
+            {title} <span className={`phrase-rotate font-extrabold text-primary ${isAnimating ? 'roll-out' : 'roll-in'}`}>{rotatingPhrases[currentPhraseIndex]}</span>
           </h1>
           <p className="text-lg md:text-xl lg:text-[22px] text-muted-foreground">
             {subtitle}
