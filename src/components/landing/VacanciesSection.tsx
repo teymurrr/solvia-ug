@@ -44,6 +44,8 @@ const VacanciesSection: React.FC<VacanciesSectionProps> = ({ vacancies }) => {
               className="border-transparent landing-vacancy-card"
               isLandingPageCard={true}
               fromLandingPage={true}
+              showDescription={true}
+              showRequirements={true}
             />
           ))}
         </div>
