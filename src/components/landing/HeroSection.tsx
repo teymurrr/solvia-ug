@@ -18,7 +18,7 @@ const HeroSection = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentPhraseIndex((prevIndex) => (prevIndex + 1) % rotatingPhrases.length);
-    }, 2000); // Change every 2 seconds
+    }, 3000); // Change every 3 seconds
     
     return () => clearInterval(interval);
   }, []);
@@ -28,9 +28,16 @@ const HeroSection = () => {
       <div className="hero-gradient absolute inset-0 opacity-20" />
       <div className="container mx-auto px-4 py-16 md:py-24 relative z-10">
         <div className="max-w-3xl mx-auto text-center space-y-6">
-          <h1 className="text-5xl md:text-6xl lg:text-[72px] font-bold tracking-tight">
-            {title} <span className="shimmer-gradient">{rotatingPhrases[currentPhraseIndex]}</span>
-          </h1>
+          <div className="space-y-2">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight">
+              {title}
+            </h1>
+            <div className="h-12"> {/* Fixed height container for the rotating text */}
+              <p className="shimmer-gradient text-2xl md:text-3xl lg:text-4xl font-medium">
+                {rotatingPhrases[currentPhraseIndex]}
+              </p>
+            </div>
+          </div>
           <p className="text-lg md:text-xl lg:text-[22px] text-muted-foreground">
             {subtitle}
           </p>
