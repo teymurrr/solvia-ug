@@ -8,7 +8,7 @@ const HeroSection = () => {
         <div className="max-w-3xl mx-auto text-center space-y-6">
           <h1 className="text-4xl font-bold">About Solvia</h1>
           <p className="text-xl text-muted-foreground">
-            Modernizing healthcare recruitment across borders, connecting talent with opportunity.
+            Digital platform where hospitals meet pre-vetted doctors and nurses directly
           </p>
         </div>
       </div>

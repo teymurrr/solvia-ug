@@ -12,7 +12,7 @@ const HeroSection = () => {
             Find, Connect & Hire Global Healthcare Professionals
           </h1>
           <p className="text-lg md:text-xl lg:text-[22px] text-gray-600 mb-10 max-w-2xl mx-auto">
-            Solvia is your go-to platform for discovering international doctors and nurses prepared for relocation
+            Digital platform where hospitals meet pre-vetted doctors and nurses directly
           </p>
           <Button size="lg" asChild>
             <Link to="/signup/institution">Browse Talents</Link>

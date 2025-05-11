@@ -1,10 +1,11 @@
+
 export type Language = 'en' | 'de' | 'es';
 
 export const translations = {
   en: {
     hero: {
-      title: 'Global Healthcare Recruitment, Simplified',
-      subtitle: 'Connecting qualified medical professionals with hospitals and clinics in need of talent worldwide.',
+      title: 'Where Doctors and Clinics Connect',
+      subtitle: 'digital platform where hospitals meet pre-vetted doctors and nurses directly',
       findJob: 'Find a job',
       findTalent: 'Find a Talent'
     },
@@ -71,8 +72,8 @@ export const translations = {
   },
   de: {
     hero: {
-      title: 'Globale Personalvermittlung im Gesundheitswesen, vereinfacht',
-      subtitle: 'Wir verbinden qualifizierte medizinische Fachkräfte mit Krankenhäusern und Kliniken weltweit.',
+      title: 'Wo Ärzte und Kliniken zusammenfinden',
+      subtitle: 'digitale Plattform, auf der Krankenhäuser direkt auf geprüfte Ärzte und Krankenpfleger treffen',
       findJob: 'Job finden',
       findTalent: 'Talent finden'
     },
@@ -139,8 +140,8 @@ export const translations = {
   },
   es: {
     hero: {
-      title: 'Reclutamiento Global en Salud, Simplificado',
-      subtitle: 'Conectamos profesionales médicos cualificados con hospitales y clínicas que necesitan talento en todo el mundo.',
+      title: 'Donde Médicos y Clínicas se Conectan',
+      subtitle: 'plataforma digital donde hospitales conocen médicos y enfermeras previamente evaluados directamente',
       findJob: 'Encontrar trabajo',
       findTalent: 'Encontrar talento'
     },

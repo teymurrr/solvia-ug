@@ -1,22 +1,27 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { useLanguage } from '@/hooks/useLanguage';
 
 const HeroSection = () => {
   const { t } = useLanguage();
+  const [currentPhraseIndex, setCurrentPhraseIndex] = useState(0);
+  const rotatingPhrases = ["no agencies", "no hidden fees", "no delays"];
   
   // Default values in case translations aren't loaded yet
-  const title = t?.hero?.title || "Global Healthcare Recruitment, Simplified";
-  const subtitle = t?.hero?.subtitle || "Connecting qualified medical professionals with hospitals and clinics in need of talent worldwide.";
+  const title = t?.hero?.title || "Where Doctors and Clinics Connect";
+  const subtitle = t?.hero?.subtitle || "digital platform where hospitals meet pre-vetted doctors and nurses directly";
   const findJob = t?.hero?.findJob || "Find a job";
   const findTalent = t?.hero?.findTalent || "Find a Talent";
   
-  // Split title for styling if it exists and contains a comma
-  const titleParts = title.split(', ');
-  const firstTitlePart = titleParts[0] || "";
-  const secondTitlePart = titleParts.length > 1 ? titleParts[1] : "";
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentPhraseIndex((prevIndex) => (prevIndex + 1) % rotatingPhrases.length);
+    }, 2000); // Change every 2 seconds
+    
+    return () => clearInterval(interval);
+  }, []);
   
   return (
     <section className="relative overflow-hidden">
@@ -24,7 +29,7 @@ const HeroSection = () => {
       <div className="container mx-auto px-4 py-16 md:py-24 relative z-10">
         <div className="max-w-3xl mx-auto text-center space-y-6">
           <h1 className="text-5xl md:text-6xl lg:text-[72px] font-bold tracking-tight">
-            {firstTitlePart}{secondTitlePart ? ', ' : ''}<span className="shimmer-gradient">{secondTitlePart}</span>
+            {title} <span className="shimmer-gradient">{rotatingPhrases[currentPhraseIndex]}</span>
           </h1>
           <p className="text-lg md:text-xl lg:text-[22px] text-muted-foreground">
             {subtitle}
