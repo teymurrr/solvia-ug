@@ -11,7 +11,7 @@ const CTASection = () => {
         <p className="text-xl mb-8 text-white">Let Solvia AI do the heavy lifting.<br />We bring talent. You focus on care.</p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Button size="lg" variant="secondary" asChild>
-            <Link to="/signup/institution">Get Started</Link>
+            <Link to="/signup/institution">Free Sign Up</Link>
           </Button>
           <Button size="lg" variant="outline" className="bg-transparent border-white hover:bg-white/10 text-white" asChild>
             <Link to="/contact">Contact Us</Link>

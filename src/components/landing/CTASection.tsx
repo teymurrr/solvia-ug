@@ -10,7 +10,7 @@ const CTASection = () => {
   // Default values in case translations aren't loaded yet
   const title = t?.cta?.title || "Ready to Transform Healthcare Recruitment?";
   const subtitle = t?.cta?.subtitle || "Join thousands of healthcare professionals and institutions already using Solvia.";
-  const createAccount = t?.cta?.createAccount || "Create Your Account";
+  const createAccount = t?.cta?.createAccount || "Free Sign Up";
   const talkToTeam = t?.cta?.talkToTeam || "Talk to Our Team";
   
   return (

@@ -1,40 +1,30 @@
-
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useToast } from '@/hooks/use-toast';
-import { useProtectedAction } from '@/hooks/useProtectedAction';
-import { Card, CardContent } from '@/components/ui/card';
-import VacancyHeader from './vacancy/VacancyHeader';
-import VacancyDetails from './vacancy/VacancyDetails';
-import VacancyFooter from './vacancy/VacancyFooter';
-import { useAuth } from '@/contexts/AuthContext';
+import { Link } from 'react-router-dom';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Bookmark, BookmarkCheck, FileCheck } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 interface VacancyCardProps {
   id: string;
   title: string;
   institution: string;
-  location?: string;
+  location: string;
   jobType: string;
-  specialty?: string;
-  profession?: string;
+  salary: string;
   description: string;
-  requirements: string[];
-  postedDate?: string;
-  showSaveOption?: boolean;
   isSaved?: boolean;
   isApplied?: boolean;
-  onSaveToggle?: (id: string) => void;
-  country?: string;
-  city?: string;
-  className?: string;
-  isDashboardCard?: boolean;
   applicationLink?: string;
+  onSaveToggle?: (id: string) => void;
+  fromDashboard?: boolean;
+  fromLandingPage?: boolean;
   searchQuery?: string;
   currentPage?: number;
   selectedFilters?: any;
   isLandingPageCard?: boolean;
-  fromLandingPage?: boolean;
-  application_link?: string;
+  isLoggedIn?: boolean;
 }
 
 const VacancyCard: React.FC<VacancyCardProps> = ({
@@ -43,125 +33,126 @@ const VacancyCard: React.FC<VacancyCardProps> = ({
   institution,
   location,
   jobType,
-  specialty,
-  profession,
+  salary,
   description,
-  requirements,
-  postedDate,
-  showSaveOption = false,
   isSaved = false,
   isApplied = false,
-  onSaveToggle,
-  country,
-  city,
-  className,
-  isDashboardCard = false,
   applicationLink,
+  onSaveToggle,
+  fromDashboard = false,
+  fromLandingPage = false,
   searchQuery,
   currentPage,
   selectedFilters,
   isLandingPageCard = false,
-  fromLandingPage = false,
-  application_link,
+  isLoggedIn = false
 }) => {
-  const { toast } = useToast();
-  const navigate = useNavigate();
-  const { handleProtectedAction } = useProtectedAction();
-  const { isLoggedIn } = useAuth();
-  
-  const displayLocation = location || (city && country ? `${city}, ${country}` : city || country || "Location not specified");
-  
-  const toggleSave = (e: React.MouseEvent) => {
-    // Stop propagation to prevent navigation when clicking save button
-    e.stopPropagation();
-    
-    handleProtectedAction(() => {
-      if (onSaveToggle) {
-        onSaveToggle(id);
-        
-        toast({
-          title: isSaved ? "Vacancy removed from saved" : "Vacancy saved",
-          description: isSaved 
-            ? "The vacancy has been removed from your saved list" 
-            : "The vacancy has been saved for later",
-        });
-      }
-    });
-  };
-
-  const handleCardClick = () => {
-    // For landing page cards, redirect to signup if not logged in
-    if ((isLandingPageCard || fromLandingPage) && !isLoggedIn) {
-      toast({
-        title: "Sign up required",
-        description: "Please sign up or log in to view vacancy details",
-      });
-      navigate('/signup');
-      return;
+  const getJobTypeBadgeVariant = (type: string) => {
+    switch(type.toLowerCase()) {
+      case 'full-time':
+        return 'default';
+      case 'part-time':
+        return 'secondary';
+      case 'temporary':
+      case 'locum': 
+        return 'outline';
+      case 'internship':
+        return 'destructive';
+      default:
+        return 'default';
     }
-    
-    // Otherwise proceed with normal navigation
-    navigate(`/vacancies/${id}`, {
-      state: { 
-        fromDashboard: isDashboardCard,
-        fromLandingPage: isLandingPageCard,
-        searchQuery,
-        currentPage,
-        selectedFilters
-      }
-    });
   };
 
-  // Define card styling based on whether it's a dashboard card or landing page card
-  const cardClasses = isDashboardCard
-    ? `border border-border shadow-sm ${className || ""} cursor-pointer`
-    : isLandingPageCard 
-      ? `${className || ""} border border-border shadow-sm hover:shadow-lg hover:scale-[1.03] transition-all duration-500 ease-in-out cursor-pointer`
-      : `${className || ""} border border-border shadow-sm hover:shadow-lg hover:scale-[1.03] transition-all duration-300 cursor-pointer`;
+  // Fix the type issue in the handleSaveToggle function
+  const handleSaveToggle = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (onSaveToggle) {
+      onSaveToggle(id);
+    }
+  };
 
   return (
-    <Card className={cardClasses} onClick={handleCardClick}>
-      <CardContent className={isDashboardCard ? "p-5" : "p-6"}>
-        <div className="space-y-4">
-          <VacancyHeader
-            id={id}
-            title={title}
-            institution={institution}
-            jobType={jobType}
-            showSaveOption={showSaveOption}
-            isSaved={isSaved}
-            isApplied={isApplied}
-            onSaveToggle={toggleSave}
-            isDashboardCard={isDashboardCard}
-          />
+    <Card className="bg-white shadow-md rounded-lg overflow-hidden">
+      <CardHeader>
+        <div className="flex justify-between items-start">
+          <div>
+            <CardTitle className="text-lg font-semibold">{title}</CardTitle>
+            <CardDescription>{institution}</CardDescription>
+          </div>
           
-          <VacancyDetails
-            displayLocation={displayLocation}
-            profession={profession}
-            specialty={specialty}
-            postedDate={postedDate}
-            description={description}
-            requirements={requirements}
-            isDashboardCard={isDashboardCard}
-          />
+          <div className="flex items-center space-x-2">
+            {isApplied && (
+              <Badge className="bg-blue-500">
+                <FileCheck className="h-3 w-3 mr-1" />
+                Applied
+              </Badge>
+            )}
+            
+            <Badge variant={getJobTypeBadgeVariant(jobType)}>
+              {jobType}
+            </Badge>
+            
+            {onSaveToggle && !isLandingPageCard && (
+              <Button
+                variant="ghost"
+                size="sm"
+                className="h-8 w-8 p-0"
+                onClick={handleSaveToggle}
+              >
+                {isSaved ? (
+                  <BookmarkCheck className="h-5 w-5 text-primary" />
+                ) : (
+                  <Bookmark className="h-5 w-5 text-muted-foreground" />
+                )}
+                <span className="sr-only">
+                  {isSaved ? 'Remove from saved' : 'Save vacancy'}
+                </span>
+              </Button>
+            )}
+          </div>
         </div>
-        
-        <div className="mt-5" onClick={(e) => e.stopPropagation()}>
-          <VacancyFooter 
-            id={id} 
-            isDashboardCard={isDashboardCard} 
-            applicationLink={applicationLink || application_link}
-            fromDashboard={isDashboardCard}
-            fromLandingPage={isLandingPageCard}
-            searchQuery={searchQuery}
-            currentPage={currentPage}
-            selectedFilters={selectedFilters}
-            isLandingPageCard={isLandingPageCard}
-            isLoggedIn={isLoggedIn}
-            isApplied={isApplied}
-          />
+      </CardHeader>
+      
+      <CardContent className="space-y-2">
+        <div className="text-sm text-muted-foreground">
+          <p>
+            <span className="font-medium">Location:</span> {location}
+          </p>
+          <p>
+            <span className="font-medium">Salary:</span> {salary}
+          </p>
         </div>
+        <p className="text-sm">
+          {description.length > 200 ? `${description.substring(0, 200)}...` : description}
+        </p>
       </CardContent>
+      
+      <CardFooter className="flex justify-between items-center">
+        {/* Apply Button or View Details */}
+        <div className="w-full flex justify-end">
+          {isLandingPageCard ? (
+            <Link
+              to={`/vacancies/${id}`}
+              className={cn(
+                Button,
+                "w-full"
+              )}
+            >
+              Apply Now
+            </Link>
+          ) : (
+            <Link
+              to={`/vacancies/${id}`}
+              className={cn(
+                Button,
+                "w-full"
+              )}
+            >
+              View Details
+            </Link>
+          )}
+        </div>
+      </CardFooter>
     </Card>
   );
 };
