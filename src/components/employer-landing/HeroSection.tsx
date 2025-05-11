@@ -15,7 +15,7 @@ const HeroSection = () => {
             Digital platform where hospitals meet pre-vetted doctors and nurses directly
           </p>
           <Button size="lg" asChild>
-            <Link to="/signup/institution">Free Sign Up</Link>
+            <Link to="/signup">Free Sign Up</Link>
           </Button>
         </div>
       </div>
