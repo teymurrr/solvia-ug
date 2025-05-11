@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
@@ -133,9 +134,18 @@ export const useVacancies = () => {
           ? vacancyData.requirements
           : [];
           
+      // Process application_deadline: convert empty string to null
+      const application_deadline = 
+        !vacancyData.application_deadline || vacancyData.application_deadline.trim() === '' 
+        ? null 
+        : vacancyData.application_deadline;
+      
+      console.log("Processed application_deadline:", application_deadline);
+          
       // Process and standardize the vacancy data
       const newVacancy = { 
-        ...vacancyData, 
+        ...vacancyData,
+        application_deadline,
         requirements,
         // Ensure job_type is set from contract_type if not provided
         job_type: vacancyData.job_type || vacancyData.contract_type,

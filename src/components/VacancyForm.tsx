@@ -39,7 +39,13 @@ const formSchema = z.object({
   city: z.string().optional(),
   description: z.string().min(10, { message: "Description is required and must be at least 10 characters" }),
   requirements: z.string().min(5, { message: "Requirements are required" }),
-  application_deadline: z.string().optional(),
+  application_deadline: z.string().optional().refine(val => {
+    // Empty string is valid (will be converted to null)
+    if (!val || val.trim() === '') return true;
+    // Otherwise check if it's a valid date
+    const date = new Date(val);
+    return !isNaN(date.getTime());
+  }, { message: "Invalid date format" }),
   salary: z.string().optional(),
 });
 
@@ -52,6 +58,11 @@ export const adaptVacancyFormData = (formData) => {
     formData.requirements = formData.requirements
       .split('\n')
       .filter(line => line.trim() !== '');
+  }
+
+  // Handle empty application_deadline
+  if (formData.application_deadline === '') {
+    formData.application_deadline = null;
   }
 
   // Copy contract_type to job_type if job_type is missing
@@ -331,7 +342,14 @@ const VacancyForm: React.FC<VacancyFormProps> = ({
                 <FormItem>
                   <FormLabel>Application Deadline</FormLabel>
                   <FormControl>
-                    <Input type="date" {...field} />
+                    <Input 
+                      type="date" 
+                      {...field} 
+                      onChange={(e) => {
+                        // Allow clearing the field (empty string will be handled appropriately)
+                        field.onChange(e.target.value);
+                      }}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
