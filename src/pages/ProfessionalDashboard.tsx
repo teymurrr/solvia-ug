@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import MainLayout from '@/components/MainLayout';
@@ -82,7 +83,7 @@ const ProfessionalDashboard: React.FC = () => {
       toast({
         title: "Application submitted successfully",
         description: "Your application has been recorded. You can view it in the 'Saved & Applied' tab.",
-        variant: "success",
+        variant: "default", // Changed from "success" to "default"
       });
     }
   }, [location.state, setSearchQuery, setCurrentPage, toast]);
