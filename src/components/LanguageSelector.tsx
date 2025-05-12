@@ -9,15 +9,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Language } from '@/utils/i18n/translations';
-
-const languageNames = {
-  en: 'English',
-  de: 'Deutsch',
-  fr: 'Français',
-  es: 'Español',
-  ru: 'Русский'
-};
+import { Language, languageNames } from '@/utils/i18n/translations';
 
 export const LanguageSelector = () => {
   const { language, setLanguage } = useLanguage();
