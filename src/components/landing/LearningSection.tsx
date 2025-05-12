@@ -1,7 +1,8 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Globe, GraduationCap } from 'lucide-react';
 
 const LearningSection = () => {
   return (
@@ -16,22 +17,51 @@ const LearningSection = () => {
           </p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div className="bg-white rounded-lg shadow-md p-4">
-            <h3 className="text-xl font-semibold mb-2">Course 1</h3>
-            <p className="text-gray-600">Description of course 1.</p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+          {/* German Language Courses */}
+          <div className="bg-white rounded-lg shadow-md p-6 flex flex-col">
+            <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
+              <Globe className="h-6 w-6 text-primary" />
+            </div>
+            <h3 className="text-xl font-semibold mb-2">German Language Courses</h3>
+            <p className="text-gray-600 mb-4">Master medical German with our specialized language courses designed specifically for healthcare professionals.</p>
+            <ul className="space-y-2 mb-4">
+              <li className="flex items-center gap-2">
+                <span className="h-1.5 w-1.5 rounded-full bg-primary"></span>
+                <span>Basic to Advanced Medical German</span>
+              </li>
+              <li className="flex items-center gap-2">
+                <span className="h-1.5 w-1.5 rounded-full bg-primary"></span>
+                <span>Flexible Learning Schedule</span>
+              </li>
+              <li className="flex items-center gap-2">
+                <span className="h-1.5 w-1.5 rounded-full bg-primary"></span>
+                <span>Telc Medical Preparation</span>
+              </li>
+            </ul>
           </div>
-          <div className="bg-white rounded-lg shadow-md p-4">
-            <h3 className="text-xl font-semibold mb-2">Course 2</h3>
-            <p className="text-gray-600">Description of course 2.</p>
-          </div>
-          <div className="bg-white rounded-lg shadow-md p-4">
-            <h3 className="text-xl font-semibold mb-2">Course 3</h3>
-            <p className="text-gray-600">Description of course 3.</p>
-          </div>
-           <div className="bg-white rounded-lg shadow-md p-4">
-            <h3 className="text-xl font-semibold mb-2">Course 4</h3>
-            <p className="text-gray-600">Description of course 4.</p>
+
+          {/* FSP Courses */}
+          <div className="bg-white rounded-lg shadow-md p-6 flex flex-col">
+            <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
+              <GraduationCap className="h-6 w-6 text-primary" />
+            </div>
+            <h3 className="text-xl font-semibold mb-2">FSP Preparation Courses</h3>
+            <p className="text-gray-600 mb-4">Comprehensive preparation for your medical license examination in Germany.</p>
+            <ul className="space-y-2 mb-4">
+              <li className="flex items-center gap-2">
+                <span className="h-1.5 w-1.5 rounded-full bg-primary"></span>
+                <span>Complete FSP Study Materials</span>
+              </li>
+              <li className="flex items-center gap-2">
+                <span className="h-1.5 w-1.5 rounded-full bg-primary"></span>
+                <span>Practice Examinations</span>
+              </li>
+              <li className="flex items-center gap-2">
+                <span className="h-1.5 w-1.5 rounded-full bg-primary"></span>
+                <span>One-on-One Mentoring</span>
+              </li>
+            </ul>
           </div>
         </div>
         
