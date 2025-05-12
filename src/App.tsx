@@ -2,7 +2,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Toaster } from '@/components/ui/toaster';
 import { LanguageProvider } from '@/hooks/useLanguage';
-import { AuthProvider } from '@/contexts/AuthContext'; // Change to use the AuthContext provider
+import { AuthProvider } from '@/contexts/AuthContext'; 
 
 import Index from '@/pages/Index';
 import About from '@/pages/About';

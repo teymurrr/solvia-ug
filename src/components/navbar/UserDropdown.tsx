@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Building, LogOut, Mail, Languages, User } from 'lucide-react';
+import { Building, LogOut, Mail, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import {
@@ -10,12 +10,8 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuSub,
-  DropdownMenuSubTrigger,
-  DropdownMenuSubContent,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { availableLanguages } from '@/data/languages';
 import { useToast } from '@/hooks/use-toast';
 
 interface UserDropdownProps {
@@ -63,20 +59,6 @@ const UserDropdown: React.FC<UserDropdownProps> = ({ userType, hasUnreadMessages
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56">
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
-        
-        <DropdownMenuSub>
-          <DropdownMenuSubTrigger>
-            <Languages className="h-4 w-4 mr-2" />
-            <span>Language</span>
-          </DropdownMenuSubTrigger>
-          <DropdownMenuSubContent>
-            {availableLanguages.map((language) => (
-              <DropdownMenuItem key={language}>
-                {language}
-              </DropdownMenuItem>
-            ))}
-          </DropdownMenuSubContent>
-        </DropdownMenuSub>
 
         <DropdownMenuItem asChild>
           <Link to="/messages">

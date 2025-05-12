@@ -13,14 +13,36 @@ const LanguageContext = React.createContext<{
   setLanguage: () => {},
 });
 
+// Helper function to get browser language
+const getBrowserLanguage = (): Language => {
+  if (typeof window === 'undefined') return 'en';
+  
+  // Get browser language
+  const browserLang = navigator.language.split('-')[0];
+  
+  // Check if browser language is supported
+  if (browserLang === 'en' || browserLang === 'de' || 
+      browserLang === 'fr' || browserLang === 'es' || 
+      browserLang === 'ru') {
+    return browserLang as Language;
+  }
+  
+  return 'en'; // Default to English
+};
+
 export const LanguageProvider: React.FC<{children: React.ReactNode}> = ({ children }) => {
   const [language, setLanguage] = useState<Language>('en');
 
   useEffect(() => {
-    // Check if there's a language preference in localStorage
+    // First check if there's a language preference in localStorage
     const savedLanguage = localStorage.getItem('preferredLanguage');
-    if (savedLanguage && (savedLanguage === 'en' || savedLanguage === 'de' || savedLanguage === 'es')) {
+    if (savedLanguage && (savedLanguage === 'en' || savedLanguage === 'de' || 
+                          savedLanguage === 'fr' || savedLanguage === 'es' || 
+                          savedLanguage === 'ru')) {
       setLanguage(savedLanguage as Language);
+    } else {
+      // If no saved preference, use browser language
+      setLanguage(getBrowserLanguage());
     }
   }, []);
 

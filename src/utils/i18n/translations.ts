@@ -1,5 +1,5 @@
 
-export type Language = 'en' | 'de' | 'es';
+export type Language = 'en' | 'de' | 'fr' | 'es' | 'ru';
 
 export const translations = {
   en: {
@@ -73,48 +73,48 @@ export const translations = {
   de: {
     hero: {
       title: 'Wo Ärzte und Kliniken zusammenfinden',
-      subtitle: 'digitale Plattform, auf der Krankenhäuser direkt auf geprüfte Ärzte und Krankenpfleger treffen',
-      findJob: 'Job finden',
-      findTalent: 'Talent finden'
+      subtitle: 'Digitale Plattform, auf der Krankenhäuser direkt geprüfte Ärzte und Pflegekräfte treffen',
+      findJob: 'Stelle finden',
+      findTalent: 'Fachkräfte finden'
     },
     vacancies: {
-      title: 'Stellenangebote',
+      title: 'Offene Stellen',
       subtitle: 'Entdecken Sie spannende Möglichkeiten in führenden Gesundheitseinrichtungen',
       viewAll: 'Alle anzeigen',
       viewMore: 'Mehr anzeigen'
     },
     learning: {
-      title: 'Solvia Lernen',
-      subtitle: 'Verbessern Sie Ihre medizinische Karriere mit unseren spezialisierten Deutsch- und FSP-Kursen',
+      title: 'Solvia Fortbildung',
+      subtitle: 'Verbessern Sie Ihre medizinische Karriere mit unseren spezialisierten Deutsch- und Fachsprachprüfungskursen',
       germanCourses: {
-        title: 'Deutschkurse',
-        subtitle: 'Beherrschen Sie medizinisches Deutsch mit unseren spezialisierten Kursen',
+        title: 'Deutschkurse für Mediziner',
+        subtitle: 'Beherrschen Sie medizinisches Deutsch mit unseren Fachkursen',
         features: [
-          'Medizinisch Deutsch von Grundlagen bis Fortgeschritten',
+          'Medizinisches Deutsch von Grundlagen bis Fortgeschritten',
           'Flexibler Lernplan',
-          'Telc Medical Vorbereitung'
+          'Vorbereitung auf Telc Medizin'
         ]
       },
       fspCourses: {
-        title: 'FSP Vorbereitungskurse',
-        subtitle: 'Umfassende Vorbereitung für Ihre Approbation in Deutschland',
+        title: 'FSP-Vorbereitungskurse',
+        subtitle: 'Umfassende Vorbereitung auf Ihre Approbation in Deutschland',
         features: [
-          'Komplette FSP Studienmaterialien',
+          'Komplette FSP-Studienmaterialien',
           'Übungsprüfungen',
-          'Einzelbetreuung'
+          'Persönliches Mentoring'
         ]
       },
-      exploreCourses: 'Kurse erkunden'
+      exploreCourses: 'Kurse entdecken'
     },
     professionals: {
       title: 'Fachkräfte',
-      subtitle: 'Vernetzen Sie sich mit talentierten Gesundheitsfachkräften, die für ihre nächste Chance bereit sind',
+      subtitle: 'Vernetzen Sie sich mit talentierten medizinischen Fachkräften, die für ihre nächste berufliche Chance bereit sind',
       viewAll: 'Alle anzeigen',
       viewMore: 'Mehr anzeigen'
     },
     cta: {
-      title: 'Bereit die Personalvermittlung im Gesundheitswesen zu transformieren?',
-      subtitle: 'Schließen Sie sich Tausenden von Gesundheitsfachkräften und Einrichtungen an, die bereits Solvia nutzen.',
+      title: 'Bereit, die Personalgewinnung im Gesundheitswesen zu verändern?',
+      subtitle: 'Schließen Sie sich tausenden von medizinischen Fachkräften und Einrichtungen an, die bereits Solvia nutzen.',
       createAccount: 'Konto erstellen',
       talkToTeam: 'Mit unserem Team sprechen'
     },
@@ -123,14 +123,14 @@ export const translations = {
     },
     why: {
       title: "Warum Solvia?",
-      subtitle: "Entdecken Sie, was unsere Plattform zur ersten Wahl für Gesundheitsfachkräfte weltweit macht",
+      subtitle: "Entdecken Sie, was unsere Plattform zur ersten Wahl für Gesundheitsfachkräfte macht",
       global: {
-        title: "Globale Chancen",
-        description: "Zugang zu Gesundheitspositionen in mehreren Ländern mit voller Umzugsunterstützung"
+        title: "Internationale Chancen",
+        description: "Zugang zu medizinischen Stellen in verschiedenen Ländern mit umfassender Umzugsunterstützung"
       },
       fast: {
         title: "Schnelle Vermittlung",
-        description: "Optimierter Matching-Prozess, um schnell die richtige Position zu finden"
+        description: "Optimierter Matching-Prozess, um schnell die passende Position zu finden"
       },
       support: {
         title: "Umfassende Unterstützung",
@@ -138,51 +138,119 @@ export const translations = {
       }
     }
   },
+  fr: {
+    hero: {
+      title: 'Où médecins et cliniques se rencontrent',
+      subtitle: 'Plateforme numérique où les hôpitaux rencontrent directement des médecins et infirmiers pré-sélectionnés',
+      findJob: 'Trouver un poste',
+      findTalent: 'Trouver des talents'
+    },
+    vacancies: {
+      title: 'Offres d\'emploi',
+      subtitle: 'Découvrez des opportunités passionnantes dans des établissements de santé de premier plan',
+      viewAll: 'Voir tout',
+      viewMore: 'Voir plus'
+    },
+    learning: {
+      title: 'Formation Solvia',
+      subtitle: 'Améliorez votre carrière médicale avec nos cours spécialisés d\'allemand médical et de préparation FSP',
+      germanCourses: {
+        title: 'Cours d\'allemand médical',
+        subtitle: 'Maîtrisez l\'allemand médical avec nos cours spécialisés',
+        features: [
+          'Allemand médical du niveau débutant à avancé',
+          'Planning d\'apprentissage flexible',
+          'Préparation à l\'examen Telc Medical'
+        ]
+      },
+      fspCourses: {
+        title: 'Cours de préparation FSP',
+        subtitle: 'Préparation complète pour votre licence médicale en Allemagne',
+        features: [
+          'Matériel d\'étude FSP complet',
+          'Examens blancs',
+          'Mentorat individuel'
+        ]
+      },
+      exploreCourses: 'Explorer les cours'
+    },
+    professionals: {
+      title: 'Professionnels',
+      subtitle: 'Connectez-vous avec des professionnels de santé talentueux prêts pour leur prochaine opportunité',
+      viewAll: 'Voir tout',
+      viewMore: 'Voir plus'
+    },
+    cta: {
+      title: 'Prêt à transformer le recrutement médical?',
+      subtitle: 'Rejoignez des milliers de professionnels de santé et d\'établissements qui utilisent déjà Solvia.',
+      createAccount: 'Créer un compte',
+      talkToTeam: 'Parler à notre équipe'
+    },
+    blog: {
+      viewMore: 'Voir plus'
+    },
+    why: {
+      title: "Pourquoi Solvia?",
+      subtitle: "Découvrez ce qui fait de notre plateforme le premier choix des professionnels de la santé",
+      global: {
+        title: "Opportunités internationales",
+        description: "Accès à des postes médicaux dans différents pays avec un soutien complet pour la relocalisation"
+      },
+      fast: {
+        title: "Placement rapide",
+        description: "Processus de mise en relation optimisé pour trouver rapidement le poste qui vous convient"
+      },
+      support: {
+        title: "Accompagnement complet",
+        description: "Assistance pour la certification, la formation linguistique et l'installation dans votre nouveau pays"
+      }
+    }
+  },
   es: {
     hero: {
-      title: 'Donde Médicos y Clínicas se Conectan',
-      subtitle: 'plataforma digital donde hospitales conocen médicos y enfermeras previamente evaluados directamente',
-      findJob: 'Encontrar trabajo',
-      findTalent: 'Encontrar talento'
+      title: 'Donde médicos y clínicas se conectan',
+      subtitle: 'Plataforma digital donde hospitales contactan directamente con médicos y enfermeras previamente evaluados',
+      findJob: 'Encontrar empleo',
+      findTalent: 'Encontrar profesionales'
     },
     vacancies: {
       title: 'Vacantes',
-      subtitle: 'Descubre oportunidades emocionantes en instituciones de salud líderes',
+      subtitle: 'Descubra oportunidades interesantes en instituciones sanitarias líderes',
       viewAll: 'Ver todo',
       viewMore: 'Ver más'
     },
     learning: {
-      title: 'Solvia Aprendizaje',
-      subtitle: 'Mejora tu carrera médica con nuestros cursos especializados de alemán y FSP',
+      title: 'Formación Solvia',
+      subtitle: 'Mejore su carrera médica con nuestros cursos especializados de alemán médico y preparación FSP',
       germanCourses: {
-        title: 'Cursos de Alemán',
-        subtitle: 'Domina el alemán médico con nuestros cursos especializados',
+        title: 'Cursos de alemán médico',
+        subtitle: 'Domine el alemán médico con nuestros cursos especializados',
         features: [
-          'Alemán Médico de Básico a Avanzado',
-          'Horario Flexible de Aprendizaje',
-          'Preparación Telc Medical'
+          'Alemán médico desde nivel básico hasta avanzado',
+          'Horario de aprendizaje flexible',
+          'Preparación para Telc Medical'
         ]
       },
       fspCourses: {
-        title: 'Cursos de Preparación FSP',
-        subtitle: 'Preparación integral para tu licencia médica en Alemania',
+        title: 'Cursos de preparación FSP',
+        subtitle: 'Preparación completa para su licencia médica en Alemania',
         features: [
-          'Materiales Completos de Estudio FSP',
-          'Exámenes de Práctica',
-          'Tutoría Individual'
+          'Materiales de estudio FSP completos',
+          'Exámenes de práctica',
+          'Tutoría personalizada'
         ]
       },
       exploreCourses: 'Explorar cursos'
     },
     professionals: {
       title: 'Profesionales',
-      subtitle: 'Conéctate con profesionales de la salud talentosos listos para su próxima oportunidad',
+      subtitle: 'Conecte con profesionales sanitarios talentosos listos para su próxima oportunidad',
       viewAll: 'Ver todo',
       viewMore: 'Ver más'
     },
     cta: {
-      title: '¿Listo para Transformar el Reclutamiento en Salud?',
-      subtitle: 'Únete a miles de profesionales de la salud e instituciones que ya utilizan Solvia.',
+      title: '¿Listo para transformar la contratación sanitaria?',
+      subtitle: 'Únase a miles de profesionales sanitarios e instituciones que ya utilizan Solvia.',
       createAccount: 'Crear cuenta',
       talkToTeam: 'Hablar con nuestro equipo'
     },
@@ -191,18 +259,86 @@ export const translations = {
     },
     why: {
       title: "¿Por qué Solvia?",
-      subtitle: "Descubra qué hace que nuestra plataforma sea la principal opción para profesionales de la salud en todo el mundo",
+      subtitle: "Descubra qué hace de nuestra plataforma la primera elección para profesionales sanitarios",
       global: {
-        title: "Oportunidades Globales",
-        description: "Acceso a puestos de salud en varios países con apoyo completo de reubicación"
+        title: "Oportunidades internacionales",
+        description: "Acceso a puestos sanitarios en diferentes países con apoyo integral para la reubicación"
       },
       fast: {
-        title: "Colocación Rápida",
-        description: "Proceso de coincidencia optimizado para ayudarle a encontrar el puesto adecuado rápidamente"
+        title: "Colocación rápida",
+        description: "Proceso optimizado de selección para encontrar rápidamente el puesto adecuado"
       },
       support: {
-        title: "Apoyo Integral",
-        description: "Orientación a través de la certificación, formación en idiomas y establecimiento en su nuevo país"
+        title: "Apoyo integral",
+        description: "Asistencia con certificación, formación lingüística y establecimiento en su nuevo país"
+      }
+    }
+  },
+  ru: {
+    hero: {
+      title: 'Где встречаются врачи и клиники',
+      subtitle: 'Цифровая платформа, где больницы напрямую встречаются с проверенными врачами и медсестрами',
+      findJob: 'Найти работу',
+      findTalent: 'Найти специалистов'
+    },
+    vacancies: {
+      title: 'Вакансии',
+      subtitle: 'Откройте для себя интересные возможности в ведущих медицинских учреждениях',
+      viewAll: 'Посмотреть все',
+      viewMore: 'Показать больше'
+    },
+    learning: {
+      title: 'Обучение в Solvia',
+      subtitle: 'Улучшите свою медицинскую карьеру с помощью наших специализированных курсов немецкого языка и подготовки к FSP',
+      germanCourses: {
+        title: 'Курсы медицинского немецкого',
+        subtitle: 'Овладейте медицинским немецким с нашими специализированными курсами',
+        features: [
+          'Медицинский немецкий от начального до продвинутого уровня',
+          'Гибкий график обучения',
+          'Подготовка к Telc Medical'
+        ]
+      },
+      fspCourses: {
+        title: 'Курсы подготовки к FSP',
+        subtitle: 'Комплексная подготовка к получению медицинской лицензии в Германии',
+        features: [
+          'Полные учебные материалы FSP',
+          'Практические экзамены',
+          'Индивидуальное наставничество'
+        ]
+      },
+      exploreCourses: 'Изучить курсы'
+    },
+    professionals: {
+      title: 'Специалисты',
+      subtitle: 'Свяжитесь с талантливыми медицинскими работниками, готовыми к новым возможностям',
+      viewAll: 'Посмотреть все',
+      viewMore: 'Показать больше'
+    },
+    cta: {
+      title: 'Готовы изменить подход к найму медицинского персонала?',
+      subtitle: 'Присоединяйтесь к тысячам медицинских работников и учреждений, уже использующих Solvia.',
+      createAccount: 'Создать аккаунт',
+      talkToTeam: 'Связаться с нашей командой'
+    },
+    blog: {
+      viewMore: 'Показать больше'
+    },
+    why: {
+      title: "Почему Solvia?",
+      subtitle: "Узнайте, что делает нашу платформу первым выбором для медицинских специалистов",
+      global: {
+        title: "Международные возможности",
+        description: "Доступ к медицинским должностям в разных странах с комплексной поддержкой при переезде"
+      },
+      fast: {
+        title: "Быстрое трудоустройство",
+        description: "Оптимизированный процесс подбора для быстрого поиска подходящей должности"
+      },
+      support: {
+        title: "Всесторонняя поддержка",
+        description: "Помощь с сертификацией, языковой подготовкой и обустройством в новой стране"
       }
     }
   }

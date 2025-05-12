@@ -10,6 +10,7 @@ import NavLinks from './navbar/NavLinks';
 import UserDropdown from './navbar/UserDropdown';
 import MobileMenu from './navbar/MobileMenu';
 import { useToast } from '@/hooks/use-toast';
+import LanguageSelector from './LanguageSelector';
 
 const hasUnreadMessages = false;
 
@@ -74,6 +75,8 @@ const Navbar = () => {
           </div>
 
           <div className="hidden sm:ml-6 sm:flex sm:items-center gap-2">
+            <LanguageSelector />
+            
             {isLoggedIn ? (
               <UserDropdown 
                 userType={userType} 
@@ -93,6 +96,7 @@ const Navbar = () => {
           </div>
 
           <div className="-mr-2 flex items-center sm:hidden">
+            <LanguageSelector />
             <Button variant="ghost" size="icon" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
               <span className="sr-only">Open main menu</span>
               {mobileMenuOpen ? (
