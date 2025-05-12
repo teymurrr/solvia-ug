@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
@@ -13,7 +14,7 @@ import {
   TableRow 
 } from '@/components/ui/table';
 
-// Define ProfessionalData interface first to avoid circular reference
+// Define individual interfaces without circular references
 interface ProfessionalData {
   first_name: string;
   last_name: string;
@@ -21,14 +22,13 @@ interface ProfessionalData {
   email: string;
 }
 
-// Then define VacancyData interface
 interface VacancyData {
   title: string;
   department: string;
   specialty: string;
 }
 
-// Finally define Application interface that uses both
+// Define Application interface that references the other types
 interface Application {
   id: string;
   vacancy_id: string;
@@ -89,7 +89,7 @@ const ApplicationsTab = () => {
           return {
             ...app,
             professional
-          };
+          } as Application;  // Explicit type casting to Application
         }));
         
         setApplications(formattedApplications);
