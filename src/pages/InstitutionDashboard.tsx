@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import MainLayout from '@/components/MainLayout';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -7,6 +8,7 @@ import { ProfileTab, VacanciesTab, TalentsTab, DashboardHeader } from '@/compone
 import ApplicationsTab from '@/components/institution-dashboard/ApplicationsTab';
 import { useProfessionals } from '@/hooks/useProfessionals';
 import { useVacancies, VacancyInput } from '@/hooks/useVacancies';
+import { useApplications } from '@/hooks/useApplications';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
 import { useLocation } from 'react-router-dom';
@@ -27,6 +29,20 @@ const InstitutionDashboard = () => {
     error: professionalsError,
     refreshProfessionals
   } = useProfessionals();
+  
+  // Add useApplications hook
+  const {
+    applications,
+    filteredApplications,
+    loading: applicationsLoading,
+    error: applicationsError,
+    searchQuery: applicationsSearchQuery,
+    filters: applicationsFilters,
+    handleSearchQueryChange: handleApplicationsSearchQueryChange,
+    handleFilterChange: handleApplicationsFilterChange,
+    updateApplicationStatus,
+    refreshApplications
+  } = useApplications();
   
   const { 
     vacancies, 
@@ -67,10 +83,11 @@ const InstitutionDashboard = () => {
     console.log("Filtered institution vacancies:", institutionVacancies);
   }, [user, vacancies, institutionVacancies]);
 
-  // If authentication state changes, refresh vacancies
+  // If authentication state changes, refresh data
   useEffect(() => {
     if (user?.id) {
       refreshVacancies();
+      refreshApplications();
     }
   }, [user]);
 
@@ -184,26 +201,9 @@ const InstitutionDashboard = () => {
     setVacancyFormOpen(true);
   };
 
-  // Mock data for the ApplicationsTab
-  const [applicationsSearchQuery, setApplicationsSearchQuery] = useState('');
-  const [applications, setApplications] = useState([]);
-  const [filteredApplications, setFilteredApplications] = useState([]);
-  const [applicationsFilters, setApplicationsFilters] = useState({
-    status: 'all_statuses',
-    date: 'all_time'
-  });
-
-  const handleApplicationsSearch = () => {
-    // Mock implementation
-    console.log("Searching applications with query:", applicationsSearchQuery);
-    setFilteredApplications(applications);
-  };
-
-  const handleApplicationsFilterChange = (filterName: string, value: string) => {
-    setApplicationsFilters(prev => ({
-      ...prev,
-      [filterName]: value
-    }));
+  const handleApplicationSearch = () => {
+    // Handled by the useApplications hook
+    console.log("Application search triggered");
   };
 
   const handleEmptyAction = () => {
@@ -255,14 +255,15 @@ const InstitutionDashboard = () => {
               <ApplicationsTab 
                 applications={applications}
                 filteredApplications={filteredApplications}
-                loading={false}
-                error={null}
+                loading={applicationsLoading}
+                error={applicationsError}
                 searchQuery={applicationsSearchQuery}
-                onSearchQueryChange={(e) => setApplicationsSearchQuery(e.target.value)}
-                onSearch={handleApplicationsSearch}
+                onSearchQueryChange={handleApplicationsSearchQueryChange}
+                onSearch={handleApplicationSearch}
                 filters={applicationsFilters}
                 onFilterChange={handleApplicationsFilterChange}
-                refreshApplications={() => console.log("Refreshing applications")}
+                refreshApplications={refreshApplications}
+                onUpdateStatus={updateApplicationStatus}
               />
             </TabsContent>
             

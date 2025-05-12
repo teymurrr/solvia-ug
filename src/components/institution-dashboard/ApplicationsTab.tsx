@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+
+import React from 'react';
 import { Search, Users, RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -13,16 +14,9 @@ import {
   PaginationEllipsis,
 } from '@/components/ui/pagination';
 import { Skeleton } from '@/components/ui/skeleton';
-
-interface Application {
-  id: string;
-  applicantId: string;
-  applicantName: string;
-  applicantPhoto?: string;
-  vacancyTitle: string;
-  appliedDate: string;
-  status: 'pending' | 'reviewing' | 'accepted' | 'rejected';
-}
+import ApplicationFilterDropdowns from './ApplicationFilterDropdowns';
+import ApplicationCard from './ApplicationCard';
+import { Application } from '@/hooks/useApplications';
 
 type PageType = number | 'ellipsis1' | 'ellipsis2';
 
@@ -40,6 +34,7 @@ interface ApplicationsTabProps {
   };
   onFilterChange: (filterName: string, value: string) => void;
   refreshApplications?: () => void;
+  onUpdateStatus?: (applicationId: string, status: 'pending' | 'reviewing' | 'accepted' | 'rejected') => Promise<boolean>;
 }
 
 const ApplicationsTab: React.FC<ApplicationsTabProps> = ({
@@ -52,13 +47,14 @@ const ApplicationsTab: React.FC<ApplicationsTabProps> = ({
   onSearch,
   filters,
   onFilterChange,
-  refreshApplications
+  refreshApplications,
+  onUpdateStatus = async () => false
 }) => {
-  const [currentPage, setCurrentPage] = useState(1);
-  const applicationsPerPage = 10;
+  const [currentPage, setCurrentPage] = React.useState(1);
+  const applicationsPerPage = 5;
 
   // Reset to first page when filters change
-  useEffect(() => {
+  React.useEffect(() => {
     setCurrentPage(1);
   }, [filteredApplications]);
 
@@ -162,9 +158,8 @@ const ApplicationsTab: React.FC<ApplicationsTabProps> = ({
             </Button>
           </div>
           
-          {/* Implement FilterDropdowns component for filtering applications */}
-          {/* Add filter options for status and date */}
-          {/* Pass filters and onFilterChange props to the FilterDropdowns component */}
+          {/* Filter dropdowns */}
+          <ApplicationFilterDropdowns filters={filters} onFilterChange={onFilterChange} />
           
           {loading ? (
             // Show loading skeletons
@@ -172,17 +167,12 @@ const ApplicationsTab: React.FC<ApplicationsTabProps> = ({
               {[1, 2, 3].map((i) => (
                 <div key={i} className="p-6 border rounded-lg space-y-4">
                   <div className="flex items-start gap-4">
-                    <Skeleton className="h-16 w-16 rounded-full" />
+                    <Skeleton className="h-12 w-12 rounded-full" />
                     <div className="space-y-2 flex-1">
                       <Skeleton className="h-4 w-1/3" />
                       <Skeleton className="h-3 w-1/4" />
                       <Skeleton className="h-3 w-1/2" />
                     </div>
-                  </div>
-                  <div className="grid grid-cols-3 gap-4">
-                    <Skeleton className="h-12 w-full" />
-                    <Skeleton className="h-12 w-full" />
-                    <Skeleton className="h-12 w-full" />
                   </div>
                 </div>
               ))}
@@ -206,29 +196,14 @@ const ApplicationsTab: React.FC<ApplicationsTabProps> = ({
             </div>
           ) : Array.isArray(currentApplications) && currentApplications.length > 0 ? (
             // Show application cards
-            <div className="space-y-6">
-              <div className="flex flex-col space-y-4">
-                {/* Implement ApplicationCard component to display application details */}
-                {/* Pass application data as props to the ApplicationCard component */}
-                {currentApplications.map((application) => (
-                  <div key={application.id} className="p-6 border rounded-lg">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <h3 className="text-lg font-semibold">{application.applicantName}</h3>
-                        <p className="text-muted-foreground">{application.vacancyTitle}</p>
-                      </div>
-                      <div>
-                        <p className="text-sm text-muted-foreground">
-                          Applied on {application.appliedDate}
-                        </p>
-                        <p className="text-sm text-muted-foreground">
-                          Status: {application.status}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
+            <div className="space-y-4">
+              {currentApplications.map((application) => (
+                <ApplicationCard 
+                  key={application.id} 
+                  application={application} 
+                  onUpdateStatus={onUpdateStatus}
+                />
+              ))}
               
               {totalPages > 1 && (
                 <Pagination className="mt-6">
@@ -310,20 +285,6 @@ const ApplicationsTab: React.FC<ApplicationsTabProps> = ({
       </CardContent>
     </Card>
   );
-};
-
-// Add a default export with empty array fallbacks for required props
-ApplicationsTab.defaultProps = {
-  applications: [],
-  filteredApplications: [],
-  searchQuery: '',
-  onSearchQueryChange: () => {},
-  onSearch: () => {},
-  filters: {
-    status: 'all_statuses',
-    date: 'all_time'
-  },
-  onFilterChange: () => {}
 };
 
 export default ApplicationsTab;
