@@ -37,6 +37,14 @@ export interface VacancyCardProps {
   fromLandingPage?: boolean;
   showDescription?: boolean;
   showRequirements?: boolean;
+  // Adding the missing props that were causing errors
+  searchQuery?: string;
+  currentPage?: number;
+  selectedFilters?: {
+    jobTypes: string[];
+    country: string;
+    city: string;
+  };
 }
 
 const VacancyCard: React.FC<VacancyCardProps> = ({
@@ -64,6 +72,11 @@ const VacancyCard: React.FC<VacancyCardProps> = ({
   showRequirements = false,
   description,
   requirements,
+  // We're not actually using these props in this component,
+  // but they're being passed in from ProfessionalDashboard.tsx
+  searchQuery,
+  currentPage,
+  selectedFilters,
 }) => {
   const { t } = useLanguage();
   

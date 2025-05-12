@@ -192,7 +192,7 @@ const SavedAndApplied: React.FC<SavedAndAppliedProps> = ({ userId }) => {
                   specialty={vacancy.specialty || 'Various'}
                   jobType={vacancy.job_type}
                   location={vacancy.location}
-                  createdAt={vacancy.created_at ? new Date(vacancy.created_at).toLocaleDateString() : undefined}
+                  createdAt={vacancy.posted_date ? new Date(vacancy.posted_date).toLocaleDateString() : undefined}
                   isDashboardCard={true}
                   isSaved={true}
                   onSaveToggle={() => handleToggleSave(vacancy.id)}
@@ -226,7 +226,7 @@ const SavedAndApplied: React.FC<SavedAndAppliedProps> = ({ userId }) => {
                   specialty={vacancy.specialty || 'Various'}
                   jobType={vacancy.job_type}
                   location={vacancy.location}
-                  createdAt={vacancy.created_at ? new Date(vacancy.created_at).toLocaleDateString() : undefined}
+                  createdAt={vacancy.posted_date ? new Date(vacancy.posted_date).toLocaleDateString() : undefined}
                   isDashboardCard={true}
                   isApplied={true}
                   isSaved={false}

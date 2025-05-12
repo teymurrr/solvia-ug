@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
@@ -72,28 +71,20 @@ const ApplicationsTab = () => {
         if (error) throw error;
         
         // Since we can't do complex joins, we'll fetch professional data separately
-        const formattedApplications = await Promise.all(data.map(async (app) => {
+        const formattedApplications = await Promise.all((data || []).map(async (app) => {
           // Get professional profile data
-          const { data: profileData, error: profileError } = await supabase
+          const { data: profileData } = await supabase
             .from('professional_profiles')
             .select('first_name, last_name, specialty')
             .eq('id', app.user_id)
             .single();
             
-          if (profileError) {
-            console.error('Error fetching professional profile:', profileError);
-          }
-          
-          // Get user email - we cannot query auth.users directly from client
-          // Instead, we'll either use what we have or provide a placeholder
-          let email = 'no-email@example.com';
-          // In a real app, you might use a function or API endpoint to get the email securely
-          
+          // Provide default values if profile data is not available
           const professional: ProfessionalData = {
             first_name: profileData?.first_name || 'Unknown',
             last_name: profileData?.last_name || 'User',
             specialty: profileData?.specialty || 'Not specified',
-            email: email
+            email: 'no-email@example.com'
           };
           
           return {
