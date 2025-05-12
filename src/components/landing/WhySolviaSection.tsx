@@ -1,62 +1,98 @@
 
 import React from 'react';
 import { Card, CardContent } from "@/components/ui/card";
-import { UserCheck, Clock, FileCheck, DollarSign } from 'lucide-react';
+import { Star, Smile, Users, Clock, FileCheck, DollarSign } from 'lucide-react';
+import { Button } from "@/components/ui/button";
 import { useLanguage } from '@/hooks/useLanguage';
+import { Link } from 'react-router-dom';
 
 const WhySolviaSection = () => {
   const { t } = useLanguage();
   
   return (
-    <section className="py-12 bg-gradient-to-br from-blue-50 to-white">
+    <section className="py-16 bg-gradient-to-br from-blue-50 to-white">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-10">
-          <h2 className="text-3xl font-bold text-black mb-4">Why Solvia?</h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            The smarter way to connect healthcare professionals with institutions
-          </p>
-        </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
-          <Card className="border-transparent hover:shadow-lg transition-all">
-            <CardContent className="p-6 flex flex-col items-center text-center">
-              <DollarSign className="h-12 w-12 text-[#006ae6] mb-4" />
-              <h3 className="text-xl font-semibold mb-2">Direct Hiring, No Fees</h3>
-              <p className="text-muted-foreground">
-                Skip third-party recruiters. Talk to professionals directly and hire without commission.
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+          {/* Left Column: Title, Description, Stats, and Button */}
+          <div className="flex flex-col justify-between">
+            <div className="space-y-6">
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 leading-tight">
+                Here's what makes us different from traditional recruitment agencies
+              </h2>
+              
+              <p className="text-lg text-gray-600">
+                At Solvia, we are passionate about connecting professionals around the world with institutions directly, without middlemen.
               </p>
-            </CardContent>
-          </Card>
+              
+              <div className="flex gap-12 mt-8">
+                <div>
+                  <span className="text-4xl font-bold text-primary">200+</span>
+                  <p className="text-gray-600">Active Positions</p>
+                </div>
+                <div>
+                  <span className="text-4xl font-bold text-primary">1000+</span>
+                  <p className="text-gray-600">Professionals</p>
+                </div>
+              </div>
+            </div>
+            
+            <div className="mt-8 md:mt-0">
+              <Button asChild className="px-8">
+                <Link to="/about">About Us</Link>
+              </Button>
+            </div>
+          </div>
           
-          <Card className="border-transparent hover:shadow-lg transition-all">
-            <CardContent className="p-6 flex flex-col items-center text-center">
-              <UserCheck className="h-12 w-12 text-[#006ae6] mb-4" />
-              <h3 className="text-xl font-semibold mb-2">Verified Medical Profiles</h3>
-              <p className="text-muted-foreground">
-                Every candidate is pre-screened, with documents and language skills ready.
-              </p>
-            </CardContent>
-          </Card>
-          
-          <Card className="border-transparent hover:shadow-lg transition-all">
-            <CardContent className="p-6 flex flex-col items-center text-center">
-              <FileCheck className="h-12 w-12 text-[#006ae6] mb-4" />
-              <h3 className="text-xl font-semibold mb-2">Transparent Process</h3>
-              <p className="text-muted-foreground">
-                See qualifications, availability, and status in real-time. No guesswork.
-              </p>
-            </CardContent>
-          </Card>
-          
-          <Card className="border-transparent hover:shadow-lg transition-all">
-            <CardContent className="p-6 flex flex-col items-center text-center">
-              <Clock className="h-12 w-12 text-[#006ae6] mb-4" />
-              <h3 className="text-xl font-semibold mb-2">Faster Placements</h3>
-              <p className="text-muted-foreground">
-                Instant access to candidates means faster onboarding and less admin work.
-              </p>
-            </CardContent>
-          </Card>
+          {/* Right Column: Feature Cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <Card className="border-transparent hover:shadow-lg transition-all">
+              <CardContent className="p-6">
+                <div className="bg-primary/10 p-3 rounded-lg w-12 h-12 flex items-center justify-center mb-4">
+                  <DollarSign className="h-6 w-6 text-primary" />
+                </div>
+                <h3 className="text-lg font-semibold mb-2">Direct Hiring, No Fees</h3>
+                <p className="text-gray-600">
+                  Skip third-party recruiters. Talk to professionals directly and hire without commission.
+                </p>
+              </CardContent>
+            </Card>
+            
+            <Card className="border-transparent hover:shadow-lg transition-all">
+              <CardContent className="p-6">
+                <div className="bg-primary/10 p-3 rounded-lg w-12 h-12 flex items-center justify-center mb-4">
+                  <Users className="h-6 w-6 text-primary" />
+                </div>
+                <h3 className="text-lg font-semibold mb-2">Verified Medical Profiles</h3>
+                <p className="text-gray-600">
+                  Every candidate is pre-screened, with documents and language skills ready.
+                </p>
+              </CardContent>
+            </Card>
+            
+            <Card className="border-transparent hover:shadow-lg transition-all">
+              <CardContent className="p-6">
+                <div className="bg-primary/10 p-3 rounded-lg w-12 h-12 flex items-center justify-center mb-4">
+                  <FileCheck className="h-6 w-6 text-primary" />
+                </div>
+                <h3 className="text-lg font-semibold mb-2">Transparent Process</h3>
+                <p className="text-gray-600">
+                  See qualifications, availability, and status in real-time. No guesswork.
+                </p>
+              </CardContent>
+            </Card>
+            
+            <Card className="border-transparent hover:shadow-lg transition-all">
+              <CardContent className="p-6">
+                <div className="bg-primary/10 p-3 rounded-lg w-12 h-12 flex items-center justify-center mb-4">
+                  <Clock className="h-6 w-6 text-primary" />
+                </div>
+                <h3 className="text-lg font-semibold mb-2">Faster Placements</h3>
+                <p className="text-gray-600">
+                  Instant access to candidates means faster onboarding and less admin work.
+                </p>
+              </CardContent>
+            </Card>
+          </div>
         </div>
       </div>
     </section>

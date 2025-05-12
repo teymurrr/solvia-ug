@@ -1,240 +1,314 @@
-
-import React, { useEffect, useState } from 'react';
-import { supabase } from '@/integrations/supabase/client';
-import { useToast } from '@/hooks/use-toast';
-import { Loader2 } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Search, Users, RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { useAuth } from '@/contexts/AuthContext';
-import { 
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow 
-} from '@/components/ui/table';
+import { Input } from '@/components/ui/input';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+  PaginationEllipsis,
+} from '@/components/ui/pagination';
+import { Skeleton } from '@/components/ui/skeleton';
 
-// Define individual interfaces without circular references
-interface ProfessionalData {
-  first_name: string;
-  last_name: string;
-  specialty: string;
-  email: string;
-}
-
-interface VacancyData {
-  title: string;
-  department: string;
-  specialty: string;
-}
-
-// Define Application interface that references the other types
 interface Application {
   id: string;
-  vacancy_id: string;
-  user_id: string;
-  created_at: string;
-  status: string;
-  resume_url?: string;
-  cover_letter?: string;
-  vacancy: VacancyData;
-  professional: ProfessionalData;
+  applicantId: string;
+  applicantName: string;
+  applicantPhoto?: string;
+  vacancyTitle: string;
+  appliedDate: string;
+  status: 'pending' | 'reviewing' | 'accepted' | 'rejected';
 }
 
-const ApplicationsTab = () => {
-  const [applications, setApplications] = useState<Application[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const { user } = useAuth();
-  const { toast } = useToast();
-  
-  useEffect(() => {
-    const fetchApplications = async () => {
-      if (!user?.id) return;
-      
-      setIsLoading(true);
-      try {
-        // Using applied_vacancies table instead of applications
-        const { data, error } = await supabase
-          .from('applied_vacancies')
-          .select(`
-            id,
-            vacancy_id,
-            user_id,
-            created_at,
-            status,
-            application_data,
-            vacancy:vacancies(title, department, specialty)
-          `)
-          .eq('institution_id', user.id);
-          
-        if (error) throw error;
-        
-        // Since we can't do complex joins, we'll fetch professional data separately
-        const formattedApplications = await Promise.all((data || []).map(async (app) => {
-          // Get professional profile data
-          const { data: profileData } = await supabase
-            .from('professional_profiles')
-            .select('first_name, last_name, specialty')
-            .eq('id', app.user_id)
-            .single();
-            
-          // Provide default values if profile data is not available
-          const professional: ProfessionalData = {
-            first_name: profileData?.first_name || 'Unknown',
-            last_name: profileData?.last_name || 'User',
-            specialty: profileData?.specialty || 'Not specified',
-            email: 'no-email@example.com'
-          };
-          
-          // Explicitly cast to Application type to avoid TypeScript circular reference error
-          return {
-            ...app,
-            professional
-          } as Application;
-        }));
-        
-        setApplications(formattedApplications);
-      } catch (error: any) {
-        console.error('Error fetching applications:', error);
-        toast({
-          title: 'Failed to load applications',
-          description: error.message,
-          variant: 'destructive',
-        });
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    
-    fetchApplications();
-  }, [user, toast]);
+type PageType = number | 'ellipsis1' | 'ellipsis2';
 
-  const updateApplicationStatus = async (id: string, status: string) => {
-    try {
-      const { error } = await supabase
-        .from('applied_vacancies')
-        .update({ status })
-        .eq('id', id);
-        
-      if (error) throw error;
+interface ApplicationsTabProps {
+  applications: Application[];
+  filteredApplications: Application[];
+  loading?: boolean;
+  error?: string | null;
+  searchQuery: string;
+  onSearchQueryChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onSearch: () => void;
+  filters: {
+    status: string;
+    date: string;
+  };
+  onFilterChange: (filterName: string, value: string) => void;
+  refreshApplications?: () => void;
+}
+
+const ApplicationsTab: React.FC<ApplicationsTabProps> = ({
+  applications,
+  filteredApplications,
+  loading = false,
+  error = null,
+  searchQuery,
+  onSearchQueryChange,
+  onSearch,
+  filters,
+  onFilterChange,
+  refreshApplications
+}) => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const applicationsPerPage = 10;
+
+  // Reset to first page when filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [filteredApplications]);
+
+  // Calculate pagination values
+  const totalPages = Math.ceil((filteredApplications?.length || 0) / applicationsPerPage);
+  const startIndex = (currentPage - 1) * applicationsPerPage;
+  const endIndex = startIndex + applicationsPerPage;
+  const currentApplications = filteredApplications?.slice(startIndex, endIndex) || [];
+
+  // Generate page numbers for pagination
+  const getPageNumbers = () => {
+    const pages: PageType[] = [];
+    const maxPagesToShow = 5; // Show at most 5 page numbers, with ellipsis if needed
+    
+    if (totalPages <= maxPagesToShow) {
+      // Show all pages if there are few
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(i);
+      }
+    } else {
+      // Always include first page
+      pages.push(1);
       
-      // Update local state
-      setApplications(prev => 
-        prev.map(app => app.id === id ? { ...app, status } : app)
-      );
+      // Calculate start and end of visible pages
+      let startPage = Math.max(2, currentPage - 1);
+      let endPage = Math.min(totalPages - 1, currentPage + 1);
       
-      toast({
-        title: 'Status updated',
-        description: `Application status set to ${status}`,
-      });
-    } catch (error: any) {
-      console.error('Error updating application status:', error);
-      toast({
-        title: 'Failed to update status',
-        description: error.message,
-        variant: 'destructive',
-      });
+      // Adjust if we're near the beginning
+      if (currentPage <= 3) {
+        endPage = Math.min(maxPagesToShow - 1, totalPages - 1);
+      }
+      
+      // Adjust if we're near the end
+      if (currentPage >= totalPages - 2) {
+        startPage = Math.max(2, totalPages - (maxPagesToShow - 2));
+      }
+      
+      // Add ellipsis before middle pages if needed
+      if (startPage > 2) {
+        pages.push('ellipsis1');
+      }
+      
+      // Add visible pages
+      for (let i = startPage; i <= endPage; i++) {
+        pages.push(i);
+      }
+      
+      // Add ellipsis after middle pages if needed
+      if (endPage < totalPages - 1) {
+        pages.push('ellipsis2');
+      }
+      
+      // Always include last page
+      pages.push(totalPages);
     }
+    
+    return pages;
   };
 
-  if (isLoading) {
-    return (
-      <div className="flex justify-center items-center h-64">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
-      </div>
-    );
-  }
-
-  if (applications.length === 0) {
-    return (
-      <div className="text-center py-12">
-        <h3 className="text-lg font-medium">No applications yet</h3>
-        <p className="text-muted-foreground mt-2">
-          When healthcare professionals apply to your vacancies, they will appear here.
-        </p>
-      </div>
-    );
-  }
-
   return (
-    <div className="overflow-x-auto">
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Applicant</TableHead>
-            <TableHead>Position</TableHead>
-            <TableHead>Specialty</TableHead>
-            <TableHead>Applied on</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead className="text-right">Actions</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {applications.map((application) => (
-            <TableRow key={application.id}>
-              <TableCell>
-                <div>
-                  <div className="font-medium">
-                    {application.professional.first_name} {application.professional.last_name}
+    <Card>
+      <CardHeader className="flex flex-row items-center justify-between">
+        <div>
+          <CardTitle>Manage Applications</CardTitle>
+          <CardDescription>
+            Review and manage job applications
+          </CardDescription>
+        </div>
+        {refreshApplications && (
+          <Button 
+            variant="outline" 
+            size="icon" 
+            onClick={refreshApplications}
+            disabled={loading}
+          >
+            <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
+            <span className="sr-only">Refresh</span>
+          </Button>
+        )}
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-6">
+          <div className="flex flex-col md:flex-row gap-4">
+            <div className="flex-1 relative">
+              <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+              <Input 
+                placeholder="Search by applicant name or vacancy title" 
+                className="pl-10" 
+                value={searchQuery}
+                onChange={onSearchQueryChange}
+                onKeyDown={(e) => e.key === 'Enter' && onSearch()}
+                disabled={loading}
+              />
+            </div>
+            <Button 
+              type="button" 
+              onClick={onSearch}
+              disabled={loading}
+            >
+              Search
+            </Button>
+          </div>
+          
+          {/* Implement FilterDropdowns component for filtering applications */}
+          {/* Add filter options for status and date */}
+          {/* Pass filters and onFilterChange props to the FilterDropdowns component */}
+          
+          {loading ? (
+            // Show loading skeletons
+            <div className="space-y-4">
+              {[1, 2, 3].map((i) => (
+                <div key={i} className="p-6 border rounded-lg space-y-4">
+                  <div className="flex items-start gap-4">
+                    <Skeleton className="h-16 w-16 rounded-full" />
+                    <div className="space-y-2 flex-1">
+                      <Skeleton className="h-4 w-1/3" />
+                      <Skeleton className="h-3 w-1/4" />
+                      <Skeleton className="h-3 w-1/2" />
+                    </div>
                   </div>
-                  <div className="text-sm text-muted-foreground">
-                    {application.professional.specialty}
+                  <div className="grid grid-cols-3 gap-4">
+                    <Skeleton className="h-12 w-full" />
+                    <Skeleton className="h-12 w-full" />
+                    <Skeleton className="h-12 w-full" />
                   </div>
                 </div>
-              </TableCell>
-              <TableCell>{application.vacancy.title}</TableCell>
-              <TableCell>{application.vacancy.specialty}</TableCell>
-              <TableCell>
-                {new Date(application.created_at).toLocaleDateString()}
-              </TableCell>
-              <TableCell>
-                <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
-                  ${
-                    application.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
-                    application.status === 'approved' ? 'bg-green-100 text-green-800' :
-                    application.status === 'rejected' ? 'bg-red-100 text-red-800' :
-                    'bg-gray-100 text-gray-800'
-                  }
-                `}>
-                  {application.status.charAt(0).toUpperCase() + application.status.slice(1)}
-                </span>
-              </TableCell>
-              <TableCell className="text-right space-x-2">
-                {application.status === 'pending' && (
-                  <>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="text-green-600 border-green-600 hover:bg-green-50"
-                      onClick={() => updateApplicationStatus(application.id, 'approved')}
-                    >
-                      Approve
-                    </Button>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="text-red-600 border-red-600 hover:bg-red-50"
-                      onClick={() => updateApplicationStatus(application.id, 'rejected')}
-                    >
-                      Reject
-                    </Button>
-                  </>
-                )}
-                {application.resume_url && (
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => window.open(application.resume_url, '_blank')}
-                  >
-                    View Resume
-                  </Button>
-                )}
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </div>
+              ))}
+            </div>
+          ) : error ? (
+            // Show error message
+            <div className="text-center py-8">
+              <h3 className="text-lg font-medium text-red-500">{error}</h3>
+              <p className="text-muted-foreground mt-2">
+                There was a problem loading applications
+              </p>
+              {refreshApplications && (
+                <Button 
+                  variant="outline" 
+                  className="mt-4"
+                  onClick={refreshApplications}
+                >
+                  Try Again
+                </Button>
+              )}
+            </div>
+          ) : Array.isArray(currentApplications) && currentApplications.length > 0 ? (
+            // Show application cards
+            <div className="space-y-6">
+              <div className="flex flex-col space-y-4">
+                {/* Implement ApplicationCard component to display application details */}
+                {/* Pass application data as props to the ApplicationCard component */}
+                {currentApplications.map((application) => (
+                  <div key={application.id} className="p-6 border rounded-lg">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <h3 className="text-lg font-semibold">{application.applicantName}</h3>
+                        <p className="text-muted-foreground">{application.vacancyTitle}</p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-muted-foreground">
+                          Applied on {application.appliedDate}
+                        </p>
+                        <p className="text-sm text-muted-foreground">
+                          Status: {application.status}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              
+              {totalPages > 1 && (
+                <Pagination className="mt-6">
+                  <PaginationContent>
+                    {currentPage > 1 && (
+                      <PaginationItem>
+                        <PaginationPrevious 
+                          href="#" 
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setCurrentPage(prev => prev - 1);
+                          }} 
+                        />
+                      </PaginationItem>
+                    )}
+                    
+                    {getPageNumbers().map((page, index) => (
+                      <PaginationItem key={index}>
+                        {page === 'ellipsis1' || page === 'ellipsis2' ? (
+                          <PaginationEllipsis />
+                        ) : (
+                          <PaginationLink
+                            href="#"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              if (typeof page === 'number') {
+                                setCurrentPage(page);
+                              }
+                            }}
+                            isActive={currentPage === page}
+                          >
+                            {page}
+                          </PaginationLink>
+                        )}
+                      </PaginationItem>
+                    ))}
+                    
+                    {currentPage < totalPages && (
+                      <PaginationItem>
+                        <PaginationNext 
+                          href="#" 
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setCurrentPage(prev => prev + 1);
+                          }} 
+                        />
+                      </PaginationItem>
+                    )}
+                  </PaginationContent>
+                </Pagination>
+              )}
+            </div>
+          ) : Array.isArray(applications) && applications.length > 0 && (searchQuery || !Object.values(filters).every(f => f.startsWith('all_'))) ? (
+            // No results for search/filter
+            <div className="text-center py-8">
+              <h3 className="text-lg font-medium">No matching applications found</h3>
+              <p className="text-muted-foreground">Try adjusting your search criteria or filters</p>
+            </div>
+          ) : !Array.isArray(applications) || applications.length === 0 ? (
+            // No applications in database
+            <div className="text-center py-8">
+              <Users className="h-12 w-12 mx-auto text-muted-foreground" />
+              <h3 className="mt-4 text-lg font-medium">No applications have been received yet</h3>
+              <p className="text-muted-foreground">
+                Check back later as candidates apply for positions
+              </p>
+            </div>
+          ) : (
+            // Default empty state
+            <div className="text-center py-8">
+              <Users className="h-12 w-12 mx-auto text-muted-foreground" />
+              <h3 className="mt-4 text-lg font-medium">Manage job applications</h3>
+              <p className="text-muted-foreground">
+                Use the search and filters above to find specific applications
+              </p>
+            </div>
+          )}
+        </div>
+      </CardContent>
+    </Card>
   );
 };
 
