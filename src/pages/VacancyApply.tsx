@@ -41,6 +41,7 @@ const VacancyApply = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [vacancy, setVacancy] = useState<Vacancy | null>(null);
   const [loadingVacancy, setLoadingVacancy] = useState(true);
+  const [redirected, setRedirected] = useState(false);
   
   // Check if user came from the dashboard
   const fromDashboard = location.state?.fromDashboard || false;
@@ -205,22 +206,41 @@ const VacancyApply = () => {
     );
   }
 
-  // Redirect to external application if provided
+  // Handle redirection to external application link
   useEffect(() => {
-    if (vacancy?.application_link) {
+    if (vacancy?.application_link && !redirected) {
+      setRedirected(true); // Mark as redirected to prevent infinite loop
       window.open(vacancy.application_link, '_blank');
       // Redirect back to vacancies list after opening external link
-      navigate('/vacancies', {
-        state: { 
-          externalApplication: true,
-          vacancyTitle: vacancy.title
-        }
-      });
+      if (fromDashboard) {
+        navigate('/dashboard/professional', {
+          state: { 
+            activeTab: 'vacancies',
+            externalApplication: true,
+            vacancyTitle: vacancy.title
+          }
+        });
+      } else {
+        navigate('/vacancies', {
+          state: { 
+            externalApplication: true,
+            vacancyTitle: vacancy.title
+          }
+        });
+      }
     }
-  }, [vacancy, navigate]);
+  }, [vacancy, navigate, redirected, fromDashboard]);
 
+  // If has external application link, show loading until redirect
   if (vacancy?.application_link) {
-    return null; // Don't render anything as we're redirecting
+    return (
+      <MainLayout>
+        <div className="container py-8 flex justify-center items-center min-h-[500px]">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+          <p className="ml-4">Redirecting to external application...</p>
+        </div>
+      </MainLayout>
+    );
   }
 
   return (
