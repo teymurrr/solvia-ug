@@ -12,7 +12,7 @@ const WhySolviaSection = () => {
   return (
     <section className="py-12 bg-gradient-to-br from-blue-50 to-white">
       <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
           {/* Left Column: Title, Description, Stats, and Button */}
           <div className="space-y-8">
             <div className="space-y-6">
@@ -43,53 +43,61 @@ const WhySolviaSection = () => {
             </div>
           </div>
           
-          {/* Right Column: Feature Cards in a single row */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <Card className="border-transparent hover:shadow-lg transition-all h-full">
-              <CardContent className="p-4 flex flex-col items-center text-center h-full">
-                <div className="bg-primary/10 p-3 rounded-lg w-12 h-12 flex items-center justify-center mb-3">
-                  <DollarSign className="h-5 w-5 text-primary" />
+          {/* Right Column: Feature Cards in a vertical layout */}
+          <div className="space-y-4">
+            <Card className="border-transparent hover:shadow-lg transition-all">
+              <CardContent className="p-4 flex items-center">
+                <div className="bg-primary/10 p-3 rounded-lg w-12 h-12 flex items-center justify-center mr-4">
+                  <Star className="h-5 w-5 text-primary" />
                 </div>
-                <h3 className="text-base font-semibold mb-2">Direct Hiring, No Fees</h3>
-                <p className="text-sm text-gray-600">
-                  Skip third-party recruiters.
-                </p>
+                <div>
+                  <h3 className="text-xl font-semibold mb-1">Direct Hiring, No Fees</h3>
+                  <p className="text-gray-600">
+                    Skip third-party recruiters and connect directly with professionals.
+                  </p>
+                </div>
               </CardContent>
             </Card>
             
-            <Card className="border-transparent hover:shadow-lg transition-all h-full">
-              <CardContent className="p-4 flex flex-col items-center text-center h-full">
-                <div className="bg-primary/10 p-3 rounded-lg w-12 h-12 flex items-center justify-center mb-3">
+            <Card className="border-transparent hover:shadow-lg transition-all">
+              <CardContent className="p-4 flex items-center">
+                <div className="bg-primary/10 p-3 rounded-lg w-12 h-12 flex items-center justify-center mr-4">
+                  <Smile className="h-5 w-5 text-primary" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-semibold mb-1">Fast Process, Best Results</h3>
+                  <p className="text-gray-600">
+                    Our streamlined approach ensures quicker placements with better outcomes.
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+            
+            <Card className="border-transparent hover:shadow-lg transition-all">
+              <CardContent className="p-4 flex items-center">
+                <div className="bg-primary/10 p-3 rounded-lg w-12 h-12 flex items-center justify-center mr-4">
                   <Users className="h-5 w-5 text-primary" />
                 </div>
-                <h3 className="text-base font-semibold mb-2">Verified Profiles</h3>
-                <p className="text-sm text-gray-600">
-                  Pre-screened candidates ready.
-                </p>
-              </CardContent>
-            </Card>
-            
-            <Card className="border-transparent hover:shadow-lg transition-all h-full">
-              <CardContent className="p-4 flex flex-col items-center text-center h-full">
-                <div className="bg-primary/10 p-3 rounded-lg w-12 h-12 flex items-center justify-center mb-3">
-                  <FileCheck className="h-5 w-5 text-primary" />
+                <div>
+                  <h3 className="text-xl font-semibold mb-1">Verified Profiles</h3>
+                  <p className="text-gray-600">
+                    All our professionals are pre-screened and verified for quality assurance.
+                  </p>
                 </div>
-                <h3 className="text-base font-semibold mb-2">Transparent Process</h3>
-                <p className="text-sm text-gray-600">
-                  Real-time status updates.
-                </p>
               </CardContent>
             </Card>
             
-            <Card className="border-transparent hover:shadow-lg transition-all h-full">
-              <CardContent className="p-4 flex flex-col items-center text-center h-full">
-                <div className="bg-primary/10 p-3 rounded-lg w-12 h-12 flex items-center justify-center mb-3">
+            <Card className="border-transparent hover:shadow-lg transition-all">
+              <CardContent className="p-4 flex items-center">
+                <div className="bg-primary/10 p-3 rounded-lg w-12 h-12 flex items-center justify-center mr-4">
                   <Clock className="h-5 w-5 text-primary" />
                 </div>
-                <h3 className="text-base font-semibold mb-2">Faster Placements</h3>
-                <p className="text-sm text-gray-600">
-                  Less admin work needed.
-                </p>
+                <div>
+                  <h3 className="text-xl font-semibold mb-1">Transparent Process</h3>
+                  <p className="text-gray-600">
+                    Track application status in real-time with our transparent process.
+                  </p>
+                </div>
               </CardContent>
             </Card>
           </div>

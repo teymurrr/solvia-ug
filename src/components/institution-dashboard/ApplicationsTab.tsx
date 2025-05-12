@@ -312,4 +312,18 @@ const ApplicationsTab: React.FC<ApplicationsTabProps> = ({
   );
 };
 
+// Add a default export with empty array fallbacks for required props
+ApplicationsTab.defaultProps = {
+  applications: [],
+  filteredApplications: [],
+  searchQuery: '',
+  onSearchQueryChange: () => {},
+  onSearch: () => {},
+  filters: {
+    status: 'all_statuses',
+    date: 'all_time'
+  },
+  onFilterChange: () => {}
+};
+
 export default ApplicationsTab;
