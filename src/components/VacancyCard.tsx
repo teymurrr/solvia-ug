@@ -1,14 +1,16 @@
+
 import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { useNavigate } from 'react-router-dom';
 import { Badge } from '@/components/ui/badge';
-import { BookmarkIcon } from '@radix-ui/react-icons';
+import { BookmarkCheck } from 'lucide-react';
 import { Building2, MapPin, Calendar } from 'lucide-react'; 
 import { cn } from '@/lib/utils';
 import { Button } from './ui/button';
 import VacancyFooter from './vacancy/VacancyFooter';
 import { useLanguage } from '@/hooks/useLanguage';
 import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/contexts/AuthContext';
 
 export interface VacancyCardProps {
   id: string;
@@ -82,6 +84,7 @@ const VacancyCard: React.FC<VacancyCardProps> = ({
   const { t } = useLanguage();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { session } = useAuth();
   
   const handleSaveClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -132,9 +135,9 @@ const VacancyCard: React.FC<VacancyCardProps> = ({
                 onClick={handleSaveClick}
               >
                 {isSaved ? (
-                  <BookmarkIcon className="h-5 w-5 text-primary" />
+                  <BookmarkCheck className="h-5 w-5 text-red-500" />
                 ) : (
-                  <BookmarkIcon className="h-5 w-5" />
+                  <BookmarkCheck className="h-5 w-5 text-gray-400 hover:text-red-500" />
                 )}
               </Button>
             )}
@@ -214,7 +217,7 @@ const VacancyCard: React.FC<VacancyCardProps> = ({
               id={id}
               isLandingPageCard={true}
               fromLandingPage={true}
-              isLoggedIn={false}
+              isLoggedIn={!!session}
               isApplied={isApplied}
             />
           </div>

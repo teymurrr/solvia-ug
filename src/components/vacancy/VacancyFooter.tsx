@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { FileCheck } from 'lucide-react';
+import useDashboard from '@/components/professional-dashboard/useDashboard';
 
 interface VacancyFooterProps {
   id: string;
@@ -34,8 +35,10 @@ const VacancyFooter: React.FC<VacancyFooterProps> = ({
 }) => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  // Import apply function from useDashboard
+  const { applyToVacancy } = useDashboard();
 
-  const handleApply = () => {
+  const handleApply = async () => {
     // If already applied, don't do anything
     if (isApplied) {
       toast({
@@ -60,16 +63,29 @@ const VacancyFooter: React.FC<VacancyFooterProps> = ({
       // Open external application link in a new tab
       window.open(applicationLink, '_blank');
     } else {
-      // Navigate to internal application page with state to track origin
-      navigate(`/vacancies/${id}/apply`, {
-        state: { 
-          fromDashboard,
-          fromLandingPage,
-          searchQuery,
-          currentPage,
-          selectedFilters
-        }
-      });
+      // Try to apply directly if logged in
+      const success = await applyToVacancy(id);
+      
+      if (success) {
+        // If successfully applied, show toast and stay on page
+        navigate(`/professional-dashboard`, {
+          state: { 
+            activeTab: 'saved', 
+            applicationSubmitted: true 
+          }
+        });
+      } else {
+        // Navigate to internal application page with state to track origin
+        navigate(`/vacancies/${id}/apply`, {
+          state: { 
+            fromDashboard,
+            fromLandingPage,
+            searchQuery,
+            currentPage,
+            selectedFilters
+          }
+        });
+      }
     }
   };
 
