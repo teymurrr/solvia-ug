@@ -22,7 +22,7 @@ const ProfessionalsSection: React.FC<ProfessionalsSectionProps> = ({ professiona
   return (
     <section className="py-12 bg-white">
       <div className="container mx-auto px-4">
-        <div className="space-y-6 mb-8">
+        <div className="space-y-6 mb-8 text-center">
           <h2 className="text-[42px] font-bold text-gray-900 leading-tight">
             {title}
           </h2>
@@ -41,7 +41,7 @@ const ProfessionalsSection: React.FC<ProfessionalsSectionProps> = ({ professiona
           ))}
         </div>
         
-        <div className="flex justify-end">
+        <div className="flex justify-center">
           <Button variant="outline" asChild className="group border-primary text-primary hover:bg-primary/10">
             <Link to="/signup/institution" className="flex items-center">
               {viewMore}

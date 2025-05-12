@@ -11,7 +11,7 @@ const InsightsSection = () => {
     <section className="py-16 bg-gradient-to-br from-gray-50 via-white to-gray-50">
       <div className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto">
-          <div className="space-y-6 mb-8">
+          <div className="space-y-6 mb-8 text-center">
             <h2 className="text-[42px] font-bold text-gray-900 leading-tight">
               Solvia Insights
             </h2>
@@ -98,7 +98,7 @@ const InsightsSection = () => {
             </Card>
           </div>
           
-          <div className="flex justify-end">
+          <div className="flex justify-center">
             <Button variant="outline" asChild className="group border-primary text-primary hover:bg-primary/10">
               <Link to="/insights" className="flex items-center">
                 View More

@@ -20,9 +20,9 @@ const Index = () => {
         <VacanciesSection vacancies={featuredVacancies} />
         <ProfessionalsSection professionals={featuredProfessionals} />
         <TimelineSection />
-        <InsightsSection />
         <LearningSection />
         <CTASection />
+        <InsightsSection />
       </div>
     </MainLayout>
   );
