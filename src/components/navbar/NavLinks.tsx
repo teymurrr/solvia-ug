@@ -1,6 +1,7 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Home, Heart, BarChart, LayoutDashboard } from 'lucide-react';
+import { Home, Heart, BarChart, LayoutDashboard, BookOpen } from 'lucide-react';
 
 interface NavLinksProps {
   isLoggedIn: boolean;
