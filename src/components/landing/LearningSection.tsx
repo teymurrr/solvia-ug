@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { BookOpen, GraduationCap, Globe, Clock, Lightbulb } from 'lucide-react';
+import { BookOpen, GraduationCap, Globe, Clock } from 'lucide-react';
 import { useProtectedAction } from '@/hooks/useProtectedAction';
 import { useLanguage } from '@/hooks/useLanguage';
 
@@ -38,10 +38,11 @@ const LearningSection = () => {
     <section className="py-16 bg-white">
       <div className="container mx-auto px-4">
         <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-12">
-            <Lightbulb className="h-[30px] w-[30px] text-[#006ae6] mx-auto mb-4" />
-            <h2 className="text-[30px] font-bold text-black">{title}</h2>
-            <p className="text-lg text-muted-foreground">
+          <div className="space-y-6 mb-12">
+            <h2 className="text-[42px] font-bold text-gray-900 leading-tight">
+              {title}
+            </h2>
+            <p className="text-[20px] text-gray-600">
               {subtitle}
             </p>
           </div>
@@ -91,7 +92,7 @@ const LearningSection = () => {
               </CardContent>
             </Card>
           </div>
-          <div className="text-center">
+          <div className="text-left">
             <Button 
               size="lg" 
               asChild 

@@ -53,13 +53,13 @@ const TimelineSection = () => {
   ];
 
   return (
-    <section className="py-8 bg-white">
+    <section className="py-12 bg-white">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-8">
-          <h2 className="text-[30px] font-bold text-black">
+        <div className="space-y-6 mb-8">
+          <h2 className="text-[42px] font-bold text-gray-900 leading-tight">
             {t.journey.title}
           </h2>
-          <p className="text-base text-muted-foreground mt-3 mb-4">
+          <p className="text-[20px] text-gray-600">
             {t.journey.subtitle}
           </p>
         </div>

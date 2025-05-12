@@ -184,7 +184,28 @@ const InstitutionDashboard = () => {
     setVacancyFormOpen(true);
   };
 
-  // Create empty handlers for the talents tab vacancies
+  // Mock data for the ApplicationsTab
+  const [applicationsSearchQuery, setApplicationsSearchQuery] = useState('');
+  const [applications, setApplications] = useState([]);
+  const [filteredApplications, setFilteredApplications] = useState([]);
+  const [applicationsFilters, setApplicationsFilters] = useState({
+    status: 'all_statuses',
+    date: 'all_time'
+  });
+
+  const handleApplicationsSearch = () => {
+    // Mock implementation
+    console.log("Searching applications with query:", applicationsSearchQuery);
+    setFilteredApplications(applications);
+  };
+
+  const handleApplicationsFilterChange = (filterName: string, value: string) => {
+    setApplicationsFilters(prev => ({
+      ...prev,
+      [filterName]: value
+    }));
+  };
+
   const handleEmptyAction = () => {
     // Empty function - no action needed for display-only vacancies
     console.log("This action is not available for sample vacancies");
@@ -231,7 +252,18 @@ const InstitutionDashboard = () => {
             </TabsContent>
             
             <TabsContent value="applications" className="space-y-6">
-              <ApplicationsTab />
+              <ApplicationsTab 
+                applications={applications}
+                filteredApplications={filteredApplications}
+                loading={false}
+                error={null}
+                searchQuery={applicationsSearchQuery}
+                onSearchQueryChange={(e) => setApplicationsSearchQuery(e.target.value)}
+                onSearch={handleApplicationsSearch}
+                filters={applicationsFilters}
+                onFilterChange={handleApplicationsFilterChange}
+                refreshApplications={() => console.log("Refreshing applications")}
+              />
             </TabsContent>
             
             <TabsContent value="talents" className="space-y-6">

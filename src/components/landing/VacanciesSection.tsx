@@ -2,7 +2,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
-import { Briefcase, ArrowRight } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import VacancyCard from '@/components/VacancyCard';
 import { useLanguage } from '@/hooks/useLanguage';
 
@@ -19,12 +19,13 @@ const VacanciesSection: React.FC<VacanciesSectionProps> = ({ vacancies }) => {
   const viewMore = t?.vacancies?.viewMore || "View More";
   
   return (
-    <section className="py-8 bg-white">
+    <section className="py-12 bg-white">
       <div className="container mx-auto px-4">
-        <div className="text-center">
-          <Briefcase className="h-[30px] w-[30px] text-[#006ae6] mx-auto mb-4" />
-          <h2 className="text-[30px] font-bold text-black">{title}</h2>
-          <p className="text-lg text-muted-foreground mt-4 mb-6">
+        <div className="space-y-6">
+          <h2 className="text-[42px] font-bold text-gray-900 leading-tight">
+            {title}
+          </h2>
+          <p className="text-[20px] text-gray-600">
             {subtitle}
           </p>
           <Button variant="ghost" asChild className="group">
