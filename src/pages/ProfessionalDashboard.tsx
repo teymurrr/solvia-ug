@@ -338,6 +338,7 @@ const ProfessionalDashboard: React.FC = () => {
                             searchQuery={searchQuery}
                             currentPage={currentPage}
                             selectedFilters={selectedFilters}
+                            fromDashboard={true} // Add this prop to indicate card is from dashboard
                           />
                         ))}
                       </div>

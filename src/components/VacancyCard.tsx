@@ -37,6 +37,7 @@ export interface VacancyCardProps {
   onSaveToggle?: (id: string) => void;
   isLandingPageCard?: boolean;
   fromLandingPage?: boolean;
+  fromDashboard?: boolean; // Added prop to track if card is from dashboard
   showDescription?: boolean;
   showRequirements?: boolean;
   // Adding the missing props that were causing errors
@@ -70,6 +71,7 @@ const VacancyCard: React.FC<VacancyCardProps> = ({
   onSaveToggle,
   isLandingPageCard = false,
   fromLandingPage = false,
+  fromDashboard = false, // Default to false if not provided
   showDescription = false,
   showRequirements = false,
   description,
@@ -103,8 +105,20 @@ const VacancyCard: React.FC<VacancyCardProps> = ({
       return;
     }
     
-    // Otherwise navigate to vacancy details
-    navigate(`/vacancies/${id}`);
+    // Pass fromDashboard state if navigating from dashboard
+    if (fromDashboard) {
+      navigate(`/vacancies/${id}`, {
+        state: {
+          fromDashboard: true,
+          searchQuery,
+          currentPage,
+          selectedFilters
+        }
+      });
+    } else {
+      // Otherwise navigate to vacancy details normally
+      navigate(`/vacancies/${id}`);
+    }
   };
 
   return (
