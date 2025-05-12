@@ -3,7 +3,6 @@ import MainLayout from '@/components/MainLayout';
 import HeroSection from '@/components/employer-landing/HeroSection';
 import TimelineSection from '@/components/employer-landing/TimelineSection';
 import WhySolviaSection from '@/components/employer-landing/WhySolviaSection';
-import InsightsSection from '@/components/employer-landing/InsightsSection';
 import CTASection from '@/components/employer-landing/CTASection';
 
 const EmployersLanding = () => {
@@ -17,7 +16,6 @@ const EmployersLanding = () => {
         <HeroSection />
         <TimelineSection />
         <WhySolviaSection />
-        <InsightsSection />
         <CTASection />
       </div>
     </MainLayout>

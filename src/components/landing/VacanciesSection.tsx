@@ -21,22 +21,16 @@ const VacanciesSection: React.FC<VacanciesSectionProps> = ({ vacancies }) => {
   return (
     <section className="py-12 bg-white">
       <div className="container mx-auto px-4">
-        <div className="space-y-6">
+        <div className="space-y-6 mb-8">
           <h2 className="text-[42px] font-bold text-gray-900 leading-tight">
             {title}
           </h2>
           <p className="text-[20px] text-gray-600">
             {subtitle}
           </p>
-          <Button variant="ghost" asChild className="group">
-            <Link to="/signup/professional" className="flex items-center">
-              {viewMore}
-              <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-            </Link>
-          </Button>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
           {vacancies.map((vacancy) => (
             <VacancyCard
               key={vacancy.id}
@@ -49,6 +43,15 @@ const VacanciesSection: React.FC<VacanciesSectionProps> = ({ vacancies }) => {
               showRequirements={true}
             />
           ))}
+        </div>
+        
+        <div className="flex justify-end">
+          <Button variant="outline" asChild className="group border-primary text-primary hover:bg-primary/10">
+            <Link to="/signup/professional" className="flex items-center">
+              {viewMore}
+              <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+            </Link>
+          </Button>
         </div>
       </div>
     </section>

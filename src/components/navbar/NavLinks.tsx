@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { User, Briefcase, HelpCircle, LayoutDashboard, BookOpen, BarChart } from 'lucide-react';
+import { Home, Briefcase, HelpCircle, LayoutDashboard, BookOpen, BarChart } from 'lucide-react';
 
 interface NavLinksProps {
   isLoggedIn: boolean;
@@ -17,9 +17,9 @@ const NavLinks: React.FC<NavLinksProps> = ({ isLoggedIn, userType }) => {
           className="flex flex-col items-center group"
         >
           <div className="p-2 rounded-full group-hover:bg-gray-100 transition-colors">
-            <User className="h-5 w-5 text-gray-600 group-hover:text-gray-900" />
+            <Home className="h-5 w-5 text-gray-600 group-hover:text-gray-900" />
           </div>
-          <span className="text-sm text-gray-600 group-hover:text-gray-900">For Talents</span>
+          <span className="text-sm text-gray-600 group-hover:text-gray-900">Home</span>
         </Link>
         
         <Link

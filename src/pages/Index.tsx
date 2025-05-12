@@ -8,6 +8,7 @@ import WhySolviaSection from '@/components/landing/WhySolviaSection';
 import LearningSection from '@/components/landing/LearningSection';
 import CTASection from '@/components/landing/CTASection';
 import ProfessionalsSection from '@/components/landing/ProfessionalsSection';
+import InsightsSection from '@/components/landing/InsightsSection';
 import { featuredVacancies, featuredProfessionals } from '@/data/landingPageData';
 
 const Index = () => {
@@ -19,6 +20,7 @@ const Index = () => {
         <VacanciesSection vacancies={featuredVacancies} />
         <ProfessionalsSection professionals={featuredProfessionals} />
         <TimelineSection />
+        <InsightsSection />
         <LearningSection />
         <CTASection />
       </div>

@@ -2,7 +2,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Badge } from '@/components/ui/badge';
-import { User, Briefcase, HelpCircle, LayoutDashboard, BookOpen, BarChart } from 'lucide-react';
+import { Home, Briefcase, HelpCircle, LayoutDashboard, BookOpen, BarChart } from 'lucide-react';
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -34,8 +34,8 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
               className="flex items-center space-x-3 px-4 py-2 hover:bg-gray-50"
               onClick={onClose}
             >
-              <User className="h-5 w-5 text-gray-600" />
-              <span>For Talents</span>
+              <Home className="h-5 w-5 text-gray-600" />
+              <span>Home</span>
             </Link>
             
             <Link

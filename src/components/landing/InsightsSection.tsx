@@ -1,22 +1,26 @@
+
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Lightbulb, Heart, ChartBar, Users, Network } from 'lucide-react';
+import { Button } from "@/components/ui/button";
+import { ArrowRight, Heart, ChartBar, Users, Network } from 'lucide-react';
 
 const InsightsSection = () => {
   return (
     <section className="py-16 bg-gradient-to-br from-gray-50 via-white to-gray-50">
       <div className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <Lightbulb className="h-12 w-12 text-[#0EA5E9] mx-auto mb-4" />
-            <h2 className="text-[30px] font-bold text-black mb-4">Solvia Insights</h2>
-            <p className="text-lg text-muted-foreground">
+          <div className="space-y-6 mb-8">
+            <h2 className="text-[42px] font-bold text-gray-900 leading-tight">
+              Solvia Insights
+            </h2>
+            <p className="text-[20px] text-gray-600">
               Comprehensive solutions for healthcare institutions
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
             <Card className="relative overflow-hidden">
               <div className="absolute top-4 right-4">
                 <Badge variant="comingSoon">Coming Soon</Badge>
@@ -92,6 +96,15 @@ const InsightsSection = () => {
                 </p>
               </CardContent>
             </Card>
+          </div>
+          
+          <div className="flex justify-end">
+            <Button variant="outline" asChild className="group border-primary text-primary hover:bg-primary/10">
+              <Link to="/insights" className="flex items-center">
+                View More
+                <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+              </Link>
+            </Button>
           </div>
         </div>
       </div>

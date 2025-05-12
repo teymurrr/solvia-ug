@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Users, ArrowRight } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Professional } from '@/types/landing';
 import ProfessionalCardLanding from './ProfessionalCardLanding';
@@ -22,20 +22,16 @@ const ProfessionalsSection: React.FC<ProfessionalsSectionProps> = ({ professiona
   return (
     <section className="py-12 bg-white">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
-          <Users className="h-[30px] w-[30px] text-[#006ae6] mx-auto mb-4" />
-          <h2 className="text-[30px] font-bold text-black">{title}</h2>
-          <p className="text-lg text-muted-foreground mt-4 mb-6">
+        <div className="space-y-6 mb-8">
+          <h2 className="text-[42px] font-bold text-gray-900 leading-tight">
+            {title}
+          </h2>
+          <p className="text-[20px] text-gray-600">
             {subtitle}
           </p>
-          <Button variant="ghost" asChild className="group mx-auto">
-            <Link to="/signup/institution" className="flex items-center">
-              {viewMore}
-              <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-            </Link>
-          </Button>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
           {professionals.slice(0, 4).map((professional) => (
             <ProfessionalCardLanding
               key={professional.id}
@@ -43,6 +39,15 @@ const ProfessionalsSection: React.FC<ProfessionalsSectionProps> = ({ professiona
               className="border-transparent hover:shadow-lg hover:scale-[1.02] transition-all duration-300"
             />
           ))}
+        </div>
+        
+        <div className="flex justify-end">
+          <Button variant="outline" asChild className="group border-primary text-primary hover:bg-primary/10">
+            <Link to="/signup/institution" className="flex items-center">
+              {viewMore}
+              <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+            </Link>
+          </Button>
         </div>
       </div>
     </section>
