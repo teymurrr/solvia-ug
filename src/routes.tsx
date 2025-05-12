@@ -1,4 +1,3 @@
-
 import { lazy, Suspense, useState, useEffect } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import ProtectedRoute from "@/components/ProtectedRoute";
@@ -37,8 +36,7 @@ const Professionals = lazy(() => import("@/pages/Professionals"));
 const Institutions = lazy(() => import("@/pages/Institutions"));
 const NotFound = lazy(() => import("@/pages/NotFound"));
 
-// Vacancy related pages
-const Vacancies = lazy(() => import("@/pages/Vacancies"));
+// Vacancy related pages (removed Vacancies import)
 const VacancyDetail = lazy(() => import("@/pages/VacancyDetail"));
 const VacancyApply = lazy(() => import("@/pages/VacancyApply"));
 
@@ -98,8 +96,7 @@ const AppRoutes = () => {
         
         <Route path="/learning" element={<SolviaLearning />} />
 
-        {/* Vacancy routes */}
-        <Route path="/vacancies" element={<Vacancies />} />
+        {/* Vacancy routes - removed Vacancies route */}
         <Route path="/vacancies/:id" element={<VacancyDetail />} />
         <Route
           path="/vacancies/:id/apply"

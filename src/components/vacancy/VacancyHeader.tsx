@@ -22,6 +22,15 @@ const VacancyHeader: React.FC<VacancyHeaderProps> = ({
   isSaved = false,
   onSaveToggle,
 }) => {
+  // Create a handler that accepts the click event but calls onSaveToggle with the id
+  const handleSaveToggle = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (onSaveToggle) {
+      onSaveToggle(id);
+    }
+  };
+
   return (
     <div className="flex justify-between items-start">
       <div>
@@ -42,10 +51,10 @@ const VacancyHeader: React.FC<VacancyHeaderProps> = ({
           size="icon"
           aria-label={isSaved ? "Remove from saved" : "Save vacancy"}
           className="h-8 w-8"
-          onClick={onSaveToggle}
+          onClick={handleSaveToggle}
         >
           {isSaved ? (
-            <BookmarkCheck className="h-5 w-5 text-red-500" />
+            <BookmarkCheck className="h-5 w-5 text-red-500 fill-red-500" />
           ) : (
             <BookmarkCheck className="h-5 w-5 text-gray-400 hover:text-red-500" />
           )}
