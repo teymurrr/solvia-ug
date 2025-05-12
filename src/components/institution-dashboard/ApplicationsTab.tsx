@@ -1,359 +1,427 @@
 
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent } from '@/components/ui/card';
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
-import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Input } from '@/components/ui/input';
 import { FileText, Mail, ExternalLink, Clock, CheckCircle, XCircle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { getInitials } from '@/lib/utils';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useLanguage } from '@/hooks/useLanguage';
 
-// Define proper interfaces for application objects
-interface Applicant {
+// Define Application type
+type Application = {
   id: string;
-  first_name: string;
-  last_name: string;
-  profession?: string;
-  specialty?: string;
-  profile_image?: string;
-}
-
-interface Application {
-  id: string;
+  user_id: string;
   vacancy_id: string;
-  vacancy_title: string;
-  status: 'pending' | 'accepted' | 'rejected';
-  application_date: string;
-  applicant: Applicant;
-  application_data?: any;
-}
+  status: 'pending' | 'reviewed' | 'shortlisted' | 'rejected' | 'hired';
+  created_at: string;
+  // Join data
+  vacancy?: {
+    title: string;
+    institution: string;
+    department: string;
+  };
+  user?: {
+    id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    avatar_url?: string;
+    profession?: string;
+    specialty?: string;
+  };
+  // UI state
+  isExpanded?: boolean;
+};
 
-const ApplicationsTab = () => {
-  const { session, user } = useAuth();
-  const [applications, setApplications] = useState<Application[]>([]);
-  const [activeTab, setActiveTab] = useState<string>('all');
-  const [loading, setLoading] = useState(true);
+const ApplicationsTab: React.FC = () => {
+  const { user } = useAuth();
   const { toast } = useToast();
   const { t } = useLanguage();
-
-  // Fetch applications for the institution
-  useEffect(() => {
-    const fetchApplications = async () => {
-      if (!user?.id) return;
-      
-      try {
-        setLoading(true);
-        
-        // Get vacancies for this institution
-        const { data: vacancies, error: vacanciesError } = await supabase
-          .from('vacancies')
-          .select('id, title')
-          .eq('institution_id', user.id);
-          
-        if (vacanciesError) throw vacanciesError;
-        
-        if (!vacancies || vacancies.length === 0) {
-          setApplications([]);
-          return;
-        }
-        
-        // Get all applications for these vacancies
-        const vacancyIds = vacancies.map(v => v.id);
-        
-        const { data: applicationsData, error: applicationsError } = await supabase
-          .from('applied_vacancies')
-          .select(`
-            id,
-            vacancy_id,
-            user_id,
-            status,
-            application_date,
-            application_data
-          `)
-          .in('vacancy_id', vacancyIds);
-          
-        if (applicationsError) throw applicationsError;
-        
-        if (!applicationsData || applicationsData.length === 0) {
-          setApplications([]);
-          setLoading(false);
-          return;
-        }
-        
-        // Get professional profiles for each applicant
-        // Create a map of vacancy titles
-        const vacancyTitleMap = vacancies.reduce((map: Record<string, string>, vacancy) => {
-          map[vacancy.id] = vacancy.title;
-          return map;
-        }, {});
-        
-        // Get user profiles
-        const userIds = [...new Set(applicationsData.map(app => app.user_id))];
-        
-        const { data: profiles, error: profilesError } = await supabase
-          .from('professional_profiles')
-          .select(`
-            id,
-            first_name,
-            last_name,
-            profession,
-            specialty,
-            profile_image
-          `)
-          .in('id', userIds);
-          
-        if (profilesError) throw profilesError;
-        
-        // Create a map of profiles
-        const profileMap = profiles ? profiles.reduce((map: Record<string, any>, profile) => {
-          map[profile.id] = profile;
-          return map;
-        }, {}) : {};
-        
-        // Combine all data
-        const formattedApplications = applicationsData.map(app => {
-          // Explicitly define the return type to avoid deep instantiation
-          const formattedApp: Application = {
-            id: app.id,
-            vacancy_id: app.vacancy_id,
-            vacancy_title: vacancyTitleMap[app.vacancy_id] || 'Unknown Vacancy',
-            status: app.status as 'pending' | 'accepted' | 'rejected',
-            application_date: app.application_date,
-            applicant: profileMap[app.user_id] || { 
-              id: app.user_id,
-              first_name: 'Unknown',
-              last_name: 'Applicant'
-            },
-            application_data: app.application_data
-          };
-          return formattedApp;
-        });
-        
-        setApplications(formattedApplications);
-        
-      } catch (error) {
-        console.error('Error loading applications:', error);
-        toast({
-          title: t?.common?.error || 'Error',
-          description: t?.dashboard?.applications?.errorLoading || 'Could not load applications',
-          variant: 'destructive',
-        });
-      } finally {
-        setLoading(false);
-      }
-    };
+  const [applications, setApplications] = useState<Application[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [statusFilter, setStatusFilter] = useState<string>('all');
+  
+  // TODO: These are missing in the translations, using fallbacks for now
+  const applicationLabels = {
+    title: 'Applications',
+    noApplications: 'No applications found',
+    noApplicationsDesc: 'You will see applications to your vacancies here.',
+    loading: 'Loading applications...',
+    filter: {
+      all: 'All Applications',
+      pending: 'Pending',
+      reviewed: 'Reviewed',
+      shortlisted: 'Shortlisted',
+      rejected: 'Rejected',
+      hired: 'Hired'
+    },
+    search: 'Search applications...',
+    applicant: 'Applicant',
+    vacancy: 'Vacancy',
+    status: 'Status',
+    date: 'Application Date',
+    actions: 'Actions',
+    viewProfile: 'View Profile',
+    viewResume: 'View Resume',
+    email: 'Email',
+    reviewed: 'Mark as Reviewed',
+    shortlist: 'Shortlist',
+    reject: 'Reject',
+    hire: 'Hire'
+  };
+  
+  const fetchApplications = async () => {
+    if (!user?.id) return;
     
-    fetchApplications();
-  }, [user, toast, t]);
-
-  // Filter applications based on active tab
-  const filteredApplications = applications.filter(app => {
-    if (activeTab === 'all') return true;
-    return app.status === activeTab;
-  });
-
-  // Handle application status update
-  const updateApplicationStatus = async (applicationId: string, newStatus: 'accepted' | 'rejected') => {
     try {
-      const { error } = await supabase
+      setLoading(true);
+      
+      // First, get vacancies from this institution
+      const { data: vacancyData, error: vacancyError } = await supabase
+        .from('vacancies')
+        .select('id, title, institution, department')
+        .eq('institution_id', user.id);
+      
+      if (vacancyError) throw vacancyError;
+      
+      if (!vacancyData || vacancyData.length === 0) {
+        setApplications([]);
+        return;
+      }
+      
+      const vacancyIds = vacancyData.map(v => v.id);
+      
+      // Then get applications for these vacancies
+      const { data, error } = await supabase
         .from('applied_vacancies')
-        .update({ status: newStatus })
-        .eq('id', applicationId);
-        
+        .select(`
+          id,
+          user_id,
+          vacancy_id,
+          status,
+          created_at,
+          vacancy:vacancies(title, institution, department),
+          user:user_id(id, firstName, lastName, email, avatar_url, profession, specialty)
+        `)
+        .in('vacancy_id', vacancyIds)
+        .order('created_at', { ascending: false });
+      
       if (error) throw error;
       
-      // Update local state
-      setApplications(prev => prev.map(app => 
-        app.id === applicationId ? { ...app, status: newStatus } : app
-      ));
+      // Format the data to match our Application type
+      const formattedApplications: Application[] = data.map((app) => ({
+        id: app.id,
+        user_id: app.user_id,
+        vacancy_id: app.vacancy_id,
+        status: app.status || 'pending',
+        created_at: app.created_at,
+        vacancy: app.vacancy,
+        user: app.user,
+        isExpanded: false
+      }));
       
-      toast({
-        title: 'Status Updated',
-        description: `Application has been ${newStatus}`,
-      });
+      setApplications(formattedApplications);
+      console.log("Applications loaded:", formattedApplications);
       
     } catch (error) {
-      console.error('Error updating application status:', error);
+      console.error('Error fetching applications:', error);
       toast({
-        title: 'Error',
-        description: 'Could not update application status',
-        variant: 'destructive',
+        title: "Error loading applications",
+        description: "There was a problem loading your applications.",
+        variant: "destructive"
       });
-    }
-  };
-
-  // Get status badge
-  const getStatusBadge = (status: string) => {
-    switch (status) {
-      case 'pending':
-        return <Badge variant="outline" className="bg-yellow-50 text-yellow-700 border-yellow-200 flex items-center gap-1"><Clock className="h-3 w-3" /> {t?.dashboard?.applications?.pending || 'Pending'}</Badge>;
-      case 'accepted':
-        return <Badge className="bg-green-50 text-green-700 border-green-200 flex items-center gap-1"><CheckCircle className="h-3 w-3" /> {t?.dashboard?.applications?.accepted || 'Accepted'}</Badge>;
-      case 'rejected':
-        return <Badge variant="outline" className="bg-red-50 text-red-700 border-red-200 flex items-center gap-1"><XCircle className="h-3 w-3" /> {t?.dashboard?.applications?.rejected || 'Rejected'}</Badge>;
-      default:
-        return <Badge variant="outline">{status}</Badge>;
+    } finally {
+      setLoading(false);
     }
   };
   
-  // Loading skeleton
+  useEffect(() => {
+    fetchApplications();
+  }, [user?.id]);
+  
+  const updateApplicationStatus = async (applicationId: string, newStatus: Application['status']) => {
+    try {
+      const { data, error } = await supabase
+        .from('applied_vacancies')
+        .update({ status: newStatus })
+        .eq('id', applicationId)
+        .select()
+        .single();
+        
+      if (error) throw error;
+      
+      setApplications(apps => 
+        apps.map(app => 
+          app.id === applicationId ? { ...app, status: newStatus } : app
+        )
+      );
+      
+      toast({
+        title: "Status updated",
+        description: `Application marked as ${newStatus}`,
+      });
+      
+      return true;
+    } catch (error) {
+      console.error('Error updating application status:', error);
+      toast({
+        title: "Error updating status",
+        description: "There was a problem updating the application status.",
+        variant: "destructive"
+      });
+      return false;
+    }
+  };
+  
+  const toggleExpanded = (applicationId: string) => {
+    setApplications(apps => 
+      apps.map(app => 
+        app.id === applicationId ? { ...app, isExpanded: !app.isExpanded } : app
+      )
+    );
+  };
+  
+  const getStatusBadgeProps = (status: Application['status']) => {
+    switch(status) {
+      case 'pending':
+        return { className: "bg-yellow-100 text-yellow-800 hover:bg-yellow-200", icon: <Clock className="h-3 w-3 mr-1" /> };
+      case 'reviewed':
+        return { className: "bg-blue-100 text-blue-800 hover:bg-blue-200", icon: <FileText className="h-3 w-3 mr-1" /> };
+      case 'shortlisted':
+        return { className: "bg-indigo-100 text-indigo-800 hover:bg-indigo-200", icon: <FileText className="h-3 w-3 mr-1" /> };
+      case 'rejected':
+        return { className: "bg-red-100 text-red-800 hover:bg-red-200", icon: <XCircle className="h-3 w-3 mr-1" /> };
+      case 'hired':
+        return { className: "bg-green-100 text-green-800 hover:bg-green-200", icon: <CheckCircle className="h-3 w-3 mr-1" /> };
+      default:
+        return { className: "bg-gray-100 text-gray-800 hover:bg-gray-200", icon: <Clock className="h-3 w-3 mr-1" /> };
+    }
+  };
+  
+  // Filter applications based on search term and status filter
+  const filteredApplications = applications.filter(app => {
+    const matchesSearch = 
+      searchTerm === '' || 
+      app.user?.firstName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      app.user?.lastName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      app.vacancy?.title?.toLowerCase().includes(searchTerm.toLowerCase());
+      
+    const matchesFilter = statusFilter === 'all' || app.status === statusFilter;
+    
+    return matchesSearch && matchesFilter;
+  });
+  
   if (loading) {
     return (
-      <div className="space-y-4">
-        <Tabs defaultValue="all">
-          <TabsList>
-            <TabsTrigger value="all"><Skeleton className="h-4 w-16" /></TabsTrigger>
-            <TabsTrigger value="pending"><Skeleton className="h-4 w-16" /></TabsTrigger>
-            <TabsTrigger value="accepted"><Skeleton className="h-4 w-16" /></TabsTrigger>
-            <TabsTrigger value="rejected"><Skeleton className="h-4 w-16" /></TabsTrigger>
-          </TabsList>
-        </Tabs>
-        
-        {[1, 2, 3].map((i) => (
-          <Card key={i} className="overflow-hidden">
-            <CardContent className="p-0">
-              <div className="border-b p-4">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-4">
-                    <Skeleton className="h-10 w-10 rounded-full" />
-                    <div>
-                      <Skeleton className="h-4 w-32 mb-1" />
-                      <Skeleton className="h-3 w-24" />
-                    </div>
-                  </div>
-                  <Skeleton className="h-8 w-20" />
-                </div>
-              </div>
-              <div className="p-4">
-                <Skeleton className="h-4 w-full mb-3" />
-                <Skeleton className="h-4 w-3/4 mb-3" />
-                <div className="flex justify-end mt-4 space-x-2">
-                  <Skeleton className="h-9 w-24" />
-                  <Skeleton className="h-9 w-24" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+      <Card>
+        <CardContent className="p-6">
+          <div className="flex items-center justify-center py-12">
+            <Skeleton className="h-8 w-8 rounded-full" />
+            <Skeleton className="h-6 w-36 ml-3" />
+          </div>
+        </CardContent>
+      </Card>
     );
   }
-
-  // No applications yet
+  
   if (applications.length === 0) {
     return (
-      <div className="text-center py-12 border rounded-lg bg-gray-50">
-        <FileText className="mx-auto h-12 w-12 text-gray-400" />
-        <h3 className="mt-4 text-lg font-medium text-gray-900">
-          {t?.dashboard?.applications?.noApplications || "No applications yet"}
-        </h3>
-        <p className="mt-2 text-sm text-gray-500 max-w-sm mx-auto">
-          {t?.dashboard?.applications?.noApplicationsDesc || "You haven't received any applications for your vacancies yet."}
-        </p>
-      </div>
+      <Card>
+        <CardContent className="p-6">
+          <div className="text-center py-12">
+            <h3 className="text-lg font-medium text-gray-900">
+              {applicationLabels.noApplications}
+            </h3>
+            <p className="mt-2 text-gray-600">
+              {applicationLabels.noApplicationsDesc}
+            </p>
+          </div>
+        </CardContent>
+      </Card>
     );
   }
-
-  // Main content
+  
   return (
-    <div className="space-y-4">
-      <Tabs 
-        defaultValue="all" 
-        value={activeTab} 
-        onValueChange={setActiveTab}
-        className="w-full"
-      >
-        <TabsList>
-          <TabsTrigger value="all">{t?.dashboard?.applications?.all || "All"} ({applications.length})</TabsTrigger>
-          <TabsTrigger value="pending">{t?.dashboard?.applications?.pending || "Pending"} ({applications.filter(a => a.status === 'pending').length})</TabsTrigger>
-          <TabsTrigger value="accepted">{t?.dashboard?.applications?.accepted || "Accepted"} ({applications.filter(a => a.status === 'accepted').length})</TabsTrigger>
-          <TabsTrigger value="rejected">{t?.dashboard?.applications?.rejected || "Rejected"} ({applications.filter(a => a.status === 'rejected').length})</TabsTrigger>
-        </TabsList>
-      </Tabs>
-      
-      {filteredApplications.length === 0 ? (
-        <div className="text-center py-8 border rounded-lg bg-gray-50">
-          <p>{t?.dashboard?.applications?.noApplicationsInCategory || "No applications in this category."}</p>
+    <Card>
+      <CardContent className="p-6">
+        <div className="flex flex-col md:flex-row items-center justify-between mb-6 space-y-4 md:space-y-0">
+          <h2 className="text-2xl font-bold">
+            {applicationLabels.title}
+          </h2>
+          
+          <div className="flex flex-col sm:flex-row w-full md:w-auto space-y-2 sm:space-y-0 sm:space-x-2">
+            <Input
+              placeholder={applicationLabels.search}
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full sm:w-64"
+            />
+            <Select
+              value={statusFilter}
+              onValueChange={setStatusFilter}
+            >
+              <SelectTrigger className="w-full sm:w-40">
+                <SelectValue placeholder={applicationLabels.filter.all} />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">{applicationLabels.filter.all}</SelectItem>
+                <SelectItem value="pending">{applicationLabels.filter.pending}</SelectItem>
+                <SelectItem value="reviewed">{applicationLabels.filter.reviewed}</SelectItem>
+                <SelectItem value="shortlisted">{applicationLabels.filter.shortlisted}</SelectItem>
+                <SelectItem value="rejected">{applicationLabels.filter.rejected}</SelectItem>
+                <SelectItem value="hired">{applicationLabels.filter.hired}</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
         </div>
-      ) : (
-        filteredApplications.map((application) => (
-          <Card key={application.id} className="overflow-hidden">
-            <CardContent className="p-0">
-              <div className="border-b p-4">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-4">
-                    <Avatar>
-                      {application.applicant.profile_image ? (
-                        <AvatarImage src={application.applicant.profile_image} />
-                      ) : (
-                        <AvatarFallback>{getInitials(`${application.applicant.first_name} ${application.applicant.last_name}`)}</AvatarFallback>
-                      )}
-                    </Avatar>
-                    <div>
-                      <h4 className="text-sm font-medium">{application.applicant.first_name} {application.applicant.last_name}</h4>
-                      <p className="text-sm text-muted-foreground">
-                        {application.applicant.profession}{application.applicant.specialty ? `, ${application.applicant.specialty}` : ''}
+        
+        <div className="overflow-auto">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>{applicationLabels.applicant}</TableHead>
+                <TableHead>{applicationLabels.vacancy}</TableHead>
+                <TableHead>{applicationLabels.status}</TableHead>
+                <TableHead>{applicationLabels.date}</TableHead>
+                <TableHead className="text-right">{applicationLabels.actions}</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {filteredApplications.map((application) => (
+                <React.Fragment key={application.id}>
+                  <TableRow 
+                    className="cursor-pointer" 
+                    onClick={() => toggleExpanded(application.id)}
+                  >
+                    <TableCell>
+                      <div className="flex items-center space-x-3">
+                        <Avatar>
+                          <AvatarImage src={application.user?.avatar_url} />
+                          <AvatarFallback>
+                            {application.user ? getInitials(`${application.user.firstName} ${application.user.lastName}`) : '??'}
+                          </AvatarFallback>
+                        </Avatar>
+                        <div>
+                          <p className="font-medium">
+                            {application.user?.firstName} {application.user?.lastName}
+                          </p>
+                          <p className="text-sm text-gray-500">
+                            {application.user?.profession || application.user?.specialty || "Professional"}
+                          </p>
+                        </div>
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <p className="font-medium">{application.vacancy?.title}</p>
+                      <p className="text-sm text-gray-500">
+                        {application.vacancy?.department}
                       </p>
-                    </div>
-                  </div>
-                  {getStatusBadge(application.status)}
-                </div>
-              </div>
-              <div className="p-4">
-                <div className="flex justify-between items-start">
-                  <div>
-                    <h3 className="font-medium">{application.vacancy_title}</h3>
-                    <p className="text-sm text-gray-500">
-                      {t?.dashboard?.applications?.appliedOn || "Applied on"}: {new Date(application.application_date).toLocaleDateString()}
-                    </p>
-                  </div>
+                    </TableCell>
+                    <TableCell>
+                      <Badge className={getStatusBadgeProps(application.status).className}>
+                        {getStatusBadgeProps(application.status).icon}
+                        {application.status.charAt(0).toUpperCase() + application.status.slice(1)}
+                      </Badge>
+                    </TableCell>
+                    <TableCell>
+                      {new Date(application.created_at).toLocaleDateString()}
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          window.open(`/professional-profile/${application.user?.id}`, '_blank');
+                        }}
+                      >
+                        {applicationLabels.viewProfile} <ExternalLink className="ml-1 h-3.5 w-3.5" />
+                      </Button>
+                    </TableCell>
+                  </TableRow>
                   
-                  <div className="flex space-x-2">
-                    <Button size="sm" variant="outline" asChild>
-                      <a href={`mailto:${application.applicant.id}`}>
-                        <Mail className="h-4 w-4 mr-1" />
-                        {t?.common?.contact || "Contact"}
-                      </a>
-                    </Button>
-                    <Button size="sm" variant="outline" asChild>
-                      <a href={`/professionals/${application.applicant.id}`} target="_blank" rel="noopener noreferrer">
-                        <ExternalLink className="h-4 w-4 mr-1" />
-                        {t?.common?.viewProfile || "View Profile"}
-                      </a>
-                    </Button>
-                  </div>
-                </div>
-                
-                {application.status === 'pending' && (
-                  <div className="flex justify-end mt-4 space-x-2">
-                    <Button 
-                      size="sm" 
-                      variant="outline" 
-                      className="border-red-200 text-red-700 hover:bg-red-50"
-                      onClick={() => updateApplicationStatus(application.id, 'rejected')}
-                    >
-                      {t?.dashboard?.applications?.reject || "Reject"}
-                    </Button>
-                    <Button 
-                      size="sm" 
-                      className="bg-green-600 text-white hover:bg-green-700"
-                      onClick={() => updateApplicationStatus(application.id, 'accepted')}
-                    >
-                      {t?.dashboard?.applications?.accept || "Accept"}
-                    </Button>
-                  </div>
-                )}
-              </div>
-            </CardContent>
-          </Card>
-        ))
-      )}
-    </div>
+                  {application.isExpanded && (
+                    <TableRow>
+                      <TableCell colSpan={5} className="bg-gray-50 p-4">
+                        <div className="flex flex-col space-y-4">
+                          <div className="flex flex-wrap gap-2">
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              onClick={() => window.location.href = `mailto:${application.user?.email}`}
+                            >
+                              <Mail className="mr-1 h-4 w-4" />
+                              {applicationLabels.email}
+                            </Button>
+                            
+                            {/* Status update buttons */}
+                            {application.status === 'pending' && (
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                onClick={() => updateApplicationStatus(application.id, 'reviewed')}
+                              >
+                                <FileText className="mr-1 h-4 w-4" />
+                                {applicationLabels.reviewed}
+                              </Button>
+                            )}
+                            
+                            {(application.status === 'pending' || application.status === 'reviewed') && (
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                className="bg-indigo-100 text-indigo-800 hover:bg-indigo-200 border-indigo-200"
+                                onClick={() => updateApplicationStatus(application.id, 'shortlisted')}
+                              >
+                                <CheckCircle className="mr-1 h-4 w-4" />
+                                {applicationLabels.shortlist}
+                              </Button>
+                            )}
+                            
+                            {application.status !== 'rejected' && application.status !== 'hired' && (
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                className="bg-red-100 text-red-800 hover:bg-red-200 border-red-200"
+                                onClick={() => updateApplicationStatus(application.id, 'rejected')}
+                              >
+                                <XCircle className="mr-1 h-4 w-4" />
+                                {applicationLabels.reject}
+                              </Button>
+                            )}
+                            
+                            {application.status === 'shortlisted' && (
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                className="bg-green-100 text-green-800 hover:bg-green-200 border-green-200"
+                                onClick={() => updateApplicationStatus(application.id, 'hired')}
+                              >
+                                <CheckCircle className="mr-1 h-4 w-4" />
+                                {applicationLabels.hire}
+                              </Button>
+                            )}
+                          </div>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </React.Fragment>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
+      </CardContent>
+    </Card>
   );
 };
 
