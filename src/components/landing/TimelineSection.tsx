@@ -55,7 +55,7 @@ const TimelineSection = () => {
   return (
     <section className="py-12 bg-white">
       <div className="container mx-auto px-4">
-        <div className="space-y-6 mb-8">
+        <div className="space-y-6 mb-8 text-center">
           <h2 className="text-[42px] font-bold text-gray-900 leading-tight">
             {t.journey.title}
           </h2>

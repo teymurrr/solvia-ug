@@ -8,7 +8,7 @@ const LearningSection = () => {
   return (
     <section className="py-16 bg-gradient-to-br from-blue-50 to-white">
       <div className="container mx-auto px-4">
-        <div className="space-y-6 mb-8 text-center">
+        <div className="space-y-3 mb-8 text-center">
           <h2 className="text-[42px] font-bold text-gray-900 leading-tight">
             Solvia Learning
           </h2>

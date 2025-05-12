@@ -21,7 +21,7 @@ const VacanciesSection: React.FC<VacanciesSectionProps> = ({ vacancies }) => {
   return (
     <section className="py-12 bg-white">
       <div className="container mx-auto px-4">
-        <div className="space-y-6 mb-8 text-center">
+        <div className="space-y-3 mb-8 text-center">
           <h2 className="text-[42px] font-bold text-gray-900 leading-tight">
             {title}
           </h2>
