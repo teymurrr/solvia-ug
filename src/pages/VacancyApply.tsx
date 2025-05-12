@@ -90,7 +90,7 @@ const VacancyApply = () => {
   });
 
   // Update form values when profile data loads
-  React.useEffect(() => {
+  useEffect(() => {
     if (profileData) {
       form.reset({
         firstName: profileData.firstName || '',
@@ -196,6 +196,35 @@ const VacancyApply = () => {
     }
   };
 
+  // Handle redirection to external application link
+  useEffect(() => {
+    if (vacancy?.application_link && !redirected) {
+      setRedirected(true); // Mark as redirected to prevent infinite loop
+      window.open(vacancy.application_link, '_blank');
+      
+      // Redirect back after opening external link
+      setTimeout(() => {
+        if (fromDashboard) {
+          navigate('/dashboard/professional', {
+            state: { 
+              activeTab: 'vacancies',
+              externalApplication: true,
+              vacancyTitle: vacancy.title
+            }
+          });
+        } else {
+          navigate('/vacancies', {
+            state: { 
+              externalApplication: true,
+              vacancyTitle: vacancy.title
+            }
+          });
+        }
+      }, 100); // Small timeout to ensure window.open completes
+    }
+  }, [vacancy, navigate, redirected, fromDashboard]);
+
+  // Show loading until data is fetched
   if (loading || loadingVacancy) {
     return (
       <MainLayout>
@@ -206,205 +235,177 @@ const VacancyApply = () => {
     );
   }
 
-  // Handle redirection to external application link
-  useEffect(() => {
-    if (vacancy?.application_link && !redirected) {
-      setRedirected(true); // Mark as redirected to prevent infinite loop
-      window.open(vacancy.application_link, '_blank');
-      // Redirect back to vacancies list after opening external link
-      if (fromDashboard) {
-        navigate('/dashboard/professional', {
-          state: { 
-            activeTab: 'vacancies',
-            externalApplication: true,
-            vacancyTitle: vacancy.title
-          }
-        });
-      } else {
-        navigate('/vacancies', {
-          state: { 
-            externalApplication: true,
-            vacancyTitle: vacancy.title
-          }
-        });
-      }
-    }
-  }, [vacancy, navigate, redirected, fromDashboard]);
-
-  // If has external application link, show loading until redirect
-  if (vacancy?.application_link) {
-    return (
-      <MainLayout>
+  // Always render the same components with the same conditional structure
+  // Use inline conditional rendering instead of early returns to maintain hook order
+  return (
+    <MainLayout>
+      {vacancy?.application_link ? (
         <div className="container py-8 flex justify-center items-center min-h-[500px]">
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
           <p className="ml-4">Redirecting to external application...</p>
         </div>
-      </MainLayout>
-    );
-  }
-
-  return (
-    <MainLayout>
-      <div className="container mx-auto px-4 py-8">
-        <button 
-          onClick={handleCancel}
-          className="inline-flex items-center text-primary hover:underline mb-6"
-        >
-          <ArrowLeft className="h-4 w-4 mr-1" />
-          {fromDashboard ? 'Back to Dashboard' : 'Back to Vacancy'}
-        </button>
-        
-        <div className="mb-6">
-          <h1 className="text-3xl font-bold">Apply for Position</h1>
-          <p className="text-muted-foreground mt-1">
-            {vacancy?.title || 'Job Position'} at {vacancy?.institution || 'Institution'} ({vacancy?.location || 'Location'})
-          </p>
-        </div>
-        
-        <Card className="max-w-3xl mx-auto">
-          <CardHeader>
-            <CardTitle>Application Form</CardTitle>
-            <CardDescription>
-              Complete the form below to apply for this position. Fields marked with * are required.
-            </CardDescription>
-          </CardHeader>
+      ) : (
+        <div className="container mx-auto px-4 py-8">
+          <button 
+            onClick={handleCancel}
+            className="inline-flex items-center text-primary hover:underline mb-6"
+          >
+            <ArrowLeft className="h-4 w-4 mr-1" />
+            {fromDashboard ? 'Back to Dashboard' : 'Back to Vacancy'}
+          </button>
           
-          <CardContent>
-            <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <FormField
-                    control={form.control}
-                    name="firstName"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>First Name *</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Your first name" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  
-                  <FormField
-                    control={form.control}
-                    name="lastName"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Last Name *</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Your last name" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <FormField
-                    control={form.control}
-                    name="email"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Email Address *</FormLabel>
-                        <FormControl>
-                          <Input type="email" placeholder="your.email@example.com" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  
-                  <FormField
-                    control={form.control}
-                    name="phone"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Phone Number (Optional)</FormLabel>
-                        <FormControl>
-                          <Input type="tel" placeholder="+1 234 567 890" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-                
-                {/* CV Upload */}
-                <div className="space-y-2">
-                  <Label htmlFor="cv">Upload CV/Resume *</Label>
-                  <div className="flex items-center">
-                    <Label
-                      htmlFor="cv"
-                      className={`cursor-pointer flex items-center justify-center w-full h-32 px-4 transition border-2 border-dashed rounded-md appearance-none ${
-                        cvFile ? 'bg-primary/5 border-primary' : 'bg-background hover:border-primary'
-                      } focus:outline-none`}
-                    >
-                      <div className="flex flex-col items-center space-y-2">
-                        {cvFile ? (
-                          <>
-                            <Check className="h-8 w-8 text-primary" />
-                            <span className="text-sm text-primary">{cvFile.name}</span>
-                          </>
-                        ) : (
-                          <>
-                            <FileUp className="h-8 w-8 text-muted-foreground" />
-                            <span className="text-xs text-muted-foreground">
-                              Click to upload your CV/Resume (PDF, DOC, DOCX)
-                            </span>
-                          </>
-                        )}
-                      </div>
-                    </Label>
-                    <Input
-                      id="cv"
-                      type="file"
-                      accept=".pdf,.doc,.docx"
-                      className="hidden"
-                      onChange={handleFileChange}
-                      required
+          <div className="mb-6">
+            <h1 className="text-3xl font-bold">Apply for Position</h1>
+            <p className="text-muted-foreground mt-1">
+              {vacancy?.title || 'Job Position'} at {vacancy?.institution || 'Institution'} ({vacancy?.location || 'Location'})
+            </p>
+          </div>
+          
+          <Card className="max-w-3xl mx-auto">
+            <CardHeader>
+              <CardTitle>Application Form</CardTitle>
+              <CardDescription>
+                Complete the form below to apply for this position. Fields marked with * are required.
+              </CardDescription>
+            </CardHeader>
+            
+            <CardContent>
+              <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <FormField
+                      control={form.control}
+                      name="firstName"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>First Name *</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Your first name" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    
+                    <FormField
+                      control={form.control}
+                      name="lastName"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Last Name *</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Your last name" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
                     />
                   </div>
-                </div>
-                
-                {/* Cover Letter / Notes */}
-                <FormField
-                  control={form.control}
-                  name="coverLetter"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Cover Letter / Additional Notes (Optional)</FormLabel>
-                      <FormControl>
-                        <Textarea
-                          placeholder="Write any additional information you'd like to include with your application..."
-                          className="min-h-[150px]"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                
-                <div className="flex justify-end gap-4">
-                  <Button
-                    type="button"
-                    variant="outline"
-                    onClick={handleCancel}
-                  >
-                    Cancel
-                  </Button>
-                  <Button type="submit" disabled={isSubmitting}>
-                    {isSubmitting ? "Submitting..." : "Submit Application"}
-                  </Button>
-                </div>
-              </form>
-            </Form>
-          </CardContent>
-        </Card>
-      </div>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <FormField
+                      control={form.control}
+                      name="email"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Email Address *</FormLabel>
+                          <FormControl>
+                            <Input type="email" placeholder="your.email@example.com" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    
+                    <FormField
+                      control={form.control}
+                      name="phone"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Phone Number (Optional)</FormLabel>
+                          <FormControl>
+                            <Input type="tel" placeholder="+1 234 567 890" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  
+                  {/* CV Upload */}
+                  <div className="space-y-2">
+                    <Label htmlFor="cv">Upload CV/Resume *</Label>
+                    <div className="flex items-center">
+                      <Label
+                        htmlFor="cv"
+                        className={`cursor-pointer flex items-center justify-center w-full h-32 px-4 transition border-2 border-dashed rounded-md appearance-none ${
+                          cvFile ? 'bg-primary/5 border-primary' : 'bg-background hover:border-primary'
+                        } focus:outline-none`}
+                      >
+                        <div className="flex flex-col items-center space-y-2">
+                          {cvFile ? (
+                            <>
+                              <Check className="h-8 w-8 text-primary" />
+                              <span className="text-sm text-primary">{cvFile.name}</span>
+                            </>
+                          ) : (
+                            <>
+                              <FileUp className="h-8 w-8 text-muted-foreground" />
+                              <span className="text-xs text-muted-foreground">
+                                Click to upload your CV/Resume (PDF, DOC, DOCX)
+                              </span>
+                            </>
+                          )}
+                        </div>
+                      </Label>
+                      <Input
+                        id="cv"
+                        type="file"
+                        accept=".pdf,.doc,.docx"
+                        className="hidden"
+                        onChange={handleFileChange}
+                        required
+                      />
+                    </div>
+                  </div>
+                  
+                  {/* Cover Letter / Notes */}
+                  <FormField
+                    control={form.control}
+                    name="coverLetter"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Cover Letter / Additional Notes (Optional)</FormLabel>
+                        <FormControl>
+                          <Textarea
+                            placeholder="Write any additional information you'd like to include with your application..."
+                            className="min-h-[150px]"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  
+                  <div className="flex justify-end gap-4">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={handleCancel}
+                    >
+                      Cancel
+                    </Button>
+                    <Button type="submit" disabled={isSubmitting}>
+                      {isSubmitting ? "Submitting..." : "Submit Application"}
+                    </Button>
+                  </div>
+                </form>
+              </Form>
+            </CardContent>
+          </Card>
+        </div>
+      )}
     </MainLayout>
   );
 };
