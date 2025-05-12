@@ -2,50 +2,50 @@
 import React from "react";
 import { Timeline } from "@/components/ui/timeline";
 import { FileText, Users, Building2 } from "lucide-react";
+import { useLanguage } from '@/hooks/useLanguage';
 
 const TimelineSection = () => {
+  const { t } = useLanguage();
+
   const timelineData = [
     {
-      title: "Post Jobs",
+      title: t.journey.steps.profile,
       content: (
         <div className="space-y-4">
           <p className="text-[18px] text-neutral-800 dark:text-neutral-200 font-normal leading-relaxed">
-            Create detailed job listings for your healthcare positions. Include requirements, 
-            responsibilities, and benefits to attract the right candidates.
+            {t.journey.steps.profileDesc}
           </p>
           <div className="flex items-center gap-2 text-primary">
             <FileText className="h-6 w-6" />
-            <span className="text-base font-medium">Easy job posting process</span>
+            <span className="text-base font-medium">{t.journey.steps.profileFeature}</span>
           </div>
         </div>
       ),
     },
     {
-      title: "Connect",
+      title: t.journey.steps.apply,
       content: (
         <div className="space-y-4">
           <p className="text-[18px] text-neutral-800 dark:text-neutral-200 font-normal leading-relaxed">
-            Browse through profiles of qualified healthcare professionals. Use our advanced 
-            filters to find candidates that match your requirements perfectly.
+            {t.journey.steps.applyDesc}
           </p>
           <div className="flex items-center gap-2 text-primary">
             <Users className="h-6 w-6" />
-            <span className="text-base font-medium">Direct messaging with candidates</span>
+            <span className="text-base font-medium">{t.journey.steps.applyFeature}</span>
           </div>
         </div>
       ),
     },
     {
-      title: "Hire",
+      title: t.journey.steps.start,
       content: (
         <div className="space-y-4">
           <p className="text-[18px] text-neutral-800 dark:text-neutral-200 font-normal leading-relaxed">
-            Once you've found the perfect match, we'll help with the hiring process. 
-            From contract signing to relocation assistance, we're here to support you.
+            {t.journey.steps.startDesc}
           </p>
           <div className="flex items-center gap-2 text-primary">
             <Building2 className="h-6 w-6" />
-            <span className="text-base font-medium">Full hiring support</span>
+            <span className="text-base font-medium">{t.journey.steps.startFeature}</span>
           </div>
         </div>
       ),
@@ -53,14 +53,14 @@ const TimelineSection = () => {
   ];
 
   return (
-    <section className="py-8 bg-transparent"> {/* Reduced vertical padding */}
+    <section className="py-8 bg-transparent">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-8"> {/* Reduced margin bottom */}
+        <div className="text-center mb-8">
           <h2 className="text-[30px] font-bold text-black">
-            Your Journey with Solvia
+            {t.journey.title}
           </h2>
-          <p className="text-base text-muted-foreground mt-3 mb-4"> {/* Reduced margins */}
-            Follow the steps to start your recruitment journey with us
+          <p className="text-base text-muted-foreground mt-3 mb-4">
+            {t.journey.subtitle}
           </p>
         </div>
         <Timeline 
