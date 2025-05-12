@@ -18,6 +18,17 @@ const VacanciesSection: React.FC<VacanciesSectionProps> = ({ vacancies }) => {
   const subtitle = t?.vacancies?.subtitle || "Discover exciting opportunities at leading healthcare institutions";
   const viewMore = t?.vacancies?.viewMore || "View More";
   
+  // Modify the description in the first vacancy card
+  const modifiedVacancies = vacancies.map((vacancy, index) => {
+    if (index === 0 && vacancy.description === "Join our team of expert cardiologists in providing world-class cardiac care.") {
+      return {
+        ...vacancy,
+        description: "Join our team of expert cardiologists in providing cardiac care."
+      };
+    }
+    return vacancy;
+  });
+  
   return (
     <section className="py-12 bg-white">
       <div className="container mx-auto px-4">
@@ -31,7 +42,7 @@ const VacanciesSection: React.FC<VacanciesSectionProps> = ({ vacancies }) => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-          {vacancies.map((vacancy) => (
+          {modifiedVacancies.map((vacancy) => (
             <VacancyCard
               key={vacancy.id}
               {...vacancy}
