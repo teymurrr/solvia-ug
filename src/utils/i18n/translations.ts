@@ -1,4 +1,3 @@
-
 export type Language = 'en' | 'de' | 'fr' | 'es' | 'ru';
 
 export const translations = {
@@ -13,7 +12,16 @@ export const translations = {
       title: 'Vacancies',
       subtitle: 'Discover exciting opportunities at leading healthcare institutions',
       viewAll: 'View All',
-      viewMore: 'View More'
+      viewMore: 'View More',
+      posted: 'Posted',
+      application: 'application',
+      applications: 'applications',
+      description: 'Description',
+      keyRequirements: 'Key Requirements',
+      more: 'more',
+      apply: 'Apply Now',
+      save: 'Save',
+      saved: 'Saved'
     },
     learning: {
       title: 'Solvia Learning',
@@ -51,7 +59,10 @@ export const translations = {
       talkToTeam: 'Talk to Our Team'
     },
     blog: {
-      viewMore: 'View More'
+      title: 'Latest from Our Blog',
+      subtitle: 'Insights, stories, and tips for healthcare professionals and recruiters',
+      viewMore: 'View More',
+      readMore: 'Read More'
     },
     why: {
       title: "Why Solvia?",
@@ -68,6 +79,48 @@ export const translations = {
         title: "Comprehensive Support",
         description: "Guidance through certification, language training, and settlement in your new country"
       }
+    },
+    journey: {
+      title: "Your Journey with Solvia",
+      subtitle: "Your journey to working in a new country made simple and straightforward",
+      steps: {
+        profile: "Create Profile",
+        profileDesc: "Build your professional profile showcasing your skills, experience, and qualifications. Stand out to potential employers with a complete profile.",
+        profileFeature: "Easy profile creation",
+        apply: "Apply",
+        applyDesc: "Browse through healthcare opportunities worldwide. Apply to positions that match your skills and aspirations with just a few clicks.",
+        applyFeature: "Global opportunities",
+        start: "Start",
+        startDesc: "Once hired, we'll support your transition. From relocation assistance to integration support, we ensure a smooth start to your new role.",
+        startFeature: "Full relocation support"
+      }
+    },
+    insights: {
+      title: "Solvia Insights",
+      subtitle: "Comprehensive solutions for healthcare institutions",
+      comingSoon: "Coming Soon"
+    },
+    common: {
+      login: "Log in",
+      signup: "Free Sign Up",
+      applied: "Applied",
+      loading: "Loading...",
+      noResults: "No results found",
+      about: "About",
+      contact: "Contact",
+      vacancies: "Vacancies",
+      professionals: "Professionals",
+      learning: "Learning",
+      dashboard: "Dashboard",
+      settings: "Settings",
+      profile: "Profile",
+      messages: "Messages",
+      logout: "Log out"
+    },
+    footer: {
+      allRightsReserved: "All rights reserved",
+      termsOfService: "Terms of Service",
+      privacyPolicy: "Privacy Policy"
     }
   },
   de: {
@@ -81,7 +134,16 @@ export const translations = {
       title: 'Offene Stellen',
       subtitle: 'Entdecken Sie spannende Möglichkeiten in führenden Gesundheitseinrichtungen',
       viewAll: 'Alle anzeigen',
-      viewMore: 'Mehr anzeigen'
+      viewMore: 'Mehr anzeigen',
+      posted: 'Veröffentlicht',
+      application: 'Bewerbung',
+      applications: 'Bewerbungen',
+      description: 'Beschreibung',
+      keyRequirements: 'Hauptanforderungen',
+      more: 'weitere',
+      apply: 'Jetzt bewerben',
+      save: 'Speichern',
+      saved: 'Gespeichert'
     },
     learning: {
       title: 'Solvia Fortbildung',
@@ -119,7 +181,10 @@ export const translations = {
       talkToTeam: 'Mit unserem Team sprechen'
     },
     blog: {
-      viewMore: 'Mehr anzeigen'
+      title: 'Aktuelles aus unserem Blog',
+      subtitle: 'Einblicke, Geschichten und Tipps für Gesundheitsfachkräfte und Personalvermittler',
+      viewMore: 'Mehr anzeigen',
+      readMore: 'Weiterlesen'
     },
     why: {
       title: "Warum Solvia?",
@@ -136,6 +201,48 @@ export const translations = {
         title: "Umfassende Unterstützung",
         description: "Begleitung durch Zertifizierung, Sprachtraining und Eingewöhnung in Ihrem neuen Land"
       }
+    },
+    journey: {
+      title: "Ihr Weg mit Solvia",
+      subtitle: "Ihr Weg zur Arbeit in einem neuen Land - einfach und unkompliziert",
+      steps: {
+        profile: "Profil erstellen",
+        profileDesc: "Erstellen Sie Ihr berufliches Profil mit Ihren Fähigkeiten, Erfahrungen und Qualifikationen. Heben Sie sich mit einem vollständigen Profil von potenziellen Arbeitgebern ab.",
+        profileFeature: "Einfache Profilerstellung",
+        apply: "Bewerben",
+        applyDesc: "Durchsuchen Sie medizinische Stellenangebote weltweit. Bewerben Sie sich mit wenigen Klicks auf Positionen, die Ihren Fähigkeiten und Zielen entsprechen.",
+        applyFeature: "Internationale Möglichkeiten",
+        start: "Starten",
+        startDesc: "Nach der Einstellung unterstützen wir Ihren Übergang. Von Umzugshilfe bis Integrationsunterstützung sorgen wir für einen reibungslosen Start in Ihre neue Rolle.",
+        startFeature: "Volle Umzugsunterstützung"
+      }
+    },
+    insights: {
+      title: "Solvia Einblicke",
+      subtitle: "Umfassende Lösungen für Gesundheitseinrichtungen",
+      comingSoon: "Demnächst verfügbar"
+    },
+    common: {
+      login: "Anmelden",
+      signup: "Kostenlos registrieren",
+      applied: "Beworben",
+      loading: "Wird geladen...",
+      noResults: "Keine Ergebnisse gefunden",
+      about: "Über uns",
+      contact: "Kontakt",
+      vacancies: "Stellenangebote",
+      professionals: "Fachkräfte",
+      learning: "Bildung",
+      dashboard: "Dashboard",
+      settings: "Einstellungen",
+      profile: "Profil",
+      messages: "Nachrichten",
+      logout: "Abmelden"
+    },
+    footer: {
+      allRightsReserved: "Alle Rechte vorbehalten",
+      termsOfService: "Nutzungsbedingungen",
+      privacyPolicy: "Datenschutzrichtlinie"
     }
   },
   fr: {
@@ -149,7 +256,16 @@ export const translations = {
       title: 'Offres d\'emploi',
       subtitle: 'Découvrez des opportunités passionnantes dans des établissements de santé de premier plan',
       viewAll: 'Voir tout',
-      viewMore: 'Voir plus'
+      viewMore: 'Voir plus',
+      posted: 'Publié',
+      application: 'candidature',
+      applications: 'candidatures',
+      description: 'Description',
+      keyRequirements: 'Exigences principales',
+      more: 'de plus',
+      apply: 'Postuler maintenant',
+      save: 'Enregistrer',
+      saved: 'Enregistré'
     },
     learning: {
       title: 'Formation Solvia',
@@ -187,7 +303,10 @@ export const translations = {
       talkToTeam: 'Parler à notre équipe'
     },
     blog: {
-      viewMore: 'Voir plus'
+      title: 'Dernières actualités de notre blog',
+      subtitle: 'Perspectives, histoires et conseils pour les professionnels de la santé et les recruteurs',
+      viewMore: 'Voir plus',
+      readMore: 'Lire la suite'
     },
     why: {
       title: "Pourquoi Solvia?",
@@ -204,6 +323,48 @@ export const translations = {
         title: "Accompagnement complet",
         description: "Assistance pour la certification, la formation linguistique et l'installation dans votre nouveau pays"
       }
+    },
+    journey: {
+      title: "Votre parcours avec Solvia",
+      subtitle: "Votre parcours pour travailler dans un nouveau pays, simplifié et direct",
+      steps: {
+        profile: "Créer un profil",
+        profileDesc: "Constituez votre profil professionnel mettant en valeur vos compétences, votre expérience et vos qualifications. Démarquez-vous auprès des employeurs potentiels avec un profil complet.",
+        profileFeature: "Création de profil facile",
+        apply: "Postuler",
+        applyDesc: "Parcourez les opportunités de santé dans le monde entier. Postulez à des postes correspondant à vos compétences et aspirations en quelques clics.",
+        applyFeature: "Opportunités mondiales",
+        start: "Commencer",
+        startDesc: "Une fois embauché, nous soutiendrons votre transition. De l'aide à la relocalisation au soutien à l'intégration, nous assurons un démarrage en douceur dans votre nouveau rôle.",
+        startFeature: "Soutien complet à la relocalisation"
+      }
+    },
+    insights: {
+      title: "Insights Solvia",
+      subtitle: "Solutions complètes pour les établissements de santé",
+      comingSoon: "Bientôt disponible"
+    },
+    common: {
+      login: "Connexion",
+      signup: "Inscription gratuite",
+      applied: "Postulé",
+      loading: "Chargement...",
+      noResults: "Aucun résultat trouvé",
+      about: "À propos",
+      contact: "Contact",
+      vacancies: "Offres d'emploi",
+      professionals: "Professionnels",
+      learning: "Formation",
+      dashboard: "Tableau de bord",
+      settings: "Paramètres",
+      profile: "Profil",
+      messages: "Messages",
+      logout: "Déconnexion"
+    },
+    footer: {
+      allRightsReserved: "Tous droits réservés",
+      termsOfService: "Conditions d'utilisation",
+      privacyPolicy: "Politique de confidentialité"
     }
   },
   es: {
@@ -217,7 +378,16 @@ export const translations = {
       title: 'Vacantes',
       subtitle: 'Descubra oportunidades interesantes en instituciones sanitarias líderes',
       viewAll: 'Ver todo',
-      viewMore: 'Ver más'
+      viewMore: 'Ver más',
+      posted: 'Publicado',
+      application: 'solicitud',
+      applications: 'solicitudes',
+      description: 'Descripción',
+      keyRequirements: 'Requisitos principales',
+      more: 'más',
+      apply: 'Solicitar ahora',
+      save: 'Guardar',
+      saved: 'Guardado'
     },
     learning: {
       title: 'Formación Solvia',
@@ -255,7 +425,10 @@ export const translations = {
       talkToTeam: 'Hablar con nuestro equipo'
     },
     blog: {
-      viewMore: 'Ver más'
+      title: 'Lo último de nuestro blog',
+      subtitle: 'Información, historias y consejos para profesionales sanitarios y reclutadores',
+      viewMore: 'Ver más',
+      readMore: 'Leer más'
     },
     why: {
       title: "¿Por qué Solvia?",
@@ -272,6 +445,48 @@ export const translations = {
         title: "Apoyo integral",
         description: "Asistencia con certificación, formación lingüística y establecimiento en su nuevo país"
       }
+    },
+    journey: {
+      title: "Su viaje con Solvia",
+      subtitle: "Su camino para trabajar en un nuevo país de forma simple y directa",
+      steps: {
+        profile: "Crear perfil",
+        profileDesc: "Construya su perfil profesional mostrando sus habilidades, experiencia y cualificaciones. Destaque ante posibles empleadores con un perfil completo.",
+        profileFeature: "Creación de perfil fácil",
+        apply: "Aplicar",
+        applyDesc: "Explore oportunidades sanitarias en todo el mundo. Solicite puestos que coincidan con sus habilidades y aspiraciones con solo unos clics.",
+        applyFeature: "Oportunidades globales",
+        start: "Comenzar",
+        startDesc: "Una vez contratado, apoyaremos su transición. Desde asistencia para la reubicación hasta apoyo para la integración, garantizamos un inicio sin problemas en su nuevo rol.",
+        startFeature: "Apoyo completo para reubicación"
+      }
+    },
+    insights: {
+      title: "Solvia Insights",
+      subtitle: "Soluciones integrales para instituciones sanitarias",
+      comingSoon: "Próximamente"
+    },
+    common: {
+      login: "Iniciar sesión",
+      signup: "Registro gratuito",
+      applied: "Solicitado",
+      loading: "Cargando...",
+      noResults: "No se encontraron resultados",
+      about: "Acerca de",
+      contact: "Contacto",
+      vacancies: "Vacantes",
+      professionals: "Profesionales",
+      learning: "Formación",
+      dashboard: "Panel",
+      settings: "Configuración",
+      profile: "Perfil",
+      messages: "Mensajes",
+      logout: "Cerrar sesión"
+    },
+    footer: {
+      allRightsReserved: "Todos los derechos reservados",
+      termsOfService: "Términos de servicio",
+      privacyPolicy: "Política de privacidad"
     }
   },
   ru: {
@@ -285,7 +500,16 @@ export const translations = {
       title: 'Вакансии',
       subtitle: 'Откройте для себя интересные возможности в ведущих медицинских учреждениях',
       viewAll: 'Посмотреть все',
-      viewMore: 'Показать больше'
+      viewMore: 'Показать больше',
+      posted: 'Опубликовано',
+      application: 'заявка',
+      applications: 'заявок',
+      description: 'Описание',
+      keyRequirements: 'Ключевые требования',
+      more: 'ещё',
+      apply: 'Подать заявку',
+      save: 'Сохранить',
+      saved: 'Сохранено'
     },
     learning: {
       title: 'Обучение в Solvia',
@@ -323,7 +547,10 @@ export const translations = {
       talkToTeam: 'Связаться с нашей командой'
     },
     blog: {
-      viewMore: 'Показать больше'
+      title: 'Последние публикации в блоге',
+      subtitle: 'Аналитика, истории и советы для медицинских работников и рекрутеров',
+      viewMore: 'Показать больше',
+      readMore: 'Читать далее'
     },
     why: {
       title: "Почему Solvia?",
@@ -340,6 +567,48 @@ export const translations = {
         title: "Всесторонняя поддержка",
         description: "Помощь с сертификацией, языковой подготовкой и обустройством в новой стране"
       }
+    },
+    journey: {
+      title: "Ваш путь с Solvia",
+      subtitle: "Ваш путь к работе в новой стране - простой и понятный",
+      steps: {
+        profile: "Создать профиль",
+        profileDesc: "Создайте свой профессиональный профиль, демонстрирующий ваши навыки, опыт и квалификацию. Выделитесь для потенциальных работодателей с помощью полного профиля.",
+        profileFeature: "Простое создание профиля",
+        apply: "Подать заявку",
+        applyDesc: "Просматривайте медицинские вакансии по всему миру. Подавайте заявки на должности, соответствующие вашим навыкам и стремлениям, всего в несколько кликов.",
+        applyFeature: "Глобальные возможности",
+        start: "Начало работы",
+        startDesc: "После найма мы поддержим ваш переход. От помощи с переездом до поддержки интеграции, мы обеспечиваем плавно�� начало вашей новой роли.",
+        startFeature: "Полная поддержка при переезде"
+      }
+    },
+    insights: {
+      title: "Аналитика Solvia",
+      subtitle: "Комплексные решения для медицинских учреждений",
+      comingSoon: "Скоро"
+    },
+    common: {
+      login: "Войти",
+      signup: "Бесплатная регистрация",
+      applied: "Отправлено",
+      loading: "Загрузка...",
+      noResults: "Результаты не найдены",
+      about: "О нас",
+      contact: "Контакты",
+      vacancies: "Вакансии",
+      professionals: "Специалисты",
+      learning: "Обучение",
+      dashboard: "Панель управления",
+      settings: "Настройки",
+      profile: "Профиль",
+      messages: "Сообщения",
+      logout: "Выйти"
+    },
+    footer: {
+      allRightsReserved: "Все права защищены",
+      termsOfService: "Условия использования",
+      privacyPolicy: "Политика конфиденциальности"
     }
   }
 };

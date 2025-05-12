@@ -32,6 +32,7 @@ const getBrowserLanguage = (): Language => {
 
 export const LanguageProvider: React.FC<{children: React.ReactNode}> = ({ children }) => {
   const [language, setLanguage] = useState<Language>('en');
+  const [isInitialized, setIsInitialized] = useState(false);
 
   useEffect(() => {
     // First check if there's a language preference in localStorage
@@ -44,12 +45,21 @@ export const LanguageProvider: React.FC<{children: React.ReactNode}> = ({ childr
       // If no saved preference, use browser language
       setLanguage(getBrowserLanguage());
     }
+    setIsInitialized(true);
   }, []);
 
   const handleSetLanguage = (lang: Language) => {
     setLanguage(lang);
     localStorage.setItem('preferredLanguage', lang);
+    document.documentElement.lang = lang;
   };
+
+  // Set document language attribute when language changes
+  useEffect(() => {
+    if (isInitialized) {
+      document.documentElement.lang = language;
+    }
+  }, [language, isInitialized]);
 
   return (
     <LanguageContext.Provider value={{ language, setLanguage: handleSetLanguage }}>

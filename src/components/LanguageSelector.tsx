@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Globe } from 'lucide-react';
+import { Languages } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
 import { Button } from '@/components/ui/button';
 import {
@@ -24,13 +24,15 @@ export const LanguageSelector = () => {
 
   const handleLanguageChange = (newLang: Language) => {
     setLanguage(newLang);
+    // Force a UI refresh when language changes
+    window.location.reload();
   };
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size="icon" className="rounded-full">
-          <Globe className="h-5 w-5" />
+          <Languages className="h-5 w-5" />
           <span className="sr-only">Change Language</span>
         </Button>
       </DropdownMenuTrigger>

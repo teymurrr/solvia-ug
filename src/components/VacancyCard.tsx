@@ -8,6 +8,7 @@ import { Building2, MapPin, Calendar } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from './ui/button';
 import VacancyFooter from './vacancy/VacancyFooter';
+import { useLanguage } from '@/hooks/useLanguage';
 
 export interface VacancyCardProps {
   id: string;
@@ -36,9 +37,6 @@ export interface VacancyCardProps {
   fromLandingPage?: boolean;
   showDescription?: boolean;
   showRequirements?: boolean;
-  searchQuery?: string;
-  currentPage?: number;
-  selectedFilters?: any;
 }
 
 const VacancyCard: React.FC<VacancyCardProps> = ({
@@ -66,11 +64,9 @@ const VacancyCard: React.FC<VacancyCardProps> = ({
   showRequirements = false,
   description,
   requirements,
-  // Added these props but they're not used internally
-  searchQuery,
-  currentPage,
-  selectedFilters,
 }) => {
+  const { t } = useLanguage();
+  
   const handleSaveClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     e.stopPropagation();
@@ -133,7 +129,7 @@ const VacancyCard: React.FC<VacancyCardProps> = ({
               )}
               {isApplied && (
                 <Badge variant="secondary" className="bg-green-50 text-green-700 border-green-200">
-                  Applied
+                  {t?.common?.applied || "Applied"}
                 </Badge>
               )}
             </div>
@@ -141,7 +137,7 @@ const VacancyCard: React.FC<VacancyCardProps> = ({
             {/* Display description if required */}
             {showDescription && description && (
               <div className="mt-4">
-                <h4 className="text-sm font-medium mb-1">Description</h4>
+                <h4 className="text-sm font-medium mb-1">{t?.vacancies?.description || "Description"}</h4>
                 <p className="text-sm text-gray-600 line-clamp-3">{description}</p>
               </div>
             )}
@@ -149,7 +145,7 @@ const VacancyCard: React.FC<VacancyCardProps> = ({
             {/* Display requirements if needed */}
             {showRequirements && requirements && requirements.length > 0 && (
               <div className="mt-4">
-                <h4 className="text-sm font-medium mb-1">Key Requirements</h4>
+                <h4 className="text-sm font-medium mb-1">{t?.vacancies?.keyRequirements || "Key Requirements"}</h4>
                 <ul className="text-sm text-gray-600 pl-5">
                   {requirements.slice(0, 3).map((requirement, index) => (
                     <li key={index} className="list-disc">
@@ -157,7 +153,9 @@ const VacancyCard: React.FC<VacancyCardProps> = ({
                     </li>
                   ))}
                   {requirements.length > 3 && (
-                    <li className="text-xs text-gray-500 list-none mt-1">+ {requirements.length - 3} more</li>
+                    <li className="text-xs text-gray-500 list-none mt-1">
+                      + {requirements.length - 3} {t?.vacancies?.more || "more"}
+                    </li>
                   )}
                 </ul>
               </div>
@@ -166,13 +164,15 @@ const VacancyCard: React.FC<VacancyCardProps> = ({
             {createdAt && !isDashboardCard && (
               <div className="mt-4 flex items-center text-xs text-gray-500">
                 <Calendar className="mr-1 h-3.5 w-3.5" />
-                <span>Posted {createdAt}</span>
+                <span>{t?.vacancies?.posted || "Posted"} {createdAt}</span>
               </div>
             )}
 
             {isDashboardCard && applicationCount !== undefined && (
               <div className="mt-4 text-sm text-gray-600">
-                {applicationCount} {applicationCount === 1 ? 'application' : 'applications'}
+                {applicationCount} {applicationCount === 1 
+                  ? (t?.vacancies?.application || "application") 
+                  : (t?.vacancies?.applications || "applications")}
               </div>
             )}
           </div>
