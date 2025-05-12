@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Link } from 'react-router-dom';
@@ -16,7 +15,8 @@ export interface VacancyCardProps {
   institution: string;
   location: string;
   jobType: string;
-  specialty: string;
+  // Make specialty optional since it's treated as optional in ProfessionalDashboard.tsx
+  specialty?: string;
   profession?: string;
   department?: string;
   salary?: string;

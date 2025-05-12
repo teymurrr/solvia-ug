@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
@@ -34,7 +35,7 @@ interface Application {
   };
 }
 
-// Simplified professional data structure to avoid type issues
+// Define ProfessionalData interface separately to avoid circular reference
 interface ProfessionalData {
   first_name: string;
   last_name: string;
