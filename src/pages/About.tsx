@@ -7,8 +7,11 @@ import StorySection from '@/components/about/StorySection';
 import TeamSection from '@/components/about/TeamSection';
 import ValuesSection from '@/components/about/ValuesSection';
 import CTASection from '@/components/about/CTASection';
+import { useLanguage } from '@/hooks/useLanguage';
 
 const About = () => {
+  const { t } = useLanguage();
+
   return (
     <MainLayout>
       <HeroSection />

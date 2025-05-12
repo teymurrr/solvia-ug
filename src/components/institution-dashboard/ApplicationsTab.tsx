@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
@@ -14,6 +13,22 @@ import {
   TableRow 
 } from '@/components/ui/table';
 
+// Define ProfessionalData interface first to avoid circular reference
+interface ProfessionalData {
+  first_name: string;
+  last_name: string;
+  specialty: string;
+  email: string;
+}
+
+// Then define VacancyData interface
+interface VacancyData {
+  title: string;
+  department: string;
+  specialty: string;
+}
+
+// Finally define Application interface that uses both
 interface Application {
   id: string;
   vacancy_id: string;
@@ -22,25 +37,8 @@ interface Application {
   status: string;
   resume_url?: string;
   cover_letter?: string;
-  vacancy: {
-    title: string;
-    department: string;
-    specialty: string;
-  };
-  professional: {
-    first_name: string;
-    last_name: string;
-    specialty: string;
-    email: string;
-  };
-}
-
-// Define ProfessionalData interface separately to avoid circular reference
-interface ProfessionalData {
-  first_name: string;
-  last_name: string;
-  specialty: string;
-  email: string;
+  vacancy: VacancyData;
+  professional: ProfessionalData;
 }
 
 const ApplicationsTab = () => {

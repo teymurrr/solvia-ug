@@ -3,6 +3,7 @@ import React from 'react';
 import { Search } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { useLanguage } from '@/hooks/useLanguage';
 
 interface VacancySearchProps {
   searchQuery: string;
@@ -15,13 +16,15 @@ const VacancySearch: React.FC<VacancySearchProps> = ({
   setSearchQuery,
   handleSearch
 }) => {
+  const { t } = useLanguage();
+  
   return (
     <div className="flex flex-col md:flex-row gap-4">
       <div className="flex-1">
         <div className="relative">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input
-            placeholder="Search by title, location, or keyword..."
+            placeholder={t?.dashboard?.vacancies?.searchPlaceholder || "Search by title, location, or keyword..."}
             className="pl-10"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
@@ -31,7 +34,7 @@ const VacancySearch: React.FC<VacancySearchProps> = ({
       </div>
       <Button variant="outline" className="md:w-auto" onClick={handleSearch}>
         <Search className="h-4 w-4 mr-2" />
-        Search
+        {t?.dashboard?.vacancies?.search || "Search"}
       </Button>
     </div>
   );

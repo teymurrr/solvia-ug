@@ -11,6 +11,7 @@ import UserDropdown from './navbar/UserDropdown';
 import MobileMenu from './navbar/MobileMenu';
 import { useToast } from '@/hooks/use-toast';
 import LanguageSelector from './LanguageSelector';
+import { useLanguage } from '@/hooks/useLanguage';
 
 const hasUnreadMessages = false;
 
@@ -20,6 +21,7 @@ const Navbar = () => {
   const { isLoggedIn, userType, signOut } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { t } = useLanguage();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -86,10 +88,10 @@ const Navbar = () => {
             ) : (
               <>
                 <Button variant="ghost" asChild>
-                  <Link to="/login">Log in</Link>
+                  <Link to="/login">{t?.common?.login || "Log in"}</Link>
                 </Button>
                 <Button asChild>
-                  <Link to="/signup">Free Sign Up</Link>
+                  <Link to="/signup">{t?.common?.signup || "Free Sign Up"}</Link>
                 </Button>
               </>
             )}

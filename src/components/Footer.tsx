@@ -4,11 +4,13 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import Logo from './Logo';
 import { useToast } from '@/hooks/use-toast';
+import { useLanguage } from '@/hooks/useLanguage';
 
 const Footer: React.FC = () => {
   const { isLoggedIn } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { t } = useLanguage();
 
   const handleProfessionalLink = (e: React.MouseEvent<HTMLAnchorElement>, path: string) => {
     e.preventDefault();
@@ -48,7 +50,7 @@ const Footer: React.FC = () => {
           </div>
           
           <div className="space-y-4">
-            <h4 className="font-medium text-base">For Professionals</h4>
+            <h4 className="font-medium text-base">{t?.footer?.forProfessionals || "For Professionals"}</h4>
             <ul className="space-y-2">
               <li>
                 <a 
@@ -56,7 +58,7 @@ const Footer: React.FC = () => {
                   onClick={(e) => handleProfessionalLink(e, '/professionals')}
                   className="text-sm text-muted-foreground hover:text-medical-600 transition-colors"
                 >
-                  Create Profile
+                  {t?.footer?.createProfile || "Create Profile"}
                 </a>
               </li>
               <li>
@@ -65,7 +67,7 @@ const Footer: React.FC = () => {
                   onClick={(e) => handleProfessionalLink(e, '/professionals/search')}
                   className="text-sm text-muted-foreground hover:text-medical-600 transition-colors"
                 >
-                  Find Opportunities
+                  {t?.footer?.findOpportunities || "Find Opportunities"}
                 </a>
               </li>
               <li>
@@ -74,14 +76,14 @@ const Footer: React.FC = () => {
                   onClick={(e) => handleProfessionalLink(e, '/professionals/resources')}
                   className="text-sm text-muted-foreground hover:text-medical-600 transition-colors"
                 >
-                  Resources
+                  {t?.footer?.resources || "Resources"}
                 </a>
               </li>
             </ul>
           </div>
           
           <div className="space-y-4">
-            <h4 className="font-medium text-base">For Institutions</h4>
+            <h4 className="font-medium text-base">{t?.footer?.forInstitutions || "For Institutions"}</h4>
             <ul className="space-y-2">
               <li>
                 <a 
@@ -89,7 +91,7 @@ const Footer: React.FC = () => {
                   onClick={(e) => handleInstitutionLink(e, '/institutions')}
                   className="text-sm text-muted-foreground hover:text-medical-600 transition-colors"
                 >
-                  Post Positions
+                  {t?.footer?.postPositions || "Post Positions"}
                 </a>
               </li>
               <li>
@@ -98,7 +100,7 @@ const Footer: React.FC = () => {
                   onClick={(e) => handleInstitutionLink(e, '/institutions/search')}
                   className="text-sm text-muted-foreground hover:text-medical-600 transition-colors"
                 >
-                  Search Professionals
+                  {t?.footer?.searchProfessionals || "Search Professionals"}
                 </a>
               </li>
               <li>
@@ -107,33 +109,33 @@ const Footer: React.FC = () => {
                   onClick={(e) => handleInstitutionLink(e, '/institutions/resources')}
                   className="text-sm text-muted-foreground hover:text-medical-600 transition-colors"
                 >
-                  Resources
+                  {t?.footer?.resources || "Resources"}
                 </a>
               </li>
             </ul>
           </div>
           
           <div className="space-y-4">
-            <h4 className="font-medium text-base">Company</h4>
+            <h4 className="font-medium text-base">{t?.footer?.company || "Company"}</h4>
             <ul className="space-y-2">
               <li>
                 <Link to="/about" className="text-sm text-muted-foreground hover:text-medical-600 transition-colors">
-                  About Us
+                  {t?.common?.about || "About Us"}
                 </Link>
               </li>
               <li>
                 <Link to="/contact" className="text-sm text-muted-foreground hover:text-medical-600 transition-colors">
-                  Contact
+                  {t?.common?.contact || "Contact"}
                 </Link>
               </li>
               <li>
                 <Link to="/privacy" className="text-sm text-muted-foreground hover:text-medical-600 transition-colors">
-                  Privacy Policy
+                  {t?.footer?.privacyPolicy || "Privacy Policy"}
                 </Link>
               </li>
               <li>
                 <Link to="/terms" className="text-sm text-muted-foreground hover:text-medical-600 transition-colors">
-                  Terms of Service
+                  {t?.footer?.termsOfService || "Terms of Service"}
                 </Link>
               </li>
             </ul>
@@ -142,7 +144,7 @@ const Footer: React.FC = () => {
         
         <div className="mt-12 pt-6 border-t flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-sm text-muted-foreground">
-            © {new Date().getFullYear()} Solvia Global Hub. All rights reserved.
+            © {new Date().getFullYear()} Solvia Global Hub. {t?.footer?.allRightsReserved || "All rights reserved"}
           </p>
           <div className="flex gap-4">
             <a href="#" className="text-sm text-muted-foreground hover:text-medical-600 transition-colors">

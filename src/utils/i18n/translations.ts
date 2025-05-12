@@ -120,7 +120,101 @@ export const translations = {
     footer: {
       allRightsReserved: "All rights reserved",
       termsOfService: "Terms of Service",
-      privacyPolicy: "Privacy Policy"
+      privacyPolicy: "Privacy Policy",
+      forProfessionals: "For Professionals",
+      forInstitutions: "For Institutions",
+      createProfile: "Create Profile",
+      findOpportunities: "Find Opportunities",
+      resources: "Resources",
+      postPositions: "Post Positions",
+      searchProfessionals: "Search Professionals",
+      company: "Company"
+    },
+    about: {
+      hero: {
+        title: "About Solvia",
+        subtitle: "Transforming Healthcare Recruitment Worldwide"
+      },
+      mission: {
+        title: "Our Mission",
+        description: "To connect qualified healthcare professionals with institutions worldwide, providing opportunities for career growth and ensuring quality healthcare delivery."
+      },
+      story: {
+        title: "Our Story",
+        description: "Founded in 2022, Solvia began with a simple idea: make healthcare recruitment transparent, efficient, and human-centered. Today, we serve thousands of professionals and institutions across multiple countries."
+      },
+      team: {
+        title: "Our Team",
+        description: "We're a dedicated team of healthcare and technology experts committed to transforming medical recruitment."
+      },
+      values: {
+        title: "Our Values",
+        integrity: "Integrity",
+        integrityDesc: "We operate with transparency and honesty in all our interactions.",
+        excellence: "Excellence",
+        excellenceDesc: "We strive for the highest standards in our services and operations.",
+        innovation: "Innovation",
+        innovationDesc: "We continuously seek better ways to serve our users and solve problems.",
+        inclusion: "Inclusion",
+        inclusionDesc: "We embrace diversity and create equal opportunities for all."
+      }
+    },
+    dashboard: {
+      title: "Professional Dashboard",
+      subtitle: "Manage your profile and view opportunities",
+      profile: {
+        title: "Your Profile",
+        description: "This is how institutions will see you",
+        createProfile: "Create Profile",
+        completeProfile: "Complete Your Profile",
+        updateProfile: "Update Profile",
+        loading: "Loading profile data...",
+        editProfile: "Edit Your Profile",
+        saveProfile: "Save Profile",
+        activelySearching: "Actively searching",
+        openToRelocation: "Open to relocation",
+        fspCertified: "FSP Certified",
+        profileCompletion: "Profile completion",
+        location: "Location",
+        notSpecified: "Not specified",
+        profession: "Profession",
+        fspCertificate: "FSP Certificate",
+        yes: "Yes",
+        no: "No",
+        experience: "Experience",
+        at: "at",
+        present: "Present",
+        education: "Education",
+        in: "in",
+        languages: "Languages",
+        about: "About",
+        incompleteProfile: "Your profile is incomplete. Add more information about yourself to attract potential employers."
+      },
+      vacancies: {
+        title: "Available Vacancies",
+        description: "Explore open positions in healthcare institutions",
+        search: "Search",
+        searchPlaceholder: "Search by title, location, or keyword...",
+        resetFilters: "Reset filters",
+        noVacanciesFound: "No vacancies found",
+        noVacanciesDesc: "Try adjusting your search criteria",
+        jobType: "Job Type",
+        country: "Country",
+        city: "City"
+      },
+      saved: {
+        title: "Saved & Applied Vacancies",
+        description: "Track vacancies you've saved or applied for",
+        savedVacancies: "Saved Vacancies",
+        appliedVacancies: "Applied Vacancies",
+        noSaved: "No saved vacancies",
+        noSavedDesc: "You haven't saved any vacancies yet. Save vacancies to keep track of them.",
+        noApplied: "No applications yet",
+        noAppliedDesc: "You haven't applied to any vacancies yet. Start applying to find your next role.",
+        browseVacancies: "Browse Vacancies",
+        vacancyRemoved: "Vacancy removed",
+        vacancyRemovedDesc: "The vacancy has been removed from your saved list."
+      }
     }
   },
   de: {
@@ -242,7 +336,101 @@ export const translations = {
     footer: {
       allRightsReserved: "Alle Rechte vorbehalten",
       termsOfService: "Nutzungsbedingungen",
-      privacyPolicy: "Datenschutzrichtlinie"
+      privacyPolicy: "Datenschutzrichtlinie",
+      forProfessionals: "Für Fachkräfte",
+      forInstitutions: "Für Einrichtungen",
+      createProfile: "Profil erstellen",
+      findOpportunities: "Stellen finden",
+      resources: "Ressourcen",
+      postPositions: "Stellen ausschreiben",
+      searchProfessionals: "Fachkräfte suchen",
+      company: "Unternehmen"
+    },
+    about: {
+      hero: {
+        title: "Über Solvia",
+        subtitle: "Transformation der Personalgewinnung im Gesundheitswesen weltweit"
+      },
+      mission: {
+        title: "Unsere Mission",
+        description: "Qualifizierte medizinische Fachkräfte mit Einrichtungen weltweit zu verbinden, Karrieremöglichkeiten zu schaffen und qualitativ hochwertige Gesundheitsversorgung zu gewährleisten."
+      },
+      story: {
+        title: "Unsere Geschichte",
+        description: "Gegründet im Jahr 2022, begann Solvia mit einer einfachen Idee: die Personalgewinnung im Gesundheitswesen transparent, effizient und menschenzentriert zu gestalten. Heute betreuen wir tausende von Fachkräften und Einrichtungen in mehreren Ländern."
+      },
+      team: {
+        title: "Unser Team",
+        description: "Wir sind ein engagiertes Team aus Experten im Gesundheitswesen und Technologie, die sich der Transformation der medizinischen Personalvermittlung verschrieben haben."
+      },
+      values: {
+        title: "Unsere Werte",
+        integrity: "Integrität",
+        integrityDesc: "Wir handeln mit Transparenz und Ehrlichkeit in allen unseren Interaktionen.",
+        excellence: "Exzellenz",
+        excellenceDesc: "Wir streben nach höchsten Standards in unseren Dienstleistungen und Betriebsabläufen.",
+        innovation: "Innovation",
+        innovationDesc: "Wir suchen kontinuierlich nach besseren Wegen, unseren Nutzern zu dienen und Probleme zu lösen.",
+        inclusion: "Inklusion",
+        inclusionDesc: "Wir fördern Vielfalt und schaffen gleiche Chancen für alle."
+      }
+    },
+    dashboard: {
+      title: "Fachkräfte Dashboard",
+      subtitle: "Verwalten Sie Ihr Profil und entdecken Sie Chancen",
+      profile: {
+        title: "Ihr Profil",
+        description: "So werden Sie von Einrichtungen gesehen",
+        createProfile: "Profil erstellen",
+        completeProfile: "Profil vervollständigen",
+        updateProfile: "Profil aktualisieren",
+        loading: "Profildaten werden geladen...",
+        editProfile: "Profil bearbeiten",
+        saveProfile: "Profil speichern",
+        activelySearching: "Aktiv auf der Suche",
+        openToRelocation: "Bereit für einen Umzug",
+        fspCertified: "FSP-Zertifiziert",
+        profileCompletion: "Profil vervollständigung",
+        location: "Standort",
+        notSpecified: "Nicht angegeben",
+        profession: "Beruf",
+        fspCertificate: "FSP-Zertifikat",
+        yes: "Ja",
+        no: "Nein",
+        experience: "Erfahrung",
+        at: "bei",
+        present: "Aktuell",
+        education: "Bildung",
+        in: "in",
+        languages: "Sprachen",
+        about: "Über mich",
+        incompleteProfile: "Ihr Profil ist unvollständig. Fügen Sie weitere Informationen über sich hinzu, um potenzielle Arbeitgeber anzusprechen."
+      },
+      vacancies: {
+        title: "Verfügbare Stellen",
+        description: "Entdecken Sie offene Positionen in Gesundheitseinrichtungen",
+        search: "Suchen",
+        searchPlaceholder: "Suche nach Titel, Ort oder Stichwort...",
+        resetFilters: "Filter zurücksetzen",
+        noVacanciesFound: "Keine Stellen gefunden",
+        noVacanciesDesc: "Versuchen Sie, Ihre Suchkriterien anzupassen",
+        jobType: "Stellenart",
+        country: "Land",
+        city: "Stadt"
+      },
+      saved: {
+        title: "Gespeicherte & beworbene Stellen",
+        description: "Verfolgen Sie gespeicherte Stellen und Bewerbungen",
+        savedVacancies: "Gespeicherte Stellen",
+        appliedVacancies: "Beworbene Stellen",
+        noSaved: "Keine gespeicherten Stellen",
+        noSavedDesc: "Sie haben noch keine Stellen gespeichert. Speichern Sie Stellen, um sie im Auge zu behalten.",
+        noApplied: "Noch keine Bewerbungen",
+        noAppliedDesc: "Sie haben sich noch nicht auf Stellen beworben. Beginnen Sie mit Bewerbungen, um Ihre nächste Rolle zu finden.",
+        browseVacancies: "Stellen durchsuchen",
+        vacancyRemoved: "Stelle entfernt",
+        vacancyRemovedDesc: "Die Stelle wurde aus Ihrer Liste gespeicherter Stellen entfernt."
+      }
     }
   },
   fr: {
@@ -364,7 +552,101 @@ export const translations = {
     footer: {
       allRightsReserved: "Tous droits réservés",
       termsOfService: "Conditions d'utilisation",
-      privacyPolicy: "Politique de confidentialité"
+      privacyPolicy: "Politique de confidentialité",
+      forProfessionals: "Pour les professionnels",
+      forInstitutions: "Pour les établissements",
+      createProfile: "Créer un profil",
+      findOpportunities: "Trouver des opportunités",
+      resources: "Ressources",
+      postPositions: "Publier des postes",
+      searchProfessionals: "Rechercher des professionnels",
+      company: "Entreprise"
+    },
+    about: {
+      hero: {
+        title: "À propos de Solvia",
+        subtitle: "Transformer le recrutement médical dans le monde entier"
+      },
+      mission: {
+        title: "Notre mission",
+        description: "Connecter des professionnels de santé qualifiés avec des établissements du monde entier, offrir des opportunités de développement de carrière et assurer des soins de santé de qualité."
+      },
+      story: {
+        title: "Notre histoire",
+        description: "Fondée en 2022, Solvia a débuté avec une idée simple : rendre le recrutement médical transparent, efficace et centré sur l'humain. Aujourd'hui, nous servons des milliers de professionnels et d'établissements dans plusieurs pays."
+      },
+      team: {
+        title: "Notre équipe",
+        description: "Nous sommes une équipe dédiée d'experts en santé et en technologie engagés à transformer le recrutement médical."
+      },
+      values: {
+        title: "Nos valeurs",
+        integrity: "Intégrité",
+        integrityDesc: "Nous opérons avec transparence et honnêteté dans toutes nos interactions.",
+        excellence: "Excellence",
+        excellenceDesc: "Nous visons les plus hauts standards dans nos services et opérations.",
+        innovation: "Innovation",
+        innovationDesc: "Nous cherchons continuellement de meilleures façons de servir nos utilisateurs et de résoudre des problèmes.",
+        inclusion: "Inclusion",
+        inclusionDesc: "Nous embrassons la diversité et créons des opportunités égales pour tous."
+      }
+    },
+    dashboard: {
+      title: "Tableau de bord professionnel",
+      subtitle: "Gérez votre profil et consultez les opportunités",
+      profile: {
+        title: "Votre profil",
+        description: "C'est ainsi que les établissements vous verront",
+        createProfile: "Créer un profil",
+        completeProfile: "Compléter votre profil",
+        updateProfile: "Mettre à jour le profil",
+        loading: "Chargement des données du profil...",
+        editProfile: "Modifier votre profil",
+        saveProfile: "Enregistrer le profil",
+        activelySearching: "Recherche active",
+        openToRelocation: "Ouvert à la relocalisation",
+        fspCertified: "Certifié FSP",
+        profileCompletion: "Achèvement du profil",
+        location: "Emplacement",
+        notSpecified: "Non précisé",
+        profession: "Profession",
+        fspCertificate: "Certificat FSP",
+        yes: "Oui",
+        no: "Non",
+        experience: "Expérience",
+        at: "à",
+        present: "Présent",
+        education: "Éducation",
+        in: "en",
+        languages: "Langues",
+        about: "À propos",
+        incompleteProfile: "Votre profil est incomplet. Ajoutez plus d'informations sur vous-même pour attirer des employeurs potentiels."
+      },
+      vacancies: {
+        title: "Postes disponibles",
+        description: "Explorez les postes ouverts dans les établissements de santé",
+        search: "Rechercher",
+        searchPlaceholder: "Recherche par titre, lieu ou mot-clé...",
+        resetFilters: "Réinitialiser les filtres",
+        noVacanciesFound: "Aucun poste trouvé",
+        noVacanciesDesc: "Essayez d'ajuster vos critères de recherche",
+        jobType: "Type d'emploi",
+        country: "Pays",
+        city: "Ville"
+      },
+      saved: {
+        title: "Postes enregistrés et postulés",
+        description: "Suivez les postes que vous avez enregistrés ou auxquels vous avez postulé",
+        savedVacancies: "Postes enregistrés",
+        appliedVacancies: "Postes postulés",
+        noSaved: "Aucun poste enregistré",
+        noSavedDesc: "Vous n'avez pas encore enregistré de postes. Enregistrez des postes pour les suivre.",
+        noApplied: "Aucune candidature encore",
+        noAppliedDesc: "Vous n'avez pas encore postulé à des postes. Commencez à postuler pour trouver votre prochain rôle.",
+        browseVacancies: "Parcourir les postes",
+        vacancyRemoved: "Poste supprimé",
+        vacancyRemovedDesc: "Le poste a été supprimé de votre liste de postes enregistrés."
+      }
     }
   },
   es: {
@@ -486,129 +768,44 @@ export const translations = {
     footer: {
       allRightsReserved: "Todos los derechos reservados",
       termsOfService: "Términos de servicio",
-      privacyPolicy: "Política de privacidad"
-    }
-  },
-  ru: {
-    hero: {
-      title: 'Где встречаются врачи и клиники',
-      subtitle: 'Цифровая платформа, где больницы напрямую встречаются с проверенными врачами и медсестрами',
-      findJob: 'Найти работу',
-      findTalent: 'Найти специалистов'
+      privacyPolicy: "Política de privacidad",
+      forProfessionals: "Para profesionales",
+      forInstitutions: "Para instituciones",
+      createProfile: "Crear perfil",
+      findOpportunities: "Encontrar oportunidades",
+      resources: "Recursos",
+      postPositions: "Publicar posiciones",
+      searchProfessionals: "Buscar profesionales",
+      company: "Empresa"
     },
-    vacancies: {
-      title: 'Вакансии',
-      subtitle: 'Откройте для себя интересные возможности в ведущих медицинских учреждениях',
-      viewAll: 'Посмотреть все',
-      viewMore: 'Показать больше',
-      posted: 'Опубликовано',
-      application: 'заявка',
-      applications: 'заявок',
-      description: 'Описание',
-      keyRequirements: 'Ключевые требования',
-      more: 'ещё',
-      apply: 'Подать заявку',
-      save: 'Сохранить',
-      saved: 'Сохранено'
-    },
-    learning: {
-      title: 'Обучение в Solvia',
-      subtitle: 'Улучшите свою медицинскую карьеру с помощью наших специализированных курсов немецкого языка и подготовки к FSP',
-      germanCourses: {
-        title: 'Курсы медицинского немецкого',
-        subtitle: 'Овладейте медицинским немецким с нашими специализированными курсами',
-        features: [
-          'Медицинский немецкий от начального до продвинутого уровня',
-          'Гибкий график обучения',
-          'Подготовка к Telc Medical'
-        ]
+    about: {
+      hero: {
+        title: "Acerca de Solvia",
+        subtitle: "Transformando la contratación sanitaria en todo el mundo"
       },
-      fspCourses: {
-        title: 'Курсы подготовки к FSP',
-        subtitle: 'Комплексная подготовка к получению медицинской лицензии в Германии',
-        features: [
-          'Полные учебные материалы FSP',
-          'Практические экзамены',
-          'Индивидуальное наставничество'
-        ]
+      mission: {
+        title: "Nuestra misión",
+        description: "Conectar profesionales sanitarios cualificados con instituciones de todo el mundo, proporcionando oportunidades para el crecimiento profesional y asegurando una atención sanitaria de calidad."
       },
-      exploreCourses: 'Изучить курсы'
-    },
-    professionals: {
-      title: 'Специалисты',
-      subtitle: 'Свяжитесь с талантливыми медицинскими работниками, готовыми к новым возможностям',
-      viewAll: 'Посмотреть все',
-      viewMore: 'Показать больше'
-    },
-    cta: {
-      title: 'Готовы изменить подход к найму медицинского персонала?',
-      subtitle: 'Присоединяйтесь к тысячам медицинских работников и учреждений, уже использующих Solvia.',
-      createAccount: 'Создать аккаунт',
-      talkToTeam: 'Связаться с нашей командой'
-    },
-    blog: {
-      title: 'Последние публикации в блоге',
-      subtitle: 'Аналитика, истории и советы для медицинских работников и рекрутеров',
-      viewMore: 'Показать больше',
-      readMore: 'Читать далее'
-    },
-    why: {
-      title: "Почему Solvia?",
-      subtitle: "Узнайте, что делает нашу платформу первым выбором для медицинских специалистов",
-      global: {
-        title: "Международные возможности",
-        description: "Доступ к медицинским должностям в разных странах с комплексной поддержкой при переезде"
+      story: {
+        title: "Nuestra historia",
+        description: "Fundada en 2022, Solvia comenzó con una idea simple: hacer que la contratación sanitaria sea transparente, eficiente y centrada en las personas. Hoy, atendemos a miles de profesionales e instituciones en múltiples países."
       },
-      fast: {
-        title: "Быстрое трудоустройство",
-        description: "Оптимизированный процесс подбора для быстрого поиска подходящей должности"
+      team: {
+        title: "Nuestro equipo",
+        description: "Somos un equipo dedicado de expertos en salud y tecnología comprometidos con la transformación de la contratación médica."
       },
-      support: {
-        title: "Всесторонняя поддержка",
-        description: "Помощь с сертификацией, языковой подготовкой и обустройством в новой стране"
+      values: {
+        title: "Nuestros valores",
+        integrity: "Integridad",
+        integrityDesc: "Operamos con transparencia y honestidad en todas nuestras interacciones.",
+        excellence: "Excelencia",
+        excellenceDesc: "Nos esforzamos por alcanzar los más altos estándares en nuestros servicios y operaciones.",
+        innovation: "Innovación",
+        innovationDesc: "Buscamos continuamente mejores formas de servir a nuestros usuarios y resolver problemas.",
+        inclusion: "Inclusión",
+        inclusionDesc: "Abrazamos la diversidad y creamos igualdad de oportunidades para todos."
       }
     },
-    journey: {
-      title: "Ваш путь с Solvia",
-      subtitle: "Ваш путь к работе в новой стране - простой и понятный",
-      steps: {
-        profile: "Создать профиль",
-        profileDesc: "Создайте свой профессиональный профиль, демонстрирующий ваши навыки, опыт и квалификацию. Выделитесь для потенциальных работодателей с помощью полного профиля.",
-        profileFeature: "Простое создание профиля",
-        apply: "Подать заявку",
-        applyDesc: "Просматривайте медицинские вакансии по всему миру. Подавайте заявки на должности, соответствующие вашим навыкам и стремлениям, всего в несколько кликов.",
-        applyFeature: "Глобальные возможности",
-        start: "Начало работы",
-        startDesc: "После найма мы поддержим ваш переход. От помощи с переездом до поддержки интеграции, мы обеспечиваем плавно�� начало вашей новой роли.",
-        startFeature: "Полная поддержка при переезде"
-      }
-    },
-    insights: {
-      title: "Аналитика Solvia",
-      subtitle: "Комплексные решения для медицинских учреждений",
-      comingSoon: "Скоро"
-    },
-    common: {
-      login: "Войти",
-      signup: "Бесплатная регистрация",
-      applied: "Отправлено",
-      loading: "Загрузка...",
-      noResults: "Результаты не найдены",
-      about: "О нас",
-      contact: "Контакты",
-      vacancies: "Вакансии",
-      professionals: "Специалисты",
-      learning: "Обучение",
-      dashboard: "Панель управления",
-      settings: "Настройки",
-      profile: "Профиль",
-      messages: "Сообщения",
-      logout: "Выйти"
-    },
-    footer: {
-      allRightsReserved: "Все права защищены",
-      termsOfService: "Условия использования",
-      privacyPolicy: "Политика конфиденциальности"
-    }
-  }
-};
+    dashboard: {
+      title: "Panel de profesionales

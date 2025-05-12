@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import MainLayout from '@/components/MainLayout';
@@ -16,6 +17,7 @@ import {
 import SavedAndApplied from '@/components/professional-dashboard/SavedAndApplied';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
+import { useLanguage } from '@/hooks/useLanguage';
 import {
   Pagination,
   PaginationContent,
@@ -33,6 +35,8 @@ const ProfessionalDashboard: React.FC = () => {
   const location = useLocation();
   const { toast } = useToast();
   const { user } = useAuth();
+  const { t } = useLanguage();
+  
   // Get the active tab from location state if provided
   const defaultTab = location.state?.activeTab || 'profile';
   
@@ -233,23 +237,23 @@ const ProfessionalDashboard: React.FC = () => {
       <div className="container py-8">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
           <div>
-            <h1 className="text-3xl font-bold">Professional Dashboard</h1>
-            <p className="text-muted-foreground">Manage your profile and view opportunities</p>
+            <h1 className="text-3xl font-bold">{t?.dashboard?.title || "Professional Dashboard"}</h1>
+            <p className="text-muted-foreground">{t?.dashboard?.subtitle || "Manage your profile and view opportunities"}</p>
           </div>
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
           <TabsList className="grid w-full md:w-auto grid-cols-3">
-            <TabsTrigger value="profile">Profile</TabsTrigger>
-            <TabsTrigger value="vacancies">Vacancies</TabsTrigger>
-            <TabsTrigger value="saved">Saved & Applied</TabsTrigger>
+            <TabsTrigger value="profile">{t?.common?.profile || "Profile"}</TabsTrigger>
+            <TabsTrigger value="vacancies">{t?.common?.vacancies || "Vacancies"}</TabsTrigger>
+            <TabsTrigger value="saved">{t?.dashboard?.saved?.title || "Saved & Applied"}</TabsTrigger>
           </TabsList>
 
           <TabsContent value="profile" className="space-y-6">
             <Card>
               <CardHeader>
-                <CardTitle>Your Profile</CardTitle>
-                <CardDescription>This is how institutions will see you</CardDescription>
+                <CardTitle>{t?.dashboard?.profile?.title || "Your Profile"}</CardTitle>
+                <CardDescription>{t?.dashboard?.profile?.description || "This is how institutions will see you"}</CardDescription>
               </CardHeader>
               <CardContent>
                 {loading ? (
@@ -267,7 +271,7 @@ const ProfessionalDashboard: React.FC = () => {
                       onClick={() => setIsEditProfileOpen(true)}
                       className="mt-4 inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background bg-primary text-primary-foreground hover:bg-primary/90 h-10 py-2 px-4"
                     >
-                      Create Profile
+                      {t?.dashboard?.profile?.createProfile || "Create Profile"}
                     </button>
                   </div>
                 )}
@@ -278,8 +282,8 @@ const ProfessionalDashboard: React.FC = () => {
           <TabsContent value="vacancies" className="space-y-6">
             <Card>
               <CardHeader>
-                <CardTitle>Available Vacancies</CardTitle>
-                <CardDescription>Explore open positions in healthcare institutions</CardDescription>
+                <CardTitle>{t?.dashboard?.vacancies?.title || "Available Vacancies"}</CardTitle>
+                <CardDescription>{t?.dashboard?.vacancies?.description || "Explore open positions in healthcare institutions"}</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
@@ -381,9 +385,9 @@ const ProfessionalDashboard: React.FC = () => {
                     </>
                   ) : (
                     <NoResults
-                      title="No vacancies found"
-                      description="Try adjusting your search criteria"
-                      actionLabel="Reset Search"
+                      title={t?.dashboard?.vacancies?.noVacanciesFound || "No vacancies found"}
+                      description={t?.dashboard?.vacancies?.noVacanciesDesc || "Try adjusting your search criteria"}
+                      actionLabel={t?.dashboard?.vacancies?.resetFilters || "Reset Search"}
                       onAction={resetFilters}
                     />
                   )}
@@ -397,8 +401,8 @@ const ProfessionalDashboard: React.FC = () => {
               <CardHeader>
                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
                   <div>
-                    <CardTitle>Saved & Applied Vacancies</CardTitle>
-                    <CardDescription>Track vacancies you've saved or applied for</CardDescription>
+                    <CardTitle>{t?.dashboard?.saved?.title || "Saved & Applied Vacancies"}</CardTitle>
+                    <CardDescription>{t?.dashboard?.saved?.description || "Track vacancies you've saved or applied for"}</CardDescription>
                   </div>
                 </div>
               </CardHeader>

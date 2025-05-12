@@ -2,6 +2,7 @@
 import React from 'react';
 import { FileText } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useLanguage } from '@/hooks/useLanguage';
 
 interface NoResultsProps {
   title: string;
@@ -16,6 +17,8 @@ const NoResults: React.FC<NoResultsProps> = ({
   actionLabel,
   onAction
 }) => {
+  const { t } = useLanguage();
+  
   return (
     <div className="text-center py-8">
       <FileText className="h-12 w-12 mx-auto text-muted-foreground" />
