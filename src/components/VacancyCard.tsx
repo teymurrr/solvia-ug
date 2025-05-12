@@ -2,10 +2,11 @@ import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { useNavigate } from 'react-router-dom';
 import { Badge } from '@/components/ui/badge';
-import { BookmarkIcon } from '@radix-ui/react-icons';
+import { Bookmark, BookmarkCheck } from 'lucide-react';
 import { Building2, MapPin, Calendar } from 'lucide-react'; 
 import { cn } from '@/lib/utils';
 import { Button } from './ui/button';
+import VacancyHeader from './vacancy/VacancyHeader';
 import VacancyFooter from './vacancy/VacancyFooter';
 import { useLanguage } from '@/hooks/useLanguage';
 import { useToast } from '@/hooks/use-toast';
@@ -132,9 +133,9 @@ const VacancyCard: React.FC<VacancyCardProps> = ({
                 onClick={handleSaveClick}
               >
                 {isSaved ? (
-                  <BookmarkIcon className="h-5 w-5 text-primary" />
+                  <BookmarkCheck className="h-5 w-5 text-primary" />
                 ) : (
-                  <BookmarkIcon className="h-5 w-5" />
+                  <Bookmark className="h-5 w-5" />
                 )}
               </Button>
             )}

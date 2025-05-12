@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import MainLayout from '@/components/MainLayout';
@@ -54,7 +53,6 @@ const ProfessionalDashboard: React.FC = () => {
     setSelectedCity,
     activeFilters,
     savedVacancies,
-    setSavedVacancies,
     appliedVacancies,
     profileData,
     savedTabView,
@@ -68,7 +66,9 @@ const ProfessionalDashboard: React.FC = () => {
     vacancyResults,
     handleSearch,
     loading,
-    removeSavedVacancy
+    toggleSaveVacancy,
+    refreshSavedVacancies,
+    refreshAppliedVacancies
   } = useDashboard();
 
   // Update active tab when location state changes
@@ -95,6 +95,14 @@ const ProfessionalDashboard: React.FC = () => {
       });
     }
   }, [location.state, setSearchQuery, setCurrentPage, toast]);
+
+  useEffect(() => {
+    // Refresh saved and applied vacancies when switching to saved tab
+    if (activeTab === 'saved') {
+      refreshSavedVacancies();
+      refreshAppliedVacancies();
+    }
+  }, [activeTab, refreshSavedVacancies, refreshAppliedVacancies]);
 
   const calculateProfileCompletion = (profile: typeof profileData): number => {
     if (!profile) return 0;
@@ -132,16 +140,6 @@ const ProfessionalDashboard: React.FC = () => {
       default:
         return <Briefcase className="h-4 w-4 mr-2" />;
     }
-  };
-
-  const toggleSaveVacancy = (vacancyId: string) => {
-    setSavedVacancies(prev => {
-      if (prev.includes(vacancyId)) {
-        return prev.filter(id => id !== vacancyId);
-      } else {
-        return [...prev, vacancyId];
-      }
-    });
   };
 
   const totalPages = Math.ceil(vacancyResults.length / ITEMS_PER_PAGE);
@@ -336,6 +334,7 @@ const ProfessionalDashboard: React.FC = () => {
                             isSaved={savedVacancies.includes(vacancy.id)}
                             onSaveToggle={toggleSaveVacancy}
                             isDashboardCard={true}
+                            isApplied={appliedVacancies.includes(vacancy.id)}
                             searchQuery={searchQuery}
                             currentPage={currentPage}
                             selectedFilters={selectedFilters}

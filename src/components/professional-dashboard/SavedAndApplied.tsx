@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+
+import React, { useState, useEffect, useCallback } from 'react';
 import VacancyCard from '@/components/VacancyCard';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -7,6 +8,7 @@ import { Loader2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Vacancy } from '@/hooks/useVacancies';
 import { useLanguage } from '@/hooks/useLanguage';
+import { useDashboard } from '@/components/professional-dashboard';
 
 interface SavedAndAppliedProps {
   userId: string;
@@ -19,9 +21,11 @@ const SavedAndApplied: React.FC<SavedAndAppliedProps> = ({ userId }) => {
   const [appliedVacancies, setAppliedVacancies] = useState<Vacancy[]>([]);
   const { toast } = useToast();
   const { t } = useLanguage();
+  const { toggleSaveVacancy, refreshSavedVacancies: refreshSavedIds } = useDashboard();
 
   const refreshSavedVacancies = async () => {
     try {
+      setIsLoading(true);
       // First get the saved vacancy IDs
       const { data: savedData, error: savedError } = await supabase
         .from('saved_vacancies')
@@ -32,6 +36,7 @@ const SavedAndApplied: React.FC<SavedAndAppliedProps> = ({ userId }) => {
       
       if (savedData.length === 0) {
         setSavedVacancies([]);
+        setIsLoading(false);
         return;
       }
       
@@ -45,6 +50,7 @@ const SavedAndApplied: React.FC<SavedAndAppliedProps> = ({ userId }) => {
       if (vacanciesError) throw vacanciesError;
       
       setSavedVacancies(vacanciesData || []);
+      setIsLoading(false);
     } catch (error) {
       console.error('Error loading saved vacancies:', error);
       toast({
@@ -52,11 +58,13 @@ const SavedAndApplied: React.FC<SavedAndAppliedProps> = ({ userId }) => {
         description: 'Could not load your saved vacancies.',
         variant: 'destructive',
       });
+      setIsLoading(false);
     }
   };
 
   const refreshAppliedVacancies = async () => {
     try {
+      setIsLoading(true);
       // First get the applied vacancy IDs
       const { data: appliedData, error: appliedError } = await supabase
         .from('applied_vacancies')
@@ -67,6 +75,7 @@ const SavedAndApplied: React.FC<SavedAndAppliedProps> = ({ userId }) => {
       
       if (appliedData.length === 0) {
         setAppliedVacancies([]);
+        setIsLoading(false);
         return;
       }
       
@@ -80,6 +89,7 @@ const SavedAndApplied: React.FC<SavedAndAppliedProps> = ({ userId }) => {
       if (vacanciesError) throw vacanciesError;
       
       setAppliedVacancies(vacanciesData || []);
+      setIsLoading(false);
     } catch (error) {
       console.error('Error loading applied vacancies:', error);
       toast({
@@ -87,52 +97,17 @@ const SavedAndApplied: React.FC<SavedAndAppliedProps> = ({ userId }) => {
         description: 'Could not load your applied vacancies.',
         variant: 'destructive',
       });
+      setIsLoading(false);
     }
   };
-
-  const removeSavedVacancy = async (vacancyId: string) => {
-    try {
-      const { error } = await supabase
-        .from('saved_vacancies')
-        .delete()
-        .eq('user_id', userId)
-        .eq('vacancy_id', vacancyId);
-        
-      if (error) throw error;
-      
-      setSavedVacancies(prev => prev.filter(vacancy => vacancy.id !== vacancyId));
-    } catch (error) {
-      console.error('Error removing saved vacancy:', error);
-      throw error;
-    }
-  };
-
-  useEffect(() => {
-    const loadData = async () => {
-      setIsLoading(true);
-      try {
-        await Promise.all([
-          refreshSavedVacancies(),
-          refreshAppliedVacancies()
-        ]);
-      } catch (error) {
-        console.error('Error loading saved/applied vacancies:', error);
-        toast({
-          title: 'Error loading data',
-          description: 'Could not load your saved and applied vacancies.',
-          variant: 'destructive',
-        });
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    loadData();
-  }, [userId]);
 
   const handleToggleSave = async (vacancyId: string) => {
     try {
-      await removeSavedVacancy(vacancyId);
+      await toggleSaveVacancy(vacancyId);
+      // After toggling in the database, refresh the list
+      await refreshSavedVacancies();
+      await refreshSavedIds();
+      
       toast({
         title: t?.dashboard?.saved?.vacancyRemoved || 'Vacancy removed',
         description: t?.dashboard?.saved?.vacancyRemovedDesc || 'The vacancy has been removed from your saved list.',
@@ -146,6 +121,19 @@ const SavedAndApplied: React.FC<SavedAndAppliedProps> = ({ userId }) => {
       });
     }
   };
+
+  useEffect(() => {
+    if (userId) {
+      const loadData = async () => {
+        if (activeTab === 'saved') {
+          await refreshSavedVacancies();
+        } else {
+          await refreshAppliedVacancies();
+        }
+      };
+      loadData();
+    }
+  }, [userId, activeTab]);
 
   // Loading state
   if (isLoading) {
@@ -206,7 +194,7 @@ const SavedAndApplied: React.FC<SavedAndAppliedProps> = ({ userId }) => {
                   createdAt={vacancy.posted_date ? new Date(vacancy.posted_date).toLocaleDateString() : undefined}
                   isDashboardCard={true}
                   isSaved={true}
-                  onSaveToggle={() => handleToggleSave(vacancy.id)}
+                  onSaveToggle={handleToggleSave}
                   showSaveOption={true}
                 />
               ))}
