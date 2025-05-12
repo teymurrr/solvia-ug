@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Briefcase, Plus, Edit, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -24,7 +25,7 @@ interface Application {
   isExpanded: boolean;
 }
 
-interface VacanciesTabProps {
+export interface VacanciesTabProps {
   vacancies: any[];
   onAddVacancy: () => void;
   onEditVacancy: (vacancy: any) => void;

@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
@@ -41,6 +40,7 @@ const VacancyApply = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [vacancy, setVacancy] = useState<Vacancy | null>(null);
   const [loadingVacancy, setLoadingVacancy] = useState(true);
+  const [redirected, setRedirected] = useState(false);
   
   // Check if user came from the dashboard
   const fromDashboard = location.state?.fromDashboard || false;
@@ -48,6 +48,17 @@ const VacancyApply = () => {
   const searchQuery = location.state?.searchQuery || '';
   const currentPage = location.state?.currentPage || 1;
   const selectedFilters = location.state?.selectedFilters || {};
+
+  const form = useForm<ApplicationFormValues>({
+    resolver: zodResolver(applicationSchema),
+    defaultValues: {
+      firstName: '',
+      lastName: '',
+      email: '',
+      phone: '',
+      coverLetter: '',
+    },
+  });
 
   // Fetch the vacancy details from Supabase
   useEffect(() => {
@@ -77,17 +88,6 @@ const VacancyApply = () => {
     fetchVacancy();
   }, [id, toast]);
 
-  const form = useForm<ApplicationFormValues>({
-    resolver: zodResolver(applicationSchema),
-    defaultValues: {
-      firstName: profileData?.firstName || '',
-      lastName: profileData?.lastName || '',
-      email: profileData?.email || '',
-      phone: '', // Default to empty string since phone might not exist in profileData
-      coverLetter: '',
-    },
-  });
-
   // Update form values when profile data loads
   React.useEffect(() => {
     if (profileData) {
@@ -100,6 +100,22 @@ const VacancyApply = () => {
       });
     }
   }, [profileData, form]);
+
+  // Handle external application link - only runs once when vacancy is loaded
+  useEffect(() => {
+    if (vacancy?.application_link && !redirected) {
+      setRedirected(true);
+      window.open(vacancy.application_link, '_blank');
+      // Redirect back to vacancies list after opening external link
+      navigate('/dashboard/professional', {
+        state: { 
+          activeTab: 'vacancies',
+          externalApplication: true,
+          vacancyTitle: vacancy.title
+        }
+      });
+    }
+  }, [vacancy, redirected, navigate]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -169,21 +185,17 @@ const VacancyApply = () => {
       });
       
       // Navigate back to the dashboard if that's where the user came from,
-      // otherwise go to the vacancies page
-      if (fromDashboard) {
-        navigate('/dashboard/professional', { 
-          state: { 
-            activeTab: 'saved',
-            savedTabView: 'applied',
-            searchQuery,
-            currentPage,
-            selectedFilters,
-            applicationSubmitted: true // Flag to show a success message
-          }
-        });
-      } else {
-        navigate('/vacancies');
-      }
+      // otherwise go to the dashboard vacancies tab
+      navigate('/dashboard/professional', { 
+        state: { 
+          activeTab: 'saved',
+          savedTabView: 'applied',
+          searchQuery,
+          currentPage,
+          selectedFilters,
+          applicationSubmitted: true // Flag to show a success message
+        }
+      });
     } catch (error: any) {
       toast({
         title: "Error",
@@ -205,22 +217,16 @@ const VacancyApply = () => {
     );
   }
 
-  // Redirect to external application if provided
-  useEffect(() => {
-    if (vacancy?.application_link) {
-      window.open(vacancy.application_link, '_blank');
-      // Redirect back to vacancies list after opening external link
-      navigate('/vacancies', {
-        state: { 
-          externalApplication: true,
-          vacancyTitle: vacancy.title
-        }
-      });
-    }
-  }, [vacancy, navigate]);
-
+  // Skip rendering if redirect is happening
   if (vacancy?.application_link) {
-    return null; // Don't render anything as we're redirecting
+    return (
+      <MainLayout>
+        <div className="container py-8 flex justify-center items-center min-h-[500px]">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+          <p className="ml-4">Redirecting to external application page...</p>
+        </div>
+      </MainLayout>
+    );
   }
 
   return (

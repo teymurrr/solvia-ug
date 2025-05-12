@@ -22,10 +22,8 @@ const VacancyHeader: React.FC<VacancyHeaderProps> = ({
   isSaved = false,
   onSaveToggle,
 }) => {
-  // Create a handler that accepts the click event but calls onSaveToggle with the id
-  const handleSaveToggle = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
+  // Create a handler that calls onSaveToggle with the id
+  const handleSaveToggle = () => {
     if (onSaveToggle) {
       onSaveToggle(id);
     }

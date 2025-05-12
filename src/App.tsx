@@ -56,7 +56,7 @@ function App() {
             <Route path="/dashboard/professional" element={<ProfessionalDashboard />} />
             <Route path="/professionals" element={<Professionals />} />
             
-            {/* Vacancy routes - removed Vacancies page */}
+            {/* Vacancy routes */}
             <Route path="/vacancies/:id" element={<VacancyDetail />} />
             <Route path="/vacancies/:id/apply" element={<VacancyApply />} />
             
