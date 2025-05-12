@@ -2,7 +2,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Globe, GraduationCap } from 'lucide-react';
+import { ArrowRight, Globe, GraduationCap, BookOpen } from 'lucide-react';
 
 const LearningSection = () => {
   return (
