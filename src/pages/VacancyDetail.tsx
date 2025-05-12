@@ -1,16 +1,11 @@
-
 import React, { useState } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
 import MainLayout from '@/components/MainLayout';
-import { 
-  VacancyHeader, 
-  VacancyMetaInfo, 
-  VacancyDescription,
-  VacancySidebar,
-  formatDate,
-  calculateDaysRemaining
-} from '@/components/vacancy-detail';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Briefcase, MapPin, Calendar, Building, Medal, Clock, ArrowLeft, Heart } from 'lucide-react';
 
 // This would come from an API in a real application
 const getVacancyById = (id: string) => {
@@ -63,25 +58,75 @@ const VacancyDetail = () => {
   const [isSaved, setIsSaved] = useState(false);
   
   // Enhanced navigation state tracking
+  const fromDashboard = location.state?.fromDashboard || false;
+  const fromLandingPage = location.state?.fromLandingPage || false;
   const searchQuery = location.state?.searchQuery || '';
   const currentPage = location.state?.currentPage || 1;
   const selectedFilters = location.state?.selectedFilters || {};
   
-  // Handle navigation back to dashboard
+  // Enhanced navigation that respects where the user came from
   const handleGoBack = () => {
-    // Always go back to the dashboard with the vacancies tab active
-    navigate('/dashboard/professional', { 
-      state: { 
-        activeTab: 'vacancies',
-        searchQuery,
-        currentPage,
-        selectedFilters
-      }
-    });
+    if (fromDashboard) {
+      // Go back to the dashboard with the vacancies tab active
+      navigate('/dashboard/professional', { 
+        state: { 
+          activeTab: 'vacancies',
+          searchQuery,
+          currentPage,
+          selectedFilters
+        }
+      });
+    } else if (fromLandingPage) {
+      // Go back to the landing page
+      navigate('/', {
+        state: { 
+          searchQuery,
+          currentPage,
+          selectedFilters
+        }
+      });
+    } else {
+      // Otherwise, go back to the general vacancies page
+      navigate('/vacancies');
+    }
+  };
+  
+  // Format dates
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return new Intl.DateTimeFormat('en-US', { 
+      year: 'numeric', 
+      month: 'short', 
+      day: 'numeric' 
+    }).format(date);
   };
   
   // Calculate days remaining until deadline
-  const daysRemaining = calculateDaysRemaining(vacancy.applicationDeadline);
+  const calculateDaysRemaining = () => {
+    const today = new Date();
+    const deadline = new Date(vacancy.applicationDeadline);
+    const diffTime = deadline.getTime() - today.getTime();
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays;
+  };
+  
+  const daysRemaining = calculateDaysRemaining();
+  
+  // Get badge variant based on job type
+  const getJobTypeBadgeVariant = (type: string) => {
+    switch(type) {
+      case 'Full-time':
+        return 'default';
+      case 'Part-time':
+        return 'secondary';
+      case 'Internship':
+        return 'outline';
+      case 'Volunteer':
+        return 'destructive';
+      default:
+        return 'default';
+    }
+  };
 
   // Handle save/unsave vacancy
   const handleSaveVacancy = () => {
@@ -100,11 +145,12 @@ const VacancyDetail = () => {
     }
   };
 
-  // Handle apply button click
+  // Handle apply button click - preserve source origin and search state when applying
   const handleApply = () => {
     navigate(`/vacancies/${id}/apply`, { 
       state: { 
-        fromDashboard: true,
+        fromDashboard,
+        fromLandingPage,
         searchQuery,
         currentPage,
         selectedFilters
@@ -115,46 +161,137 @@ const VacancyDetail = () => {
   return (
     <MainLayout>
       <div className="container mx-auto px-4 py-8">
-        <VacancyHeader
-          title={vacancy.title}
-          institution={vacancy.institution}
-          jobType={vacancy.jobType}
-          onGoBack={handleGoBack}
-        />
+        <button 
+          onClick={handleGoBack} 
+          className="inline-flex items-center text-primary hover:underline mb-6"
+        >
+          <ArrowLeft className="h-4 w-4 mr-1" />
+          {fromDashboard ? 'Back to Dashboard' : fromLandingPage ? 'Back to Home' : 'Back to Vacancies'}
+        </button>
         
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Main content */}
           <div className="lg:col-span-2 space-y-8">
-            <VacancyMetaInfo
-              location={vacancy.location}
-              profession={vacancy.profession}
-              specialty={vacancy.specialty}
-              workHours={vacancy.workHours}
-              applicationDeadline={vacancy.applicationDeadline}
-              daysRemaining={daysRemaining}
-              formatDate={formatDate}
-            />
+            {/* Header */}
+            <div>
+              <div className="flex flex-wrap justify-between items-start gap-2 mb-4">
+                <div>
+                  <h1 className="text-3xl font-bold">{vacancy.title}</h1>
+                  <div className="flex items-center text-muted-foreground mt-1">
+                    <Building className="h-4 w-4 mr-1" />
+                    <span className="text-lg">{vacancy.institution}</span>
+                  </div>
+                </div>
+                <Badge variant={getJobTypeBadgeVariant(vacancy.jobType)} className="whitespace-nowrap">
+                  {vacancy.jobType}
+                </Badge>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-y-2 gap-x-4 my-6">
+                <div className="flex items-center text-muted-foreground">
+                  <MapPin className="h-4 w-4 mr-2" />
+                  <span>{vacancy.location}</span>
+                </div>
+                <div className="flex items-center text-muted-foreground">
+                  <Briefcase className="h-4 w-4 mr-2" />
+                  <span>{vacancy.profession} • {vacancy.specialty}</span>
+                </div>
+                <div className="flex items-center text-muted-foreground">
+                  <Clock className="h-4 w-4 mr-2" />
+                  <span>{vacancy.workHours}</span>
+                </div>
+                <div className="flex items-center text-muted-foreground">
+                  <Calendar className="h-4 w-4 mr-2" />
+                  <span className={daysRemaining < 7 ? 'text-destructive font-medium' : ''}>
+                    {daysRemaining <= 0 
+                      ? 'Deadline passed' 
+                      : `Deadline: ${formatDate(vacancy.applicationDeadline)} (${daysRemaining} days left)`}
+                  </span>
+                </div>
+              </div>
+            </div>
             
-            <VacancyDescription
-              description={vacancy.description}
-              responsibilities={vacancy.responsibilities}
-              requirements={vacancy.requirements}
-              benefits={vacancy.benefits}
-            />
+            {/* Description */}
+            <div>
+              <h2 className="text-xl font-semibold mb-3">Description</h2>
+              <p className="text-muted-foreground">{vacancy.description}</p>
+            </div>
+            
+            {/* Responsibilities */}
+            <div>
+              <h2 className="text-xl font-semibold mb-3">Responsibilities</h2>
+              <ul className="list-disc pl-5 space-y-1 text-muted-foreground">
+                {vacancy.responsibilities.map((responsibility, index) => (
+                  <li key={index}>{responsibility}</li>
+                ))}
+              </ul>
+            </div>
+            
+            {/* Requirements */}
+            <div>
+              <h2 className="text-xl font-semibold mb-3">Requirements</h2>
+              <ul className="list-disc pl-5 space-y-1 text-muted-foreground">
+                {vacancy.requirements.map((requirement, index) => (
+                  <li key={index}>{requirement}</li>
+                ))}
+              </ul>
+            </div>
+            
+            {/* Benefits */}
+            <div>
+              <h2 className="text-xl font-semibold mb-3">Benefits</h2>
+              <ul className="list-disc pl-5 space-y-1 text-muted-foreground">
+                {vacancy.benefits.map((benefit, index) => (
+                  <li key={index}>{benefit}</li>
+                ))}
+              </ul>
+            </div>
           </div>
           
           {/* Sidebar */}
           <div>
-            <VacancySidebar
-              salary={vacancy.salary}
-              postedDate={vacancy.postedDate}
-              applicationDeadline={vacancy.applicationDeadline}
-              daysRemaining={daysRemaining}
-              isSaved={isSaved}
-              formatDate={formatDate}
-              onApply={handleApply}
-              onSaveVacancy={handleSaveVacancy}
-            />
+            <Card className="sticky top-20">
+              <CardContent className="space-y-5 pt-6">
+                {/* Salary */}
+                <div>
+                  <h3 className="text-lg font-semibold mb-1">Salary</h3>
+                  <p className="text-muted-foreground">{vacancy.salary}</p>
+                </div>
+                
+                {/* Posted Date */}
+                <div>
+                  <h3 className="text-lg font-semibold mb-1">Posted On</h3>
+                  <p className="text-muted-foreground">{formatDate(vacancy.postedDate)}</p>
+                </div>
+                
+                {/* Application Deadline */}
+                <div>
+                  <h3 className="text-lg font-semibold mb-1">Application Deadline</h3>
+                  <p className={`${daysRemaining < 7 ? 'text-destructive font-medium' : 'text-muted-foreground'}`}>
+                    {formatDate(vacancy.applicationDeadline)}
+                    <br />
+                    {daysRemaining <= 0 
+                      ? 'Deadline passed' 
+                      : `${daysRemaining} days remaining`}
+                  </p>
+                </div>
+                
+                {/* Apply Button */}
+                <Button className="w-full mt-4" size="lg" onClick={handleApply}>
+                  Apply Now
+                </Button>
+                
+                {/* Save Button - Updated with heart icon */}
+                <Button 
+                  variant="outline" 
+                  className="w-full gap-2" 
+                  onClick={handleSaveVacancy}
+                >
+                  <Heart className={`h-4 w-4 ${isSaved ? 'fill-primary text-primary' : ''}`} />
+                  {isSaved ? 'Saved' : 'Save for Later'}
+                </Button>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </div>

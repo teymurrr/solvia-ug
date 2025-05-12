@@ -7,7 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { getJobTypeBadgeVariant } from '@/components/vacancy/utils';
 import { Skeleton } from '@/components/ui/skeleton';
 
-export interface VacanciesTabProps {
+interface VacanciesTabProps {
   vacancies: any[];
   onAddVacancy: () => void;
   onEditVacancy: (vacancy: any) => void;

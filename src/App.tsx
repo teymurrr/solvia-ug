@@ -13,6 +13,7 @@ import Signup from '@/pages/Signup';
 import InstitutionSignup from '@/pages/InstitutionSignup';
 import ProfessionalDashboard from '@/pages/ProfessionalDashboard';
 import ProfessionalSignup from '@/pages/ProfessionalSignup';
+import Vacancies from '@/pages/Vacancies';
 import VacancyDetail from '@/pages/VacancyDetail';
 import VacancyApply from '@/pages/VacancyApply';
 import Professionals from '@/pages/Professionals';
@@ -57,6 +58,7 @@ function App() {
             <Route path="/professionals" element={<Professionals />} />
             
             {/* Vacancy routes */}
+            <Route path="/vacancies" element={<Vacancies />} />
             <Route path="/vacancies/:id" element={<VacancyDetail />} />
             <Route path="/vacancies/:id/apply" element={<VacancyApply />} />
             

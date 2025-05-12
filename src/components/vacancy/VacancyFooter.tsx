@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { FileCheck } from 'lucide-react';
-import useDashboard from '@/components/professional-dashboard/useDashboard';
 
 interface VacancyFooterProps {
   id: string;
@@ -35,10 +34,8 @@ const VacancyFooter: React.FC<VacancyFooterProps> = ({
 }) => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  // Import apply function from useDashboard
-  const { applyToVacancy } = useDashboard();
 
-  const handleApply = async () => {
+  const handleApply = () => {
     // If already applied, don't do anything
     if (isApplied) {
       toast({
@@ -63,28 +60,16 @@ const VacancyFooter: React.FC<VacancyFooterProps> = ({
       // Open external application link in a new tab
       window.open(applicationLink, '_blank');
     } else {
-      // Try to apply directly if logged in
-      const success = await applyToVacancy(id);
-      
-      if (success) {
-        // If successfully applied, show toast and redirect to dashboard
-        navigate('/dashboard/professional', {
-          state: { 
-            activeTab: 'vacancies', 
-            applicationSubmitted: true 
-          }
-        });
-      } else {
-        // Navigate to internal application page with state to track origin
-        navigate(`/vacancies/${id}/apply`, {
-          state: { 
-            fromDashboard: true,
-            searchQuery,
-            currentPage,
-            selectedFilters
-          }
-        });
-      }
+      // Navigate to internal application page with state to track origin
+      navigate(`/vacancies/${id}/apply`, {
+        state: { 
+          fromDashboard,
+          fromLandingPage,
+          searchQuery,
+          currentPage,
+          selectedFilters
+        }
+      });
     }
   };
 
@@ -99,10 +84,10 @@ const VacancyFooter: React.FC<VacancyFooterProps> = ({
       return;
     }
     
-    // Always navigate with fromDashboard=true to ensure proper back navigation
     navigate(`/vacancies/${id}`, {
       state: { 
-        fromDashboard: true,
+        fromDashboard,
+        fromLandingPage,
         searchQuery,
         currentPage,
         selectedFilters

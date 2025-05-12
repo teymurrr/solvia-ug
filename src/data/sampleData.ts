@@ -1,3 +1,93 @@
-
-// This file is kept empty after removing sample vacancies
-export const sampleVacancies = [];
+export const sampleVacancies = [
+  {
+    id: '1',
+    title: 'Senior Cardiologist',
+    institution: 'General Hospital, New York',
+    location: 'New York, USA',
+    description: 'Looking for an experienced cardiologist to join our team. Must have excellent diagnostic skills and patient care abilities.',
+    jobType: 'Full-time',
+    specialty: 'Cardiology',
+    profession: 'Doctor',
+    postedDate: '2025-03-15',
+    applicationDeadline: '2025-05-15',
+    requirements: ['English required', '5+ years experience', 'Board certification']
+  },
+  {
+    id: '2',
+    title: 'Pediatric Nurse',
+    institution: 'Children\'s Hospital, Boston',
+    location: 'Boston, USA',
+    description: 'Seeking pediatric nurse with experience in intensive care unit. Compassionate care for young patients required.',
+    jobType: 'Part-time',
+    specialty: 'Pediatrics',
+    profession: 'Nurse',
+    postedDate: '2025-03-10',
+    applicationDeadline: '2025-04-30',
+    requirements: ['Pediatric certification', '3+ years experience', 'BLS certification']
+  },
+  {
+    id: '3',
+    title: 'Neurologist',
+    institution: 'Medical Center, Chicago',
+    location: 'Chicago, USA',
+    description: 'Neurologist needed for busy medical center. Will be responsible for patient diagnosis and treatment plans.',
+    jobType: 'Full-time',
+    specialty: 'Neurology',
+    profession: 'Doctor',
+    postedDate: '2025-03-05',
+    applicationDeadline: '2025-05-05',
+    requirements: ['Board certified', '7+ years experience', 'Research experience preferred']
+  },
+  {
+    id: '4',
+    title: 'Emergency Room Physician',
+    institution: 'City Hospital, Los Angeles',
+    location: 'Los Angeles, USA',
+    description: 'ER doctor needed for high-volume emergency department. Must excel in fast-paced environment.',
+    jobType: 'Full-time',
+    specialty: 'Emergency Medicine',
+    profession: 'Doctor',
+    postedDate: '2025-02-28',
+    applicationDeadline: '2025-04-28',
+    requirements: ['ER certification', '5+ years experience', 'ACLS certification']
+  },
+  {
+    id: '5',
+    title: 'Medical Technician',
+    institution: 'Diagnostic Center, Dallas',
+    location: 'Dallas, USA',
+    description: 'Medical lab tech needed for diagnostic testing. Experience with advanced equipment required.',
+    jobType: 'Full-time',
+    specialty: 'Laboratory Science',
+    profession: 'Technician',
+    postedDate: '2025-03-01',
+    applicationDeadline: '2025-04-15',
+    requirements: ['Lab certification', '2+ years experience', 'Experience with PCR testing']
+  },
+  {
+    id: '6',
+    title: 'Volunteer Nurse',
+    institution: 'Community Clinic, Miami',
+    location: 'Miami, USA',
+    description: 'Looking for volunteer nurses to help at our community clinic serving underprivileged populations.',
+    jobType: 'Volunteer',
+    specialty: 'General Nursing',
+    profession: 'Nurse',
+    postedDate: '2025-03-08',
+    applicationDeadline: '2025-06-08',
+    requirements: ['Nursing license', 'Compassionate attitude', 'Bilingual (English/Spanish) preferred']
+  },
+  {
+    id: '7',
+    title: 'Medical Intern',
+    institution: 'University Hospital, Seattle',
+    location: 'Seattle, USA',
+    description: 'Medical internship position available for recent graduates looking to gain hands-on experience.',
+    jobType: 'Internship',
+    specialty: 'General Medicine',
+    profession: 'Doctor',
+    postedDate: '2025-03-12',
+    applicationDeadline: '2025-05-01',
+    requirements: ['Medical degree', 'Recent graduate', 'Strong academic record']
+  },
+];
