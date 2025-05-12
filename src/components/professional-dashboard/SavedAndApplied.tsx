@@ -6,7 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { supabase } from '@/integrations/supabase/client';
 import { Loader2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import useDashboard from './useDashboard'; // Fixed import
+import { Vacancy } from '@/hooks/useVacancies';
 
 interface SavedAndAppliedProps {
   userId: string;
@@ -15,14 +15,96 @@ interface SavedAndAppliedProps {
 const SavedAndApplied: React.FC<SavedAndAppliedProps> = ({ userId }) => {
   const [activeTab, setActiveTab] = useState<'saved' | 'applied'>('saved');
   const [isLoading, setIsLoading] = useState(true);
+  const [savedVacancies, setSavedVacancies] = useState<Vacancy[]>([]);
+  const [appliedVacancies, setAppliedVacancies] = useState<Vacancy[]>([]);
   const { toast } = useToast();
-  const { 
-    savedVacancies, 
-    appliedVacancies, 
-    removeSavedVacancy,
-    refreshSavedVacancies,
-    refreshAppliedVacancies
-  } = useDashboard(userId);
+
+  const refreshSavedVacancies = async () => {
+    try {
+      // First get the saved vacancy IDs
+      const { data: savedData, error: savedError } = await supabase
+        .from('saved_vacancies')
+        .select('vacancy_id')
+        .eq('user_id', userId);
+      
+      if (savedError) throw savedError;
+      
+      if (savedData.length === 0) {
+        setSavedVacancies([]);
+        return;
+      }
+      
+      // Get the actual vacancy details
+      const savedIds = savedData.map(item => item.vacancy_id);
+      const { data: vacanciesData, error: vacanciesError } = await supabase
+        .from('vacancies')
+        .select('*')
+        .in('id', savedIds);
+        
+      if (vacanciesError) throw vacanciesError;
+      
+      setSavedVacancies(vacanciesData || []);
+    } catch (error) {
+      console.error('Error loading saved vacancies:', error);
+      toast({
+        title: 'Error',
+        description: 'Could not load your saved vacancies.',
+        variant: 'destructive',
+      });
+    }
+  };
+
+  const refreshAppliedVacancies = async () => {
+    try {
+      // First get the applied vacancy IDs
+      const { data: appliedData, error: appliedError } = await supabase
+        .from('applied_vacancies')
+        .select('vacancy_id')
+        .eq('user_id', userId);
+      
+      if (appliedError) throw appliedError;
+      
+      if (appliedData.length === 0) {
+        setAppliedVacancies([]);
+        return;
+      }
+      
+      // Get the actual vacancy details
+      const appliedIds = appliedData.map(item => item.vacancy_id);
+      const { data: vacanciesData, error: vacanciesError } = await supabase
+        .from('vacancies')
+        .select('*')
+        .in('id', appliedIds);
+        
+      if (vacanciesError) throw vacanciesError;
+      
+      setAppliedVacancies(vacanciesData || []);
+    } catch (error) {
+      console.error('Error loading applied vacancies:', error);
+      toast({
+        title: 'Error',
+        description: 'Could not load your applied vacancies.',
+        variant: 'destructive',
+      });
+    }
+  };
+
+  const removeSavedVacancy = async (vacancyId: string) => {
+    try {
+      const { error } = await supabase
+        .from('saved_vacancies')
+        .delete()
+        .eq('user_id', userId)
+        .eq('vacancy_id', vacancyId);
+        
+      if (error) throw error;
+      
+      setSavedVacancies(prev => prev.filter(vacancy => vacancy.id !== vacancyId));
+    } catch (error) {
+      console.error('Error removing saved vacancy:', error);
+      throw error;
+    }
+  };
 
   useEffect(() => {
     const loadData = async () => {
@@ -45,7 +127,7 @@ const SavedAndApplied: React.FC<SavedAndAppliedProps> = ({ userId }) => {
     };
 
     loadData();
-  }, [userId, refreshSavedVacancies, refreshAppliedVacancies, toast]);
+  }, [userId]);
 
   const handleToggleSave = async (vacancyId: string) => {
     try {
@@ -113,7 +195,7 @@ const SavedAndApplied: React.FC<SavedAndAppliedProps> = ({ userId }) => {
                   createdAt={vacancy.created_at ? new Date(vacancy.created_at).toLocaleDateString() : undefined}
                   isDashboardCard={true}
                   isSaved={true}
-                  onSaveToggle={handleToggleSave}
+                  onSaveToggle={() => handleToggleSave(vacancy.id)}
                   showSaveOption={true}
                 />
               ))}

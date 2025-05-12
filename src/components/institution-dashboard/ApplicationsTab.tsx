@@ -84,18 +84,16 @@ const ApplicationsTab = () => {
             console.error('Error fetching professional profile:', profileError);
           }
           
-          // Get user email
-          const { data: userData, error: userError } = await supabase
-            .from('auth.users')
-            .select('email')
-            .eq('id', app.user_id)
-            .single();
-            
+          // Get user email - we cannot query auth.users directly from client
+          // Instead, we'll either use what we have or provide a placeholder
+          let email = 'no-email@example.com';
+          // In a real app, you might use a function or API endpoint to get the email securely
+          
           const professional: ProfessionalData = {
             first_name: profileData?.first_name || 'Unknown',
             last_name: profileData?.last_name || 'User',
             specialty: profileData?.specialty || 'Not specified',
-            email: userData?.email || 'no-email@example.com'
+            email: email
           };
           
           return {

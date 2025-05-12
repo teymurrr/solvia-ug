@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
@@ -27,7 +26,7 @@ export const defaultProfileData: ProfileFormValues = {
   fspCertificateFile: "",
 };
 
-export default function useDashboard() {
+export default function useDashboard(userId?: string) {
   const { toast } = useToast();
   const { session, user } = useAuth();
   const navigate = useNavigate();
@@ -52,13 +51,15 @@ export default function useDashboard() {
 
   // Load saved vacancies from Supabase
   const fetchSavedVacancies = useCallback(async () => {
-    if (!session?.user) return;
+    if (!session?.user && !userId) return [];
     
     try {
+      const userIdToUse = userId || session?.user.id;
+      
       const { data, error } = await supabase
         .from('saved_vacancies')
         .select('vacancy_id')
-        .eq('user_id', session.user.id);
+        .eq('user_id', userIdToUse);
         
       if (error) {
         throw error;
@@ -72,17 +73,19 @@ export default function useDashboard() {
       console.error("Error fetching saved vacancies:", error);
       return [];
     }
-  }, [session]);
+  }, [session, userId]);
   
   // Fetch applied vacancies
   const fetchAppliedVacancies = useCallback(async () => {
-    if (!session?.user) return;
+    if (!session?.user && !userId) return [];
     
     try {
+      const userIdToUse = userId || session?.user.id;
+      
       const { data, error } = await supabase
         .from('applied_vacancies')
         .select('vacancy_id')
-        .eq('user_id', session.user.id);
+        .eq('user_id', userIdToUse);
         
       if (error) {
         throw error;
@@ -96,7 +99,37 @@ export default function useDashboard() {
       console.error("Error fetching applied vacancies:", error);
       return [];
     }
-  }, [session]);
+  }, [session, userId]);
+
+  // Add removeSavedVacancy function
+  const removeSavedVacancy = useCallback(async (vacancyId: string) => {
+    if (!session?.user && !userId) {
+      toast({
+        title: "Authentication Required",
+        description: "Please log in to manage saved vacancies.",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    try {
+      const userIdToUse = userId || session?.user.id;
+      
+      const { error } = await supabase
+        .from('saved_vacancies')
+        .delete()
+        .eq('user_id', userIdToUse)
+        .eq('vacancy_id', vacancyId);
+        
+      if (error) throw error;
+      
+      setSavedVacancies(prev => prev.filter(id => id !== vacancyId));
+      
+    } catch (error: any) {
+      console.error("Error removing saved vacancy:", error);
+      throw error;
+    }
+  }, [session, userId, toast]);
 
   useEffect(() => {
     const loadData = async () => {
@@ -108,10 +141,10 @@ export default function useDashboard() {
       setLoading(false);
     };
     
-    if (session?.user) {
+    if (session?.user || userId) {
       loadData();
     }
-  }, [session, fetchSavedVacancies, fetchAppliedVacancies]);
+  }, [session, fetchSavedVacancies, fetchAppliedVacancies, userId]);
 
   // Update profile data when it changes in the hook
   useEffect(() => {
@@ -342,6 +375,7 @@ export default function useDashboard() {
     toggleSaveVacancy,
     applyToVacancy,
     refreshSavedVacancies: fetchSavedVacancies,
-    refreshAppliedVacancies: fetchAppliedVacancies
+    refreshAppliedVacancies: fetchAppliedVacancies,
+    removeSavedVacancy // Added this function
   };
 }

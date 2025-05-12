@@ -15,6 +15,7 @@ import {
 } from '@/components/professional-dashboard';
 import SavedAndApplied from '@/components/professional-dashboard/SavedAndApplied';
 import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/contexts/AuthContext';
 import {
   Pagination,
   PaginationContent,
@@ -31,6 +32,7 @@ const ITEMS_PER_PAGE = 3;
 const ProfessionalDashboard: React.FC = () => {
   const location = useLocation();
   const { toast } = useToast();
+  const { user } = useAuth();
   // Get the active tab from location state if provided
   const defaultTab = location.state?.activeTab || 'profile';
   
@@ -62,6 +64,7 @@ const ProfessionalDashboard: React.FC = () => {
     vacancyResults,
     handleSearch,
     loading,
+    removeSavedVacancy
   } = useDashboard();
 
   // Update active tab when location state changes
@@ -413,13 +416,8 @@ const ProfessionalDashboard: React.FC = () => {
                     ))}
                   </div>
                 ) : (
-                  <SavedAndApplied
-                    savedTabView={savedTabView}
-                    setSavedTabView={setSavedTabView}
-                    savedVacancies={savedVacancies}
-                    appliedVacancies={appliedVacancies}
-                    toggleSaveVacancy={toggleSaveVacancy}
-                    availableVacancies={vacancyResults}
+                  <SavedAndApplied 
+                    userId={user?.id || ''}
                   />
                 )}
               </CardContent>

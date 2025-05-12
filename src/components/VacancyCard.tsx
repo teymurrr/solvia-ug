@@ -36,6 +36,9 @@ export interface VacancyCardProps {
   fromLandingPage?: boolean;
   showDescription?: boolean;
   showRequirements?: boolean;
+  searchQuery?: string;
+  currentPage?: number;
+  selectedFilters?: any;
 }
 
 const VacancyCard: React.FC<VacancyCardProps> = ({
@@ -63,6 +66,10 @@ const VacancyCard: React.FC<VacancyCardProps> = ({
   showRequirements = false,
   description,
   requirements,
+  // Added these props but they're not used internally
+  searchQuery,
+  currentPage,
+  selectedFilters,
 }) => {
   const handleSaveClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
