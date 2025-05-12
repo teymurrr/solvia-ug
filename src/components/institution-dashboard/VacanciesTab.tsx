@@ -7,12 +7,15 @@ import { Badge } from '@/components/ui/badge';
 import { getJobTypeBadgeVariant } from '@/components/vacancy/utils';
 import { Skeleton } from '@/components/ui/skeleton';
 
-interface VacanciesTabProps {
+export interface VacanciesTabProps {
   vacancies: any[];
   onAddVacancy: () => void;
   onEditVacancy: (vacancy: any) => void;
   onDeleteVacancy: (id: string | number) => void;
   loading?: boolean;
+  title?: string;
+  description?: string;
+  showAddButton?: boolean;
 }
 
 const VacanciesTab: React.FC<VacanciesTabProps> = ({ 
@@ -20,14 +23,17 @@ const VacanciesTab: React.FC<VacanciesTabProps> = ({
   onAddVacancy, 
   onEditVacancy,
   onDeleteVacancy,
-  loading = false
+  loading = false,
+  title = "Your Posted Vacancies",
+  description = "Manage job listings and view applications",
+  showAddButton = true
 }) => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Your Posted Vacancies</CardTitle>
+        <CardTitle>{title}</CardTitle>
         <CardDescription>
-          Manage job listings and view applications
+          {description}
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -90,10 +96,12 @@ const VacanciesTab: React.FC<VacanciesTabProps> = ({
                 </div>
               </div>
             ))}
-            <Button onClick={onAddVacancy} className="w-full">
-              <Plus className="h-4 w-4 mr-2" />
-              Post Another Vacancy
-            </Button>
+            {showAddButton && (
+              <Button onClick={onAddVacancy} className="w-full">
+                <Plus className="h-4 w-4 mr-2" />
+                Post Another Vacancy
+              </Button>
+            )}
           </div>
         ) : (
           <div className="text-center py-8">
@@ -102,10 +110,12 @@ const VacanciesTab: React.FC<VacanciesTabProps> = ({
             <p className="text-muted-foreground">
               Post your first job listing to attract healthcare professionals
             </p>
-            <Button className="mt-4" onClick={onAddVacancy}>
-              <Plus className="h-4 w-4 mr-2" />
-              Post a Vacancy
-            </Button>
+            {showAddButton && (
+              <Button className="mt-4" onClick={onAddVacancy}>
+                <Plus className="h-4 w-4 mr-2" />
+                Post a Vacancy
+              </Button>
+            )}
           </div>
         )}
       </CardContent>

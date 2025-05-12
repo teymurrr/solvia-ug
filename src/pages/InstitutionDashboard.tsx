@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import MainLayout from '@/components/MainLayout';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -11,6 +10,7 @@ import { useVacancies, VacancyInput } from '@/hooks/useVacancies';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
 import { useLocation } from 'react-router-dom';
+import { featuredVacancies } from '@/data/landingPageData';
 
 const InstitutionDashboard = () => {
   const location = useLocation();
@@ -184,6 +184,12 @@ const InstitutionDashboard = () => {
     setVacancyFormOpen(true);
   };
 
+  // Create empty handlers for the talents tab vacancies
+  const handleEmptyAction = () => {
+    // Empty function - no action needed for display-only vacancies
+    console.log("This action is not available for sample vacancies");
+  };
+
   return (
     <MainLayout hideEditProfile>
       <div className="container py-8">
@@ -241,6 +247,22 @@ const InstitutionDashboard = () => {
                 onFilterChange={handleFilterChange}
                 refreshProfessionals={refreshProfessionals}
               />
+              
+              {/* Add the sample vacancies section to the talents tab */}
+              {!professionalsLoading && (
+                <div className="mt-8">
+                  <h2 className="text-xl font-semibold mb-4">Featured Vacancies</h2>
+                  <VacanciesTab
+                    vacancies={featuredVacancies || []} 
+                    onAddVacancy={handleEmptyAction}
+                    onEditVacancy={handleEmptyAction}
+                    onDeleteVacancy={handleEmptyAction}
+                    title="Sample Vacancies"
+                    description="Examples of vacancy listings from leading healthcare institutions"
+                    showAddButton={false}
+                  />
+                </div>
+              )}
             </TabsContent>
           </Tabs>
         )}
