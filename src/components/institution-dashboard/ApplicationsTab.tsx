@@ -86,10 +86,11 @@ const ApplicationsTab = () => {
             email: 'no-email@example.com'
           };
           
+          // Explicitly cast to Application type to avoid TypeScript circular reference error
           return {
             ...app,
             professional
-          } as Application;  // Explicit type casting to Application
+          } as Application;
         }));
         
         setApplications(formattedApplications);

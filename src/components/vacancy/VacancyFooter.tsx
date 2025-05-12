@@ -51,7 +51,7 @@ const VacancyFooter: React.FC<VacancyFooterProps> = ({
         title: "Sign up required",
         description: "Please sign up or log in to apply for this vacancy",
       });
-      navigate('/signup');
+      navigate('/signup/professional');
       return;
     }
     
@@ -80,7 +80,7 @@ const VacancyFooter: React.FC<VacancyFooterProps> = ({
         title: "Sign up required",
         description: "Please sign up or log in to view vacancy details",
       });
-      navigate('/signup');
+      navigate('/signup/professional');
       return;
     }
     
