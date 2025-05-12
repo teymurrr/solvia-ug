@@ -67,10 +67,10 @@ const VacancyFooter: React.FC<VacancyFooterProps> = ({
       const success = await applyToVacancy(id);
       
       if (success) {
-        // If successfully applied, show toast and stay on page
-        navigate(`/professional-dashboard`, {
+        // If successfully applied, show toast and redirect to dashboard
+        navigate('/dashboard/professional', {
           state: { 
-            activeTab: 'saved', 
+            activeTab: 'vacancies', 
             applicationSubmitted: true 
           }
         });
@@ -78,8 +78,7 @@ const VacancyFooter: React.FC<VacancyFooterProps> = ({
         // Navigate to internal application page with state to track origin
         navigate(`/vacancies/${id}/apply`, {
           state: { 
-            fromDashboard,
-            fromLandingPage,
+            fromDashboard: true,
             searchQuery,
             currentPage,
             selectedFilters
@@ -100,10 +99,10 @@ const VacancyFooter: React.FC<VacancyFooterProps> = ({
       return;
     }
     
+    // Always navigate with fromDashboard=true to ensure proper back navigation
     navigate(`/vacancies/${id}`, {
       state: { 
-        fromDashboard,
-        fromLandingPage,
+        fromDashboard: true,
         searchQuery,
         currentPage,
         selectedFilters

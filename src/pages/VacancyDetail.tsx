@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
@@ -64,31 +65,17 @@ const VacancyDetail = () => {
   const currentPage = location.state?.currentPage || 1;
   const selectedFilters = location.state?.selectedFilters || {};
   
-  // Enhanced navigation that respects where the user came from
+  // Updated navigation handler that always goes to the dashboard instead of vacancies page
   const handleGoBack = () => {
-    if (fromDashboard) {
-      // Go back to the dashboard with the vacancies tab active
-      navigate('/dashboard/professional', { 
-        state: { 
-          activeTab: 'vacancies',
-          searchQuery,
-          currentPage,
-          selectedFilters
-        }
-      });
-    } else if (fromLandingPage) {
-      // Go back to the landing page
-      navigate('/', {
-        state: { 
-          searchQuery,
-          currentPage,
-          selectedFilters
-        }
-      });
-    } else {
-      // Otherwise, go back to the general vacancies page
-      navigate('/vacancies');
-    }
+    // Always go back to the dashboard with the vacancies tab active
+    navigate('/dashboard/professional', { 
+      state: { 
+        activeTab: 'vacancies',
+        searchQuery,
+        currentPage,
+        selectedFilters
+      }
+    });
   };
   
   // Format dates
@@ -149,8 +136,7 @@ const VacancyDetail = () => {
   const handleApply = () => {
     navigate(`/vacancies/${id}/apply`, { 
       state: { 
-        fromDashboard,
-        fromLandingPage,
+        fromDashboard: true,
         searchQuery,
         currentPage,
         selectedFilters
@@ -166,7 +152,7 @@ const VacancyDetail = () => {
           className="inline-flex items-center text-primary hover:underline mb-6"
         >
           <ArrowLeft className="h-4 w-4 mr-1" />
-          {fromDashboard ? 'Back to Dashboard' : fromLandingPage ? 'Back to Home' : 'Back to Vacancies'}
+          Back to Dashboard
         </button>
         
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">

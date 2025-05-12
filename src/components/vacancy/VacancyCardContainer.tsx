@@ -41,9 +41,7 @@ const VacancyCardContainer: React.FC<VacancyCardProps> = ({
   const { toast } = useToast();
   const { session } = useAuth();
 
-  const handleSaveClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
+  const handleSaveClick = (id: string) => {
     if (onSaveToggle) {
       onSaveToggle(id);
     }
@@ -60,8 +58,15 @@ const VacancyCardContainer: React.FC<VacancyCardProps> = ({
       return;
     }
     
-    // Otherwise navigate to vacancy details
-    navigate(`/vacancies/${id}`);
+    // Otherwise navigate to vacancy details with state to track it came from dashboard
+    navigate(`/vacancies/${id}`, {
+      state: { 
+        fromDashboard: true,
+        searchQuery,
+        currentPage,
+        selectedFilters
+      }
+    });
   };
 
   return (
