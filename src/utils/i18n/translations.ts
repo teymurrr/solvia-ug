@@ -808,4 +808,4 @@ export const translations = {
       }
     },
     dashboard: {
-      title: "Panel de profesionales",
+      title: "Panel de profesionales
