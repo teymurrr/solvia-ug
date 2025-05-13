@@ -1,3 +1,5 @@
 
 // Re-export from applications directory
-export { useApplications, Application } from './applications';
+export { useApplications } from './applications';
+export type { Application } from './applications';
+

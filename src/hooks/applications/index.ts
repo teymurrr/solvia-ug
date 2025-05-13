@@ -5,7 +5,8 @@ import { useApplicationFilters } from './useApplicationFilters';
 import { useUpdateApplicationStatus } from './useUpdateApplicationStatus';
 import type { Application } from './types';
 
-export { Application } from './types';
+// Re-export using "export type" for TypeScript types
+export type { Application } from './types';
 
 export const useApplications = () => {
   const [applications, setApplications] = useState<Application[]>([]);
