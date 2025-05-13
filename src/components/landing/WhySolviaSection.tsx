@@ -51,9 +51,9 @@ const WhySolviaSection = () => {
                   <Star className="h-5 w-5 text-primary" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold mb-1">Direct Hiring, No Fees</h3>
+                  <h3 className="text-xl font-semibold mb-1">{t?.why?.directHiring?.title || "Direct Hiring, No Fees"}</h3>
                   <p className="text-gray-600">
-                    Skip third-party recruiters and connect directly with professionals.
+                    {t?.why?.directHiring?.description || "Skip third-party recruiters and connect directly with professionals."}
                   </p>
                 </div>
               </CardContent>
@@ -65,9 +65,9 @@ const WhySolviaSection = () => {
                   <Smile className="h-5 w-5 text-primary" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold mb-1">Fast Process, Best Results</h3>
+                  <h3 className="text-xl font-semibold mb-1">{t?.why?.fastProcess?.title || "Fast Process, Best Results"}</h3>
                   <p className="text-gray-600">
-                    Our streamlined approach ensures quicker placements with better outcomes.
+                    {t?.why?.fastProcess?.description || "Our streamlined approach ensures quicker placements with better outcomes."}
                   </p>
                 </div>
               </CardContent>
@@ -79,9 +79,9 @@ const WhySolviaSection = () => {
                   <Users className="h-5 w-5 text-primary" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold mb-1">Verified Profiles</h3>
+                  <h3 className="text-xl font-semibold mb-1">{t?.why?.verifiedProfiles?.title || "Verified Profiles"}</h3>
                   <p className="text-gray-600">
-                    All our professionals are pre-screened and verified for quality assurance.
+                    {t?.why?.verifiedProfiles?.description || "All our professionals are pre-screened and verified for quality assurance."}
                   </p>
                 </div>
               </CardContent>
@@ -93,9 +93,9 @@ const WhySolviaSection = () => {
                   <Clock className="h-5 w-5 text-primary" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold mb-1">Transparent Process</h3>
+                  <h3 className="text-xl font-semibold mb-1">{t?.why?.transparentProcess?.title || "Transparent Process"}</h3>
                   <p className="text-gray-600">
-                    Track application status in real-time with our transparent process.
+                    {t?.why?.transparentProcess?.description || "Track application status in real-time with our transparent process."}
                   </p>
                 </div>
               </CardContent>

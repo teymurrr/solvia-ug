@@ -1,18 +1,22 @@
+
 import React from 'react';
 import MainLayout from '@/components/MainLayout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Heart, ChartBar, Users, Network } from 'lucide-react';
+import { useLanguage } from '@/hooks/useLanguage';
 
 const Insights = () => {
+  const { t } = useLanguage();
+
   return (
     <MainLayout>
       <div className="container mx-auto py-12 px-4">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold text-primary mb-4">Solvia Insights</h1>
+            <h1 className="text-4xl font-bold text-primary mb-4">{t?.insights?.title || "Solvia Insights"}</h1>
             <p className="text-lg text-muted-foreground">
-              Comprehensive solutions for healthcare institutions
+              {t?.insights?.subtitle || "Comprehensive solutions for healthcare institutions"}
             </p>
           </div>
 
@@ -20,19 +24,18 @@ const Insights = () => {
             {/* Employee Experience & Wellbeing */}
             <Card className="relative overflow-hidden">
               <div className="absolute top-4 right-4">
-                <Badge variant="comingSoon">Coming Soon</Badge>
+                <Badge variant="comingSoon">{t?.insights?.comingSoon || "Coming Soon"}</Badge>
               </div>
               <CardHeader>
                 <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
                   <Heart className="h-6 w-6 text-primary" />
                 </div>
-                <CardTitle>Employee Experience & Wellbeing</CardTitle>
-                <CardDescription>Enhance workplace satisfaction and employee wellness</CardDescription>
+                <CardTitle>{t?.insights?.employeeExperience?.title || "Employee Experience & Wellbeing"}</CardTitle>
+                <CardDescription>{t?.insights?.employeeExperience?.subtitle || "Enhance workplace satisfaction and employee wellness"}</CardDescription>
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground">
-                  Comprehensive programs designed to improve employee satisfaction, 
-                  mental health support, and work-life balance initiatives.
+                  {t?.insights?.employeeExperience?.description || "Comprehensive programs designed to improve employee satisfaction, mental health support, and work-life balance initiatives."}
                 </p>
               </CardContent>
             </Card>
@@ -40,19 +43,18 @@ const Insights = () => {
             {/* Analytics & Strategic Services */}
             <Card className="relative overflow-hidden">
               <div className="absolute top-4 right-4">
-                <Badge variant="comingSoon">Coming Soon</Badge>
+                <Badge variant="comingSoon">{t?.insights?.comingSoon || "Coming Soon"}</Badge>
               </div>
               <CardHeader>
                 <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
                   <ChartBar className="h-6 w-6 text-primary" />
                 </div>
-                <CardTitle>Analytics & Strategic Services</CardTitle>
-                <CardDescription>Data-driven healthcare workforce solutions</CardDescription>
+                <CardTitle>{t?.insights?.analytics?.title || "Analytics & Strategic Services"}</CardTitle>
+                <CardDescription>{t?.insights?.analytics?.subtitle || "Data-driven healthcare workforce solutions"}</CardDescription>
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground">
-                  Advanced analytics and strategic planning services to optimize 
-                  workforce management and operational efficiency.
+                  {t?.insights?.analytics?.description || "Advanced analytics and strategic planning services to optimize workforce management and operational efficiency."}
                 </p>
               </CardContent>
             </Card>
@@ -60,19 +62,18 @@ const Insights = () => {
             {/* Talent Development */}
             <Card className="relative overflow-hidden">
               <div className="absolute top-4 right-4">
-                <Badge variant="comingSoon">Coming Soon</Badge>
+                <Badge variant="comingSoon">{t?.insights?.comingSoon || "Coming Soon"}</Badge>
               </div>
               <CardHeader>
                 <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
                   <Users className="h-6 w-6 text-primary" />
                 </div>
-                <CardTitle>Talent Development Services</CardTitle>
-                <CardDescription>Grow and nurture healthcare talent</CardDescription>
+                <CardTitle>{t?.insights?.talentDevelopment?.title || "Talent Development Services"}</CardTitle>
+                <CardDescription>{t?.insights?.talentDevelopment?.subtitle || "Grow and nurture healthcare talent"}</CardDescription>
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground">
-                  Customized training programs and professional development paths 
-                  to enhance healthcare workforce capabilities.
+                  {t?.insights?.talentDevelopment?.description || "Customized training programs and professional development paths to enhance healthcare workforce capabilities."}
                 </p>
               </CardContent>
             </Card>
@@ -80,19 +81,18 @@ const Insights = () => {
             {/* Community & Networking */}
             <Card className="relative overflow-hidden">
               <div className="absolute top-4 right-4">
-                <Badge variant="comingSoon">Coming Soon</Badge>
+                <Badge variant="comingSoon">{t?.insights?.comingSoon || "Coming Soon"}</Badge>
               </div>
               <CardHeader>
                 <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
                   <Network className="h-6 w-6 text-primary" />
                 </div>
-                <CardTitle>Community & Networking</CardTitle>
-                <CardDescription>Connect with healthcare professionals</CardDescription>
+                <CardTitle>{t?.insights?.community?.title || "Community & Networking"}</CardTitle>
+                <CardDescription>{t?.insights?.community?.subtitle || "Connect with healthcare professionals"}</CardDescription>
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground">
-                  Build valuable connections within the healthcare community through 
-                  networking events and professional forums.
+                  {t?.insights?.community?.description || "Build valuable connections within the healthcare community through networking events and professional forums."}
                 </p>
               </CardContent>
             </Card>

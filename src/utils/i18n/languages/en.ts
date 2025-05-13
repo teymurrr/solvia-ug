@@ -1,3 +1,4 @@
+
 export const en = {
   hero: {
     title: 'Where Doctors and Clinics Connect',
@@ -77,6 +78,22 @@ export const en = {
     support: {
       title: "Comprehensive Support",
       description: "Guidance through certification, language training, and settlement in your new country"
+    },
+    directHiring: {
+      title: "Direct Hiring, No Fees",
+      description: "Skip third-party recruiters and connect directly with professionals."
+    },
+    fastProcess: {
+      title: "Fast Process, Best Results",
+      description: "Our streamlined approach ensures quicker placements with better outcomes."
+    },
+    verifiedProfiles: {
+      title: "Verified Profiles",
+      description: "All our professionals are pre-screened and verified for quality assurance."
+    },
+    transparentProcess: {
+      title: "Transparent Process",
+      description: "Track application status in real-time with our transparent process."
     }
   },
   journey: {
@@ -97,7 +114,27 @@ export const en = {
   insights: {
     title: "Solvia Insights",
     subtitle: "Comprehensive solutions for healthcare institutions",
-    comingSoon: "Coming Soon"
+    comingSoon: "Coming Soon",
+    employeeExperience: {
+      title: "Employee Experience & Wellbeing",
+      subtitle: "Enhance workplace satisfaction and employee wellness",
+      description: "Comprehensive programs designed to improve employee satisfaction, mental health support, and work-life balance initiatives."
+    },
+    analytics: {
+      title: "Analytics & Strategic Services",
+      subtitle: "Data-driven healthcare workforce solutions",
+      description: "Advanced analytics and strategic planning services to optimize workforce management and operational efficiency."
+    },
+    talentDevelopment: {
+      title: "Talent Development Services",
+      subtitle: "Grow and nurture healthcare talent",
+      description: "Customized training programs and professional development paths to enhance healthcare workforce capabilities."
+    },
+    community: {
+      title: "Community & Networking",
+      subtitle: "Connect with healthcare professionals",
+      description: "Build valuable connections within the healthcare community through networking events and professional forums."
+    }
   },
   common: {
     login: "Log in",
@@ -105,16 +142,19 @@ export const en = {
     applied: "Applied",
     loading: "Loading...",
     noResults: "No results found",
-    about: "About",
+    about: "About Us",
     contact: "Contact",
     vacancies: "Vacancies",
     professionals: "Professionals",
-    learning: "Learning",
+    learning: "Solvia Learning",
     dashboard: "Dashboard",
     settings: "Settings",
     profile: "Profile",
     messages: "Messages",
-    logout: "Log out"
+    logout: "Log out",
+    home: "Home",
+    forEmployers: "For Employers",
+    viewMore: "View More"
   },
   footer: {
     allRightsReserved: "All rights reserved",

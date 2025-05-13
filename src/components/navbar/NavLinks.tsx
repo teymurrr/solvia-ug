@@ -2,6 +2,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Home, Heart, BarChart, LayoutDashboard, BookOpen } from 'lucide-react';
+import { useLanguage } from '@/hooks/useLanguage';
 
 interface NavLinksProps {
   isLoggedIn: boolean;
@@ -9,6 +10,8 @@ interface NavLinksProps {
 }
 
 const NavLinks: React.FC<NavLinksProps> = ({ isLoggedIn, userType }) => {
+  const { t } = useLanguage();
+
   if (!isLoggedIn) {
     return (
       <div className="flex justify-center space-x-8 flex-1">
@@ -19,7 +22,7 @@ const NavLinks: React.FC<NavLinksProps> = ({ isLoggedIn, userType }) => {
           <div className="p-2 rounded-full group-hover:bg-gray-100 transition-colors">
             <Home className="h-5 w-5 text-gray-600 group-hover:text-gray-900" />
           </div>
-          <span className="text-sm text-gray-600 group-hover:text-gray-900">Home</span>
+          <span className="text-sm text-gray-600 group-hover:text-gray-900">{t?.common?.home || "Home"}</span>
         </Link>
 
         <Link
@@ -29,7 +32,7 @@ const NavLinks: React.FC<NavLinksProps> = ({ isLoggedIn, userType }) => {
           <div className="p-2 rounded-full group-hover:bg-gray-100 transition-colors">
             <Heart className="h-5 w-5 text-gray-600 group-hover:text-gray-900" />
           </div>
-          <span className="text-sm text-gray-600 group-hover:text-gray-900">About Us</span>
+          <span className="text-sm text-gray-600 group-hover:text-gray-900">{t?.common?.about || "About Us"}</span>
         </Link>
       </div>
     );
@@ -45,7 +48,7 @@ const NavLinks: React.FC<NavLinksProps> = ({ isLoggedIn, userType }) => {
           <div className="p-2 rounded-full group-hover:bg-gray-100 transition-colors">
             <LayoutDashboard className="h-5 w-5 text-gray-600 group-hover:text-gray-900" />
           </div>
-          <span className="text-sm text-gray-600 group-hover:text-gray-900">Dashboard</span>
+          <span className="text-sm text-gray-600 group-hover:text-gray-900">{t?.common?.dashboard || "Dashboard"}</span>
         </Link>
 
         <Link
@@ -55,7 +58,7 @@ const NavLinks: React.FC<NavLinksProps> = ({ isLoggedIn, userType }) => {
           <div className="p-2 rounded-full group-hover:bg-gray-100 transition-colors">
             <BookOpen className="h-5 w-5 text-gray-600 group-hover:text-gray-900" />
           </div>
-          <span className="text-sm text-gray-600 group-hover:text-gray-900">Solvia Learning</span>
+          <span className="text-sm text-gray-600 group-hover:text-gray-900">{t?.common?.learning || "Solvia Learning"}</span>
         </Link>
       </div>
     );
@@ -71,7 +74,7 @@ const NavLinks: React.FC<NavLinksProps> = ({ isLoggedIn, userType }) => {
           <div className="p-2 rounded-full group-hover:bg-gray-100 transition-colors">
             <LayoutDashboard className="h-5 w-5 text-gray-600 group-hover:text-gray-900" />
           </div>
-          <span className="text-sm text-gray-600 group-hover:text-gray-900">Dashboard</span>
+          <span className="text-sm text-gray-600 group-hover:text-gray-900">{t?.common?.dashboard || "Dashboard"}</span>
         </Link>
 
         <Link
@@ -81,7 +84,7 @@ const NavLinks: React.FC<NavLinksProps> = ({ isLoggedIn, userType }) => {
           <div className="p-2 rounded-full group-hover:bg-gray-100 transition-colors">
             <BarChart className="h-5 w-5 text-gray-600 group-hover:text-gray-900" />
           </div>
-          <span className="text-sm text-gray-600 group-hover:text-gray-900">Solvia Insights</span>
+          <span className="text-sm text-gray-600 group-hover:text-gray-900">{t?.insights?.title || "Solvia Insights"}</span>
         </Link>
       </div>
     );

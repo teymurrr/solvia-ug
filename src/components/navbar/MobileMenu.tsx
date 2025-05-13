@@ -3,6 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Badge } from '@/components/ui/badge';
 import { Home, Briefcase, HelpCircle, LayoutDashboard, BookOpen, BarChart } from 'lucide-react';
+import { useLanguage } from '@/hooks/useLanguage';
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -22,6 +23,8 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
   onSignOut,
   onClose,
 }) => {
+  const { t } = useLanguage();
+  
   if (!isOpen) return null;
 
   return (
@@ -35,7 +38,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
               onClick={onClose}
             >
               <Home className="h-5 w-5 text-gray-600" />
-              <span>Home</span>
+              <span>{t?.common?.home || "Home"}</span>
             </Link>
             
             <Link
@@ -44,7 +47,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
               onClick={onClose}
             >
               <Briefcase className="h-5 w-5 text-gray-600" />
-              <span>For Employers</span>
+              <span>{t?.common?.forEmployers || "For Employers"}</span>
             </Link>
 
             <Link
@@ -53,7 +56,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
               onClick={onClose}
             >
               <HelpCircle className="h-5 w-5 text-gray-600" />
-              <span>About</span>
+              <span>{t?.common?.about || "About"}</span>
             </Link>
           </>
         )}
@@ -66,7 +69,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
               onClick={onClose}
             >
               <LayoutDashboard className="h-5 w-5 text-gray-600" />
-              <span>Dashboard</span>
+              <span>{t?.common?.dashboard || "Dashboard"}</span>
             </Link>
 
             <Link
@@ -75,7 +78,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
               onClick={onClose}
             >
               <BookOpen className="h-5 w-5 text-gray-600" />
-              <span>Solvia Learning</span>
+              <span>{t?.common?.learning || "Solvia Learning"}</span>
             </Link>
           </>
         )}
@@ -88,7 +91,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
               onClick={onClose}
             >
               <LayoutDashboard className="h-5 w-5 text-gray-600" />
-              <span>Dashboard</span>
+              <span>{t?.common?.dashboard || "Dashboard"}</span>
             </Link>
 
             <Link
@@ -97,7 +100,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
               onClick={onClose}
             >
               <BarChart className="h-5 w-5 text-gray-600" />
-              <span>Solvia Insights</span>
+              <span>{t?.insights?.title || "Solvia Insights"}</span>
             </Link>
           </>
         )}
@@ -111,7 +114,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
               className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800 flex items-center"
               onClick={onClose}
             >
-              Messages
+              {t?.common?.messages || "Messages"}
               {hasUnreadMessages && (
                 <Badge className="ml-2 bg-red-500 text-white">1</Badge>
               )}
@@ -123,7 +126,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
               }}
               className="block w-full text-left pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-red-500 hover:bg-gray-50 hover:border-red-300"
             >
-              Sign out
+              {t?.common?.logout || "Sign out"}
             </button>
           </div>
         ) : (
@@ -133,14 +136,14 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
               className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800"
               onClick={onClose}
             >
-              Log in
+              {t?.common?.login || "Log in"}
             </Link>
             <Link
               to="/signup"
               className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800"
               onClick={onClose}
             >
-              Free Sign up
+              {t?.common?.signup || "Free Sign up"}
             </Link>
           </div>
         )}

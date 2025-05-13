@@ -1,13 +1,16 @@
 
 import React from 'react';
 import { Globe, Users, FileCheck, Clock } from 'lucide-react';
+import { useLanguage } from '@/hooks/useLanguage';
 
 const WhySolviaSection = () => {
+  const { t } = useLanguage();
+  
   return (
     <section className="py-16 bg-transparent">
       <div className="container mx-auto px-4">
         <h2 className="text-[30px] font-bold text-black text-center mb-12">
-          Why Solvia?
+          {t?.why?.title || "Why Solvia?"}
         </h2>
         <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
           <div className="flex gap-4 items-start">
@@ -15,9 +18,9 @@ const WhySolviaSection = () => {
               <Globe className="h-6 w-6 text-[#006ae6]" />
             </div>
             <div>
-              <h3 className="text-xl font-semibold mb-2">International Reach, Local Readiness</h3>
+              <h3 className="text-xl font-semibold mb-2">{t?.why?.global?.title || "International Reach, Local Readiness"}</h3>
               <p className="text-gray-600">
-                We source skilled professionals from countries like Azerbaijan, Morocco, and beyond – all prepared for the German healthcare system, including Approbation and FSP.
+                {t?.why?.global?.description || "We source skilled professionals from countries like Azerbaijan, Morocco, and beyond – all prepared for the German healthcare system, including Approbation and FSP."}
               </p>
             </div>
           </div>
@@ -27,9 +30,9 @@ const WhySolviaSection = () => {
               <Users className="h-6 w-6 text-[#006ae6]" />
             </div>
             <div>
-              <h3 className="text-xl font-semibold mb-2">Language-Ready Candidates</h3>
+              <h3 className="text-xl font-semibold mb-2">{t?.why?.languageReady?.title || "Language-Ready Candidates"}</h3>
               <p className="text-gray-600">
-                We ensure every candidate reaches at least B2 level in German and provide extra training to match workplace needs.
+                {t?.why?.languageReady?.description || "We ensure every candidate reaches at least B2 level in German and provide extra training to match workplace needs."}
               </p>
             </div>
           </div>
@@ -39,9 +42,9 @@ const WhySolviaSection = () => {
               <FileCheck className="h-6 w-6 text-[#006ae6]" />
             </div>
             <div>
-              <h3 className="text-xl font-semibold mb-2">Hassle-Free Documentation</h3>
+              <h3 className="text-xl font-semibold mb-2">{t?.why?.documentation?.title || "Hassle-Free Documentation"}</h3>
               <p className="text-gray-600">
-                From visa paperwork to medical certifications – we guide candidates through every step, so you don't have to.
+                {t?.why?.documentation?.description || "From visa paperwork to medical certifications – we guide candidates through every step, so you don't have to."}
               </p>
             </div>
           </div>
@@ -51,9 +54,9 @@ const WhySolviaSection = () => {
               <Clock className="h-6 w-6 text-[#006ae6]" />
             </div>
             <div>
-              <h3 className="text-xl font-semibold mb-2">Faster Hiring, Less Admin</h3>
+              <h3 className="text-xl font-semibold mb-2">{t?.why?.fasterHiring?.title || "Faster Hiring, Less Admin"}</h3>
               <p className="text-gray-600">
-                Browse profiles, schedule interviews directly via our calendar tool, and access CVs instantly.
+                {t?.why?.fasterHiring?.description || "Browse profiles, schedule interviews directly via our calendar tool, and access CVs instantly."}
               </p>
             </div>
           </div>
