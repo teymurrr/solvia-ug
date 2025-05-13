@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Book } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { BlogPost } from '@/types/landing';
@@ -19,19 +19,10 @@ const BlogSection: React.FC<BlogSectionProps> = ({ posts }) => {
     <section className="py-16 bg-gray-50">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <div className="flex flex-col items-center justify-center">
-            <Book className="h-[30px] w-[30px] text-[#006ae6] mb-4" />
-            <h2 className="text-[30px] font-bold text-black">{t?.blog?.title || "Latest from Our Blog"}</h2>
-            <p className="text-lg text-muted-foreground mb-4 max-w-xl mx-auto">
-              {t?.blog?.subtitle || "Insights, stories, and tips for healthcare professionals and recruiters"}
-            </p>
-            <Button variant="ghost" asChild className="group mx-auto">
-              <Link to="/blog" className="flex items-center">
-                {t?.blog?.viewMore || "View More"}
-                <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-              </Link>
-            </Button>
-          </div>
+          <h2 className="text-3xl md:text-4xl font-bold text-black mb-3">{t?.blog?.title || "Latest from Our Blog"}</h2>
+          <p className="text-lg text-muted-foreground mb-6 max-w-2xl mx-auto">
+            {t?.blog?.subtitle || "Insights, stories, and tips for healthcare professionals and recruiters"}
+          </p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {posts.map((blog) => (
@@ -65,6 +56,14 @@ const BlogSection: React.FC<BlogSectionProps> = ({ posts }) => {
               </CardContent>
             </Card>
           ))}
+        </div>
+        <div className="mt-10 text-center">
+          <Button variant="outline" asChild className="group">
+            <Link to="/blog" className="flex items-center">
+              {t?.blog?.viewMore || "View More"}
+              <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+            </Link>
+          </Button>
         </div>
       </div>
     </section>
