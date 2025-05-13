@@ -1,4 +1,3 @@
-
 export const de = {
   hero: {
     title: 'Wo Ärzte und Kliniken zusammenfinden',
@@ -65,6 +64,8 @@ export const de = {
   why: {
     title: "Warum Solvia?",
     subtitle: "Entdecken Sie, was unsere Plattform zur ersten Wahl für Gesundheitsfachkräfte macht",
+    heading: "Was uns von traditionellen Personalvermittlungen unterscheidet",
+    description: "Bei Solvia setzen wir uns leidenschaftlich dafür ein, Fachkräfte weltweit direkt mit Einrichtungen zu verbinden, ohne Zwischenhändler.",
     global: {
       title: "Internationale Chancen",
       description: "Zugang zu medizinischen Stellen in verschiedenen Ländern mit umfassender Umzugsunterstützung"

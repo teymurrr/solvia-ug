@@ -1,4 +1,3 @@
-
 export const es = {
   hero: {
     title: 'Donde médicos y clínicas se conectan',
@@ -65,6 +64,8 @@ export const es = {
   why: {
     title: "¿Por qué Solvia?",
     subtitle: "Descubra qué hace de nuestra plataforma la primera elección para profesionales sanitarios",
+    heading: "Esto es lo que nos diferencia de las agencias de reclutamiento tradicionales",
+    description: "En Solvia, nos apasiona conectar a profesionales de todo el mundo con instituciones directamente, sin intermediarios.",
     global: {
       title: "Oportunidades internacionales",
       description: "Acceso a puestos sanitarios en diferentes países con apoyo integral para la reubicación"

@@ -12,7 +12,7 @@ const HeroSection = () => {
   
   // Default values in case translations aren't loaded yet
   const title = t?.hero?.title || "Where Doctors and Clinics Connect";
-  const subtitle = t?.hero?.subtitle || "digital platform where hospitals meet pre-vetted doctors and nurses directly";
+  const subtitle = t?.hero?.subtitle || "Digital platform where hospitals meet pre-vetted doctors and nurses directly";
   const findJob = t?.hero?.findJob || "Find a job";
   const findTalent = t?.hero?.findTalent || "Find a Talent";
   

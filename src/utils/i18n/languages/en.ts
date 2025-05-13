@@ -1,8 +1,7 @@
-
 export const en = {
   hero: {
     title: 'Where Doctors and Clinics Connect',
-    subtitle: 'digital platform where hospitals meet pre-vetted doctors and nurses directly',
+    subtitle: 'Digital platform where hospitals meet pre-vetted doctors and nurses directly',
     findJob: 'Find a job',
     findTalent: 'Find a Talent'
   },
@@ -65,6 +64,8 @@ export const en = {
   why: {
     title: "Why Solvia?",
     subtitle: "Discover what makes our platform the top choice for healthcare professionals worldwide",
+    heading: "Here's what makes us different from traditional recruitment agencies",
+    description: "At Solvia, we are passionate about connecting professionals around the world with institutions directly, without middlemen.",
     global: {
       title: "Global Opportunities",
       description: "Access to healthcare positions across multiple countries with full relocation support"

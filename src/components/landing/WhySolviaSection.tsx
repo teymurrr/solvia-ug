@@ -17,11 +17,11 @@ const WhySolviaSection = () => {
           <div className="space-y-8">
             <div className="space-y-6">
               <h2 className="text-[42px] font-bold text-gray-900 leading-tight">
-                Here's what makes us different from traditional recruitment agencies
+                {t?.why?.heading || "Here's what makes us different from traditional recruitment agencies"}
               </h2>
               
               <p className="text-[20px] text-gray-600">
-                At Solvia, we are passionate about connecting professionals around the world with institutions directly, without middlemen.
+                {t?.why?.description || "At Solvia, we are passionate about connecting professionals around the world with institutions directly, without middlemen."}
               </p>
               
               <div className="flex gap-12 mt-8">
@@ -38,7 +38,7 @@ const WhySolviaSection = () => {
             
             <div>
               <Button asChild className="px-8">
-                <Link to="/about">About Us</Link>
+                <Link to="/about">{t?.common?.about || "About Us"}</Link>
               </Button>
             </div>
           </div>
