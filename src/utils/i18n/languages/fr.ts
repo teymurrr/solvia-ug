@@ -130,7 +130,10 @@ export const fr = {
     settings: "Paramètres",
     profile: "Profil",
     messages: "Messages",
-    logout: "Déconnexion"
+    logout: "Déconnexion",
+    home: "Accueil",
+    forEmployers: "Pour employeurs",
+    viewMore: "Voir plus"
   },
   footer: {
     allRightsReserved: "Tous droits réservés",

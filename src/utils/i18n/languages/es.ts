@@ -130,7 +130,10 @@ export const es = {
     settings: "Configuración",
     profile: "Perfil",
     messages: "Mensajes",
-    logout: "Cerrar sesión"
+    logout: "Cerrar sesión",
+    home: "Inicio",
+    forEmployers: "Para empleadores",
+    viewMore: "Ver más"
   },
   footer: {
     allRightsReserved: "Todos los derechos reservados",
