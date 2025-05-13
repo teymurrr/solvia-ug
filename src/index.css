@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -121,41 +122,76 @@
     animation: shine 8s linear infinite;
   }
 
-  .phrase-rotate {
-    display: inline-block;
+  .shimmer-text {
     color: #0974f1;
-    position: relative;
-    transform-origin: center;
+    background: linear-gradient(
+      to right,
+      #0974f1 20%,
+      #4c9cf5 30%,
+      #7cb5f8 40%,
+      #4c9cf5 50%,
+      #0974f1 70%
+    );
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shimmer 3s linear infinite;
+    display: inline-block;
+    font-weight: 500;
   }
 
-  /* Updated rotation animations */
+  .phrase-rotate {
+    display: inline-block;
+    position: relative;
+    transform-origin: center center;
+    transform-style: preserve-3d;
+    perspective: 1000px;
+  }
+
+  /* 3D rotation with fade animations */
   .rotate-in {
-    animation: rotateIn 0.8s ease-out forwards;
+    animation: rotateIn 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
   }
   
   .rotate-out {
-    animation: rotateOut 0.8s ease-in forwards;
+    animation: rotateOut 0.5s cubic-bezier(0.47, 0, 0.745, 0.715) forwards;
   }
 
   @keyframes rotateIn {
     0% { 
-      transform: rotateY(90deg);
+      transform: rotateX(90deg);
       opacity: 0;
     }
     100% { 
-      transform: rotateY(0deg);
+      transform: rotateX(0deg);
       opacity: 1;
     }
   }
 
   @keyframes rotateOut {
     0% { 
-      transform: rotateY(0deg);
+      transform: rotateX(0deg);
       opacity: 1;
     }
     100% { 
-      transform: rotateY(-90deg);
+      transform: rotateX(-90deg);
       opacity: 0;
+    }
+  }
+
+  @keyframes shimmer {
+    0% {
+      background-position: 0% center;
+    }
+    100% {
+      background-position: 200% center;
+    }
+  }
+
+  @keyframes shine {
+    to {
+      background-position: 200% center;
     }
   }
 

@@ -1,3 +1,4 @@
+
 export const de = {
   hero: {
     title: 'Wo Ärzte und Kliniken zusammenfinden',
@@ -150,7 +151,10 @@ export const de = {
     settings: "Einstellungen",
     profile: "Profil",
     messages: "Nachrichten",
-    logout: "Abmelden"
+    logout: "Abmelden",
+    home: "Startseite",
+    forEmployers: "Für Arbeitgeber",
+    viewMore: "Mehr anzeigen"
   },
   footer: {
     allRightsReserved: "Alle Rechte vorbehalten",

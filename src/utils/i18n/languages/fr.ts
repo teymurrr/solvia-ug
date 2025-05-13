@@ -1,3 +1,4 @@
+
 export const fr = {
   hero: {
     title: 'Où médecins et cliniques se rencontrent',
@@ -150,7 +151,10 @@ export const fr = {
     settings: "Paramètres",
     profile: "Profil",
     messages: "Messages",
-    logout: "Déconnexion"
+    logout: "Déconnexion",
+    home: "Accueil",
+    forEmployers: "Pour les employeurs",
+    viewMore: "Voir plus"
   },
   footer: {
     allRightsReserved: "Tous droits réservés",

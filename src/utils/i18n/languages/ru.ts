@@ -1,3 +1,4 @@
+
 export const ru = {
   hero: {
     title: 'Где врачи и клиники находят друг друга',
@@ -114,7 +115,10 @@ export const ru = {
     settings: "Настройки",
     profile: "Профиль",
     messages: "Сообщения",
-    logout: "Выход"
+    logout: "Выход",
+    home: "Главная",
+    forEmployers: "Для работодателей",
+    viewMore: "Показать больше"
   },
   footer: {
     allRightsReserved: "Все права защищены",
