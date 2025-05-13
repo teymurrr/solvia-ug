@@ -1,4 +1,3 @@
-
 export const de = {
   hero: {
     title: 'Wo Ärzte und Kliniken zusammenfinden',
@@ -114,27 +113,7 @@ export const de = {
   insights: {
     title: "Solvia Einblicke",
     subtitle: "Umfassende Lösungen für Gesundheitseinrichtungen",
-    comingSoon: "Demnächst verfügbar",
-    employeeExperience: {
-      title: "Mitarbeitererfahrung & Wohlbefinden",
-      subtitle: "Verbessern Sie die Arbeitsplatzzufriedenheit und das Wohlbefinden der Mitarbeiter",
-      description: "Umfassende Programme zur Verbesserung der Mitarbeiterzufriedenheit, Unterstützung der psychischen Gesundheit und Initiativen zur Work-Life-Balance."
-    },
-    analytics: {
-      title: "Analytics & Strategische Dienstleistungen",
-      subtitle: "Datengesteuerte Lösungen für Gesundheitspersonal",
-      description: "Fortschrittliche Analysen und strategische Planungsdienste zur Optimierung des Personalmanagements und der operativen Effizienz."
-    },
-    talentDevelopment: {
-      title: "Talententwicklungsdienste",
-      subtitle: "Fördern und entwickeln Sie Gesundheitstalente",
-      description: "Maßgeschneiderte Schulungsprogramme und berufliche Entwicklungswege zur Verbesserung der Fähigkeiten des Gesundheitspersonals."
-    },
-    community: {
-      title: "Community & Networking",
-      subtitle: "Verbinden Sie sich mit Gesundheitsexperten",
-      description: "Knüpfen Sie wertvolle Kontakte innerhalb der Gesundheitsgemeinschaft durch Networking-Events und professionelle Foren."
-    }
+    comingSoon: "Demnächst verfügbar"
   },
   common: {
     login: "Anmelden",
@@ -151,10 +130,7 @@ export const de = {
     settings: "Einstellungen",
     profile: "Profil",
     messages: "Nachrichten",
-    logout: "Abmelden",
-    home: "Startseite",
-    forEmployers: "Für Arbeitgeber",
-    viewMore: "Mehr anzeigen"
+    logout: "Abmelden"
   },
   footer: {
     allRightsReserved: "Alle Rechte vorbehalten",

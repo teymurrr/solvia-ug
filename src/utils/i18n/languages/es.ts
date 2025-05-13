@@ -1,4 +1,3 @@
-
 export const es = {
   hero: {
     title: 'Donde médicos y clínicas se conectan',
@@ -114,27 +113,7 @@ export const es = {
   insights: {
     title: "Solvia Insights",
     subtitle: "Soluciones integrales para instituciones sanitarias",
-    comingSoon: "Próximamente",
-    employeeExperience: {
-      title: "Experiencia y bienestar de los empleados",
-      subtitle: "Mejore la satisfacción laboral y el bienestar de los empleados",
-      description: "Programas integrales diseñados para mejorar la satisfacción de los empleados, el apoyo a la salud mental y las iniciativas de equilibrio entre trabajo y vida personal."
-    },
-    analytics: {
-      title: "Servicios analíticos y estratégicos",
-      subtitle: "Soluciones de personal sanitario basadas en datos",
-      description: "Servicios avanzados de análisis y planificación estratégica para optimizar la gestión del personal y la eficiencia operativa."
-    },
-    talentDevelopment: {
-      title: "Servicios de desarrollo de talento",
-      subtitle: "Desarrollar y nutrir el talento sanitario",
-      description: "Programas de formación personalizados y rutas de desarrollo profesional para mejorar las capacidades del personal sanitario."
-    },
-    community: {
-      title: "Comunidad y networking",
-      subtitle: "Conecte con profesionales sanitarios",
-      description: "Construya conexiones valiosas dentro de la comunidad sanitaria a través de eventos de networking y foros profesionales."
-    }
+    comingSoon: "Próximamente"
   },
   common: {
     login: "Iniciar sesión",
@@ -151,10 +130,7 @@ export const es = {
     settings: "Configuración",
     profile: "Perfil",
     messages: "Mensajes",
-    logout: "Cerrar sesión",
-    home: "Inicio",
-    forEmployers: "Para empleadores",
-    viewMore: "Ver más"
+    logout: "Cerrar sesión"
   },
   footer: {
     allRightsReserved: "Todos los derechos reservados",

@@ -119,83 +119,25 @@
     color: transparent;
     -webkit-background-clip: text;
     background-clip: text;
-    animation: shine 8s linear infinite;
-  }
-
-  .shimmer-text {
-    color: #0974f1;
-    background: linear-gradient(
-      to right,
-      #0974f1 20%,
-      #4c9cf5 30%,
-      #7cb5f8 40%,
-      #4c9cf5 50%,
-      #0974f1 70%
-    );
-    background-size: 200% auto;
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: shimmer 3s linear infinite;
-    display: inline-block;
-    font-weight: 500;
+    animation: shine 6s linear infinite;
   }
 
   .phrase-rotate {
     display: inline-block;
+    color: #0974f1;
     position: relative;
-    transform-origin: center center;
-    transform-style: preserve-3d;
-    perspective: 1000px;
+    transform-origin: center;
   }
 
-  /* 3D rotation with fade animations */
-  .rotate-in {
-    animation: rotateIn 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  /* New fade animation classes */
+  .fade-in-down {
+    animation: fadeInDown 0.5s ease-out forwards;
   }
   
-  .rotate-out {
-    animation: rotateOut 0.5s cubic-bezier(0.47, 0, 0.745, 0.715) forwards;
+  .fade-out-up {
+    animation: fadeOutUp 0.5s ease-in forwards;
   }
 
-  @keyframes rotateIn {
-    0% { 
-      transform: rotateX(90deg);
-      opacity: 0;
-    }
-    100% { 
-      transform: rotateX(0deg);
-      opacity: 1;
-    }
-  }
-
-  @keyframes rotateOut {
-    0% { 
-      transform: rotateX(0deg);
-      opacity: 1;
-    }
-    100% { 
-      transform: rotateX(-90deg);
-      opacity: 0;
-    }
-  }
-
-  @keyframes shimmer {
-    0% {
-      background-position: 0% center;
-    }
-    100% {
-      background-position: 200% center;
-    }
-  }
-
-  @keyframes shine {
-    to {
-      background-position: 200% center;
-    }
-  }
-
-  /* Keeping old animation keyframes with slight modifications */
   @keyframes fadeInDown {
     0% { 
       transform: translateY(-20px);
@@ -214,6 +156,29 @@
     }
     100% { 
       transform: translateY(-20px);
+      opacity: 0;
+    }
+  }
+
+  /* Keeping the old animation keyframes for reference */
+  @keyframes rollIn {
+    0% { 
+      transform: translateY(-100%) rotateX(90deg);
+      opacity: 0;
+    }
+    100% { 
+      transform: translateY(0) rotateX(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes rollOut {
+    0% { 
+      transform: translateY(0) rotateX(0);
+      opacity: 1;
+    }
+    100% { 
+      transform: translateY(100%) rotateX(-90deg);
       opacity: 0;
     }
   }
