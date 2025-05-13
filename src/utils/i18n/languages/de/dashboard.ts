@@ -1,0 +1,58 @@
+
+export const dashboard = {
+  title: "Fachkräfte Dashboard",
+  subtitle: "Verwalten Sie Ihr Profil und entdecken Sie Chancen",
+  profile: {
+    title: "Ihr Profil",
+    description: "So werden Sie von Einrichtungen gesehen",
+    createProfile: "Profil erstellen",
+    completeProfile: "Profil vervollständigen",
+    updateProfile: "Profil aktualisieren",
+    loading: "Profildaten werden geladen...",
+    editProfile: "Profil bearbeiten",
+    saveProfile: "Profil speichern",
+    activelySearching: "Aktiv auf der Suche",
+    openToRelocation: "Bereit für einen Umzug",
+    fspCertified: "FSP-Zertifiziert",
+    profileCompletion: "Profil vervollständigung",
+    location: "Standort",
+    notSpecified: "Nicht angegeben",
+    profession: "Beruf",
+    fspCertificate: "FSP-Zertifikat",
+    yes: "Ja",
+    no: "Nein",
+    experience: "Erfahrung",
+    at: "bei",
+    present: "Aktuell",
+    education: "Bildung",
+    in: "in",
+    languages: "Sprachen",
+    about: "Über mich",
+    incompleteProfile: "Ihr Profil ist unvollständig. Fügen Sie weitere Informationen über sich hinzu, um potenzielle Arbeitgeber anzusprechen."
+  },
+  vacancies: {
+    title: "Verfügbare Stellen",
+    description: "Entdecken Sie offene Positionen in Gesundheitseinrichtungen",
+    search: "Suchen",
+    searchPlaceholder: "Suche nach Titel, Ort oder Stichwort...",
+    resetFilters: "Filter zurücksetzen",
+    noVacanciesFound: "Keine Stellen gefunden",
+    noVacanciesDesc: "Versuchen Sie, Ihre Suchkriterien anzupassen",
+    jobType: "Stellenart",
+    country: "Land",
+    city: "Stadt"
+  },
+  saved: {
+    title: "Gespeicherte & beworbene Stellen",
+    description: "Verfolgen Sie gespeicherte Stellen und Bewerbungen",
+    savedVacancies: "Gespeicherte Stellen",
+    appliedVacancies: "Beworbene Stellen",
+    noSaved: "Keine gespeicherten Stellen",
+    noSavedDesc: "Sie haben noch keine Stellen gespeichert. Speichern Sie Stellen, um sie im Auge zu behalten.",
+    noApplied: "Noch keine Bewerbungen",
+    noAppliedDesc: "Sie haben sich noch nicht auf Stellen beworben. Beginnen Sie mit Bewerbungen, um Ihre nächste Rolle zu finden.",
+    browseVacancies: "Stellen durchsuchen",
+    vacancyRemoved: "Stelle entfernt",
+    vacancyRemovedDesc: "Die Stelle wurde aus Ihrer Liste gespeicherter Stellen entfernt."
+  }
+};

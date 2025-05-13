@@ -1,0 +1,21 @@
+
+export const common = {
+  login: "Log in",
+  signup: "Free Sign Up",
+  applied: "Applied",
+  loading: "Loading...",
+  noResults: "No results found",
+  about: "About Us",
+  contact: "Contact",
+  vacancies: "Vacancies",
+  professionals: "Professionals",
+  learning: "Solvia Learning",
+  dashboard: "Dashboard",
+  settings: "Settings",
+  profile: "Profile",
+  messages: "Messages",
+  logout: "Log out",
+  home: "Home",
+  forEmployers: "For Employers",
+  viewMore: "View More"
+};

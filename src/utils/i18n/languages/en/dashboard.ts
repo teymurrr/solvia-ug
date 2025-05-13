@@ -1,0 +1,58 @@
+
+export const dashboard = {
+  title: "Professional Dashboard",
+  subtitle: "Manage your profile and view opportunities",
+  profile: {
+    title: "Your Profile",
+    description: "This is how institutions will see you",
+    createProfile: "Create Profile",
+    completeProfile: "Complete Your Profile",
+    updateProfile: "Update Profile",
+    loading: "Loading profile data...",
+    editProfile: "Edit Your Profile",
+    saveProfile: "Save Profile",
+    activelySearching: "Actively searching",
+    openToRelocation: "Open to relocation",
+    fspCertified: "FSP Certified",
+    profileCompletion: "Profile completion",
+    location: "Location",
+    notSpecified: "Not specified",
+    profession: "Profession",
+    fspCertificate: "FSP Certificate",
+    yes: "Yes",
+    no: "No",
+    experience: "Experience",
+    at: "at",
+    present: "Present",
+    education: "Education",
+    in: "in",
+    languages: "Languages",
+    about: "About",
+    incompleteProfile: "Your profile is incomplete. Add more information about yourself to attract potential employers."
+  },
+  vacancies: {
+    title: "Available Vacancies",
+    description: "Explore open positions in healthcare institutions",
+    search: "Search",
+    searchPlaceholder: "Search by title, location, or keyword...",
+    resetFilters: "Reset filters",
+    noVacanciesFound: "No vacancies found",
+    noVacanciesDesc: "Try adjusting your search criteria",
+    jobType: "Job Type",
+    country: "Country",
+    city: "City"
+  },
+  saved: {
+    title: "Saved & Applied Vacancies",
+    description: "Track vacancies you've saved or applied for",
+    savedVacancies: "Saved Vacancies",
+    appliedVacancies: "Applied Vacancies",
+    noSaved: "No saved vacancies",
+    noSavedDesc: "You haven't saved any vacancies yet. Save vacancies to keep track of them.",
+    noApplied: "No applications yet",
+    noAppliedDesc: "You haven't applied to any vacancies yet. Start applying to find your next role.",
+    browseVacancies: "Browse Vacancies",
+    vacancyRemoved: "Vacancy removed",
+    vacancyRemovedDesc: "The vacancy has been removed from your saved list."
+  }
+};
