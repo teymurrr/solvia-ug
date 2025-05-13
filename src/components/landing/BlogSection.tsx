@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { BlogPost } from '@/types/landing';
 import { useLanguage } from '@/hooks/useLanguage';
+import { AspectRatio } from "@/components/ui/aspect-ratio";
 
 interface BlogSectionProps {
   posts: BlogPost[];
@@ -14,22 +15,19 @@ interface BlogSectionProps {
 const BlogSection: React.FC<BlogSectionProps> = ({ posts }) => {
   const { t } = useLanguage();
 
-  // Default values in case translations aren't loaded yet
-  const viewMore = t?.blog?.viewMore || "View More";
-
   return (
     <section className="py-16 bg-gray-50">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <div className="flex flex-col items-center justify-center">
             <Book className="h-[30px] w-[30px] text-[#006ae6] mb-4" />
-            <h2 className="text-[30px] font-bold text-black">Latest from Our Blog</h2>
+            <h2 className="text-[30px] font-bold text-black">{t?.blog?.title || "Latest from Our Blog"}</h2>
             <p className="text-lg text-muted-foreground mb-4 max-w-xl mx-auto">
-              Insights, stories, and tips for healthcare professionals and recruiters
+              {t?.blog?.subtitle || "Insights, stories, and tips for healthcare professionals and recruiters"}
             </p>
             <Button variant="ghost" asChild className="group mx-auto">
               <Link to="/blog" className="flex items-center">
-                {viewMore}
+                {t?.blog?.viewMore || "View More"}
                 <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </Link>
             </Button>
@@ -39,6 +37,17 @@ const BlogSection: React.FC<BlogSectionProps> = ({ posts }) => {
           {posts.map((blog) => (
             <Card key={blog.id} className="border-transparent hover:shadow-lg hover:scale-[1.02] transition-all duration-300">
               <CardContent className="p-6">
+                {blog.imageUrl && (
+                  <div className="mb-4">
+                    <AspectRatio ratio={16 / 9}>
+                      <img
+                        src={blog.imageUrl}
+                        alt={blog.title}
+                        className="rounded-md object-cover w-full h-full"
+                      />
+                    </AspectRatio>
+                  </div>
+                )}
                 <div className="flex items-center gap-2 text-sm text-muted-foreground mb-2">
                   <span>{blog.readTime}</span>
                   <span>•</span>
@@ -50,7 +59,7 @@ const BlogSection: React.FC<BlogSectionProps> = ({ posts }) => {
                   to={`/blog/${blog.id}`}
                   className="text-medical-600 hover:text-medical-700 font-medium inline-flex items-center group"
                 >
-                  Read More
+                  {t?.blog?.readMore || "Read More"}
                   <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
                 </Link>
               </CardContent>

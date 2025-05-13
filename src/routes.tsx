@@ -1,4 +1,3 @@
-
 import { lazy, Suspense, useState, useEffect } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import ProtectedRoute from "@/components/ProtectedRoute";
@@ -18,6 +17,8 @@ const Contact = lazy(() => import("@/pages/Contact"));
 const Privacy = lazy(() => import("@/pages/Privacy"));
 const Terms = lazy(() => import("@/pages/Terms"));
 const EmployersLanding = lazy(() => import("@/pages/EmployersLanding"));
+const Blog = lazy(() => import("@/pages/Blog"));
+const BlogDetail = lazy(() => import("@/pages/BlogDetail"));
 
 // Auth pages - import individually instead of bundling
 const Signup = lazy(() => import("@/pages/Signup"));
@@ -84,6 +85,8 @@ const AppRoutes = () => {
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/terms" element={<Terms />} />
         <Route path="/employers" element={<EmployersLanding />} />
+        <Route path="/blog" element={<Blog />} />
+        <Route path="/blog/:id" element={<BlogDetail />} />
         
         {/* Auth routes */}
         <Route path="/signup" element={<Signup />} />

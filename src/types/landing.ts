@@ -37,4 +37,8 @@ export interface BlogPost {
   excerpt: string;
   date: string;
   readTime: string;
+  imageUrl?: string;
+  author?: string;
+  category?: string;
+  content?: string;
 }
