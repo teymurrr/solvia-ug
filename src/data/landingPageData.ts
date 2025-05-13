@@ -1,3 +1,4 @@
+
 import { Professional, BlogPost } from '@/types/landing';
 
 export const featuredProfessionals: Professional[] = [
@@ -193,7 +194,9 @@ export const featuredBlogs: BlogPost[] = [
   {
     id: '1',
     title: 'The Future of Healthcare Recruitment',
+    slug: 'future-of-healthcare-recruitment',
     excerpt: 'Discover how AI and technology are transforming medical staffing globally, creating more opportunities for healthcare professionals.',
+    content: null,
     date: '2025-04-15',
     readTime: '5 min read',
     imageUrl: 'https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
@@ -203,7 +206,9 @@ export const featuredBlogs: BlogPost[] = [
   {
     id: '2',
     title: 'Working Abroad in Healthcare',
+    slug: 'working-abroad-in-healthcare',
     excerpt: 'Essential tips for medical professionals considering international careers and how to navigate the challenges of relocation.',
+    content: null,
     date: '2025-04-12',
     readTime: '4 min read',
     imageUrl: 'https://images.unsplash.com/photo-1584982751601-97dcc096659c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
