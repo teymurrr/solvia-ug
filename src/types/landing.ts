@@ -1,4 +1,3 @@
-
 export interface Professional {
   id: string;
   firstName: string;
@@ -31,14 +30,28 @@ export interface Institution {
   openPositions: number;
 }
 
+export interface BlogComment {
+  id: string;
+  blog_post_id: string;
+  user_id: string;
+  content: string;
+  created_at: string;
+  updated_at: string;
+  user_name?: string;  // For display purposes
+}
+
+// Extend the existing BlogPost type to align with our database schema
 export interface BlogPost {
   id: string;
   title: string;
+  slug: string;
   excerpt: string;
-  date: string;
-  readTime: string;
+  content: string | null;
   imageUrl?: string;
-  author?: string;
+  date: string;
   category?: string;
-  content?: string;
+  readTime?: string;
+  author?: string;
+  author_id?: string;
+  status?: 'draft' | 'published';
 }

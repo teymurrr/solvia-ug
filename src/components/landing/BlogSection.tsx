@@ -7,13 +7,21 @@ import { Card, CardContent } from "@/components/ui/card";
 import { BlogPost } from '@/types/landing';
 import { useLanguage } from '@/hooks/useLanguage';
 import { AspectRatio } from "@/components/ui/aspect-ratio";
+import { useBlogPosts } from '@/hooks/useBlogPosts';
 
 interface BlogSectionProps {
-  posts: BlogPost[];
+  posts?: BlogPost[]; // Make posts optional since we'll fetch if not provided
 }
 
-const BlogSection: React.FC<BlogSectionProps> = ({ posts }) => {
+const BlogSection: React.FC<BlogSectionProps> = ({ posts: propsPosts }) => {
   const { t } = useLanguage();
+  const { posts: fetchedPosts, loading } = useBlogPosts();
+  
+  // Use posts from props if provided, otherwise use fetched posts
+  const posts = propsPosts || fetchedPosts;
+
+  // Only show up to 2 posts in the landing page section
+  const displayPosts = posts.slice(0, 2);
 
   return (
     <section className="py-16 bg-gray-50">
@@ -24,39 +32,51 @@ const BlogSection: React.FC<BlogSectionProps> = ({ posts }) => {
             {t?.blog?.subtitle || "Insights, stories, and tips for healthcare professionals and recruiters"}
           </p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {posts.map((blog) => (
-            <Card key={blog.id} className="border-transparent hover:shadow-lg hover:scale-[1.02] transition-all duration-300">
-              <CardContent className="p-6">
-                {blog.imageUrl && (
-                  <div className="mb-4">
-                    <AspectRatio ratio={16 / 9}>
-                      <img
-                        src={blog.imageUrl}
-                        alt={blog.title}
-                        className="rounded-md object-cover w-full h-full"
-                      />
-                    </AspectRatio>
+        
+        {loading ? (
+          <div className="flex justify-center py-16">
+            <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-medical-600"></div>
+          </div>
+        ) : displayPosts.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {displayPosts.map((blog) => (
+              <Card key={blog.id} className="border-transparent hover:shadow-lg hover:scale-[1.02] transition-all duration-300">
+                <CardContent className="p-6">
+                  {blog.imageUrl && (
+                    <div className="mb-4">
+                      <AspectRatio ratio={16 / 9}>
+                        <img
+                          src={blog.imageUrl}
+                          alt={blog.title}
+                          className="rounded-md object-cover w-full h-full"
+                        />
+                      </AspectRatio>
+                    </div>
+                  )}
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground mb-2">
+                    <span>{blog.readTime}</span>
+                    <span>•</span>
+                    <span>{new Date(blog.date).toLocaleDateString()}</span>
                   </div>
-                )}
-                <div className="flex items-center gap-2 text-sm text-muted-foreground mb-2">
-                  <span>{blog.readTime}</span>
-                  <span>•</span>
-                  <span>{new Date(blog.date).toLocaleDateString()}</span>
-                </div>
-                <h3 className="text-xl font-semibold mb-2">{blog.title}</h3>
-                <p className="text-muted-foreground mb-4">{blog.excerpt}</p>
-                <Link
-                  to={`/blog/${blog.id}`}
-                  className="text-medical-600 hover:text-medical-700 font-medium inline-flex items-center group"
-                >
-                  {t?.blog?.readMore || "Read More"}
-                  <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                </Link>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+                  <h3 className="text-xl font-semibold mb-2">{blog.title}</h3>
+                  <p className="text-muted-foreground mb-4">{blog.excerpt}</p>
+                  <Link
+                    to={`/blog/${blog.id}`}
+                    className="text-medical-600 hover:text-medical-700 font-medium inline-flex items-center group"
+                  >
+                    {t?.blog?.readMore || "Read More"}
+                    <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                  </Link>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-8">
+            <p className="text-muted-foreground">No blog posts available yet.</p>
+          </div>
+        )}
+        
         <div className="mt-10 text-center">
           <Button variant="outline" asChild className="group">
             <Link to="/blog" className="flex items-center">

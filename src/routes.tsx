@@ -1,6 +1,7 @@
 import { lazy, Suspense, useState, useEffect } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import ProtectedRoute from "@/components/ProtectedRoute";
+import AdminRoute from "@/components/AdminRoute";
 import { useAuth } from "@/contexts/AuthContext";
 
 // Simple loading component
@@ -31,6 +32,10 @@ const AuthCallback = lazy(() => import("@/pages/AuthCallback"));
 // Dashboard pages
 const ProfessionalDashboard = lazy(() => import("@/pages/ProfessionalDashboard"));
 const InstitutionDashboard = lazy(() => import("@/pages/InstitutionDashboard"));
+
+// Admin pages - blog management
+const AdminBlogList = lazy(() => import("@/pages/admin/BlogList"));
+const BlogEditor = lazy(() => import("@/pages/admin/BlogEditor"));
 
 // Other pages - load individually as needed
 const SolviaLearning = lazy(() => import("@/pages/SolviaLearning"));
@@ -87,6 +92,32 @@ const AppRoutes = () => {
         <Route path="/employers" element={<EmployersLanding />} />
         <Route path="/blog" element={<Blog />} />
         <Route path="/blog/:id" element={<BlogDetail />} />
+        
+        {/* Admin blog management routes */}
+        <Route
+          path="/admin/blog"
+          element={
+            <AdminRoute>
+              <AdminBlogList />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path="/admin/blog/new"
+          element={
+            <AdminRoute>
+              <BlogEditor />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path="/admin/blog/edit/:id"
+          element={
+            <AdminRoute>
+              <BlogEditor />
+            </AdminRoute>
+          }
+        />
         
         {/* Auth routes */}
         <Route path="/signup" element={<Signup />} />
