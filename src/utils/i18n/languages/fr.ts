@@ -111,9 +111,29 @@ export const fr = {
     }
   },
   insights: {
-    title: "Insights Solvia",
+    title: "Solvia Insights",
     subtitle: "Solutions complètes pour les établissements de santé",
-    comingSoon: "Bientôt disponible"
+    comingSoon: "Bientôt disponible",
+    employeeExperience: {
+      title: "Expérience des employés et bien-être",
+      subtitle: "Améliorez la satisfaction au travail et le bien-être des employés",
+      description: "Programmes complets conçus pour améliorer la satisfaction des employés, le soutien à la santé mentale et les initiatives d'équilibre travail-vie personnelle."
+    },
+    analytics: {
+      title: "Services analytiques et stratégiques",
+      subtitle: "Solutions de main-d'œuvre de santé basées sur les données",
+      description: "Services d'analyse avancée et de planification stratégique pour optimiser la gestion du personnel et l'efficacité opérationnelle."
+    },
+    talentDevelopment: {
+      title: "Services de développement des talents",
+      subtitle: "Développer et cultiver les talents de la santé",
+      description: "Programmes de formation personnalisés et parcours de développement professionnel pour améliorer les capacités du personnel de santé."
+    },
+    community: {
+      title: "Communauté et réseautage",
+      subtitle: "Connectez-vous avec des professionnels de la santé",
+      description: "Établissez des connexions précieuses au sein de la communauté de la santé grâce à des événements de réseautage et des forums professionnels."
+    }
   },
   common: {
     login: "Connexion",
