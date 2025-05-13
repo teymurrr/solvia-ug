@@ -77,6 +77,22 @@ export const de = {
     support: {
       title: "Umfassende Unterstützung",
       description: "Begleitung durch Zertifizierung, Sprachtraining und Eingewöhnung in Ihrem neuen Land"
+    },
+    directHiring: {
+      title: "Direkte Einstellung, keine Gebühren",
+      description: "Überspringen Sie Personalvermittler und verbinden Sie sich direkt mit Fachkräften."
+    },
+    fastProcess: {
+      title: "Schneller Prozess, beste Ergebnisse",
+      description: "Unser optimierter Ansatz gewährleistet schnellere Vermittlungen mit besseren Ergebnissen."
+    },
+    verifiedProfiles: {
+      title: "Verifizierte Profile",
+      description: "Alle unsere Fachkräfte werden vorgeprüft und für Qualitätssicherung verifiziert."
+    },
+    transparentProcess: {
+      title: "Transparenter Prozess",
+      description: "Verfolgen Sie den Bewerbungsstatus in Echtzeit mit unserem transparenten Prozess."
     }
   },
   journey: {

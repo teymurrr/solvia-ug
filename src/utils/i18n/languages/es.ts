@@ -77,6 +77,22 @@ export const es = {
     support: {
       title: "Apoyo integral",
       description: "Asistencia con certificación, formación lingüística y establecimiento en su nuevo país"
+    },
+    directHiring: {
+      title: "Contratación directa, sin comisiones",
+      description: "Evite intermediarios y conéctese directamente con profesionales."
+    },
+    fastProcess: {
+      title: "Proceso rápido, mejores resultados",
+      description: "Nuestro enfoque optimizado garantiza colocaciones más rápidas con mejores resultados."
+    },
+    verifiedProfiles: {
+      title: "Perfiles verificados",
+      description: "Todos nuestros profesionales son preseleccionados y verificados para garantizar la calidad."
+    },
+    transparentProcess: {
+      title: "Proceso transparente",
+      description: "Siga el estado de la solicitud en tiempo real con nuestro proceso transparente."
     }
   },
   journey: {

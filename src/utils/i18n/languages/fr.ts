@@ -77,6 +77,22 @@ export const fr = {
     support: {
       title: "Accompagnement complet",
       description: "Assistance pour la certification, la formation linguistique et l'installation dans votre nouveau pays"
+    },
+    directHiring: {
+      title: "Recrutement direct, sans frais",
+      description: "Contournez les recruteurs tiers et connectez-vous directement avec les professionnels."
+    },
+    fastProcess: {
+      title: "Processus rapide, meilleurs résultats",
+      description: "Notre approche simplifiée assure des placements plus rapides avec de meilleurs résultats."
+    },
+    verifiedProfiles: {
+      title: "Profils vérifiés",
+      description: "Tous nos professionnels sont présélectionnés et vérifiés pour une assurance qualité."
+    },
+    transparentProcess: {
+      title: "Processus transparent",
+      description: "Suivez l'état des candidatures en temps réel grâce à notre processus transparent."
     }
   },
   journey: {
@@ -87,7 +103,7 @@ export const fr = {
       profileDesc: "Constituez votre profil professionnel mettant en valeur vos compétences, votre expérience et vos qualifications. Démarquez-vous auprès des employeurs potentiels avec un profil complet.",
       profileFeature: "Création de profil facile",
       apply: "Postuler",
-      applyDesc: "Parcourez les opportunités de santé dans le monde entier. Postulez à des postes correspondant à vos compétences et aspirations en quelques clics.",
+      applyDesc: "Parcourez les opportunités de sant�� dans le monde entier. Postulez à des postes correspondant à vos compétences et aspirations en quelques clics.",
       applyFeature: "Opportunités mondiales",
       start: "Commencer",
       startDesc: "Une fois embauché, nous soutiendrons votre transition. De l'aide à la relocalisation au soutien à l'intégration, nous assurons un démarrage en douceur dans votre nouveau rôle.",

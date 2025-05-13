@@ -30,9 +30,9 @@ const WhySolviaSection = () => {
               <Users className="h-6 w-6 text-[#006ae6]" />
             </div>
             <div>
-              <h3 className="text-xl font-semibold mb-2">{t?.why?.languageReady?.title || "Language-Ready Candidates"}</h3>
+              <h3 className="text-xl font-semibold mb-2">{t?.why?.verifiedProfiles?.title || "Language-Ready Candidates"}</h3>
               <p className="text-gray-600">
-                {t?.why?.languageReady?.description || "We ensure every candidate reaches at least B2 level in German and provide extra training to match workplace needs."}
+                {t?.why?.verifiedProfiles?.description || "We ensure every candidate reaches at least B2 level in German and provide extra training to match workplace needs."}
               </p>
             </div>
           </div>
@@ -42,9 +42,9 @@ const WhySolviaSection = () => {
               <FileCheck className="h-6 w-6 text-[#006ae6]" />
             </div>
             <div>
-              <h3 className="text-xl font-semibold mb-2">{t?.why?.documentation?.title || "Hassle-Free Documentation"}</h3>
+              <h3 className="text-xl font-semibold mb-2">{t?.why?.directHiring?.title || "Hassle-Free Documentation"}</h3>
               <p className="text-gray-600">
-                {t?.why?.documentation?.description || "From visa paperwork to medical certifications – we guide candidates through every step, so you don't have to."}
+                {t?.why?.directHiring?.description || "From visa paperwork to medical certifications – we guide candidates through every step, so you don't have to."}
               </p>
             </div>
           </div>
@@ -54,9 +54,9 @@ const WhySolviaSection = () => {
               <Clock className="h-6 w-6 text-[#006ae6]" />
             </div>
             <div>
-              <h3 className="text-xl font-semibold mb-2">{t?.why?.fasterHiring?.title || "Faster Hiring, Less Admin"}</h3>
+              <h3 className="text-xl font-semibold mb-2">{t?.why?.fastProcess?.title || "Faster Hiring, Less Admin"}</h3>
               <p className="text-gray-600">
-                {t?.why?.fasterHiring?.description || "Browse profiles, schedule interviews directly via our calendar tool, and access CVs instantly."}
+                {t?.why?.fastProcess?.description || "Browse profiles, schedule interviews directly via our calendar tool, and access CVs instantly."}
               </p>
             </div>
           </div>
