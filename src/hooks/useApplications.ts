@@ -19,6 +19,17 @@ export interface Application {
   cvFileName?: string;
 }
 
+// Define an interface for the application data JSON structure
+interface ApplicationData {
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  phone?: string;
+  coverLetter?: string;
+  cvFileName?: string;
+  [key: string]: any; // Allow for additional fields
+}
+
 export const useApplications = () => {
   const { user } = useAuth();
   const { toast } = useToast();
@@ -93,7 +104,7 @@ export const useApplications = () => {
       }
 
       // Get user details for each application
-      const formattedApplications = await Promise.all(data.map(async (application) => {
+      const formattedApplications: Application[] = await Promise.all(data.map(async (application) => {
         // Fetch user profile data
         const { data: userData, error: userError } = await supabase
           .from('professional_profiles')
@@ -101,24 +112,33 @@ export const useApplications = () => {
           .eq('id', application.user_id)
           .single();
         
+        // Safely parse application_data as ApplicationData or empty object if null
+        const applicationData = application.application_data as ApplicationData || {};
+        
+        // Validate the status is one of the allowed values
+        let typedStatus: Application['status'] = 'pending'; // Default fallback
+        if (['pending', 'reviewing', 'accepted', 'rejected'].includes(application.status)) {
+          typedStatus = application.status as Application['status'];
+        }
+        
         // Format the application data to match the Application interface
         return {
           id: application.id,
           applicantId: application.user_id,
           applicantName: userData 
             ? `${userData.first_name} ${userData.last_name}`
-            : application.application_data?.firstName 
-              ? `${application.application_data.firstName} ${application.application_data.lastName}` 
+            : applicationData?.firstName && applicationData?.lastName
+              ? `${applicationData.firstName} ${applicationData.lastName}` 
               : 'Unknown Applicant',
           applicantPhoto: userData?.profile_image || undefined,
-          applicantEmail: application.application_data?.email,
-          applicantPhone: application.application_data?.phone,
+          applicantEmail: applicationData?.email,
+          applicantPhone: applicationData?.phone,
           vacancyId: application.vacancy_id,
           vacancyTitle: application.vacancies?.title || 'Unknown Position',
           appliedDate: new Date(application.application_date).toLocaleDateString(),
-          status: application.status,
-          coverLetter: application.application_data?.coverLetter,
-          cvFileName: application.application_data?.cvFileName
+          status: typedStatus,
+          coverLetter: applicationData?.coverLetter,
+          cvFileName: applicationData?.cvFileName
         };
       }));
 
