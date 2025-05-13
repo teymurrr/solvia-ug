@@ -1,0 +1,20 @@
+
+export const common = {
+  login: "Iniciar sesión",
+  signup: "Registrarse",
+  logout: "Cerrar sesión",
+  search: "Buscar",
+  loading: "Cargando...",
+  error: "Se ha producido un error",
+  home: "Inicio",
+  about: "Acerca de",
+  contact: "Contacto",
+  profile: "Perfil",
+  dashboard: "Panel",
+  settings: "Configuración",
+  vacancies: "Vacantes",
+  professionals: "Profesionales",
+  institutions: "Instituciones",
+  messages: "Mensajes",
+  notifications: "Notificaciones"
+};

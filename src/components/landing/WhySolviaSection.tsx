@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Card, CardContent } from "@/components/ui/card";
-import { Star, Smile, Users, Clock, FileCheck, DollarSign } from 'lucide-react';
+import { Star, Smile, Users, Clock } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { useLanguage } from '@/hooks/useLanguage';
 import { Link } from 'react-router-dom';
@@ -51,9 +51,9 @@ const WhySolviaSection = () => {
                   <Star className="h-5 w-5 text-primary" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold mb-1">{t?.why?.directHiring?.title || "Direct Collaboration, No Middlemen"}</h3>
+                  <h3 className="text-xl font-semibold mb-1">Direct Collaboration, No Middlemen</h3>
                   <p className="text-gray-600">
-                    {t?.why?.directHiring?.description || "Connect and communicate without agencies or commissions — just people, transparently."}
+                    Connect and communicate without agencies or commissions — just people, transparently.
                   </p>
                 </div>
               </CardContent>
@@ -65,9 +65,9 @@ const WhySolviaSection = () => {
                   <Smile className="h-5 w-5 text-primary" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold mb-1">{t?.why?.fastProcess?.title || "Faster Matches, Smoother Processes"}</h3>
+                  <h3 className="text-xl font-semibold mb-1">Faster Matches, Smoother Processes</h3>
                   <p className="text-gray-600">
-                    {t?.why?.fastProcess?.description || "Our smart platform streamlines the journey — saving time and delivering better outcomes for everyone involved."}
+                    Our smart platform streamlines the journey — saving time and delivering better outcomes for everyone involved.
                   </p>
                 </div>
               </CardContent>
@@ -79,9 +79,9 @@ const WhySolviaSection = () => {
                   <Users className="h-5 w-5 text-primary" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold mb-1">{t?.why?.verifiedProfiles?.title || "Verified Community, Trusted Interactions"}</h3>
+                  <h3 className="text-xl font-semibold mb-1">Verified Community, Trusted Interactions</h3>
                   <p className="text-gray-600">
-                    {t?.why?.verifiedProfiles?.description || "All profiles are reviewed and validated to ensure quality, safety, and trust on both sides."}
+                    All profiles are reviewed and validated to ensure quality, safety, and trust on both sides.
                   </p>
                 </div>
               </CardContent>
@@ -93,9 +93,9 @@ const WhySolviaSection = () => {
                   <Clock className="h-5 w-5 text-primary" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold mb-1">{t?.why?.transparentProcess?.title || "Full Transparency, Shared Control"}</h3>
+                  <h3 className="text-xl font-semibold mb-1">Full Transparency, Shared Control</h3>
                   <p className="text-gray-600">
-                    {t?.why?.transparentProcess?.description || "Both professionals and institutions can track progress, respond quickly, and stay in control — no gatekeepers, no guessing."}
+                    Both professionals and institutions can track progress, respond quickly, and stay in control — no gatekeepers, no guessing.
                   </p>
                 </div>
               </CardContent>
