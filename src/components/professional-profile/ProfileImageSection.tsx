@@ -11,9 +11,9 @@ interface ProfileImageSectionProps {
   handleImageChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const ProfileImageSection: React.FC<ProfileImageSectionProps> = ({
-  imagePreview,
-  handleImageChange,
+const ProfileImageSection: React.FC<ProfileImageSectionProps> = ({ 
+  imagePreview, 
+  handleImageChange 
 }) => {
   const { t } = useLanguage();
   
@@ -21,12 +21,7 @@ const ProfileImageSection: React.FC<ProfileImageSectionProps> = ({
     <div className="flex flex-col items-center gap-4 mb-4">
       <Avatar className="h-24 w-24">
         {imagePreview ? (
-          <AvatarImage 
-            src={imagePreview} 
-            alt="Profile" 
-            width={96}
-            height={96}
-          />
+          <AvatarImage src={imagePreview} alt="Profile" />
         ) : (
           <AvatarFallback>
             <User className="h-12 w-12" />

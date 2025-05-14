@@ -32,6 +32,8 @@ export interface DashboardTranslations {
     location: string;
     institution: string;
     department?: string;
+    description?: string;
+    requirements?: string;
   };
   professionals: {
     title: string;
@@ -43,6 +45,7 @@ export interface DashboardTranslations {
     location: string;
     yearsOfExperience?: string;
     languages?: string;
+    about?: string;
   };
   talents?: {
     title: string;
@@ -77,6 +80,10 @@ export interface DashboardTranslations {
     name?: string;
     email?: string;
     phone?: string;
+    message?: string;
+    send?: string;
+    success?: string;
+    error?: string;
   };
   applications: {
     pending: string;
@@ -108,7 +115,9 @@ export interface DashboardTranslations {
     editProfile: string;
     saveProfile: string;
     activelySearching: string;
+    activelySearchingDesc?: string;
     openToRelocation: string;
+    openToRelocationDesc?: string;
     fspCertified: string;
     fspCertificate: string;
     fspCertificateDesc?: string;
@@ -117,17 +126,52 @@ export interface DashboardTranslations {
     certificateUploaded?: string;
     profileCompletion: string;
     location: string;
+    locationPlaceholder?: string;
     notSpecified: string;
     profession: string;
+    specialty?: string;
+    specialtyPlaceholder?: string;
+    firstName?: string;
+    firstNamePlaceholder?: string;
+    lastName?: string;
+    lastNamePlaceholder?: string;
+    emailPlaceholder?: string;
+    selectProfession?: string;
     yes: string;
     no: string;
     experience: string;
+    experienceCount?: string;
+    addExperience?: string;
+    hospital?: string;
+    hospitalPlaceholder?: string;
+    role?: string;
+    rolePlaceholder?: string;
+    startDate?: string;
+    endDate?: string;
+    currentlyWorking?: string;
     at: string;
     present: string;
     education: string;
+    educationCount?: string;
+    addEducation?: string;
+    institution?: string;
+    institutionPlaceholder?: string;
+    degree?: string;
+    degreePlaceholder?: string;
+    field?: string;
+    fieldPlaceholder?: string;
+    currentlyStudying?: string;
     in: string;
     languages: string;
+    languageCount?: string;
+    addLanguage?: string;
+    languageName?: string;
+    languageNamePlaceholder?: string;
+    languageLevel?: string;
+    selectLevel?: string;
+    certificate?: string;
     about: string;
+    aboutPlaceholder?: string;
     incompleteProfile: string;
   };
   saved?: {

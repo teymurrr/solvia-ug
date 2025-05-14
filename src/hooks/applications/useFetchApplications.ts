@@ -1,122 +1,122 @@
+import { useState, useEffect } from 'react';
 
-import { useState } from 'react';
-import { supabase } from '@/integrations/supabase/client';
-import { useAuth } from '@/contexts/AuthContext';
-import { Application, ApplicationData } from './types';
+export interface Application {
+  id: string;
+  user_id: string;
+  vacancy_id: string;
+  applicantId: string;
+  applicantName: string;
+  applicantPhoto: string;
+  applicantEmail: string;
+  applicantPhone: string;
+  vacancyId: string;
+  vacancyTitle: string;
+  appliedDate: string;
+  application_date: string;
+  status: string;
+  coverLetter: string;
+  cvFileName: string;
+}
 
 export const useFetchApplications = () => {
-  const { user } = useAuth();
-  const [loading, setLoading] = useState(true);
+  const [applications, setApplications] = useState<Application[]>([]);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchApplications = async (): Promise<Application[]> => {
-    if (!user?.id) {
-      setLoading(false);
-      setError('Authentication required');
-      return [];
-    }
-
-    try {
+  useEffect(() => {
+    const fetchApplications = async () => {
       setLoading(true);
       setError(null);
       
-      // Fetch all vacancies owned by this institution
-      const { data: institutionVacancies, error: vacanciesError } = await supabase
-        .from('vacancies')
-        .select('id')
-        .eq('institution_id', user.id);
-      
-      if (vacanciesError) {
-        throw vacanciesError;
-      }
-      
-      // If no vacancies, return empty applications
-      if (!institutionVacancies || institutionVacancies.length === 0) {
+      try {
+        // In a real application, this would be a call to your backend API
+        // For now, we'll just use some mock data
+        
+        // Simulate API delay
+        await new Promise(resolve => setTimeout(resolve, 800));
+        
+        const mockApplications: Application[] = [
+          {
+            id: '1',
+            user_id: 'user1',
+            vacancy_id: '1',
+            applicantId: 'user1',
+            applicantName: 'John Smith',
+            applicantPhoto: '/placeholder.svg',
+            applicantEmail: 'john.smith@example.com',
+            applicantPhone: '+1234567890',
+            vacancyId: '1',
+            vacancyTitle: 'Senior Cardiologist',
+            appliedDate: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
+            application_date: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
+            status: 'pending',
+            coverLetter: 'I am writing to express my interest in the Senior Cardiologist position.',
+            cvFileName: 'john_smith_cv.pdf'
+          },
+          {
+            id: '2',
+            user_id: 'user2',
+            vacancy_id: '2',
+            applicantId: 'user2',
+            applicantName: 'Alice Johnson',
+            applicantPhoto: '/placeholder.svg',
+            applicantEmail: 'alice.johnson@example.com',
+            applicantPhone: '+9876543210',
+            vacancyId: '2',
+            vacancyTitle: 'Registered Nurse',
+            appliedDate: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+            application_date: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+            status: 'reviewing',
+            coverLetter: 'I am an experienced registered nurse with a passion for patient care.',
+            cvFileName: 'alice_johnson_cv.pdf'
+          },
+          {
+            id: '3',
+            user_id: 'user3',
+            vacancy_id: '1',
+            applicantId: 'user3',
+            applicantName: 'Bob Williams',
+            applicantPhoto: '/placeholder.svg',
+            applicantEmail: 'bob.williams@example.com',
+            applicantPhone: '+1122334455',
+            vacancyId: '1',
+            vacancyTitle: 'Senior Cardiologist',
+            appliedDate: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(),
+            application_date: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(),
+            status: 'accepted',
+            coverLetter: 'I have extensive experience in cardiology and am eager to contribute to your team.',
+            cvFileName: 'bob_williams_cv.pdf'
+          },
+          {
+            id: '4',
+            user_id: 'user4',
+            vacancy_id: '3',
+            applicantId: 'user4',
+            applicantName: 'Emily Davis',
+            applicantPhoto: '/placeholder.svg',
+            applicantEmail: 'emily.davis@example.com',
+            applicantPhone: '+9988776655',
+            vacancyId: '3',
+            vacancyTitle: 'Medical Technician',
+            appliedDate: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000).toISOString(),
+            application_date: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000).toISOString(),
+            status: 'rejected',
+            coverLetter: 'I am a certified medical technician with a strong attention to detail.',
+            cvFileName: 'emily_davis_cv.pdf'
+          },
+        ];
+        
+        setApplications(mockApplications);
+      } catch (err) {
+        console.error('Error fetching applications:', err);
+        setError('Failed to load applications. Please try again.');
+      } finally {
         setLoading(false);
-        return [];
       }
-      
-      const vacancyIds = institutionVacancies.map(v => v.id);
-      
-      // Get applications for these vacancies
-      const { data, error: applicationsError } = await supabase
-        .from('applied_vacancies')
-        .select(`
-          id,
-          vacancy_id,
-          user_id,
-          application_date,
-          status,
-          application_data,
-          vacancies:vacancy_id (
-            title
-          )
-        `)
-        .in('vacancy_id', vacancyIds)
-        .order('application_date', { ascending: false });
-      
-      if (applicationsError) {
-        throw applicationsError;
-      }
-      
-      // If no data, return empty applications
-      if (!data || data.length === 0) {
-        setLoading(false);
-        return [];
-      }
+    };
 
-      // Get user details for each application
-      const formattedApplications: Application[] = await Promise.all(data.map(async (application) => {
-        // Fetch user profile data
-        const { data: userData, error: userError } = await supabase
-          .from('professional_profiles')
-          .select('first_name, last_name, profile_image')
-          .eq('id', application.user_id)
-          .single();
-        
-        // Safely parse application_data as ApplicationData or empty object if null
-        const applicationData = application.application_data as ApplicationData || {};
-        
-        // Validate the status is one of the allowed values
-        let typedStatus: Application['status'] = 'pending'; // Default fallback
-        if (['pending', 'reviewing', 'accepted', 'rejected'].includes(application.status)) {
-          typedStatus = application.status as Application['status'];
-        }
-        
-        // Format the application data to match the Application interface
-        return {
-          id: application.id,
-          applicantId: application.user_id,
-          applicantName: userData 
-            ? `${userData.first_name} ${userData.last_name}`
-            : applicationData?.firstName && applicationData?.lastName
-              ? `${applicationData.firstName} ${applicationData.lastName}` 
-              : 'Unknown Applicant',
-          applicantPhoto: userData?.profile_image || undefined,
-          applicantEmail: applicationData?.email,
-          applicantPhone: applicationData?.phone,
-          vacancyId: application.vacancy_id,
-          vacancyTitle: application.vacancies?.title || 'Unknown Position',
-          appliedDate: new Date(application.application_date).toLocaleDateString(),
-          status: typedStatus,
-          coverLetter: applicationData?.coverLetter,
-          cvFileName: applicationData?.cvFileName
-        };
-      }));
+    fetchApplications();
+  }, []);
 
-      return formattedApplications;
-    } catch (err: any) {
-      console.error('Error fetching applications:', err);
-      setError(err.message || 'Failed to fetch applications');
-      return [];
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  return {
-    fetchApplications,
-    loading,
-    error
-  };
+  return { applications, loading, error };
 };

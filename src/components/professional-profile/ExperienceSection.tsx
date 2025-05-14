@@ -1,28 +1,30 @@
 
 import React from 'react';
+import { Button } from '@/components/ui/button';
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
+import { UseFormReturn, useFieldArray } from 'react-hook-form';
 import { Plus, Trash2 } from 'lucide-react';
-import { UseFormReturn } from 'react-hook-form';
-import { useFieldArray } from 'react-hook-form';
 import { ProfileFormValues } from './types';
+import { useLanguage } from '@/hooks/useLanguage';
 
 interface ExperienceSectionProps {
   form: UseFormReturn<ProfileFormValues>;
 }
 
 const ExperienceSection: React.FC<ExperienceSectionProps> = ({ form }) => {
+  const { t } = useLanguage();
+  
   const { fields, append, remove } = useFieldArray({
     control: form.control,
-    name: "experiences",
+    name: "experiences"
   });
 
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
-        <h3 className="text-lg font-medium">Professional Experience</h3>
+        <h3 className="text-lg font-medium">{t?.dashboard?.profile?.experience || "Professional Experience"}</h3>
         <Button 
           type="button" 
           variant="outline" 
@@ -30,14 +32,14 @@ const ExperienceSection: React.FC<ExperienceSectionProps> = ({ form }) => {
           onClick={() => append({ hospital: "", location: "", role: "", startDate: "", endDate: "", current: false })}
         >
           <Plus className="h-4 w-4 mr-2" />
-          Add Experience
+          {t?.dashboard?.profile?.addExperience || "Add Experience"}
         </Button>
       </div>
 
       {fields.map((field, index) => (
         <div key={field.id} className="border rounded-md p-4 space-y-4">
           <div className="flex justify-between">
-            <h4 className="font-medium">Experience {index + 1}</h4>
+            <h4 className="font-medium">{t?.dashboard?.profile?.experienceCount || "Experience"} {index + 1}</h4>
             {fields.length > 1 && (
               <Button 
                 type="button" 
@@ -56,9 +58,9 @@ const ExperienceSection: React.FC<ExperienceSectionProps> = ({ form }) => {
               name={`experiences.${index}.hospital`}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Hospital/Institution</FormLabel>
+                  <FormLabel>{t?.dashboard?.profile?.hospital || "Hospital/Institution"}</FormLabel>
                   <FormControl>
-                    <Input placeholder="General Hospital" {...field} />
+                    <Input placeholder={t?.dashboard?.profile?.hospitalPlaceholder || "General Hospital"} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -70,9 +72,9 @@ const ExperienceSection: React.FC<ExperienceSectionProps> = ({ form }) => {
               name={`experiences.${index}.location`}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Location</FormLabel>
+                  <FormLabel>{t?.dashboard?.profile?.location || "Location"}</FormLabel>
                   <FormControl>
-                    <Input placeholder="New York, USA" {...field} />
+                    <Input placeholder={t?.dashboard?.profile?.locationPlaceholder || "New York, USA"} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -84,9 +86,9 @@ const ExperienceSection: React.FC<ExperienceSectionProps> = ({ form }) => {
               name={`experiences.${index}.role`}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Role</FormLabel>
+                  <FormLabel>{t?.dashboard?.profile?.role || "Role"}</FormLabel>
                   <FormControl>
-                    <Input placeholder="Senior Cardiologist" {...field} />
+                    <Input placeholder={t?.dashboard?.profile?.rolePlaceholder || "Senior Cardiologist"} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -98,7 +100,7 @@ const ExperienceSection: React.FC<ExperienceSectionProps> = ({ form }) => {
               name={`experiences.${index}.startDate`}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Start Date</FormLabel>
+                  <FormLabel>{t?.dashboard?.profile?.startDate || "Start Date"}</FormLabel>
                   <FormControl>
                     <Input type="month" {...field} />
                   </FormControl>
@@ -125,7 +127,7 @@ const ExperienceSection: React.FC<ExperienceSectionProps> = ({ form }) => {
                     />
                   </FormControl>
                   <div className="space-y-1 leading-none">
-                    <FormLabel>Currently working here</FormLabel>
+                    <FormLabel>{t?.dashboard?.profile?.currentlyWorking || "Currently working here"}</FormLabel>
                   </div>
                 </FormItem>
               )}
@@ -137,7 +139,7 @@ const ExperienceSection: React.FC<ExperienceSectionProps> = ({ form }) => {
                 name={`experiences.${index}.endDate`}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>End Date</FormLabel>
+                    <FormLabel>{t?.dashboard?.profile?.endDate || "End Date"}</FormLabel>
                     <FormControl>
                       <Input type="month" {...field} />
                     </FormControl>

@@ -1,160 +1,135 @@
+import { useState } from 'react';
 
-import { useState, useEffect } from 'react';
-import { useQuery } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
-import { useAuth } from '@/contexts/AuthContext';
-import { useToast } from '@/hooks/use-toast';
-import { Application, ApplicationStatus, ApplicationData, ApplicationFilter } from './types';
-import { useApplicationFilters } from './useApplicationFilters';
-import { useUpdateApplicationStatus } from './useUpdateApplicationStatus';
+export interface Application {
+  id: string;
+  user_id: string;
+  vacancy_id: string;
+  applicantId: string;
+  applicantName: string;
+  applicantPhoto: string;
+  applicantEmail: string;
+  applicantPhone: string;
+  vacancyId: string;
+  vacancyTitle: string;
+  appliedDate: string;
+  application_date: string;
+  status: 'pending' | 'reviewing' | 'accepted' | 'rejected';
+  coverLetter: string;
+  cvFileName: string;
+}
 
-export const useApplications = () => {
-  const { session } = useAuth();
-  const { toast } = useToast();
-  const [applications, setApplications] = useState<Application[]>([]);
-  const { updateApplicationStatus, submitting } = useUpdateApplicationStatus();
-  
-  // Get filter functionality from the useApplicationFilters hook
-  const {
-    filteredApplications,
-    searchQuery,
-    filters,
-    handleSearchQueryChange,
-    handleFilterChange
-  } = useApplicationFilters(applications);
+export interface Vacancy {
+  id: string;
+  title: string;
+  institution: string;
+  department: string;
+  location: string;
+  description: string;
+  requirements: string[];
+  job_type: string;
+  created_at: string;
+}
 
-  // Fetch applications data
-  const fetchApplicationsQuery = useQuery({
-    queryKey: ['applications', session?.user?.id],
-    queryFn: async (): Promise<Application[]> => {
-      if (!session?.user) {
-        return [];
-      }
+export interface ApplicationFilter {
+  status: string;
+  date: string;
+}
 
-      try {
-        const { data, error } = await supabase
-          .from('applied_vacancies')
-          .select(`
-            *,
-            vacancy:vacancy_id (
-              id,
-              title,
-              institution,
-              location,
-              posted_date,
-              department,
-              description,
-              requirements,
-              job_type
-            )
-          `)
-          .eq('user_id', session.user.id)
-          .order('application_date', { ascending: false });
+export const mockVacancies: Vacancy[] = [
+  {
+    id: '1',
+    title: 'Senior Cardiologist',
+    institution: 'Heart Medical Center',
+    department: 'Cardiology',
+    location: 'Berlin, Germany',
+    description: 'We are looking for an experienced cardiologist to join our growing team.',
+    requirements: [
+      'MD or equivalent medical degree',
+      'Board certification in cardiology',
+      'At least 5 years of experience',
+      'Strong communication skills'
+    ],
+    job_type: 'Full-time',
+    created_at: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+  },
+  {
+    id: '2',
+    title: 'Registered Nurse',
+    institution: 'City General Hospital',
+    department: 'Emergency Medicine',
+    location: 'Munich, Germany',
+    description: 'Join our emergency department as a registered nurse providing immediate care.',
+    requirements: [
+      'BSN degree',
+      'Valid nursing license',
+      'Emergency care certification',
+      'Ability to work under pressure'
+    ],
+    job_type: 'Part-time',
+    created_at: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
+  },
+  {
+    id: '3',
+    title: 'Medical Assistant',
+    institution: 'Klinikum Stuttgart',
+    department: 'General Practice',
+    location: 'Stuttgart, Germany',
+    description: 'Seeking a detail-oriented medical assistant to support our general practice.',
+    requirements: [
+      'Completion of a medical assistant program',
+      'Certification as a medical assistant',
+      'Experience with patient care',
+      'Excellent organizational skills'
+    ],
+    job_type: 'Full-time',
+    created_at: new Date(Date.now() - 8 * 24 * 60 * 60 * 1000).toISOString(),
+  },
+  {
+    id: '4',
+    title: 'Physical Therapist',
+    institution: 'Reha Zentrum Heidelberg',
+    department: 'Rehabilitation',
+    location: 'Heidelberg, Germany',
+    description: 'We are hiring a physical therapist to help patients recover from injuries.',
+    requirements: [
+      'Master’s degree in physical therapy',
+      'Valid physical therapy license',
+      'Experience in rehabilitation',
+      'Strong interpersonal skills'
+    ],
+    job_type: 'Full-time',
+    created_at: new Date(Date.now() - 11 * 24 * 60 * 60 * 1000).toISOString(),
+  },
+  {
+    id: '5',
+    title: 'Radiology Technician',
+    institution: 'Universitätsklinikum Freiburg',
+    department: 'Radiology',
+    location: 'Freiburg, Germany',
+    description: 'Looking for a skilled radiology technician to perform imaging procedures.',
+    requirements: [
+      'Associate’s degree in radiology technology',
+      'Certification as a radiology technician',
+      'Experience with imaging equipment',
+      'Attention to detail'
+    ],
+    job_type: 'Full-time',
+    created_at: new Date(Date.now() - 14 * 24 * 60 * 60 * 1000).toISOString(),
+  },
+];
 
-        if (error) {
-          throw error;
-        }
-
-        if (!data || data.length === 0) {
-          return [];
-        }
-
-        // Transform the data to match our Application interface
-        const formattedApplications = data.map(item => {
-          // Map database status to our application status type
-          let typedStatus: ApplicationStatus = 'pending'; // Default
-          if (['pending', 'reviewing', 'reviewed', 'shortlisted', 'interview', 'accepted', 'rejected'].includes(item.status)) {
-            typedStatus = item.status as ApplicationStatus;
-          }
-
-          // Safely cast and extract application data
-          const appData = item.application_data as ApplicationData || {};
-          
-          const application: Application = {
-            id: item.id,
-            user_id: item.user_id,
-            vacancy_id: item.vacancy_id,
-            application_date: item.application_date,
-            status: typedStatus,
-            application_data: appData,
-            vacancy: item.vacancy ? {
-              id: item.vacancy.id,
-              title: item.vacancy.title,
-              institution: item.vacancy.institution,
-              department: item.vacancy.department || '',
-              location: item.vacancy.location,
-              description: item.vacancy.description || '',
-              requirements: item.vacancy.requirements || null,
-              job_type: item.vacancy.job_type || ''
-            } : undefined,
-            // Enhanced properties for UI display
-            applicantId: item.user_id,
-            applicantName: appData.firstName && appData.lastName 
-              ? `${appData.firstName} ${appData.lastName}` 
-              : 'Unnamed Applicant',
-            applicantPhoto: appData.profileImage,
-            applicantEmail: appData.email,
-            applicantPhone: appData.phone,
-            vacancyId: item.vacancy_id,
-            vacancyTitle: item.vacancy?.title || 'Unknown Position',
-            appliedDate: new Date(item.application_date).toLocaleDateString(),
-            coverLetter: appData.coverLetter,
-            cvFileName: appData.cvFileName
-          };
-
-          return application;
-        });
-
-        setApplications(formattedApplications);
-        return formattedApplications;
-      } catch (err: any) {
-        console.error("Error fetching applications:", err);
-        toast({
-          title: "Error",
-          description: err.message || "Failed to fetch applications",
-          variant: "destructive"
-        });
-        return [];
-      }
-    },
-    enabled: !!session?.user
+export const useApplicationFilters = () => {
+  const [filters, setFilters] = useState<ApplicationFilter>({
+    status: 'all',
+    date: 'all'
   });
 
-  // Handle application status update
-  const handleUpdateStatus = async (applicationId: string, newStatus: ApplicationStatus) => {
-    const success = await updateApplicationStatus(applicationId, newStatus);
-    if (success) {
-      // Update local state
-      setApplications(prev => prev.map(app => 
-        app.id === applicationId ? { ...app, status: newStatus } : app
-      ));
-      return true;
-    }
-    return false;
+  const updateApplicationFilters = (filterKey: keyof ApplicationFilter, value: string) => {
+    setFilters((prev) => ({
+      ...prev,
+      [filterKey]: value
+    }));
   };
 
-  // Refresh applications
-  const refreshApplications = () => {
-    fetchApplicationsQuery.refetch();
-  };
-
-  // Set applications when query data changes
-  useEffect(() => {
-    if (fetchApplicationsQuery.data) {
-      setApplications(fetchApplicationsQuery.data);
-    }
-  }, [fetchApplicationsQuery.data]);
-
-  return {
-    applications,
-    filteredApplications,
-    loading: fetchApplicationsQuery.isLoading || submitting,
-    error: fetchApplicationsQuery.error ? (fetchApplicationsQuery.error as Error).message : null,
-    searchQuery,
-    filters,
-    handleSearchQueryChange,
-    handleFilterChange,
-    updateApplicationStatus: handleUpdateStatus,
-    refreshApplications
-  };
+  return { filters, updateApplicationFilters };
 };

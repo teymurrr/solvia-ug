@@ -40,7 +40,8 @@ const InstitutionDashboard = () => {
     handleSearchQueryChange: handleApplicationsSearchQueryChange,
     handleFilterChange: handleApplicationsFilterChange,
     updateApplicationStatus,
-    refreshApplications
+    refreshApplications,
+    updateApplicationFilters
   } = useApplications();
   
   const { 

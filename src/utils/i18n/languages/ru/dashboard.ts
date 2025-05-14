@@ -27,9 +27,7 @@ export const dashboard: DashboardTranslations = {
     location: 'Местоположение',
     institution: 'Учреждение',
     department: 'Отдел',
-    contractType: 'Тип контракта',
     jobType: 'Тип работы',
-    salary: 'Зарплата',
   },
   professionals: {
     title: 'Востребованные профессионалы',
@@ -55,6 +53,8 @@ export const dashboard: DashboardTranslations = {
     email: 'Электронная почта',
     message: 'Сообщение',
     send: 'Отправить сообщение',
+    contactUs: 'Свяжитесь с нами',
+    phone: 'Телефон'
   },
   applications: {
     pending: "Ожидает рассмотрения",

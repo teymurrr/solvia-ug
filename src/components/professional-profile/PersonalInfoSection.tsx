@@ -7,6 +7,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { UseFormReturn } from 'react-hook-form';
 import { ProfileFormValues } from './types';
+import { useLanguage } from '@/hooks/useLanguage';
 
 interface PersonalInfoSectionProps {
   form: UseFormReturn<ProfileFormValues>;
@@ -14,6 +15,8 @@ interface PersonalInfoSectionProps {
 }
 
 const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({ form, professionOptions }) => {
+  const { t } = useLanguage();
+  
   return (
     <>
       <div className="grid gap-4 md:grid-cols-2">
@@ -22,9 +25,9 @@ const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({ form, profess
           name="firstName"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>First Name</FormLabel>
+              <FormLabel>{t?.dashboard?.profile?.firstName || "First Name"}</FormLabel>
               <FormControl>
-                <Input placeholder="John" {...field} />
+                <Input placeholder={t?.dashboard?.profile?.firstNamePlaceholder || "John"} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -36,9 +39,9 @@ const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({ form, profess
           name="lastName"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Last Name</FormLabel>
+              <FormLabel>{t?.dashboard?.profile?.lastName || "Last Name"}</FormLabel>
               <FormControl>
-                <Input placeholder="Doe" {...field} />
+                <Input placeholder={t?.dashboard?.profile?.lastNamePlaceholder || "Doe"} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -50,14 +53,14 @@ const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({ form, profess
           name="profession"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Profession</FormLabel>
+              <FormLabel>{t?.dashboard?.profile?.profession || "Profession"}</FormLabel>
               <Select 
                 onValueChange={field.onChange} 
                 defaultValue={field.value}
               >
                 <FormControl>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select profession" />
+                    <SelectValue placeholder={t?.dashboard?.profile?.selectProfession || "Select profession"} />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
@@ -78,9 +81,9 @@ const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({ form, profess
           name="specialty"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Specialty</FormLabel>
+              <FormLabel>{t?.dashboard?.profile?.specialty || "Specialty"}</FormLabel>
               <FormControl>
-                <Input placeholder="Cardiologist" {...field} />
+                <Input placeholder={t?.dashboard?.profile?.specialtyPlaceholder || "Cardiologist"} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -92,9 +95,9 @@ const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({ form, profess
           name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Email</FormLabel>
+              <FormLabel>{t?.dashboard?.contact?.email || "Email"}</FormLabel>
               <FormControl>
-                <Input placeholder="name@example.com" {...field} />
+                <Input placeholder={t?.dashboard?.profile?.emailPlaceholder || "name@example.com"} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -106,9 +109,9 @@ const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({ form, profess
           name="location"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Location</FormLabel>
+              <FormLabel>{t?.dashboard?.profile?.location || "Location"}</FormLabel>
               <FormControl>
-                <Input placeholder="New York, USA" {...field} />
+                <Input placeholder={t?.dashboard?.profile?.locationPlaceholder || "New York, USA"} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -128,9 +131,9 @@ const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({ form, profess
               />
             </FormControl>
             <div className="space-y-1 leading-none">
-              <FormLabel>Actively searching for a new role</FormLabel>
+              <FormLabel>{t?.dashboard?.profile?.activelySearching || "Actively searching for a new role"}</FormLabel>
               <p className="text-sm text-muted-foreground">
-                This will highlight your profile to potential employers
+                {t?.dashboard?.profile?.activelySearchingDesc || "This will highlight your profile to potential employers"}
               </p>
             </div>
           </FormItem>
@@ -149,9 +152,9 @@ const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({ form, profess
               />
             </FormControl>
             <div className="space-y-1 leading-none">
-              <FormLabel>Open to relocation</FormLabel>
+              <FormLabel>{t?.dashboard?.profile?.openToRelocation || "Open to relocation"}</FormLabel>
               <p className="text-sm text-muted-foreground">
-                Indicate if you're willing to relocate for a suitable position
+                {t?.dashboard?.profile?.openToRelocationDesc || "Indicate if you're willing to relocate for a suitable position"}
               </p>
             </div>
           </FormItem>
@@ -163,10 +166,10 @@ const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({ form, profess
         name="about"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>About</FormLabel>
+            <FormLabel>{t?.dashboard?.profile?.about || "About"}</FormLabel>
             <FormControl>
               <Textarea 
-                placeholder="Share information about your professional interests, research, or career goals..." 
+                placeholder={t?.dashboard?.profile?.aboutPlaceholder || "Share information about your professional interests, research, or career goals..."} 
                 className="min-h-[100px]"
                 {...field} 
               />

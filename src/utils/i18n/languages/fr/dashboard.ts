@@ -1,3 +1,4 @@
+
 import { DashboardTranslations } from "../../types";
 
 export const dashboard: DashboardTranslations = {
@@ -43,7 +44,6 @@ export const dashboard: DashboardTranslations = {
     specialty: "Spécialité",
     location: "Emplacement",
     yearsOfExperience: "Années d'expérience",
-    about: "À propos",
     languages: "Langues",
   },
   testimonials: {
@@ -63,6 +63,7 @@ export const dashboard: DashboardTranslations = {
     send: "Envoyer",
     success: "Votre message a été envoyé avec succès.",
     error: "Une erreur s'est produite lors de l'envoi de votre message.",
+    contactUs: "Contactez-nous"
   },
   applications: {
     pending: "En attente",

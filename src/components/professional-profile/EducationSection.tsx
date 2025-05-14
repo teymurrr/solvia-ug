@@ -1,28 +1,30 @@
 
 import React from 'react';
+import { Button } from '@/components/ui/button';
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
+import { UseFormReturn, useFieldArray } from 'react-hook-form';
 import { Plus, Trash2 } from 'lucide-react';
-import { UseFormReturn } from 'react-hook-form';
-import { useFieldArray } from 'react-hook-form';
 import { ProfileFormValues } from './types';
+import { useLanguage } from '@/hooks/useLanguage';
 
 interface EducationSectionProps {
   form: UseFormReturn<ProfileFormValues>;
 }
 
 const EducationSection: React.FC<EducationSectionProps> = ({ form }) => {
+  const { t } = useLanguage();
+  
   const { fields, append, remove } = useFieldArray({
     control: form.control,
-    name: "education",
+    name: "education"
   });
 
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
-        <h3 className="text-lg font-medium">Education</h3>
+        <h3 className="text-lg font-medium">{t?.dashboard?.profile?.education || "Education"}</h3>
         <Button 
           type="button" 
           variant="outline" 
@@ -30,14 +32,14 @@ const EducationSection: React.FC<EducationSectionProps> = ({ form }) => {
           onClick={() => append({ institution: "", degree: "", field: "", startDate: "", endDate: "", current: false })}
         >
           <Plus className="h-4 w-4 mr-2" />
-          Add Education
+          {t?.dashboard?.profile?.addEducation || "Add Education"}
         </Button>
       </div>
 
       {fields.map((field, index) => (
         <div key={field.id} className="border rounded-md p-4 space-y-4">
           <div className="flex justify-between">
-            <h4 className="font-medium">Education {index + 1}</h4>
+            <h4 className="font-medium">{t?.dashboard?.profile?.educationCount || "Education"} {index + 1}</h4>
             {fields.length > 1 && (
               <Button 
                 type="button" 
@@ -56,9 +58,9 @@ const EducationSection: React.FC<EducationSectionProps> = ({ form }) => {
               name={`education.${index}.institution`}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Institution</FormLabel>
+                  <FormLabel>{t?.dashboard?.profile?.institution || "Institution"}</FormLabel>
                   <FormControl>
-                    <Input placeholder="Harvard Medical School" {...field} />
+                    <Input placeholder={t?.dashboard?.profile?.institutionPlaceholder || "Harvard Medical School"} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -70,9 +72,9 @@ const EducationSection: React.FC<EducationSectionProps> = ({ form }) => {
               name={`education.${index}.degree`}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Degree</FormLabel>
+                  <FormLabel>{t?.dashboard?.profile?.degree || "Degree"}</FormLabel>
                   <FormControl>
-                    <Input placeholder="MD" {...field} />
+                    <Input placeholder={t?.dashboard?.profile?.degreePlaceholder || "MD"} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -84,9 +86,9 @@ const EducationSection: React.FC<EducationSectionProps> = ({ form }) => {
               name={`education.${index}.field`}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Field of Study</FormLabel>
+                  <FormLabel>{t?.dashboard?.profile?.field || "Field of Study"}</FormLabel>
                   <FormControl>
-                    <Input placeholder="Medicine" {...field} />
+                    <Input placeholder={t?.dashboard?.profile?.fieldPlaceholder || "Medicine"} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -98,7 +100,7 @@ const EducationSection: React.FC<EducationSectionProps> = ({ form }) => {
               name={`education.${index}.startDate`}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Start Date</FormLabel>
+                  <FormLabel>{t?.dashboard?.profile?.startDate || "Start Date"}</FormLabel>
                   <FormControl>
                     <Input type="month" {...field} />
                   </FormControl>
@@ -125,7 +127,7 @@ const EducationSection: React.FC<EducationSectionProps> = ({ form }) => {
                     />
                   </FormControl>
                   <div className="space-y-1 leading-none">
-                    <FormLabel>Currently studying here</FormLabel>
+                    <FormLabel>{t?.dashboard?.profile?.currentlyStudying || "Currently studying here"}</FormLabel>
                   </div>
                 </FormItem>
               )}
@@ -137,7 +139,7 @@ const EducationSection: React.FC<EducationSectionProps> = ({ form }) => {
                 name={`education.${index}.endDate`}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>End Date</FormLabel>
+                    <FormLabel>{t?.dashboard?.profile?.endDate || "End Date"}</FormLabel>
                     <FormControl>
                       <Input type="month" {...field} />
                     </FormControl>

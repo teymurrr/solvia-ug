@@ -1,53 +1,32 @@
 
-import React, { useState, useMemo } from 'react';
+import React from 'react';
+import { Button } from '@/components/ui/button';
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { Plus, Trash2, Upload, Check } from 'lucide-react';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { UseFormReturn, useFieldArray } from 'react-hook-form';
+import { Check, Plus, Trash2, Upload } from 'lucide-react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { ProfileFormValues } from './types';
-import { DEFAULT_LANGUAGES } from '@/data/languages';
+import { useLanguage } from '@/hooks/useLanguage';
 
 interface LanguageSectionProps {
   form: UseFormReturn<ProfileFormValues>;
-  languageLevels: string[];
   handleLanguageCertificateChange: (e: React.ChangeEvent<HTMLInputElement>, index: number) => void;
+  languageLevels: string[];
 }
 
-const LanguageSection: React.FC<LanguageSectionProps> = ({ 
-  form, 
-  languageLevels,
-  handleLanguageCertificateChange 
-}) => {
+const LanguageSection: React.FC<LanguageSectionProps> = ({ form, handleLanguageCertificateChange, languageLevels }) => {
+  const { t } = useLanguage();
+  
   const { fields, append, remove } = useFieldArray({
     control: form.control,
-    name: "languages",
+    name: "languages"
   });
-
-  // Create a memoized safe language options array
-  const languageOptions = useMemo(() => {
-    try {
-      // Define a fallback list of languages in case there's an issue
-      return DEFAULT_LANGUAGES || [
-        "English", "Spanish", "French", "German", "Italian", 
-        "Portuguese", "Dutch", "Russian", "Chinese", "Japanese", 
-        "Arabic", "Hindi", "Bengali", "Polish", "Ukrainian", 
-        "Romanian", "Greek", "Swedish", "Norwegian", "Finnish"
-      ];
-    } catch (error) {
-      console.error("Error loading language options:", error);
-      return [
-        "English", "Spanish", "French", "German", "Italian", 
-        "Portuguese", "Dutch", "Russian", "Chinese", "Japanese"
-      ];
-    }
-  }, []);
 
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
-        <h3 className="text-lg font-medium">Language Skills</h3>
+        <h3 className="text-lg font-medium">{t?.dashboard?.profile?.languages || "Language Skills"}</h3>
         <Button 
           type="button" 
           variant="outline" 
@@ -55,14 +34,14 @@ const LanguageSection: React.FC<LanguageSectionProps> = ({
           onClick={() => append({ language: "", level: "A1", certificate: "" })}
         >
           <Plus className="h-4 w-4 mr-2" />
-          Add Language
+          {t?.dashboard?.profile?.addLanguage || "Add Language"}
         </Button>
       </div>
 
       {fields.map((field, index) => (
         <div key={field.id} className="border rounded-md p-4 space-y-4">
           <div className="flex justify-between">
-            <h4 className="font-medium">Language {index + 1}</h4>
+            <h4 className="font-medium">{t?.dashboard?.profile?.languageCount || "Language"} {index + 1}</h4>
             {fields.length > 1 && (
               <Button 
                 type="button" 
@@ -81,31 +60,10 @@ const LanguageSection: React.FC<LanguageSectionProps> = ({
               name={`languages.${index}.language`}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Language</FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    value={field.value || ""}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select language" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent className="max-h-[300px]">
-                      {languageOptions && languageOptions.length > 0 ? (
-                        languageOptions.map((language) => (
-                          <SelectItem key={language} value={language}>
-                            {language}
-                          </SelectItem>
-                        ))
-                      ) : (
-                        <SelectItem value="no-options" disabled>
-                          No languages available
-                        </SelectItem>
-                      )}
-                    </SelectContent>
-                  </Select>
+                  <FormLabel>{t?.dashboard?.profile?.languageName || "Language"}</FormLabel>
+                  <FormControl>
+                    <Input placeholder={t?.dashboard?.profile?.languageNamePlaceholder || "English"} {...field} />
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
@@ -116,15 +74,14 @@ const LanguageSection: React.FC<LanguageSectionProps> = ({
               name={`languages.${index}.level`}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Level</FormLabel>
+                  <FormLabel>{t?.dashboard?.profile?.languageLevel || "Level"}</FormLabel>
                   <Select 
                     onValueChange={field.onChange} 
                     defaultValue={field.value}
-                    value={field.value}
                   >
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select level" />
+                        <SelectValue placeholder={t?.dashboard?.profile?.selectLevel || "Select level"} />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
@@ -141,7 +98,7 @@ const LanguageSection: React.FC<LanguageSectionProps> = ({
             />
 
             <div className="md:col-span-2">
-              <FormLabel>Certificate (optional)</FormLabel>
+              <FormLabel>{t?.dashboard?.profile?.certificate || "Certificate"} ({t?.common?.optional || "optional"})</FormLabel>
               <div className="flex items-center gap-2 mt-1">
                 <Input
                   id={`languageCertificate-${index}`}
@@ -156,11 +113,11 @@ const LanguageSection: React.FC<LanguageSectionProps> = ({
                   onClick={() => document.getElementById(`languageCertificate-${index}`)?.click()}
                 >
                   <Upload className="h-4 w-4 mr-2" />
-                  Upload Certificate
+                  {t?.dashboard?.profile?.uploadCertificate || "Upload Certificate"}
                 </Button>
                 {form.watch(`languages.${index}.certificate`) && (
                   <span className="text-sm text-green-600 flex items-center">
-                    <Check className="h-4 w-4 mr-1" /> Certificate uploaded
+                    <Check className="h-4 w-4 mr-1" /> {t?.dashboard?.profile?.certificateUploaded || "Certificate uploaded"}
                   </span>
                 )}
               </div>
