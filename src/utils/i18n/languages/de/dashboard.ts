@@ -4,7 +4,7 @@ export const dashboard = {
   applications: "Bewerbungen",
   savedJobs: "Gespeicherte Stellen",
   messages: "Nachrichten",
-  profile: "Profil",
+  profileSection: "Profil",
   settings: "Einstellungen",
   myVacancies: "Meine Stellenangebote",
   candidates: "Kandidaten",

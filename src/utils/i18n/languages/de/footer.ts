@@ -3,7 +3,7 @@ export const footer = {
   aboutUs: "Über uns",
   professionals: "Fachkräfte",
   institutions: "Institutionen",
-  resources: "Ressourcen",
+  resourcesSection: "Ressourcen",
   blog: "Blog",
   contact: "Kontakt",
   terms: "Nutzungsbedingungen",
