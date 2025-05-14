@@ -4,6 +4,7 @@ import { DashboardTranslations } from "../../types";
 export const dashboard: DashboardTranslations = {
   title: "Panel de Control Profesional",
   subtitle: "Gestiona tu perfil y consulta oportunidades",
+  welcome: "Bienvenido al panel de control",
   hero: {
     title: "Encuentra el trabajo de tus sueños en el sector sanitario",
     subtitle:
@@ -31,6 +32,8 @@ export const dashboard: DashboardTranslations = {
     search: "Buscar",
     searchPlaceholder: "Buscar por título, ubicación o palabra clave...",
     resetFilters: "Reiniciar filtros",
+    noVacanciesFound: "No se encontraron vacantes",
+    noVacanciesDesc: "Intenta ajustar tus criterios de búsqueda",
     positions: "Puestos",
     location: "Ubicación",
     institution: "Institución",
