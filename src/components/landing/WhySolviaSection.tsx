@@ -27,11 +27,11 @@ const WhySolviaSection = () => {
               <div className="flex gap-12 mt-8">
                 <div>
                   <span className="text-[70px] font-bold text-primary">200+</span>
-                  <p className="text-gray-600 text-lg">Active Positions</p>
+                  <p className="text-gray-600 text-lg">{t?.vacancies?.positions || "Active Positions"}</p>
                 </div>
                 <div>
                   <span className="text-[70px] font-bold text-primary">1000+</span>
-                  <p className="text-gray-600 text-lg">Professionals</p>
+                  <p className="text-gray-600 text-lg">{t?.professionals?.title || "Professionals"}</p>
                 </div>
               </div>
             </div>
