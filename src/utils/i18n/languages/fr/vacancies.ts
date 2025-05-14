@@ -1,17 +1,17 @@
 
 export const vacancies = {
-  title: "Postes Disponibles",
-  subtitle: "Explorez les opportunités d'emploi dans le secteur de la santé",
-  viewAll: "Voir tout",
-  viewMore: "Voir plus",
-  posted: "Publié",
-  application: "Candidature",
-  applications: "Candidatures",
-  apply: "Postuler",
-  applyNow: "Postuler maintenant",
-  location: "Emplacement",
-  positions: "Postes",
-  salary: "Salaire",
-  filters: "Filtres",
-  saved: "Enregistré"
+  title: 'Postes Ouverts',
+  subtitle: 'Explorez des opportunités passionnantes dans des établissements de santé de premier plan',
+  viewAll: 'Voir tout',
+  viewMore: 'Voir plus',
+  posted: 'Publié',
+  application: 'Candidature',
+  applications: 'Candidatures',
+  description: 'Description',
+  keyRequirements: 'Exigences clés',
+  more: 'plus',
+  apply: 'Postuler maintenant',
+  save: 'Enregistrer',
+  saved: 'Enregistré',
+  positions: 'Postes actifs'
 };

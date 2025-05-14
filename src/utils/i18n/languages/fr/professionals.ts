@@ -9,5 +9,6 @@ export const professionals = {
   specialty: "Spécialité",
   availability: "Disponibilité",
   location: "Emplacement",
-  filters: "Filtres"
+  filters: "Filtres",
+  viewMore: "Voir plus"
 };

@@ -1,18 +1,17 @@
 
 export const vacancies = {
-  title: 'Vacancies',
-  subtitle: 'Discover exciting opportunities at leading healthcare institutions',
+  title: 'Open Positions',
+  subtitle: 'Explore exciting opportunities at leading healthcare institutions',
   viewAll: 'View All',
   viewMore: 'View More',
   posted: 'Posted',
-  application: 'application',
-  applications: 'applications',
+  application: 'Application',
+  applications: 'Applications',
   description: 'Description',
   keyRequirements: 'Key Requirements',
   more: 'more',
   apply: 'Apply Now',
-  applyNow: 'Apply Now',
   save: 'Save',
   saved: 'Saved',
-  positions: 'Healthcare Positions'
+  positions: 'Active Positions'
 };

@@ -1,7 +1,7 @@
 
 export const blog = {
-  title: "Lo último de nuestro blog",
-  subtitle: "Insights, historias y consejos para profesionales sanitarios y reclutadores",
-  viewMore: "Ver más",
-  readMore: "Leer más"
+  title: 'Lo Último de Nuestro Blog',
+  subtitle: 'Ideas, historias y consejos para profesionales sanitarios y reclutadores',
+  viewMore: 'Ver Más',
+  readMore: 'Leer Más'
 };
