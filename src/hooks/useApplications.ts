@@ -26,7 +26,10 @@ export const useApplications = () => {
             title,
             institution,
             location,
-            posted_date
+            posted_date,
+            department,
+            description,
+            job_type
           )
         `)
         .eq('user_id', session.user.id)
@@ -68,7 +71,20 @@ export const useApplications = () => {
           appliedDate: new Date(item.application_date).toLocaleDateString(),
           status: typedStatus,
           coverLetter: appData.coverLetter,
-          cvFileName: appData.cvFileName
+          cvFileName: appData.cvFileName,
+          user_id: item.user_id,
+          vacancy_id: item.vacancy_id,
+          application_date: item.application_date,
+          application_data: appData,
+          vacancy: item.vacancy ? {
+            id: item.vacancy.id,
+            title: item.vacancy.title,
+            institution: item.vacancy.institution,
+            department: item.vacancy.department || '',
+            location: item.vacancy.location,
+            description: item.vacancy.description || '',
+            job_type: item.vacancy.job_type || ''
+          } : undefined
         };
       });
     },

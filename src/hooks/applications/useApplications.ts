@@ -41,7 +41,11 @@ export const useApplications = () => {
               title,
               institution,
               location,
-              posted_date
+              posted_date,
+              department,
+              description,
+              requirements,
+              job_type
             )
           `)
           .eq('user_id', session.user.id)
@@ -73,7 +77,16 @@ export const useApplications = () => {
             application_date: item.application_date,
             status: typedStatus,
             application_data: appData,
-            vacancy: item.vacancy,
+            vacancy: item.vacancy ? {
+              id: item.vacancy.id,
+              title: item.vacancy.title,
+              institution: item.vacancy.institution,
+              department: item.vacancy.department || '',
+              location: item.vacancy.location,
+              description: item.vacancy.description || '',
+              requirements: item.vacancy.requirements || null,
+              job_type: item.vacancy.job_type || ''
+            } : undefined,
             // Enhanced properties for UI display
             applicantId: item.user_id,
             applicantName: appData.firstName && appData.lastName 

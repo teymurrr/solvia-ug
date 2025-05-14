@@ -1,4 +1,3 @@
-
 export const dashboard = {
   title: "Professional Dashboard",
   subtitle: "Manage your profile and view opportunities",
@@ -54,5 +53,25 @@ export const dashboard = {
     browseVacancies: "Browse Vacancies",
     vacancyRemoved: "Vacancy removed",
     vacancyRemovedDesc: "The vacancy has been removed from your saved list."
+  },
+  applications: {
+    pending: "Pending Review",
+    reviewing: "Under Review",
+    accepted: "Accepted",
+    rejected: "Rejected",
+    viewDetails: "View Details",
+    applicationDetails: "Application Details",
+    reviewApplication: "Review the application for",
+    noEmailProvided: "No email provided",
+    appliedFor: "Applied for",
+    coverLetter: "Cover Letter",
+    markPending: "Mark Pending",
+    startReview: "Start Review",
+    reject: "Reject",
+    accept: "Accept",
+    markAsPending: "Mark as Pending",
+    updateStatus: "Update status",
+    appliedOn: "Applied",
+    unknown: "Unknown"
   }
 };
