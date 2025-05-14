@@ -1,13 +1,14 @@
+
 import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
-import { useNavigate } from 'react-router-dom';
 import { Badge } from '@/components/ui/badge';
 import { Bookmark, BookmarkCheck } from 'lucide-react';
-import { Building2, MapPin, Calendar } from 'lucide-react'; 
+import { Building2, MapPin } from 'lucide-react'; 
 import { cn } from '@/lib/utils';
 import { Button } from './ui/button';
 import VacancyHeader from './vacancy/VacancyHeader';
 import VacancyFooter from './vacancy/VacancyFooter';
+import VacancyDetails from './vacancy/VacancyDetails';
 import { useLanguage } from '@/hooks/useLanguage';
 import { useToast } from '@/hooks/use-toast';
 
@@ -17,7 +18,6 @@ export interface VacancyCardProps {
   institution: string;
   location: string;
   jobType: string;
-  // Make specialty optional since it's treated as optional in ProfessionalDashboard.tsx
   specialty?: string;
   profession?: string;
   department?: string;
@@ -37,10 +37,9 @@ export interface VacancyCardProps {
   onSaveToggle?: (id: string) => void;
   isLandingPageCard?: boolean;
   fromLandingPage?: boolean;
-  fromDashboard?: boolean; // Added prop to track if card is from dashboard
+  fromDashboard?: boolean;
   showDescription?: boolean;
   showRequirements?: boolean;
-  // Adding the missing props that were causing errors
   searchQuery?: string;
   currentPage?: number;
   selectedFilters?: {
@@ -71,19 +70,16 @@ const VacancyCard: React.FC<VacancyCardProps> = ({
   onSaveToggle,
   isLandingPageCard = false,
   fromLandingPage = false,
-  fromDashboard = false, // Default to false if not provided
-  showDescription = false,
-  showRequirements = false,
+  fromDashboard = false,
+  showDescription = true, // Make description visible by default
+  showRequirements = true, // Make requirements visible by default
   description,
   requirements,
-  // We're not actually using these props in this component,
-  // but they're being passed in from ProfessionalDashboard.tsx
   searchQuery,
   currentPage,
   selectedFilters,
 }) => {
   const { t } = useLanguage();
-  const navigate = useNavigate();
   const { toast } = useToast();
   
   const handleSaveClick = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -94,35 +90,10 @@ const VacancyCard: React.FC<VacancyCardProps> = ({
     }
   };
 
-  const handleCardClick = () => {
-    // Redirect to signup if this card is from landing page
-    if (isLandingPageCard || fromLandingPage) {
-      toast({
-        title: "Sign up required",
-        description: "Please sign up or log in to view vacancy details",
-      });
-      navigate('/signup/professional');
-      return;
-    }
-    
-    // Pass fromDashboard state if navigating from dashboard
-    if (fromDashboard) {
-      navigate(`/vacancies/${id}`, {
-        state: {
-          fromDashboard: true,
-          searchQuery,
-          currentPage,
-          selectedFilters
-        }
-      });
-    } else {
-      // Otherwise navigate to vacancy details normally
-      navigate(`/vacancies/${id}`);
-    }
-  };
+  // Removed handleCardClick since cards are no longer clickable
 
   return (
-    <Card className={cn("h-full border hover:shadow-md transition-shadow cursor-pointer", className)} onClick={handleCardClick}>
+    <Card className={cn("h-full border hover:border-gray-300 transition-shadow", className)}>
       <CardContent className="p-0">
         <div className="p-5">
           <div className="flex justify-between items-start">
@@ -179,36 +150,30 @@ const VacancyCard: React.FC<VacancyCardProps> = ({
             )}
           </div>
 
-          {/* Display description if required */}
-          {showDescription && description && (
+          {/* Always display description */}
+          {description && (
             <div className="mt-4">
               <h4 className="text-sm font-medium mb-1">{t?.vacancies?.description || "Description"}</h4>
-              <p className="text-sm text-gray-600 line-clamp-3">{description}</p>
+              <p className="text-sm text-gray-600 line-clamp-4">{description}</p>
             </div>
           )}
 
-          {/* Display requirements if needed */}
-          {showRequirements && requirements && requirements.length > 0 && (
+          {/* Always display requirements */}
+          {requirements && requirements.length > 0 && (
             <div className="mt-4">
               <h4 className="text-sm font-medium mb-1">{t?.vacancies?.keyRequirements || "Key Requirements"}</h4>
               <ul className="text-sm text-gray-600 pl-5">
-                {requirements.slice(0, 3).map((requirement, index) => (
+                {requirements.map((requirement, index) => (
                   <li key={index} className="list-disc">
                     <span className="line-clamp-1">{requirement}</span>
                   </li>
                 ))}
-                {requirements.length > 3 && (
-                  <li className="text-xs text-gray-500 list-none mt-1">
-                    + {requirements.length - 3} {t?.vacancies?.more || "more"}
-                  </li>
-                )}
               </ul>
             </div>
           )}
 
           {createdAt && !isDashboardCard && (
             <div className="mt-4 flex items-center text-xs text-gray-500">
-              <Calendar className="mr-1 h-3.5 w-3.5" />
               <span>{t?.vacancies?.posted || "Posted"} {createdAt}</span>
             </div>
           )}
@@ -222,18 +187,20 @@ const VacancyCard: React.FC<VacancyCardProps> = ({
           )}
         </div>
 
-        {/* Apply button at the bottom of card */}
-        {(isLandingPageCard || fromLandingPage) && (
-          <div className="px-5 pb-5 pt-2" onClick={e => e.stopPropagation()}>
-            <VacancyFooter 
-              id={id}
-              isLandingPageCard={true}
-              fromLandingPage={true}
-              isLoggedIn={false}
-              isApplied={isApplied}
-            />
-          </div>
-        )}
+        {/* Always add apply button at the bottom of card */}
+        <div className="px-5 pb-5 pt-2">
+          <VacancyFooter 
+            id={id}
+            isLandingPageCard={isLandingPageCard}
+            fromLandingPage={fromLandingPage}
+            isLoggedIn={true}
+            isApplied={isApplied}
+            searchQuery={searchQuery}
+            currentPage={currentPage}
+            selectedFilters={selectedFilters}
+            fromDashboard={fromDashboard}
+          />
+        </div>
       </CardContent>
     </Card>
   );

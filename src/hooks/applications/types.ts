@@ -1,33 +1,48 @@
 
-// Define application-related type definitions
-
 export interface Application {
   id: string;
-  applicantId: string;
-  applicantName: string;
-  applicantPhoto?: string;
-  applicantEmail?: string;
-  applicantPhone?: string;
-  vacancyId: string;
-  vacancyTitle: string;
-  appliedDate: string;
-  status: 'pending' | 'reviewing' | 'accepted' | 'rejected';
-  coverLetter?: string;
-  cvFileName?: string;
+  user_id: string;
+  vacancy_id: string;
+  application_date: string;
+  status: ApplicationStatus;
+  application_data?: ApplicationData;
+  vacancy?: {
+    title: string;
+    institution: string;
+    department: string;
+    location: string;
+    description: string;
+    requirements: string[] | null;
+    job_type: string;
+  };
+  user?: {
+    email: string;
+    firstName?: string;
+    lastName?: string;
+    profession?: string;
+    specialty?: string;
+  };
 }
+
+export type ApplicationStatus = 
+  | 'pending'
+  | 'reviewed'
+  | 'shortlisted'
+  | 'interview'
+  | 'accepted'
+  | 'rejected';
 
 export interface ApplicationData {
-  firstName?: string;
-  lastName?: string;
-  email?: string;
-  phone?: string;
-  coverLetter?: string;
-  cvFileName?: string;
-  profileImage?: string;
-  [key: string]: any; // Allow for additional fields
+  cover_letter?: string;
+  resume_url?: string;
+  questions?: {
+    question: string;
+    answer: string;
+  }[];
+  [key: string]: any;
 }
 
-export interface ApplicationFilters {
-  status: 'all_statuses' | 'pending' | 'reviewing' | 'accepted' | 'rejected';
-  date: 'all_time' | 'today' | 'this_week' | 'this_month' | 'this_year';
+export interface ApplicationFilter {
+  status: ApplicationStatus | 'all';
+  searchQuery: string;
 }

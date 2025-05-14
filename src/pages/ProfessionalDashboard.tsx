@@ -28,7 +28,7 @@ import {
 } from '@/components/ui/pagination';
 import { Skeleton } from '@/components/ui/skeleton';
 
-const ITEMS_PER_PAGE = 3;
+const ITEMS_PER_PAGE = 20; // Changed from 3 to 20 as requested
 
 const ProfessionalDashboard: React.FC = () => {
   const location = useLocation();
