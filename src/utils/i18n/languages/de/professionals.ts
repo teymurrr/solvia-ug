@@ -1,7 +1,14 @@
 
 export const professionals = {
-  title: 'Fachkräfte',
-  subtitle: 'Vernetzen Sie sich mit talentierten medizinischen Fachkräften, die für ihre nächste berufliche Chance bereit sind',
-  viewAll: 'Alle anzeigen',
-  viewMore: 'Mehr anzeigen'
+  title: "Gesundheitsfachkräfte",
+  subtitle: "Entdecken Sie qualifizierte Fachkräfte aus aller Welt",
+  viewAll: "Alle anzeigen",
+  viewProfile: "Profil anzeigen",
+  contact: "Kontakt",
+  experience: "Erfahrung",
+  specialty: "Fachgebiet",
+  availability: "Verfügbarkeit",
+  location: "Standort",
+  filters: "Filter",
+  viewMore: "Mehr anzeigen"
 };

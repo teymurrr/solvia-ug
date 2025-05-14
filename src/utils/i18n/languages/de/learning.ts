@@ -1,23 +1,23 @@
 
 export const learning = {
-  title: 'Solvia Fortbildung',
-  subtitle: 'Verbessern Sie Ihre medizinische Karriere mit unseren spezialisierten Deutsch- und Fachsprachprüfungskursen',
+  title: "Solvia Lernprogramm",
+  subtitle: "Verbessern Sie Ihre medizinische Karriere mit unseren spezialisierten Deutsch- und FSP-Vorbereitungskursen",
   germanCourses: {
-    title: 'Deutschkurse für Mediziner',
-    subtitle: 'Beherrschen Sie medizinisches Deutsch mit unseren Fachkursen',
+    title: 'Medizinische Deutschkurse',
+    subtitle: 'Beherrschen Sie medizinisches Deutsch mit unseren spezialisierten Kursen',
     features: [
-      'Medizinisches Deutsch von Grundlagen bis Fortgeschritten',
+      'Medizinisches Deutsch von Anfänger bis Fortgeschritten',
       'Flexibler Lernplan',
-      'Vorbereitung auf Telc Medizin'
+      'Telc Medical Vorbereitung'
     ]
   },
   fspCourses: {
     title: 'FSP-Vorbereitungskurse',
-    subtitle: 'Umfassende Vorbereitung auf Ihre Approbation in Deutschland',
+    subtitle: 'Umfassende Vorbereitung für Ihre ärztliche Lizenz in Deutschland',
     features: [
-      'Komplette FSP-Studienmaterialien',
+      'Komplettes FSP-Studienmaterial',
       'Übungsprüfungen',
-      'Persönliches Mentoring'
+      'Individuelles Mentoring'
     ]
   },
   exploreCourses: 'Kurse entdecken'

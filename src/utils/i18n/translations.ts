@@ -1,9 +1,16 @@
 
 export type Language = 'en' | 'de' | 'fr' | 'es' | 'ru';
 
-import { languageModules, TranslationType } from './languages';
+import { en, de, fr, es, ru } from './languages';
+export type TranslationType = typeof en;
 
-export const translations: Record<Language, TranslationType> = languageModules;
+export const translations: Record<Language, TranslationType> = {
+  en,
+  de,
+  fr,
+  es,
+  ru
+};
 
 export const languageNames = {
   en: 'English',

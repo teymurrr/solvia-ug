@@ -1,7 +1,9 @@
 
 export const cta = {
-  title: 'Bereit, die Personalgewinnung im Gesundheitswesen zu verändern?',
-  subtitle: 'Schließen Sie sich tausenden von medizinischen Fachkräften und Einrichtungen an, die bereits Solvia nutzen.',
-  createAccount: 'Konto erstellen',
-  talkToTeam: 'Mit unserem Team sprechen'
+  title: "Bereit für den nächsten Karriereschritt?",
+  subtitle: "Schließen Sie sich unserer Gemeinschaft von Gesundheitsfachkräften und Institutionen an",
+  signup: "Jetzt registrieren",
+  learnMore: "Mehr erfahren",
+  createAccount: "Konto erstellen",
+  talkToTeam: "Mit unserem Team sprechen"
 };

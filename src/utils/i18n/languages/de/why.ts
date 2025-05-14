@@ -1,28 +1,28 @@
 
 export const why = {
   title: "Warum Solvia?",
-  subtitle: "Entdecken Sie, was unsere Plattform zur ersten Wahl für Gesundheitsfachkräfte macht",
-  heading: "Was uns von traditionellen Personalvermittlungen unterscheidet",
-  description: "Bei Solvia setzen wir uns leidenschaftlich dafür ein, Fachkräfte weltweit direkt mit Einrichtungen zu verbinden, ohne Zwischenhändler.",
+  subtitle: "Entdecken Sie, was unsere Plattform zur ersten Wahl für Gesundheitsexperten weltweit macht",
+  heading: "Hier ist, was uns von traditionellen Personalvermittlungen unterscheidet",
+  description: "Bei Solvia sind wir leidenschaftlich daran interessiert, Fachleute aus aller Welt direkt mit Institutionen zu verbinden, ohne Zwischenhändler.",
   global: {
-    title: "Internationale Chancen",
-    description: "Zugang zu medizinischen Stellen in verschiedenen Ländern mit umfassender Umzugsunterstützung"
+    title: "Internationale Möglichkeiten",
+    description: "Zugang zu Gesundheitspositionen in verschiedenen Ländern mit vollständiger Umzugsunterstützung"
   },
   fast: {
     title: "Schnelle Vermittlung",
-    description: "Optimierter Matching-Prozess, um schnell die passende Position zu finden"
+    description: "Optimierter Matching-Prozess, um Ihnen zu helfen, schnell die richtige Position zu finden"
   },
   support: {
     title: "Umfassende Unterstützung",
-    description: "Begleitung durch Zertifizierung, Sprachtraining und Eingewöhnung in Ihrem neuen Land"
+    description: "Begleitung bei Zertifizierung, Sprachkursen und Eingewöhnung in Ihrem neuen Land"
   },
   directHiring: {
-    title: "Direkte Zusammenarbeit, keine Vermittler",
+    title: "Direkte Zusammenarbeit, keine Mittler",
     description: "Verbinden und kommunizieren Sie ohne Agenturen oder Provisionen — nur Menschen, transparent."
   },
   fastProcess: {
-    title: "Schnellere Vermittlung, reibungslosere Prozesse",
-    description: "Unsere intelligente Plattform optimiert den Prozess — spart Zeit und liefert bessere Ergebnisse für alle Beteiligten."
+    title: "Schnellere Übereinstimmungen, reibungslosere Prozesse",
+    description: "Unsere intelligente Plattform optimiert den Weg — spart Zeit und liefert bessere Ergebnisse für alle Beteiligten."
   },
   verifiedProfiles: {
     title: "Verifizierte Gemeinschaft, vertrauenswürdige Interaktionen",
@@ -30,6 +30,6 @@ export const why = {
   },
   transparentProcess: {
     title: "Volle Transparenz, geteilte Kontrolle",
-    description: "Sowohl Fachkräfte als auch Einrichtungen können den Fortschritt verfolgen, schnell reagieren und die Kontrolle behalten — keine Türsteher, kein Raten."
+    description: "Sowohl Fachleute als auch Institutionen können den Fortschritt verfolgen, schnell reagieren und die Kontrolle behalten — keine Türsteher, kein Rätselraten."
   }
 };

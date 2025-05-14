@@ -1,14 +1,24 @@
 
 export const footer = {
+  aboutUs: "Über uns",
+  professionals: "Fachkräfte",
+  institutions: "Institutionen",
+  resources: "Ressourcen",
+  blog: "Blog",
+  contact: "Kontakt",
+  terms: "Nutzungsbedingungen",
+  privacy: "Datenschutzrichtlinie",
+  copyright: "© 2025 Solvia. Alle Rechte vorbehalten.",
+  language: "Sprache",
   allRightsReserved: "Alle Rechte vorbehalten",
   termsOfService: "Nutzungsbedingungen",
   privacyPolicy: "Datenschutzrichtlinie",
   forProfessionals: "Für Fachkräfte",
-  forInstitutions: "Für Einrichtungen",
+  forInstitutions: "Für Institutionen",
   createProfile: "Profil erstellen",
-  findOpportunities: "Stellen finden",
+  findOpportunities: "Möglichkeiten finden",
   resources: "Ressourcen",
-  postPositions: "Stellen ausschreiben",
+  postPositions: "Positionen veröffentlichen",
   searchProfessionals: "Fachkräfte suchen",
   company: "Unternehmen"
 };
