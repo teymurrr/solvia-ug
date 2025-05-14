@@ -7,12 +7,12 @@ import { useLanguage } from '@/hooks/useLanguage';
 const CTASection = () => {
   const { t } = useLanguage();
 
-  // Use the cta translations directly instead of through about
-  // If translations aren't available, provide fallback values
-  const title = t?.cta?.title || 'Join Our Healthcare Community';
-  const subtitle = t?.cta?.subtitle || 'Connect with healthcare professionals and institutions worldwide.';
-  const createAccount = t?.cta?.createAccount || 'Create Your Account';
-  const talkToTeam = t?.cta?.talkToTeam || 'Talk to Our Team';
+  // Get CTA texts directly from any available source (t.about?.cta or t.cta)
+  // with appropriate fallbacks
+  const title = t?.about?.cta?.title || t?.cta?.title || 'Join Our Healthcare Community';
+  const subtitle = t?.about?.cta?.subtitle || t?.cta?.subtitle || 'Connect with healthcare professionals and institutions worldwide.';
+  const createAccount = t?.about?.cta?.createAccount || t?.cta?.createAccount || 'Create Your Account';
+  const talkToTeam = t?.about?.cta?.talkToTeam || t?.cta?.talkToTeam || 'Talk to Our Team';
 
   return (
     <section className="bg-medical-700 py-16 px-4">
