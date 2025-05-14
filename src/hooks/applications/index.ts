@@ -1,3 +1,3 @@
 
-export { useApplications } from '@/hooks/useApplications';
-export type { Application } from '@/hooks/useApplications';
+export { useApplications } from '@/hooks/applications/useApplications';
+export type { Application } from '@/hooks/applications/types';

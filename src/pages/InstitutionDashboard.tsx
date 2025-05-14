@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import MainLayout from '@/components/MainLayout';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -8,7 +7,7 @@ import { ProfileTab, VacanciesTab, TalentsTab, DashboardHeader } from '@/compone
 import ApplicationsTab from '@/components/institution-dashboard/ApplicationsTab';
 import { useProfessionals } from '@/hooks/useProfessionals';
 import { useVacancies, VacancyInput } from '@/hooks/useVacancies';
-import { useApplications } from '@/hooks/useApplications';
+import { useApplications } from '@/hooks/applications';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
 import { useLocation } from 'react-router-dom';
@@ -30,7 +29,7 @@ const InstitutionDashboard = () => {
     refreshProfessionals
   } = useProfessionals();
   
-  // Add useApplications hook
+  // Use the enhanced applications hook
   const {
     applications,
     filteredApplications,
