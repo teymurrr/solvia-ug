@@ -13,6 +13,7 @@ import { footer } from './footer';
 import { about } from './about';
 import { dashboard } from './dashboard';
 import { auth } from './auth';
+import { contact } from './contact';
 
 export const de = {
   hero,
@@ -28,5 +29,6 @@ export const de = {
   footer,
   about,
   dashboard,
-  auth
+  auth,
+  contact
 };

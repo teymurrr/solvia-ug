@@ -18,20 +18,22 @@ import {
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
-
-const formSchema = z.object({
-  fullName: z.string().min(2, 'Full name must be at least 2 characters'),
-  email: z.string().email('Please enter a valid email address'),
-  mobile: z.string().optional(),
-  country: z.string().min(2, 'Please enter your country'),
-  notes: z.string().min(10, 'Please provide more details in your message'),
-});
-
-type ContactFormValues = z.infer<typeof formSchema>;
+import { useLanguage } from '@/hooks/useLanguage';
 
 const Contact = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
+  const { t } = useLanguage();
+  
+  const formSchema = z.object({
+    fullName: z.string().min(2, 'Full name must be at least 2 characters'),
+    email: z.string().email('Please enter a valid email address'),
+    mobile: z.string().optional(),
+    country: z.string().min(2, 'Please enter your country'),
+    notes: z.string().min(10, 'Please provide more details in your message'),
+  });
+
+  type ContactFormValues = z.infer<typeof formSchema>;
   
   const form = useForm<ContactFormValues>({
     resolver: zodResolver(formSchema),
@@ -50,16 +52,16 @@ const Contact = () => {
       console.log('Form submitted:', data);
       
       toast({
-        title: "Message sent successfully",
-        description: "We'll get back to you as soon as possible.",
+        title: t.contact.success,
+        description: t.contact.successDescription,
       });
       
       // Redirect to home page after successful submission
       navigate('/');
     } catch (error) {
       toast({
-        title: "Error sending message",
-        description: "Please try again later.",
+        title: t.contact.error,
+        description: t.contact.errorDescription,
         variant: "destructive",
       });
     }
@@ -69,9 +71,9 @@ const Contact = () => {
     <MainLayout>
       <div className="container max-w-2xl mx-auto py-12 px-4">
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold mb-4">Contact Us</h1>
+          <h1 className="text-4xl font-bold mb-4">{t.contact.title}</h1>
           <p className="text-muted-foreground">
-            Have a question or want to learn more? We're here to help!
+            {t.contact.subtitle}
           </p>
         </div>
 
@@ -82,7 +84,7 @@ const Contact = () => {
               name="fullName"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Full Name *</FormLabel>
+                  <FormLabel>{t.contact.fullName} *</FormLabel>
                   <FormControl>
                     <Input placeholder="John Doe" {...field} />
                   </FormControl>
@@ -96,7 +98,7 @@ const Contact = () => {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email *</FormLabel>
+                  <FormLabel>{t.contact.email} *</FormLabel>
                   <FormControl>
                     <Input type="email" placeholder="john@example.com" {...field} />
                   </FormControl>
@@ -110,7 +112,7 @@ const Contact = () => {
               name="mobile"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Mobile Number (Optional)</FormLabel>
+                  <FormLabel>{t.contact.mobile}</FormLabel>
                   <FormControl>
                     <Input placeholder="+1 234 567 8900" {...field} />
                   </FormControl>
@@ -124,7 +126,7 @@ const Contact = () => {
               name="country"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Country *</FormLabel>
+                  <FormLabel>{t.contact.country} *</FormLabel>
                   <FormControl>
                     <Input placeholder="Enter your country" {...field} />
                   </FormControl>
@@ -138,7 +140,7 @@ const Contact = () => {
               name="notes"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Message *</FormLabel>
+                  <FormLabel>{t.contact.message} *</FormLabel>
                   <FormControl>
                     <Textarea 
                       placeholder="Please provide details about your inquiry..."
@@ -153,7 +155,7 @@ const Contact = () => {
 
             <Button type="submit" className="w-full">
               <Send className="mr-2 h-4 w-4" />
-              Submit Message
+              {t.contact.submit}
             </Button>
           </form>
         </Form>
