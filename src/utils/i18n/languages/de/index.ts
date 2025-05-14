@@ -12,8 +12,6 @@ import { common } from './common';
 import { footer } from './footer';
 import { about } from './about';
 import { dashboard } from './dashboard';
-import { terms } from './terms';
-import { privacy } from './privacy';
 
 export const de = {
   hero,
@@ -28,7 +26,5 @@ export const de = {
   common,
   footer,
   about,
-  dashboard,
-  terms,
-  privacy
+  dashboard
 };

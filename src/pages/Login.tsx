@@ -13,7 +13,6 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth, UserType } from '@/contexts/AuthContext';
-import { useLanguage } from '@/hooks/useLanguage';
 
 const loginSchema = z.object({
   email: z.string().email('Please enter a valid email address'),
@@ -30,7 +29,6 @@ const Login = () => {
   const { toast } = useToast();
   const { signIn, userType: authUserType } = useAuth();
   const navigate = useNavigate();
-  const { t } = useLanguage();
   
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
@@ -96,9 +94,9 @@ const Login = () => {
       <div className="container max-w-md mx-auto py-12">
         <Card>
           <CardHeader className="space-y-1">
-            <CardTitle className="text-2xl font-bold text-center">{t.common.loginTitle}</CardTitle>
+            <CardTitle className="text-2xl font-bold text-center">Login</CardTitle>
             <CardDescription className="text-center">
-              {t.common.loginDescription}
+              Enter your credentials to access your account
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -109,7 +107,7 @@ const Login = () => {
                 onClick={() => setUserType('professional')}
                 className="flex-1"
               >
-                {t.common.professionalTab}
+                Professional
               </Button>
               <Button 
                 type="button" 
@@ -117,7 +115,7 @@ const Login = () => {
                 onClick={() => setUserType('institution')}
                 className="flex-1"
               >
-                {t.common.institutionTab}
+                Institution
               </Button>
             </div>
             
@@ -128,7 +126,7 @@ const Login = () => {
                   name="email"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>{t.common.email}</FormLabel>
+                      <FormLabel>Email</FormLabel>
                       <div className="relative">
                         <FormControl>
                           <Input 
@@ -149,7 +147,7 @@ const Login = () => {
                   name="password"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>{t.common.password}</FormLabel>
+                      <FormLabel>Password</FormLabel>
                       <div className="relative">
                         <FormControl>
                           <Input 
@@ -190,7 +188,7 @@ const Login = () => {
                           />
                         </FormControl>
                         <FormLabel className="text-sm font-medium cursor-pointer">
-                          {t.common.rememberMe}
+                          Remember me
                         </FormLabel>
                       </FormItem>
                     )}
@@ -200,7 +198,7 @@ const Login = () => {
                     to="/forgot-password" 
                     className="text-sm text-medical-700 hover:text-medical-800"
                   >
-                    {t.common.forgotPassword}
+                    Forgot password?
                   </Link>
                 </div>
                 
@@ -209,19 +207,19 @@ const Login = () => {
                   className="w-full"
                   disabled={isSubmitting}
                 >
-                  {isSubmitting ? t.common.loggingIn : `${t.common.logInAs} ${userType === 'professional' ? t.common.professionalTab : t.common.institutionTab}`}
+                  {isSubmitting ? 'Logging in...' : `Log in as ${userType === 'professional' ? 'Professional' : 'Institution'}`}
                 </Button>
               </form>
             </Form>
           </CardContent>
           <CardFooter className="flex flex-col space-y-4">
             <div className="text-sm text-center text-muted-foreground">
-              {t.common.dontHaveAccount}{" "}
+              Don't have an account?{" "}
               <Link 
                 to={userType === 'professional' ? '/signup/professional' : '/signup/institution'} 
                 className="text-medical-700 hover:text-medical-800 font-medium"
               >
-                {t.common.createOne}
+                Create one
               </Link>
             </div>
             <div className="text-sm text-center text-muted-foreground">
@@ -229,7 +227,7 @@ const Login = () => {
                 to="/confirm-email" 
                 className="text-medical-700 hover:text-medical-800 font-medium"
               >
-                {t.common.confirmEmail}
+                Need to confirm your email?
               </Link>
             </div>
           </CardFooter>
