@@ -1,7 +1,10 @@
 
 import React from 'react';
+import { useLanguage } from '@/hooks/useLanguage';
 
 const StorySection = () => {
+  const { t } = useLanguage();
+  
   return (
     <section className="py-16 bg-gray-50">
       <div className="container mx-auto px-4">
@@ -16,19 +19,15 @@ const StorySection = () => {
             </div>
             
             <div className="md:w-1/2 space-y-4">
-              <h2 className="text-3xl font-bold">Our Story</h2>
+              <h2 className="text-3xl font-bold">{t?.about?.story?.title}</h2>
               <p className="text-muted-foreground">
-                Solvia was born from a simple observation: healthcare recruitment, especially across borders, 
-                is unnecessarily complex, slow, and expensive.
+                {t?.about?.story?.founded || "Solvia was born from a simple observation: healthcare recruitment, especially across borders, is unnecessarily complex, slow, and expensive."}
               </p>
               <p className="text-muted-foreground">
-                Founded by a team with backgrounds in healthcare and technology, we saw an opportunity to create 
-                a platform that serves both medical professionals seeking opportunities and healthcare institutions 
-                facing staffing challenges.
+                {t?.about?.story?.team || "Founded by a team with backgrounds in healthcare and technology, we saw an opportunity to create a platform that serves both medical professionals seeking opportunities and healthcare institutions facing staffing challenges."}
               </p>
               <p className="text-muted-foreground">
-                Today, we're proud to be connecting thousands of healthcare professionals with institutions in over 
-                45 countries, making healthcare recruitment smarter, simpler, and truly global.
+                {t?.about?.story?.description}
               </p>
             </div>
           </div>

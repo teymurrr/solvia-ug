@@ -1,15 +1,17 @@
 
 import React from 'react';
+import { useLanguage } from '@/hooks/useLanguage';
 
 const TeamSection = () => {
+  const { t } = useLanguage();
+  
   return (
     <section className="py-16">
       <div className="container mx-auto px-4">
         <div className="max-w-3xl mx-auto mb-12 text-center">
-          <h2 className="text-3xl font-bold mb-4">Our Team</h2>
+          <h2 className="text-3xl font-bold mb-4">{t?.about?.team?.title}</h2>
           <p className="text-lg text-muted-foreground">
-            We're a diverse team of healthcare professionals, technologists, and recruitment experts dedicated to transforming 
-            healthcare staffing.
+            {t?.about?.team?.description}
           </p>
         </div>
         
@@ -23,7 +25,7 @@ const TeamSection = () => {
               />
             </div>
             <h3 className="text-xl font-semibold">Teymur Mammadov</h3>
-            <p className="text-muted-foreground">Co-Founder</p>
+            <p className="text-muted-foreground">{t?.about?.team?.cofounder || "Co-Founder"}</p>
           </div>
           
           <div className="bg-gray-50 rounded-lg p-6 text-center">
@@ -35,7 +37,7 @@ const TeamSection = () => {
               />
             </div>
             <h3 className="text-xl font-semibold">David Rehrl</h3>
-            <p className="text-muted-foreground">Co-Founder</p>
+            <p className="text-muted-foreground">{t?.about?.team?.cofounder || "Co-Founder"}</p>
           </div>
         </div>
       </div>

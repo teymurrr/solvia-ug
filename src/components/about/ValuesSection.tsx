@@ -1,15 +1,18 @@
 
 import React from 'react';
 import { Users, Building2, Globe, GraduationCap } from 'lucide-react';
+import { useLanguage } from '@/hooks/useLanguage';
 
 const ValuesSection = () => {
+  const { t } = useLanguage();
+  
   return (
     <section className="py-16 bg-gray-50">
       <div className="container mx-auto px-4">
         <div className="max-w-3xl mx-auto mb-12 text-center">
-          <h2 className="text-3xl font-bold mb-4">Our Values</h2>
+          <h2 className="text-3xl font-bold mb-4">{t?.about?.values?.title}</h2>
           <p className="text-lg text-muted-foreground">
-            The principles that guide everything we do at Solvia.
+            {t?.about?.values?.description || "The principles that guide everything we do at Solvia."}
           </p>
         </div>
         
@@ -19,9 +22,9 @@ const ValuesSection = () => {
               <Users className="h-6 w-6 text-medical-600" />
             </div>
             <div>
-              <h3 className="text-xl font-semibold mb-2">People First</h3>
+              <h3 className="text-xl font-semibold mb-2">{t?.about?.values?.peopleFirst || "People First"}</h3>
               <p className="text-muted-foreground">
-                We believe that at the heart of healthcare are dedicated professionals. We put their needs and career aspirations first.
+                {t?.about?.values?.peopleFirstDesc || "We believe that at the heart of healthcare are dedicated professionals. We put their needs and career aspirations first."}
               </p>
             </div>
           </div>
@@ -31,9 +34,9 @@ const ValuesSection = () => {
               <Building2 className="h-6 w-6 text-medical-600" />
             </div>
             <div>
-              <h3 className="text-xl font-semibold mb-2">Institution Success</h3>
+              <h3 className="text-xl font-semibold mb-2">{t?.about?.values?.institution || "Institution Success"}</h3>
               <p className="text-muted-foreground">
-                We're committed to helping healthcare institutions find the right talent to deliver exceptional care.
+                {t?.about?.values?.institutionDesc || "We're committed to helping healthcare institutions find the right talent to deliver exceptional care."}
               </p>
             </div>
           </div>
@@ -43,9 +46,9 @@ const ValuesSection = () => {
               <Globe className="h-6 w-6 text-medical-600" />
             </div>
             <div>
-              <h3 className="text-xl font-semibold mb-2">Global Perspective</h3>
+              <h3 className="text-xl font-semibold mb-2">{t?.about?.values?.global || "Global Perspective"}</h3>
               <p className="text-muted-foreground">
-                We embrace diversity and believe in creating opportunities across geographic and cultural boundaries.
+                {t?.about?.values?.globalDesc || "We embrace diversity and believe in creating opportunities across geographic and cultural boundaries."}
               </p>
             </div>
           </div>
@@ -55,9 +58,9 @@ const ValuesSection = () => {
               <GraduationCap className="h-6 w-6 text-medical-600" />
             </div>
             <div>
-              <h3 className="text-xl font-semibold mb-2">Continuous Learning</h3>
+              <h3 className="text-xl font-semibold mb-2">{t?.about?.values?.learning || "Continuous Learning"}</h3>
               <p className="text-muted-foreground">
-                We're always improving our platform and processes to better serve the healthcare community.
+                {t?.about?.values?.learningDesc || "We're always improving our platform and processes to better serve the healthcare community."}
               </p>
             </div>
           </div>
