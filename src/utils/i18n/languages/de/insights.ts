@@ -3,6 +3,7 @@ export const insights = {
   title: "Solvia Insights",
   subtitle: "Umfassende Lösungen für Gesundheitseinrichtungen",
   comingSoon: "Demnächst verfügbar",
+  viewMore: "Mehr anzeigen",
   employeeExperience: {
     title: "Mitarbeitererfahrung & Wohlbefinden",
     subtitle: "Verbessern Sie die Arbeitsplatzzufriedenheit und das Wohlbefinden der Mitarbeiter",

@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -38,9 +37,9 @@ const VacancyFooter: React.FC<VacancyFooterProps> = ({
   const { t } = useLanguage();
   
   // Get translations with fallbacks
-  const applyNowText = t?.vacancies?.applyNow || t?.vacancies?.apply || "Apply Now";
+  const applyNowText = t?.vacancies?.apply || "Apply Now";
   const appliedText = t?.common?.applied || "Applied";
-  const viewDetailsText = "View Details";
+  const viewDetailsText = t?.vacancies?.viewDetails || "View Details";
 
   const handleApply = () => {
     // If already applied, don't do anything

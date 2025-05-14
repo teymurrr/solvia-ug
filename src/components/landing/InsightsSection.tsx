@@ -100,7 +100,7 @@ const InsightsSection = () => {
           <div className="flex justify-center">
             <Button variant="outline" asChild className="group border-primary text-primary hover:bg-primary/10">
               <Link to="/insights" className="flex items-center">
-                {t?.common?.viewMore || "View More"}
+                {t?.insights?.viewMore || t?.common?.viewMore || "View More"}
                 <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </Link>
             </Button>

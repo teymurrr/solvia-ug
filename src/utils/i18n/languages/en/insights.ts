@@ -3,6 +3,7 @@ export const insights = {
   title: "Solvia Insights",
   subtitle: "Comprehensive solutions for healthcare institutions",
   comingSoon: "Coming Soon",
+  viewMore: "View More",
   employeeExperience: {
     title: "Employee Experience & Wellbeing",
     subtitle: "Enhance workplace satisfaction and employee wellness",
