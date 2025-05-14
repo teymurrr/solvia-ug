@@ -39,7 +39,7 @@ const VacancyFooter: React.FC<VacancyFooterProps> = ({
   // Get translations with fallbacks
   const applyNowText = t?.vacancies?.apply || "Apply Now";
   const appliedText = t?.common?.applied || "Applied";
-  const viewDetailsText = t?.vacancies?.viewDetails || "View Details";
+  const viewDetailsText = t?.vacancies?.viewMore || "View Details"; // Changed from viewDetails to viewMore as it exists in the translations
 
   const handleApply = () => {
     // If already applied, don't do anything
