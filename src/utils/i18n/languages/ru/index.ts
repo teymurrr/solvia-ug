@@ -12,6 +12,8 @@ import { common } from './common';
 import { footer } from './footer';
 import { about } from './about';
 import { dashboard } from './dashboard';
+import { terms } from './terms';
+import { privacy } from './privacy';
 
 export const ru = {
   hero,
@@ -26,5 +28,7 @@ export const ru = {
   common,
   footer,
   about,
-  dashboard
+  dashboard,
+  terms,
+  privacy
 };

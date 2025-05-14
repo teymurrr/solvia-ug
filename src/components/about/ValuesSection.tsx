@@ -1,66 +1,49 @@
 
 import React from 'react';
-import { Users, Building2, Globe, GraduationCap } from 'lucide-react';
+import { Shield, Award, Lightbulb, Users } from 'lucide-react';
+import { useLanguage } from '@/hooks/useLanguage';
 
 const ValuesSection = () => {
+  const { t } = useLanguage();
+  
+  // Default values in case translations are not available
+  const title = t?.about?.values?.title || "Our Values";
+  const values = [
+    {
+      icon: <Shield className="h-8 w-8 text-medical-600" />,
+      title: t?.about?.values?.integrity || "Integrity",
+      description: t?.about?.values?.integrityDesc || "We operate with transparency and honesty in all our interactions."
+    },
+    {
+      icon: <Award className="h-8 w-8 text-medical-600" />,
+      title: t?.about?.values?.excellence || "Excellence",
+      description: t?.about?.values?.excellenceDesc || "We strive for the highest standards in our services and operations."
+    },
+    {
+      icon: <Lightbulb className="h-8 w-8 text-medical-600" />,
+      title: t?.about?.values?.innovation || "Innovation",
+      description: t?.about?.values?.innovationDesc || "We continuously seek better ways to serve our users and solve problems."
+    },
+    {
+      icon: <Users className="h-8 w-8 text-medical-600" />,
+      title: t?.about?.values?.inclusion || "Inclusion",
+      description: t?.about?.values?.inclusionDesc || "We embrace diversity and create equal opportunities for all."
+    }
+  ];
+
   return (
     <section className="py-16 bg-gray-50">
       <div className="container mx-auto px-4">
-        <div className="max-w-3xl mx-auto mb-12 text-center">
-          <h2 className="text-3xl font-bold mb-4">Our Values</h2>
-          <p className="text-lg text-muted-foreground">
-            The principles that guide everything we do at Solvia.
-          </p>
-        </div>
+        <h2 className="text-3xl font-bold mb-12 text-center">{title}</h2>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div className="flex gap-4">
-            <div className="bg-medical-100 p-2 h-fit rounded">
-              <Users className="h-6 w-6 text-medical-600" />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {values.map((value, index) => (
+            <div key={index} className="bg-white p-6 rounded-lg shadow-sm">
+              <div className="mb-4">{value.icon}</div>
+              <h3 className="text-xl font-semibold mb-2">{value.title}</h3>
+              <p className="text-muted-foreground">{value.description}</p>
             </div>
-            <div>
-              <h3 className="text-xl font-semibold mb-2">People First</h3>
-              <p className="text-muted-foreground">
-                We believe that at the heart of healthcare are dedicated professionals. We put their needs and career aspirations first.
-              </p>
-            </div>
-          </div>
-          
-          <div className="flex gap-4">
-            <div className="bg-medical-100 p-2 h-fit rounded">
-              <Building2 className="h-6 w-6 text-medical-600" />
-            </div>
-            <div>
-              <h3 className="text-xl font-semibold mb-2">Institution Success</h3>
-              <p className="text-muted-foreground">
-                We're committed to helping healthcare institutions find the right talent to deliver exceptional care.
-              </p>
-            </div>
-          </div>
-          
-          <div className="flex gap-4">
-            <div className="bg-medical-100 p-2 h-fit rounded">
-              <Globe className="h-6 w-6 text-medical-600" />
-            </div>
-            <div>
-              <h3 className="text-xl font-semibold mb-2">Global Perspective</h3>
-              <p className="text-muted-foreground">
-                We embrace diversity and believe in creating opportunities across geographic and cultural boundaries.
-              </p>
-            </div>
-          </div>
-          
-          <div className="flex gap-4">
-            <div className="bg-medical-100 p-2 h-fit rounded">
-              <GraduationCap className="h-6 w-6 text-medical-600" />
-            </div>
-            <div>
-              <h3 className="text-xl font-semibold mb-2">Continuous Learning</h3>
-              <p className="text-muted-foreground">
-                We're always improving our platform and processes to better serve the healthcare community.
-              </p>
-            </div>
-          </div>
+          ))}
         </div>
       </div>
     </section>

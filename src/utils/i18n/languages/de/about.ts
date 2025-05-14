@@ -2,39 +2,34 @@
 export const about = {
   title: "Über Solvia",
   subtitle: "Unsere Mission und Vision",
-  missionSection: "Unsere Mission",
-  visionSection: "Unsere Vision",
-  valuesSection: "Unsere Werte",
-  teamSection: "Unser Team",
-  joinUs: "Schließen Sie sich uns an",
-  storySection: "Unsere Geschichte",
-  missionText: "Verbindung von Gesundheitsfachkräften und Institutionen weltweit, um ein effizienteres und zugänglicheres Gesundheitssystem zu schaffen.",
-  visionText: "Eine Welt, in der Gesundheitstalente sich frei dorthin bewegen können, wo sie am meisten gebraucht werden, und so zur Lösung des globalen Mangels an Gesundheitspersonal beitragen.",
+  missionText: "Verbinden von medizinischen Fachkräften und Einrichtungen weltweit, um ein effizienteres und zugänglicheres Gesundheitssystem zu schaffen.",
+  visionText: "Eine Welt, in der medizinische Talente frei dorthin gehen können, wo sie am meisten gebraucht werden, und so dazu beitragen, den globalen Mangel an Gesundheitspersonal zu beheben.",
+  joinUs: "Machen Sie mit",
   hero: {
     title: "Über Solvia",
-    subtitle: "Transformation der Gesundheitsrekrutierung weltweit"
+    subtitle: "Transformation der medizinischen Rekrutierung weltweit"
   },
   mission: {
     title: "Unsere Mission",
-    description: "Qualifizierte Gesundheitsfachkräfte mit Institutionen weltweit zu verbinden, Karrieremöglichkeiten zu bieten und eine hochwertige Gesundheitsversorgung zu gewährleisten."
+    description: "Qualifizierte Gesundheitsfachkräfte mit Einrichtungen auf der ganzen Welt zu verbinden, Chancen für berufliches Wachstum zu bieten und eine qualitativ hochwertige Gesundheitsversorgung zu gewährleisten."
   },
   story: {
     title: "Unsere Geschichte",
-    description: "Solvia wurde 2022 mit einer einfachen Idee gegründet: Gesundheitsrekrutierung transparent, effizient und menschenzentriert zu gestalten. Heute betreuen wir Tausende von Fachkräften und Institutionen in mehreren Ländern."
+    description: "Solvia wurde 2022 mit einer einfachen Idee gegründet: die medizinische Rekrutierung transparent, effizient und menschenzentriert zu gestalten. Heute betreuen wir Tausende von Fachkräften und Einrichtungen in mehreren Ländern."
   },
   team: {
     title: "Unser Team",
-    description: "Wir sind ein engagiertes Team von Gesundheits- und Technologieexperten, die sich der Transformation der medizinischen Rekrutierung verschrieben haben."
+    description: "Wir sind ein engagiertes Team von Experten im Gesundheitswesen und in der Technologie, das sich der Transformation der medizinischen Rekrutierung verschrieben hat."
   },
   values: {
     title: "Unsere Werte",
     integrity: "Integrität",
-    integrityDesc: "Wir agieren mit Transparenz und Ehrlichkeit in all unseren Interaktionen.",
+    integrityDesc: "Wir handeln in all unseren Interaktionen mit Transparenz und Ehrlichkeit.",
     excellence: "Exzellenz",
-    excellenceDesc: "Wir streben nach höchsten Standards in unseren Dienstleistungen und Betriebsabläufen.",
+    excellenceDesc: "Wir streben die höchsten Standards in unseren Dienstleistungen und Abläufen an.",
     innovation: "Innovation",
-    innovationDesc: "Wir suchen kontinuierlich nach besseren Wegen, um unseren Benutzern zu dienen und Probleme zu lösen.",
+    innovationDesc: "Wir suchen ständig nach besseren Wegen, unseren Nutzern zu dienen und Probleme zu lösen.",
     inclusion: "Inklusion",
-    inclusionDesc: "Wir fördern Vielfalt und schaffen gleiche Chancen für alle."
+    inclusionDesc: "Wir schätzen Vielfalt und schaffen gleiche Chancen für alle."
   }
 };
