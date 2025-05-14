@@ -1,16 +1,22 @@
+
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { useVacancies } from "@/hooks/useVacancies";
 import { useAuth } from "@/contexts/AuthContext";
-import { toast } from "@/hooks/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from '@/hooks/useLanguage';
 
 interface VacancyFooterProps {
   id: string;
   applyUrl?: string;
   similarVacancies?: any[];
+  // Adding these properties to support VacancyCard usage
+  isLandingPageCard?: boolean;
+  fromLandingPage?: boolean;
+  isLoggedIn?: boolean;
+  isApplied?: boolean;
 }
 
 const formatDate = (dateString: string): string => {
@@ -25,16 +31,23 @@ const formatDate = (dateString: string): string => {
 const VacancyFooter = ({ 
   id, 
   applyUrl, 
-  similarVacancies = [] 
+  similarVacancies = [],
+  isLandingPageCard = false,
+  fromLandingPage = false,
+  isLoggedIn: isLoggedInProp,
+  isApplied = false
 }: VacancyFooterProps) => {
   const { isLoggedIn } = useAuth();
   const location = useLocation();
-  const { updateVacancy } = useVacancies();
+  const { vacancies, handleAddVacancy, handleUpdateVacancy, handleDeleteVacancy, loading, submitting, error, refreshVacancies } = useVacancies();
   const { toast } = useToast();
   const { t } = useLanguage();
   
+  // Use the prop if provided, otherwise use the context value
+  const effectiveIsLoggedIn = isLoggedInProp !== undefined ? isLoggedInProp : isLoggedIn;
+  
   const handleApply = () => {
-    if (!isLoggedIn) {
+    if (!effectiveIsLoggedIn) {
       toast({
         title: "Authentication Required",
         description: "Please sign up or log in to apply for this vacancy.",
@@ -55,7 +68,7 @@ const VacancyFooter = ({
   };
 
   const handleSave = async (id: string) => {
-    if (!isLoggedIn) {
+    if (!effectiveIsLoggedIn) {
        toast({
         title: "Authentication Required",
         description: "Please sign up or log in to save this vacancy.",
@@ -67,7 +80,7 @@ const VacancyFooter = ({
     const isSaved = location.pathname.includes('/dashboard');
 
     try {
-      await updateVacancy(id, { saved: !isSaved });
+      await handleUpdateVacancy({ id, saved: !isSaved });
 
       toast({
         title: isSaved ? "Vacancy removed" : "Vacancy saved",
