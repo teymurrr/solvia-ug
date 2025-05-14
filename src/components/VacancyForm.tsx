@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -38,7 +39,7 @@ const formSchema = z.object({
   country: z.string().optional(),
   city: z.string().optional(),
   description: z.string().min(10, { message: "Description is required and must be at least 10 characters" }),
-  requirements: z.string().min(5, { message: "Requirements are required" }),
+  requirements: z.string().optional(), // Changed from required with min length to optional
   salary: z.string().optional(),
   application_link: z.string().url({ message: "Please enter a valid URL" }).optional().or(z.literal('')),
 });
@@ -48,10 +49,13 @@ export const adaptVacancyFormData = (formData) => {
   console.log("Adapting form data:", formData);
   
   // Format requirements into an array if it's a string
-  if (typeof formData.requirements === 'string') {
+  if (typeof formData.requirements === 'string' && formData.requirements.trim() !== '') {
     formData.requirements = formData.requirements
       .split('\n')
       .filter(line => line.trim() !== '');
+  } else if (!formData.requirements || formData.requirements.trim() === '') {
+    // If requirements is empty or just whitespace, set it as an empty array
+    formData.requirements = [];
   }
 
   // Copy contract_type to job_type if job_type is missing

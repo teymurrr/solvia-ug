@@ -18,7 +18,7 @@ const VacancyDetails: React.FC<VacancyDetailsProps> = ({
   specialty,
   postedDate,
   description,
-  requirements,
+  requirements = [], // Provide default empty array
   isDashboardCard = false
 }) => {
   return (
