@@ -6,9 +6,11 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import MainLayout from '@/components/MainLayout';
 import { useToast } from '@/hooks/use-toast';
+import { useLanguage } from '@/hooks/useLanguage';
 
 const EmailConfirmationRequired = () => {
   const { toast } = useToast();
+  const { t } = useLanguage();
   const email = localStorage.getItem('pendingConfirmationEmail');
 
   const handleResendEmail = async () => {
@@ -28,9 +30,9 @@ const EmailConfirmationRequired = () => {
             <div className="mx-auto bg-yellow-100 p-3 rounded-full mb-4">
               <Mail className="h-6 w-6 text-yellow-600" />
             </div>
-            <CardTitle className="text-2xl font-bold text-center">Confirm Your Email</CardTitle>
+            <CardTitle className="text-2xl font-bold text-center">{t.common.confirmYourEmail}</CardTitle>
             <CardDescription className="text-center">
-              We've sent a confirmation email to:
+              {t.common.confirmEmailDesc}
             </CardDescription>
             <p className="text-center font-medium">{email || 'your email address'}</p>
           </CardHeader>
@@ -39,30 +41,30 @@ const EmailConfirmationRequired = () => {
               <div className="flex items-start gap-3">
                 <AlertTriangle className="h-5 w-5 text-amber-600 mt-0.5" />
                 <p className="text-sm text-amber-800">
-                  You must confirm your email before you can sign in to your account.
+                  {t.common.mustConfirmEmail}
                 </p>
               </div>
             </div>
             <div className="space-y-2">
-              <h3 className="text-sm font-medium">What to do next:</h3>
+              <h3 className="text-sm font-medium">{t.common.whatToDoNext}</h3>
               <ul className="space-y-3">
                 <li className="flex items-start gap-2">
                   <div className="bg-green-100 p-1 rounded-full">
                     <Check className="h-3.5 w-3.5 text-green-600" />
                   </div>
-                  <span className="text-sm">Check your email inbox for a confirmation link</span>
+                  <span className="text-sm">{t.common.checkInbox}</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <div className="bg-green-100 p-1 rounded-full">
                     <Check className="h-3.5 w-3.5 text-green-600" />
                   </div>
-                  <span className="text-sm">Click on the link in the email to confirm your account</span>
+                  <span className="text-sm">{t.common.clickLink}</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <div className="bg-green-100 p-1 rounded-full">
                     <Check className="h-3.5 w-3.5 text-green-600" />
                   </div>
-                  <span className="text-sm">After confirming, you can sign in with your credentials</span>
+                  <span className="text-sm">{t.common.afterConfirming}</span>
                 </li>
               </ul>
             </div>
@@ -73,15 +75,15 @@ const EmailConfirmationRequired = () => {
               variant="outline" 
               className="w-full"
             >
-              Resend confirmation email
+              {t.common.resendEmail}
             </Button>
             <div className="text-sm text-center text-muted-foreground">
-              Already confirmed?{" "}
+              {t.common.alreadyConfirmed}{" "}
               <Link 
                 to="/login"
                 className="text-medical-700 hover:text-medical-800 font-medium"
               >
-                Sign in
+                {t.common.signIn}
               </Link>
             </div>
           </CardFooter>

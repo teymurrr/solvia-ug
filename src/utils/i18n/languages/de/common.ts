@@ -21,5 +21,63 @@ export const common = {
   noResults: "Keine Ergebnisse gefunden",
   learning: "Solvia Lernen",
   forEmployers: "Für Arbeitgeber",
-  viewMore: "Mehr anzeigen"
+  viewMore: "Mehr anzeigen",
+  
+  // Login page translations
+  loginTitle: "Anmelden",
+  loginDescription: "Geben Sie Ihre Anmeldedaten ein, um auf Ihr Konto zuzugreifen",
+  professionalTab: "Fachkraft",
+  institutionTab: "Institution",
+  email: "E-Mail",
+  password: "Passwort",
+  rememberMe: "Angemeldet bleiben",
+  forgotPassword: "Passwort vergessen?",
+  dontHaveAccount: "Haben Sie noch kein Konto?",
+  createOne: "Erstellen Sie eines",
+  confirmEmail: "Müssen Sie Ihre E-Mail bestätigen?",
+  loggingIn: "Anmeldung läuft...",
+  logInAs: "Anmelden als",
+  
+  // Signup page translations
+  createAccount: "Konto erstellen",
+  selectAccountType: "Wählen Sie den Kontotyp, um zu beginnen",
+  professional: "Gesundheitsfachkraft",
+  institution: "Gesundheitseinrichtung",
+  professionalDesc: "Erstellen Sie ein Profil, um Ihre Expertise zu präsentieren und relevante Möglichkeiten in Gesundheitseinrichtungen zu finden.",
+  institutionDesc: "Erstellen Sie ein Konto, um Stellenangebote zu veröffentlichen, nach Talenten zu suchen und mit Gesundheitsfachkräften in Kontakt zu treten.",
+  continueAs: "Fortfahren als",
+  alreadyHaveAccount: "Haben Sie bereits ein Konto?",
+  
+  // Professional signup page
+  createProfessionalAccount: "Fachkraft-Konto erstellen",
+  professionalSignupDesc: "Geben Sie Ihre Informationen ein, um Ihr Gesundheitsfachkraft-Konto zu erstellen",
+  firstName: "Vorname",
+  lastName: "Nachname",
+  specialty: "Fachgebiet",
+  confirmPassword: "Passwort bestätigen",
+  openToRelocation: "Ich bin umzugsbereit",
+  agreeToTerms: "Ich stimme den Nutzungsbedingungen und der Datenschutzerklärung zu",
+  creatingAccount: "Konto wird erstellt...",
+  createProfessionalAccount: "Fachkraft-Konto erstellen",
+  
+  // Institution signup page
+  createInstitutionAccount: "Institutions-Konto erstellen",
+  institutionSignupDesc: "Geben Sie Ihre Informationen ein, um Ihr Gesundheitseinrichtungs-Konto zu erstellen",
+  institutionName: "Name der Einrichtung",
+  website: "Website",
+  location: "Standort",
+  institutionType: "Art der Einrichtung",
+  createInstitutionAccount: "Institutions-Konto erstellen",
+  
+  // Email confirmation page
+  confirmYourEmail: "Bestätigen Sie Ihre E-Mail",
+  confirmEmailDesc: "Wir haben eine Bestätigungs-E-Mail gesendet an:",
+  mustConfirmEmail: "Sie müssen Ihre E-Mail bestätigen, bevor Sie sich bei Ihrem Konto anmelden können.",
+  whatToDoNext: "Was als Nächstes zu tun ist:",
+  checkInbox: "Überprüfen Sie Ihren E-Mail-Posteingang auf einen Bestätigungslink",
+  clickLink: "Klicken Sie auf den Link in der E-Mail, um Ihr Konto zu bestätigen",
+  afterConfirming: "Nach der Bestätigung können Sie sich mit Ihren Anmeldedaten anmelden",
+  resendEmail: "Bestätigungs-E-Mail erneut senden",
+  alreadyConfirmed: "Bereits bestätigt?",
+  signIn: "Anmelden"
 };

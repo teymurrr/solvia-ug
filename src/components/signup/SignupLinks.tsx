@@ -1,20 +1,23 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useLanguage } from '@/hooks/useLanguage';
 
 export const SignupLinks: React.FC = () => {
+  const { t } = useLanguage();
+  
   return (
     <>
       <div className="text-sm text-center text-muted-foreground">
-        Want to sign up as an institution?{" "}
+        {t.common.dontHaveAccount}{" "}
         <Link to="/signup/institution" className="text-medical-700 hover:text-medical-800 font-medium">
-          Institution signup
+          {t.common.institution}
         </Link>
       </div>
       <div className="text-sm text-center text-muted-foreground">
-        Already have an account?{" "}
+        {t.common.alreadyHaveAccount}{" "}
         <Link to="/login" className="text-medical-700 hover:text-medical-800 font-medium">
-          Log in
+          {t.common.login}
         </Link>
       </div>
     </>

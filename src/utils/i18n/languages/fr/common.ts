@@ -16,5 +16,63 @@ export const common = {
   professionals: "Professionnels",
   institutions: "Institutions",
   messages: "Messages",
-  notifications: "Notifications"
+  notifications: "Notifications",
+  
+  // Login page translations
+  loginTitle: "Connexion",
+  loginDescription: "Entrez vos identifiants pour accéder à votre compte",
+  professionalTab: "Professionnel",
+  institutionTab: "Institution",
+  email: "E-mail",
+  password: "Mot de passe",
+  rememberMe: "Se souvenir de moi",
+  forgotPassword: "Mot de passe oublié ?",
+  dontHaveAccount: "Vous n'avez pas de compte ?",
+  createOne: "Créer un compte",
+  confirmEmail: "Besoin de confirmer votre e-mail ?",
+  loggingIn: "Connexion en cours...",
+  logInAs: "Se connecter en tant que",
+  
+  // Signup page translations
+  createAccount: "Créer un compte",
+  selectAccountType: "Sélectionnez le type de compte pour commencer",
+  professional: "Professionnel de santé",
+  institution: "Établissement de santé",
+  professionalDesc: "Créez un profil pour mettre en valeur votre expertise et trouver des opportunités pertinentes dans les établissements de santé.",
+  institutionDesc: "Créez un compte pour publier des offres d'emploi, rechercher des talents et vous connecter avec des professionnels de la santé.",
+  continueAs: "Continuer en tant que",
+  alreadyHaveAccount: "Vous avez déjà un compte ?",
+  
+  // Professional signup page
+  createProfessionalAccount: "Créer un compte professionnel",
+  professionalSignupDesc: "Entrez vos informations pour créer votre compte de professionnel de santé",
+  firstName: "Prénom",
+  lastName: "Nom",
+  specialty: "Spécialité",
+  confirmPassword: "Confirmer le mot de passe",
+  openToRelocation: "Je suis ouvert à la délocalisation",
+  agreeToTerms: "J'accepte les conditions d'utilisation et la politique de confidentialité",
+  creatingAccount: "Création du compte...",
+  createProfessionalAccount: "Créer un compte professionnel",
+  
+  // Institution signup page
+  createInstitutionAccount: "Créer un compte d'établissement",
+  institutionSignupDesc: "Entrez vos informations pour créer votre compte d'établissement de santé",
+  institutionName: "Nom de l'établissement",
+  website: "Site web",
+  location: "Emplacement",
+  institutionType: "Type d'établissement",
+  createInstitutionAccount: "Créer un compte d'établissement",
+  
+  // Email confirmation page
+  confirmYourEmail: "Confirmez votre e-mail",
+  confirmEmailDesc: "Nous avons envoyé un e-mail de confirmation à :",
+  mustConfirmEmail: "Vous devez confirmer votre e-mail avant de pouvoir vous connecter à votre compte.",
+  whatToDoNext: "Que faire ensuite :",
+  checkInbox: "Vérifiez votre boîte de réception pour un lien de confirmation",
+  clickLink: "Cliquez sur le lien dans l'e-mail pour confirmer votre compte",
+  afterConfirming: "Après confirmation, vous pourrez vous connecter avec vos identifiants",
+  resendEmail: "Renvoyer l'e-mail de confirmation",
+  alreadyConfirmed: "Déjà confirmé ?",
+  signIn: "Se connecter"
 };
