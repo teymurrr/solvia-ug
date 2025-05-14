@@ -45,7 +45,7 @@ const Footer: React.FC = () => {
           <div className="space-y-4">
             <Logo />
             <p className="text-sm text-muted-foreground max-w-xs">
-              Connecting qualified medical professionals with healthcare institutions worldwide.
+              {t?.footer?.tagline || "Connecting qualified medical professionals with healthcare institutions worldwide."}
             </p>
           </div>
           

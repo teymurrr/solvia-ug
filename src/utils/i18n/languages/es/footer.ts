@@ -19,5 +19,6 @@ export const footer = {
   findOpportunities: "Encontrar oportunidades",
   postPositions: "Publicar posiciones",
   searchProfessionals: "Buscar profesionales",
-  company: "Empresa"
+  company: "Empresa",
+  tagline: "Conectando profesionales médicos cualificados con instituciones sanitarias en todo el mundo."
 };

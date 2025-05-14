@@ -12,5 +12,6 @@ export const footer = {
   searchProfessionals: "Search Professionals",
   company: "Company",
   aboutUs: "About Us",
-  contact: "Contact"
+  contact: "Contact",
+  tagline: "Connecting qualified medical professionals with healthcare institutions worldwide."
 };
