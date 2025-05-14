@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
@@ -23,28 +22,25 @@ export interface Vacancy {
   salary?: string;
   institution_id?: string;
   application_link?: string;
-  saved?: boolean;
 }
 
 // Define input type for adding a vacancy
 export interface VacancyInput {
-  title?: string;
-  institution?: string;
-  department?: string;
+  title: string;
+  institution: string;
+  department: string;
   specialty?: string;
   profession?: string;
-  contract_type?: string;
+  contract_type: string;
   job_type?: string;
   country?: string;
   city?: string;
-  location?: string;
-  description?: string;
-  requirements?: string | string[];
+  location: string;
+  description: string;
+  requirements: string | string[];
   salary?: string;
   institution_id?: string;
   application_link?: string;
-  saved?: boolean;
-  id?: string;
 }
 
 export const useVacancies = () => {
@@ -187,7 +183,7 @@ export const useVacancies = () => {
     }
   };
 
-  const handleUpdateVacancy = async (vacancyData: VacancyInput) => {
+  const handleUpdateVacancy = async (vacancyData: VacancyInput & { id: string }) => {
     console.log("Starting handleUpdateVacancy with data:", vacancyData);
     
     if (!user || !session) {
@@ -208,29 +204,28 @@ export const useVacancies = () => {
         throw new Error("Vacancy ID is required for updates");
       }
       
-      // Process requirements to ensure it's always an array if present
-      let updatedData: any = { ...vacancyData };
+      // Process requirements to ensure it's always an array
+      const requirements = typeof vacancyData.requirements === 'string' 
+        ? vacancyData.requirements.split('\n').filter((line: string) => line.trim() !== '')
+        : Array.isArray(vacancyData.requirements) 
+          ? vacancyData.requirements
+          : [];
+          
+      // Process and standardize the vacancy data
+      const updatedVacancy = { 
+        ...vacancyData,
+        requirements,
+        // Ensure job_type is set from contract_type if not provided
+        job_type: vacancyData.job_type || vacancyData.contract_type,
+        // Ensure application_link is properly handled
+        application_link: vacancyData.application_link || null
+      };
       
-      if (vacancyData.requirements) {
-        const requirements = typeof vacancyData.requirements === 'string' 
-          ? vacancyData.requirements.split('\n').filter((line: string) => line.trim() !== '')
-          : Array.isArray(vacancyData.requirements) 
-            ? vacancyData.requirements
-            : [];
-            
-        updatedData.requirements = requirements;
-      }
-      
-      // If job_type is not provided but contract_type is, set job_type from contract_type
-      if (vacancyData.contract_type && !vacancyData.job_type) {
-        updatedData.job_type = vacancyData.contract_type;
-      }
-      
-      console.log("Updating vacancy in Supabase:", updatedData);
+      console.log("Updating vacancy in Supabase:", updatedVacancy);
       
       const { data, error } = await supabase
         .from('vacancies')
-        .update(updatedData)
+        .update(updatedVacancy)
         .eq('id', vacancyData.id)
         .select()
         .single();
@@ -262,53 +257,6 @@ export const useVacancies = () => {
       return null;
     } finally {
       setSubmitting(false);
-    }
-  };
-
-  const updateVacancy = async (id: string, updates: { saved?: boolean }) => {
-    console.log(`Updating vacancy ${id} with:`, updates);
-    
-    try {
-      // First get the current vacancy data
-      const { data: existingVacancy, error: fetchError } = await supabase
-        .from('vacancies')
-        .select('*')
-        .eq('id', id)
-        .single();
-        
-      if (fetchError) {
-        console.error("Error fetching vacancy:", fetchError);
-        throw fetchError;
-      }
-      
-      if (!existingVacancy) {
-        throw new Error("Vacancy not found");
-      }
-      
-      // Now update with the new data
-      const { data, error } = await supabase
-        .from('vacancies')
-        .update({
-          ...existingVacancy,
-          ...updates,
-          updated_at: new Date().toISOString()
-        })
-        .eq('id', id)
-        .select()
-        .single();
-        
-      if (error) {
-        console.error("Error updating vacancy:", error);
-        throw error;
-      }
-      
-      // Update the vacancy in state
-      setVacancies(prev => prev.map(v => v.id === id ? { ...v, ...updates } : v));
-      
-      return data;
-    } catch (error) {
-      console.error("Failed to update vacancy:", error);
-      throw error;
     }
   };
 
@@ -350,7 +298,6 @@ export const useVacancies = () => {
     vacancies, 
     handleAddVacancy,
     handleUpdateVacancy,
-    updateVacancy,
     handleDeleteVacancy, 
     loading,
     submitting,

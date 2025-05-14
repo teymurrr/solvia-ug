@@ -2,11 +2,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
-import { useLanguage } from '@/hooks/useLanguage';
 
 const CTASection = () => {
-  const { t } = useLanguage();
-  
   return (
     <section className="py-20 bg-gradient-to-r from-primary via-primary/95 to-primary text-white">
       <div className="container mx-auto px-4 text-center text-white">
@@ -14,10 +11,10 @@ const CTASection = () => {
         <p className="text-xl mb-8 text-white">Let Solvia AI do the heavy lifting.<br />We bring talent. You focus on care.</p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Button size="lg" variant="secondary" asChild>
-            <Link to="/signup">{t?.cta?.createAccount || "Free Sign Up"}</Link>
+            <Link to="/signup">Free Sign Up</Link>
           </Button>
           <Button size="lg" variant="outline" className="bg-transparent border-white hover:bg-white/10 text-white" asChild>
-            <Link to="/contact">{t?.cta?.talkToTeam || "Contact Us"}</Link>
+            <Link to="/contact">Contact Us</Link>
           </Button>
         </div>
       </div>

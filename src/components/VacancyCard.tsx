@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { useNavigate } from 'react-router-dom';
@@ -228,8 +227,8 @@ const VacancyCard: React.FC<VacancyCardProps> = ({
           <div className="px-5 pb-5 pt-2" onClick={e => e.stopPropagation()}>
             <VacancyFooter 
               id={id}
-              isLandingPageCard={isLandingPageCard}
-              fromLandingPage={fromLandingPage}
+              isLandingPageCard={true}
+              fromLandingPage={true}
               isLoggedIn={false}
               isApplied={isApplied}
             />
