@@ -2,14 +2,17 @@
 import React from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Users, Building2, Globe } from 'lucide-react';
-
-const statsData = [
-  {icon: Users, title: '5,000+', description: 'Healthcare Professionals'},
-  {icon: Building2, title: '1,200+', description: 'Healthcare Institutions'},
-  {icon: Globe, title: '45+', description: 'Countries Worldwide'}
-];
+import { useLanguage } from '@/hooks/useLanguage';
 
 const StatsSection = () => {
+  const { t } = useLanguage();
+  
+  const statsData = [
+    {icon: Users, title: '5,000+', description: t?.common?.professionals || 'Healthcare Professionals'},
+    {icon: Building2, title: '1,200+', description: t?.vacancies?.positions || 'Active Positions'},
+    {icon: Globe, title: '45+', description: t?.common?.countries || 'Countries Worldwide'}
+  ];
+
   return (
     <section className="bg-white py-8">
       <div className="container mx-auto px-4">

@@ -11,6 +11,8 @@ export const vacancies = {
   keyRequirements: 'Key Requirements',
   more: 'more',
   apply: 'Apply Now',
+  applyNow: 'Apply Now',
   save: 'Save',
-  saved: 'Saved'
+  saved: 'Saved',
+  positions: 'Healthcare Positions'
 };

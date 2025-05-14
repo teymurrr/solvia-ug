@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { FileCheck } from 'lucide-react';
+import { useLanguage } from '@/hooks/useLanguage';
 
 interface VacancyFooterProps {
   id: string;
@@ -34,6 +35,12 @@ const VacancyFooter: React.FC<VacancyFooterProps> = ({
 }) => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { t } = useLanguage();
+  
+  // Get translations with fallbacks
+  const applyNowText = t?.vacancies?.applyNow || t?.vacancies?.apply || "Apply Now";
+  const appliedText = t?.common?.applied || "Applied";
+  const viewDetailsText = "View Details";
 
   const handleApply = () => {
     // If already applied, don't do anything
@@ -112,10 +119,10 @@ const VacancyFooter: React.FC<VacancyFooterProps> = ({
           {isApplied ? (
             <>
               <FileCheck className="mr-2 h-4 w-4" />
-              Applied
+              {appliedText}
             </>
           ) : (
-            "Apply Now"
+            applyNowText
           )}
         </Button>
       </div>
@@ -133,7 +140,7 @@ const VacancyFooter: React.FC<VacancyFooterProps> = ({
           className={`flex-shrink-0 ${buttonClasses}`}
           size={isDashboardCard ? "sm" : "default"}
         >
-          View Details
+          {viewDetailsText}
         </Button>
       )}
       <Button 
@@ -146,10 +153,10 @@ const VacancyFooter: React.FC<VacancyFooterProps> = ({
         {isApplied ? (
           <>
             <FileCheck className="mr-2 h-4 w-4" />
-            Applied
+            {appliedText}
           </>
         ) : (
-          "Apply Now"
+          applyNowText
         )}
       </Button>
     </div>

@@ -16,7 +16,7 @@ const VacanciesSection: React.FC<VacanciesSectionProps> = ({ vacancies }) => {
   // Default values in case translations aren't loaded yet
   const title = t?.vacancies?.title || "Vacancies";
   const subtitle = t?.vacancies?.subtitle || "Discover exciting opportunities at leading healthcare institutions";
-  const viewMore = t?.vacancies?.viewMore || "View More";
+  const viewMore = t?.common?.viewMore || t?.vacancies?.viewMore || "View More";
   
   // Modify the description in the first vacancy card
   const modifiedVacancies = vacancies.map((vacancy, index) => {
