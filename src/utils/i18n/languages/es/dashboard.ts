@@ -1,6 +1,9 @@
+
 import { DashboardTranslations } from "../../types";
 
 export const dashboard: DashboardTranslations = {
+  title: "Panel de Control Profesional",
+  subtitle: "Gestiona tu perfil y consulta oportunidades",
   hero: {
     title: "Encuentra el trabajo de tus sueños en el sector sanitario",
     subtitle:
@@ -72,5 +75,46 @@ export const dashboard: DashboardTranslations = {
     updateStatus: "Actualizar estado",
     appliedOn: "Aplicado el",
     unknown: "Desconocido"
+  },
+  profile: {
+    title: "Tu Perfil",
+    description: "Así es como te verán las instituciones",
+    createProfile: "Crear Perfil",
+    completeProfile: "Completa Tu Perfil",
+    updateProfile: "Actualizar Perfil",
+    loading: "Cargando datos del perfil...",
+    editProfile: "Editar Tu Perfil",
+    saveProfile: "Guardar Perfil",
+    activelySearching: "Buscando activamente",
+    openToRelocation: "Abierto a reubicación",
+    fspCertified: "Certificado FSP",
+    profileCompletion: "Completado del perfil",
+    location: "Ubicación",
+    notSpecified: "No especificado",
+    profession: "Profesión",
+    fspCertificate: "Certificado FSP",
+    yes: "Sí",
+    no: "No",
+    experience: "Experiencia",
+    at: "en",
+    present: "Presente",
+    education: "Educación",
+    in: "en",
+    languages: "Idiomas",
+    about: "Sobre mí",
+    incompleteProfile: "Tu perfil está incompleto. Añade más información sobre ti para atraer a posibles empleadores."
+  },
+  saved: {
+    title: "Vacantes Guardadas y Aplicadas",
+    description: "Haz seguimiento de las vacantes que has guardado o aplicado",
+    savedVacancies: "Vacantes Guardadas",
+    appliedVacancies: "Vacantes Aplicadas",
+    noSaved: "No hay vacantes guardadas",
+    noSavedDesc: "Aún no has guardado ninguna vacante. Guarda vacantes para hacerles seguimiento.",
+    noApplied: "No hay solicitudes todavía",
+    noAppliedDesc: "Aún no has aplicado a ninguna vacante. Comienza a aplicar para encontrar tu próximo rol.",
+    browseVacancies: "Explorar Vacantes",
+    vacancyRemoved: "Vacante eliminada",
+    vacancyRemovedDesc: "La vacante ha sido eliminada de tu lista de guardados."
   }
 };
