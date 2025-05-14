@@ -7,11 +7,11 @@ import { useLanguage } from '@/hooks/useLanguage';
 const CTASection = () => {
   const { t } = useLanguage();
   
-  // Using safe fallbacks for translations that might not exist
-  const title = t?.about?.missionText || "Connect with our team";
-  const subtitle = t?.about?.visionText || "Learn more about how Solvia can help your institution";
-  const joinUsText = t?.about?.mission?.title || "Join Us"; // Changed to use existing translation
-  const contactTeamText = t?.common?.contact || "Contact Team"; // Changed to use existing translation
+  // Using translations that actually exist in all language files
+  const title = t?.about?.mission?.title || "Our Mission";
+  const subtitle = t?.about?.mission?.description || "Learn more about how Solvia can help your institution";
+  const joinUsText = t?.common?.signup || "Join Us";
+  const contactTeamText = t?.common?.contact || "Contact Team";
   
   return (
     <section className="py-16 bg-gradient-to-r from-primary via-primary/95 to-primary text-white">
