@@ -10,59 +10,59 @@ const TimelineSection = () => {
   // Ensure we have fallback values if t.journey is undefined
   const journeyData = t?.journey || {
     title: 'Your Journey with Solvia',
-    subtitle: 'How it works - from profile creation to your new position',
+    subtitle: 'Your journey to working in a new country made simple and straightforward',
     steps: {
-      profile: 'Create Your Profile',
-      profileDesc: 'Complete your professional profile with your expertise, experience, and requirements.',
-      profileFeature: 'Detailed Profile Creation',
-      apply: 'Apply to Positions',
-      applyDesc: 'Browse and apply to positions that match your skills and preferences.',
-      applyFeature: 'Personalized Job Matching',
-      start: 'Start Your New Role',
-      startDesc: "Once hired, we'll help you with the transition to your new position.",
-      startFeature: 'Seamless Onboarding Support'
+      profile: 'Create Profile',
+      profileDesc: 'Build your professional profile showcasing your skills, experience, and qualifications. Stand out to potential employers with a complete profile.',
+      profileFeature: 'Easy profile creation',
+      apply: 'Apply',
+      applyDesc: 'Browse through healthcare opportunities worldwide. Apply to positions that match your skills and aspirations with just a few clicks.',
+      applyFeature: 'Global opportunities',
+      start: 'Start',
+      startDesc: "Once hired, we'll support your transition. From relocation assistance to integration support, we ensure a smooth start to your new role.",
+      startFeature: 'Full relocation support'
     }
   };
   
   const timelineData = [
     {
-      title: journeyData.steps?.profile || 'Create Your Profile',
+      title: journeyData.steps?.profile || 'Create Profile',
       content: (
         <div className="space-y-4">
           <p className="text-[18px] text-neutral-800 dark:text-neutral-200 font-normal leading-relaxed">
-            {journeyData.steps?.profileDesc || 'Complete your professional profile with details about your experience.'}
+            {journeyData.steps?.profileDesc || 'Build your professional profile showcasing your skills, experience, and qualifications.'}
           </p>
           <div className="flex items-center gap-2 text-primary">
             <FileText className="h-6 w-6" />
-            <span className="text-[18px] font-medium">{journeyData.steps?.profileFeature || 'Detailed Profile Creation'}</span>
+            <span className="text-[18px] font-medium">{journeyData.steps?.profileFeature || 'Easy profile creation'}</span>
           </div>
         </div>
       ),
     },
     {
-      title: journeyData.steps?.apply || 'Apply to Positions',
+      title: journeyData.steps?.apply || 'Apply',
       content: (
         <div className="space-y-4">
           <p className="text-[18px] text-neutral-800 dark:text-neutral-200 font-normal leading-relaxed">
-            {journeyData.steps?.applyDesc || 'Browse and apply to positions that match your skills.'}
+            {journeyData.steps?.applyDesc || 'Browse through healthcare opportunities worldwide. Apply to positions that match your skills.'}
           </p>
           <div className="flex items-center gap-2 text-primary">
             <Building2 className="h-6 w-6" />
-            <span className="text-[18px] font-medium">{journeyData.steps?.applyFeature || 'Personalized Job Matching'}</span>
+            <span className="text-[18px] font-medium">{journeyData.steps?.applyFeature || 'Global opportunities'}</span>
           </div>
         </div>
       ),
     },
     {
-      title: journeyData.steps?.start || 'Start Your New Role',
+      title: journeyData.steps?.start || 'Start',
       content: (
         <div className="space-y-4">
           <p className="text-[18px] text-neutral-800 dark:text-neutral-200 font-normal leading-relaxed">
-            {journeyData.steps?.startDesc || "Once hired, we'll help you with the transition to your new role."}
+            {journeyData.steps?.startDesc || "Once hired, we'll support your transition. From relocation assistance to integration support, we ensure a smooth start."}
           </p>
           <div className="flex items-center gap-2 text-primary">
             <Rocket className="h-6 w-6" />
-            <span className="text-[18px] font-medium">{journeyData.steps?.startFeature || 'Seamless Onboarding Support'}</span>
+            <span className="text-[18px] font-medium">{journeyData.steps?.startFeature || 'Full relocation support'}</span>
           </div>
         </div>
       ),
@@ -77,7 +77,7 @@ const TimelineSection = () => {
             {journeyData.title || 'Your Journey with Solvia'}
           </h2>
           <p className="text-[20px] text-gray-600">
-            {journeyData.subtitle || 'How it works - from profile creation to your new position'}
+            {journeyData.subtitle || 'Your journey to working in a new country made simple and straightforward'}
           </p>
         </div>
         <Timeline 

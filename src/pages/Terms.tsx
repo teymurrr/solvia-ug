@@ -1,13 +1,15 @@
-
 import React from 'react';
 import MainLayout from '@/components/MainLayout';
+import { useLanguage } from '@/hooks/useLanguage';
 
 const Terms = () => {
+  const { t } = useLanguage();
+  
   return (
     <MainLayout>
       <div className="container mx-auto px-4 py-12">
         <div className="max-w-4xl mx-auto">
-          <h1 className="text-3xl font-bold mb-6">Terms of Service</h1>
+          <h1 className="text-3xl font-bold mb-6">{t?.footer?.termsOfService || "Terms of Service"}</h1>
           <p className="text-sm text-muted-foreground mb-8">Effective Date: 29.05.2025</p>
           
           <div className="prose prose-slate max-w-none">

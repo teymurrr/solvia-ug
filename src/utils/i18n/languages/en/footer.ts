@@ -10,5 +10,7 @@ export const footer = {
   resources: "Resources",
   postPositions: "Post Positions",
   searchProfessionals: "Search Professionals",
-  company: "Company"
+  company: "Company",
+  aboutUs: "About Us",
+  contact: "Contact"
 };
