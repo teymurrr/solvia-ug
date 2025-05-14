@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
-import { Application, ApplicationFilters, ApplicationData } from './types';
+import { Application, ApplicationStatus, ApplicationData, ApplicationFilter } from './types';
 import { useApplicationFilters } from './useApplicationFilters';
 import { useUpdateApplicationStatus } from './useUpdateApplicationStatus';
 
@@ -56,20 +56,25 @@ export const useApplications = () => {
         }
 
         // Transform the data to match our Application interface
-        const formattedApplications: Application[] = data.map(item => {
+        const formattedApplications = data.map(item => {
           // Map database status to our application status type
-          let typedStatus: Application['status'] = 'pending'; // Default
-          if (['pending', 'reviewing', 'accepted', 'rejected'].includes(item.status)) {
-            typedStatus = item.status as Application['status'];
-          } else if (item.status === 'reviewed') {
-            typedStatus = 'reviewing'; // Map 'reviewed' to 'reviewing'
+          let typedStatus: ApplicationStatus = 'pending'; // Default
+          if (['pending', 'reviewing', 'reviewed', 'shortlisted', 'interview', 'accepted', 'rejected'].includes(item.status)) {
+            typedStatus = item.status as ApplicationStatus;
           }
 
           // Safely cast and extract application data
           const appData = item.application_data as ApplicationData || {};
           
-          return {
+          const application: Application = {
             id: item.id,
+            user_id: item.user_id,
+            vacancy_id: item.vacancy_id,
+            application_date: item.application_date,
+            status: typedStatus,
+            application_data: appData,
+            vacancy: item.vacancy,
+            // Enhanced properties for UI display
             applicantId: item.user_id,
             applicantName: appData.firstName && appData.lastName 
               ? `${appData.firstName} ${appData.lastName}` 
@@ -80,10 +85,11 @@ export const useApplications = () => {
             vacancyId: item.vacancy_id,
             vacancyTitle: item.vacancy?.title || 'Unknown Position',
             appliedDate: new Date(item.application_date).toLocaleDateString(),
-            status: typedStatus,
             coverLetter: appData.coverLetter,
             cvFileName: appData.cvFileName
           };
+
+          return application;
         });
 
         setApplications(formattedApplications);
@@ -102,7 +108,7 @@ export const useApplications = () => {
   });
 
   // Handle application status update
-  const handleUpdateStatus = async (applicationId: string, newStatus: Application['status']) => {
+  const handleUpdateStatus = async (applicationId: string, newStatus: ApplicationStatus) => {
     const success = await updateApplicationStatus(applicationId, newStatus);
     if (success) {
       // Update local state

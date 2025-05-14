@@ -21,5 +21,10 @@ export const common = {
   noResults: "Keine Ergebnisse gefunden",
   learning: "Solvia Lernen",
   forEmployers: "Für Arbeitgeber",
-  viewMore: "Mehr anzeigen"
+  viewMore: "Mehr anzeigen",
+  cancel: "Abbrechen",
+  saving: "Speichern...",
+  apply: "Bewerben",
+  save: "Speichern",
+  remove: "Entfernen"
 };

@@ -16,5 +16,10 @@ export const common = {
   professionals: "Специалисты",
   institutions: "Учреждения",
   messages: "Сообщения",
-  notifications: "Уведомления"
+  notifications: "Уведомления",
+  cancel: "Отмена",
+  saving: "Сохранение...",
+  apply: "Подать заявку",
+  save: "Сохранить",
+  remove: "Удалить"
 };

@@ -22,10 +22,22 @@ export interface Application {
     profession?: string;
     specialty?: string;
   };
+  // Computed properties for UI display
+  applicantId?: string;
+  applicantName?: string;
+  applicantPhoto?: string;
+  applicantEmail?: string;
+  applicantPhone?: string;
+  vacancyId?: string;
+  vacancyTitle?: string;
+  appliedDate?: string;
+  coverLetter?: string;
+  cvFileName?: string;
 }
 
 export type ApplicationStatus = 
   | 'pending'
+  | 'reviewing'  // Add 'reviewing' as a valid status
   | 'reviewed'
   | 'shortlisted'
   | 'interview'
@@ -45,4 +57,10 @@ export interface ApplicationData {
 export interface ApplicationFilter {
   status: ApplicationStatus | 'all';
   searchQuery: string;
+}
+
+// Add ApplicationFilters interface for useApplicationFilters hook
+export interface ApplicationFilters {
+  status: ApplicationStatus | 'all';
+  dateRange: 'all' | 'today' | 'this_week' | 'this_month';
 }

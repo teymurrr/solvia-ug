@@ -1,80 +1,62 @@
 
-import { useState, useEffect } from 'react';
-import { Application, ApplicationFilters } from './types';
+import { useState, useMemo } from 'react';
+import { Application, ApplicationStatus, ApplicationFilter } from './types';
 
 export const useApplicationFilters = (applications: Application[]) => {
-  const [filteredApplications, setFilteredApplications] = useState<Application[]>(applications);
-  const [filters, setFilters] = useState<ApplicationFilters>({
-    status: 'all_statuses',
-    date: 'all_time'
+  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [filters, setFilters] = useState<ApplicationFilter>({
+    status: 'all',
+    searchQuery: ''
   });
-  const [searchQuery, setSearchQuery] = useState('');
 
-  // Apply filters and search
-  const applyFilters = () => {
-    let filtered = [...applications];
-    
-    // Apply status filter
-    if (filters.status !== 'all_statuses') {
-      filtered = filtered.filter(app => app.status === filters.status);
-    }
-    
-    // Apply date filter
-    if (filters.date !== 'all_time') {
-      const now = new Date();
-      let cutoffDate = new Date();
-      
-      switch (filters.date) {
-        case 'today':
-          cutoffDate.setDate(now.getDate() - 1);
-          break;
-        case 'this_week':
-          cutoffDate.setDate(now.getDate() - 7);
-          break;
-        case 'this_month':
-          cutoffDate.setMonth(now.getMonth() - 1);
-          break;
-        case 'this_year':
-          cutoffDate.setFullYear(now.getFullYear() - 1);
-          break;
-      }
-      
-      filtered = filtered.filter(app => {
-        const appDate = new Date(app.appliedDate);
-        return appDate >= cutoffDate;
-      });
-    }
-    
-    // Apply search query
-    if (searchQuery.trim() !== '') {
-      const query = searchQuery.toLowerCase();
-      filtered = filtered.filter(app => 
-        app.applicantName.toLowerCase().includes(query) ||
-        app.vacancyTitle.toLowerCase().includes(query) ||
-        (app.applicantEmail && app.applicantEmail.toLowerCase().includes(query))
-      );
-    }
-    
-    return filtered;
+  const handleSearchQueryChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(event.target.value);
+    setFilters(prev => ({ ...prev, searchQuery: event.target.value }));
   };
 
-  // Handle search query change
-  const handleSearchQueryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(e.target.value);
-  };
-
-  // Handle filter change
   const handleFilterChange = (filterName: string, value: string) => {
-    setFilters(prev => ({
-      ...prev,
-      [filterName]: value
+    setFilters(prev => ({ 
+      ...prev, 
+      [filterName]: value === 'all' ? 'all' : value as ApplicationStatus
     }));
   };
 
-  // Update filtered applications when filters, search query, or applications change
-  useEffect(() => {
-    setFilteredApplications(applyFilters());
-  }, [filters, searchQuery, applications]);
+  const filteredApplications = useMemo(() => {
+    if (!applications || applications.length === 0) {
+      return [];
+    }
+
+    return applications.filter(app => {
+      // Filter by status
+      const statusMatch = filters.status === 'all' || app.status === filters.status;
+
+      // Check if we need to apply search filters
+      if (!filters.searchQuery) {
+        return statusMatch;
+      }
+
+      const search = filters.searchQuery.toLowerCase();
+      
+      // Apply search to all fields
+      const searchInDate = app.appliedDate 
+        ? app.appliedDate.toLowerCase().includes(search)
+        : false;
+      
+      const searchInName = app.applicantName 
+        ? app.applicantName.toLowerCase().includes(search) 
+        : false;
+      
+      const searchInPosition = app.vacancyTitle 
+        ? app.vacancyTitle.toLowerCase().includes(search) 
+        : false;
+        
+      const searchInEmail = app.applicantEmail 
+        ? app.applicantEmail.toLowerCase().includes(search) 
+        : false;
+
+      return statusMatch && (searchInDate || searchInName || searchInPosition || searchInEmail);
+    });
+  }, [applications, filters]);
 
   return {
     filteredApplications,

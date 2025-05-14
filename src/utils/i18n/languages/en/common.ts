@@ -18,5 +18,10 @@ export const common = {
   home: "Home",
   forEmployers: "For Employers",
   viewMore: "View More",
-  countries: "Countries Worldwide"
+  countries: "Countries Worldwide",
+  cancel: "Cancel",
+  saving: "Saving...",
+  apply: "Apply",
+  save: "Save",
+  remove: "Remove"
 };

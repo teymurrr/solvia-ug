@@ -11,6 +11,7 @@ import ExperienceSection from './ExperienceSection';
 import EducationSection from './EducationSection';
 import LanguageSection from './LanguageSection';
 import CertificatesSection from './CertificatesSection';
+import { useLanguage } from '@/hooks/useLanguage';
 
 interface ProfileFormDialogProps {
   open: boolean;
@@ -45,6 +46,7 @@ export const ProfileFormDialog: React.FC<ProfileFormDialogProps> = ({
   },
   onSave
 }) => {
+  const { t } = useLanguage();
   const {
     form,
     imagePreview,
@@ -60,9 +62,9 @@ export const ProfileFormDialog: React.FC<ProfileFormDialogProps> = ({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[800px] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Edit Your Profile</DialogTitle>
+          <DialogTitle>{t?.dashboard?.profile?.editProfile || "Edit Your Profile"}</DialogTitle>
           <DialogDescription>
-            Update your profile information to help institutions find you.
+            {t?.dashboard?.profile?.description || "Update your profile information to help institutions find you."}
           </DialogDescription>
         </DialogHeader>
 
@@ -96,15 +98,15 @@ export const ProfileFormDialog: React.FC<ProfileFormDialogProps> = ({
 
             <div className="flex justify-end gap-2">
               <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
-                Cancel
+                {t?.common?.cancel || "Cancel"}
               </Button>
               <Button type="submit" disabled={loading}>
                 {loading ? (
                   <>
                     <span className="mr-2 inline-block animate-spin">⟳</span>
-                    Saving...
+                    {t?.common?.saving || "Saving..."}
                   </>
-                ) : "Save Changes"}
+                ) : t?.dashboard?.profile?.saveProfile || "Save Changes"}
               </Button>
             </div>
           </form>

@@ -16,5 +16,10 @@ export const common = {
   professionals: "Professionnels",
   institutions: "Institutions",
   messages: "Messages",
-  notifications: "Notifications"
+  notifications: "Notifications",
+  cancel: "Annuler",
+  saving: "Enregistrement...",
+  apply: "Postuler",
+  save: "Enregistrer",
+  remove: "Supprimer"
 };
