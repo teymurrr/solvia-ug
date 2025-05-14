@@ -1,4 +1,3 @@
-
 import { DashboardTranslations } from '../../types';
 
 export const dashboard: DashboardTranslations = {
@@ -92,7 +91,7 @@ export const dashboard: DashboardTranslations = {
     location: "Местоположение",
     notSpecified: "Не указано",
     profession: "Профессия",
-    fspCertificate: "Сертификат FSP",
+    fspCertificate: 'Сертификат FSP',
     yes: "Да",
     no: "Нет",
     experience: "Опыт",

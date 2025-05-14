@@ -1,4 +1,3 @@
-
 import { DashboardTranslations } from "../../types";
 
 export const dashboard: DashboardTranslations = {
@@ -96,5 +95,7 @@ export const dashboard: DashboardTranslations = {
     updateStatus: "Status aktualisieren",
     appliedOn: "Beworben am",
     unknown: "Unbekannt"
-  }
+  },
+  fspCertificate: 'FSP-Zertifikat',
+  optional: 'Optional'
 };
