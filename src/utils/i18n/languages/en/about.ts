@@ -26,5 +26,11 @@ export const about = {
     innovationDesc: "We continuously seek better ways to serve our users and solve problems.",
     inclusion: "Inclusion",
     inclusionDesc: "We embrace diversity and create equal opportunities for all."
+  },
+  cta: {
+    title: 'Join Our Healthcare Community',
+    subtitle: 'Connect with healthcare professionals and institutions worldwide.',
+    createAccount: 'Create Your Account',
+    talkToTeam: 'Talk to Our Team'
   }
 };
