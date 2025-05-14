@@ -19,7 +19,7 @@ const TimelineSection = () => {
       applyDesc: 'Browse and apply to positions that match your skills and preferences.',
       applyFeature: 'Personalized Job Matching',
       start: 'Start Your New Role',
-      startDesc: 'Once hired, we'll help you with the transition to your new position.',
+      startDesc: "Once hired, we'll help you with the transition to your new position.",
       startFeature: 'Seamless Onboarding Support'
     }
   };
@@ -58,7 +58,7 @@ const TimelineSection = () => {
       content: (
         <div className="space-y-4">
           <p className="text-[18px] text-neutral-800 dark:text-neutral-200 font-normal leading-relaxed">
-            {journeyData.steps?.startDesc || 'Once hired, we'll help you with the transition to your new role.'}
+            {journeyData.steps?.startDesc || "Once hired, we'll help you with the transition to your new role."}
           </p>
           <div className="flex items-center gap-2 text-primary">
             <Rocket className="h-6 w-6" />

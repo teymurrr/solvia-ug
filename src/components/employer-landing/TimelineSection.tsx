@@ -19,7 +19,7 @@ const TimelineSection = () => {
       applyDesc: 'Browse and apply to positions that match your skills and preferences.',
       applyFeature: 'Personalized Job Matching',
       start: 'Start Your New Role',
-      startDesc: 'Once hired, we'll help you with the transition to your new position.',
+      startDesc: "Once hired, we'll help you with the transition to your new position.",
       startFeature: 'Seamless Onboarding Support'
     }
   };
