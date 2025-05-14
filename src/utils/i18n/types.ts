@@ -16,9 +16,9 @@ export interface DashboardTranslations {
     viewMore: string;
     posted: string;
     ago: string;
-    hours: string;
-    days: string;
-    noVacancies: string;
+    hours?: string;
+    days?: string;
+    noVacancies?: string;
     positions: string;
     location: string;
     institution: string;
@@ -27,12 +27,12 @@ export interface DashboardTranslations {
     title: string;
     subtitle: string;
     viewAll: string;
-    noProfessionals: string;
+    noProfessionals?: string;
     profession: string;
     specialty: string;
     location: string;
   };
-  blog: {
+  blog?: {
     title: string;
     subtitle: string;
     viewAll: string;
@@ -64,7 +64,7 @@ export interface DashboardTranslations {
     appliedOn: string;
     unknown: string;
   };
-  profile: {
+  profile?: {
     title: string;
     description: string;
     createProfile: string;
@@ -92,7 +92,7 @@ export interface DashboardTranslations {
     about: string;
     incompleteProfile: string;
   };
-  saved: {
+  saved?: {
     title: string;
     description: string;
     savedVacancies: string;

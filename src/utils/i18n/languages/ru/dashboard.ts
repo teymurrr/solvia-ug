@@ -1,6 +1,9 @@
+
 import { DashboardTranslations } from '../../types';
 
 export const dashboard: DashboardTranslations = {
+  title: 'Профессиональная панель управления',
+  subtitle: 'Управляйте своим профилем и просматривайте возможности',
   hero: {
     title: 'Найдите работу своей мечты в сфере здравоохранения',
     subtitle:
@@ -72,5 +75,46 @@ export const dashboard: DashboardTranslations = {
     updateStatus: "Обновить статус",
     appliedOn: "Подано",
     unknown: "Неизвестно"
+  },
+  profile: {
+    title: "Ваш Профиль",
+    description: "Так вас будут видеть учреждения",
+    createProfile: "Создать Профиль",
+    completeProfile: "Заполнить Профиль",
+    updateProfile: "Обновить Профиль",
+    loading: "Загрузка данных профиля...",
+    editProfile: "Редактировать Профиль",
+    saveProfile: "Сохранить Профиль",
+    activelySearching: "Активно ищу работу",
+    openToRelocation: "Готов к переезду",
+    fspCertified: "Сертифицирован FSP",
+    profileCompletion: "Заполненность профиля",
+    location: "Местоположение",
+    notSpecified: "Не указано",
+    profession: "Профессия",
+    fspCertificate: "Сертификат FSP",
+    yes: "Да",
+    no: "Нет",
+    experience: "Опыт",
+    at: "в",
+    present: "Настоящее время",
+    education: "Образование",
+    in: "в",
+    languages: "Языки",
+    about: "О себе",
+    incompleteProfile: "Ваш профиль не заполнен. Добавьте больше информации о себе, чтобы привлечь потенциальных работодателей."
+  },
+  saved: {
+    title: "Сохраненные и Поданные Вакансии",
+    description: "Отслеживайте вакансии, которые вы сохранили или на которые подали заявку",
+    savedVacancies: "Сохраненные Вакансии",
+    appliedVacancies: "Поданные Заявки",
+    noSaved: "Нет сохраненных вакансий",
+    noSavedDesc: "Вы еще не сохранили ни одной вакансии. Сохраняйте вакансии, чтобы отслеживать их.",
+    noApplied: "Нет поданных заявок",
+    noAppliedDesc: "Вы еще не подали заявку ни на одну вакансию. Начните подавать заявки, чтобы найти свою следующую роль.",
+    browseVacancies: "Просмотреть Вакансии",
+    vacancyRemoved: "Вакансия удалена",
+    vacancyRemovedDesc: "Вакансия была удалена из вашего списка сохраненных."
   }
 };
