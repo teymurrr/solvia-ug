@@ -1,3 +1,4 @@
+
 export const dashboard = {
   title: "Professional Dashboard",
   subtitle: "Manage your profile and view opportunities",
@@ -18,6 +19,10 @@ export const dashboard = {
     notSpecified: "Not specified",
     profession: "Profession",
     fspCertificate: "FSP Certificate",
+    fspCertificateDesc: "Check if you have an FSP (Foreign Specialist Physician) certificate",
+    uploadPhoto: "Upload Photo",
+    uploadCertificate: "Upload FSP Certificate",
+    certificateUploaded: "Certificate uploaded",
     yes: "Yes",
     no: "No",
     experience: "Experience",
@@ -39,7 +44,8 @@ export const dashboard = {
     noVacanciesDesc: "Try adjusting your search criteria",
     jobType: "Job Type",
     country: "Country",
-    city: "City"
+    city: "City",
+    department: "Department"
   },
   saved: {
     title: "Saved & Applied Vacancies",
@@ -73,5 +79,14 @@ export const dashboard = {
     updateStatus: "Update status",
     appliedOn: "Applied",
     unknown: "Unknown"
+  },
+  professionals: {
+    yearsOfExperience: "years of experience",
+    languages: "Languages"
+  },
+  contact: {
+    name: "Name",
+    email: "Email",
+    phone: "Phone"
   }
 };

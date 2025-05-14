@@ -29,7 +29,8 @@ export const useApplications = () => {
             posted_date,
             department,
             description,
-            job_type
+            job_type,
+            requirements
           )
         `)
         .eq('user_id', session.user.id)
@@ -83,7 +84,8 @@ export const useApplications = () => {
             department: item.vacancy.department || '',
             location: item.vacancy.location,
             description: item.vacancy.description || '',
-            job_type: item.vacancy.job_type || ''
+            job_type: item.vacancy.job_type || '',
+            requirements: item.vacancy.requirements || []
           } : undefined
         };
       });

@@ -4,7 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { User, Upload } from 'lucide-react';
-import { OptimizedImage } from '@/components/ui/optimized-image';
+import { useLanguage } from '@/hooks/useLanguage';
 
 interface ProfileImageSectionProps {
   imagePreview: string | null;
@@ -15,6 +15,8 @@ const ProfileImageSection: React.FC<ProfileImageSectionProps> = ({
   imagePreview,
   handleImageChange,
 }) => {
+  const { t } = useLanguage();
+  
   return (
     <div className="flex flex-col items-center gap-4 mb-4">
       <Avatar className="h-24 w-24">
@@ -46,7 +48,7 @@ const ProfileImageSection: React.FC<ProfileImageSectionProps> = ({
           onClick={() => document.getElementById('profileImage')?.click()}
         >
           <Upload className="h-4 w-4 mr-2" />
-          Upload Photo
+          {t?.dashboard?.profile?.uploadPhoto || "Upload Photo"}
         </Button>
       </div>
     </div>

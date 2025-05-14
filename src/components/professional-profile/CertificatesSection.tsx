@@ -7,6 +7,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Upload, Check, FileCheck } from 'lucide-react';
 import { UseFormReturn } from 'react-hook-form';
 import { ProfileFormValues } from './types';
+import { useLanguage } from '@/hooks/useLanguage';
 
 interface CertificatesSectionProps {
   form: UseFormReturn<ProfileFormValues>;
@@ -19,6 +20,8 @@ const CertificatesSection: React.FC<CertificatesSectionProps> = ({
   sfpCertificatePreview,
   handleSfpCertificateChange 
 }) => {
+  const { t } = useLanguage();
+  
   return (
     <>
       <FormField
@@ -33,9 +36,9 @@ const CertificatesSection: React.FC<CertificatesSectionProps> = ({
               />
             </FormControl>
             <div className="space-y-1 leading-none">
-              <FormLabel>FSP Certificate</FormLabel>
+              <FormLabel>{t?.dashboard?.profile?.fspCertificate || "FSP Certificate"}</FormLabel>
               <p className="text-sm text-muted-foreground">
-                Check if you have an FSP (Foreign Specialist Physician) certificate
+                {t?.dashboard?.profile?.fspCertificateDesc || "Check if you have an FSP (Foreign Specialist Physician) certificate"}
               </p>
             </div>
             {field.value && (
@@ -49,7 +52,7 @@ const CertificatesSection: React.FC<CertificatesSectionProps> = ({
 
       {form.watch("fspCertificate") && (
         <div className="border rounded-md p-4">
-          <FormLabel>FSP Certificate</FormLabel>
+          <FormLabel>{t?.dashboard?.profile?.fspCertificate || "FSP Certificate"}</FormLabel>
           <div className="flex items-center gap-2 mt-2">
             <Input
               id="fspCertificateFile"
@@ -64,11 +67,11 @@ const CertificatesSection: React.FC<CertificatesSectionProps> = ({
               onClick={() => document.getElementById('fspCertificateFile')?.click()}
             >
               <Upload className="h-4 w-4 mr-2" />
-              Upload FSP Certificate
+              {t?.dashboard?.profile?.uploadCertificate || "Upload FSP Certificate"}
             </Button>
             {sfpCertificatePreview && (
               <span className="text-sm text-green-600 flex items-center">
-                <Check className="h-4 w-4 mr-1" /> Certificate uploaded
+                <Check className="h-4 w-4 mr-1" /> {t?.dashboard?.profile?.certificateUploaded || "Certificate uploaded"}
               </span>
             )}
           </div>

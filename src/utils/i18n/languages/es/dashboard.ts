@@ -28,9 +28,13 @@ export const dashboard: DashboardTranslations = {
     hours: "horas",
     days: "días",
     noVacancies: "No hay vacantes disponibles en este momento.",
+    search: "Buscar",
+    searchPlaceholder: "Buscar por título, ubicación o palabra clave...",
+    resetFilters: "Reiniciar filtros",
     positions: "Puestos",
     location: "Ubicación",
     institution: "Institución",
+    department: "Departamento"
   },
   professionals: {
     title: "Profesionales destacados",
@@ -41,6 +45,8 @@ export const dashboard: DashboardTranslations = {
     profession: "Profesión",
     specialty: "Especialidad",
     location: "Ubicación",
+    yearsOfExperience: "años de experiencia",
+    languages: "Idiomas"
   },
   blog: {
     title: "Artículos recientes del blog",
@@ -55,6 +61,9 @@ export const dashboard: DashboardTranslations = {
     subtitle:
       "Ponte en contacto con nuestro equipo de soporte para resolver tus dudas. ¡Estamos aquí para ayudarte!",
     contactUs: "Contáctanos",
+    name: "Nombre",
+    email: "Correo electrónico",
+    phone: "Teléfono"
   },
   applications: {
     pending: "Pendiente de revisión",
@@ -88,11 +97,15 @@ export const dashboard: DashboardTranslations = {
     activelySearching: "Buscando activamente",
     openToRelocation: "Abierto a reubicación",
     fspCertified: "Certificado FSP",
+    fspCertificate: "Certificado FSP",
+    fspCertificateDesc: "Marca si tienes un certificado FSP (Médico Especialista Extranjero)",
+    uploadPhoto: "Subir Foto",
+    uploadCertificate: "Subir Certificado FSP",
+    certificateUploaded: "Certificado subido",
     profileCompletion: "Completado del perfil",
     location: "Ubicación",
     notSpecified: "No especificado",
     profession: "Profesión",
-    fspCertificate: "Certificado FSP",
     yes: "Sí",
     no: "No",
     experience: "Experiencia",

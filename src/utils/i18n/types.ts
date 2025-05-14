@@ -2,7 +2,8 @@
 export interface DashboardTranslations {
   title?: string;
   subtitle?: string;
-  hero: {
+  welcome?: string;
+  hero?: {
     title: string;
     subtitle: string;
     findJob: string;
@@ -11,17 +12,26 @@ export interface DashboardTranslations {
   };
   vacancies: {
     title: string;
-    subtitle: string;
+    subtitle?: string;
     viewAll: string;
     viewMore: string;
     posted: string;
-    ago: string;
+    ago?: string;
     hours?: string;
     days?: string;
     noVacancies?: string;
+    search?: string;
+    searchPlaceholder?: string;
+    resetFilters?: string;
+    noVacanciesFound?: string;
+    noVacanciesDesc?: string;
+    jobType?: string;
+    country?: string;
+    city?: string;
     positions: string;
     location: string;
     institution: string;
+    department?: string;
   };
   professionals: {
     title: string;
@@ -31,6 +41,27 @@ export interface DashboardTranslations {
     profession: string;
     specialty: string;
     location: string;
+    yearsOfExperience?: string;
+    languages?: string;
+  };
+  talents?: {
+    title: string;
+    subtitle: string;
+    search?: string;
+    profession?: string;
+    specialty?: string;
+    country?: string;
+    language?: string;
+    noMatchingProfessionals?: string;
+    adjustCriteria?: string;
+    noProfessionalsAvailable?: string;
+    checkBackLater?: string;
+  };
+  filters?: {
+    allRoles?: string;
+    allProfessions?: string;
+    allCountries?: string;
+    allLanguages?: string;
   };
   blog?: {
     title: string;
@@ -43,6 +74,9 @@ export interface DashboardTranslations {
     title: string;
     subtitle: string;
     contactUs: string;
+    name?: string;
+    email?: string;
+    phone?: string;
   };
   applications: {
     pending: string;
@@ -76,11 +110,15 @@ export interface DashboardTranslations {
     activelySearching: string;
     openToRelocation: string;
     fspCertified: string;
+    fspCertificate: string;
+    fspCertificateDesc?: string;
+    uploadPhoto?: string;
+    uploadCertificate?: string;
+    certificateUploaded?: string;
     profileCompletion: string;
     location: string;
     notSpecified: string;
     profession: string;
-    fspCertificate: string;
     yes: string;
     no: string;
     experience: string;
