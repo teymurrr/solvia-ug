@@ -5,19 +5,22 @@ import { FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/comp
 import { Input } from '@/components/ui/input';
 import { UseFormReturn } from 'react-hook-form';
 import { ProfessionalSignupFormValues } from '@/schemas/professionalSignupSchema';
+import { useLanguage } from '@/hooks/useLanguage';
 
 interface EmailFieldProps {
   form: UseFormReturn<ProfessionalSignupFormValues>;
 }
 
 export const EmailField: React.FC<EmailFieldProps> = ({ form }) => {
+  const { t } = useLanguage();
+  
   return (
     <FormField
       control={form.control}
       name="email"
       render={({ field }) => (
         <FormItem>
-          <FormLabel>Email</FormLabel>
+          <FormLabel>{t.auth.email}</FormLabel>
           <div className="relative">
             <FormControl>
               <Input 

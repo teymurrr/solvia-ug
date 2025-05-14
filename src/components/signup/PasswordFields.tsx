@@ -5,6 +5,7 @@ import { FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/comp
 import { Input } from '@/components/ui/input';
 import { UseFormReturn } from 'react-hook-form';
 import { ProfessionalSignupFormValues } from '@/schemas/professionalSignupSchema';
+import { useLanguage } from '@/hooks/useLanguage';
 
 interface PasswordFieldsProps {
   form: UseFormReturn<ProfessionalSignupFormValues>;
@@ -13,6 +14,7 @@ interface PasswordFieldsProps {
 export const PasswordFields: React.FC<PasswordFieldsProps> = ({ form }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const { t } = useLanguage();
 
   return (
     <>
@@ -21,7 +23,7 @@ export const PasswordFields: React.FC<PasswordFieldsProps> = ({ form }) => {
         name="password"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Password</FormLabel>
+            <FormLabel>{t.auth.password}</FormLabel>
             <div className="relative">
               <FormControl>
                 <Input 
@@ -54,7 +56,7 @@ export const PasswordFields: React.FC<PasswordFieldsProps> = ({ form }) => {
         name="confirmPassword"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Confirm Password</FormLabel>
+            <FormLabel>{t.auth.confirmPassword}</FormLabel>
             <div className="relative">
               <FormControl>
                 <Input 

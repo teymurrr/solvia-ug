@@ -12,12 +12,14 @@ import { InstitutionInfoFields } from './InstitutionInfoFields';
 import { EmailField } from './EmailField';
 import { PasswordFields } from './PasswordFields';
 import { TermsAgreement } from './TermsAgreement';
+import { useLanguage } from '@/hooks/useLanguage';
 
 export const InstitutionSignupForm = () => {
   const { toast } = useToast();
   const { signUp } = useAuth();
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const { t } = useLanguage();
   
   const form = useForm<InstitutionSignupFormValues>({
     resolver: zodResolver(institutionSignupSchema),
@@ -72,7 +74,7 @@ export const InstitutionSignupForm = () => {
         <TermsAgreement form={form} />
         
         <Button type="submit" className="w-full" disabled={isSubmitting}>
-          {isSubmitting ? "Creating account..." : "Create institution account"}
+          {isSubmitting ? t.auth.creatingAccount : t.auth.createInstitutionAccount}
         </Button>
       </form>
     </Form>

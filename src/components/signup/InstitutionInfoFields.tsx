@@ -5,12 +5,15 @@ import { FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/comp
 import { Input } from '@/components/ui/input';
 import { UseFormReturn } from 'react-hook-form';
 import { InstitutionSignupFormValues } from '@/schemas/institutionSignupSchema';
+import { useLanguage } from '@/hooks/useLanguage';
 
 interface InstitutionInfoFieldsProps {
   form: UseFormReturn<InstitutionSignupFormValues>;
 }
 
 export const InstitutionInfoFields: React.FC<InstitutionInfoFieldsProps> = ({ form }) => {
+  const { t } = useLanguage();
+  
   return (
     <>
       <FormField
@@ -18,7 +21,7 @@ export const InstitutionInfoFields: React.FC<InstitutionInfoFieldsProps> = ({ fo
         name="institutionName"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Institution Name</FormLabel>
+            <FormLabel>{t.auth.institutionName}</FormLabel>
             <div className="relative">
               <FormControl>
                 <Input 
@@ -39,10 +42,10 @@ export const InstitutionInfoFields: React.FC<InstitutionInfoFieldsProps> = ({ fo
         name="institutionType"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Institution Type</FormLabel>
+            <FormLabel>{t.auth.institutionType}</FormLabel>
             <FormControl>
               <Input 
-                placeholder="e.g., Hospital, Clinic, Research Center" 
+                placeholder={t.auth.institutionTypePlaceholder}
                 {...field}
               />
             </FormControl>
@@ -56,11 +59,11 @@ export const InstitutionInfoFields: React.FC<InstitutionInfoFieldsProps> = ({ fo
         name="location"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Location</FormLabel>
+            <FormLabel>{t.auth.location}</FormLabel>
             <div className="relative">
               <FormControl>
                 <Input 
-                  placeholder="City, Country" 
+                  placeholder={t.auth.locationPlaceholder}
                   {...field}
                   className="pl-10" 
                 />
@@ -77,11 +80,11 @@ export const InstitutionInfoFields: React.FC<InstitutionInfoFieldsProps> = ({ fo
         name="website"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Website (optional)</FormLabel>
+            <FormLabel>{t.auth.website}</FormLabel>
             <div className="relative">
               <FormControl>
                 <Input 
-                  placeholder="https://www.hospital.com" 
+                  placeholder={t.auth.websitePlaceholder}
                   {...field}
                   className="pl-10" 
                 />

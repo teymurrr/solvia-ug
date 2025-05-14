@@ -5,12 +5,15 @@ import { FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/comp
 import { Input } from '@/components/ui/input';
 import { UseFormReturn } from 'react-hook-form';
 import { ProfessionalSignupFormValues } from '@/schemas/professionalSignupSchema';
+import { useLanguage } from '@/hooks/useLanguage';
 
 interface NameFieldsProps {
   form: UseFormReturn<ProfessionalSignupFormValues>;
 }
 
 export const NameFields: React.FC<NameFieldsProps> = ({ form }) => {
+  const { t } = useLanguage();
+  
   return (
     <div className="grid grid-cols-2 gap-4">
       <FormField
@@ -18,7 +21,7 @@ export const NameFields: React.FC<NameFieldsProps> = ({ form }) => {
         name="firstName"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>First Name</FormLabel>
+            <FormLabel>{t.auth.firstName}</FormLabel>
             <div className="relative">
               <FormControl>
                 <Input 
@@ -39,7 +42,7 @@ export const NameFields: React.FC<NameFieldsProps> = ({ form }) => {
         name="lastName"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Last Name</FormLabel>
+            <FormLabel>{t.auth.lastName}</FormLabel>
             <FormControl>
               <Input 
                 placeholder="Doe" 

@@ -12,6 +12,7 @@ import { common } from './common';
 import { footer } from './footer';
 import { about } from './about';
 import { dashboard } from './dashboard';
+import { auth } from './auth';
 
 export const en = {
   hero,
@@ -26,5 +27,6 @@ export const en = {
   common,
   footer,
   about,
-  dashboard
+  dashboard,
+  auth
 };

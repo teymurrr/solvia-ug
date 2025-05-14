@@ -14,12 +14,14 @@ import { SpecialtyField } from './SpecialtyField';
 import { PasswordFields } from './PasswordFields';
 import { TermsAgreement } from './TermsAgreement';
 import { RelocationOption } from './RelocationOption';
+import { useLanguage } from '@/hooks/useLanguage';
 
 export const ProfessionalSignupForm: React.FC = () => {
   const { toast } = useToast();
   const { signUp } = useAuth();
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const { t } = useLanguage();
   
   const form = useForm<ProfessionalSignupFormValues>({
     resolver: zodResolver(professionalSignupSchema),
@@ -76,7 +78,7 @@ export const ProfessionalSignupForm: React.FC = () => {
         <TermsAgreement form={form} />
         
         <Button type="submit" className="w-full" disabled={isSubmitting}>
-          {isSubmitting ? "Creating account..." : "Create professional account"}
+          {isSubmitting ? t.auth.creatingAccount : t.auth.createProfessionalAccount}
         </Button>
       </form>
     </Form>
