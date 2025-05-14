@@ -26,15 +26,16 @@ const ProfessionalCardLanding: React.FC<ProfessionalCardLandingProps> = ({ profe
     lastName,
     specialty,
     country,
-    languages,
+    languages = [], // Add default value to prevent undefined
     experience,
     fspCertificate,
     activelySearching,
-    experiences,
-    education,
+    experiences = [], // Add default value to prevent undefined
+    education = [], // Add default value to prevent undefined
     profileImage,
     isOpenToRelocation,
   } = professional;
+  
   const fullName = `${firstName} ${lastName}`;
   const latestExperience = experiences?.[0];
   const latestEducation = education?.[0];
@@ -51,8 +52,9 @@ const ProfessionalCardLanding: React.FC<ProfessionalCardLandingProps> = ({ profe
     });
   };
 
-  const displayLanguages = languages.slice(0, 3);
-  const hasMoreLanguages = languages.length > 3;
+  // Ensure languages exists before trying to slice it
+  const displayLanguages = languages?.slice(0, 3) || [];
+  const hasMoreLanguages = languages?.length > 3 || false;
 
   return (
     <Card 
@@ -152,16 +154,18 @@ const ProfessionalCardLanding: React.FC<ProfessionalCardLandingProps> = ({ profe
             )}
 
             {/* Languages section - now always displayed in a line */}
-            <div className="flex flex-wrap gap-2 mt-2">
-              {displayLanguages.map((lang, idx) => (
-                <Badge key={idx} variant="outline" className="text-xs">
-                  {lang.language} ({lang.level})
-                </Badge>
-              ))}
-              {hasMoreLanguages && (
-                <span className="text-xs text-muted-foreground">...</span>
-              )}
-            </div>
+            {displayLanguages.length > 0 && (
+              <div className="flex flex-wrap gap-2 mt-2">
+                {displayLanguages.map((lang, idx) => (
+                  <Badge key={idx} variant="outline" className="text-xs">
+                    {lang.language} ({lang.level})
+                  </Badge>
+                ))}
+                {hasMoreLanguages && (
+                  <span className="text-xs text-muted-foreground">...</span>
+                )}
+              </div>
+            )}
           </div>
         </div>
       </CardContent>

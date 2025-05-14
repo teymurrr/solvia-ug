@@ -32,7 +32,7 @@ const ProfessionalsSection: React.FC<ProfessionalsSectionProps> = ({ professiona
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-          {professionals.slice(0, 4).map((professional) => (
+          {professionals?.slice(0, 4).map((professional) => (
             <ProfessionalCardLanding
               key={professional.id}
               professional={professional}
