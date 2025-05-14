@@ -10,14 +10,22 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Language, languageNames } from '@/utils/i18n/translations';
+import { toast } from '@/hooks/use-toast';
 
 export const LanguageSelector = () => {
   const { language, setLanguage } = useLanguage();
 
   const handleLanguageChange = (newLang: Language) => {
+    if (newLang === language) return;
+    
     setLanguage(newLang);
-    // Force a UI refresh when language changes
-    window.location.reload();
+    
+    // Show a toast to confirm language change
+    toast({
+      title: "Language changed",
+      description: `Interface language changed to ${languageNames[newLang]}`,
+      duration: 2000,
+    });
   };
 
   return (

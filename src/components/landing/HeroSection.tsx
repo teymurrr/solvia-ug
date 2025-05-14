@@ -8,7 +8,9 @@ const HeroSection = () => {
   const { t } = useLanguage();
   const [currentPhraseIndex, setCurrentPhraseIndex] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
-  const rotatingPhrases = ["no agencies", "no hidden fees", "no delays"];
+  
+  // Get rotating phrases from translations or use default fallbacks
+  const rotatingPhrases = t?.hero?.rotatingPhrases || ["no agencies", "no hidden fees", "no delays"];
   
   // Default values in case translations aren't loaded yet
   const title = t?.hero?.title || "Where Doctors and Clinics Connect";
@@ -26,7 +28,7 @@ const HeroSection = () => {
     }, 3000); // Change every 3 seconds
     
     return () => clearInterval(interval);
-  }, []);
+  }, [rotatingPhrases.length]);
   
   return (
     <section className="relative overflow-hidden">
