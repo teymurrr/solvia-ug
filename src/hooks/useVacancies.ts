@@ -17,7 +17,7 @@ export interface Vacancy {
   city?: string;
   location: string;
   description: string;
-  requirements: string[];
+  requirements: string[] | null;
   posted_date: string;
   salary?: string;
   institution_id?: string;
@@ -37,7 +37,7 @@ export interface VacancyInput {
   city?: string;
   location: string;
   description: string;
-  requirements: string | string[];
+  requirements: string | string[] | null;
   salary?: string;
   institution_id?: string;
   application_link?: string;
@@ -74,6 +74,8 @@ export const useVacancies = () => {
         ...vacancy,
         job_type: vacancy.job_type || vacancy.contract_type,
         posted_date: vacancy.posted_date || new Date().toISOString(),
+        // Ensure requirements is always an array or null, never undefined
+        requirements: vacancy.requirements || null
       }));
       
       setVacancies(formattedVacancies);
@@ -126,12 +128,22 @@ export const useVacancies = () => {
       console.log("Current user ID:", user.id);
       console.log("Processing vacancy data before submission");
       
-      // Process requirements to ensure it's always an array
-      const requirements = typeof vacancyData.requirements === 'string' 
-        ? vacancyData.requirements.split('\n').filter((line: string) => line.trim() !== '')
-        : Array.isArray(vacancyData.requirements) 
-          ? vacancyData.requirements
-          : [];
+      // Process requirements to ensure it's always an array, null, or empty array
+      let requirements;
+      if (typeof vacancyData.requirements === 'string') {
+        if (vacancyData.requirements.trim() !== '') {
+          requirements = vacancyData.requirements
+            .split('\n')
+            .filter((line: string) => line.trim() !== '');
+        } else {
+          requirements = [];
+        }
+      } else if (Array.isArray(vacancyData.requirements)) {
+        requirements = vacancyData.requirements;
+      } else {
+        // If requirements is null or undefined, keep it as null
+        requirements = vacancyData.requirements === undefined ? [] : vacancyData.requirements;
+      }
       
       // Process and standardize the vacancy data
       const newVacancy = { 
@@ -204,12 +216,22 @@ export const useVacancies = () => {
         throw new Error("Vacancy ID is required for updates");
       }
       
-      // Process requirements to ensure it's always an array
-      const requirements = typeof vacancyData.requirements === 'string' 
-        ? vacancyData.requirements.split('\n').filter((line: string) => line.trim() !== '')
-        : Array.isArray(vacancyData.requirements) 
-          ? vacancyData.requirements
-          : [];
+      // Process requirements to ensure it's always an array, null, or empty array
+      let requirements;
+      if (typeof vacancyData.requirements === 'string') {
+        if (vacancyData.requirements.trim() !== '') {
+          requirements = vacancyData.requirements
+            .split('\n')
+            .filter((line: string) => line.trim() !== '');
+        } else {
+          requirements = [];
+        }
+      } else if (Array.isArray(vacancyData.requirements)) {
+        requirements = vacancyData.requirements;
+      } else {
+        // If requirements is null or undefined, keep it as null
+        requirements = vacancyData.requirements === undefined ? [] : vacancyData.requirements;
+      }
           
       // Process and standardize the vacancy data
       const updatedVacancy = { 

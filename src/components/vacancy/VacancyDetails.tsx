@@ -8,7 +8,7 @@ interface VacancyDetailsProps {
   specialty?: string;
   postedDate?: string;
   description: string;
-  requirements: string[];
+  requirements: string[] | null;
   isDashboardCard?: boolean;
 }
 

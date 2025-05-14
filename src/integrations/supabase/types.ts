@@ -397,7 +397,7 @@ export type Database = {
           location: string
           posted_date: string
           profession: string | null
-          requirements: string[]
+          requirements: string[] | null
           salary: string | null
           specialty: string | null
           title: string
@@ -418,7 +418,7 @@ export type Database = {
           location: string
           posted_date?: string
           profession?: string | null
-          requirements: string[]
+          requirements?: string[] | null
           salary?: string | null
           specialty?: string | null
           title: string
@@ -439,7 +439,7 @@ export type Database = {
           location?: string
           posted_date?: string
           profession?: string | null
-          requirements?: string[]
+          requirements?: string[] | null
           salary?: string | null
           specialty?: string | null
           title?: string
