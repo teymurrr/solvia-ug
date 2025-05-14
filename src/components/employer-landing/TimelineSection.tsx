@@ -7,46 +7,63 @@ import { useLanguage } from '@/hooks/useLanguage';
 const TimelineSection = () => {
   const { t } = useLanguage();
 
+  // Create a safe journey object with fallbacks
+  const journeyData = t?.journey || {
+    title: 'Your Journey with Solvia',
+    subtitle: 'How it works - from profile creation to your new position',
+    steps: {
+      profile: 'Create Your Profile',
+      profileDesc: 'Complete your professional profile with your expertise, experience, and requirements.',
+      profileFeature: 'Detailed Profile Creation',
+      apply: 'Apply to Positions',
+      applyDesc: 'Browse and apply to positions that match your skills and preferences.',
+      applyFeature: 'Personalized Job Matching',
+      start: 'Start Your New Role',
+      startDesc: 'Once hired, we'll help you with the transition to your new position.',
+      startFeature: 'Seamless Onboarding Support'
+    }
+  };
+
   // Provide fallback values for translations in case they're undefined
   const timelineData = [
     {
-      title: t?.journey?.steps?.profile || "Create Your Profile",
+      title: journeyData.steps?.profile || "Create Your Profile",
       content: (
         <div className="space-y-4">
           <p className="text-[18px] text-neutral-800 dark:text-neutral-200 font-normal leading-relaxed">
-            {t?.journey?.steps?.profileDesc || "Complete your professional profile with your expertise, experience, and requirements."}
+            {journeyData.steps?.profileDesc || "Complete your professional profile with your expertise, experience, and requirements."}
           </p>
           <div className="flex items-center gap-2 text-primary">
             <FileText className="h-6 w-6" />
-            <span className="text-base font-medium">{t?.journey?.steps?.profileFeature || "Detailed Profile Creation"}</span>
+            <span className="text-base font-medium">{journeyData.steps?.profileFeature || "Detailed Profile Creation"}</span>
           </div>
         </div>
       ),
     },
     {
-      title: t?.journey?.steps?.apply || "Apply to Positions",
+      title: journeyData.steps?.apply || "Apply to Positions",
       content: (
         <div className="space-y-4">
           <p className="text-[18px] text-neutral-800 dark:text-neutral-200 font-normal leading-relaxed">
-            {t?.journey?.steps?.applyDesc || "Browse and apply to positions that match your skills and preferences."}
+            {journeyData.steps?.applyDesc || "Browse and apply to positions that match your skills and preferences."}
           </p>
           <div className="flex items-center gap-2 text-primary">
             <Users className="h-6 w-6" />
-            <span className="text-base font-medium">{t?.journey?.steps?.applyFeature || "Personalized Job Matching"}</span>
+            <span className="text-base font-medium">{journeyData.steps?.applyFeature || "Personalized Job Matching"}</span>
           </div>
         </div>
       ),
     },
     {
-      title: t?.journey?.steps?.start || "Start Your New Role",
+      title: journeyData.steps?.start || "Start Your New Role",
       content: (
         <div className="space-y-4">
           <p className="text-[18px] text-neutral-800 dark:text-neutral-200 font-normal leading-relaxed">
-            {t?.journey?.steps?.startDesc || "Once hired, we'll help you with the transition to your new position."}
+            {journeyData.steps?.startDesc || "Once hired, we'll help you with the transition to your new position."}
           </p>
           <div className="flex items-center gap-2 text-primary">
             <Building2 className="h-6 w-6" />
-            <span className="text-base font-medium">{t?.journey?.steps?.startFeature || "Seamless Onboarding Support"}</span>
+            <span className="text-base font-medium">{journeyData.steps?.startFeature || "Seamless Onboarding Support"}</span>
           </div>
         </div>
       ),
@@ -58,10 +75,10 @@ const TimelineSection = () => {
       <div className="container mx-auto px-4">
         <div className="text-center mb-8">
           <h2 className="text-[30px] font-bold text-black">
-            {t?.journey?.title || "Your Journey with Solvia"}
+            {journeyData.title || "Your Journey with Solvia"}
           </h2>
           <p className="text-base text-muted-foreground mt-3 mb-4">
-            {t?.journey?.subtitle || "How it works - from profile creation to your new position"}
+            {journeyData.subtitle || "How it works - from profile creation to your new position"}
           </p>
         </div>
         <Timeline 
