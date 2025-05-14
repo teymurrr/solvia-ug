@@ -4,6 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { User, Upload } from 'lucide-react';
+import { OptimizedImage } from '@/components/ui/optimized-image';
 
 interface ProfileImageSectionProps {
   imagePreview: string | null;
@@ -18,7 +19,12 @@ const ProfileImageSection: React.FC<ProfileImageSectionProps> = ({
     <div className="flex flex-col items-center gap-4 mb-4">
       <Avatar className="h-24 w-24">
         {imagePreview ? (
-          <AvatarImage src={imagePreview} alt="Profile" />
+          <AvatarImage 
+            src={imagePreview} 
+            alt="Profile" 
+            width={96}
+            height={96}
+          />
         ) : (
           <AvatarFallback>
             <User className="h-12 w-12" />

@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { useLanguage } from '@/hooks/useLanguage';
+import { OptimizedImage } from '@/components/ui/optimized-image';
 
 const TeamSection = () => {
   const { t } = useLanguage();
@@ -18,10 +19,13 @@ const TeamSection = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
           <div className="bg-gray-50 rounded-lg p-6 text-center">
             <div className="w-40 h-40 mx-auto mb-4 rounded-full overflow-hidden shadow-lg">
-              <img 
+              <OptimizedImage 
                 src="/lovable-uploads/50866c4f-dae7-4f12-82b4-78f2002e281a.png" 
-                alt="Teymur Mammadov" 
-                className="w-full h-full object-cover object-top"
+                alt="Teymur Mammadov"
+                aspectRatio={1} 
+                className="object-top"
+                width={160}
+                height={160}
               />
             </div>
             <h3 className="text-xl font-semibold">Teymur Mammadov</h3>
@@ -30,10 +34,13 @@ const TeamSection = () => {
           
           <div className="bg-gray-50 rounded-lg p-6 text-center">
             <div className="w-40 h-40 mx-auto mb-4 rounded-full overflow-hidden shadow-lg">
-              <img 
+              <OptimizedImage 
                 src="/lovable-uploads/6076d717-f7de-4fe6-b318-20bfcd6e2aa6.png" 
-                alt="David Rehrl" 
-                className="w-full h-full object-cover object-top"
+                alt="David Rehrl"
+                aspectRatio={1} 
+                className="object-top"
+                width={160}
+                height={160}
               />
             </div>
             <h3 className="text-xl font-semibold">David Rehrl</h3>

@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { useLanguage } from '@/hooks/useLanguage';
+import { OptimizedImage } from '@/components/ui/optimized-image';
 
 const StorySection = () => {
   const { t } = useLanguage();
@@ -11,10 +12,13 @@ const StorySection = () => {
         <div className="max-w-4xl mx-auto">
           <div className="flex flex-col md:flex-row gap-12 items-center">
             <div className="md:w-1/2">
-              <img 
+              <OptimizedImage 
                 src="/lovable-uploads/431c73d2-5785-4d33-8f35-d11742c829e0.png" 
-                alt="Solvia Logo" 
-                className="w-full rounded-lg shadow-lg"
+                alt="Solvia Logo"
+                className="rounded-lg shadow-lg" 
+                width={500}
+                height={350}
+                priority={true} // Load this image with high priority
               />
             </div>
             
