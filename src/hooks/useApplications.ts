@@ -2,7 +2,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
-import { Application } from '@/hooks/applications/types';
+import { Application, ApplicationData } from '@/hooks/applications/types';
 
 export type { Application } from '@/hooks/applications/types';
 
@@ -51,8 +51,8 @@ export const useApplications = () => {
           typedStatus = 'reviewing'; // Map 'reviewed' to 'reviewing'
         }
 
-        // Extract application data
-        const appData = item.application_data || {};
+        // Safely cast and extract application data
+        const appData = (item.application_data || {}) as ApplicationData;
         
         return {
           id: item.id,

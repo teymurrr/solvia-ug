@@ -23,6 +23,7 @@ export interface ApplicationData {
   phone?: string;
   coverLetter?: string;
   cvFileName?: string;
+  profileImage?: string;
   [key: string]: any; // Allow for additional fields
 }
 
