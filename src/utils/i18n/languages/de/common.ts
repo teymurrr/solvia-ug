@@ -58,7 +58,6 @@ export const common = {
   openToRelocation: "Ich bin umzugsbereit",
   agreeToTerms: "Ich stimme den Nutzungsbedingungen und der Datenschutzerklärung zu",
   creatingAccount: "Konto wird erstellt...",
-  createProfessionalAccount: "Fachkraft-Konto erstellen",
   
   // Institution signup page
   createInstitutionAccount: "Institutions-Konto erstellen",
@@ -67,7 +66,6 @@ export const common = {
   website: "Website",
   location: "Standort",
   institutionType: "Art der Einrichtung",
-  createInstitutionAccount: "Institutions-Konto erstellen",
   
   // Email confirmation page
   confirmYourEmail: "Bestätigen Sie Ihre E-Mail",
