@@ -54,26 +54,32 @@ export const useBlogComments = (blogPostId: string) => {
       if (error) throw error;
       
       const formattedComments: BlogComment[] = data.map(comment => {
-        // Extract the profile data and handle it safely
-        const profileData = comment.professional_profiles as ProfessionalProfile | null;
+        // We need to handle the profileData more carefully by checking its shape first
+        const profileData = comment.professional_profiles;
         
-        // Check if profileData exists and is a valid object (not an error object)
+        // Check if profileData exists, is an object, and isn't an error object
         const isValidProfile = 
           profileData !== null && 
           typeof profileData === 'object' && 
           !('error' in profileData);
+        
+        let author;
+        if (isValidProfile) {
+          // Only now we can safely access the profile properties
+          const profile = profileData as any;
+          author = {
+            first_name: profile.first_name || 'Anonymous',
+            last_name: profile.last_name || '',
+            profile_image: profile.profile_image
+          };
+        }
         
         return {
           id: comment.id,
           content: comment.content,
           created_at: comment.created_at,
           updated_at: comment.updated_at,
-          // Only create author if profileData is valid
-          author: isValidProfile && profileData ? {
-            first_name: profileData.first_name || 'Anonymous',
-            last_name: profileData.last_name || '',
-            profile_image: profileData.profile_image
-          } : undefined
+          author // This will be undefined if not a valid profile
         };
       });
       
