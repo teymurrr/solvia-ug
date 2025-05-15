@@ -9,6 +9,7 @@ import LearningSection from '@/components/landing/LearningSection';
 import CTASection from '@/components/landing/CTASection';
 import ProfessionalsSection from '@/components/landing/ProfessionalsSection';
 import InsightsSection from '@/components/landing/InsightsSection';
+import BlogSection from '@/components/landing/BlogSection';
 import { featuredVacancies, featuredProfessionals, featuredBlogs } from '@/data/landingPageData';
 
 const Index = () => {
@@ -21,9 +22,9 @@ const Index = () => {
         <ProfessionalsSection professionals={featuredProfessionals} />
         <TimelineSection />
         <LearningSection />
-        <CTASection />
         <InsightsSection />
-        {/* BlogSection removed as requested */}
+        <BlogSection posts={featuredBlogs} />
+        <CTASection />
       </div>
     </MainLayout>
   );
