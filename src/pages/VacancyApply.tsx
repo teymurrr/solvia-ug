@@ -16,7 +16,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { Vacancy } from '@/hooks/useVacancies';
-import { queryParamsToState, isSafari, stateToQueryParams } from '@/utils/browserDetection';
+import { queryParamsToState, isSafari, stateToQueryParams, createDashboardReturnState } from '@/utils/browserDetection';
 
 // Create schema for form validation
 const applicationSchema = z.object({
@@ -42,6 +42,9 @@ const VacancyApply = () => {
   const [loadingVacancy, setLoadingVacancy] = useState(true);
   const [redirected, setRedirected] = useState(false);
   
+  console.log('[VacancyApply] Starting application page with URL:', window.location.href);
+  console.log('[VacancyApply] Location state:', location.state);
+  
   // Combine state from both React Router's location.state and URL query parameters
   // This ensures compatibility with both Safari and other browsers
   const routerState = location.state || {};
@@ -51,15 +54,31 @@ const VacancyApply = () => {
   console.log('[VacancyApply] Router state:', routerState);
   console.log('[VacancyApply] Query params state:', queryState);
   
-  // Check if user came from the dashboard - ensure this is correctly parsed from query params
-  const fromDashboard = routerState.fromDashboard || queryState.fromDashboard === true || queryState.fromDashboard === 'true';
+  // Combine both sources of state
+  const combinedState = {...routerState, ...queryState};
+  
+  // Check if user came from the dashboard - ensure this is correctly parsed from all sources
+  const fromDashboard = 
+    routerState.fromDashboard === true || 
+    queryState.fromDashboard === true || 
+    queryState.fromDashboard === 'true' ||
+    routerState.directToDashboard === true ||
+    queryState.directToDashboard === true ||
+    queryState.directToDashboard === 'true';
+    
   // Preserve search state and pagination from the dashboard
-  const searchQuery = routerState.searchQuery || queryState.searchQuery || '';
-  const currentPage = Number(routerState.currentPage || queryState.currentPage || 1);
-  const selectedFilters = routerState.selectedFilters || queryState.selectedFilters || {}; // Try to get from query params too
+  const searchQuery = combinedState.searchQuery || '';
+  const currentPage = Number(combinedState.currentPage || 1);
+  const selectedFilters = combinedState.selectedFilters || {};
+  
+  // New flag to indicate we should always go back to dashboard
+  const directToDashboard = fromDashboard || 
+                          combinedState.directToDashboard === true ||
+                          combinedState.directToDashboard === 'true';
 
   console.log('[VacancyApply] Combined state:', { 
     fromDashboard, 
+    directToDashboard,
     searchQuery, 
     currentPage, 
     selectedFilters 
@@ -77,13 +96,14 @@ const VacancyApply = () => {
           .single();
           
         if (error) {
-          console.error('Error fetching vacancy:', error);
+          console.error('[VacancyApply] Error fetching vacancy:', error);
           toast({
             title: "Error",
             description: "Failed to load vacancy details",
             variant: "destructive",
           });
         } else {
+          console.log('[VacancyApply] Vacancy data loaded:', data);
           setVacancy(data as Vacancy);
         }
         setLoadingVacancy(false);
@@ -124,58 +144,47 @@ const VacancyApply = () => {
   };
 
   const handleCancel = () => {
-    console.log('[VacancyApply] Handling cancel with fromDashboard:', fromDashboard);
+    console.log('[VacancyApply] Handling cancel with fromDashboard:', fromDashboard, 'directToDashboard:', directToDashboard);
     
-    // Always go back to dashboard if fromDashboard is true
-    if (fromDashboard) {
+    // IMPORTANT CHANGE: Always go back to dashboard if fromDashboard or directToDashboard is true
+    if (fromDashboard || directToDashboard) {
+      // Create a state object for dashboard navigation
+      const state = createDashboardReturnState(true, {
+        activeTab: 'vacancies',
+        searchQuery,
+        currentPage,
+        selectedFilters
+      });
+      
       // Check if we need to use query params for navigation (Safari)
       if (isSafari()) {
         // For Safari, create state as query params
-        const state = { 
-          activeTab: 'vacancies',
-          searchQuery,
-          currentPage,
-          selectedFilters
-        };
         const queryString = stateToQueryParams(state);
         console.log('[VacancyApply] Navigating back to dashboard with query params:', queryString);
         navigate(`/dashboard/professional${queryString}`);
       } else {
         // For other browsers, use state object
         console.log('[VacancyApply] Navigating back to dashboard with state object');
-        navigate('/dashboard/professional', {
-          state: { 
-            activeTab: 'vacancies',
-            searchQuery,
-            currentPage,
-            selectedFilters
-          }
-        });
+        navigate('/dashboard/professional', { state });
       }
     } else {
-      // When coming from somewhere else, go back to that vacancy detail directly
+      // When coming from somewhere else, go back to that vacancy detail
+      const state = {
+        fromDashboard,
+        searchQuery,
+        currentPage,
+        selectedFilters
+      };
+      
       if (isSafari()) {
         // For Safari, use query params
-        const state = {
-          fromDashboard,
-          searchQuery,
-          currentPage,
-          selectedFilters
-        };
         const queryString = stateToQueryParams(state);
         console.log('[VacancyApply] Navigating back to vacancy with query params:', queryString);
         navigate(`/vacancies/${id}${queryString}`);
       } else {
         // For other browsers, use state object
         console.log('[VacancyApply] Navigating back to vacancy with state object');
-        navigate(`/vacancies/${id}`, {
-          state: {
-            fromDashboard,
-            searchQuery,
-            currentPage,
-            selectedFilters
-          }
-        });
+        navigate(`/vacancies/${id}`, { state });
       }
     }
   };
@@ -193,8 +202,8 @@ const VacancyApply = () => {
     setIsSubmitting(true);
     
     try {
-      console.log('Application data:', data);
-      console.log('CV file:', cvFile);
+      console.log('[VacancyApply] Submitting application data:', data);
+      console.log('[VacancyApply] CV file:', cvFile);
       
       // Save the application in the database
       const { error } = await supabase
@@ -214,7 +223,7 @@ const VacancyApply = () => {
         });
       
       if (error) {
-        console.error('Error submitting application:', error);
+        console.error('[VacancyApply] Error submitting application:', error);
         throw error;
       }
       
@@ -226,32 +235,24 @@ const VacancyApply = () => {
         description: "Your application has been successfully submitted",
       });
       
-      // MODIFIED: Always navigate back to the dashboard after successful application
-      // This ensures we never redirect to the vacancies page
+      // IMPORTANT CHANGE: Always navigate back to the dashboard after successful application
+      // Create a state object for dashboard navigation
+      const state = createDashboardReturnState(true, {
+        activeTab: 'saved',
+        savedTabView: 'applied',
+        searchQuery,
+        currentPage,
+        selectedFilters,
+        applicationSubmitted: true
+      });
+      
       if (isSafari()) {
-        const state = {
-          activeTab: 'saved',
-          savedTabView: 'applied',
-          searchQuery,
-          currentPage,
-          selectedFilters,
-          applicationSubmitted: true
-        };
         const queryString = stateToQueryParams(state);
         console.log('[VacancyApply] Post-submission: Navigating to dashboard with query params:', queryString);
         navigate(`/dashboard/professional${queryString}`);
       } else {
         console.log('[VacancyApply] Post-submission: Navigating to dashboard with state object');
-        navigate('/dashboard/professional', { 
-          state: { 
-            activeTab: 'saved',
-            savedTabView: 'applied',
-            searchQuery,
-            currentPage,
-            selectedFilters,
-            applicationSubmitted: true
-          }
-        });
+        navigate('/dashboard/professional', { state });
       }
     } catch (error: any) {
       toast({
@@ -268,28 +269,25 @@ const VacancyApply = () => {
   useEffect(() => {
     if (vacancy?.application_link && !redirected) {
       setRedirected(true); // Mark as redirected to prevent infinite loop
+      console.log('[VacancyApply] External application link found, opening:', vacancy.application_link);
       window.open(vacancy.application_link, '_blank');
       
-      // MODIFIED: Always redirect to dashboard after opening external application
+      // IMPORTANT CHANGE: Always redirect to dashboard after opening external application
       setTimeout(() => {
+        // Create a state object for dashboard navigation
+        const state = createDashboardReturnState(true, {
+          activeTab: 'vacancies',
+          externalApplication: true,
+          vacancyTitle: vacancy.title
+        });
+        
         if (isSafari()) {
-          const state = {
-            activeTab: 'vacancies',
-            externalApplication: true,
-            vacancyTitle: vacancy.title
-          };
           const queryString = stateToQueryParams(state);
           console.log('[VacancyApply] External application: Navigating to dashboard with query params:', queryString);
           navigate(`/dashboard/professional${queryString}`);
         } else {
           console.log('[VacancyApply] External application: Navigating to dashboard with state object');
-          navigate('/dashboard/professional', {
-            state: { 
-              activeTab: 'vacancies',
-              externalApplication: true,
-              vacancyTitle: vacancy.title
-            }
-          });
+          navigate('/dashboard/professional', { state });
         }
       }, 100); // Small timeout to ensure window.open completes
     }
@@ -322,7 +320,7 @@ const VacancyApply = () => {
             className="inline-flex items-center text-primary hover:underline mb-6"
           >
             <ArrowLeft className="h-4 w-4 mr-1" />
-            {fromDashboard ? 'Back to Dashboard' : 'Back to Vacancy'}
+            {fromDashboard || directToDashboard ? 'Back to Dashboard' : 'Back to Vacancy'}
           </button>
           
           <div className="mb-6">

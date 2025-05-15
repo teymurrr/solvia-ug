@@ -1,4 +1,3 @@
-
 /**
  * Utility functions to detect browser types
  */
@@ -12,9 +11,24 @@ export const isSafari = (): boolean => {
   // More precise Safari detection - checks for Safari but not Chrome
   // (Chrome includes Safari in its user agent string)
   const isSafariAgent = userAgent.includes('safari') && !userAgent.includes('chrome');
-  console.log('Browser detection - User Agent:', userAgent);
-  console.log('Is Safari detected:', isSafariAgent);
-  return isSafariAgent;
+  
+  // Add more detailed logging for debugging
+  console.log('[browserDetection] User Agent:', userAgent);
+  console.log('[browserDetection] Is Safari detected:', isSafariAgent);
+  
+  // Fallback detection using vendor if needed
+  const isAppleWebKit = navigator.vendor && 
+                        navigator.vendor.indexOf('Apple') > -1 &&
+                        userAgent.indexOf('CriOS') === -1 && 
+                        userAgent.indexOf('FxiOS') === -1;
+                        
+  console.log('[browserDetection] Is Apple WebKit:', isAppleWebKit);
+  
+  // Use either detection method
+  const result = isSafariAgent || isAppleWebKit;
+  console.log('[browserDetection] Final Safari detection result:', result);
+  
+  return result;
 };
 
 /**
@@ -80,5 +94,25 @@ export const queryParamsToState = (): Record<string, any> => {
   });
   
   console.log('Extracted state from query params:', state);
+  return state;
+};
+
+/**
+ * Creates a clean state object for dashboard navigation
+ * @param fromDashboard Whether navigation originated from dashboard
+ * @param additionalParams Any additional parameters to include
+ * @returns A state object ready for navigation
+ */
+export const createDashboardReturnState = (fromDashboard: boolean, additionalParams: Record<string, any> = {}): Record<string, any> => {
+  // Always ensure we have the activeTab parameter for dashboard navigation
+  const baseState = { 
+    activeTab: additionalParams.activeTab || 'vacancies',
+    fromDashboard: fromDashboard === true // Ensure this is a boolean
+  };
+  
+  // Add any additional parameters
+  const state = {...baseState, ...additionalParams};
+  
+  console.log('[browserDetection] Created dashboard return state:', state);
   return state;
 };
