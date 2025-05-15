@@ -46,17 +46,25 @@ export const useBlogComments = (blogPostId: string) => {
       
       if (error) throw error;
       
-      const formattedComments: BlogComment[] = data.map(comment => ({
-        id: comment.id,
-        content: comment.content,
-        created_at: comment.created_at,
-        updated_at: comment.updated_at,
-        author: comment.professional_profiles ? {
-          first_name: comment.professional_profiles.first_name || 'Anonymous',
-          last_name: comment.professional_profiles.last_name || '',
-          profile_image: comment.professional_profiles.profile_image
-        } : undefined
-      }));
+      const formattedComments: BlogComment[] = data.map(comment => {
+        // Check if professional_profiles is an error object (it has an 'error' property)
+        // or if it's null/undefined
+        const isValidProfile = comment.professional_profiles && 
+                              typeof comment.professional_profiles === 'object' && 
+                              !('error' in comment.professional_profiles);
+        
+        return {
+          id: comment.id,
+          content: comment.content,
+          created_at: comment.created_at,
+          updated_at: comment.updated_at,
+          author: isValidProfile ? {
+            first_name: comment.professional_profiles.first_name || 'Anonymous',
+            last_name: comment.professional_profiles.last_name || '',
+            profile_image: comment.professional_profiles.profile_image
+          } : undefined
+        };
+      });
       
       setComments(formattedComments);
     } catch (error) {
