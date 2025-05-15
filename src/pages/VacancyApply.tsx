@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
@@ -52,12 +51,12 @@ const VacancyApply = () => {
   console.log('[VacancyApply] Router state:', routerState);
   console.log('[VacancyApply] Query params state:', queryState);
   
-  // Check if user came from the dashboard
-  const fromDashboard = routerState.fromDashboard || queryState.fromDashboard === 'true';
+  // Check if user came from the dashboard - ensure this is correctly parsed from query params
+  const fromDashboard = routerState.fromDashboard || queryState.fromDashboard === true || queryState.fromDashboard === 'true';
   // Preserve search state and pagination from the dashboard
   const searchQuery = routerState.searchQuery || queryState.searchQuery || '';
   const currentPage = Number(routerState.currentPage || queryState.currentPage || 1);
-  const selectedFilters = routerState.selectedFilters || {}; // Complex objects won't be in query params
+  const selectedFilters = routerState.selectedFilters || queryState.selectedFilters || {}; // Try to get from query params too
 
   console.log('[VacancyApply] Combined state:', { 
     fromDashboard, 
@@ -125,6 +124,9 @@ const VacancyApply = () => {
   };
 
   const handleCancel = () => {
+    console.log('[VacancyApply] Handling cancel with fromDashboard:', fromDashboard);
+    
+    // Always go back to dashboard if fromDashboard is true
     if (fromDashboard) {
       // Check if we need to use query params for navigation (Safari)
       if (isSafari()) {
@@ -151,7 +153,7 @@ const VacancyApply = () => {
         });
       }
     } else {
-      // When navigating back to vacancy detail
+      // When coming from somewhere else, go back to that vacancy detail directly
       if (isSafari()) {
         // For Safari, use query params
         const state = {
@@ -224,37 +226,32 @@ const VacancyApply = () => {
         description: "Your application has been successfully submitted",
       });
       
-      // Navigate back to the dashboard if that's where the user came from,
-      // otherwise go to the vacancies page
-      if (fromDashboard) {
-        // Check if we should use query params for navigation (Safari)
-        if (isSafari()) {
-          const state = {
+      // MODIFIED: Always navigate back to the dashboard after successful application
+      // This ensures we never redirect to the vacancies page
+      if (isSafari()) {
+        const state = {
+          activeTab: 'saved',
+          savedTabView: 'applied',
+          searchQuery,
+          currentPage,
+          selectedFilters,
+          applicationSubmitted: true
+        };
+        const queryString = stateToQueryParams(state);
+        console.log('[VacancyApply] Post-submission: Navigating to dashboard with query params:', queryString);
+        navigate(`/dashboard/professional${queryString}`);
+      } else {
+        console.log('[VacancyApply] Post-submission: Navigating to dashboard with state object');
+        navigate('/dashboard/professional', { 
+          state: { 
             activeTab: 'saved',
             savedTabView: 'applied',
             searchQuery,
             currentPage,
             selectedFilters,
             applicationSubmitted: true
-          };
-          const queryString = stateToQueryParams(state);
-          console.log('[VacancyApply] Post-submission: Navigating to dashboard with query params:', queryString);
-          navigate(`/dashboard/professional${queryString}`);
-        } else {
-          console.log('[VacancyApply] Post-submission: Navigating to dashboard with state object');
-          navigate('/dashboard/professional', { 
-            state: { 
-              activeTab: 'saved',
-              savedTabView: 'applied',
-              searchQuery,
-              currentPage,
-              selectedFilters,
-              applicationSubmitted: true
-            }
-          });
-        }
-      } else {
-        navigate('/vacancies');
+          }
+        });
       }
     } catch (error: any) {
       toast({
@@ -273,29 +270,22 @@ const VacancyApply = () => {
       setRedirected(true); // Mark as redirected to prevent infinite loop
       window.open(vacancy.application_link, '_blank');
       
-      // Redirect back after opening external link
+      // MODIFIED: Always redirect to dashboard after opening external application
       setTimeout(() => {
-        if (fromDashboard) {
-          if (isSafari()) {
-            const state = {
-              activeTab: 'vacancies',
-              externalApplication: true,
-              vacancyTitle: vacancy.title
-            };
-            const queryString = stateToQueryParams(state);
-            navigate(`/dashboard/professional${queryString}`);
-          } else {
-            navigate('/dashboard/professional', {
-              state: { 
-                activeTab: 'vacancies',
-                externalApplication: true,
-                vacancyTitle: vacancy.title
-              }
-            });
-          }
+        if (isSafari()) {
+          const state = {
+            activeTab: 'vacancies',
+            externalApplication: true,
+            vacancyTitle: vacancy.title
+          };
+          const queryString = stateToQueryParams(state);
+          console.log('[VacancyApply] External application: Navigating to dashboard with query params:', queryString);
+          navigate(`/dashboard/professional${queryString}`);
         } else {
-          navigate('/vacancies', {
+          console.log('[VacancyApply] External application: Navigating to dashboard with state object');
+          navigate('/dashboard/professional', {
             state: { 
+              activeTab: 'vacancies',
               externalApplication: true,
               vacancyTitle: vacancy.title
             }
@@ -303,7 +293,7 @@ const VacancyApply = () => {
         }
       }, 100); // Small timeout to ensure window.open completes
     }
-  }, [vacancy, navigate, redirected, fromDashboard]);
+  }, [vacancy, navigate, redirected]);
 
   // Show loading until data is fetched
   if (loading || loadingVacancy) {

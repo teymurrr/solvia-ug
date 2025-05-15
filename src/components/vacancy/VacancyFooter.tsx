@@ -67,20 +67,27 @@ const VacancyFooter: React.FC<VacancyFooterProps> = ({
       // Open external application link in a new tab
       window.open(applicationLink, '_blank');
     } else {
+      // Always set fromDashboard=true if we're in the dashboard to ensure correct back navigation
+      const dashboardParam = isDashboardCard || fromDashboard ? true : false;
+      
       // Create state object with all relevant information
       const state = { 
-        fromDashboard,
+        fromDashboard: dashboardParam, // Make sure this is always true when in dashboard
         fromLandingPage,
         searchQuery,
         currentPage,
         selectedFilters
       };
       
+      console.log('Applying to vacancy with state:', state);
+      console.log('Is in dashboard:', isDashboardCard || fromDashboard);
+      
       // Handle Safari browser differently
       if (isSafari()) {
         // For Safari, use query params instead of state
         const queryString = stateToQueryParams(state);
         console.log('Safari detected, using query params for application:', queryString);
+        console.log('Navigation target:', `/vacancies/${id}/apply${queryString}`);
         navigate(`/vacancies/${id}/apply${queryString}`);
       } else {
         // For other browsers, use the state object
