@@ -16,6 +16,13 @@ export interface BlogComment {
   };
 }
 
+// Interface to define the structure of professional profiles
+interface ProfessionalProfile {
+  first_name: string;
+  last_name: string;
+  profile_image?: string;
+}
+
 export const useBlogComments = (blogPostId: string) => {
   const [comments, setComments] = useState<BlogComment[]>([]);
   const [loading, setLoading] = useState(true);
@@ -47,11 +54,12 @@ export const useBlogComments = (blogPostId: string) => {
       if (error) throw error;
       
       const formattedComments: BlogComment[] = data.map(comment => {
-        // Check if professional_profiles exists and is a valid object (not an error object)
-        const profileData = comment.professional_profiles;
+        // Extract the profile data and handle it safely
+        const profileData = comment.professional_profiles as ProfessionalProfile | null;
+        
+        // Check if profileData exists and is a valid object (not an error object)
         const isValidProfile = 
           profileData !== null && 
-          profileData !== undefined && 
           typeof profileData === 'object' && 
           !('error' in profileData);
         
@@ -60,6 +68,7 @@ export const useBlogComments = (blogPostId: string) => {
           content: comment.content,
           created_at: comment.created_at,
           updated_at: comment.updated_at,
+          // Only create author if profileData is valid
           author: isValidProfile && profileData ? {
             first_name: profileData.first_name || 'Anonymous',
             last_name: profileData.last_name || '',
