@@ -51,7 +51,11 @@ export const useBlogComments = (blogPostId: string) => {
         content: comment.content,
         created_at: comment.created_at,
         updated_at: comment.updated_at,
-        author: comment.professional_profiles
+        author: comment.professional_profiles ? {
+          first_name: comment.professional_profiles.first_name || 'Anonymous',
+          last_name: comment.professional_profiles.last_name || '',
+          profile_image: comment.professional_profiles.profile_image
+        } : undefined
       }));
       
       setComments(formattedComments);

@@ -33,7 +33,7 @@ export interface Application {
 
 export interface ApplicationFilter {
   status: string;
-  date?: string; // Make date optional to match usage
+  date: string; // Make date required to match usage in InstitutionDashboard.tsx
 }
 
 export interface ApplicationFilters {

@@ -1,3 +1,4 @@
+
 import { Professional, BlogPost } from '@/types/landing';
 
 export const featuredProfessionals: Professional[] = [
@@ -198,7 +199,9 @@ export const featuredBlogs: BlogPost[] = [
     date: '2023-05-10T00:00:00.000Z',
     readTime: '6 min read',
     category: 'Recruitment',
-    author: 'Dr. Maria Schmidt'
+    author: 'Dr. Maria Schmidt',
+    slug: 'future-of-healthcare-recruitment',
+    content: null
   },
   {
     id: '2',
@@ -208,6 +211,8 @@ export const featuredBlogs: BlogPost[] = [
     date: '2023-04-22T00:00:00.000Z',
     readTime: '8 min read',
     category: 'Career Advice',
-    author: 'Thomas Weber'
+    author: 'Thomas Weber',
+    slug: 'working-in-germany-medical-professional',
+    content: null
   }
 ];
