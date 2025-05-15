@@ -2,6 +2,7 @@
 export const common = {
   login: "Connexion",
   signup: "Inscription",
+  freeSignup: "Inscription gratuite",
   logout: "Déconnexion",
   search: "Rechercher",
   loading: "Chargement...",

@@ -91,7 +91,7 @@ const Navbar = () => {
                   <Link to="/login">{t?.common?.login || "Log in"}</Link>
                 </Button>
                 <Button asChild>
-                  <Link to="/signup">{t?.common?.signup || "Free Sign Up"}</Link>
+                  <Link to="/signup">{t?.common?.freeSignup || "Free Sign Up"}</Link>
                 </Button>
               </>
             )}

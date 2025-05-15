@@ -2,6 +2,7 @@
 export const common = {
   login: "Вход",
   signup: "Регистрация",
+  freeSignup: "Бесплатная регистрация",
   logout: "Выход",
   search: "Поиск",
   loading: "Загрузка...",
