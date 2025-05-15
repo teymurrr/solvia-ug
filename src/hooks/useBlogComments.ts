@@ -1,193 +1,109 @@
 
 import { useState, useEffect } from 'react';
-import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
-import { BlogComment } from '@/types/landing';
+import { useToast } from './use-toast';
 import { useAuth } from '@/contexts/AuthContext';
 
-export const useBlogComments = (blogPostId: string | undefined) => {
+export interface BlogComment {
+  id: string;
+  content: string;
+  created_at: string;
+  updated_at: string;
+  author?: {
+    first_name: string;
+    last_name: string;
+    profile_image?: string;
+  };
+}
+
+export const useBlogComments = (blogPostId: string) => {
   const [comments, setComments] = useState<BlogComment[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { toast } = useToast();
   const { user } = useAuth();
 
-  useEffect(() => {
-    const fetchComments = async () => {
-      if (!blogPostId) {
-        setLoading(false);
-        return;
-      }
+  const fetchComments = async () => {
+    try {
+      setLoading(true);
       
-      try {
-        setLoading(true);
-        
-        const { data, error } = await supabase
-          .from('blog_comments')
-          .select(`
-            id, 
-            blog_post_id, 
-            user_id, 
-            content, 
-            created_at, 
-            updated_at
-          `)
-          .eq('blog_post_id', blogPostId)
-          .order('created_at', { ascending: true });
-        
-        if (error) throw error;
-        
-        // For each comment, fetch the user's name
-        const commentsWithUserNames = await Promise.all(
-          data.map(async (comment) => {
-            // Try to get user name from the professional_profiles table
-            const { data: userData } = await supabase
-              .from('professional_profiles')
-              .select('first_name, last_name')
-              .eq('id', comment.user_id)
-              .maybeSingle();
-
-            // Try to get user name from institution_profiles table if not found
-            let userName = 'Anonymous';
-            if (userData) {
-              userName = `${userData.first_name} ${userData.last_name}`;
-            } else {
-              const { data: instData } = await supabase
-                .from('institution_profiles')
-                .select('institution_name')
-                .eq('id', comment.user_id)
-                .maybeSingle();
-              
-              if (instData) {
-                userName = instData.institution_name;
-              }
-            }
-
-            return {
-              ...comment,
-              user_name: userName
-            };
-          })
-        );
-        
-        setComments(commentsWithUserNames);
-      } catch (error) {
-        console.error('Error fetching blog comments:', error);
-        setError('Failed to fetch comments');
-        toast({
-          title: 'Error',
-          description: 'Failed to fetch comments',
-          variant: 'destructive',
-        });
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchComments();
-  }, [blogPostId, toast]);
+      const { data, error } = await supabase
+        .from('blog_comments')
+        .select(`
+          id, 
+          content, 
+          created_at, 
+          updated_at,
+          user_id,
+          professional_profiles:user_id (
+            first_name,
+            last_name,
+            profile_image
+          )
+        `)
+        .eq('blog_post_id', blogPostId)
+        .order('created_at', { ascending: false });
+      
+      if (error) throw error;
+      
+      const formattedComments: BlogComment[] = data.map(comment => ({
+        id: comment.id,
+        content: comment.content,
+        created_at: comment.created_at,
+        updated_at: comment.updated_at,
+        author: comment.professional_profiles
+      }));
+      
+      setComments(formattedComments);
+    } catch (error) {
+      console.error('Error fetching comments:', error);
+      setError('Failed to fetch comments');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const addComment = async (content: string) => {
-    if (!blogPostId || !user) {
+    if (!user) {
       toast({
         title: 'Error',
         description: 'You must be logged in to comment',
         variant: 'destructive',
       });
-      return false;
+      return;
     }
-
+    
     try {
-      const { data, error } = await supabase
+      const { error } = await supabase
         .from('blog_comments')
         .insert({
           blog_post_id: blogPostId,
           user_id: user.id,
-          content,
-        })
-        .select();
-
+          content
+        });
+      
       if (error) throw error;
-
-      // Get the user's name
-      let userName = 'Anonymous';
-      const { data: userData } = await supabase
-        .from('professional_profiles')
-        .select('first_name, last_name')
-        .eq('id', user.id)
-        .maybeSingle();
-
-      if (userData) {
-        userName = `${userData.first_name} ${userData.last_name}`;
-      } else {
-        const { data: instData } = await supabase
-          .from('institution_profiles')
-          .select('institution_name')
-          .eq('id', user.id)
-          .maybeSingle();
-        
-        if (instData) {
-          userName = instData.institution_name;
-        }
-      }
-
-      const newComment = {
-        ...data[0],
-        user_name: userName,
-      };
-
-      setComments([...comments, newComment]);
       
       toast({
         title: 'Success',
-        description: 'Comment added successfully',
+        description: 'Your comment has been posted',
       });
       
-      return true;
+      // Refresh comments
+      fetchComments();
     } catch (error) {
-      console.error('Error adding comment:', error);
+      console.error('Error posting comment:', error);
       toast({
         title: 'Error',
-        description: 'Failed to add comment',
+        description: 'Failed to post comment',
         variant: 'destructive',
       });
-      return false;
     }
   };
 
-  const deleteComment = async (commentId: string) => {
-    try {
-      const { error } = await supabase
-        .from('blog_comments')
-        .delete()
-        .eq('id', commentId);
+  useEffect(() => {
+    fetchComments();
+  }, [blogPostId]);
 
-      if (error) throw error;
-
-      setComments(comments.filter((comment) => comment.id !== commentId));
-      
-      toast({
-        title: 'Success',
-        description: 'Comment deleted successfully',
-      });
-      
-      return true;
-    } catch (error) {
-      console.error('Error deleting comment:', error);
-      toast({
-        title: 'Error',
-        description: 'Failed to delete comment',
-        variant: 'destructive',
-      });
-      return false;
-    }
-  };
-
-  return { 
-    comments, 
-    loading, 
-    error, 
-    addComment,
-    deleteComment
-  };
+  return { comments, loading, error, fetchComments, addComment };
 };
