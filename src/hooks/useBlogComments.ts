@@ -64,9 +64,10 @@ export const useBlogComments = (blogPostId: string) => {
           !('error' in profileData);
         
         let author;
+        // Ensure profileData is not null and is a valid profile before accessing its properties
         if (isValidProfile && profileData) {
-          // Only now we can safely access the profile properties
-          const profile = profileData as any;
+          // Use a type assertion with a specific type rather than 'any'
+          const profile = profileData as ProfessionalProfile;
           author = {
             first_name: profile.first_name || 'Anonymous',
             last_name: profile.last_name || '',
