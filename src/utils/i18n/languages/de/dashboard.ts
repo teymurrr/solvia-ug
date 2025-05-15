@@ -14,7 +14,7 @@ export const dashboard: DashboardTranslations = {
     updateProfile: "Profil aktualisieren",
     loading: "Profildaten werden geladen...",
     saveProfile: "Profil speichern",
-    activelySearching: "Aktiv auf Jobsuche",
+    activelySearching: "Aktiv auf der Suche",
     activelySearchingDesc: "Dies hebt Ihr Profil für potenzielle Arbeitgeber hervor",
     openToRelocation: "Offen für Umzug",
     openToRelocationDesc: "Geben Sie an, ob Sie bereit sind, für eine passende Position umzuziehen",
@@ -35,7 +35,7 @@ export const dashboard: DashboardTranslations = {
     firstNamePlaceholder: "Max",
     lastName: "Nachname",
     lastNamePlaceholder: "Mustermann",
-    email: "E-Mail",
+    // Remove duplicate email property
     emailPlaceholder: "name@beispiel.de",
     selectProfession: "Beruf auswählen",
     yes: "Ja",
@@ -176,6 +176,9 @@ export const dashboard: DashboardTranslations = {
     vacancyRemoved: "Stelle entfernt",
     vacancyRemovedDesc: "Die Stelle wurde aus Ihrer Liste der gespeicherten Stellen entfernt."
   },
-  fspCertificate: 'FSP-Zertifikat',
-  optional: 'Optional'
+  hero: {
+    title: "Dashboard",
+    subtitle: "Verwalten Sie Ihr Profil und entdecken Sie neue Möglichkeiten",
+    rotatingPhrases: ["Stellen", "Chancen", "Karrieren"]
+  }
 };

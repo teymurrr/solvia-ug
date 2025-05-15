@@ -187,4 +187,9 @@ export interface DashboardTranslations {
     vacancyRemoved: string;
     vacancyRemovedDesc: string;
   };
+  // Added missing properties
+  fspCertificate?: string;
+  optional?: string;
+  testimonials?: any; // Added for RU dashboard compatibility
+  email?: string; // Added for compatibility
 }

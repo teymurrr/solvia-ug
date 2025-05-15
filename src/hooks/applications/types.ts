@@ -57,9 +57,11 @@ export interface ApplicationData {
 export interface ApplicationFilter {
   status: ApplicationStatus | 'all';
   searchQuery: string;
+  // Add dateRange property to match what's used in the dashboard
+  dateRange?: 'all' | 'today' | 'this_week' | 'this_month';
 }
 
-// Add ApplicationFilters interface for useApplicationFilters hook
+// Update ApplicationFilters interface for useApplicationFilters hook
 export interface ApplicationFilters {
   status: ApplicationStatus | 'all';
   dateRange: 'all' | 'today' | 'this_week' | 'this_month';

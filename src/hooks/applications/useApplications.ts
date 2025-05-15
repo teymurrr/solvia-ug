@@ -3,10 +3,12 @@ import { useMemo } from 'react';
 import { Application } from './types';
 import { useFetchApplications } from './useFetchApplications';
 import { useApplicationFilters } from './useApplicationFilters';
+import { useUpdateApplicationStatus } from './useUpdateApplicationStatus';
 
 export const useApplications = () => {
   const { applications, loading, error } = useFetchApplications();
   const { filteredApplications, searchQuery, filters, handleSearchQueryChange, handleFilterChange } = useApplicationFilters(applications);
+  const { updateApplicationStatus, submitting } = useUpdateApplicationStatus();
   
   const applicationsByStatus = useMemo(() => {
     const result: Record<string, Application[]> = {
@@ -28,6 +30,19 @@ export const useApplications = () => {
     return result;
   }, [filteredApplications]);
 
+  // Add functions for refreshing applications and updating filters
+  const refreshApplications = async () => {
+    console.log('Refreshing applications...');
+    // This would typically call a refresh method from useFetchApplications
+    // For now, we'll just log it
+  };
+
+  const updateApplicationFilters = (newFilters: any) => {
+    console.log('Updating application filters:', newFilters);
+    // This would update filters in the useApplicationFilters hook
+    // For now, we'll just log it
+  };
+
   return {
     applications,
     filteredApplications,
@@ -37,6 +52,10 @@ export const useApplications = () => {
     handleSearchQueryChange,
     handleFilterChange,
     loading,
-    error
+    error,
+    updateApplicationStatus,
+    refreshApplications,
+    updateApplicationFilters,
+    submitting
   };
 };

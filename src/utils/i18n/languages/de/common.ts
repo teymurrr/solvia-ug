@@ -26,5 +26,6 @@ export const common = {
   saving: "Speichern...",
   apply: "Bewerben",
   save: "Speichern",
-  remove: "Entfernen"
+  remove: "Entfernen",
+  countries: "Länder weltweit"
 };

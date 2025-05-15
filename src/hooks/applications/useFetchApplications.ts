@@ -1,22 +1,6 @@
-import { useState, useEffect } from 'react';
 
-export interface Application {
-  id: string;
-  user_id: string;
-  vacancy_id: string;
-  applicantId: string;
-  applicantName: string;
-  applicantPhoto: string;
-  applicantEmail: string;
-  applicantPhone: string;
-  vacancyId: string;
-  vacancyTitle: string;
-  appliedDate: string;
-  application_date: string;
-  status: string;
-  coverLetter: string;
-  cvFileName: string;
-}
+import { useState, useEffect } from 'react';
+import { Application, ApplicationStatus } from './types';
 
 export const useFetchApplications = () => {
   const [applications, setApplications] = useState<Application[]>([]);
@@ -49,7 +33,7 @@ export const useFetchApplications = () => {
             vacancyTitle: 'Senior Cardiologist',
             appliedDate: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
             application_date: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
-            status: 'pending',
+            status: 'pending' as ApplicationStatus,
             coverLetter: 'I am writing to express my interest in the Senior Cardiologist position.',
             cvFileName: 'john_smith_cv.pdf'
           },
@@ -66,7 +50,7 @@ export const useFetchApplications = () => {
             vacancyTitle: 'Registered Nurse',
             appliedDate: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
             application_date: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
-            status: 'reviewing',
+            status: 'reviewing' as ApplicationStatus,
             coverLetter: 'I am an experienced registered nurse with a passion for patient care.',
             cvFileName: 'alice_johnson_cv.pdf'
           },
@@ -83,7 +67,7 @@ export const useFetchApplications = () => {
             vacancyTitle: 'Senior Cardiologist',
             appliedDate: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(),
             application_date: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(),
-            status: 'accepted',
+            status: 'accepted' as ApplicationStatus,
             coverLetter: 'I have extensive experience in cardiology and am eager to contribute to your team.',
             cvFileName: 'bob_williams_cv.pdf'
           },
@@ -100,7 +84,7 @@ export const useFetchApplications = () => {
             vacancyTitle: 'Medical Technician',
             appliedDate: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000).toISOString(),
             application_date: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000).toISOString(),
-            status: 'rejected',
+            status: 'rejected' as ApplicationStatus,
             coverLetter: 'I am a certified medical technician with a strong attention to detail.',
             cvFileName: 'emily_davis_cv.pdf'
           },

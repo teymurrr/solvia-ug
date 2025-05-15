@@ -38,5 +38,11 @@ export const common = {
   delete: 'Delete',
   add: 'Add',
   remove: 'Remove',
-  optional: 'optional'  // Added this property to fix the error
+  optional: 'optional',
+  // Added missing properties
+  home: 'Home',
+  forEmployers: 'For Employers',
+  viewMore: 'View More',
+  saving: 'Saving...',
+  countries: 'Countries Worldwide'
 };
