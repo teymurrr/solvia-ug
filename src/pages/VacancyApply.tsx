@@ -17,7 +17,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { Vacancy } from '@/hooks/useVacancies';
-import { queryParamsToState } from '@/utils/browserDetection';
+import { queryParamsToState, isSafari, stateToQueryParams } from '@/utils/browserDetection';
 
 // Create schema for form validation
 const applicationSchema = z.object({
@@ -48,12 +48,23 @@ const VacancyApply = () => {
   const routerState = location.state || {};
   const queryState = queryParamsToState();
   
+  console.log('[VacancyApply] Browser is Safari:', isSafari());
+  console.log('[VacancyApply] Router state:', routerState);
+  console.log('[VacancyApply] Query params state:', queryState);
+  
   // Check if user came from the dashboard
   const fromDashboard = routerState.fromDashboard || queryState.fromDashboard === 'true';
   // Preserve search state and pagination from the dashboard
   const searchQuery = routerState.searchQuery || queryState.searchQuery || '';
   const currentPage = Number(routerState.currentPage || queryState.currentPage || 1);
   const selectedFilters = routerState.selectedFilters || {}; // Complex objects won't be in query params
+
+  console.log('[VacancyApply] Combined state:', { 
+    fromDashboard, 
+    searchQuery, 
+    currentPage, 
+    selectedFilters 
+  });
 
   // Fetch the vacancy details from Supabase
   useEffect(() => {
@@ -115,19 +126,21 @@ const VacancyApply = () => {
 
   const handleCancel = () => {
     if (fromDashboard) {
-      // For Safari compatibility
-      if (window.location.search) {
-        // If we have query params (Safari), use them again for navigation back
-        navigate('/dashboard/professional', {
-          state: { 
-            activeTab: 'vacancies',
-            searchQuery,
-            currentPage,
-            selectedFilters
-          }
-        });
+      // Check if we need to use query params for navigation (Safari)
+      if (isSafari()) {
+        // For Safari, create state as query params
+        const state = { 
+          activeTab: 'vacancies',
+          searchQuery,
+          currentPage,
+          selectedFilters
+        };
+        const queryString = stateToQueryParams(state);
+        console.log('[VacancyApply] Navigating back to dashboard with query params:', queryString);
+        navigate(`/dashboard/professional${queryString}`);
       } else {
-        // For other browsers, use state
+        // For other browsers, use state object
+        console.log('[VacancyApply] Navigating back to dashboard with state object');
         navigate('/dashboard/professional', {
           state: { 
             activeTab: 'vacancies',
@@ -139,13 +152,28 @@ const VacancyApply = () => {
       }
     } else {
       // When navigating back to vacancy detail
-      if (window.location.search) {
-        // If we have query params (Safari), use them again for navigation back
-        const queryString = window.location.search;
+      if (isSafari()) {
+        // For Safari, use query params
+        const state = {
+          fromDashboard,
+          searchQuery,
+          currentPage,
+          selectedFilters
+        };
+        const queryString = stateToQueryParams(state);
+        console.log('[VacancyApply] Navigating back to vacancy with query params:', queryString);
         navigate(`/vacancies/${id}${queryString}`);
       } else {
-        // For other browsers, use state
-        navigate(`/vacancies/${id}`);
+        // For other browsers, use state object
+        console.log('[VacancyApply] Navigating back to vacancy with state object');
+        navigate(`/vacancies/${id}`, {
+          state: {
+            fromDashboard,
+            searchQuery,
+            currentPage,
+            selectedFilters
+          }
+        });
       }
     }
   };
@@ -199,16 +227,32 @@ const VacancyApply = () => {
       // Navigate back to the dashboard if that's where the user came from,
       // otherwise go to the vacancies page
       if (fromDashboard) {
-        navigate('/dashboard/professional', { 
-          state: { 
+        // Check if we should use query params for navigation (Safari)
+        if (isSafari()) {
+          const state = {
             activeTab: 'saved',
             savedTabView: 'applied',
             searchQuery,
             currentPage,
             selectedFilters,
-            applicationSubmitted: true // Flag to show a success message
-          }
-        });
+            applicationSubmitted: true
+          };
+          const queryString = stateToQueryParams(state);
+          console.log('[VacancyApply] Post-submission: Navigating to dashboard with query params:', queryString);
+          navigate(`/dashboard/professional${queryString}`);
+        } else {
+          console.log('[VacancyApply] Post-submission: Navigating to dashboard with state object');
+          navigate('/dashboard/professional', { 
+            state: { 
+              activeTab: 'saved',
+              savedTabView: 'applied',
+              searchQuery,
+              currentPage,
+              selectedFilters,
+              applicationSubmitted: true
+            }
+          });
+        }
       } else {
         navigate('/vacancies');
       }
@@ -232,13 +276,23 @@ const VacancyApply = () => {
       // Redirect back after opening external link
       setTimeout(() => {
         if (fromDashboard) {
-          navigate('/dashboard/professional', {
-            state: { 
+          if (isSafari()) {
+            const state = {
               activeTab: 'vacancies',
               externalApplication: true,
               vacancyTitle: vacancy.title
-            }
-          });
+            };
+            const queryString = stateToQueryParams(state);
+            navigate(`/dashboard/professional${queryString}`);
+          } else {
+            navigate('/dashboard/professional', {
+              state: { 
+                activeTab: 'vacancies',
+                externalApplication: true,
+                vacancyTitle: vacancy.title
+              }
+            });
+          }
         } else {
           navigate('/vacancies', {
             state: { 

@@ -1,3 +1,4 @@
+
 /**
  * Utility functions to detect browser types
  */
@@ -8,6 +9,8 @@
  */
 export const isSafari = (): boolean => {
   const userAgent = navigator.userAgent.toLowerCase();
+  // More precise Safari detection - checks for Safari but not Chrome
+  // (Chrome includes Safari in its user agent string)
   return userAgent.includes('safari') && !userAgent.includes('chrome');
 };
 

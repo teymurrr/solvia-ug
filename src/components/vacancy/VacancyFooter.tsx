@@ -81,9 +81,11 @@ const VacancyFooter: React.FC<VacancyFooterProps> = ({
       if (isSafari()) {
         // For Safari, use query params instead of state
         const queryString = stateToQueryParams(state);
+        console.log('Safari detected, using query params:', queryString);
         navigate(`/vacancies/${id}/apply${queryString}`);
       } else {
         // For other browsers, use the state object
+        console.log('Using state object for navigation:', state);
         navigate(`/vacancies/${id}/apply`, { state });
       }
     }
@@ -113,9 +115,11 @@ const VacancyFooter: React.FC<VacancyFooterProps> = ({
     if (isSafari()) {
       // For Safari, use query params instead of state
       const queryString = stateToQueryParams(state);
+      console.log('Safari detected, using query params for view details:', queryString);
       navigate(`/vacancies/${id}${queryString}`);
     } else {
       // For other browsers, use the state object
+      console.log('Using state object for view details navigation:', state);
       navigate(`/vacancies/${id}`, { state });
     }
   };

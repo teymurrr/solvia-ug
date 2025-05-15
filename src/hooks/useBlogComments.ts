@@ -1,139 +1,344 @@
-
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { useToast } from './use-toast';
 import { useAuth } from '@/contexts/AuthContext';
+import { useToast } from '@/hooks/use-toast';
+import { useProfileData } from '@/components/professional-profile/hooks/useProfileData';
 
 export interface BlogComment {
   id: string;
+  blog_id: string;
+  user_id: string;
   content: string;
   created_at: string;
   updated_at: string;
-  author?: {
-    first_name: string;
-    last_name: string;
-    profile_image?: string;
-  };
+  user_name?: string;
+  user_avatar?: string;
+  user_type?: string;
+  replies?: BlogComment[];
+  parent_id?: string | null;
 }
 
-// Interface to define the structure of professional profiles
-interface ProfessionalProfile {
-  first_name: string;
-  last_name: string;
-  profile_image?: string;
-}
-
-export const useBlogComments = (blogPostId: string) => {
+export const useBlogComments = (blogId: string) => {
   const [comments, setComments] = useState<BlogComment[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const { toast } = useToast();
   const { user } = useAuth();
+  const { toast } = useToast();
+  const { profileData } = useProfileData();
 
-  const fetchComments = async () => {
+  // Fetch comments for a specific blog post
+  const fetchComments = useCallback(async () => {
     try {
       setLoading(true);
+      setError(null);
       
       const { data, error } = await supabase
         .from('blog_comments')
-        .select(`
-          id, 
-          content, 
-          created_at, 
-          updated_at,
-          user_id,
-          professional_profiles:user_id (
-            first_name,
-            last_name,
-            profile_image
-          )
-        `)
-        .eq('blog_post_id', blogPostId)
-        .order('created_at', { ascending: false });
+        .select('*, user:user_id(id, email, user_metadata)')
+        .eq('blog_id', blogId)
+        .order('created_at', { ascending: true });
       
       if (error) throw error;
       
-      const formattedComments: BlogComment[] = data.map(comment => {
-        // We need to handle the profileData more carefully by checking its shape first
-        const profileData = comment.professional_profiles;
-        
-        // Check if profileData exists, is an object, and isn't an error object
-        const isValidProfile = 
-          profileData !== null && 
-          typeof profileData === 'object' && 
-          !('error' in profileData);
-        
-        let author;
-        // Ensure profileData is not null and is a valid profile before accessing its properties
-        if (isValidProfile && profileData) {
-          // Use a type assertion with a specific type rather than 'any'
-          const profile = profileData as ProfessionalProfile;
-          author = {
-            first_name: profile.first_name || 'Anonymous',
-            last_name: profile.last_name || '',
-            profile_image: profile.profile_image
-          };
-        }
+      // Process comments to add user information and organize replies
+      const processedComments = data.map((comment: any) => {
+        // Extract user information from the joined user data
+        const userName = comment.user?.user_metadata?.full_name || 'Anonymous';
+        const userAvatar = comment.user?.user_metadata?.avatar_url || null;
+        const userType = comment.user?.user_metadata?.user_type || 'user';
         
         return {
-          id: comment.id,
-          content: comment.content,
-          created_at: comment.created_at,
-          updated_at: comment.updated_at,
-          author // This will be undefined if not a valid profile
+          ...comment,
+          user_name: userName,
+          user_avatar: userAvatar,
+          user_type: userType,
+          replies: []
         };
       });
       
-      setComments(formattedComments);
-    } catch (error) {
-      console.error('Error fetching comments:', error);
-      setError('Failed to fetch comments');
+      // Organize comments into a hierarchy (top-level comments and their replies)
+      const topLevelComments: BlogComment[] = [];
+      const replyMap: Record<string, BlogComment[]> = {};
+      
+      processedComments.forEach((comment: BlogComment) => {
+        if (!comment.parent_id) {
+          topLevelComments.push(comment);
+        } else {
+          if (!replyMap[comment.parent_id]) {
+            replyMap[comment.parent_id] = [];
+          }
+          replyMap[comment.parent_id].push(comment);
+        }
+      });
+      
+      // Attach replies to their parent comments
+      topLevelComments.forEach(comment => {
+        if (replyMap[comment.id]) {
+          comment.replies = replyMap[comment.id];
+        }
+      });
+      
+      setComments(topLevelComments);
+    } catch (err: any) {
+      console.error('Error fetching blog comments:', err);
+      setError(err.message);
     } finally {
       setLoading(false);
     }
-  };
+  }, [blogId]);
 
-  const addComment = async (content: string) => {
+  // Add a new comment
+  const addComment = useCallback(async (content: string, parentId?: string) => {
     if (!user) {
       toast({
-        title: 'Error',
-        description: 'You must be logged in to comment',
-        variant: 'destructive',
+        title: "Authentication required",
+        description: "You must be logged in to comment",
+        variant: "destructive",
       });
-      return;
+      return false;
+    }
+    
+    if (!content.trim()) {
+      toast({
+        title: "Empty comment",
+        description: "Please enter some content for your comment",
+        variant: "destructive",
+      });
+      return false;
     }
     
     try {
-      const { error } = await supabase
+      const newComment = {
+        blog_id: blogId,
+        user_id: user.id,
+        content,
+        parent_id: parentId || null,
+      };
+      
+      const { data, error } = await supabase
         .from('blog_comments')
-        .insert({
-          blog_post_id: blogPostId,
-          user_id: user.id,
-          content
-        });
+        .insert(newComment)
+        .select('*');
       
       if (error) throw error;
       
+      // Add user information to the new comment for immediate display
+      const commentWithUser = {
+        ...data[0],
+        user_name: profileData?.firstName ? `${profileData?.firstName} ${profileData?.lastName}` : 'Anonymous',
+        user_avatar: profileData?.profileImage || null,
+        user_type: user.user_metadata?.user_type || 'user',
+        replies: []
+      };
+      
+      // Update the comments state based on whether it's a reply or top-level comment
+      if (parentId) {
+        setComments(prevComments => {
+          return prevComments.map(comment => {
+            if (comment.id === parentId) {
+              return {
+                ...comment,
+                replies: [...(comment.replies || []), commentWithUser]
+              };
+            }
+            return comment;
+          });
+        });
+      } else {
+        setComments(prevComments => [...prevComments, commentWithUser]);
+      }
+      
       toast({
-        title: 'Success',
-        description: 'Your comment has been posted',
+        title: "Comment added",
+        description: "Your comment has been posted successfully",
       });
       
-      // Refresh comments
-      fetchComments();
-    } catch (error) {
-      console.error('Error posting comment:', error);
+      return true;
+    } catch (err: any) {
+      console.error('Error adding comment:', err);
       toast({
-        title: 'Error',
-        description: 'Failed to post comment',
-        variant: 'destructive',
+        title: "Error",
+        description: err.message || "Failed to add comment",
+        variant: "destructive",
       });
+      return false;
     }
-  };
+  }, [user, blogId, toast, profileData]);
 
+  // Delete a comment
+  const deleteComment = useCallback(async (commentId: string, isReply: boolean = false, parentId?: string) => {
+    if (!user) {
+      toast({
+        title: "Authentication required",
+        description: "You must be logged in to delete a comment",
+        variant: "destructive",
+      });
+      return false;
+    }
+    
+    try {
+      // First check if the user is the author of the comment
+      const { data: commentData, error: fetchError } = await supabase
+        .from('blog_comments')
+        .select('user_id')
+        .eq('id', commentId)
+        .single();
+      
+      if (fetchError) throw fetchError;
+      
+      if (commentData.user_id !== user.id) {
+        toast({
+          title: "Permission denied",
+          description: "You can only delete your own comments",
+          variant: "destructive",
+        });
+        return false;
+      }
+      
+      // Delete the comment
+      const { error } = await supabase
+        .from('blog_comments')
+        .delete()
+        .eq('id', commentId);
+      
+      if (error) throw error;
+      
+      // Update the comments state
+      if (isReply && parentId) {
+        setComments(prevComments => {
+          return prevComments.map(comment => {
+            if (comment.id === parentId) {
+              return {
+                ...comment,
+                replies: (comment.replies || []).filter(reply => reply.id !== commentId)
+              };
+            }
+            return comment;
+          });
+        });
+      } else {
+        setComments(prevComments => prevComments.filter(comment => comment.id !== commentId));
+      }
+      
+      toast({
+        title: "Comment deleted",
+        description: "Your comment has been removed",
+      });
+      
+      return true;
+    } catch (err: any) {
+      console.error('Error deleting comment:', err);
+      toast({
+        title: "Error",
+        description: err.message || "Failed to delete comment",
+        variant: "destructive",
+      });
+      return false;
+    }
+  }, [user, toast]);
+
+  // Edit a comment
+  const editComment = useCallback(async (commentId: string, content: string, isReply: boolean = false, parentId?: string) => {
+    if (!user) {
+      toast({
+        title: "Authentication required",
+        description: "You must be logged in to edit a comment",
+        variant: "destructive",
+      });
+      return false;
+    }
+    
+    if (!content.trim()) {
+      toast({
+        title: "Empty comment",
+        description: "Please enter some content for your comment",
+        variant: "destructive",
+      });
+      return false;
+    }
+    
+    try {
+      // First check if the user is the author of the comment
+      const { data: commentData, error: fetchError } = await supabase
+        .from('blog_comments')
+        .select('user_id')
+        .eq('id', commentId)
+        .single();
+      
+      if (fetchError) throw fetchError;
+      
+      if (commentData.user_id !== user.id) {
+        toast({
+          title: "Permission denied",
+          description: "You can only edit your own comments",
+          variant: "destructive",
+        });
+        return false;
+      }
+      
+      // Update the comment
+      const { data, error } = await supabase
+        .from('blog_comments')
+        .update({ content, updated_at: new Date().toISOString() })
+        .eq('id', commentId)
+        .select('*');
+      
+      if (error) throw error;
+      
+      // Update the comments state
+      if (isReply && parentId) {
+        setComments(prevComments => {
+          return prevComments.map(comment => {
+            if (comment.id === parentId) {
+              return {
+                ...comment,
+                replies: (comment.replies || []).map(reply => 
+                  reply.id === commentId ? { ...reply, content, updated_at: data[0].updated_at } : reply
+                )
+              };
+            }
+            return comment;
+          });
+        });
+      } else {
+        setComments(prevComments => 
+          prevComments.map(comment => 
+            comment.id === commentId ? { ...comment, content, updated_at: data[0].updated_at } : comment
+          )
+        );
+      }
+      
+      toast({
+        title: "Comment updated",
+        description: "Your comment has been edited successfully",
+      });
+      
+      return true;
+    } catch (err: any) {
+      console.error('Error editing comment:', err);
+      toast({
+        title: "Error",
+        description: err.message || "Failed to edit comment",
+        variant: "destructive",
+      });
+      return false;
+    }
+  }, [user, toast]);
+
+  // Load comments when the component mounts or blogId changes
   useEffect(() => {
-    fetchComments();
-  }, [blogPostId]);
+    if (blogId) {
+      fetchComments();
+    }
+  }, [blogId, fetchComments]);
 
-  return { comments, loading, error, fetchComments, addComment };
+  return {
+    comments,
+    loading,
+    error,
+    addComment,
+    deleteComment,
+    editComment,
+    refreshComments: fetchComments,
+  };
 };
