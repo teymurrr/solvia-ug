@@ -47,21 +47,23 @@ export const useBlogComments = (blogPostId: string) => {
       if (error) throw error;
       
       const formattedComments: BlogComment[] = data.map(comment => {
-        // Check if professional_profiles is an error object (it has an 'error' property)
-        // or if it's null/undefined
-        const isValidProfile = comment.professional_profiles && 
-                              typeof comment.professional_profiles === 'object' && 
-                              !('error' in comment.professional_profiles);
+        // Check if professional_profiles exists and is a valid object (not an error object)
+        const profileData = comment.professional_profiles;
+        const isValidProfile = 
+          profileData !== null && 
+          profileData !== undefined && 
+          typeof profileData === 'object' && 
+          !('error' in profileData);
         
         return {
           id: comment.id,
           content: comment.content,
           created_at: comment.created_at,
           updated_at: comment.updated_at,
-          author: isValidProfile ? {
-            first_name: comment.professional_profiles.first_name || 'Anonymous',
-            last_name: comment.professional_profiles.last_name || '',
-            profile_image: comment.professional_profiles.profile_image
+          author: isValidProfile && profileData ? {
+            first_name: profileData.first_name || 'Anonymous',
+            last_name: profileData.last_name || '',
+            profile_image: profileData.profile_image
           } : undefined
         };
       });
