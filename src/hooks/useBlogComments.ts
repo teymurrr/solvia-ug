@@ -64,7 +64,7 @@ export const useBlogComments = (blogPostId: string) => {
           !('error' in profileData);
         
         let author;
-        if (isValidProfile) {
+        if (isValidProfile && profileData) {
           // Only now we can safely access the profile properties
           const profile = profileData as any;
           author = {
