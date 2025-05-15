@@ -1,6 +1,6 @@
 
 import { useMemo } from 'react';
-import { Application, ApplicationStatus } from './types';
+import { Application } from './types';
 import { useFetchApplications } from './useFetchApplications';
 import { useApplicationFilters } from './useApplicationFilters';
 import { useUpdateApplicationStatus } from './useUpdateApplicationStatus';
@@ -33,7 +33,7 @@ export const useApplications = () => {
   // Function for refreshing applications, now properly exported
   const handleRefreshApplications = async () => {
     console.log('Refreshing applications...');
-    return refreshApplications();
+    return await refreshApplications();
   };
 
   return {

@@ -41,8 +41,7 @@ const VacancyFooter: React.FC<VacancyFooterProps> = ({
   // Get translations with fallbacks
   const applyNowText = t?.vacancies?.apply || "Apply Now";
   const appliedText = t?.common?.applied || "Applied";
-  const viewDetailsText = t?.vacancies?.viewMore || "View Details"; // Changed from viewDetails to viewMore as it exists in the translations
-
+  
   const handleApply = () => {
     // If already applied, don't do anything
     if (isApplied) {
@@ -91,42 +90,6 @@ const VacancyFooter: React.FC<VacancyFooterProps> = ({
     }
   };
 
-  const handleViewDetails = () => {
-    // Redirect to signup if user is not logged in
-    if (!isLoggedIn && (isLandingPageCard || fromLandingPage)) {
-      toast({
-        title: "Sign up required",
-        description: "Please sign up or log in to view vacancy details",
-      });
-      navigate('/signup/professional');
-      return;
-    }
-    
-    // Create state object with all relevant information
-    const state = { 
-      fromDashboard,
-      fromLandingPage,
-      searchQuery,
-      currentPage,
-      selectedFilters
-    };
-    
-    // Handle Safari browser differently
-    if (isSafari()) {
-      // For Safari, use query params instead of state
-      const queryString = stateToQueryParams(state);
-      console.log('Safari detected, using query params for view details:', queryString);
-      navigate(`/vacancies/${id}${queryString}`);
-    } else {
-      // For other browsers, use the state object
-      console.log('Using state object for view details navigation:', state);
-      navigate(`/vacancies/${id}`, { state });
-    }
-  };
-
-  // Adjust styling based on whether it's a dashboard card
-  const buttonClasses = isDashboardCard ? "px-4 py-1 h-9" : "";
-
   // For landing page cards, only show Apply Now button
   if (isLandingPageCard) {
     return (
@@ -151,23 +114,12 @@ const VacancyFooter: React.FC<VacancyFooterProps> = ({
     );
   }
 
-  // Regular view for all other cards in the site
+  // Regular view for all other cards in the site - we're removing the View Details button for the Professional Dashboard
   return (
     <div className="pt-2 flex justify-between gap-2">
-      {/* Only show View Details button if not in dashboard */}
-      {!isDashboardCard && (
-        <Button 
-          variant="outline" 
-          onClick={handleViewDetails} 
-          className={`flex-shrink-0 ${buttonClasses}`}
-          size={isDashboardCard ? "sm" : "default"}
-        >
-          {viewDetailsText}
-        </Button>
-      )}
       <Button 
         onClick={handleApply} 
-        className={`${!isDashboardCard ? 'ml-auto' : 'w-full'} ${buttonClasses}`}
+        className="w-full"
         size={isDashboardCard ? "sm" : "default"}
         variant={isApplied ? "outline" : "default"}
         disabled={isApplied}

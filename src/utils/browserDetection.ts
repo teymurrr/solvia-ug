@@ -24,9 +24,14 @@ export const stateToQueryParams = (state: Record<string, any>): string => {
   
   const params = new URLSearchParams();
   Object.entries(state).forEach(([key, value]) => {
-    // Only add primitive values to query params
-    if (typeof value !== 'object') {
-      params.append(key, String(value));
+    if (value !== undefined && value !== null) {
+      // Handle arrays and objects by JSON stringifying them
+      if (typeof value === 'object') {
+        params.append(key, JSON.stringify(value));
+      } else {
+        // Only add primitive values to query params
+        params.append(key, String(value));
+      }
     }
   });
   
@@ -44,6 +49,16 @@ export const queryParamsToState = (): Record<string, any> => {
   
   // Convert all params to their respective types
   params.forEach((value, key) => {
+    // Try to parse JSON objects/arrays
+    if (value.startsWith('[') || value.startsWith('{')) {
+      try {
+        state[key] = JSON.parse(value);
+        return;
+      } catch (e) {
+        // If parsing fails, continue with regular type conversion
+      }
+    }
+    
     // Try to convert to boolean
     if (value === 'true') {
       state[key] = true;
@@ -51,7 +66,7 @@ export const queryParamsToState = (): Record<string, any> => {
       state[key] = false;
     } 
     // Try to convert to number
-    else if (!isNaN(Number(value))) {
+    else if (!isNaN(Number(value)) && value !== '') {
       state[key] = Number(value);
     } 
     // Keep as string

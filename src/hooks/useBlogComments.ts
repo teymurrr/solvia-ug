@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
@@ -123,7 +124,7 @@ export const useBlogComments = (blogId: string) => {
       if (error) throw error;
       
       // Add user information to the new comment for immediate display
-      const commentWithUser = {
+      const commentWithUser: BlogComment = {
         ...data[0],
         user_name: profileData?.firstName ? `${profileData?.firstName} ${profileData?.lastName}` : 'Anonymous',
         user_avatar: profileData?.profileImage || null,
@@ -139,7 +140,7 @@ export const useBlogComments = (blogId: string) => {
               return {
                 ...comment,
                 replies: [...(comment.replies || []), commentWithUser]
-              };
+              } as BlogComment;
             }
             return comment;
           });
