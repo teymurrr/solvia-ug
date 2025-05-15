@@ -22,6 +22,14 @@ const CertificatesSection: React.FC<CertificatesSectionProps> = ({
 }) => {
   const { t } = useLanguage();
   
+  // Create fallbacks for missing translation properties
+  const profileText = t?.dashboard?.profile || {
+    fspCertificate: "FSP Certificate",
+    fspCertificateDesc: "Check if you have an FSP (Foreign Specialist Physician) certificate",
+    uploadCertificate: "Upload FSP Certificate",
+    certificateUploaded: "Certificate uploaded"
+  };
+  
   return (
     <>
       <FormField
@@ -36,9 +44,9 @@ const CertificatesSection: React.FC<CertificatesSectionProps> = ({
               />
             </FormControl>
             <div className="space-y-1 leading-none">
-              <FormLabel>{t?.dashboard?.profile?.fspCertificate || "FSP Certificate"}</FormLabel>
+              <FormLabel>{profileText.fspCertificate || "FSP Certificate"}</FormLabel>
               <p className="text-sm text-muted-foreground">
-                {t?.dashboard?.profile?.fspCertificateDesc || "Check if you have an FSP (Foreign Specialist Physician) certificate"}
+                {profileText.fspCertificateDesc || "Check if you have an FSP (Foreign Specialist Physician) certificate"}
               </p>
             </div>
           </FormItem>
@@ -47,7 +55,7 @@ const CertificatesSection: React.FC<CertificatesSectionProps> = ({
 
       {form.watch("fspCertificate") && (
         <div className="border rounded-md p-4">
-          <FormLabel>{t?.dashboard?.profile?.fspCertificate || "FSP Certificate"}</FormLabel>
+          <FormLabel>{profileText.fspCertificate || "FSP Certificate"}</FormLabel>
           <div className="flex items-center gap-2 mt-2">
             <Input
               id="fspCertificateFile"
@@ -62,11 +70,11 @@ const CertificatesSection: React.FC<CertificatesSectionProps> = ({
               onClick={() => document.getElementById('fspCertificateFile')?.click()}
             >
               <Upload className="h-4 w-4 mr-2" />
-              {t?.dashboard?.profile?.uploadCertificate || "Upload FSP Certificate"}
+              {profileText.uploadCertificate || "Upload FSP Certificate"}
             </Button>
             {sfpCertificatePreview && (
               <span className="text-sm text-green-600 flex items-center">
-                <Check className="h-4 w-4 mr-1" /> {t?.dashboard?.profile?.certificateUploaded || "Certificate uploaded"}
+                <Check className="h-4 w-4 mr-1" /> {profileText.certificateUploaded || "Certificate uploaded"}
               </span>
             )}
           </div>

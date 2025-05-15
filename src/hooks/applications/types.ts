@@ -18,6 +18,7 @@ export interface Application {
     last_name: string;
     specialty?: string;
     profile_image?: string;
+    phone?: string;  // Added phone property
   };
   // Additional properties used in ApplicationCard
   applicantName?: string;

@@ -18,13 +18,19 @@ const VacancySearch: React.FC<VacancySearchProps> = ({
 }) => {
   const { t } = useLanguage();
   
+  // Ensure that t.dashboard.vacancies has the needed properties
+  const vacancyText = t?.dashboard?.vacancies || {
+    searchPlaceholder: "Search by title, location, or keyword...",
+    search: "Search"
+  };
+  
   return (
     <div className="flex flex-col md:flex-row gap-4">
       <div className="flex-1">
         <div className="relative">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input
-            placeholder={t?.dashboard?.vacancies?.searchPlaceholder || "Search by title, location, or keyword..."}
+            placeholder={vacancyText.searchPlaceholder || "Search by title, location, or keyword..."}
             className="pl-10"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
@@ -34,7 +40,7 @@ const VacancySearch: React.FC<VacancySearchProps> = ({
       </div>
       <Button variant="outline" className="md:w-auto" onClick={handleSearch}>
         <Search className="h-4 w-4 mr-2" />
-        {t?.dashboard?.vacancies?.search || "Search"}
+        {vacancyText.search || "Search"}
       </Button>
     </div>
   );

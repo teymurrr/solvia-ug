@@ -50,6 +50,14 @@ const FilterBar: React.FC<FilterBarProps> = ({
 }) => {
   const { t } = useLanguage();
   
+  // Ensure that t.dashboard.vacancies has the needed properties
+  const vacancyText = t?.dashboard?.vacancies || {
+    jobType: "Job Type",
+    country: "Country",
+    city: "City",
+    resetFilters: "Reset filters"
+  };
+  
   return (
     <div className="flex flex-wrap gap-2">
       <TooltipProvider>
@@ -60,7 +68,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
                 <DropdownMenuTrigger asChild>
                   <Button variant="outline" className="flex items-center gap-2">
                     <Briefcase className="h-4 w-4" />
-                    {t?.dashboard?.vacancies?.jobType || "Job Type"}
+                    {vacancyText.jobType || "Job Type"}
                     {selectedJobTypes.length > 0 && (
                       <Badge className="ml-1 bg-primary text-white">
                         {selectedJobTypes.length}
@@ -69,7 +77,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="start" className="w-48">
-                  <DropdownMenuLabel>{t?.dashboard?.vacancies?.jobType || "Select Job Types"}</DropdownMenuLabel>
+                  <DropdownMenuLabel>{vacancyText.jobType || "Select Job Types"}</DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   {jobTypes.map((jobType) => (
                     <DropdownMenuCheckboxItem
@@ -97,14 +105,14 @@ const FilterBar: React.FC<FilterBarProps> = ({
                 <DropdownMenuTrigger asChild>
                   <Button variant="outline" className="flex items-center gap-2">
                     <MapPin className="h-4 w-4" />
-                    {t?.dashboard?.vacancies?.country || "Country"}
+                    {vacancyText.country || "Country"}
                     {selectedCountry && (
                       <Badge className="ml-1 bg-primary text-white">1</Badge>
                     )}
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="start" className="w-48">
-                  <DropdownMenuLabel>{t?.dashboard?.vacancies?.country || "Select Country"}</DropdownMenuLabel>
+                  <DropdownMenuLabel>{vacancyText.country || "Select Country"}</DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   {countries.map((country) => (
                     <DropdownMenuCheckboxItem
@@ -138,14 +146,14 @@ const FilterBar: React.FC<FilterBarProps> = ({
                 <DropdownMenuTrigger asChild>
                   <Button variant="outline" className="flex items-center gap-2">
                     <Building className="h-4 w-4" />
-                    {t?.dashboard?.vacancies?.city || "City"}
+                    {vacancyText.city || "City"}
                     {selectedCity && (
                       <Badge className="ml-1 bg-primary text-white">1</Badge>
                     )}
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="start" className="w-48">
-                  <DropdownMenuLabel>{t?.dashboard?.vacancies?.city || "Select City"}</DropdownMenuLabel>
+                  <DropdownMenuLabel>{vacancyText.city || "Select City"}</DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   {cities.map((city) => (
                     <DropdownMenuCheckboxItem
@@ -174,7 +182,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
       {activeFilters.length > 0 && (
         <>
           <Button variant="ghost" size="sm" onClick={resetFilters} className="ml-auto">
-            {t?.dashboard?.vacancies?.resetFilters || "Reset filters"}
+            {vacancyText.resetFilters || "Reset filters"}
           </Button>
           <div className="flex flex-wrap gap-2 w-full mt-2">
             {activeFilters.map((filter, index) => (

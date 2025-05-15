@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useCallback } from 'react';
 import VacancyCard from '@/components/VacancyCard';
 import { Button } from '@/components/ui/button';
@@ -22,6 +21,23 @@ const SavedAndApplied: React.FC<SavedAndAppliedProps> = ({ userId }) => {
   const { toast } = useToast();
   const { t } = useLanguage();
   const { toggleSaveVacancy, refreshSavedVacancies: refreshSavedIds } = useDashboard();
+  
+  // Ensure all required properties exist with fallbacks
+  const savedText = t?.dashboard?.saved || {
+    savedVacancies: "Saved Vacancies",
+    appliedVacancies: "Applied Vacancies",
+    noSaved: "No saved vacancies",
+    noSavedDesc: "You haven't saved any vacancies yet. Save vacancies to keep track of them.",
+    noApplied: "No applications yet",
+    noAppliedDesc: "You haven't applied to any vacancies yet. Start applying to find your next role.",
+    browseVacancies: "Browse Vacancies",
+    vacancyRemoved: "Vacancy removed",
+    vacancyRemovedDesc: "The vacancy has been removed from your saved list."
+  };
+  
+  const commonText = t?.common || {
+    loading: "Loading your vacancies..."
+  };
 
   const refreshSavedVacancies = async () => {
     try {
@@ -109,8 +125,8 @@ const SavedAndApplied: React.FC<SavedAndAppliedProps> = ({ userId }) => {
       await refreshSavedIds();
       
       toast({
-        title: t?.dashboard?.saved?.vacancyRemoved || 'Vacancy removed',
-        description: t?.dashboard?.saved?.vacancyRemovedDesc || 'The vacancy has been removed from your saved list.',
+        title: savedText.vacancyRemoved || 'Vacancy removed',
+        description: savedText.vacancyRemovedDesc || 'The vacancy has been removed from your saved list.',
       });
     } catch (error) {
       console.error('Error removing saved vacancy:', error);
@@ -141,7 +157,7 @@ const SavedAndApplied: React.FC<SavedAndAppliedProps> = ({ userId }) => {
       <div className="flex justify-center items-center h-64">
         <Loader2 className="h-8 w-8 animate-spin text-primary" />
         <span className="ml-2 text-lg text-gray-600">
-          {t?.common?.loading || "Loading your vacancies..."}
+          {commonText.loading || "Loading your vacancies..."}
         </span>
       </div>
     );
@@ -157,10 +173,10 @@ const SavedAndApplied: React.FC<SavedAndAppliedProps> = ({ userId }) => {
       >
         <TabsList className="grid w-full grid-cols-2 mb-4">
           <TabsTrigger value="saved">
-            {t?.dashboard?.saved?.savedVacancies || "Saved Vacancies"}
+            {savedText.savedVacancies || "Saved Vacancies"}
           </TabsTrigger>
           <TabsTrigger value="applied">
-            {t?.dashboard?.saved?.appliedVacancies || "Applied Vacancies"}
+            {savedText.appliedVacancies || "Applied Vacancies"}
           </TabsTrigger>
         </TabsList>
         
@@ -168,14 +184,14 @@ const SavedAndApplied: React.FC<SavedAndAppliedProps> = ({ userId }) => {
           {savedVacancies.length === 0 ? (
             <div className="text-center py-12 border rounded-md bg-gray-50">
               <h3 className="text-lg font-medium text-gray-900">
-                {t?.dashboard?.saved?.noSaved || "No saved vacancies"}
+                {savedText.noSaved || "No saved vacancies"}
               </h3>
               <p className="mt-2 text-gray-600">
-                {t?.dashboard?.saved?.noSavedDesc || "You haven't saved any vacancies yet. Save vacancies to keep track of them."}
+                {savedText.noSavedDesc || "You haven't saved any vacancies yet. Save vacancies to keep track of them."}
               </p>
               <Button className="mt-4" asChild>
                 <a href="/vacancies">
-                  {t?.dashboard?.saved?.browseVacancies || "Browse Vacancies"}
+                  {savedText.browseVacancies || "Browse Vacancies"}
                 </a>
               </Button>
             </div>
@@ -206,14 +222,14 @@ const SavedAndApplied: React.FC<SavedAndAppliedProps> = ({ userId }) => {
           {appliedVacancies.length === 0 ? (
             <div className="text-center py-12 border rounded-md bg-gray-50">
               <h3 className="text-lg font-medium text-gray-900">
-                {t?.dashboard?.saved?.noApplied || "No applications yet"}
+                {savedText.noApplied || "No applications yet"}
               </h3>
               <p className="mt-2 text-gray-600">
-                {t?.dashboard?.saved?.noAppliedDesc || "You haven't applied to any vacancies yet. Start applying to find your next role."}
+                {savedText.noAppliedDesc || "You haven't applied to any vacancies yet. Start applying to find your next role."}
               </p>
               <Button className="mt-4" asChild>
                 <a href="/vacancies">
-                  {t?.dashboard?.saved?.browseVacancies || "Browse Vacancies"}
+                  {savedText.browseVacancies || "Browse Vacancies"}
                 </a>
               </Button>
             </div>

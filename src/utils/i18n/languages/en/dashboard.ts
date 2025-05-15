@@ -1,181 +1,73 @@
 
-export const dashboard = {
-  // Common
-  title: 'Dashboard',
-  description: 'Manage your account and data',
-  createProfile: 'Create Profile',
-  completeProfile: 'Complete Profile',
-  updateProfile: 'Update Profile',
-  loading: 'Loading...',
-  editProfile: 'Edit Profile',
-  saveProfile: 'Save Profile',
-  activelySearching: 'I am actively searching',
-  openToRelocation: 'Open to relocation',
-  
-  // Professional Dashboard
-  welcome: 'Welcome back',
-  findYourNextRole: 'Find your next role',
-  suggestedVacancies: 'Suggested Vacancies',
-  savedVacancies: 'Saved Vacancies',
-  appliedVacancies: 'Applied Vacancies',
-  noVacancies: 'No vacancies found',
-  searchVacancies: 'Search vacancies',
-  filterByLocation: 'Filter by location',
-  filterBySpecialty: 'Filter by specialty',
-  filterByType: 'Filter by type',
-  viewAllVacancies: 'View all vacancies',
-  vacancy: 'Vacancy',
-  institution: 'Institution',
-  date: 'Date',
-  status: 'Status',
-  
-  // Institution Dashboard
-  welcomeInstitution: 'Welcome Institution',
-  manageYourVacancies: 'Manage Your Vacancies',
-  manageYourProfile: 'Manage Your Profile',
-  postedVacancies: 'Posted Vacancies',
-  noPostedVacancies: 'No posted vacancies',
-  createVacancy: 'Create Vacancy',
-  applications: {
-    pending: 'Pending Review',
-    reviewing: 'Under Review',
-    interview: 'Interview',
-    offered: 'Offer Extended',
-    rejected: 'Rejected',
-    accepted: 'Accepted',
-    withdrawn: 'Withdrawn',
-    viewDetails: 'View Details',
-    applicationDetails: 'Application Details',
-    reviewApplication: 'Review the application for',
-    noEmailProvided: 'No email provided',
-    appliedFor: 'Applied for',
-    coverLetter: 'Cover Letter',
-    markPending: 'Mark Pending',
-    startReview: 'Start Review',
-    reject: 'Reject',
-    accept: 'Accept',
-    markAsPending: 'Mark as Pending',
-    updateStatus: 'Update status',
-    appliedOn: 'Applied on',
-    unknown: 'Unknown'
-  },
-  noApplications: 'No applications',
-  viewAllApplications: 'View all applications',
-  candidate: 'Candidate',
-  messageCandidate: 'Message candidate',
-  talents: 'Talents',
-  viewAllTalents: 'View all talents',
-  noTalents: 'No talents found',
-  
-  // Profile sections
-  personalInfo: 'Personal Information',
-  firstName: 'First Name',
-  lastName: 'Last Name',
-  location: 'Location',
-  profession: 'Profession',
-  specialty: 'Specialty',
-  about: 'About',
-  profileImage: 'Profile Image',
-  uploadImage: 'Upload Image',
-  removeImage: 'Remove Image',
-  
-  // Experience section
-  experience: 'Experience',
-  addExperience: 'Add Experience',
-  editExperience: 'Edit Experience',
-  deleteExperience: 'Delete Experience',
-  noExperience: 'No experience added',
-  role: 'Role',
-  hospital: 'Hospital',
-  startDate: 'Start Date',
-  endDate: 'End Date',
-  current: 'Current',
-  
-  // Education section
-  education: 'Education',
-  addEducation: 'Add Education',
-  editEducation: 'Edit Education',
-  deleteEducation: 'Delete Education',
-  noEducation: 'No education added',
-  degree: 'Degree',
-  field: 'Field',
-  
-  // Language section
-  languages: 'Languages',
-  addLanguage: 'Add Language',
-  editLanguage: 'Edit Language',
-  deleteLanguage: 'Delete Language',
-  noLanguages: 'No languages added',
-  language: 'Language',
-  level: 'Level',
-  certificate: 'Certificate',
-  
-  // Skills section
-  certificates: 'Certificates',
-  addCertificate: 'Add Certificate',
-  editCertificate: 'Edit Certificate',
-  deleteCertificate: 'Delete Certificate',
-  noCertificates: 'No certificates added',
-  certificateName: 'Certificate Name',
-  issuingOrganization: 'Issuing Organization',
-  issueDate: 'Issue Date',
-  expirationDate: 'Expiration Date',
-  noExpiration: 'No Expiration',
-  credentialId: 'Credential ID',
-  credentialURL: 'Credential URL',
-  
-  // Vacancy Form
-  vacancyForm: {
-    title: 'Vacancy Title',
-    location: 'Location',
-    city: 'City',
-    country: 'Country',
-    department: 'Department',
-    jobType: 'Job Type',
-    contractType: 'Contract Type',
-    salary: 'Salary (optional)',
-    description: 'Description',
-    requirements: 'Requirements',
-    addRequirement: 'Add Requirement',
-    removeRequirement: 'Remove',
-    submit: 'Post Vacancy',
-    update: 'Update Vacancy',
-    cancel: 'Cancel',
-    success: 'Vacancy created/updated successfully!',
-    error: 'Error creating/updating vacancy'
-  },
-  
-  // Success messages
-  profileUpdated: 'Profile updated successfully!',
-  
-  // Error messages
-  profileError: 'Error updating profile',
-  incompleteProfile: 'Please complete your profile to use this feature.',
-  
-  // Hero
-  hero: {
-    title: 'Connect with Leading Healthcare Institutions',
-    subtitle: 'Discover your next career opportunity',
-    findJob: 'Find a Job',
-    findTalent: 'Find Talent',
-    rotatingPhrases: [
-      'Find your dream job',
-      'Connect with top hospitals',
-      'Accelerate your career'
-    ]
-  },
-
-  // Profile-related properties
+export default {
   profile: {
-    title: 'Your Profile',
-    description: 'How you appear to institutions'
+    title: "Profile",
+    description: "Your professional profile",
+    loading: "Loading profile data...",
+    createProfile: "Create Profile",
+    completeProfile: "Complete Your Profile",
+    updateProfile: "Update Profile",
+    editProfile: "Edit Profile",
+    saveProfile: "Save Profile",
+    activelySearching: "Actively searching",
+    openToRelocation: "Open to relocation",
+    fspCertified: "FSP Certified",
+    fspCertificate: "FSP Certificate",
+    fspCertificateDesc: "Check if you have an FSP (Foreign Specialist Physician) certificate",
+    profileCompletion: "Profile completion",
+    location: "Location",
+    profession: "Profession",
+    notSpecified: "Not specified",
+    yes: "Yes",
+    no: "No",
+    experience: "Experience",
+    education: "Education",
+    languages: "Languages",
+    about: "About",
+    incompleteProfile: "Your profile is incomplete. Add more information about yourself to attract potential employers.",
+    at: "at",
+    in: "in",
+    present: "Present",
+    uploadCertificate: "Upload FSP Certificate",
+    certificateUploaded: "Certificate uploaded"
   },
-
-  // Vacancies-related properties for FilterBar component
+  saved: {
+    savedVacancies: "Saved Vacancies",
+    appliedVacancies: "Applied Vacancies",
+    noSaved: "No saved vacancies",
+    noSavedDesc: "You haven't saved any vacancies yet. Save vacancies to keep track of them.",
+    noApplied: "No applications yet",
+    noAppliedDesc: "You haven't applied to any vacancies yet. Start applying to find your next role.",
+    browseVacancies: "Browse Vacancies",
+    vacancyRemoved: "Vacancy removed",
+    vacancyRemovedDesc: "The vacancy has been removed from your saved list."
+  },
+  applications: {
+    pending: "Pending Review",
+    reviewing: "Under Review",
+    accepted: "Accepted", 
+    rejected: "Rejected",
+    unknown: "Unknown",
+    appliedOn: "Applied",
+    viewDetails: "View Details",
+    applicationDetails: "Application Details",
+    reviewApplication: "Review the application for",
+    noEmailProvided: "No email provided",
+    appliedFor: "Applied for",
+    coverLetter: "Cover Letter",
+    markPending: "Mark Pending",
+    startReview: "Start Review",
+    reject: "Reject",
+    accept: "Accept",
+    updateStatus: "Update status",
+    markAsPending: "Mark as Pending"
+  },
   vacancies: {
-    search: 'Search',
-    location: 'Location',
-    specialty: 'Specialty',
-    type: 'Type'
+    jobType: "Job Type",
+    country: "Country",
+    city: "City",
+    resetFilters: "Reset filters",
+    search: "Search",
+    searchPlaceholder: "Search by title, location, or keyword..."
   }
 };

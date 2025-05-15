@@ -1,82 +1,81 @@
 
-import { useState, useEffect, useContext } from 'react';
-import { translations, Language } from '@/utils/i18n/translations';
+import React, { createContext, useState, useContext, useEffect, ReactNode } from 'react';
 
-// Create a context for language selection
-import React from 'react';
+// Import language files
+import en from '../utils/i18n/languages/en/index';
+import de from '../utils/i18n/languages/de/index';
+import es from '../utils/i18n/languages/es/index';
+import fr from '../utils/i18n/languages/fr/index';
 
-const LanguageContext = React.createContext<{
-  language: Language;
-  setLanguage: (lang: Language) => void;
-}>({
-  language: 'en',
+// Define context interfaces
+interface LanguageContextType {
+  currentLanguage: string;
+  setLanguage: (lang: string) => void;
+  t: any;
+}
+
+// Create context with default values
+const LanguageContext = createContext<LanguageContextType>({
+  currentLanguage: 'en',
   setLanguage: () => {},
+  t: en,
 });
 
-// Helper function to get browser language
-const getBrowserLanguage = (): Language => {
-  if (typeof window === 'undefined') return 'en';
-  
-  // Get browser language
-  const browserLang = navigator.language.split('-')[0];
-  
-  // Check if browser language is supported
-  if (browserLang === 'en' || browserLang === 'de' || 
-      browserLang === 'fr' || browserLang === 'es' || 
-      browserLang === 'ru') {
-    return browserLang as Language;
-  }
-  
-  return 'en'; // Default to English
-};
+// Define props for provider
+interface LanguageProviderProps {
+  children: ReactNode;
+}
 
-export const LanguageProvider: React.FC<{children: React.ReactNode}> = ({ children }) => {
-  const [language, setLanguage] = useState<Language>('en');
-  const [isInitialized, setIsInitialized] = useState(false);
+// Language provider component
+export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) => {
+  const [currentLanguage, setCurrentLanguage] = useState<string>('en');
+  const [translations, setTranslations] = useState<any>(en);
 
+  // Effect to load language from localStorage on component mount
   useEffect(() => {
-    // First check if there's a language preference in localStorage
-    const savedLanguage = localStorage.getItem('preferredLanguage');
-    if (savedLanguage && (savedLanguage === 'en' || savedLanguage === 'de' || 
-                          savedLanguage === 'fr' || savedLanguage === 'es' || 
-                          savedLanguage === 'ru')) {
-      setLanguage(savedLanguage as Language);
-    } else {
-      // If no saved preference, use browser language
-      setLanguage(getBrowserLanguage());
+    const storedLanguage = localStorage.getItem('language');
+    if (storedLanguage) {
+      setCurrentLanguage(storedLanguage);
+      switchLanguage(storedLanguage);
     }
-    setIsInitialized(true);
   }, []);
 
-  const handleSetLanguage = (lang: Language) => {
-    setLanguage(lang);
-    localStorage.setItem('preferredLanguage', lang);
-    document.documentElement.lang = lang;
+  // Function to switch language
+  const switchLanguage = (lang: string) => {
+    switch (lang) {
+      case 'en':
+        setTranslations(en);
+        break;
+      case 'de':
+        setTranslations(de);
+        break;
+      case 'es':
+        setTranslations(es);
+        break;
+      case 'fr':
+        setTranslations(fr);
+        break;
+      default:
+        setTranslations(en);
+    }
   };
 
-  // Set document language attribute when language changes
-  useEffect(() => {
-    if (isInitialized) {
-      document.documentElement.lang = language;
-    }
-  }, [language, isInitialized]);
+  // Function to set language and save to localStorage
+  const setLanguage = (lang: string) => {
+    localStorage.setItem('language', lang);
+    setCurrentLanguage(lang);
+    switchLanguage(lang);
+  };
 
   return (
-    <LanguageContext.Provider value={{ language, setLanguage: handleSetLanguage }}>
+    <LanguageContext.Provider value={{ currentLanguage, setLanguage, t: translations }}>
       {children}
     </LanguageContext.Provider>
   );
 };
 
-export const useLanguage = () => {
-  const { language, setLanguage } = useContext(LanguageContext);
-  
-  // Return the translations for the current language with proper typing
-  const t = translations[language] || translations.en;
-  
-  return {
-    language,
-    setLanguage,
-    t
-  };
-};
+// Custom hook for consuming language context
+export const useLanguage = () => useContext(LanguageContext);
+
+// Make sure the language files (en, de, es, fr) include all the necessary properties that are being accessed in the components
+// This ensures that `t.dashboard.profile.loading`, `t.dashboard.profile.createProfile`, etc. are all properly defined

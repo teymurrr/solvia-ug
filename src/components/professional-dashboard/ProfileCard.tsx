@@ -21,12 +21,38 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
 }) => {
   const { t } = useLanguage();
   
+  // Ensure all required properties exist
+  const profileText = t?.dashboard?.profile || {
+    loading: "Loading profile data...",
+    createProfile: "Create Profile",
+    activelySearching: "Actively searching",
+    openToRelocation: "Open to relocation",
+    fspCertified: "FSP Certified",
+    profileCompletion: "Profile completion",
+    location: "Location",
+    notSpecified: "Not specified",
+    profession: "Profession",
+    fspCertificate: "FSP Certificate",
+    yes: "Yes",
+    no: "No",
+    experience: "Experience",
+    at: "at",
+    present: "Present",
+    education: "Education",
+    in: "in",
+    languages: "Languages",
+    about: "About",
+    incompleteProfile: "Your profile is incomplete. Add more information about yourself to attract potential employers.",
+    completeProfile: "Complete Your Profile",
+    updateProfile: "Update Profile"
+  };
+  
   if (!profileData) {
     return (
       <div className="text-center py-6">
-        <p>{t?.dashboard?.profile?.loading || "Loading profile data..."}</p>
+        <p>{profileText.loading || "Loading profile data..."}</p>
         <Button variant="outline" className="mt-4" onClick={onEdit}>
-          {t?.dashboard?.profile?.createProfile || "Create Profile"}
+          {profileText.createProfile || "Create Profile"}
         </Button>
       </div>
     );
@@ -55,7 +81,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
             <div className="flex gap-2">
               {profileData.activelySearching && (
                 <Badge className="bg-green-500">
-                  {t?.dashboard?.profile?.activelySearching || "Actively searching"}
+                  {profileText.activelySearching || "Actively searching"}
                 </Badge>
               )}
               {profileData.openToRelocation && (
@@ -65,7 +91,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
                       <MapPin className="h-5 w-5 text-blue-500" />
                     </TooltipTrigger>
                     <TooltipContent>
-                      <p>{t?.dashboard?.profile?.openToRelocation || "Open to relocation"}</p>
+                      <p>{profileText.openToRelocation || "Open to relocation"}</p>
                     </TooltipContent>
                   </Tooltip>
                 </TooltipProvider>
@@ -77,7 +103,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
                       <Award className="h-5 w-5 text-yellow-500" />
                     </TooltipTrigger>
                     <TooltipContent>
-                      <p>{t?.dashboard?.profile?.fspCertified || "FSP Certified"}</p>
+                      <p>{profileText.fspCertified || "FSP Certified"}</p>
                     </TooltipContent>
                   </Tooltip>
                 </TooltipProvider>
@@ -90,7 +116,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
         <div className="flex flex-col space-y-2">
           <div className="flex justify-between">
             <span className="text-sm font-medium">
-              {t?.dashboard?.profile?.profileCompletion || "Profile completion"}
+              {profileText.profileCompletion || "Profile completion"}
             </span>
             <span className="text-sm font-medium">{profileCompletionPercentage}%</span>
           </div>
@@ -100,23 +126,23 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <h3 className="text-sm font-medium text-muted-foreground">
-              {t?.dashboard?.profile?.location || "Location"}
+              {profileText.location || "Location"}
             </h3>
-            <p>{profileData.location || t?.dashboard?.profile?.notSpecified || "Not specified"}</p>
+            <p>{profileData.location || profileText.notSpecified || "Not specified"}</p>
           </div>
           <div>
             <h3 className="text-sm font-medium text-muted-foreground">
-              {t?.dashboard?.profile?.profession || "Profession"}
+              {profileText.profession || "Profession"}
             </h3>
             <p>{profileData.profession}</p>
           </div>
           <div>
             <h3 className="text-sm font-medium text-muted-foreground">
-              {t?.dashboard?.profile?.fspCertificate || "FSP Certificate"}
+              {profileText.fspCertificate || "FSP Certificate"}
             </h3>
             <p>{profileData.fspCertificate ? 
-              (t?.dashboard?.profile?.yes || "Yes") : 
-              (t?.dashboard?.profile?.no || "No")}
+              (profileText.yes || "Yes") : 
+              (profileText.no || "No")}
             </p>
           </div>
         </div>
@@ -124,15 +150,15 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
         {profileData.experiences && profileData.experiences.length > 0 && (
           <div>
             <h3 className="text-sm font-medium text-muted-foreground">
-              {t?.dashboard?.profile?.experience || "Experience"}
+              {profileText.experience || "Experience"}
             </h3>
             <div className="space-y-2 mt-1">
               {profileData.experiences.map((exp, index) => (
                 <div key={index} className="text-sm">
-                  <p className="font-medium">{exp.role} {t?.dashboard?.profile?.at || "at"} {exp.hospital}</p>
+                  <p className="font-medium">{exp.role} {profileText.at || "at"} {exp.hospital}</p>
                   <p className="text-muted-foreground">
                     {exp.location} | {exp.startDate} - {exp.current ? 
-                      (t?.dashboard?.profile?.present || "Present") : 
+                      (profileText.present || "Present") : 
                       exp.endDate}
                   </p>
                 </div>
@@ -144,15 +170,15 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
         {profileData.education && profileData.education.length > 0 && (
           <div>
             <h3 className="text-sm font-medium text-muted-foreground">
-              {t?.dashboard?.profile?.education || "Education"}
+              {profileText.education || "Education"}
             </h3>
             <div className="space-y-2 mt-1">
               {profileData.education.map((edu, index) => (
                 <div key={index} className="text-sm">
-                  <p className="font-medium">{edu.degree} {t?.dashboard?.profile?.in || "in"} {edu.field}</p>
+                  <p className="font-medium">{edu.degree} {profileText.in || "in"} {edu.field}</p>
                   <p className="text-muted-foreground">
                     {edu.institution} | {edu.startDate} - {edu.current ? 
-                      (t?.dashboard?.profile?.present || "Present") : 
+                      (profileText.present || "Present") : 
                       edu.endDate}
                   </p>
                 </div>
@@ -164,7 +190,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
         {profileData.languages && profileData.languages.length > 0 && (
           <div>
             <h3 className="text-sm font-medium text-muted-foreground">
-              {t?.dashboard?.profile?.languages || "Languages"}
+              {profileText.languages || "Languages"}
             </h3>
             <div className="flex flex-wrap gap-2 mt-1">
               {profileData.languages.map((lang, index) => (
@@ -178,18 +204,18 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
 
         <div>
           <h3 className="text-sm font-medium text-muted-foreground">
-            {t?.dashboard?.profile?.about || "About"}
+            {profileText.about || "About"}
           </h3>
           <p className="text-muted-foreground">
-            {profileData.about || t?.dashboard?.profile?.incompleteProfile || 
+            {profileData.about || profileText.incompleteProfile || 
               "Your profile is incomplete. Add more information about yourself to attract potential employers."}
           </p>
         </div>
 
         <Button variant="default" onClick={onEdit}>
           {!profileData.experiences || profileData.experiences.length === 0
-            ? (t?.dashboard?.profile?.completeProfile || "Complete Your Profile")
-            : (t?.dashboard?.profile?.updateProfile || "Update Profile")}
+            ? (profileText.completeProfile || "Complete Your Profile")
+            : (profileText.updateProfile || "Update Profile")}
         </Button>
       </div>
     </div>
