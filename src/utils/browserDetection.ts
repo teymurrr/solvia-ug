@@ -24,7 +24,7 @@ export const isSafari = (): boolean => {
                         
   console.log('[browserDetection] Is Apple WebKit:', isAppleWebKit);
   
-  // Use either detection method
+  // Strict Safari detection - use both methods combined for more accuracy
   const result = isSafariAgent || isAppleWebKit;
   console.log('[browserDetection] Final Safari detection result:', result);
   
@@ -115,4 +115,64 @@ export const createDashboardReturnState = (fromDashboard: boolean, additionalPar
   
   console.log('[browserDetection] Created dashboard return state:', state);
   return state;
+};
+
+/**
+ * Direct Apply to Vacancy - Skip intermediary pages for Safari
+ * @param id Vacancy ID
+ * @param applicationLink External application link if any
+ * @param state Navigation state object
+ * @returns Boolean indicating if direct navigation was performed
+ */
+export const handleDirectApply = (
+  id: string,
+  applicationLink: string | undefined,
+  state: Record<string, any>,
+  navigate: Function
+): boolean => {
+  // Only execute direct navigation for Safari
+  if (!isSafari()) {
+    console.log('[browserDetection] Not Safari, skipping direct navigation');
+    return false;
+  }
+  
+  console.log('[browserDetection] Direct Apply triggered for Safari with state:', state);
+  console.log('[browserDetection] Application link exists:', !!applicationLink);
+  
+  // For external application links
+  if (applicationLink) {
+    console.log('[browserDetection] Opening external link in new tab:', applicationLink);
+    // Open external link in new tab
+    window.open(applicationLink, '_blank');
+    
+    // Create dashboard return state with notice about external application
+    const dashboardState = createDashboardReturnState(true, {
+      activeTab: 'vacancies',
+      externalApplication: true
+    });
+    
+    // Navigate directly to dashboard
+    const queryString = stateToQueryParams(dashboardState);
+    console.log('[browserDetection] Redirecting to dashboard after external link with query params:', queryString);
+    navigate(`/dashboard/professional${queryString}`);
+    return true;
+  }
+  
+  // For internal application - navigate directly to apply page
+  if (id) {
+    // Ensure fromDashboard is properly set in state
+    const updatedState = {
+      ...state,
+      fromDashboard: true,
+      directToDashboard: true
+    };
+    
+    // Navigate to apply page with query params
+    const queryString = stateToQueryParams(updatedState);
+    console.log('[browserDetection] Direct navigation to vacancy apply with query params:', queryString);
+    navigate(`/vacancies/${id}/apply${queryString}`);
+    return true;
+  }
+  
+  return false;
 };

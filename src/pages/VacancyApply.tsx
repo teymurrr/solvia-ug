@@ -113,6 +113,19 @@ const VacancyApply = () => {
     fetchVacancy();
   }, [id, toast]);
 
+  // Update form values when profile data loads
+  useEffect(() => {
+    if (profileData) {
+      form.reset({
+        firstName: profileData.firstName || '',
+        lastName: profileData.lastName || '',
+        email: profileData.email || '',
+        phone: profileData.phone || '', 
+        coverLetter: '',
+      });
+    }
+  }, [profileData, form]);
+
   const form = useForm<ApplicationFormValues>({
     resolver: zodResolver(applicationSchema),
     defaultValues: {
@@ -124,19 +137,6 @@ const VacancyApply = () => {
     },
   });
 
-  // Update form values when profile data loads
-  useEffect(() => {
-    if (profileData) {
-      form.reset({
-        firstName: profileData.firstName || '',
-        lastName: profileData.lastName || '',
-        email: profileData.email || '',
-        phone: '', // Default to empty string since phone might not exist in profileData
-        coverLetter: '',
-      });
-    }
-  }, [profileData, form]);
-
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       setCvFile(e.target.files[0]);
@@ -146,7 +146,7 @@ const VacancyApply = () => {
   const handleCancel = () => {
     console.log('[VacancyApply] Handling cancel with fromDashboard:', fromDashboard, 'directToDashboard:', directToDashboard);
     
-    // IMPORTANT CHANGE: Always go back to dashboard if fromDashboard or directToDashboard is true
+    // IMPORTANT: Always go back to dashboard if fromDashboard or directToDashboard is true
     if (fromDashboard || directToDashboard) {
       // Create a state object for dashboard navigation
       const state = createDashboardReturnState(true, {
@@ -227,15 +227,12 @@ const VacancyApply = () => {
         throw error;
       }
       
-      // Future enhancement: Upload CV file to Supabase storage
-      // This would require setting up storage buckets
-      
       toast({
         title: "Application submitted",
         description: "Your application has been successfully submitted",
       });
       
-      // IMPORTANT CHANGE: Always navigate back to the dashboard after successful application
+      // ALWAYS navigate back to the dashboard after successful application
       // Create a state object for dashboard navigation
       const state = createDashboardReturnState(true, {
         activeTab: 'saved',
@@ -265,31 +262,35 @@ const VacancyApply = () => {
     }
   };
 
-  // Handle redirection to external application link
+  // Handle redirection to external application link - CRITICAL for Safari
   useEffect(() => {
+    // If we have a vacancy with an external link and haven't redirected yet
     if (vacancy?.application_link && !redirected) {
-      setRedirected(true); // Mark as redirected to prevent infinite loop
+      // Mark as redirected to prevent infinite loop
+      setRedirected(true); 
       console.log('[VacancyApply] External application link found, opening:', vacancy.application_link);
+      
+      // Open external link in new tab
       window.open(vacancy.application_link, '_blank');
       
-      // IMPORTANT CHANGE: Always redirect to dashboard after opening external application
-      setTimeout(() => {
-        // Create a state object for dashboard navigation
-        const state = createDashboardReturnState(true, {
-          activeTab: 'vacancies',
-          externalApplication: true,
-          vacancyTitle: vacancy.title
-        });
-        
-        if (isSafari()) {
-          const queryString = stateToQueryParams(state);
-          console.log('[VacancyApply] External application: Navigating to dashboard with query params:', queryString);
-          navigate(`/dashboard/professional${queryString}`);
-        } else {
-          console.log('[VacancyApply] External application: Navigating to dashboard with state object');
-          navigate('/dashboard/professional', { state });
-        }
-      }, 100); // Small timeout to ensure window.open completes
+      // IMMEDIATELY redirect back to dashboard (don't wait for user interaction)
+      console.log('[VacancyApply] Immediately redirecting back to dashboard after opening external link');
+      
+      // Create a state object for dashboard navigation
+      const state = createDashboardReturnState(true, {
+        activeTab: 'vacancies',
+        externalApplication: true,
+        vacancyTitle: vacancy.title
+      });
+      
+      if (isSafari()) {
+        const queryString = stateToQueryParams(state);
+        console.log('[VacancyApply] External application: Navigating to dashboard with query params:', queryString);
+        navigate(`/dashboard/professional${queryString}`);
+      } else {
+        console.log('[VacancyApply] External application: Navigating to dashboard with state object');
+        navigate('/dashboard/professional', { state });
+      }
     }
   }, [vacancy, navigate, redirected]);
 
@@ -341,6 +342,7 @@ const VacancyApply = () => {
             <CardContent>
               <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                  {/* Form fields - keep structure for consistency */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <FormField
                       control={form.control}

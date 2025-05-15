@@ -5,7 +5,12 @@ import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { FileCheck } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
-import { isSafari, stateToQueryParams, createDashboardReturnState } from '@/utils/browserDetection';
+import { 
+  isSafari, 
+  stateToQueryParams, 
+  createDashboardReturnState, 
+  handleDirectApply 
+} from '@/utils/browserDetection';
 
 interface VacancyFooterProps {
   id: string;
@@ -77,6 +82,26 @@ const VacancyFooter: React.FC<VacancyFooterProps> = ({
     const dashboardParam = isDashboardCard || fromDashboard ? true : false;
     console.log('[VacancyFooter] Is from dashboard:', dashboardParam);
     
+    // Create state object with all relevant information
+    const state = { 
+      fromDashboard: dashboardParam, 
+      fromLandingPage,
+      searchQuery,
+      currentPage,
+      selectedFilters,
+      // Add this to ensure we can go back to dashboard directly
+      directToDashboard: dashboardParam
+    };
+    
+    // SAFARI SPECIFIC HANDLING - Direct navigation for Safari
+    // This will skip the vacancy details page and go straight to application for Safari
+    const didHandleSafari = handleDirectApply(id, applicationLink, state, navigate);
+    if (didHandleSafari) {
+      console.log('[VacancyFooter] Safari handled with direct navigation');
+      return;
+    }
+    
+    // STANDARD FLOW FOR OTHER BROWSERS
     // Handle different application scenarios
     if (applicationLink) {
       // For external applications, directly open link in new tab
@@ -91,45 +116,12 @@ const VacancyFooter: React.FC<VacancyFooterProps> = ({
         });
         
         console.log('[VacancyFooter] Redirecting back to dashboard after external link');
-        const isSafariDetected = isSafari();
-        
-        if (isSafariDetected) {
-          // For Safari, use query parameters
-          const queryString = stateToQueryParams(state);
-          console.log('[VacancyFooter] Safari detected, navigating with query params:', queryString);
-          navigate(`/dashboard/professional${queryString}`);
-        } else {
-          // For other browsers, use state object
-          console.log('[VacancyFooter] Using state object for navigation');
-          navigate('/dashboard/professional', { state });
-        }
+        navigate('/dashboard/professional', { state });
       }
     } else {
       // For internal applications, navigate to application page
-      // Create state object with all relevant information
-      const state = { 
-        fromDashboard: dashboardParam, 
-        fromLandingPage,
-        searchQuery,
-        currentPage,
-        selectedFilters,
-        // Add this to ensure we can go back to dashboard directly
-        directToDashboard: dashboardParam
-      };
-      
       console.log('[VacancyFooter] Navigating to application page with state:', state);
-      const isSafariDetected = isSafari();
-      
-      if (isSafariDetected) {
-        // For Safari, use query params instead of state
-        const queryString = stateToQueryParams(state);
-        console.log('[VacancyFooter] Safari detected, using query params for application:', queryString);
-        navigate(`/vacancies/${id}/apply${queryString}`);
-      } else {
-        // For other browsers, use the state object
-        console.log('[VacancyFooter] Using state object for application navigation');
-        navigate(`/vacancies/${id}/apply`, { state });
-      }
+      navigate(`/vacancies/${id}/apply`, { state });
     }
   };
 
