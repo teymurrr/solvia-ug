@@ -12,12 +12,12 @@ import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from '
 import { useForm } from 'react-hook-form';
 import { useProfileData } from '@/components/professional-profile/hooks/useProfileData';
 import { ArrowLeft, Upload, FileUp, Check } from 'lucide-react';
-import { Link } from 'react-router-dom';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { Vacancy } from '@/hooks/useVacancies';
+import { queryParamsToState } from '@/utils/browserDetection';
 
 // Create schema for form validation
 const applicationSchema = z.object({
@@ -43,12 +43,17 @@ const VacancyApply = () => {
   const [loadingVacancy, setLoadingVacancy] = useState(true);
   const [redirected, setRedirected] = useState(false);
   
+  // Combine state from both React Router's location.state and URL query parameters
+  // This ensures compatibility with both Safari and other browsers
+  const routerState = location.state || {};
+  const queryState = queryParamsToState();
+  
   // Check if user came from the dashboard
-  const fromDashboard = location.state?.fromDashboard || false;
+  const fromDashboard = routerState.fromDashboard || queryState.fromDashboard === 'true';
   // Preserve search state and pagination from the dashboard
-  const searchQuery = location.state?.searchQuery || '';
-  const currentPage = location.state?.currentPage || 1;
-  const selectedFilters = location.state?.selectedFilters || {};
+  const searchQuery = routerState.searchQuery || queryState.searchQuery || '';
+  const currentPage = Number(routerState.currentPage || queryState.currentPage || 1);
+  const selectedFilters = routerState.selectedFilters || {}; // Complex objects won't be in query params
 
   // Fetch the vacancy details from Supabase
   useEffect(() => {
@@ -110,16 +115,38 @@ const VacancyApply = () => {
 
   const handleCancel = () => {
     if (fromDashboard) {
-      navigate('/dashboard/professional', {
-        state: { 
-          activeTab: 'vacancies',
-          searchQuery,
-          currentPage,
-          selectedFilters
-        }
-      });
+      // For Safari compatibility
+      if (window.location.search) {
+        // If we have query params (Safari), use them again for navigation back
+        navigate('/dashboard/professional', {
+          state: { 
+            activeTab: 'vacancies',
+            searchQuery,
+            currentPage,
+            selectedFilters
+          }
+        });
+      } else {
+        // For other browsers, use state
+        navigate('/dashboard/professional', {
+          state: { 
+            activeTab: 'vacancies',
+            searchQuery,
+            currentPage,
+            selectedFilters
+          }
+        });
+      }
     } else {
-      navigate(`/vacancies/${id}`);
+      // When navigating back to vacancy detail
+      if (window.location.search) {
+        // If we have query params (Safari), use them again for navigation back
+        const queryString = window.location.search;
+        navigate(`/vacancies/${id}${queryString}`);
+      } else {
+        // For other browsers, use state
+        navigate(`/vacancies/${id}`);
+      }
     }
   };
 

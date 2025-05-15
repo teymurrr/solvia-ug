@@ -1,9 +1,11 @@
+
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { FileCheck } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
+import { isSafari, stateToQueryParams } from '@/utils/browserDetection';
 
 interface VacancyFooterProps {
   id: string;
@@ -66,16 +68,24 @@ const VacancyFooter: React.FC<VacancyFooterProps> = ({
       // Open external application link in a new tab
       window.open(applicationLink, '_blank');
     } else {
-      // Navigate to internal application page with state to track origin
-      navigate(`/vacancies/${id}/apply`, {
-        state: { 
-          fromDashboard,
-          fromLandingPage,
-          searchQuery,
-          currentPage,
-          selectedFilters
-        }
-      });
+      // Create state object with all relevant information
+      const state = { 
+        fromDashboard,
+        fromLandingPage,
+        searchQuery,
+        currentPage,
+        selectedFilters
+      };
+      
+      // Handle Safari browser differently
+      if (isSafari()) {
+        // For Safari, use query params instead of state
+        const queryString = stateToQueryParams(state);
+        navigate(`/vacancies/${id}/apply${queryString}`);
+      } else {
+        // For other browsers, use the state object
+        navigate(`/vacancies/${id}/apply`, { state });
+      }
     }
   };
 
@@ -90,15 +100,24 @@ const VacancyFooter: React.FC<VacancyFooterProps> = ({
       return;
     }
     
-    navigate(`/vacancies/${id}`, {
-      state: { 
-        fromDashboard,
-        fromLandingPage,
-        searchQuery,
-        currentPage,
-        selectedFilters
-      }
-    });
+    // Create state object with all relevant information
+    const state = { 
+      fromDashboard,
+      fromLandingPage,
+      searchQuery,
+      currentPage,
+      selectedFilters
+    };
+    
+    // Handle Safari browser differently
+    if (isSafari()) {
+      // For Safari, use query params instead of state
+      const queryString = stateToQueryParams(state);
+      navigate(`/vacancies/${id}${queryString}`);
+    } else {
+      // For other browsers, use the state object
+      navigate(`/vacancies/${id}`, { state });
+    }
   };
 
   // Adjust styling based on whether it's a dashboard card

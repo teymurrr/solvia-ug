@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
 import MainLayout from '@/components/MainLayout';
@@ -6,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Briefcase, MapPin, Calendar, Building, Medal, Clock, ArrowLeft, Heart } from 'lucide-react';
+import { isSafari, stateToQueryParams, queryParamsToState } from '@/utils/browserDetection';
 
 // This would come from an API in a real application
 const getVacancyById = (id: string) => {
@@ -57,12 +59,17 @@ const VacancyDetail = () => {
   const vacancy = getVacancyById(id || '');
   const [isSaved, setIsSaved] = useState(false);
   
+  // Combine state from both React Router's location.state and URL query parameters
+  // This ensures compatibility with both Safari and other browsers
+  const routerState = location.state || {};
+  const queryState = queryParamsToState();
+  
   // Enhanced navigation state tracking
-  const fromDashboard = location.state?.fromDashboard || false;
-  const fromLandingPage = location.state?.fromLandingPage || false;
-  const searchQuery = location.state?.searchQuery || '';
-  const currentPage = location.state?.currentPage || 1;
-  const selectedFilters = location.state?.selectedFilters || {};
+  const fromDashboard = routerState.fromDashboard || queryState.fromDashboard === 'true';
+  const fromLandingPage = routerState.fromLandingPage || queryState.fromLandingPage === 'true';
+  const searchQuery = routerState.searchQuery || queryState.searchQuery || '';
+  const currentPage = Number(routerState.currentPage || queryState.currentPage || 1);
+  const selectedFilters = routerState.selectedFilters || {}; // Complex objects won't be in query params
   
   // Enhanced navigation that respects where the user came from
   const handleGoBack = () => {
@@ -147,15 +154,24 @@ const VacancyDetail = () => {
 
   // Handle apply button click - preserve source origin and search state when applying
   const handleApply = () => {
-    navigate(`/vacancies/${id}/apply`, { 
-      state: { 
-        fromDashboard,
-        fromLandingPage,
-        searchQuery,
-        currentPage,
-        selectedFilters
-      }
-    });
+    // Create state object with all navigation context
+    const state = { 
+      fromDashboard,
+      fromLandingPage,
+      searchQuery,
+      currentPage,
+      selectedFilters
+    };
+    
+    // Handle Safari browser differently
+    if (isSafari()) {
+      // For Safari, use query params instead of state
+      const queryString = stateToQueryParams(state);
+      navigate(`/vacancies/${id}/apply${queryString}`);
+    } else {
+      // For other browsers, use the state object
+      navigate(`/vacancies/${id}/apply`, { state });
+    }
   };
 
   return (
