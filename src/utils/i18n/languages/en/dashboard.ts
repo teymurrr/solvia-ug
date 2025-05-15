@@ -1,5 +1,5 @@
 
-export default {
+export const dashboard = {
   profile: {
     title: "Profile",
     description: "Your professional profile",
@@ -32,6 +32,8 @@ export default {
     certificateUploaded: "Certificate uploaded"
   },
   saved: {
+    title: "Saved Items",
+    description: "Vacancies you've saved and applied to",
     savedVacancies: "Saved Vacancies",
     appliedVacancies: "Applied Vacancies",
     noSaved: "No saved vacancies",

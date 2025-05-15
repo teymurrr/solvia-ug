@@ -2,10 +2,10 @@
 import React, { createContext, useState, useContext, useEffect, ReactNode } from 'react';
 
 // Import language files
-import en from '../utils/i18n/languages/en/index';
-import de from '../utils/i18n/languages/de/index';
-import es from '../utils/i18n/languages/es/index';
-import fr from '../utils/i18n/languages/fr/index';
+import { en } from '../utils/i18n/languages/en/index';
+import { de } from '../utils/i18n/languages/de/index';
+import { es } from '../utils/i18n/languages/es/index';
+import { fr } from '../utils/i18n/languages/fr/index';
 
 // Define context interfaces
 interface LanguageContextType {
@@ -76,6 +76,3 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
 
 // Custom hook for consuming language context
 export const useLanguage = () => useContext(LanguageContext);
-
-// Make sure the language files (en, de, es, fr) include all the necessary properties that are being accessed in the components
-// This ensures that `t.dashboard.profile.loading`, `t.dashboard.profile.createProfile`, etc. are all properly defined

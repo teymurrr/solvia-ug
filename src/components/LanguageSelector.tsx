@@ -13,10 +13,10 @@ import { Language, languageNames } from '@/utils/i18n/translations';
 import { toast } from '@/hooks/use-toast';
 
 export const LanguageSelector = () => {
-  const { language, setLanguage } = useLanguage();
+  const { currentLanguage, setLanguage } = useLanguage();
 
   const handleLanguageChange = (newLang: Language) => {
-    if (newLang === language) return;
+    if (newLang === currentLanguage) return;
     
     setLanguage(newLang);
     
@@ -41,7 +41,7 @@ export const LanguageSelector = () => {
           <DropdownMenuItem
             key={lang}
             onClick={() => handleLanguageChange(lang as Language)}
-            className={language === lang ? 'bg-muted' : ''}
+            className={currentLanguage === lang ? 'bg-muted' : ''}
           >
             {languageNames[lang]}
           </DropdownMenuItem>
