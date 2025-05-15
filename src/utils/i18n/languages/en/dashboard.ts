@@ -36,7 +36,29 @@ export const dashboard = {
   postedVacancies: 'Posted Vacancies',
   noPostedVacancies: 'No posted vacancies',
   createVacancy: 'Create Vacancy',
-  applications: 'Applications',
+  applications: {
+    pending: 'Pending Review',
+    reviewing: 'Under Review',
+    interview: 'Interview',
+    offered: 'Offer Extended',
+    rejected: 'Rejected',
+    accepted: 'Accepted',
+    withdrawn: 'Withdrawn',
+    viewDetails: 'View Details',
+    applicationDetails: 'Application Details',
+    reviewApplication: 'Review the application for',
+    noEmailProvided: 'No email provided',
+    appliedFor: 'Applied for',
+    coverLetter: 'Cover Letter',
+    markPending: 'Mark Pending',
+    startReview: 'Start Review',
+    reject: 'Reject',
+    accept: 'Accept',
+    markAsPending: 'Mark as Pending',
+    updateStatus: 'Update status',
+    appliedOn: 'Applied on',
+    unknown: 'Unknown'
+  },
   noApplications: 'No applications',
   viewAllApplications: 'View all applications',
   candidate: 'Candidate',
@@ -102,17 +124,6 @@ export const dashboard = {
   credentialId: 'Credential ID',
   credentialURL: 'Credential URL',
   
-  // Application statuses
-  applicationStatus: {
-    pending: 'Pending',
-    reviewing: 'Reviewing',
-    interview: 'Interview',
-    offered: 'Offered',
-    rejected: 'Rejected',
-    accepted: 'Accepted',
-    withdrawn: 'Withdrawn'
-  },
-  
   // Vacancy Form
   vacancyForm: {
     title: 'Vacancy Title',
@@ -152,5 +163,19 @@ export const dashboard = {
       'Connect with top hospitals',
       'Accelerate your career'
     ]
+  },
+
+  // Profile-related properties
+  profile: {
+    title: 'Your Profile',
+    description: 'How you appear to institutions'
+  },
+
+  // Vacancies-related properties for FilterBar component
+  vacancies: {
+    search: 'Search',
+    location: 'Location',
+    specialty: 'Specialty',
+    type: 'Type'
   }
 };

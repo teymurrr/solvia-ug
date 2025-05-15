@@ -83,6 +83,7 @@ const ApplicationCard: React.FC<ApplicationCardProps> = ({ application, onUpdate
   };
   
   const getInitials = (name: string) => {
+    if (!name) return 'NA';
     return name
       .split(' ')
       .map(part => part[0])
@@ -91,20 +92,28 @@ const ApplicationCard: React.FC<ApplicationCardProps> = ({ application, onUpdate
       .substring(0, 2);
   };
 
+  const fullName = application.professional ? 
+    `${application.professional.first_name} ${application.professional.last_name}` : 
+    application.applicantName || 'Unknown Applicant';
+
+  const photoUrl = application.professional?.profile_image || application.applicantPhoto;
+  const vacancyTitle = application.vacancy?.title || application.vacancyTitle || 'Unknown Position';
+  const appliedDate = application.application_date || application.appliedDate || 'Unknown Date';
+
   return (
     <Card className="overflow-hidden transition-all hover:shadow-md">
       <CardContent className="p-0">
         <div className="p-4 flex flex-col sm:flex-row items-start sm:items-center gap-4">
           <Avatar className="h-12 w-12">
-            <AvatarImage src={application.applicantPhoto} alt={application.applicantName} />
-            <AvatarFallback>{getInitials(application.applicantName || '')}</AvatarFallback>
+            <AvatarImage src={photoUrl} alt={fullName} />
+            <AvatarFallback>{getInitials(fullName)}</AvatarFallback>
           </Avatar>
           
           <div className="flex-1 min-w-0">
-            <h3 className="font-semibold text-lg truncate">{application.applicantName}</h3>
-            <p className="text-muted-foreground text-sm">{application.vacancyTitle}</p>
+            <h3 className="font-semibold text-lg truncate">{fullName}</h3>
+            <p className="text-muted-foreground text-sm">{vacancyTitle}</p>
             <div className="flex items-center gap-4 mt-1">
-              <span className="text-xs text-muted-foreground">{t?.dashboard?.applications?.appliedOn || "Applied"}: {application.appliedDate}</span>
+              <span className="text-xs text-muted-foreground">{t?.dashboard?.applications?.appliedOn || "Applied"}: {appliedDate}</span>
               {getStatusBadge()}
             </div>
           </div>
@@ -124,19 +133,19 @@ const ApplicationCard: React.FC<ApplicationCardProps> = ({ application, onUpdate
                     {t?.dashboard?.applications?.applicationDetails || "Application Details"}
                   </DialogTitle>
                   <DialogDescription>
-                    {t?.dashboard?.applications?.reviewApplication || "Review the application for"} {application.vacancyTitle}
+                    {t?.dashboard?.applications?.reviewApplication || "Review the application for"} {vacancyTitle}
                   </DialogDescription>
                 </DialogHeader>
                 
                 <div className="grid gap-6">
                   <div className="flex items-center gap-4">
                     <Avatar className="h-16 w-16">
-                      <AvatarImage src={application.applicantPhoto} alt={application.applicantName} />
-                      <AvatarFallback>{getInitials(application.applicantName || '')}</AvatarFallback>
+                      <AvatarImage src={photoUrl} alt={fullName} />
+                      <AvatarFallback>{getInitials(fullName)}</AvatarFallback>
                     </Avatar>
                     
                     <div>
-                      <h3 className="font-semibold text-lg">{application.applicantName}</h3>
+                      <h3 className="font-semibold text-lg">{fullName}</h3>
                       <div className="flex items-center gap-2 mt-1">
                         {getStatusIcon()}
                         <span className="text-sm">{application.status.charAt(0).toUpperCase() + application.status.slice(1)}</span>
@@ -150,17 +159,17 @@ const ApplicationCard: React.FC<ApplicationCardProps> = ({ application, onUpdate
                       <span>{application.applicantEmail || t?.dashboard?.applications?.noEmailProvided || 'No email provided'}</span>
                     </div>
                     
-                    {application.applicantPhone && (
+                    {(application.applicantPhone || application.professional?.phone) && (
                       <div className="flex items-center gap-2 text-sm">
                         <Phone className="h-4 w-4 text-muted-foreground" />
-                        <span>{application.applicantPhone}</span>
+                        <span>{application.applicantPhone || application.professional?.phone}</span>
                       </div>
                     )}
                   </div>
                   
                   <div>
                     <h4 className="font-medium mb-2">{t?.dashboard?.applications?.appliedFor || "Applied for"}:</h4>
-                    <p className="text-sm bg-muted p-2 rounded">{application.vacancyTitle}</p>
+                    <p className="text-sm bg-muted p-2 rounded">{vacancyTitle}</p>
                   </div>
                   
                   {application.coverLetter && (

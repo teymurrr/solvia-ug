@@ -36,7 +36,29 @@ export const dashboard = {
   postedVacancies: 'Опубликованные вакансии',
   noPostedVacancies: 'Нет опубликованных вакансий',
   createVacancy: 'Создать вакансию',
-  applications: 'Заявки',
+  applications: {
+    pending: 'Ожидает рассмотрения',
+    reviewing: 'На рассмотрении',
+    interview: 'Интервью',
+    offered: 'Предложение получено',
+    rejected: 'Отклонено',
+    accepted: 'Принято',
+    withdrawn: 'Отозвано',
+    viewDetails: 'Посмотреть детали',
+    applicationDetails: 'Детали заявки',
+    reviewApplication: 'Рассмотреть заявку на',
+    noEmailProvided: 'Email не указан',
+    appliedFor: 'Подано на',
+    coverLetter: 'Сопроводительное письмо',
+    markPending: 'Отметить как ожидающее',
+    startReview: 'Начать рассмотрение',
+    reject: 'Отклонить',
+    accept: 'Принять',
+    markAsPending: 'Отметить как ожидающее',
+    updateStatus: 'Обновить статус',
+    appliedOn: 'Подано',
+    unknown: 'Неизвестно'
+  },
   noApplications: 'Нет заявок',
   viewAllApplications: 'Просмотреть все заявки',
   candidate: 'Кандидат',
@@ -138,5 +160,19 @@ export const dashboard = {
       'Свяжитесь с ведущими больницами',
       'Ускорьте свою карьеру'
     ]
+  },
+
+  // Profile-related properties
+  profile: {
+    title: 'Ваш профиль',
+    description: 'Как вас видят учреждения'
+  },
+
+  // Vacancies-related properties for FilterBar component
+  vacancies: {
+    search: 'Поиск',
+    location: 'Местоположение',
+    specialty: 'Специальность',
+    type: 'Тип'
   }
 };

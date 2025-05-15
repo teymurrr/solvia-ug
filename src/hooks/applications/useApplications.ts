@@ -1,13 +1,13 @@
 
 import { useMemo } from 'react';
-import { Application } from './types';
+import { Application, ApplicationStatus } from './types';
 import { useFetchApplications } from './useFetchApplications';
 import { useApplicationFilters } from './useApplicationFilters';
 import { useUpdateApplicationStatus } from './useUpdateApplicationStatus';
 
 export const useApplications = () => {
-  const { applications, loading, error } = useFetchApplications();
-  const { filteredApplications, searchQuery, filters, handleSearchQueryChange, handleFilterChange } = useApplicationFilters(applications);
+  const { applications, loading, error, refreshApplications } = useFetchApplications();
+  const { filteredApplications, searchQuery, filters, handleSearchQueryChange, handleFilterChange, updateApplicationFilters } = useApplicationFilters(applications);
   const { updateApplicationStatus, submitting } = useUpdateApplicationStatus();
   
   const applicationsByStatus = useMemo(() => {
@@ -30,17 +30,10 @@ export const useApplications = () => {
     return result;
   }, [filteredApplications]);
 
-  // Add functions for refreshing applications and updating filters
-  const refreshApplications = async () => {
+  // Function for refreshing applications, now properly exported
+  const handleRefreshApplications = async () => {
     console.log('Refreshing applications...');
-    // This would typically call a refresh method from useFetchApplications
-    // For now, we'll just log it
-  };
-
-  const updateApplicationFilters = (newFilters: any) => {
-    console.log('Updating application filters:', newFilters);
-    // This would update filters in the useApplicationFilters hook
-    // For now, we'll just log it
+    return refreshApplications();
   };
 
   return {
@@ -54,7 +47,7 @@ export const useApplications = () => {
     loading,
     error,
     updateApplicationStatus,
-    refreshApplications,
+    refreshApplications: handleRefreshApplications,
     updateApplicationFilters,
     submitting
   };

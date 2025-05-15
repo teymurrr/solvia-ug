@@ -19,9 +19,23 @@ export interface Application {
     specialty?: string;
     profile_image?: string;
   };
+  // Additional properties used in ApplicationCard
+  applicantName?: string;
+  applicantEmail?: string;
+  applicantPhone?: string;
+  applicantPhoto?: string;
+  vacancyTitle?: string;
+  appliedDate?: string;
+  coverLetter?: string;
+  cvFileName?: string;
 }
 
 export interface ApplicationFilter {
+  status: string;
+  date?: string; // Make date optional to match usage
+}
+
+export interface ApplicationFilters {
   status: string;
   date?: string;
 }

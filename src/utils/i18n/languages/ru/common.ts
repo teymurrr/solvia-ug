@@ -21,5 +21,8 @@ export const common = {
   saving: "Сохранение...",
   apply: "Подать заявку",
   save: "Сохранить",
-  remove: "Удалить"
+  remove: "Удалить",
+  countries: "Страны",
+  viewMore: "Подробнее",
+  forEmployers: "Работодателям"
 };

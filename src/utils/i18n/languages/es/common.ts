@@ -21,5 +21,8 @@ export const common = {
   saving: "Guardando...",
   apply: "Aplicar",
   save: "Guardar",
-  remove: "Eliminar"
+  remove: "Eliminar",
+  countries: "Países",
+  viewMore: "Ver más",
+  forEmployers: "Para empleadores"
 };

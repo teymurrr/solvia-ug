@@ -10,7 +10,7 @@ export interface DashboardTranslations {
     findTalent: string;
     rotatingPhrases: string[];
   };
-  vacancies: {
+  vacancies?: {
     title: string;
     subtitle?: string;
     viewAll: string;
@@ -34,8 +34,10 @@ export interface DashboardTranslations {
     department?: string;
     description?: string;
     requirements?: string;
+    specialty?: string;
+    type?: string;
   };
-  professionals: {
+  professionals?: {
     title: string;
     subtitle: string;
     viewAll: string;
@@ -73,7 +75,7 @@ export interface DashboardTranslations {
     readMore: string;
     noPosts: string;
   };
-  contact: {
+  contact?: {
     title: string;
     subtitle: string;
     contactUs: string;
@@ -85,7 +87,7 @@ export interface DashboardTranslations {
     success?: string;
     error?: string;
   };
-  applications: {
+  applications?: {
     pending: string;
     reviewing: string;
     accepted: string;
@@ -104,6 +106,9 @@ export interface DashboardTranslations {
     updateStatus: string;
     appliedOn: string;
     unknown: string;
+    interview?: string;
+    offered?: string;
+    withdrawn?: string;
   };
   profile?: {
     title: string;
@@ -190,6 +195,45 @@ export interface DashboardTranslations {
   // Added missing properties
   fspCertificate?: string;
   optional?: string;
-  testimonials?: any; // Added for RU dashboard compatibility
-  email?: string; // Added for compatibility
+  description?: string;
+  createProfile?: string;
+  completeProfile?: string;
+  updateProfile?: string;
+  loading?: string;
+  editProfile?: string;
+  saveProfile?: string;
+  activelySearching?: string;
+  openToRelocation?: string;
+  email?: string;
+  applicationStatus?: {
+    pending: string;
+    reviewing: string;
+    interview: string;
+    offered: string;
+    rejected: string;
+    accepted: string;
+    withdrawn: string;
+  };
+  vacancyForm?: {
+    title: string;
+    location: string;
+    city: string;
+    country: string;
+    department: string;
+    jobType: string;
+    contractType: string;
+    salary: string;
+    description: string;
+    requirements: string;
+    addRequirement: string;
+    removeRequirement: string;
+    submit: string;
+    update: string;
+    cancel: string;
+    success: string;
+    error: string;
+  };
+  profileUpdated?: string;
+  profileError?: string;
+  incompleteProfile?: string;
 }

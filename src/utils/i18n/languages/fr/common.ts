@@ -21,5 +21,8 @@ export const common = {
   saving: "Enregistrement...",
   apply: "Postuler",
   save: "Enregistrer",
-  remove: "Supprimer"
+  remove: "Supprimer",
+  countries: "Pays",
+  viewMore: "Voir plus",
+  forEmployers: "Pour les employeurs"
 };

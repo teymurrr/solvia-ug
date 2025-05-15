@@ -36,7 +36,29 @@ export const dashboard = {
   postedVacancies: 'Veröffentlichte Stellen',
   noPostedVacancies: 'Keine veröffentlichten Stellen',
   createVacancy: 'Stelle erstellen',
-  applications: 'Bewerbungen',
+  applications: {
+    pending: 'Ausstehend',
+    reviewing: 'In Überprüfung',
+    interview: 'Interview',
+    offered: 'Angeboten',
+    rejected: 'Abgelehnt',
+    accepted: 'Akzeptiert',
+    withdrawn: 'Zurückgezogen',
+    viewDetails: 'Details anzeigen',
+    applicationDetails: 'Bewerbungsdetails',
+    reviewApplication: 'Bewerbung prüfen für',
+    noEmailProvided: 'Keine E-Mail angegeben',
+    appliedFor: 'Beworben für',
+    coverLetter: 'Anschreiben',
+    markPending: 'Als ausstehend markieren',
+    startReview: 'Prüfung beginnen',
+    reject: 'Ablehnen',
+    accept: 'Akzeptieren',
+    markAsPending: 'Als ausstehend markieren',
+    updateStatus: 'Status aktualisieren',
+    appliedOn: 'Beworben am',
+    unknown: 'Unbekannt'
+  },
   noApplications: 'Keine Bewerbungen',
   viewAllApplications: 'Alle Bewerbungen anzeigen',
   candidate: 'Kandidat',
@@ -77,7 +99,6 @@ export const dashboard = {
   noEducation: 'Keine Ausbildung hinzugefügt',
   degree: 'Abschluss',
   field: 'Fachgebiet',
-  institution: 'Institution',
   
   // Language section
   languages: 'Sprachen',
@@ -151,5 +172,19 @@ export const dashboard = {
       'Verbinden Sie sich mit Top-Krankenhäusern',
       'Beschleunigen Sie Ihre Karriere'
     ]
+  },
+
+  // Profile-related properties
+  profile: {
+    title: 'Ihr Profil',
+    description: 'Wie Sie Institutionen erscheinen'
+  },
+
+  // Vacancies-related properties for FilterBar component
+  vacancies: {
+    search: 'Suchen',
+    location: 'Standort',
+    specialty: 'Fachgebiet',
+    type: 'Art'
   }
 };

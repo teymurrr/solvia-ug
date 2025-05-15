@@ -34,5 +34,7 @@ export const common = {
   forEmployers: 'For Employers',
   countries: 'Countries',
   viewMore: 'View More',
-  saving: 'Saving...'
+  saving: 'Saving...',
+  logout: 'Logout',
+  messages: 'Messages'
 };
