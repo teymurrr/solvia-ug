@@ -30,7 +30,7 @@ export const useApplications = () => {
     return result;
   }, [filteredApplications]);
 
-  // Function for refreshing applications, now properly exported
+  // Function for refreshing applications, now properly typed
   const handleRefreshApplications = async () => {
     console.log('Refreshing applications...');
     return await refreshApplications();

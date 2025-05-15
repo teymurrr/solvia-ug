@@ -11,7 +11,10 @@ export const isSafari = (): boolean => {
   const userAgent = navigator.userAgent.toLowerCase();
   // More precise Safari detection - checks for Safari but not Chrome
   // (Chrome includes Safari in its user agent string)
-  return userAgent.includes('safari') && !userAgent.includes('chrome');
+  const isSafariAgent = userAgent.includes('safari') && !userAgent.includes('chrome');
+  console.log('Browser detection - User Agent:', userAgent);
+  console.log('Is Safari detected:', isSafariAgent);
+  return isSafariAgent;
 };
 
 /**
@@ -36,6 +39,7 @@ export const stateToQueryParams = (state: Record<string, any>): string => {
   });
   
   const queryString = params.toString();
+  console.log('Generated query string:', queryString ? `?${queryString}` : '');
   return queryString ? `?${queryString}` : '';
 };
 
@@ -75,5 +79,6 @@ export const queryParamsToState = (): Record<string, any> => {
     }
   });
   
+  console.log('Extracted state from query params:', state);
   return state;
 };

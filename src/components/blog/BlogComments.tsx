@@ -49,7 +49,7 @@ const BlogComments: React.FC<BlogCommentsProps> = ({ blogPostId }) => {
                 <div key={comment.id} className="border-b pb-6">
                   <div className="flex items-center justify-between mb-2">
                     <div className="font-semibold">
-                      {comment.author?.first_name || 'Anonymous'} {comment.author?.last_name || ''}
+                      {comment.user_name || 'Anonymous'} {/* Fixed: Using user_name instead of author.first_name */}
                     </div>
                     <div className="text-sm text-muted-foreground">
                       {new Date(comment.created_at).toLocaleDateString()}

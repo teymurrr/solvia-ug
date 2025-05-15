@@ -80,11 +80,11 @@ const VacancyFooter: React.FC<VacancyFooterProps> = ({
       if (isSafari()) {
         // For Safari, use query params instead of state
         const queryString = stateToQueryParams(state);
-        console.log('Safari detected, using query params:', queryString);
+        console.log('Safari detected, using query params for application:', queryString);
         navigate(`/vacancies/${id}/apply${queryString}`);
       } else {
         // For other browsers, use the state object
-        console.log('Using state object for navigation:', state);
+        console.log('Using state object for application navigation:', state);
         navigate(`/vacancies/${id}/apply`, { state });
       }
     }
@@ -114,7 +114,7 @@ const VacancyFooter: React.FC<VacancyFooterProps> = ({
     );
   }
 
-  // Regular view for all other cards in the site - we're removing the View Details button for the Professional Dashboard
+  // Regular view with only Apply Now button for all other cards
   return (
     <div className="pt-2 flex justify-between gap-2">
       <Button 

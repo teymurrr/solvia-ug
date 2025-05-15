@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
@@ -7,7 +6,7 @@ import { useProfileData } from '@/components/professional-profile/hooks/useProfi
 
 export interface BlogComment {
   id: string;
-  blog_id: string;
+  blog_post_id: string; // Fixed: Changed from blog_id to blog_post_id
   user_id: string;
   content: string;
   created_at: string;
@@ -36,7 +35,7 @@ export const useBlogComments = (blogId: string) => {
       const { data, error } = await supabase
         .from('blog_comments')
         .select('*, user:user_id(id, email, user_metadata)')
-        .eq('blog_id', blogId)
+        .eq('blog_post_id', blogId) // Fixed: Changed from blog_id to blog_post_id
         .order('created_at', { ascending: true });
       
       if (error) throw error;
@@ -110,7 +109,7 @@ export const useBlogComments = (blogId: string) => {
     
     try {
       const newComment = {
-        blog_id: blogId,
+        blog_post_id: blogId, // Fixed: Changed from blog_id to blog_post_id
         user_id: user.id,
         content,
         parent_id: parentId || null,
