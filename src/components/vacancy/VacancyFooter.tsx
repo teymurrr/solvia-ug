@@ -95,11 +95,11 @@ const VacancyFooter: React.FC<VacancyFooterProps> = ({
     
     // SAFARI SPECIFIC HANDLING - Direct navigation for Safari
     // This will skip the vacancy details page and go straight to application for Safari
-    const didHandleSafari = handleDirectApply(id, applicationLink, state, navigate);
-    if (didHandleSafari) {
-      console.log('[VacancyFooter] Safari handled with direct navigation');
-      return;
-    }
+    //const didHandleSafari = handleDirectApply(id, applicationLink, state, navigate);
+    //if (didHandleSafari) {
+      //console.log('[VacancyFooter] Safari handled with direct navigation');
+      //return;
+    //}
     
     // STANDARD FLOW FOR OTHER BROWSERS
     // Handle different application scenarios
