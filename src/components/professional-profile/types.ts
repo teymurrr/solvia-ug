@@ -36,6 +36,7 @@ export const profileFormSchema = z.object({
   specialty: z.string().min(2, "Specialty is required."),
   email: z.string().email("Please enter a valid email."),
   location: z.string().optional(),
+  phone: z.string().optional(), // Added phone field
   about: z.string().optional(),
   profileImage: z.string().optional(),
   activelySearching: z.boolean().optional(),

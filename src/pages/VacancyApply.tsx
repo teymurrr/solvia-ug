@@ -45,6 +45,18 @@ const VacancyApply = () => {
   console.log('[VacancyApply] Starting application page with URL:', window.location.href);
   console.log('[VacancyApply] Location state:', location.state);
   
+  // Create form before using it
+  const form = useForm<ApplicationFormValues>({
+    resolver: zodResolver(applicationSchema),
+    defaultValues: {
+      firstName: '',
+      lastName: '',
+      email: '',
+      phone: '', 
+      coverLetter: '',
+    },
+  });
+  
   // Combine state from both React Router's location.state and URL query parameters
   // This ensures compatibility with both Safari and other browsers
   const routerState = location.state || {};
@@ -120,22 +132,11 @@ const VacancyApply = () => {
         firstName: profileData.firstName || '',
         lastName: profileData.lastName || '',
         email: profileData.email || '',
-        phone: profileData.phone || '', 
+        phone: profileData.phone || '', // This will work now that we added phone to the type
         coverLetter: '',
       });
     }
   }, [profileData, form]);
-
-  const form = useForm<ApplicationFormValues>({
-    resolver: zodResolver(applicationSchema),
-    defaultValues: {
-      firstName: profileData?.firstName || '',
-      lastName: profileData?.lastName || '',
-      email: profileData?.email || '',
-      phone: '', // Default to empty string since phone might not exist in profileData
-      coverLetter: '',
-    },
-  });
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
