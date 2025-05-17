@@ -1,3 +1,4 @@
+
 /**
  * Utility functions to detect browser types
  */
@@ -53,7 +54,7 @@ export const stateToQueryParams = (state: Record<string, any>): string => {
   });
   
   const queryString = params.toString();
-  console.log('Generated query string:', queryString ? `?${queryString}` : '');
+  console.log('[browserDetection] Generated query string:', queryString ? `?${queryString}` : '');
   return queryString ? `?${queryString}` : '';
 };
 
@@ -93,7 +94,7 @@ export const queryParamsToState = (): Record<string, any> => {
     }
   });
   
-  console.log('Extracted state from query params:', state);
+  console.log('[browserDetection] Extracted state from query params:', state);
   return state;
 };
 
@@ -119,6 +120,7 @@ export const createDashboardReturnState = (fromDashboard: boolean, additionalPar
 
 /**
  * Direct Apply to Vacancy - Skip intermediary pages for Safari
+ * IMPROVED: Now handles popup blocking by using a direct approach
  * @param id Vacancy ID
  * @param applicationLink External application link if any
  * @param state Navigation state object
@@ -139,23 +141,21 @@ export const handleDirectApply = (
   console.log('[browserDetection] Direct Apply triggered for Safari with state:', state);
   console.log('[browserDetection] Application link exists:', !!applicationLink);
   
-  // For external application links
+  // For external application links - use direct approach to avoid popup blocking
   if (applicationLink) {
-    console.log('[browserDetection] Opening external link in new tab:', applicationLink);
-    // Open external link in new tab
-    window.open(applicationLink, '_blank');
-    
-    // Create dashboard return state with notice about external application
-    const dashboardState = createDashboardReturnState(true, {
-      activeTab: 'vacancies',
-      externalApplication: true
-    });
-    
-    // Navigate directly to dashboard
-    const queryString = stateToQueryParams(dashboardState);
-    console.log('[browserDetection] Redirecting to dashboard after external link with query params:', queryString);
-    navigate(`/dashboard/professional${queryString}`);
-    return true;
+    try {
+      console.log('[browserDetection] Opening external link directly in Safari:', applicationLink);
+      
+      // Open the external link in the current window first (to avoid popup blocking)
+      window.location.href = applicationLink;
+      
+      // Return immediately to avoid further navigation in this click handler
+      // The user will be taken to the external site directly
+      return true;
+    } catch (error) {
+      console.error('[browserDetection] Error opening external link:', error);
+      // If opening fails, continue with normal navigation flow
+    }
   }
   
   // For internal application - navigate directly to apply page
