@@ -1,4 +1,3 @@
-
 /**
  * Utility functions to detect browser types
  */
@@ -119,8 +118,37 @@ export const createDashboardReturnState = (fromDashboard: boolean, additionalPar
 };
 
 /**
+ * Opens a URL in a new tab using an HTML anchor element
+ * This approach helps avoid popup blockers in Safari
+ * @param url The URL to open
+ * @returns Boolean indicating if operation was successful
+ */
+export const openInNewTab = (url: string): boolean => {
+  try {
+    console.log('[browserDetection] Opening URL with anchor element:', url);
+    
+    // Create a temporary anchor element
+    const anchor = document.createElement('a');
+    anchor.href = url;
+    anchor.target = '_blank';
+    anchor.rel = 'noopener noreferrer';
+    anchor.style.display = 'none';
+    
+    // Append to document, click, and remove
+    document.body.appendChild(anchor);
+    anchor.click();
+    document.body.removeChild(anchor);
+    
+    return true;
+  } catch (error) {
+    console.error('[browserDetection] Error opening URL with anchor:', error);
+    return false;
+  }
+};
+
+/**
  * Direct Apply to Vacancy - Skip intermediary pages for Safari
- * IMPROVED: Now handles popup blocking by using a direct approach
+ * IMPROVED: Now uses HTML anchor element approach to avoid popup blocking
  * @param id Vacancy ID
  * @param applicationLink External application link if any
  * @param state Navigation state object
@@ -141,19 +169,40 @@ export const handleDirectApply = (
   console.log('[browserDetection] Direct Apply triggered for Safari with state:', state);
   console.log('[browserDetection] Application link exists:', !!applicationLink);
   
-  // For external application links - use direct approach to avoid popup blocking
+  // For external application links - use anchor approach to avoid popup blocking
   if (applicationLink) {
     try {
-      console.log('[browserDetection] Opening external link directly in Safari:', applicationLink);
+      console.log('[browserDetection] Opening external link with anchor element in Safari:', applicationLink);
       
-      // Open the external link in the current window first (to avoid popup blocking)
-      window.location.href = applicationLink;
+      // Save the application state in localStorage to enable tracking
+      // when the user returns from the external application
+      localStorage.setItem('vacancyApplicationState', JSON.stringify({
+        fromDashboard: state.fromDashboard,
+        timestamp: Date.now(),
+        externalApplication: true
+      }));
       
-      // Return immediately to avoid further navigation in this click handler
-      // The user will be taken to the external site directly
-      return true;
+      // Use our new anchor method to open in new tab
+      const success = openInNewTab(applicationLink);
+      
+      if (success) {
+        // If the user came from dashboard, navigate back after short delay
+        // This keeps the original tab on the dashboard while opening the external link in a new tab
+        if (state.fromDashboard || state.directToDashboard) {
+          setTimeout(() => {
+            const dashboardState = createDashboardReturnState(true, {
+              activeTab: 'vacancies',
+              externalApplication: true
+            });
+            
+            console.log('[browserDetection] Redirecting back to dashboard after external link opened');
+            navigate('/dashboard/professional', { state: dashboardState });
+          }, 300); // Small delay to ensure the click event completes first
+        }
+        return true;
+      }
     } catch (error) {
-      console.error('[browserDetection] Error opening external link:', error);
+      console.error('[browserDetection] Error with anchor approach:', error);
       // If opening fails, continue with normal navigation flow
     }
   }

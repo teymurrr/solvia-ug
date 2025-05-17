@@ -9,7 +9,8 @@ import {
   isSafari, 
   stateToQueryParams, 
   createDashboardReturnState, 
-  handleDirectApply 
+  handleDirectApply,
+  openInNewTab
 } from '@/utils/browserDetection';
 
 interface VacancyFooterProps {
@@ -95,10 +96,10 @@ const VacancyFooter: React.FC<VacancyFooterProps> = ({
     };
     
     // SAFARI SPECIFIC HANDLING - Direct navigation for Safari
-    // Re-enable and improve Safari handling to fix popup blocking issues
+    // Enhanced with HTML anchor element approach to avoid popup blocking
     const didHandleSafari = handleDirectApply(id, applicationLink, state, navigate);
     if (didHandleSafari) {
-      console.log('[VacancyFooter] Safari handled with direct navigation');
+      console.log('[VacancyFooter] Safari handled with enhanced anchor element approach');
       return;
     }
     
@@ -107,17 +108,26 @@ const VacancyFooter: React.FC<VacancyFooterProps> = ({
     if (applicationLink) {
       // For external applications, directly open link in new tab
       console.log('[VacancyFooter] Opening external application link:', applicationLink);
-      window.open(applicationLink, '_blank');
+      
+      // Store application state before opening external link
+      localStorage.setItem('vacancyApplicationState', JSON.stringify({
+        fromDashboard: dashboardParam,
+        timestamp: Date.now(),
+        externalApplication: true
+      }));
+      
+      // Use the openInNewTab utility that uses anchor element
+      openInNewTab(applicationLink);
       
       // Now immediately navigate back to dashboard if we came from there
       if (dashboardParam) {
-        const state = createDashboardReturnState(true, {
+        const returnState = createDashboardReturnState(true, {
           activeTab: 'vacancies',
           externalApplication: true
         });
         
         console.log('[VacancyFooter] Redirecting back to dashboard after external link');
-        navigate('/dashboard/professional', { state });
+        navigate('/dashboard/professional', { state: returnState });
       }
     } else {
       // For internal applications, navigate to application page
