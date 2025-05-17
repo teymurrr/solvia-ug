@@ -3,7 +3,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
-import { FileCheck } from 'lucide-react';
+import { FileCheck, ExternalLink } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
 import { 
   isSafari, 
@@ -59,33 +59,14 @@ const VacancyFooter: React.FC<VacancyFooterProps> = ({
     isSafari: isSafari()
   });
   
-  const handleApply = () => {
-    // If already applied, don't do anything
-    if (isApplied) {
-      toast({
-        title: "Already applied",
-        description: "You have already applied for this vacancy",
-      });
-      return;
-    }
-    
-    // Redirect to signup if user is not logged in
-    if (!isLoggedIn && (isLandingPageCard || fromLandingPage)) {
-      toast({
-        title: "Sign up required",
-        description: "Please sign up or log in to apply for this vacancy",
-      });
-      navigate('/signup/professional');
-      return;
-    }
-    
+  // Create state object with all relevant information
+  const createNavigationState = () => {
     // This is critical - always set dashboard param to true if we're in dashboard
     // or if isDashboardCard is true
     const dashboardParam = isDashboardCard || fromDashboard ? true : false;
     console.log('[VacancyFooter] Is from dashboard:', dashboardParam);
     
-    // Create state object with all relevant information
-    const state = { 
+    return { 
       fromDashboard: dashboardParam, 
       fromLandingPage,
       searchQuery,
@@ -94,91 +75,141 @@ const VacancyFooter: React.FC<VacancyFooterProps> = ({
       // Add this to ensure we can go back to dashboard directly
       directToDashboard: dashboardParam
     };
-    
-    // SAFARI SPECIFIC HANDLING - Direct navigation for Safari
-    // Enhanced with HTML anchor element approach to avoid popup blocking
-    const didHandleSafari = handleDirectApply(id, applicationLink, state, navigate);
-    if (didHandleSafari) {
-      console.log('[VacancyFooter] Safari handled with enhanced anchor element approach');
+  };
+  
+  const handleAppliedClick = () => {
+    toast({
+      title: "Already applied",
+      description: "You have already applied for this vacancy",
+    });
+  };
+  
+  const handleSignupRedirect = () => {
+    toast({
+      title: "Sign up required",
+      description: "Please sign up or log in to apply for this vacancy",
+    });
+    navigate('/signup/professional');
+  };
+
+  const handleApplyClick = (e: React.MouseEvent) => {
+    // If already applied, don't do anything
+    if (isApplied) {
+      e.preventDefault();
+      handleAppliedClick();
       return;
     }
     
-    // STANDARD FLOW FOR OTHER BROWSERS
-    // Handle different application scenarios
+    // Redirect to signup if user is not logged in
+    if (!isLoggedIn && (isLandingPageCard || fromLandingPage)) {
+      e.preventDefault();
+      handleSignupRedirect();
+      return;
+    }
+    
+    const state = createNavigationState();
+    const dashboardParam = isDashboardCard || fromDashboard ? true : false;
+    
+    // Store application state before proceeding
     if (applicationLink) {
-      // For external applications, directly open link in new tab
-      console.log('[VacancyFooter] Opening external application link:', applicationLink);
-      
-      // Store application state before opening external link
       localStorage.setItem('vacancyApplicationState', JSON.stringify({
         fromDashboard: dashboardParam,
         timestamp: Date.now(),
         externalApplication: true
       }));
       
-      // Use the openInNewTab utility that uses anchor element
-      openInNewTab(applicationLink);
-      
-      // Now immediately navigate back to dashboard if we came from there
-      if (dashboardParam) {
-        const returnState = createDashboardReturnState(true, {
-          activeTab: 'vacancies',
-          externalApplication: true
-        });
-        
-        console.log('[VacancyFooter] Redirecting back to dashboard after external link');
-        navigate('/dashboard/professional', { state: returnState });
+      // For Safari, we'll let the anchor tag handle the navigation
+      if (!isSafari() && dashboardParam) {
+        // After a short delay, navigate back to dashboard
+        setTimeout(() => {
+          const returnState = createDashboardReturnState(true, {
+            activeTab: 'vacancies',
+            externalApplication: true
+          });
+          
+          navigate('/dashboard/professional', { state: returnState });
+        }, 100);
       }
     } else {
-      // For internal applications, navigate to application page
-      console.log('[VacancyFooter] Navigating to application page with state:', state);
+      // For internal applications, we'll prevent default and handle with navigate
+      e.preventDefault();
       navigate(`/vacancies/${id}/apply`, { state });
     }
   };
 
-  // For landing page cards, only show Apply Now button
+  // For landing page cards, only show Apply Now button/link
   if (isLandingPageCard) {
     return (
       <div className="pt-2 flex justify-center">
-        <Button 
-          onClick={handleApply} 
-          className="w-full"
-          size={isDashboardCard ? "sm" : "default"}
-          variant={isApplied ? "outline" : "default"}
-          disabled={isApplied}
-        >
-          {isApplied ? (
-            <>
-              <FileCheck className="mr-2 h-4 w-4" />
-              {appliedText}
-            </>
+        {isApplied ? (
+          <Button 
+            disabled
+            size={isDashboardCard ? "sm" : "default"}
+            variant="outline"
+            className="w-full"
+          >
+            <FileCheck className="mr-2 h-4 w-4" />
+            {appliedText}
+          </Button>
+        ) : (
+          applicationLink ? (
+            <a 
+              href={applicationLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={handleApplyClick}
+              className={`inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 w-full bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2`}
+            >
+              {applyNowText}
+            </a>
           ) : (
-            applyNowText
-          )}
-        </Button>
+            <a
+              href={`/vacancies/${id}/apply`}
+              onClick={handleApplyClick}
+              className={`inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 w-full bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2`}
+            >
+              {applyNowText}
+            </a>
+          )
+        )}
       </div>
     );
   }
 
-  // Regular view with only Apply Now button for all other cards
+  // Regular view with only Apply Now button/link for all other cards
   return (
     <div className="pt-2 flex justify-between gap-2">
-      <Button 
-        onClick={handleApply} 
-        className="w-full"
-        size={isDashboardCard ? "sm" : "default"}
-        variant={isApplied ? "outline" : "default"}
-        disabled={isApplied}
-      >
-        {isApplied ? (
-          <>
-            <FileCheck className="mr-2 h-4 w-4" />
-            {appliedText}
-          </>
+      {isApplied ? (
+        <Button 
+          disabled
+          size={isDashboardCard ? "sm" : "default"}
+          variant="outline"
+          className="w-full"
+        >
+          <FileCheck className="mr-2 h-4 w-4" />
+          {appliedText}
+        </Button>
+      ) : (
+        applicationLink ? (
+          <a 
+            href={applicationLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={handleApplyClick}
+            className={`inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 w-full bg-primary text-primary-foreground hover:bg-primary/90 ${isDashboardCard ? 'h-9 rounded-md px-3' : 'h-10 px-4 py-2'}`}
+          >
+            {applyNowText} <ExternalLink className="h-4 w-4 ml-1" />
+          </a>
         ) : (
-          applyNowText
-        )}
-      </Button>
+          <a
+            href={`/vacancies/${id}/apply`}
+            onClick={handleApplyClick}
+            className={`inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 w-full bg-primary text-primary-foreground hover:bg-primary/90 ${isDashboardCard ? 'h-9 rounded-md px-3' : 'h-10 px-4 py-2'}`}
+          >
+            {applyNowText}
+          </a>
+        )
+      )}
     </div>
   );
 };
