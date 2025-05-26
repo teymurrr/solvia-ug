@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Home, Heart, BarChart, LayoutDashboard, BookOpen } from 'lucide-react';
+import { Home, Heart, BarChart, LayoutDashboard, BookOpen, FileText } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
 
 interface NavLinksProps {
@@ -59,6 +59,16 @@ const NavLinks: React.FC<NavLinksProps> = ({ isLoggedIn, userType }) => {
             <BookOpen className="h-5 w-5 text-gray-600 group-hover:text-gray-900" />
           </div>
           <span className="text-sm text-gray-600 group-hover:text-gray-900">{t?.common?.learning || "Solvia Learning"}</span>
+        </Link>
+
+        <Link
+          to="/blog"
+          className="flex flex-col items-center group"
+        >
+          <div className="p-2 rounded-full group-hover:bg-gray-100 transition-colors">
+            <FileText className="h-5 w-5 text-gray-600 group-hover:text-gray-900" />
+          </div>
+          <span className="text-sm text-gray-600 group-hover:text-gray-900">Wiki</span>
         </Link>
       </div>
     );
