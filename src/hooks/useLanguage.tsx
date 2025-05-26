@@ -6,6 +6,7 @@ import { en } from '../utils/i18n/languages/en/index';
 import { de } from '../utils/i18n/languages/de/index';
 import { es } from '../utils/i18n/languages/es/index';
 import { fr } from '../utils/i18n/languages/fr/index';
+import { ru } from '../utils/i18n/languages/ru/index';
 
 // Define context interfaces
 interface LanguageContextType {
@@ -54,6 +55,9 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
         break;
       case 'fr':
         setTranslations(fr);
+        break;
+      case 'ru':
+        setTranslations(ru);
         break;
       default:
         setTranslations(en);
