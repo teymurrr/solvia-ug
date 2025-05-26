@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
@@ -70,15 +69,6 @@ const Footer: React.FC = () => {
                   {t?.footer?.findOpportunities || "Find Opportunities"}
                 </a>
               </li>
-              <li>
-                <a 
-                  href="#" 
-                  onClick={(e) => handleProfessionalLink(e, '/professionals/resources')}
-                  className="text-sm text-muted-foreground hover:text-medical-600 transition-colors"
-                >
-                  {t?.footer?.resources || "Resources"}
-                </a>
-              </li>
             </ul>
           </div>
           
@@ -101,15 +91,6 @@ const Footer: React.FC = () => {
                   className="text-sm text-muted-foreground hover:text-medical-600 transition-colors"
                 >
                   {t?.footer?.searchProfessionals || "Search Professionals"}
-                </a>
-              </li>
-              <li>
-                <a 
-                  href="#" 
-                  onClick={(e) => handleInstitutionLink(e, '/institutions/resources')}
-                  className="text-sm text-muted-foreground hover:text-medical-600 transition-colors"
-                >
-                  {t?.footer?.resources || "Resources"}
                 </a>
               </li>
             </ul>
