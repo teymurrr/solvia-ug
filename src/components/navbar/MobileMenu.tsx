@@ -1,14 +1,14 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
-import { Bell, MessageSquare, User, LogOut, Settings } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { Home, Briefcase, HelpCircle, LayoutDashboard, BookOpen, BarChart } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
 
 interface MobileMenuProps {
   isOpen: boolean;
   isLoggedIn: boolean;
-  userType?: string;
+  userType: string | null;
   hasUnreadMessages: boolean;
   getDashboardLink: () => string;
   onSignOut: () => void;
@@ -20,109 +20,133 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
   isLoggedIn,
   userType,
   hasUnreadMessages,
-  getDashboardLink,
   onSignOut,
   onClose,
 }) => {
   const { t } = useLanguage();
-
+  
   if (!isOpen) return null;
 
-  const navItems = [
-    { name: t?.common?.vacancies || "Vacancies", href: "/vacancies" },
-    { name: t?.common?.professionals || "Professionals", href: "/professionals" },
-    { name: t?.common?.institutions || "Institutions", href: "/institutions" },
-    { name: t?.common?.solviaLearning || "Solvia Learning", href: "/learning" },
-    { name: t?.common?.wiki || "Wiki", href: "#", comingSoon: true },
-    { name: t?.common?.about || "About", href: "/about" },
-  ];
-
   return (
-    <div className="sm:hidden">
-      <div className="pt-2 pb-3 space-y-1 bg-white border-t border-gray-200">
-        {navItems.map((item) => (
-          <div key={item.name}>
-            {item.comingSoon ? (
-              <div className="flex items-center justify-between px-3 py-2">
-                <span className="text-gray-400 text-base font-medium cursor-not-allowed">
-                  {item.name}
-                </span>
-                <span className="bg-purple-500 text-white text-xs px-2 py-1 rounded-full">
-                  {t?.common?.comingSoon || "Coming Soon"}
-                </span>
-              </div>
-            ) : (
-              <Link
-                to={item.href}
-                className="text-gray-900 hover:text-blue-600 block px-3 py-2 text-base font-medium"
-                onClick={onClose}
-              >
-                {item.name}
-              </Link>
-            )}
-          </div>
-        ))}
+    <div className="sm:hidden bg-white">
+      <div className="pt-2 pb-3 space-y-1">
+        {!isLoggedIn && (
+          <>
+            <Link
+              to="/"
+              className="flex items-center space-x-3 px-4 py-2 hover:bg-gray-50"
+              onClick={onClose}
+            >
+              <Home className="h-5 w-5 text-gray-600" />
+              <span>{t?.common?.home || "Home"}</span>
+            </Link>
+            
+            <Link
+              to="/employers"
+              className="flex items-center space-x-3 px-4 py-2 hover:bg-gray-50"
+              onClick={onClose}
+            >
+              <Briefcase className="h-5 w-5 text-gray-600" />
+              <span>{t?.common?.forEmployers || "For Employers"}</span>
+            </Link>
+
+            <Link
+              to="/about"
+              className="flex items-center space-x-3 px-4 py-2 hover:bg-gray-50"
+              onClick={onClose}
+            >
+              <HelpCircle className="h-5 w-5 text-gray-600" />
+              <span>{t?.common?.about || "About"}</span>
+            </Link>
+          </>
+        )}
         
-        <div className="mt-6 pt-6 border-t border-gray-200">
-          {isLoggedIn ? (
-            <div className="space-y-1">
-              <Link
-                to={getDashboardLink()}
-                className="flex items-center px-3 py-2 text-base font-medium text-gray-900 hover:text-blue-600"
-                onClick={onClose}
-              >
-                <User className="h-5 w-5 mr-3" />
-                {t?.common?.dashboard || "Dashboard"}
-              </Link>
-              <Link
-                to="/messages"
-                className="flex items-center px-3 py-2 text-base font-medium text-gray-900 hover:text-blue-600"
-                onClick={onClose}
-              >
-                <MessageSquare className="h-5 w-5 mr-3" />
-                {t?.common?.messages || "Messages"}
-                {hasUnreadMessages && (
-                  <span className="ml-2 h-2 w-2 bg-red-500 rounded-full"></span>
-                )}
-              </Link>
-              <Link
-                to="/settings"
-                className="flex items-center px-3 py-2 text-base font-medium text-gray-900 hover:text-blue-600"
-                onClick={onClose}
-              >
-                <Settings className="h-5 w-5 mr-3" />
-                {t?.common?.settings || "Settings"}
-              </Link>
-              <button
-                onClick={() => {
-                  onSignOut();
-                  onClose();
-                }}
-                className="flex items-center w-full text-left px-3 py-2 text-base font-medium text-gray-900 hover:text-blue-600"
-              >
-                <LogOut className="h-5 w-5 mr-3" />
-                {t?.common?.logout || "Sign out"}
-              </button>
-            </div>
-          ) : (
-            <div className="space-y-1">
-              <Link
-                to="/login"
-                className="block px-3 py-2 text-base font-medium text-gray-900 hover:text-blue-600"
-                onClick={onClose}
-              >
-                {t?.common?.login || "Log in"}
-              </Link>
-              <Link
-                to="/signup"
-                className="block px-3 py-2 text-base font-medium text-blue-600 hover:text-blue-800"
-                onClick={onClose}
-              >
-                {t?.common?.freeSignup || "Free Sign Up"}
-              </Link>
-            </div>
-          )}
-        </div>
+        {isLoggedIn && userType === 'professional' && (
+          <>
+            <Link
+              to="/dashboard/professional"
+              className="flex items-center space-x-3 px-4 py-2 hover:bg-gray-50"
+              onClick={onClose}
+            >
+              <LayoutDashboard className="h-5 w-5 text-gray-600" />
+              <span>{t?.common?.dashboard || "Dashboard"}</span>
+            </Link>
+
+            <Link
+              to="/learning"
+              className="flex items-center space-x-3 px-4 py-2 hover:bg-gray-50"
+              onClick={onClose}
+            >
+              <BookOpen className="h-5 w-5 text-gray-600" />
+              <span>{t?.common?.learning || "Solvia Learning"}</span>
+            </Link>
+          </>
+        )}
+
+        {isLoggedIn && userType === 'institution' && (
+          <>
+            <Link
+              to="/dashboard/institution"
+              className="flex items-center space-x-3 px-4 py-2 hover:bg-gray-50"
+              onClick={onClose}
+            >
+              <LayoutDashboard className="h-5 w-5 text-gray-600" />
+              <span>{t?.common?.dashboard || "Dashboard"}</span>
+            </Link>
+
+            <Link
+              to="/insights"
+              className="flex items-center space-x-3 px-4 py-2 hover:bg-gray-50"
+              onClick={onClose}
+            >
+              <BarChart className="h-5 w-5 text-gray-600" />
+              <span>{t?.insights?.title || "Solvia Insights"}</span>
+            </Link>
+          </>
+        )}
+      </div>
+
+      <div className="pt-4 pb-3 border-t border-gray-200">
+        {isLoggedIn ? (
+          <div className="space-y-1">
+            <Link
+              to="/messages"
+              className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800 flex items-center"
+              onClick={onClose}
+            >
+              {t?.common?.messages || "Messages"}
+              {hasUnreadMessages && (
+                <Badge className="ml-2 bg-red-500 text-white">1</Badge>
+              )}
+            </Link>
+            <button
+              onClick={() => {
+                onSignOut();
+                onClose();
+              }}
+              className="block w-full text-left pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-red-500 hover:bg-gray-50 hover:border-red-300"
+            >
+              {t?.common?.logout || "Sign out"}
+            </button>
+          </div>
+        ) : (
+          <div className="space-y-1">
+            <Link
+              to="/login"
+              className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800"
+              onClick={onClose}
+            >
+              {t?.common?.login || "Log in"}
+            </Link>
+            <Link
+              to="/signup"
+              className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800"
+              onClick={onClose}
+            >
+              {t?.common?.freeSignup || "Free Sign Up"}
+            </Link>
+          </div>
+        )}
       </div>
     </div>
   );

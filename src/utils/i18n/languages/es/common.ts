@@ -25,8 +25,5 @@ export const common = {
   remove: "Eliminar",
   countries: "Países",
   viewMore: "Ver más",
-  forEmployers: "Para empleadores",
-  solviaLearning: "Aprendizaje Solvia",
-  wiki: "Wiki",
-  comingSoon: "Próximamente"
+  forEmployers: "Para empleadores"
 };
