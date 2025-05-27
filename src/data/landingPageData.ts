@@ -1,4 +1,3 @@
-
 import { Professional, BlogPost } from '@/types/landing';
 
 export const featuredProfessionals: Professional[] = [
@@ -31,7 +30,7 @@ export const featuredProfessionals: Professional[] = [
         field: 'Cardiology'
       }
     ],
-    profileImage: 'https://randomuser.me/api/portraits/women/28.jpg'
+    profileImage: 'https://images.unsplash.com/photo-1582750433449-648ed127bb54?w=400&h=400&fit=crop&crop=face'
   },
   {
     id: '2',
@@ -62,7 +61,7 @@ export const featuredProfessionals: Professional[] = [
         field: 'Neurology'
       }
     ],
-    profileImage: 'https://randomuser.me/api/portraits/men/22.jpg'
+    profileImage: 'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=400&h=400&fit=crop&crop=face'
   },
   {
     id: '3',
@@ -93,7 +92,7 @@ export const featuredProfessionals: Professional[] = [
         field: 'Pediatrics'
       }
     ],
-    profileImage: 'https://randomuser.me/api/portraits/women/56.jpg'
+    profileImage: 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=400&h=400&fit=crop&crop=face'
   },
   {
     id: '4',
@@ -123,7 +122,7 @@ export const featuredProfessionals: Professional[] = [
         field: 'Anesthesiology'
       }
     ],
-    profileImage: 'https://randomuser.me/api/portraits/men/45.jpg'
+    profileImage: 'https://images.unsplash.com/photo-1582750433449-648ed127bb54?w=400&h=400&fit=crop&crop=face'
   }
 ];
 
