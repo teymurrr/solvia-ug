@@ -15,6 +15,7 @@ import { dashboard } from './dashboard';
 import { auth } from './auth';
 import { contact } from './contact';
 import { terms } from './terms';
+import { application } from './application';
 
 export const es = {
   hero,
@@ -32,5 +33,6 @@ export const es = {
   dashboard,
   auth,
   contact,
-  terms
+  terms,
+  application
 };

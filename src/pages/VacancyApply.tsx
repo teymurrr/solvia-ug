@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
+import { useLanguage } from '@/hooks/useLanguage';
 import MainLayout from '@/components/MainLayout';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -34,6 +35,7 @@ const VacancyApply = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { toast } = useToast();
+  const { t } = useLanguage();
   const { profileData, loading } = useProfileData();
   const { user, session } = useAuth();
   const [cvFile, setCvFile] = useState<File | null>(null);
@@ -45,9 +47,15 @@ const VacancyApply = () => {
   console.log('[VacancyApply] Starting application page with URL:', window.location.href);
   console.log('[VacancyApply] Location state:', location.state);
   
-  // Create form before using it
+  // Create form before using it with dynamic validation messages
   const form = useForm<ApplicationFormValues>({
-    resolver: zodResolver(applicationSchema),
+    resolver: zodResolver(z.object({
+      firstName: z.string().min(1, { message: t?.application?.firstNameRequired || "First name is required" }),
+      lastName: z.string().min(1, { message: t?.application?.lastNameRequired || "Last name is required" }),
+      email: z.string().email({ message: t?.application?.invalidEmail || "Invalid email address" }),
+      phone: z.string().optional(),
+      coverLetter: z.string().optional(),
+    })),
     defaultValues: {
       firstName: '',
       lastName: '',
@@ -110,7 +118,7 @@ const VacancyApply = () => {
         if (error) {
           console.error('[VacancyApply] Error fetching vacancy:', error);
           toast({
-            title: "Error",
+            title: t?.application?.error || "Error",
             description: "Failed to load vacancy details",
             variant: "destructive",
           });
@@ -123,7 +131,7 @@ const VacancyApply = () => {
     };
     
     fetchVacancy();
-  }, [id, toast]);
+  }, [id, toast, t]);
 
   // Update form values when profile data loads
   useEffect(() => {
@@ -193,8 +201,8 @@ const VacancyApply = () => {
   const onSubmit = async (data: ApplicationFormValues) => {
     if (!user || !session) {
       toast({
-        title: "Authentication required",
-        description: "You need to be logged in to apply for vacancies",
+        title: t?.application?.authenticationRequired || "Authentication required",
+        description: t?.application?.authenticationMessage || "You need to be logged in to apply for vacancies",
         variant: "destructive",
       });
       return;
@@ -229,8 +237,8 @@ const VacancyApply = () => {
       }
       
       toast({
-        title: "Application submitted",
-        description: "Your application has been successfully submitted",
+        title: t?.application?.applicationSubmitted || "Application submitted",
+        description: t?.application?.applicationSubmittedMessage || "Your application has been successfully submitted",
       });
       
       // ALWAYS navigate back to the dashboard after successful application
@@ -254,8 +262,8 @@ const VacancyApply = () => {
       }
     } catch (error: any) {
       toast({
-        title: "Error",
-        description: error.message || "Failed to submit application. Please try again.",
+        title: t?.application?.error || "Error",
+        description: error.message || t?.application?.submitError || "Failed to submit application. Please try again.",
         variant: "destructive",
       });
     } finally {
@@ -313,7 +321,7 @@ const VacancyApply = () => {
       {vacancy?.application_link ? (
         <div className="container py-8 flex justify-center items-center min-h-[500px]">
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
-          <p className="ml-4">Redirecting to external application...</p>
+          <p className="ml-4">{t?.application?.redirectingExternal || "Redirecting to external application..."}</p>
         </div>
       ) : (
         <div className="container mx-auto px-4 py-8">
@@ -322,21 +330,24 @@ const VacancyApply = () => {
             className="inline-flex items-center text-primary hover:underline mb-6"
           >
             <ArrowLeft className="h-4 w-4 mr-1" />
-            {fromDashboard || directToDashboard ? 'Back to Dashboard' : 'Back to Vacancy'}
+            {fromDashboard || directToDashboard ? 
+              (t?.application?.backToDashboard || 'Back to Dashboard') : 
+              (t?.application?.backToVacancy || 'Back to Vacancy')
+            }
           </button>
           
           <div className="mb-6">
-            <h1 className="text-3xl font-bold">Apply for Position</h1>
+            <h1 className="text-3xl font-bold">{t?.application?.title || 'Apply for Position'}</h1>
             <p className="text-muted-foreground mt-1">
-              {vacancy?.title || 'Job Position'} at {vacancy?.institution || 'Institution'} ({vacancy?.location || 'Location'})
+              {vacancy?.title || 'Job Position'} {t?.application?.subtitle || 'at'} {vacancy?.institution || 'Institution'} ({vacancy?.location || 'Location'})
             </p>
           </div>
           
           <Card className="max-w-3xl mx-auto">
             <CardHeader>
-              <CardTitle>Application Form</CardTitle>
+              <CardTitle>{t?.application?.applicationForm || 'Application Form'}</CardTitle>
               <CardDescription>
-                Complete the form below to apply for this position. Fields marked with * are required.
+                {t?.application?.formDescription || 'Complete the form below to apply for this position. Fields marked with * are required.'}
               </CardDescription>
             </CardHeader>
             
@@ -350,9 +361,9 @@ const VacancyApply = () => {
                       name="firstName"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>First Name *</FormLabel>
+                          <FormLabel>{t?.application?.firstName || 'First Name'} *</FormLabel>
                           <FormControl>
-                            <Input placeholder="Your first name" {...field} />
+                            <Input placeholder={t?.application?.firstNamePlaceholder || "Your first name"} {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -364,9 +375,9 @@ const VacancyApply = () => {
                       name="lastName"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Last Name *</FormLabel>
+                          <FormLabel>{t?.application?.lastName || 'Last Name'} *</FormLabel>
                           <FormControl>
-                            <Input placeholder="Your last name" {...field} />
+                            <Input placeholder={t?.application?.lastNamePlaceholder || "Your last name"} {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -380,9 +391,9 @@ const VacancyApply = () => {
                       name="email"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Email Address *</FormLabel>
+                          <FormLabel>{t?.application?.email || 'Email Address'} *</FormLabel>
                           <FormControl>
-                            <Input type="email" placeholder="your.email@example.com" {...field} />
+                            <Input type="email" placeholder={t?.application?.emailPlaceholder || "your.email@example.com"} {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -394,9 +405,9 @@ const VacancyApply = () => {
                       name="phone"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Phone Number (Optional)</FormLabel>
+                          <FormLabel>{t?.application?.phoneOptional || 'Phone Number (Optional)'}</FormLabel>
                           <FormControl>
-                            <Input type="tel" placeholder="+1 234 567 890" {...field} />
+                            <Input type="tel" placeholder={t?.application?.phonePlaceholder || "+1 234 567 890"} {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -406,7 +417,7 @@ const VacancyApply = () => {
                   
                   {/* CV Upload */}
                   <div className="space-y-2">
-                    <Label htmlFor="cv">Upload CV/Resume *</Label>
+                    <Label htmlFor="cv">{t?.application?.uploadCV || 'Upload CV/Resume'} *</Label>
                     <div className="flex items-center">
                       <Label
                         htmlFor="cv"
@@ -424,7 +435,7 @@ const VacancyApply = () => {
                             <>
                               <FileUp className="h-8 w-8 text-muted-foreground" />
                               <span className="text-xs text-muted-foreground">
-                                Click to upload your CV/Resume (PDF, DOC, DOCX)
+                                {t?.application?.uploadCVDescription || 'Click to upload your CV/Resume (PDF, DOC, DOCX)'}
                               </span>
                             </>
                           )}
@@ -447,10 +458,10 @@ const VacancyApply = () => {
                     name="coverLetter"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Cover Letter / Additional Notes (Optional)</FormLabel>
+                        <FormLabel>{t?.application?.coverLetterOptional || 'Cover Letter / Additional Notes (Optional)'}</FormLabel>
                         <FormControl>
                           <Textarea
-                            placeholder="Write any additional information you'd like to include with your application..."
+                            placeholder={t?.application?.coverLetterPlaceholder || "Write any additional information you'd like to include with your application..."}
                             className="min-h-[150px]"
                             {...field}
                           />
@@ -466,10 +477,13 @@ const VacancyApply = () => {
                       variant="outline"
                       onClick={handleCancel}
                     >
-                      Cancel
+                      {t?.application?.cancel || 'Cancel'}
                     </Button>
                     <Button type="submit" disabled={isSubmitting}>
-                      {isSubmitting ? "Submitting..." : "Submit Application"}
+                      {isSubmitting ? 
+                        (t?.application?.submitting || "Submitting...") : 
+                        (t?.application?.submitApplication || "Submit Application")
+                      }
                     </Button>
                   </div>
                 </form>
