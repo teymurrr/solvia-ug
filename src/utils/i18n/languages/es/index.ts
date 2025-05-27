@@ -14,6 +14,7 @@ import { about } from './about';
 import { dashboard } from './dashboard';
 import { auth } from './auth';
 import { contact } from './contact';
+import { terms } from './terms';
 
 export const es = {
   hero,
@@ -30,5 +31,6 @@ export const es = {
   about,
   dashboard,
   auth,
-  contact
+  contact,
+  terms
 };
