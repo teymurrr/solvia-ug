@@ -30,7 +30,7 @@ export const featuredProfessionals: Professional[] = [
         field: 'Cardiology'
       }
     ],
-    profileImage: 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=400&h=400&fit=crop&crop=face'
+    profileImage: 'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=400&h=400&fit=crop&crop=face'
   },
   {
     id: '2',
