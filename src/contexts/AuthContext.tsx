@@ -40,18 +40,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   React.useEffect(() => {
     const initSession = async () => {
-      console.log("Initializing auth session...");
+      console.log("🔍 [AuthContext] Initializing auth session...");
       
       // Set up auth state listener FIRST
       const { data: { subscription } } = supabase.auth.onAuthStateChange(
         (event, session) => {
-          console.log("Auth state change event:", event);
+          console.log("🔍 [AuthContext] Auth state change event:", event);
+          console.log("🔍 [AuthContext] Session:", session ? "Session exists" : "No session");
+          console.log("🔍 [AuthContext] User email:", session?.user?.email);
+          console.log("🔍 [AuthContext] User ID:", session?.user?.id);
+          
           setSession(session);
           setUser(session?.user ?? null);
           setIsLoggedIn(!!session);
           
           if (session?.user?.user_metadata) {
-            console.log("User metadata:", session.user.user_metadata);
+            console.log("🔍 [AuthContext] User metadata:", session.user.user_metadata);
             setUserType(session.user.user_metadata.user_type);
           } else {
             setUserType(null);
@@ -63,25 +67,29 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       // THEN check for existing session
       try {
-        console.log("Checking for existing session...");
+        console.log("🔍 [AuthContext] Checking for existing session...");
         const { data, error } = await supabase.auth.getSession();
         
         if (error) {
-          console.error("Error getting session:", error);
+          console.error("❌ [AuthContext] Error getting session:", error);
         }
         
-        console.log("Got session data:", data.session ? "Session exists" : "No session");
+        console.log("🔍 [AuthContext] Got session data:", data.session ? "Session exists" : "No session");
+        if (data.session) {
+          console.log("🔍 [AuthContext] Session user email:", data.session.user?.email);
+          console.log("🔍 [AuthContext] Session user ID:", data.session.user?.id);
+        }
         
         setSession(data.session);
         setUser(data.session?.user ?? null);
         setIsLoggedIn(!!data.session);
         
         if (data.session?.user?.user_metadata) {
-          console.log("User metadata from session:", data.session.user.user_metadata);
+          console.log("🔍 [AuthContext] User metadata from session:", data.session.user.user_metadata);
           setUserType(data.session.user.user_metadata.user_type);
         }
       } catch (error) {
-        console.error("Unexpected error during session initialization:", error);
+        console.error("❌ [AuthContext] Unexpected error during session initialization:", error);
       } finally {
         setLoading(false);
       }
@@ -182,6 +190,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       // We don't rethrow here to ensure the UI gets updated even if API fails
     }
   };
+
+  console.log("🔍 [AuthContext] Provider rendering - isLoggedIn:", isLoggedIn, "loading:", loading, "user:", user?.email);
 
   return (
     <AuthContext.Provider value={{ 
