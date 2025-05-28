@@ -1,3 +1,4 @@
+
 import { Professional, BlogPost } from '@/types/landing';
 
 export const featuredProfessionals: Professional[] = [
@@ -193,25 +194,31 @@ export const featuredBlogs: BlogPost[] = [
   {
     id: '1',
     title: 'The Future of Healthcare Recruitment',
+    slug: 'future-of-healthcare-recruitment',
     excerpt: 'Explore the changing landscape of healthcare staffing and how digital platforms are transforming the industry.',
+    content: '',
     imageUrl: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2670&q=80',
     date: '2023-05-10T00:00:00.000Z',
     readTime: '6 min read',
     category: 'Recruitment',
     author: 'Dr. Maria Schmidt',
-    slug: 'future-of-healthcare-recruitment',
-    content: null
+    author_id: 'sample-author-1',
+    status: 'published',
+    language: 'en'
   },
   {
     id: '2',
     title: 'Working in Germany as a Foreign Medical Professional',
+    slug: 'working-in-germany-medical-professional',
     excerpt: 'A comprehensive guide to navigating the German healthcare system as an international doctor or nurse.',
+    content: '',
     imageUrl: 'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2670&q=80',
     date: '2023-04-22T00:00:00.000Z',
     readTime: '8 min read',
     category: 'Career Advice',
     author: 'Thomas Weber',
-    slug: 'working-in-germany-medical-professional',
-    content: null
+    author_id: 'sample-author-2',
+    status: 'published',
+    language: 'en'
   }
 ];
