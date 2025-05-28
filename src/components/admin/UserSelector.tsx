@@ -29,15 +29,22 @@ const UserSelector: React.FC<UserSelectorProps> = ({ onSelectUser, selectedEmail
   const fetchUsers = async () => {
     setLoading(true);
     try {
-      // Get professional profiles
+      // Get professional profiles with email lookup
       const { data: professionals, error: profError } = await supabase
         .from('professional_profiles')
-        .select('id, first_name, last_name');
+        .select(`
+          id, 
+          first_name, 
+          last_name
+        `);
 
-      // Get institution profiles
+      // Get institution profiles with email lookup
       const { data: institutions, error: instError } = await supabase
         .from('institution_profiles')
-        .select('id, institution_name');
+        .select(`
+          id, 
+          institution_name
+        `);
 
       if (profError && instError) {
         console.error('Error fetching users:', { profError, instError });
@@ -48,35 +55,85 @@ const UserSelector: React.FC<UserSelectorProps> = ({ onSelectUser, selectedEmail
 
       // Add professionals
       if (professionals) {
-        professionals.forEach(prof => {
+        for (const prof of professionals) {
+          // Get email from auth.users via RPC or direct query
+          const { data: authUser } = await supabase.auth.admin.getUserById(prof.id);
+          const email = authUser?.user?.email || 'Email not available';
+          
           allUsers.push({
             id: prof.id,
-            email: 'Email not available', // We can't query auth.users directly
+            email: email,
             first_name: prof.first_name,
             last_name: prof.last_name,
             user_type: 'professional'
           });
-        });
+        }
       }
 
       // Add institutions
       if (institutions) {
-        institutions.forEach(inst => {
+        for (const inst of institutions) {
           if (!allUsers.find(user => user.id === inst.id)) {
+            const { data: authUser } = await supabase.auth.admin.getUserById(inst.id);
+            const email = authUser?.user?.email || 'Email not available';
+            
             allUsers.push({
               id: inst.id,
-              email: 'Email not available',
+              email: email,
               first_name: inst.institution_name,
               user_type: 'institution'
             });
           }
-        });
+        }
       }
 
       setUsers(allUsers);
       setFilteredUsers(allUsers);
     } catch (error) {
       console.error('Error fetching users:', error);
+      
+      // Fallback: If admin access fails, try to get users without emails
+      try {
+        const { data: professionals } = await supabase
+          .from('professional_profiles')
+          .select('id, first_name, last_name');
+
+        const { data: institutions } = await supabase
+          .from('institution_profiles')
+          .select('id, institution_name');
+
+        const fallbackUsers: User[] = [];
+
+        if (professionals) {
+          professionals.forEach(prof => {
+            fallbackUsers.push({
+              id: prof.id,
+              email: 'Email access restricted',
+              first_name: prof.first_name,
+              last_name: prof.last_name,
+              user_type: 'professional'
+            });
+          });
+        }
+
+        if (institutions) {
+          institutions.forEach(inst => {
+            if (!fallbackUsers.find(user => user.id === inst.id)) {
+              fallbackUsers.push({
+                id: inst.id,
+                email: 'Email access restricted',
+                first_name: inst.institution_name,
+                user_type: 'institution'
+              });
+            }
+          });
+        }
+
+        setUsers(fallbackUsers);
+        setFilteredUsers(fallbackUsers);
+      } catch (fallbackError) {
+        console.error('Fallback error:', fallbackError);
+      }
     } finally {
       setLoading(false);
     }
@@ -182,12 +239,14 @@ const UserSelector: React.FC<UserSelectorProps> = ({ onSelectUser, selectedEmail
               </div>
             )}
 
-            <div className="mt-4 p-3 bg-blue-50 rounded-lg">
-              <p className="text-sm text-blue-800">
-                <strong>Note:</strong> Due to security restrictions, email addresses are not directly accessible. 
-                You'll need to manually enter the correct email address for the user you want to make an administrator.
-              </p>
-            </div>
+            {users.some(user => user.email === 'Email access restricted' || user.email === 'Email not available') && (
+              <div className="mt-4 p-3 bg-amber-50 rounded-lg">
+                <p className="text-sm text-amber-800">
+                  <strong>Note:</strong> Some email addresses may not be accessible due to security restrictions. 
+                  You can still select users and manually enter their correct email address.
+                </p>
+              </div>
+            )}
           </CardContent>
         </Card>
       )}

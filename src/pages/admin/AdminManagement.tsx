@@ -26,18 +26,23 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
+
+interface AdminWithEmail extends AdminUser {
+  email?: string;
+}
 
 const AdminManagement = () => {
   const navigate = useNavigate();
   const { isOwner, loading: ownerLoading } = useOwner();
   const { toast } = useToast();
   
-  const [admins, setAdmins] = useState<AdminUser[]>([]);
+  const [admins, setAdmins] = useState<AdminWithEmail[]>([]);
   const [loading, setLoading] = useState(false);
   const [newAdminEmail, setNewAdminEmail] = useState('');
   const [addingAdmin, setAddingAdmin] = useState(false);
   const [removeDialogOpen, setRemoveDialogOpen] = useState(false);
-  const [adminToRemove, setAdminToRemove] = useState<AdminUser | null>(null);
+  const [adminToRemove, setAdminToRemove] = useState<AdminWithEmail | null>(null);
   const [removingAdmin, setRemovingAdmin] = useState(false);
 
   React.useEffect(() => {
@@ -50,7 +55,30 @@ const AdminManagement = () => {
     setLoading(true);
     try {
       const adminList = await adminService.getAllAdmins();
-      setAdmins(adminList);
+      
+      // Enhance admin list with emails
+      const adminsWithEmails: AdminWithEmail[] = [];
+      
+      for (const admin of adminList) {
+        try {
+          // Try to get email from auth.users
+          const { data: authUser } = await supabase.auth.admin.getUserById(admin.id);
+          const email = authUser?.user?.email;
+          
+          adminsWithEmails.push({
+            ...admin,
+            email: email || 'Email not available'
+          });
+        } catch (error) {
+          console.error('Error fetching email for admin:', admin.id, error);
+          adminsWithEmails.push({
+            ...admin,
+            email: 'Email access restricted'
+          });
+        }
+      }
+      
+      setAdmins(adminsWithEmails);
     } catch (error) {
       console.error('Error fetching admins:', error);
       toast({
@@ -113,7 +141,7 @@ const AdminManagement = () => {
     }
   };
 
-  const confirmRemoveAdmin = (admin: AdminUser) => {
+  const confirmRemoveAdmin = (admin: AdminWithEmail) => {
     setAdminToRemove(admin);
     setRemoveDialogOpen(true);
   };
