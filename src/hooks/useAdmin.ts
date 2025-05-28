@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
@@ -6,7 +5,7 @@ import { supabase } from '@/integrations/supabase/client';
 export const useAdmin = () => {
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
-  const { user, isLoggedIn } = useAuth();
+  const { user, isLoggedIn, loading: authLoading } = useAuth();
 
   useEffect(() => {
     const checkAdminStatus = async () => {
@@ -50,10 +49,11 @@ export const useAdmin = () => {
       }
     };
 
-    console.log('🔍 [useAdmin] useEffect triggered - isLoggedIn:', isLoggedIn);
+    console.log('🔍 [useAdmin] useEffect triggered - isLoggedIn:', isLoggedIn, 'authLoading:', authLoading);
     
-    if (isLoggedIn !== undefined) {
-      if (isLoggedIn) {
+    // Wait for auth loading to complete before checking admin status
+    if (!authLoading && isLoggedIn !== undefined) {
+      if (isLoggedIn && user) {
         console.log('🔍 [useAdmin] User is logged in, checking admin status');
         checkAdminStatus();
       } else {
@@ -62,9 +62,11 @@ export const useAdmin = () => {
         setLoading(false);
       }
     } else {
-      console.log('🔍 [useAdmin] isLoggedIn is undefined, waiting...');
+      console.log('🔍 [useAdmin] Auth still loading or isLoggedIn undefined, waiting...');
+      // Keep loading true while auth is still loading
+      setLoading(true);
     }
-  }, [user, isLoggedIn]);
+  }, [user, isLoggedIn, authLoading]);
 
   console.log('🔍 [useAdmin] Hook returning - isAdmin:', isAdmin, 'loading:', loading);
   return { isAdmin, loading };

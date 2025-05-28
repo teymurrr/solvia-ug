@@ -10,24 +10,28 @@ interface AdminRouteProps {
 }
 
 const AdminRoute: React.FC<AdminRouteProps> = ({ children }) => {
-  const { isAdmin, loading } = useAdmin();
+  const { isAdmin, loading: adminLoading } = useAdmin();
   const { user, isLoggedIn, loading: authLoading } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
   
   console.log('🔍 [AdminRoute] Component rendering...');
   console.log('🔍 [AdminRoute] isAdmin:', isAdmin);
-  console.log('🔍 [AdminRoute] loading:', loading);
+  console.log('🔍 [AdminRoute] adminLoading:', adminLoading);
   console.log('🔍 [AdminRoute] authLoading:', authLoading);
   console.log('🔍 [AdminRoute] isLoggedIn:', isLoggedIn);
   console.log('🔍 [AdminRoute] user:', user?.email);
   
   useEffect(() => {
     console.log('🔍 [AdminRoute] useEffect triggered');
-    console.log('🔍 [AdminRoute] Current state - loading:', loading, 'isAdmin:', isAdmin, 'isLoggedIn:', isLoggedIn);
+    console.log('🔍 [AdminRoute] Current state - adminLoading:', adminLoading, 'authLoading:', authLoading, 'isLoggedIn:', isLoggedIn, 'isAdmin:', isAdmin);
     
-    // Only show toast and redirect after admin check is completed
-    if (!loading && !authLoading && isLoggedIn !== undefined) {
+    // Wait for both auth and admin loading to complete
+    const isStillLoading = authLoading || adminLoading || isLoggedIn === undefined;
+    
+    if (!isStillLoading) {
+      console.log('🔍 [AdminRoute] All loading complete, making access decision...');
+      
       if (!isLoggedIn) {
         console.log('❌ [AdminRoute] User not logged in, redirecting to login');
         toast({
@@ -47,11 +51,13 @@ const AdminRoute: React.FC<AdminRouteProps> = ({ children }) => {
       } else {
         console.log('✅ [AdminRoute] User is admin, access granted');
       }
+    } else {
+      console.log('🔍 [AdminRoute] Still loading, waiting... (authLoading:', authLoading, ', adminLoading:', adminLoading, ', isLoggedIn:', isLoggedIn, ')');
     }
-  }, [isAdmin, loading, authLoading, isLoggedIn, toast, navigate]);
+  }, [isAdmin, adminLoading, authLoading, isLoggedIn, toast, navigate]);
   
-  // Show loading when checking admin status or auth status
-  if (loading || authLoading || isLoggedIn === undefined) {
+  // Show loading when any authentication check is still in progress
+  if (authLoading || adminLoading || isLoggedIn === undefined) {
     console.log('🔍 [AdminRoute] Showing loading state');
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -61,7 +67,7 @@ const AdminRoute: React.FC<AdminRouteProps> = ({ children }) => {
     );
   }
   
-  // Only render children when user is admin
+  // Only render children when user is authenticated AND admin
   if (isLoggedIn && isAdmin) {
     console.log('✅ [AdminRoute] Rendering children');
     return <>{children}</>;

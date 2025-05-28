@@ -1,11 +1,10 @@
-
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 
 export const useOwner = () => {
   const [isOwner, setIsOwner] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
-  const { user, isLoggedIn } = useAuth();
+  const { user, isLoggedIn, loading: authLoading } = useAuth();
 
   useEffect(() => {
     const checkOwnerStatus = () => {
@@ -34,10 +33,11 @@ export const useOwner = () => {
       setLoading(false);
     };
 
-    console.log('🔍 [useOwner] useEffect triggered - isLoggedIn:', isLoggedIn);
+    console.log('🔍 [useOwner] useEffect triggered - isLoggedIn:', isLoggedIn, 'authLoading:', authLoading);
     
-    if (isLoggedIn !== undefined) {
-      if (isLoggedIn) {
+    // Wait for auth loading to complete before checking owner status
+    if (!authLoading && isLoggedIn !== undefined) {
+      if (isLoggedIn && user) {
         console.log('🔍 [useOwner] User is logged in, checking owner status');
         checkOwnerStatus();
       } else {
@@ -46,9 +46,11 @@ export const useOwner = () => {
         setLoading(false);
       }
     } else {
-      console.log('🔍 [useOwner] isLoggedIn is undefined, waiting...');
+      console.log('🔍 [useOwner] Auth still loading or isLoggedIn undefined, waiting...');
+      // Keep loading true while auth is still loading
+      setLoading(true);
     }
-  }, [user, isLoggedIn]);
+  }, [user, isLoggedIn, authLoading]);
 
   console.log('🔍 [useOwner] Hook returning - isOwner:', isOwner, 'loading:', loading);
   return { isOwner, loading };

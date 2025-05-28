@@ -124,30 +124,17 @@ const AdminBlogList = () => {
             </Button>
             <h1 className="text-3xl font-bold">Blog Administration</h1>
             <p className="text-muted-foreground">Manage your blog posts</p>
-            
-            {/* Debug information */}
-            <div className="mt-2 text-sm text-gray-500">
-              Debug: isOwner={isOwner ? 'true' : 'false'}, ownerLoading={ownerLoading ? 'true' : 'false'}
-            </div>
           </div>
           
           <div className="flex gap-2">
-            {/* Show the manage admins button with debug info */}
-            {!ownerLoading && (
-              <>
-                {isOwner ? (
-                  <Button variant="outline" asChild>
-                    <Link to="/admin/manage-admins" className="flex items-center">
-                      <Settings className="mr-2 h-4 w-4" />
-                      Manage Admins
-                    </Link>
-                  </Button>
-                ) : (
-                  <div className="text-xs text-red-500">
-                    Not owner - button hidden
-                  </div>
-                )}
-              </>
+            {/* Show the manage admins button only for owner */}
+            {!ownerLoading && isOwner && (
+              <Button variant="outline" asChild>
+                <Link to="/admin/manage-admins" className="flex items-center">
+                  <Settings className="mr-2 h-4 w-4" />
+                  Manage Admins
+                </Link>
+              </Button>
             )}
             
             <Button asChild>
