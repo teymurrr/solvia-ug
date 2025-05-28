@@ -11,6 +11,7 @@ import BlogSection from '@/components/landing/BlogSection';
 import LearningSection from '@/components/landing/LearningSection';
 import CTASection from '@/components/landing/CTASection';
 import AdminGranter from '@/components/AdminGranter';
+import { featuredVacancies, featuredProfessionals, featuredBlogs } from '@/data/landingPageData';
 
 const Index = () => {
   return (
@@ -19,11 +20,11 @@ const Index = () => {
       <AdminGranter />
       <WhySolviaSection />
       <HowItWorksSection />
-      <ProfessionalsSection />
-      <VacanciesSection />
+      <ProfessionalsSection professionals={featuredProfessionals} />
+      <VacanciesSection vacancies={featuredVacancies} />
       <StatsSection />
       <InsightsSection />
-      <BlogSection />
+      <BlogSection posts={featuredBlogs} />
       <LearningSection />
       <CTASection />
     </MainLayout>
