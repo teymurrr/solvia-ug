@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import MainLayout from '@/components/MainLayout';
 import { useNavigate, Link } from 'react-router-dom';
@@ -29,7 +28,7 @@ import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 
 interface AdminWithEmail extends AdminUser {
-  email?: string;
+  email: string; // Make email required to match parent interface
 }
 
 const AdminManagement = () => {
