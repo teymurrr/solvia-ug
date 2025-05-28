@@ -4,8 +4,8 @@ import MainLayout from '@/components/MainLayout';
 import { useNavigate, Link } from 'react-router-dom';
 import { useOwner } from '@/hooks/useOwner';
 import { adminService, AdminUser } from '@/services/adminService';
+import UserSelector from '@/components/admin/UserSelector';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { 
   ArrowLeft, 
@@ -188,15 +188,10 @@ const AdminManagement = () => {
             </CardHeader>
             <CardContent>
               <form onSubmit={handleAddAdmin} className="space-y-4">
-                <div>
-                  <Input
-                    type="email"
-                    placeholder="Enter email address"
-                    value={newAdminEmail}
-                    onChange={(e) => setNewAdminEmail(e.target.value)}
-                    disabled={addingAdmin}
-                  />
-                </div>
+                <UserSelector
+                  selectedEmail={newAdminEmail}
+                  onSelectUser={setNewAdminEmail}
+                />
                 <Button type="submit" disabled={addingAdmin} className="w-full">
                   {addingAdmin ? (
                     <>
