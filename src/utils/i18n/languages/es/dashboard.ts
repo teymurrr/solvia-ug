@@ -39,7 +39,10 @@ export const dashboard: DashboardTranslations = {
     institution: "Institución",
     department: "Departamento",
     description: "Descripción",
-    requirements: "Requisitos"
+    requirements: "Requisitos",
+    jobType: "Tipo de Trabajo",
+    country: "País",
+    city: "Ciudad"
   },
   professionals: {
     title: "Profesionales destacados",

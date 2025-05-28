@@ -46,8 +46,18 @@ export default function useDashboard(userId?: string) {
   const { vacancies: institutionVacancies, loading: vacanciesLoading } = useVacancies();
 
   const jobTypes = ['Full-time', 'Part-time', 'Internship', 'Volunteer'];
-  const countries = ['USA'];
-  const cities = ['New York', 'Boston', 'Chicago', 'Los Angeles', 'Dallas', 'Miami', 'Seattle'];
+  
+  // Get unique countries from actual vacancies
+  const countries = [...new Set(institutionVacancies
+    .map(vacancy => vacancy.country)
+    .filter(country => country && country.trim() !== '')
+  )].sort();
+  
+  // Get unique cities from actual vacancies
+  const cities = [...new Set(institutionVacancies
+    .map(vacancy => vacancy.city)
+    .filter(city => city && city.trim() !== '')
+  )].sort();
 
   // Load saved vacancies from Supabase
   const fetchSavedVacancies = useCallback(async () => {
