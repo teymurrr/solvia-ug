@@ -2,6 +2,7 @@ import { lazy, Suspense, useState, useEffect } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import AdminRoute from "@/components/AdminRoute";
+import OwnerRoute from "@/components/OwnerRoute";
 import { useAuth } from "@/contexts/AuthContext";
 
 // Simple loading component
@@ -36,6 +37,7 @@ const InstitutionDashboard = lazy(() => import("@/pages/InstitutionDashboard"));
 // Admin pages - blog management
 const AdminBlogList = lazy(() => import("@/pages/admin/BlogList"));
 const BlogEditor = lazy(() => import("@/pages/admin/BlogEditor"));
+const AdminManagement = lazy(() => import("@/pages/admin/AdminManagement"));
 
 // Other pages - load individually as needed
 const SolviaLearning = lazy(() => import("@/pages/SolviaLearning"));
@@ -116,6 +118,16 @@ const AppRoutes = () => {
             <AdminRoute>
               <BlogEditor />
             </AdminRoute>
+          }
+        />
+        
+        {/* Owner-only admin management route */}
+        <Route
+          path="/admin/manage-admins"
+          element={
+            <OwnerRoute>
+              <AdminManagement />
+            </OwnerRoute>
           }
         />
         

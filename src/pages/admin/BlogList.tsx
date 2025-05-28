@@ -1,8 +1,8 @@
-
 import React, { useState } from 'react';
 import MainLayout from '@/components/MainLayout';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAdmin } from '@/hooks/useAdmin';
+import { useOwner } from '@/hooks/useOwner';
 import { useBlogPosts } from '@/hooks/useBlogPosts';
 import { Button } from '@/components/ui/button';
 import { 
@@ -20,7 +20,8 @@ import {
   Trash2, 
   Eye,
   AlertTriangle,
-  Loader2
+  Loader2,
+  Settings
 } from 'lucide-react';
 import {
   AlertDialog,
@@ -39,6 +40,7 @@ import { useToast } from '@/hooks/use-toast';
 const AdminBlogList = () => {
   const navigate = useNavigate();
   const { isAdmin, loading: adminLoading } = useAdmin();
+  const { isOwner } = useOwner();
   const { posts, loading } = useBlogPosts(true);
   const { toast } = useToast();
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -120,12 +122,22 @@ const AdminBlogList = () => {
             <p className="text-muted-foreground">Manage your blog posts</p>
           </div>
           
-          <Button asChild>
-            <Link to="/admin/blog/new" className="flex items-center">
-              <Plus className="mr-2 h-4 w-4" />
-              New Post
-            </Link>
-          </Button>
+          <div className="flex gap-2">
+            {isOwner && (
+              <Button variant="outline" asChild>
+                <Link to="/admin/manage-admins" className="flex items-center">
+                  <Settings className="mr-2 h-4 w-4" />
+                  Manage Admins
+                </Link>
+              </Button>
+            )}
+            <Button asChild>
+              <Link to="/admin/blog/new" className="flex items-center">
+                <Plus className="mr-2 h-4 w-4" />
+                New Post
+              </Link>
+            </Button>
+          </div>
         </div>
 
         {posts.length > 0 ? (
