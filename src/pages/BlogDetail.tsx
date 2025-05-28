@@ -7,14 +7,16 @@ import { ArrowLeft, Edit, Loader2 } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
 import { useSingleBlogPost } from '@/hooks/useBlogPosts';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
+import { Badge } from '@/components/ui/badge';
 import BlogComments from '@/components/blog/BlogComments';
+import BlogTranslations from '@/components/blog/BlogTranslations';
 import { useAdmin } from '@/hooks/useAdmin';
 
 const BlogDetail = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { post, loading, error } = useSingleBlogPost(id);
-  const { t } = useLanguage();
+  const { post, loading, error, translations } = useSingleBlogPost(id);
+  const { t, currentLanguage } = useLanguage();
   const { isAdmin } = useAdmin();
   
   useEffect(() => {
@@ -76,9 +78,19 @@ const BlogDetail = () => {
             <div className="flex items-center gap-2">
               {post.author && <span>By {post.author}</span>}
               {post.category && (
-                <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">
+                <Badge variant="outline" className="text-xs bg-blue-100 text-blue-800">
                   {post.category}
-                </span>
+                </Badge>
+              )}
+              {post.language && (
+                <Badge variant="outline" className="text-xs">
+                  {post.language.toUpperCase()}
+                </Badge>
+              )}
+              {isAdmin && post.status === 'draft' && (
+                <Badge variant="outline" className="text-xs bg-yellow-100 text-yellow-800">
+                  Draft
+                </Badge>
               )}
             </div>
             <div className="flex items-center gap-2">
@@ -87,6 +99,9 @@ const BlogDetail = () => {
               <span>{new Date(post.date).toLocaleDateString()}</span>
             </div>
           </div>
+
+          {/* Show available translations */}
+          <BlogTranslations translations={translations} currentLanguage={currentLanguage} />
 
           {post.imageUrl && (
             <div className="mb-8">

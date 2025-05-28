@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import MainLayout from '@/components/MainLayout';
 import { useNavigate, Link, useParams } from 'react-router-dom';
@@ -10,7 +9,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Switch } from '@/components/ui/switch';
-import { ArrowLeft, Save, Upload, Image, Loader2, Clock } from 'lucide-react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { ArrowLeft, Save, Upload, Image, Loader2, Clock, Languages } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
@@ -24,6 +24,8 @@ interface BlogFormData {
   readTime: string;
   imageUrl: string;
   status: 'draft' | 'published';
+  language: string;
+  post_group_id?: string;
 }
 
 const initialFormData: BlogFormData = {
@@ -35,14 +37,23 @@ const initialFormData: BlogFormData = {
   readTime: '',
   imageUrl: '',
   status: 'draft',
+  language: 'en',
 };
+
+const languages = [
+  { code: 'en', name: 'English', flag: '🇺🇸' },
+  { code: 'de', name: 'Deutsch', flag: '🇩🇪' },
+  { code: 'es', name: 'Español', flag: '🇪🇸' },
+  { code: 'fr', name: 'Français', flag: '🇫🇷' },
+  { code: 'ru', name: 'Русский', flag: '🇷🇺' },
+];
 
 const BlogEditor = () => {
   const { id } = useParams<{ id: string }>();
   const isEditing = !!id;
   const navigate = useNavigate();
   const { isAdmin, loading: adminLoading } = useAdmin();
-  const { post, loading: postLoading } = useSingleBlogPost(id);
+  const { post, loading: postLoading, translations } = useSingleBlogPost(id);
   const [formData, setFormData] = useState<BlogFormData>(initialFormData);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [imageFile, setImageFile] = useState<File | null>(null);
@@ -80,6 +91,8 @@ const BlogEditor = () => {
         readTime: post.readTime || '',
         imageUrl: post.imageUrl || '',
         status: post.status || 'draft',
+        language: post.language || 'en',
+        post_group_id: post.post_group_id,
       });
 
       if (post.imageUrl) {
@@ -196,6 +209,8 @@ const BlogEditor = () => {
         category: formData.category || null,
         read_time: formData.readTime || null,
         status: formData.status,
+        language: formData.language,
+        post_group_id: formData.post_group_id || null,
       };
       
       if (isEditing) {
@@ -374,6 +389,31 @@ const BlogEditor = () => {
                 
                 <div className="space-y-4">
                   <div>
+                    <Label htmlFor="language" className="flex items-center">
+                      <Languages className="h-4 w-4 mr-1" />
+                      Language
+                    </Label>
+                    <Select
+                      value={formData.language}
+                      onValueChange={(value) => handleSelectChange('language', value)}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select language" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {languages.map((lang) => (
+                          <SelectItem key={lang.code} value={lang.code}>
+                            <span className="flex items-center gap-2">
+                              <span>{lang.flag}</span>
+                              <span>{lang.name}</span>
+                            </span>
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div>
                     <Label htmlFor="category">Category</Label>
                     <Input
                       id="category"
@@ -400,6 +440,35 @@ const BlogEditor = () => {
                 </div>
               </div>
 
+              {/* Show existing translations if editing */}
+              {isEditing && translations.length > 0 && (
+                <div className="bg-blue-50 rounded-lg p-6 border border-blue-200">
+                  <h3 className="font-medium mb-4 flex items-center">
+                    <Languages className="h-4 w-4 mr-2" />
+                    Available Translations
+                  </h3>
+                  <div className="space-y-2">
+                    {translations.map((translation) => {
+                      const lang = languages.find(l => l.code === translation.language);
+                      return (
+                        <div key={translation.id} className="flex items-center justify-between">
+                          <span className="flex items-center gap-2">
+                            <span>{lang?.flag}</span>
+                            <span>{lang?.name}</span>
+                          </span>
+                          <Button variant="outline" size="sm" asChild>
+                            <Link to={`/admin/blog/edit/${translation.id}`}>
+                              Edit
+                            </Link>
+                          </Button>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
+              {/* ... keep existing code (featured image section) */}
               <div className="bg-gray-50 rounded-lg p-6 border border-gray-200">
                 <h3 className="font-medium mb-4">Featured Image</h3>
                 {imagePreview ? (

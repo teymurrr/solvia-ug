@@ -7,8 +7,10 @@ import { ArrowLeft, Plus, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
+import { Badge } from '@/components/ui/badge';
 import { useBlogPosts } from '@/hooks/useBlogPosts';
 import { useAdmin } from '@/hooks/useAdmin';
+import BlogLanguageSelector from '@/components/blog/BlogLanguageSelector';
 
 const Blog = () => {
   const { t } = useLanguage();
@@ -32,14 +34,17 @@ const Blog = () => {
             </p>
           </div>
           
-          {isAdmin && (
-            <Button asChild>
-              <Link to="/admin/blog/new" className="flex items-center">
-                <Plus className="mr-2 h-4 w-4" />
-                New Post
-              </Link>
-            </Button>
-          )}
+          <div className="flex items-center gap-4">
+            <BlogLanguageSelector />
+            {isAdmin && (
+              <Button asChild>
+                <Link to="/admin/blog/new" className="flex items-center">
+                  <Plus className="mr-2 h-4 w-4" />
+                  New Post
+                </Link>
+              </Button>
+            )}
+          </div>
         </div>
 
         {loading ? (
@@ -71,13 +76,23 @@ const Blog = () => {
                     <span>{new Date(blog.date).toLocaleDateString()}</span>
                   </div>
                   <h3 className="text-xl font-semibold mb-2">{blog.title}</h3>
-                  {blog.category && (
-                    <div className="mb-2">
-                      <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">
+                  <div className="flex items-center gap-2 mb-2">
+                    {blog.category && (
+                      <Badge variant="outline" className="text-xs bg-blue-100 text-blue-800">
                         {blog.category}
-                      </span>
-                    </div>
-                  )}
+                      </Badge>
+                    )}
+                    {blog.language && (
+                      <Badge variant="outline" className="text-xs">
+                        {blog.language.toUpperCase()}
+                      </Badge>
+                    )}
+                    {isAdmin && blog.status === 'draft' && (
+                      <Badge variant="outline" className="text-xs bg-yellow-100 text-yellow-800">
+                        Draft
+                      </Badge>
+                    )}
+                  </div>
                   <p className="text-muted-foreground mb-4">{blog.excerpt}</p>
                   {blog.author && (
                     <p className="text-sm text-muted-foreground mb-4">By {blog.author}</p>

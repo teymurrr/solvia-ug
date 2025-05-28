@@ -94,6 +94,8 @@ export type Database = {
           excerpt: string
           id: string
           image_url: string | null
+          language: string
+          post_group_id: string | null
           read_time: string | null
           slug: string
           status: Database["public"]["Enums"]["blog_post_status"]
@@ -108,6 +110,8 @@ export type Database = {
           excerpt: string
           id?: string
           image_url?: string | null
+          language?: string
+          post_group_id?: string | null
           read_time?: string | null
           slug: string
           status?: Database["public"]["Enums"]["blog_post_status"]
@@ -122,6 +126,8 @@ export type Database = {
           excerpt?: string
           id?: string
           image_url?: string | null
+          language?: string
+          post_group_id?: string | null
           read_time?: string | null
           slug?: string
           status?: Database["public"]["Enums"]["blog_post_status"]

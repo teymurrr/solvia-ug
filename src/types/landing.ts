@@ -46,12 +46,14 @@ export interface BlogPost {
   title: string;
   slug: string;
   excerpt: string;
-  content: string | null;
+  content: string;
   imageUrl?: string;
   date: string;
   category?: string;
   readTime?: string;
   author?: string;
-  author_id?: string;
+  author_id: string;
   status?: 'draft' | 'published';
+  language?: string;
+  post_group_id?: string;
 }

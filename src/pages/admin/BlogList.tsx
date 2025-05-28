@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import MainLayout from '@/components/MainLayout';
 import { useNavigate, Link } from 'react-router-dom';
@@ -21,7 +22,8 @@ import {
   Eye,
   AlertTriangle,
   Loader2,
-  Settings
+  Settings,
+  Languages
 } from 'lucide-react';
 import {
   AlertDialog,
@@ -42,7 +44,7 @@ const AdminBlogList = () => {
   const navigate = useNavigate();
   const { isAdmin, loading: adminLoading } = useAdmin();
   const { isOwner, loading: ownerLoading } = useOwner();
-  const { posts, loading } = useBlogPosts(true);
+  const { posts, loading } = useBlogPosts(true); // Fetch all posts including drafts
   const { toast } = useToast();
   const { user } = useAuth();
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -97,6 +99,17 @@ const AdminBlogList = () => {
   const confirmDelete = (postId: string) => {
     setPostToDelete(postId);
     setDeleteDialogOpen(true);
+  };
+
+  const getLanguageFlag = (language: string) => {
+    const flags = {
+      en: '🇺🇸',
+      de: '🇩🇪',
+      es: '🇪🇸',
+      fr: '🇫🇷',
+      ru: '🇷🇺',
+    };
+    return flags[language as keyof typeof flags] || '🌐';
   };
   
   if (adminLoading || loading) {
@@ -169,6 +182,7 @@ const AdminBlogList = () => {
                 <TableRow>
                   <TableHead>Title</TableHead>
                   <TableHead>Status</TableHead>
+                  <TableHead>Language</TableHead>
                   <TableHead>Category</TableHead>
                   <TableHead>Date</TableHead>
                   <TableHead className="w-[150px] text-right">Actions</TableHead>
@@ -184,6 +198,12 @@ const AdminBlogList = () => {
                       ) : (
                         <Badge variant="outline" className="bg-gray-100 hover:bg-gray-200">Draft</Badge>
                       )}
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex items-center gap-2">
+                        <span>{getLanguageFlag(post.language || 'en')}</span>
+                        <span className="text-sm">{(post.language || 'en').toUpperCase()}</span>
+                      </div>
                     </TableCell>
                     <TableCell>{post.category || '—'}</TableCell>
                     <TableCell>{new Date(post.date).toLocaleDateString()}</TableCell>

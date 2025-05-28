@@ -4,13 +4,18 @@ import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { BlogPost } from '@/types/landing';
 import { useAuth } from '@/contexts/AuthContext';
+import { useLanguage } from '@/hooks/useLanguage';
 
-export const useBlogPosts = (fetchDrafts = false) => {
+export const useBlogPosts = (fetchDrafts = false, language?: string) => {
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { toast } = useToast();
   const { isLoggedIn } = useAuth();
+  const { currentLanguage } = useLanguage();
+
+  // Use provided language or fall back to current language
+  const queryLanguage = language || currentLanguage;
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -31,8 +36,11 @@ export const useBlogPosts = (fetchDrafts = false) => {
             created_at,
             updated_at,
             status,
-            author_id
+            author_id,
+            language,
+            post_group_id
           `)
+          .eq('language', queryLanguage)
           .order('created_at', { ascending: false });
         
         // Only fetch published posts unless fetchDrafts is true
@@ -57,6 +65,8 @@ export const useBlogPosts = (fetchDrafts = false) => {
           readTime: post.read_time,
           author_id: post.author_id,
           status: post.status,
+          language: post.language,
+          post_group_id: post.post_group_id,
         }));
         
         setPosts(formattedPosts);
@@ -76,7 +86,7 @@ export const useBlogPosts = (fetchDrafts = false) => {
     if (isLoggedIn || !fetchDrafts) {
       fetchPosts();
     }
-  }, [fetchDrafts, toast, isLoggedIn]);
+  }, [fetchDrafts, toast, isLoggedIn, queryLanguage]);
 
   return { posts, loading, error };
 };
@@ -85,6 +95,7 @@ export const useSingleBlogPost = (id: string | undefined) => {
   const [post, setPost] = useState<BlogPost | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [translations, setTranslations] = useState<BlogPost[]>([]);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -111,7 +122,9 @@ export const useSingleBlogPost = (id: string | undefined) => {
             created_at,
             updated_at,
             status,
-            author_id
+            author_id,
+            language,
+            post_group_id
           `)
           .eq('id', id)
           .maybeSingle();
@@ -131,9 +144,35 @@ export const useSingleBlogPost = (id: string | undefined) => {
             readTime: data.read_time,
             author_id: data.author_id,
             status: data.status,
+            language: data.language,
+            post_group_id: data.post_group_id,
           };
           
           setPost(formattedPost);
+
+          // Fetch translations if post_group_id exists
+          if (data.post_group_id) {
+            const { data: translationsData } = await supabase
+              .from('blog_posts')
+              .select(`
+                id, title, language, status
+              `)
+              .eq('post_group_id', data.post_group_id)
+              .neq('id', id);
+            
+            if (translationsData) {
+              setTranslations(translationsData.map(t => ({
+                ...t,
+                // Add minimal required fields for BlogPost type
+                slug: '',
+                excerpt: '',
+                content: '',
+                imageUrl: '',
+                date: '',
+                author_id: '',
+              })));
+            }
+          }
         } else {
           setError('Blog post not found');
         }
@@ -153,5 +192,5 @@ export const useSingleBlogPost = (id: string | undefined) => {
     fetchPost();
   }, [id, toast]);
 
-  return { post, loading, error };
+  return { post, loading, error, translations };
 };
