@@ -241,10 +241,16 @@ const ProfessionalDashboard: React.FC = () => {
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full md:w-auto grid-cols-3">
-            <TabsTrigger value="profile">{t?.common?.profile || "Profile"}</TabsTrigger>
-            <TabsTrigger value="vacancies">{t?.common?.vacancies || "Vacancies"}</TabsTrigger>
-            <TabsTrigger value="saved">{t?.dashboard?.saved?.title || "Saved & Applied"}</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-1 sm:grid-cols-3 gap-1 h-auto p-1">
+            <TabsTrigger value="profile" className="text-xs sm:text-sm px-2 py-2">
+              {t?.common?.profile || "Profile"}
+            </TabsTrigger>
+            <TabsTrigger value="vacancies" className="text-xs sm:text-sm px-2 py-2">
+              {t?.common?.vacancies || "Vacancies"}
+            </TabsTrigger>
+            <TabsTrigger value="saved" className="text-xs sm:text-sm px-2 py-2 whitespace-nowrap overflow-hidden text-ellipsis">
+              {t?.dashboard?.saved?.title || "Saved & Applied"}
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="profile" className="space-y-6">
