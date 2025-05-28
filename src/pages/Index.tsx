@@ -1,31 +1,31 @@
 
-import React from 'react';
 import MainLayout from '@/components/MainLayout';
 import HeroSection from '@/components/landing/HeroSection';
-import TimelineSection from '@/components/landing/TimelineSection';
-import VacanciesSection from '@/components/landing/VacanciesSection';
 import WhySolviaSection from '@/components/landing/WhySolviaSection';
-import LearningSection from '@/components/landing/LearningSection';
-import CTASection from '@/components/landing/CTASection';
+import HowItWorksSection from '@/components/landing/HowItWorksSection';
 import ProfessionalsSection from '@/components/landing/ProfessionalsSection';
+import VacanciesSection from '@/components/landing/VacanciesSection';
+import StatsSection from '@/components/landing/StatsSection';
 import InsightsSection from '@/components/landing/InsightsSection';
 import BlogSection from '@/components/landing/BlogSection';
-import { featuredVacancies, featuredProfessionals, featuredBlogs } from '@/data/landingPageData';
+import LearningSection from '@/components/landing/LearningSection';
+import CTASection from '@/components/landing/CTASection';
+import AdminGranter from '@/components/AdminGranter';
 
 const Index = () => {
   return (
     <MainLayout>
-      <div className="min-h-screen">
-        <HeroSection />
-        <WhySolviaSection />
-        <VacanciesSection vacancies={featuredVacancies} />
-        <ProfessionalsSection professionals={featuredProfessionals} />
-        <TimelineSection />
-        <LearningSection />
-        <InsightsSection />
-        <BlogSection posts={featuredBlogs} />
-        <CTASection />
-      </div>
+      <HeroSection />
+      <AdminGranter />
+      <WhySolviaSection />
+      <HowItWorksSection />
+      <ProfessionalsSection />
+      <VacanciesSection />
+      <StatsSection />
+      <InsightsSection />
+      <BlogSection />
+      <LearningSection />
+      <CTASection />
     </MainLayout>
   );
 };
