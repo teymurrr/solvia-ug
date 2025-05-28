@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import MainLayout from '@/components/MainLayout';
 import { useNavigate, Link } from 'react-router-dom';
@@ -26,6 +25,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
 
 interface AdminWithEmail extends AdminUser {
   email: string; // Make email required to match parent interface
@@ -53,18 +53,47 @@ const AdminManagement = () => {
   const fetchAdmins = async () => {
     setLoading(true);
     try {
-      console.log('Fetching admin list...');
-      const adminList = await adminService.getAllAdmins();
+      console.log('Fetching admin list with emails...');
       
-      // Since we can't access emails from auth.users without elevated permissions,
-      // we'll show admins without email information and let users know
-      const adminsWithEmails: AdminWithEmail[] = adminList.map(admin => ({
-        ...admin,
-        email: 'Email not accessible'
-      }));
+      // Get admin user IDs
+      const { data: adminRoles, error: rolesError } = await supabase
+        .from('user_roles')
+        .select('user_id')
+        .eq('role', 'admin');
+
+      if (rolesError) {
+        console.error('Error fetching admin roles:', rolesError);
+        throw rolesError;
+      }
+
+      if (!adminRoles || adminRoles.length === 0) {
+        setAdmins([]);
+        return;
+      }
+
+      const adminUserIds = adminRoles.map(role => role.user_id);
+
+      // Fetch all users with emails from our server function
+      const { data: usersData, error: usersError } = await supabase.functions.invoke('get-users-with-emails');
+
+      if (usersError) {
+        console.error('Error fetching users with emails:', usersError);
+        throw usersError;
+      }
+
+      // Filter to only admin users
+      const adminUsers: AdminWithEmail[] = usersData.users
+        .filter((user: any) => adminUserIds.includes(user.id))
+        .map((user: any) => ({
+          id: user.id,
+          email: user.email,
+          first_name: user.first_name,
+          last_name: user.last_name,
+          created_at: user.created_at
+        }));
       
-      setAdmins(adminsWithEmails);
-      console.log('Fetched admins:', adminsWithEmails.length);
+      setAdmins(adminUsers);
+      console.log('Fetched admins with emails:', adminUsers.length);
     } catch (error) {
       console.error('Error fetching admins:', error);
       toast({
@@ -241,7 +270,7 @@ const AdminManagement = () => {
                         <p className="font-medium">
                           {admin.first_name} {admin.last_name}
                         </p>
-                        <p className="text-sm text-muted-foreground">{admin.email}</p>
+                        <p className="text-sm text-blue-600">{admin.email}</p>
                       </div>
                       <Button
                         variant="ghost"
@@ -258,15 +287,6 @@ const AdminManagement = () => {
                 <div className="text-center py-8 text-muted-foreground">
                   <Users className="h-12 w-12 mx-auto mb-4 opacity-50" />
                   <p>No administrators found</p>
-                </div>
-              )}
-              
-              {admins.length > 0 && (
-                <div className="mt-4 p-3 bg-amber-50 rounded-lg">
-                  <p className="text-sm text-amber-800">
-                    <strong>Note:</strong> Email addresses are not accessible due to security restrictions. 
-                    Administrators are identified by their names.
-                  </p>
                 </div>
               )}
             </CardContent>

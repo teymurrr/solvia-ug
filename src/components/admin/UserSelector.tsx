@@ -29,58 +29,20 @@ const UserSelector: React.FC<UserSelectorProps> = ({ onSelectUser, selectedEmail
   const fetchUsers = async () => {
     setLoading(true);
     try {
-      console.log('Fetching users from profile tables...');
+      console.log('Fetching users with emails from server function...');
       
-      // Get professional profiles
-      const { data: professionals, error: profError } = await supabase
-        .from('professional_profiles')
-        .select('id, first_name, last_name');
+      const { data, error } = await supabase.functions.invoke('get-users-with-emails');
 
-      // Get institution profiles
-      const { data: institutions, error: instError } = await supabase
-        .from('institution_profiles')
-        .select('id, institution_name');
-
-      if (profError) {
-        console.error('Error fetching professionals:', profError);
-      }
-      
-      if (instError) {
-        console.error('Error fetching institutions:', instError);
+      if (error) {
+        console.error('Error fetching users:', error);
+        return;
       }
 
-      const allUsers: User[] = [];
-
-      // Add professionals
-      if (professionals) {
-        professionals.forEach(prof => {
-          allUsers.push({
-            id: prof.id,
-            email: 'Please enter email manually', // Email not available from profile tables
-            first_name: prof.first_name,
-            last_name: prof.last_name,
-            user_type: 'professional'
-          });
-        });
+      if (data?.users) {
+        console.log('Fetched users with emails:', data.users.length);
+        setUsers(data.users);
+        setFilteredUsers(data.users);
       }
-
-      // Add institutions
-      if (institutions) {
-        institutions.forEach(inst => {
-          if (!allUsers.find(user => user.id === inst.id)) {
-            allUsers.push({
-              id: inst.id,
-              email: 'Please enter email manually', // Email not available from profile tables
-              first_name: inst.institution_name,
-              user_type: 'institution'
-            });
-          }
-        });
-      }
-
-      console.log('Fetched users:', allUsers.length);
-      setUsers(allUsers);
-      setFilteredUsers(allUsers);
     } catch (error) {
       console.error('Error fetching users:', error);
     } finally {
@@ -98,6 +60,7 @@ const UserSelector: React.FC<UserSelectorProps> = ({ onSelectUser, selectedEmail
     const filtered = users.filter(user => {
       const searchLower = searchTerm.toLowerCase();
       return (
+        (user.email && user.email.toLowerCase().includes(searchLower)) ||
         (user.first_name && user.first_name.toLowerCase().includes(searchLower)) ||
         (user.last_name && user.last_name.toLowerCase().includes(searchLower))
       );
@@ -106,11 +69,8 @@ const UserSelector: React.FC<UserSelectorProps> = ({ onSelectUser, selectedEmail
   }, [searchTerm, users]);
 
   const handleUserSelect = (user: User) => {
-    // When clicking on a user, we'll copy their name to help the admin identify them
-    // but they'll still need to enter the email manually
+    onSelectUser(user.email);
     setShowUserList(false);
-    
-    // Don't auto-fill with placeholder text, just close the list
     console.log('Selected user:', user);
   };
 
@@ -141,7 +101,7 @@ const UserSelector: React.FC<UserSelectorProps> = ({ onSelectUser, selectedEmail
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
                 <Input
-                  placeholder="Search users by name..."
+                  placeholder="Search by name or email..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="pl-10"
@@ -168,9 +128,12 @@ const UserSelector: React.FC<UserSelectorProps> = ({ onSelectUser, selectedEmail
                           <p className="font-medium">
                             {user.first_name} {user.last_name}
                           </p>
+                          <p className="text-sm text-blue-600">{user.email}</p>
                           <p className="text-xs text-gray-500 capitalize">{user.user_type}</p>
-                          <p className="text-xs text-amber-600 mt-1">Email must be entered manually</p>
                         </div>
+                        {selectedEmail === user.email && (
+                          <Check className="h-4 w-4 text-green-600" />
+                        )}
                       </div>
                     </div>
                   ))
@@ -185,13 +148,6 @@ const UserSelector: React.FC<UserSelectorProps> = ({ onSelectUser, selectedEmail
                 )}
               </div>
             )}
-
-            <div className="mt-4 p-3 bg-blue-50 rounded-lg">
-              <p className="text-sm text-blue-800">
-                <strong>Note:</strong> Due to security restrictions, emails are not displayed in the user list. 
-                Please manually enter the email address of the user you want to grant admin rights to.
-              </p>
-            </div>
           </CardContent>
         </Card>
       )}
