@@ -128,7 +128,7 @@ const AdminBlogList = () => {
           
           <div className="flex gap-2">
             {/* Show the manage admins button only for owner */}
-            {!ownerLoading && isOwner && (
+            {isOwner && (
               <Button variant="outline" asChild>
                 <Link to="/admin/manage-admins" className="flex items-center">
                   <Settings className="mr-2 h-4 w-4" />

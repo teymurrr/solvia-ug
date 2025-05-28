@@ -79,7 +79,7 @@ const UserSelector: React.FC<UserSelectorProps> = ({ onSelectUser, selectedEmail
       <div className="flex gap-2">
         <Input
           type="email"
-          placeholder="Enter email address"
+          placeholder="Enter email address or browse users below"
           value={selectedEmail}
           onChange={(e) => onSelectUser(e.target.value)}
         />
@@ -101,7 +101,7 @@ const UserSelector: React.FC<UserSelectorProps> = ({ onSelectUser, selectedEmail
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
                 <Input
-                  placeholder="Search by name or email..."
+                  placeholder="Search by email, name..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="pl-10"
