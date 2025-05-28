@@ -26,5 +26,6 @@ export const common = {
   countries: "Países",
   viewMore: "Ver más",
   forEmployers: "Para empleadores",
-  learning: "Aprendizaje Solvia"
+  learning: "Aprendizaje Solvia",
+  myAccount: "Mi Cuenta"
 };

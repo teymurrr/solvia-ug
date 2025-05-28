@@ -13,6 +13,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { useToast } from '@/hooks/use-toast';
+import { useLanguage } from '@/hooks/useLanguage';
 
 interface UserDropdownProps {
   userType: string | null;
@@ -23,21 +24,22 @@ interface UserDropdownProps {
 const UserDropdown: React.FC<UserDropdownProps> = ({ userType, hasUnreadMessages, onSignOut }) => {
   const { toast } = useToast();
   const navigate = useNavigate();
+  const { t } = useLanguage();
 
   const handleSignOut = async () => {
     try {
       await onSignOut();
       toast({
-        title: "Sign Out Successful",
-        description: "You have been signed out successfully."
+        title: t?.common?.logout || "Sign Out Successful",
+        description: t?.auth?.signOutSuccess || "You have been signed out successfully."
       });
       // Ensure we redirect to the homepage after signout
       navigate('/', { replace: true });
     } catch (error) {
       console.error('Error during sign out:', error);
       toast({
-        title: "Error signing out",
-        description: "Please try again",
+        title: t?.common?.error || "Error signing out",
+        description: t?.auth?.signOutError || "Please try again",
         variant: "destructive"
       });
     }
@@ -58,12 +60,12 @@ const UserDropdown: React.FC<UserDropdownProps> = ({ userType, hasUnreadMessages
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56">
-        <DropdownMenuLabel>My Account</DropdownMenuLabel>
+        <DropdownMenuLabel>{t?.common?.myAccount || "My Account"}</DropdownMenuLabel>
 
         <DropdownMenuItem asChild>
           <Link to="/messages">
             <Mail className="h-4 w-4 mr-2" />
-            Messages
+            {t?.common?.messages || "Messages"}
             {hasUnreadMessages && <Badge className="ml-2 bg-red-500 text-white">1</Badge>}
           </Link>
         </DropdownMenuItem>
@@ -72,7 +74,7 @@ const UserDropdown: React.FC<UserDropdownProps> = ({ userType, hasUnreadMessages
         
         <DropdownMenuItem onClick={handleSignOut} className="text-red-500">
           <LogOut className="h-4 w-4 mr-2" />
-          Sign out
+          {t?.common?.logout || "Sign out"}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
