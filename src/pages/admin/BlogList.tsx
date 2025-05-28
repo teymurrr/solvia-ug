@@ -40,12 +40,16 @@ import { useToast } from '@/hooks/use-toast';
 const AdminBlogList = () => {
   const navigate = useNavigate();
   const { isAdmin, loading: adminLoading } = useAdmin();
-  const { isOwner } = useOwner();
+  const { isOwner, loading: ownerLoading } = useOwner();
   const { posts, loading } = useBlogPosts(true);
   const { toast } = useToast();
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [postToDelete, setPostToDelete] = useState<string | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
+
+  console.log('🔍 [BlogList] Component rendering...');
+  console.log('🔍 [BlogList] isAdmin:', isAdmin, 'adminLoading:', adminLoading);
+  console.log('🔍 [BlogList] isOwner:', isOwner, 'ownerLoading:', ownerLoading);
 
   React.useEffect(() => {
     if (!adminLoading && !isAdmin) {
@@ -120,17 +124,32 @@ const AdminBlogList = () => {
             </Button>
             <h1 className="text-3xl font-bold">Blog Administration</h1>
             <p className="text-muted-foreground">Manage your blog posts</p>
+            
+            {/* Debug information */}
+            <div className="mt-2 text-sm text-gray-500">
+              Debug: isOwner={isOwner ? 'true' : 'false'}, ownerLoading={ownerLoading ? 'true' : 'false'}
+            </div>
           </div>
           
           <div className="flex gap-2">
-            {isOwner && (
-              <Button variant="outline" asChild>
-                <Link to="/admin/manage-admins" className="flex items-center">
-                  <Settings className="mr-2 h-4 w-4" />
-                  Manage Admins
-                </Link>
-              </Button>
+            {/* Show the manage admins button with debug info */}
+            {!ownerLoading && (
+              <>
+                {isOwner ? (
+                  <Button variant="outline" asChild>
+                    <Link to="/admin/manage-admins" className="flex items-center">
+                      <Settings className="mr-2 h-4 w-4" />
+                      Manage Admins
+                    </Link>
+                  </Button>
+                ) : (
+                  <div className="text-xs text-red-500">
+                    Not owner - button hidden
+                  </div>
+                )}
+              </>
             )}
+            
             <Button asChild>
               <Link to="/admin/blog/new" className="flex items-center">
                 <Plus className="mr-2 h-4 w-4" />
