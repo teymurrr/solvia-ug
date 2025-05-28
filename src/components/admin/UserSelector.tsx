@@ -29,111 +29,60 @@ const UserSelector: React.FC<UserSelectorProps> = ({ onSelectUser, selectedEmail
   const fetchUsers = async () => {
     setLoading(true);
     try {
-      // Get professional profiles with email lookup
+      console.log('Fetching users from profile tables...');
+      
+      // Get professional profiles
       const { data: professionals, error: profError } = await supabase
         .from('professional_profiles')
-        .select(`
-          id, 
-          first_name, 
-          last_name
-        `);
+        .select('id, first_name, last_name');
 
-      // Get institution profiles with email lookup
+      // Get institution profiles
       const { data: institutions, error: instError } = await supabase
         .from('institution_profiles')
-        .select(`
-          id, 
-          institution_name
-        `);
+        .select('id, institution_name');
 
-      if (profError && instError) {
-        console.error('Error fetching users:', { profError, instError });
-        return;
+      if (profError) {
+        console.error('Error fetching professionals:', profError);
+      }
+      
+      if (instError) {
+        console.error('Error fetching institutions:', instError);
       }
 
       const allUsers: User[] = [];
 
       // Add professionals
       if (professionals) {
-        for (const prof of professionals) {
-          // Get email from auth.users via RPC or direct query
-          const { data: authUser } = await supabase.auth.admin.getUserById(prof.id);
-          const email = authUser?.user?.email || 'Email not available';
-          
+        professionals.forEach(prof => {
           allUsers.push({
             id: prof.id,
-            email: email,
+            email: 'Please enter email manually', // Email not available from profile tables
             first_name: prof.first_name,
             last_name: prof.last_name,
             user_type: 'professional'
           });
-        }
+        });
       }
 
       // Add institutions
       if (institutions) {
-        for (const inst of institutions) {
+        institutions.forEach(inst => {
           if (!allUsers.find(user => user.id === inst.id)) {
-            const { data: authUser } = await supabase.auth.admin.getUserById(inst.id);
-            const email = authUser?.user?.email || 'Email not available';
-            
             allUsers.push({
               id: inst.id,
-              email: email,
+              email: 'Please enter email manually', // Email not available from profile tables
               first_name: inst.institution_name,
               user_type: 'institution'
             });
           }
-        }
+        });
       }
 
+      console.log('Fetched users:', allUsers.length);
       setUsers(allUsers);
       setFilteredUsers(allUsers);
     } catch (error) {
       console.error('Error fetching users:', error);
-      
-      // Fallback: If admin access fails, try to get users without emails
-      try {
-        const { data: professionals } = await supabase
-          .from('professional_profiles')
-          .select('id, first_name, last_name');
-
-        const { data: institutions } = await supabase
-          .from('institution_profiles')
-          .select('id, institution_name');
-
-        const fallbackUsers: User[] = [];
-
-        if (professionals) {
-          professionals.forEach(prof => {
-            fallbackUsers.push({
-              id: prof.id,
-              email: 'Email access restricted',
-              first_name: prof.first_name,
-              last_name: prof.last_name,
-              user_type: 'professional'
-            });
-          });
-        }
-
-        if (institutions) {
-          institutions.forEach(inst => {
-            if (!fallbackUsers.find(user => user.id === inst.id)) {
-              fallbackUsers.push({
-                id: inst.id,
-                email: 'Email access restricted',
-                first_name: inst.institution_name,
-                user_type: 'institution'
-              });
-            }
-          });
-        }
-
-        setUsers(fallbackUsers);
-        setFilteredUsers(fallbackUsers);
-      } catch (fallbackError) {
-        console.error('Fallback error:', fallbackError);
-      }
     } finally {
       setLoading(false);
     }
@@ -149,7 +98,6 @@ const UserSelector: React.FC<UserSelectorProps> = ({ onSelectUser, selectedEmail
     const filtered = users.filter(user => {
       const searchLower = searchTerm.toLowerCase();
       return (
-        user.email.toLowerCase().includes(searchLower) ||
         (user.first_name && user.first_name.toLowerCase().includes(searchLower)) ||
         (user.last_name && user.last_name.toLowerCase().includes(searchLower))
       );
@@ -158,8 +106,12 @@ const UserSelector: React.FC<UserSelectorProps> = ({ onSelectUser, selectedEmail
   }, [searchTerm, users]);
 
   const handleUserSelect = (user: User) => {
-    onSelectUser(user.email);
+    // When clicking on a user, we'll copy their name to help the admin identify them
+    // but they'll still need to enter the email manually
     setShowUserList(false);
+    
+    // Don't auto-fill with placeholder text, just close the list
+    console.log('Selected user:', user);
   };
 
   return (
@@ -167,7 +119,7 @@ const UserSelector: React.FC<UserSelectorProps> = ({ onSelectUser, selectedEmail
       <div className="flex gap-2">
         <Input
           type="email"
-          placeholder="Enter email address or search users"
+          placeholder="Enter email address"
           value={selectedEmail}
           onChange={(e) => onSelectUser(e.target.value)}
         />
@@ -189,7 +141,7 @@ const UserSelector: React.FC<UserSelectorProps> = ({ onSelectUser, selectedEmail
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
                 <Input
-                  placeholder="Search users by name or email..."
+                  placeholder="Search users by name..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="pl-10"
@@ -208,9 +160,7 @@ const UserSelector: React.FC<UserSelectorProps> = ({ onSelectUser, selectedEmail
                   filteredUsers.map((user) => (
                     <div
                       key={user.id}
-                      className={`p-3 rounded-lg border cursor-pointer transition-colors hover:bg-gray-50 ${
-                        selectedEmail === user.email ? 'bg-medical-50 border-medical-200' : 'border-gray-200'
-                      }`}
+                      className="p-3 rounded-lg border cursor-pointer transition-colors hover:bg-gray-50 border-gray-200"
                       onClick={() => handleUserSelect(user)}
                     >
                       <div className="flex items-center justify-between">
@@ -218,12 +168,9 @@ const UserSelector: React.FC<UserSelectorProps> = ({ onSelectUser, selectedEmail
                           <p className="font-medium">
                             {user.first_name} {user.last_name}
                           </p>
-                          <p className="text-sm text-muted-foreground">{user.email}</p>
                           <p className="text-xs text-gray-500 capitalize">{user.user_type}</p>
+                          <p className="text-xs text-amber-600 mt-1">Email must be entered manually</p>
                         </div>
-                        {selectedEmail === user.email && (
-                          <Check className="h-5 w-5 text-medical-600" />
-                        )}
                       </div>
                     </div>
                   ))
@@ -239,14 +186,12 @@ const UserSelector: React.FC<UserSelectorProps> = ({ onSelectUser, selectedEmail
               </div>
             )}
 
-            {users.some(user => user.email === 'Email access restricted' || user.email === 'Email not available') && (
-              <div className="mt-4 p-3 bg-amber-50 rounded-lg">
-                <p className="text-sm text-amber-800">
-                  <strong>Note:</strong> Some email addresses may not be accessible due to security restrictions. 
-                  You can still select users and manually enter their correct email address.
-                </p>
-              </div>
-            )}
+            <div className="mt-4 p-3 bg-blue-50 rounded-lg">
+              <p className="text-sm text-blue-800">
+                <strong>Note:</strong> Due to security restrictions, emails are not displayed in the user list. 
+                Please manually enter the email address of the user you want to grant admin rights to.
+              </p>
+            </div>
           </CardContent>
         </Card>
       )}

@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import MainLayout from '@/components/MainLayout';
 import { useNavigate, Link } from 'react-router-dom';
@@ -25,7 +26,6 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { useToast } from '@/hooks/use-toast';
-import { supabase } from '@/integrations/supabase/client';
 
 interface AdminWithEmail extends AdminUser {
   email: string; // Make email required to match parent interface
@@ -53,31 +53,18 @@ const AdminManagement = () => {
   const fetchAdmins = async () => {
     setLoading(true);
     try {
+      console.log('Fetching admin list...');
       const adminList = await adminService.getAllAdmins();
       
-      // Enhance admin list with emails
-      const adminsWithEmails: AdminWithEmail[] = [];
-      
-      for (const admin of adminList) {
-        try {
-          // Try to get email from auth.users
-          const { data: authUser } = await supabase.auth.admin.getUserById(admin.id);
-          const email = authUser?.user?.email;
-          
-          adminsWithEmails.push({
-            ...admin,
-            email: email || 'Email not available'
-          });
-        } catch (error) {
-          console.error('Error fetching email for admin:', admin.id, error);
-          adminsWithEmails.push({
-            ...admin,
-            email: 'Email access restricted'
-          });
-        }
-      }
+      // Since we can't access emails from auth.users without elevated permissions,
+      // we'll show admins without email information and let users know
+      const adminsWithEmails: AdminWithEmail[] = adminList.map(admin => ({
+        ...admin,
+        email: 'Email not accessible'
+      }));
       
       setAdmins(adminsWithEmails);
+      console.log('Fetched admins:', adminsWithEmails.length);
     } catch (error) {
       console.error('Error fetching admins:', error);
       toast({
@@ -121,6 +108,7 @@ const AdminManagement = () => {
 
     setAddingAdmin(true);
     try {
+      console.log('Adding admin:', newAdminEmail);
       await adminService.addAdmin(newAdminEmail);
       toast({
         title: 'Success',
@@ -270,6 +258,15 @@ const AdminManagement = () => {
                 <div className="text-center py-8 text-muted-foreground">
                   <Users className="h-12 w-12 mx-auto mb-4 opacity-50" />
                   <p>No administrators found</p>
+                </div>
+              )}
+              
+              {admins.length > 0 && (
+                <div className="mt-4 p-3 bg-amber-50 rounded-lg">
+                  <p className="text-sm text-amber-800">
+                    <strong>Note:</strong> Email addresses are not accessible due to security restrictions. 
+                    Administrators are identified by their names.
+                  </p>
                 </div>
               )}
             </CardContent>
