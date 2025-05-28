@@ -1,6 +1,6 @@
 
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts'
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.38.4'
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.49.4'
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -47,13 +47,13 @@ serve(async (req) => {
 
     console.log('Looking for user with email:', email);
 
-    // Use the Auth Admin API to find the user by email
-    const { data: userData, error: userError } = await supabaseAdmin.auth.admin.getUserByEmail(email);
+    // Use the Auth Admin API to list users and find by email
+    const { data: usersData, error: usersError } = await supabaseAdmin.auth.admin.listUsers();
 
-    if (userError) {
-      console.error('Error finding user by email:', userError);
+    if (usersError) {
+      console.error('Error listing users:', usersError);
       return new Response(
-        JSON.stringify({ error: 'Failed to find user: ' + userError.message }),
+        JSON.stringify({ error: 'Failed to access users: ' + usersError.message }),
         { 
           status: 500,
           headers: { 
@@ -64,7 +64,10 @@ serve(async (req) => {
       )
     }
 
-    if (!userData || !userData.user) {
+    // Find user by email in the list
+    const user = usersData.users.find(u => u.email?.toLowerCase() === email.toLowerCase());
+
+    if (!user) {
       console.error('User not found with email:', email);
       return new Response(
         JSON.stringify({ error: 'User not found with this email address' }),
@@ -78,7 +81,6 @@ serve(async (req) => {
       )
     }
 
-    const user = userData.user;
     console.log('Found user:', user.id, user.email);
 
     // Check if user is already an admin
