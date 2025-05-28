@@ -13,6 +13,7 @@ export const useOwner = () => {
       console.log('🔍 [useOwner] User object:', user);
       console.log('🔍 [useOwner] User email:', user?.email);
       console.log('🔍 [useOwner] isLoggedIn:', isLoggedIn);
+      console.log('🔍 [useOwner] authLoading:', authLoading);
 
       if (!user?.email) {
         console.log('❌ [useOwner] No user email found, setting isOwner to false');
@@ -23,26 +24,34 @@ export const useOwner = () => {
 
       // Only tmammadovv@gmail.com is considered the owner
       const ownerEmail = 'tmammadovv@gmail.com';
-      const userIsOwner = user.email === ownerEmail;
+      const userEmail = user.email.toLowerCase().trim();
+      const ownerEmailNormalized = ownerEmail.toLowerCase().trim();
+      const userIsOwner = userEmail === ownerEmailNormalized;
       
-      console.log('🔍 [useOwner] Owner email:', ownerEmail);
-      console.log('🔍 [useOwner] User email:', user.email);
+      console.log('🔍 [useOwner] Owner email (normalized):', ownerEmailNormalized);
+      console.log('🔍 [useOwner] User email (normalized):', userEmail);
       console.log('🔍 [useOwner] Email match:', userIsOwner);
+      console.log('🔍 [useOwner] Email comparison details:');
+      console.log('  - User email length:', userEmail.length);
+      console.log('  - Owner email length:', ownerEmailNormalized.length);
+      console.log('  - Character codes:', userEmail.split('').map(c => c.charCodeAt(0)));
       console.log('✅ [useOwner] Final owner status:', userIsOwner);
       
       setIsOwner(userIsOwner);
       setLoading(false);
     };
 
-    console.log('🔍 [useOwner] useEffect triggered - isLoggedIn:', isLoggedIn, 'authLoading:', authLoading);
+    console.log('🔍 [useOwner] useEffect triggered');
+    console.log('🔍 [useOwner] State - isLoggedIn:', isLoggedIn, 'authLoading:', authLoading, 'user:', !!user);
     
     // Wait for auth loading to complete before checking owner status
     if (!authLoading) {
-      if (isLoggedIn && user) {
-        console.log('🔍 [useOwner] User is logged in, checking owner status');
+      if (isLoggedIn && user?.email) {
+        console.log('🔍 [useOwner] User is logged in with email, checking owner status');
         checkOwnerStatus();
       } else {
-        console.log('🔍 [useOwner] User is not logged in, setting isOwner to false');
+        console.log('🔍 [useOwner] User is not logged in or has no email, setting isOwner to false');
+        console.log('🔍 [useOwner] Details - isLoggedIn:', isLoggedIn, 'hasEmail:', !!user?.email);
         setIsOwner(false);
         setLoading(false);
       }
@@ -52,6 +61,8 @@ export const useOwner = () => {
     }
   }, [user, isLoggedIn, authLoading]);
 
-  console.log('🔍 [useOwner] Hook returning - isOwner:', isOwner, 'loading:', loading);
+  // Add additional debug logging for the hook's return values
+  console.log('🔍 [useOwner] Hook returning - isOwner:', isOwner, 'loading:', loading, 'authLoading:', authLoading);
+  
   return { isOwner, loading };
 };

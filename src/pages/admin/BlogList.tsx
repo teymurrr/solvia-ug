@@ -36,6 +36,7 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/contexts/AuthContext';
 
 const AdminBlogList = () => {
   const navigate = useNavigate();
@@ -43,6 +44,7 @@ const AdminBlogList = () => {
   const { isOwner, loading: ownerLoading } = useOwner();
   const { posts, loading } = useBlogPosts(true);
   const { toast } = useToast();
+  const { user } = useAuth();
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [postToDelete, setPostToDelete] = useState<string | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -50,6 +52,7 @@ const AdminBlogList = () => {
   console.log('🔍 [BlogList] Component rendering...');
   console.log('🔍 [BlogList] isAdmin:', isAdmin, 'adminLoading:', adminLoading);
   console.log('🔍 [BlogList] isOwner:', isOwner, 'ownerLoading:', ownerLoading);
+  console.log('🔍 [BlogList] Current user email:', user?.email);
 
   React.useEffect(() => {
     if (!adminLoading && !isAdmin) {
@@ -111,6 +114,9 @@ const AdminBlogList = () => {
     return null;
   }
 
+  // Check if current user is the specific owner
+  const isSpecificOwner = user?.email === 'tmammadovv@gmail.com';
+
   return (
     <MainLayout>
       <div className="container mx-auto px-4 py-12">
@@ -124,11 +130,21 @@ const AdminBlogList = () => {
             </Button>
             <h1 className="text-3xl font-bold">Blog Administration</h1>
             <p className="text-muted-foreground">Manage your blog posts</p>
+            
+            {/* Temporary debug info - remove after fixing */}
+            {process.env.NODE_ENV === 'development' && (
+              <div className="mt-2 p-2 bg-yellow-100 text-xs rounded">
+                <p>Debug: User email: {user?.email}</p>
+                <p>Debug: isOwner: {isOwner.toString()}</p>
+                <p>Debug: ownerLoading: {ownerLoading.toString()}</p>
+                <p>Debug: isSpecificOwner: {isSpecificOwner.toString()}</p>
+              </div>
+            )}
           </div>
           
           <div className="flex gap-2">
-            {/* Show the manage admins button only for owner */}
-            {isOwner && (
+            {/* Show the manage admins button only for owner - using multiple checks for reliability */}
+            {(isOwner || isSpecificOwner) && (
               <Button variant="outline" asChild>
                 <Link to="/admin/manage-admins" className="flex items-center">
                   <Settings className="mr-2 h-4 w-4" />
