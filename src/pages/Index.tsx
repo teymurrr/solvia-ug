@@ -2,7 +2,6 @@
 import MainLayout from '@/components/MainLayout';
 import HeroSection from '@/components/landing/HeroSection';
 import WhySolviaSection from '@/components/landing/WhySolviaSection';
-import HowItWorksSection from '@/components/landing/HowItWorksSection';
 import TimelineSection from '@/components/landing/TimelineSection';
 import ProfessionalsSection from '@/components/landing/ProfessionalsSection';
 import VacanciesSection from '@/components/landing/VacanciesSection';
@@ -17,7 +16,6 @@ const Index = () => {
     <MainLayout>
       <HeroSection />
       <WhySolviaSection />
-      <HowItWorksSection />
       <TimelineSection />
       <ProfessionalsSection professionals={featuredProfessionals} />
       <VacanciesSection vacancies={featuredVacancies} />
