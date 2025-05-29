@@ -58,7 +58,7 @@ const Blog = () => {
         ) : posts.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {posts.map((blog) => (
-              <Card key={blog.id} className="border-transparent hover:shadow-lg hover:scale-[1.01] transition-all duration-300 h-[350px] flex flex-col">
+              <Card key={blog.id} className="border-transparent hover:shadow-lg hover:scale-[1.01] transition-all duration-300 h-[380px] flex flex-col">
                 <CardContent className="p-6 flex flex-col h-full">
                   {blog.imageUrl && (
                     <div className="mb-4">
@@ -71,9 +71,8 @@ const Blog = () => {
                       </AspectRatio>
                     </div>
                   )}
-                  <div className="flex items-center justify-between text-sm text-muted-foreground mb-2">
+                  <div className="flex items-center text-sm text-muted-foreground mb-2">
                     <span>{blog.readTime}</span>
-                    <span>{new Date(blog.date).toLocaleDateString()}</span>
                   </div>
                   <h3 className="text-xl font-semibold mb-2 line-clamp-2">{blog.title}</h3>
                   <div className="flex items-center gap-2 mb-2">
