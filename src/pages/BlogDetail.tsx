@@ -71,9 +71,26 @@ const BlogDetail = () => {
           )}
         </div>
 
-        <article className="max-w-3xl mx-auto">
+        <article className="max-w-4xl mx-auto">
+          {/* Photo first - without fixed aspect ratio, fitting complete image */}
+          {post.imageUrl && (
+            <div className="mb-8">
+              <OptimizedImage
+                src={post.imageUrl}
+                alt={post.title}
+                fitMode="contain"
+                useAspectRatio={false}
+                className="rounded-lg mx-auto"
+                containerClassName="w-full flex justify-center bg-gray-50"
+                priority={true}
+              />
+            </div>
+          )}
+
+          {/* Title second */}
           <h1 className="text-4xl font-bold mb-4">{post.title}</h1>
           
+          {/* Metadata third */}
           <div className="flex items-center justify-between text-sm text-muted-foreground mb-6">
             <div className="flex items-center gap-2">
               {post.author && <span>By {post.author}</span>}
@@ -103,20 +120,8 @@ const BlogDetail = () => {
           {/* Show available translations */}
           <BlogTranslations translations={translations} currentLanguage={currentLanguage} />
 
-          {post.imageUrl && (
-            <div className="mb-8">
-              <OptimizedImage
-                src={post.imageUrl}
-                alt={post.title}
-                aspectRatio={16 / 9}
-                className="rounded-md"
-                containerClassName="w-full max-w-3xl mx-auto"
-                priority={true}
-              />
-            </div>
-          )}
-
-          <div className="prose prose-lg max-w-none">
+          {/* Body text last */}
+          <div className="prose prose-lg max-w-none mt-8">
             <p className="text-lg leading-relaxed mb-6">{post.excerpt}</p>
             
             {post.content ? (
