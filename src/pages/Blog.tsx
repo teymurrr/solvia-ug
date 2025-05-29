@@ -6,11 +6,11 @@ import { Link } from 'react-router-dom';
 import { ArrowLeft, Plus, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { AspectRatio } from '@/components/ui/aspect-ratio';
 import { Badge } from '@/components/ui/badge';
 import { useBlogPosts } from '@/hooks/useBlogPosts';
 import { useAdmin } from '@/hooks/useAdmin';
 import BlogLanguageSelector from '@/components/blog/BlogLanguageSelector';
+import { OptimizedImage } from '@/components/ui/optimized-image';
 
 const Blog = () => {
   const { t } = useLanguage();
@@ -62,13 +62,13 @@ const Blog = () => {
                 <CardContent className="p-6 flex flex-col h-full">
                   {blog.imageUrl && (
                     <div className="mb-4">
-                      <AspectRatio ratio={16 / 9}>
-                        <img
-                          src={blog.imageUrl}
-                          alt={blog.title}
-                          className="rounded-md object-cover w-full h-full"
-                        />
-                      </AspectRatio>
+                      <OptimizedImage
+                        src={blog.imageUrl}
+                        alt={blog.title}
+                        aspectRatio={16 / 9}
+                        className="rounded-md"
+                        containerClassName="w-full"
+                      />
                     </div>
                   )}
                   <div className="flex items-center text-sm text-muted-foreground mb-2">

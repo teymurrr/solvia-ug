@@ -6,11 +6,11 @@ import { Button } from '@/components/ui/button';
 import { ArrowLeft, Edit, Loader2 } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
 import { useSingleBlogPost } from '@/hooks/useBlogPosts';
-import { AspectRatio } from '@/components/ui/aspect-ratio';
 import { Badge } from '@/components/ui/badge';
 import BlogComments from '@/components/blog/BlogComments';
 import BlogTranslations from '@/components/blog/BlogTranslations';
 import { useAdmin } from '@/hooks/useAdmin';
+import { OptimizedImage } from '@/components/ui/optimized-image';
 
 const BlogDetail = () => {
   const { id } = useParams<{ id: string }>();
@@ -105,13 +105,14 @@ const BlogDetail = () => {
 
           {post.imageUrl && (
             <div className="mb-8">
-              <AspectRatio ratio={16 / 9}>
-                <img
-                  src={post.imageUrl}
-                  alt={post.title}
-                  className="rounded-md object-cover w-full h-full"
-                />
-              </AspectRatio>
+              <OptimizedImage
+                src={post.imageUrl}
+                alt={post.title}
+                aspectRatio={16 / 9}
+                className="rounded-md"
+                containerClassName="w-full max-w-3xl mx-auto"
+                priority={true}
+              />
             </div>
           )}
 

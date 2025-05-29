@@ -6,8 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { BlogPost } from '@/types/landing';
 import { useLanguage } from '@/hooks/useLanguage';
-import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { useBlogPosts } from '@/hooks/useBlogPosts';
+import { OptimizedImage } from "@/components/ui/optimized-image";
 
 interface BlogSectionProps {
   posts?: BlogPost[]; // Make posts optional since we'll fetch if not provided
@@ -44,13 +44,13 @@ const BlogSection: React.FC<BlogSectionProps> = ({ posts: propsPosts }) => {
                 <CardContent className="p-6 flex flex-col h-full">
                   {blog.imageUrl && (
                     <div className="mb-3">
-                      <AspectRatio ratio={16 / 9}>
-                        <img
-                          src={blog.imageUrl}
-                          alt={blog.title}
-                          className="rounded-md object-cover w-full h-full"
-                        />
-                      </AspectRatio>
+                      <OptimizedImage
+                        src={blog.imageUrl}
+                        alt={blog.title}
+                        aspectRatio={16 / 9}
+                        className="rounded-md"
+                        containerClassName="w-full"
+                      />
                     </div>
                   )}
                   <div className="flex items-center gap-2 text-sm text-muted-foreground mb-2">

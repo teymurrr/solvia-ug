@@ -10,6 +10,7 @@ interface OptimizedImageProps extends React.ImgHTMLAttributes<HTMLImageElement> 
   className?: string;
   priority?: boolean;
   containerClassName?: string;
+  maxWidth?: string;
 }
 
 export function OptimizedImage({
@@ -19,17 +20,29 @@ export function OptimizedImage({
   className,
   priority = false,
   containerClassName,
+  maxWidth = "100%",
   ...props
 }: OptimizedImageProps) {
   return (
-    <div className={cn("overflow-hidden rounded-lg", containerClassName)}>
+    <div 
+      className={cn("overflow-hidden rounded-lg", containerClassName)}
+      style={{ maxWidth }}
+    >
       <AspectRatio ratio={aspectRatio}>
         <img
           src={src}
           alt={alt}
-          className={cn("object-cover w-full h-full", className)}
+          className={cn(
+            "object-cover w-full h-full transition-transform duration-300 hover:scale-105",
+            className
+          )}
           loading={priority ? "eager" : "lazy"}
           decoding={priority ? "sync" : "async"}
+          style={{
+            maxWidth: "100%",
+            height: "auto",
+            objectFit: "cover",
+          }}
           {...props}
         />
       </AspectRatio>
