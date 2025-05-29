@@ -10,22 +10,24 @@ export const preprocessText = (text: string): string => {
     return text;
   }
   
-  // Convert plain text to HTML with proper paragraph formatting
-  let processedText = text
-    // Replace multiple consecutive line breaks with paragraph breaks
-    .replace(/\n\s*\n/g, '</p><p>')
-    // Replace single line breaks with <br> tags
-    .replace(/\n/g, '<br>')
-    // Wrap the entire content in paragraph tags
-    .replace(/^(.*)$/, '<p>$1</p>')
-    // Clean up empty paragraphs
-    .replace(/<p><\/p>/g, '')
-    // Fix paragraphs that start with <br>
-    .replace(/<p><br>/g, '<p>')
-    // Fix multiple <br> tags at the start of paragraphs
-    .replace(/<p>(<br>)+/g, '<p>');
+  // Split text by double line breaks to identify paragraphs
+  const paragraphs = text
+    .split(/\n\s*\n/) // Split on double newlines (with possible whitespace)
+    .filter(paragraph => paragraph.trim().length > 0); // Remove empty paragraphs
   
-  return processedText;
+  // Process each paragraph
+  const processedParagraphs = paragraphs.map(paragraph => {
+    // Replace single line breaks within paragraphs with <br> tags
+    const processedParagraph = paragraph
+      .trim() // Remove leading/trailing whitespace
+      .replace(/\n/g, '<br>'); // Convert single line breaks to <br>
+    
+    // Wrap in paragraph tags
+    return `<p>${processedParagraph}</p>`;
+  });
+  
+  // Join all paragraphs
+  return processedParagraphs.join('');
 };
 
 export const stripHtml = (html: string): string => {
