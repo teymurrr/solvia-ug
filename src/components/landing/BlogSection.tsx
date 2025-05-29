@@ -40,7 +40,7 @@ const BlogSection: React.FC<BlogSectionProps> = ({ posts: propsPosts }) => {
         ) : displayPosts.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {displayPosts.map((blog) => (
-              <Card key={blog.id} className="border-transparent hover:shadow-lg hover:scale-[1.02] transition-all duration-300 h-[380px] flex flex-col">
+              <Card key={blog.id} className="border-transparent hover:shadow-lg hover:scale-[1.02] transition-all duration-300 h-[320px] flex flex-col">
                 <CardContent className="p-6 flex flex-col h-full">
                   {blog.imageUrl && (
                     <div className="mb-3">
@@ -59,7 +59,7 @@ const BlogSection: React.FC<BlogSectionProps> = ({ posts: propsPosts }) => {
                     <span>{new Date(blog.date).toLocaleDateString()}</span>
                   </div>
                   <h3 className="text-lg font-semibold mb-2 line-clamp-2">{blog.title}</h3>
-                  <p className="text-muted-foreground mb-3 flex-grow line-clamp-2 text-sm">{blog.excerpt}</p>
+                  <p className="text-muted-foreground mb-3 flex-grow line-clamp-3 text-sm">{blog.excerpt}</p>
                   <div className="mt-auto">
                     <Link
                       to={`/blog/${blog.id}`}
