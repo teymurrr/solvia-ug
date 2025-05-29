@@ -10,10 +10,12 @@ import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Switch } from '@/components/ui/switch';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { ArrowLeft, Save, Upload, Image, Loader2, Clock, Languages } from 'lucide-react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { ArrowLeft, Save, Upload, Image, Loader2, Clock, Languages, Eye } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
+import { preprocessText } from '@/utils/textProcessor';
 
 interface BlogFormData {
   title: string;
@@ -59,6 +61,7 @@ const BlogEditor = () => {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [isUploading, setIsUploading] = useState(false);
+  const [activeTab, setActiveTab] = useState<'edit' | 'preview'>('edit');
   const { toast } = useToast();
   const { user } = useAuth();
 
@@ -200,11 +203,14 @@ const BlogEditor = () => {
         }
       }
       
+      // Preprocess the content to preserve formatting
+      const processedContent = preprocessText(formData.content);
+      
       const blogData = {
         title: formData.title,
         slug: formData.slug || generateSlug(formData.title),
         excerpt: formData.excerpt,
-        content: formData.content,
+        content: processedContent, // Use preprocessed content
         image_url: imageUrl,
         category: formData.category || null,
         read_time: formData.readTime || null,
@@ -370,15 +376,40 @@ const BlogEditor = () => {
 
               <div>
                 <Label htmlFor="content">Content <span className="text-red-500">*</span></Label>
-                <Textarea
-                  id="content"
-                  name="content"
-                  placeholder="Write your post content here... (HTML supported)"
-                  value={formData.content}
-                  onChange={handleInputChange}
-                  className="min-h-[300px]"
-                  required
-                />
+                <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as 'edit' | 'preview')} className="w-full">
+                  <TabsList className="grid w-full grid-cols-2">
+                    <TabsTrigger value="edit">Edit</TabsTrigger>
+                    <TabsTrigger value="preview" className="flex items-center">
+                      <Eye className="mr-2 h-4 w-4" />
+                      Preview
+                    </TabsTrigger>
+                  </TabsList>
+                  <TabsContent value="edit" className="mt-4">
+                    <Textarea
+                      id="content"
+                      name="content"
+                      placeholder="Write your post content here... Paste your text and line breaks will be preserved automatically when you publish."
+                      value={formData.content}
+                      onChange={handleInputChange}
+                      className="min-h-[300px]"
+                      required
+                    />
+                    <p className="text-sm text-muted-foreground mt-2">
+                      💡 Tip: Paste your formatted text here. Line breaks and paragraphs will be preserved automatically when you publish.
+                    </p>
+                  </TabsContent>
+                  <TabsContent value="preview" className="mt-4">
+                    <div className="border rounded-md p-4 min-h-[300px] bg-gray-50">
+                      <h4 className="font-medium mb-2">Preview:</h4>
+                      <div 
+                        className="prose prose-sm max-w-none"
+                        dangerouslySetInnerHTML={{ 
+                          __html: formData.content ? preprocessText(formData.content) : '<p class="text-muted-foreground">Start typing to see preview...</p>' 
+                        }} 
+                      />
+                    </div>
+                  </TabsContent>
+                </Tabs>
               </div>
             </div>
 
