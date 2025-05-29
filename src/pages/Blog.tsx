@@ -56,12 +56,12 @@ const Blog = () => {
             <p className="text-lg text-red-500">Failed to load blog posts. Please try again later.</p>
           </div>
         ) : posts.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {posts.map((blog) => (
-              <Card key={blog.id} className="border-transparent hover:shadow-lg hover:scale-[1.01] transition-all duration-300 h-[380px] flex flex-col">
-                <CardContent className="p-6 flex flex-col h-full">
+              <Card key={blog.id} className="border-0 hover:shadow-lg hover:scale-[1.01] transition-all duration-300 h-[400px] flex flex-col">
+                <CardContent className="p-4 flex flex-col h-full">
                   {blog.imageUrl && (
-                    <div className="mb-4">
+                    <div className="mb-3">
                       <OptimizedImage
                         src={blog.imageUrl}
                         alt={blog.title}
@@ -92,11 +92,11 @@ const Blog = () => {
                       </Badge>
                     )}
                   </div>
-                  <p className="text-muted-foreground mb-4 flex-grow line-clamp-3 text-sm">{blog.excerpt}</p>
+                  <p className="text-muted-foreground mb-3 flex-grow line-clamp-4 text-sm leading-relaxed">{blog.excerpt}</p>
                   {blog.author && (
-                    <p className="text-sm text-muted-foreground mb-4">By {blog.author}</p>
+                    <p className="text-sm text-muted-foreground mb-3">By {blog.author}</p>
                   )}
-                  <div className="mt-auto">
+                  <div className="mt-auto pt-2">
                     <Link
                       to={`/blog/${blog.id}`}
                       className="text-medical-600 hover:text-medical-700 font-medium inline-flex items-center group"

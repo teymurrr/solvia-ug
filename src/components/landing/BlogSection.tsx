@@ -40,10 +40,10 @@ const BlogSection: React.FC<BlogSectionProps> = ({ posts: propsPosts }) => {
         ) : displayPosts.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {displayPosts.map((blog) => (
-              <Card key={blog.id} className="border-transparent hover:shadow-lg hover:scale-[1.02] transition-all duration-300 h-[320px] flex flex-col">
-                <CardContent className="p-6 flex flex-col h-full">
+              <Card key={blog.id} className="border-0 hover:shadow-lg hover:scale-[1.02] transition-all duration-300 h-[350px] flex flex-col">
+                <CardContent className="p-4 flex flex-col h-full">
                   {blog.imageUrl && (
-                    <div className="mb-3">
+                    <div className="mb-2">
                       <OptimizedImage
                         src={blog.imageUrl}
                         alt={blog.title}
@@ -59,8 +59,8 @@ const BlogSection: React.FC<BlogSectionProps> = ({ posts: propsPosts }) => {
                     <span>{new Date(blog.date).toLocaleDateString()}</span>
                   </div>
                   <h3 className="blog-title text-lg font-semibold mb-2 line-clamp-2">{blog.title}</h3>
-                  <p className="text-muted-foreground mb-3 flex-grow line-clamp-3 text-sm">{blog.excerpt}</p>
-                  <div className="mt-auto">
+                  <p className="text-muted-foreground mb-2 flex-grow line-clamp-4 text-sm leading-relaxed">{blog.excerpt}</p>
+                  <div className="mt-auto pt-2">
                     <Link
                       to={`/blog/${blog.id}`}
                       className="text-medical-600 hover:text-medical-700 font-medium inline-flex items-center group"
