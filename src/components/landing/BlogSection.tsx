@@ -75,7 +75,9 @@ const BlogSection: React.FC<BlogSectionProps> = ({ posts: propsPosts }) => {
           </div>
         ) : (
           <div className="text-center py-8">
-            <p className="text-muted-foreground">No blog posts available yet.</p>
+            <p className="text-muted-foreground">
+              {loading ? "Loading blog posts..." : "No blog posts available yet."}
+            </p>
           </div>
         )}
         

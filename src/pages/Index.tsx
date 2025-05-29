@@ -9,7 +9,7 @@ import InsightsSection from '@/components/landing/InsightsSection';
 import BlogSection from '@/components/landing/BlogSection';
 import LearningSection from '@/components/landing/LearningSection';
 import CTASection from '@/components/landing/CTASection';
-import { featuredVacancies, featuredProfessionals, featuredBlogs } from '@/data/landingPageData';
+import { featuredVacancies, featuredProfessionals } from '@/data/landingPageData';
 
 const Index = () => {
   return (
@@ -20,7 +20,7 @@ const Index = () => {
       <ProfessionalsSection professionals={featuredProfessionals} />
       <VacanciesSection vacancies={featuredVacancies} />
       <InsightsSection />
-      <BlogSection posts={featuredBlogs} />
+      <BlogSection />
       <LearningSection />
       <CTASection />
     </MainLayout>
