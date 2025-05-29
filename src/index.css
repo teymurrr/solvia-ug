@@ -302,6 +302,31 @@
     }
   }
 
+  .line-clamp-5 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 5;
+    line-height: 1.5;
+    max-height: calc(1.5em * 5);
+    word-wrap: break-word;
+    word-break: break-word;
+    -webkit-hyphens: auto;
+    -ms-hyphens: auto;
+    hyphens: auto;
+  }
+
+  /* Fallback for browsers that don't support line-clamp */
+  @supports not (-webkit-line-clamp: 5) {
+    .line-clamp-5 {
+      display: block;
+      max-height: calc(1.5em * 5);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: normal;
+    }
+  }
+
   /* Safari-specific blog title fixes */
   .blog-title {
     -webkit-font-smoothing: antialiased;

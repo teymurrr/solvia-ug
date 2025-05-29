@@ -38,9 +38,9 @@ const BlogSection: React.FC<BlogSectionProps> = ({ posts: propsPosts }) => {
             <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-medical-600"></div>
           </div>
         ) : displayPosts.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-1">
             {displayPosts.map((blog) => (
-              <Card key={blog.id} className="border-0 hover:shadow-lg hover:scale-[1.02] transition-all duration-300 h-[350px] flex flex-col">
+              <Card key={blog.id} className="border-0 hover:shadow-lg hover:scale-[1.02] transition-all duration-300 h-[420px] flex flex-col">
                 <CardContent className="p-4 flex flex-col h-full">
                   {blog.imageUrl && (
                     <div className="mb-2">
@@ -58,8 +58,8 @@ const BlogSection: React.FC<BlogSectionProps> = ({ posts: propsPosts }) => {
                     <span>•</span>
                     <span>{new Date(blog.date).toLocaleDateString()}</span>
                   </div>
-                  <h3 className="blog-title text-lg font-semibold mb-2 line-clamp-2">{blog.title}</h3>
-                  <p className="text-muted-foreground mb-2 flex-grow line-clamp-4 text-sm leading-relaxed">{blog.excerpt}</p>
+                  <h3 className="blog-title text-lg font-semibold mb-3 line-clamp-3">{blog.title}</h3>
+                  <p className="text-muted-foreground mb-2 flex-grow line-clamp-5 text-sm leading-relaxed">{blog.excerpt}</p>
                   <div className="mt-auto pt-2">
                     <Link
                       to={`/blog/${blog.id}`}
