@@ -223,6 +223,21 @@
     box-shadow: 0 15px 30px rgba(9, 116, 241, 0.1);
     border-color: rgba(9, 116, 241, 0.2);
   }
+
+  /* Line clamp utilities for consistent text truncation */
+  .line-clamp-2 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .line-clamp-3 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+  }
 }
 
 @layer components {

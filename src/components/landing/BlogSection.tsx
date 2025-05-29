@@ -40,8 +40,8 @@ const BlogSection: React.FC<BlogSectionProps> = ({ posts: propsPosts }) => {
         ) : displayPosts.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {displayPosts.map((blog) => (
-              <Card key={blog.id} className="border-transparent hover:shadow-lg hover:scale-[1.02] transition-all duration-300">
-                <CardContent className="p-6">
+              <Card key={blog.id} className="border-transparent hover:shadow-lg hover:scale-[1.02] transition-all duration-300 h-full flex flex-col">
+                <CardContent className="p-6 flex flex-col h-full">
                   {blog.imageUrl && (
                     <div className="mb-4">
                       <AspectRatio ratio={16 / 9}>
@@ -58,11 +58,11 @@ const BlogSection: React.FC<BlogSectionProps> = ({ posts: propsPosts }) => {
                     <span>•</span>
                     <span>{new Date(blog.date).toLocaleDateString()}</span>
                   </div>
-                  <h3 className="text-xl font-semibold mb-2">{blog.title}</h3>
-                  <p className="text-muted-foreground mb-4">{blog.excerpt}</p>
+                  <h3 className="text-xl font-semibold mb-2 line-clamp-2">{blog.title}</h3>
+                  <p className="text-muted-foreground mb-4 flex-grow line-clamp-3">{blog.excerpt}</p>
                   <Link
                     to={`/blog/${blog.id}`}
-                    className="text-medical-600 hover:text-medical-700 font-medium inline-flex items-center group"
+                    className="text-medical-600 hover:text-medical-700 font-medium inline-flex items-center group mt-auto"
                   >
                     {t?.blog?.readMore || "Read More"}
                     <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
