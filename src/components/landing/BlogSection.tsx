@@ -20,8 +20,8 @@ const BlogSection: React.FC<BlogSectionProps> = ({ posts: propsPosts }) => {
   // Use posts from props if provided, otherwise use fetched posts
   const posts = propsPosts || fetchedPosts;
 
-  // Only show up to 2 posts in the landing page section
-  const displayPosts = posts.slice(0, 2);
+  // Show up to 3 posts in the landing page section
+  const displayPosts = posts.slice(0, 3);
 
   return (
     <section className="py-16 bg-gray-50">
@@ -38,12 +38,12 @@ const BlogSection: React.FC<BlogSectionProps> = ({ posts: propsPosts }) => {
             <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-medical-600"></div>
           </div>
         ) : displayPosts.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-1">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {displayPosts.map((blog) => (
-              <Card key={blog.id} className="border-0 hover:shadow-lg hover:scale-[1.02] transition-all duration-300 h-[420px] flex flex-col">
+              <Card key={blog.id} className="border-0 hover:shadow-lg hover:scale-[1.02] transition-all duration-300 h-[350px] flex flex-col">
                 <CardContent className="p-4 flex flex-col h-full">
                   {blog.imageUrl && (
-                    <div className="mb-2">
+                    <div className="mb-3">
                       <OptimizedImage
                         src={blog.imageUrl}
                         alt={blog.title}
@@ -53,13 +53,11 @@ const BlogSection: React.FC<BlogSectionProps> = ({ posts: propsPosts }) => {
                       />
                     </div>
                   )}
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground mb-2">
+                  <div className="flex items-center text-sm text-muted-foreground mb-2">
                     <span>{blog.readTime}</span>
-                    <span>•</span>
-                    <span>{new Date(blog.date).toLocaleDateString()}</span>
                   </div>
-                  <h3 className="blog-title text-lg font-semibold mb-3 line-clamp-3">{blog.title}</h3>
-                  <p className="text-muted-foreground mb-2 flex-grow line-clamp-5 text-sm leading-relaxed">{blog.excerpt}</p>
+                  <h3 className="blog-title text-lg font-semibold mb-2 line-clamp-2">{blog.title}</h3>
+                  <p className="text-muted-foreground mb-3 flex-grow line-clamp-3 text-sm leading-relaxed">{blog.excerpt}</p>
                   <div className="mt-auto pt-2">
                     <Link
                       to={`/blog/${blog.id}`}
