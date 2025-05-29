@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import MainLayout from '@/components/MainLayout';
 import { useNavigate, Link, useParams } from 'react-router-dom';
 import { useAdmin } from '@/hooks/useAdmin';
@@ -15,7 +15,8 @@ import { ArrowLeft, Save, Upload, Image, Loader2, Clock, Languages, Eye } from '
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
-import { preprocessText } from '@/utils/textProcessor';
+import { preprocessText, insertLinkAtPosition, getCursorPosition } from '@/utils/textProcessor';
+import BlogEditorToolbar from '@/components/blog/BlogEditorToolbar';
 
 interface BlogFormData {
   title: string;
@@ -64,6 +65,7 @@ const BlogEditor = () => {
   const [activeTab, setActiveTab] = useState<'edit' | 'preview'>('edit');
   const { toast } = useToast();
   const { user } = useAuth();
+  const contentTextareaRef = useRef<HTMLTextAreaElement>(null);
 
   const isLoading = adminLoading || (isEditing && postLoading);
 
@@ -263,6 +265,46 @@ const BlogEditor = () => {
       setIsSubmitting(false);
     }
   };
+
+  const handleInsertLink = (linkText: string, url: string) => {
+    if (contentTextareaRef.current) {
+      const textarea = contentTextareaRef.current;
+      const cursorPosition = getCursorPosition(textarea);
+      const newContent = insertLinkAtPosition(formData.content, cursorPosition, linkText, url);
+      
+      setFormData(prev => ({ ...prev, content: newContent }));
+      
+      // Focus back to textarea and position cursor after the inserted link
+      setTimeout(() => {
+        textarea.focus();
+        const newPosition = cursorPosition + `<a href="${url}" target="_blank" rel="noopener noreferrer">${linkText}</a>`.length;
+        textarea.setSelectionRange(newPosition, newPosition);
+      }, 0);
+    }
+  };
+
+  const handleFormatText = (format: 'bold' | 'italic') => {
+    if (contentTextareaRef.current) {
+      const textarea = contentTextareaRef.current;
+      const start = textarea.selectionStart;
+      const end = textarea.selectionEnd;
+      const selectedText = formData.content.substring(start, end);
+      
+      if (selectedText) {
+        const tag = format === 'bold' ? 'strong' : 'em';
+        const formattedText = `<${tag}>${selectedText}</${tag}>`;
+        const newContent = formData.content.substring(0, start) + formattedText + formData.content.substring(end);
+        
+        setFormData(prev => ({ ...prev, content: newContent }));
+        
+        // Focus back and select the formatted text
+        setTimeout(() => {
+          textarea.focus();
+          textarea.setSelectionRange(start, start + formattedText.length);
+        }, 0);
+      }
+    }
+  };
   
   if (isLoading) {
     return (
@@ -385,24 +427,31 @@ const BlogEditor = () => {
                     </TabsTrigger>
                   </TabsList>
                   <TabsContent value="edit" className="mt-4">
-                    <Textarea
-                      id="content"
-                      name="content"
-                      placeholder="Write your post content here... Paste your text and line breaks will be preserved automatically when you publish."
-                      value={formData.content}
-                      onChange={handleInputChange}
-                      className="min-h-[300px]"
-                      required
-                    />
+                    <div className="space-y-0">
+                      <BlogEditorToolbar 
+                        onInsertLink={handleInsertLink}
+                        onFormatText={handleFormatText}
+                      />
+                      <Textarea
+                        ref={contentTextareaRef}
+                        id="content"
+                        name="content"
+                        placeholder="Write your post content here... Each new line will become a new paragraph when published."
+                        value={formData.content}
+                        onChange={handleInputChange}
+                        className="min-h-[300px] rounded-t-none border-t-0 focus:border-t focus:rounded-t-md"
+                        required
+                      />
+                    </div>
                     <p className="text-sm text-muted-foreground mt-2">
-                      💡 Tip: Paste your formatted text here. Line breaks and paragraphs will be preserved automatically when you publish.
+                      💡 Tip: Use the toolbar to add links and formatting. Each line break will create a new paragraph.
                     </p>
                   </TabsContent>
                   <TabsContent value="preview" className="mt-4">
                     <div className="border rounded-md p-4 min-h-[300px] bg-gray-50">
                       <h4 className="font-medium mb-2">Preview:</h4>
                       <div 
-                        className="prose prose-sm max-w-none"
+                        className="prose prose-sm max-w-none blog-content"
                         dangerouslySetInnerHTML={{ 
                           __html: formData.content ? preprocessText(formData.content) : '<p class="text-muted-foreground">Start typing to see preview...</p>' 
                         }} 
@@ -499,7 +548,6 @@ const BlogEditor = () => {
                 </div>
               )}
 
-              {/* ... keep existing code (featured image section) */}
               <div className="bg-gray-50 rounded-lg p-6 border border-gray-200">
                 <h3 className="font-medium mb-4">Featured Image</h3>
                 {imagePreview ? (

@@ -303,6 +303,59 @@
     height: auto;
     object-fit: contain;
   }
+
+  /* Enhanced blog content styling */
+  .blog-content {
+    line-height: 1.7;
+  }
+
+  .blog-content p {
+    margin-bottom: 1rem;
+  }
+
+  .blog-content p:last-child {
+    margin-bottom: 0;
+  }
+
+  .blog-content a {
+    color: #0974f1;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    transition: color 0.2s ease;
+  }
+
+  .blog-content a:hover {
+    color: #0560d1;
+    text-decoration: underline;
+  }
+
+  .blog-content strong {
+    font-weight: 600;
+  }
+
+  .blog-content em {
+    font-style: italic;
+  }
+
+  /* Prose improvements for better paragraph spacing */
+  .prose p {
+    margin-bottom: 1.25rem;
+  }
+
+  .prose p:last-child {
+    margin-bottom: 0;
+  }
+
+  .prose a {
+    color: #0974f1;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    font-weight: 500;
+  }
+
+  .prose a:hover {
+    color: #0560d1;
+  }
 }
 
 @layer components {

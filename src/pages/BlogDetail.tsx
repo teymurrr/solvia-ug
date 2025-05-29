@@ -1,4 +1,3 @@
-
 import React, { useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import MainLayout from '@/components/MainLayout';
@@ -120,8 +119,8 @@ const BlogDetail = () => {
           {/* Show available translations */}
           <BlogTranslations translations={translations} currentLanguage={currentLanguage} />
 
-          {/* Body text last */}
-          <div className="prose prose-lg max-w-none mt-8">
+          {/* Body text with improved styling */}
+          <div className="prose prose-lg max-w-none mt-8 blog-content">
             <p className="text-lg leading-relaxed mb-6">{post.excerpt}</p>
             
             {post.content ? (
