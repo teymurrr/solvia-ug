@@ -74,7 +74,7 @@ const Blog = () => {
                   <div className="flex items-center text-sm text-muted-foreground mb-2">
                     <span>{blog.readTime}</span>
                   </div>
-                  <h3 className="text-xl font-semibold mb-2 line-clamp-2">{blog.title}</h3>
+                  <h3 className="blog-title text-xl font-semibold mb-2 line-clamp-2">{blog.title}</h3>
                   <div className="flex items-center gap-2 mb-2">
                     {blog.category && (
                       <Badge variant="outline" className="text-xs bg-blue-100 text-blue-800">

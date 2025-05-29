@@ -58,7 +58,7 @@ const BlogSection: React.FC<BlogSectionProps> = ({ posts: propsPosts }) => {
                     <span>•</span>
                     <span>{new Date(blog.date).toLocaleDateString()}</span>
                   </div>
-                  <h3 className="text-lg font-semibold mb-2 line-clamp-2">{blog.title}</h3>
+                  <h3 className="blog-title text-lg font-semibold mb-2 line-clamp-2">{blog.title}</h3>
                   <p className="text-muted-foreground mb-3 flex-grow line-clamp-3 text-sm">{blog.excerpt}</p>
                   <div className="mt-auto">
                     <Link

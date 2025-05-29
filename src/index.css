@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -91,6 +92,9 @@
 
   body {
     @apply bg-background text-foreground;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-display: swap;
   }
 }
 
@@ -223,12 +227,30 @@
     border-color: rgba(9, 116, 241, 0.2);
   }
 
-  /* Line clamp utilities for consistent text truncation */
+  /* Safari-compatible line clamp utilities */
   .line-clamp-2 {
     overflow: hidden;
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
+    line-height: 1.4;
+    max-height: calc(1.4em * 2);
+    word-wrap: break-word;
+    word-break: break-word;
+    -webkit-hyphens: auto;
+    -ms-hyphens: auto;
+    hyphens: auto;
+  }
+
+  /* Fallback for browsers that don't support line-clamp */
+  @supports not (-webkit-line-clamp: 2) {
+    .line-clamp-2 {
+      display: block;
+      max-height: calc(1.4em * 2);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: normal;
+    }
   }
 
   .line-clamp-3 {
@@ -236,6 +258,43 @@
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 3;
+    line-height: 1.4;
+    max-height: calc(1.4em * 3);
+    word-wrap: break-word;
+    word-break: break-word;
+    -webkit-hyphens: auto;
+    -ms-hyphens: auto;
+    hyphens: auto;
+  }
+
+  /* Fallback for browsers that don't support line-clamp */
+  @supports not (-webkit-line-clamp: 3) {
+    .line-clamp-3 {
+      display: block;
+      max-height: calc(1.4em * 3);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: normal;
+    }
+  }
+
+  /* Safari-specific blog title fixes */
+  .blog-title {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-weight: 600;
+    color: inherit;
+    opacity: 1;
+    visibility: visible;
+    display: block;
+    width: 100%;
+    min-height: 1.2em;
+  }
+
+  /* Ensure titles are visible during font loading */
+  .blog-title {
+    font-display: swap;
   }
 
   /* Image optimization utilities */
