@@ -58,8 +58,8 @@ const Blog = () => {
         ) : posts.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {posts.map((blog) => (
-              <Card key={blog.id} className="border-transparent hover:shadow-lg hover:scale-[1.01] transition-all duration-300">
-                <CardContent className="p-6">
+              <Card key={blog.id} className="border-transparent hover:shadow-lg hover:scale-[1.01] transition-all duration-300 h-[350px] flex flex-col">
+                <CardContent className="p-6 flex flex-col h-full">
                   {blog.imageUrl && (
                     <div className="mb-4">
                       <AspectRatio ratio={16 / 9}>
@@ -75,7 +75,7 @@ const Blog = () => {
                     <span>{blog.readTime}</span>
                     <span>{new Date(blog.date).toLocaleDateString()}</span>
                   </div>
-                  <h3 className="text-xl font-semibold mb-2">{blog.title}</h3>
+                  <h3 className="text-xl font-semibold mb-2 line-clamp-2">{blog.title}</h3>
                   <div className="flex items-center gap-2 mb-2">
                     {blog.category && (
                       <Badge variant="outline" className="text-xs bg-blue-100 text-blue-800">
@@ -93,17 +93,19 @@ const Blog = () => {
                       </Badge>
                     )}
                   </div>
-                  <p className="text-muted-foreground mb-4">{blog.excerpt}</p>
+                  <p className="text-muted-foreground mb-4 flex-grow line-clamp-3 text-sm">{blog.excerpt}</p>
                   {blog.author && (
                     <p className="text-sm text-muted-foreground mb-4">By {blog.author}</p>
                   )}
-                  <Link
-                    to={`/blog/${blog.id}`}
-                    className="text-medical-600 hover:text-medical-700 font-medium inline-flex items-center group"
-                  >
-                    {t?.blog?.readMore || "Read More"}
-                    <ArrowLeft className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform rotate-180" />
-                  </Link>
+                  <div className="mt-auto">
+                    <Link
+                      to={`/blog/${blog.id}`}
+                      className="text-medical-600 hover:text-medical-700 font-medium inline-flex items-center group"
+                    >
+                      {t?.blog?.readMore || "Read More"}
+                      <ArrowLeft className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform rotate-180" />
+                    </Link>
+                  </div>
                 </CardContent>
               </Card>
             ))}
