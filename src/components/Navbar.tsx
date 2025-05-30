@@ -12,6 +12,7 @@ import MobileMenu from './navbar/MobileMenu';
 import { useToast } from '@/hooks/use-toast';
 import LanguageSelector from './LanguageSelector';
 import { useLanguage } from '@/hooks/useLanguage';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const hasUnreadMessages = false;
 
@@ -22,6 +23,7 @@ const Navbar = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const { t } = useLanguage();
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -97,7 +99,12 @@ const Navbar = () => {
             )}
           </div>
 
-          <div className="-mr-2 flex items-center sm:hidden">
+          <div className="-mr-2 flex items-center gap-2 sm:hidden">
+            {!isLoggedIn && (
+              <Button size="sm" asChild>
+                <Link to="/signup">{t?.common?.signup || "Sign Up"}</Link>
+              </Button>
+            )}
             <LanguageSelector />
             <Button variant="ghost" size="icon" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
               <span className="sr-only">Open main menu</span>
