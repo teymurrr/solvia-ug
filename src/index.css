@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -412,17 +413,28 @@
     object-fit: contain;
   }
 
-  /* Enhanced blog content styling */
+  /* Enhanced blog content styling with improved Spanish text support */
   .blog-content {
-    line-height: 1.7;
+    line-height: 1.8;
+    font-size: 1.1rem;
   }
 
   .blog-content p {
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
+    text-align: justify;
+    hyphens: auto;
+    -webkit-hyphens: auto;
+    -ms-hyphens: auto;
   }
 
   .blog-content p:last-child {
     margin-bottom: 0;
+  }
+
+  .blog-content br {
+    display: block;
+    margin: 0.5rem 0;
+    content: "";
   }
 
   .blog-content a {
@@ -445,13 +457,30 @@
     font-style: italic;
   }
 
+  /* Special handling for Spanish text */
+  .blog-content[lang="es"] {
+    text-align: justify;
+    word-spacing: 0.1em;
+  }
+
+  .blog-content[lang="es"] p {
+    margin-bottom: 1.8rem;
+  }
+
   /* Prose improvements for better paragraph spacing */
   .prose p {
-    margin-bottom: 1.25rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.8;
   }
 
   .prose p:last-child {
     margin-bottom: 0;
+  }
+
+  .prose br {
+    display: block;
+    margin: 0.5rem 0;
+    content: "";
   }
 
   .prose a {

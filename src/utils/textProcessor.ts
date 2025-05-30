@@ -10,20 +10,30 @@ export const preprocessText = (text: string): string => {
     return text;
   }
   
-  // Split text by single line breaks and treat each as a paragraph
-  // This preserves the user's intended formatting better
-  const lines = text
-    .split(/\n/) // Split on single newlines
-    .map(line => line.trim()) // Trim each line
-    .filter(line => line.length > 0); // Remove empty lines
+  // Split text by double line breaks to identify paragraph blocks
+  const paragraphBlocks = text.split(/\n\s*\n/);
   
-  // Process each line as a paragraph
-  const processedParagraphs = lines.map(line => {
-    return `<p>${line}</p>`;
-  });
+  const processedParagraphs = paragraphBlocks.map(block => {
+    const trimmedBlock = block.trim();
+    
+    // Skip empty blocks
+    if (!trimmedBlock) {
+      return '';
+    }
+    
+    // Within each paragraph block, convert single newlines to <br> tags
+    // This preserves intentional line breaks within paragraphs
+    const linesWithBreaks = trimmedBlock
+      .split(/\n/)
+      .map(line => line.trim())
+      .filter(line => line.length > 0)
+      .join('<br>');
+    
+    return `<p>${linesWithBreaks}</p>`;
+  }).filter(p => p.length > 0); // Remove empty paragraphs
   
-  // Join all paragraphs
-  return processedParagraphs.join('');
+  // Join all paragraphs with some spacing
+  return processedParagraphs.join('\n\n');
 };
 
 export const stripHtml = (html: string): string => {
