@@ -11,26 +11,28 @@ export const preprocessText = (text: string): string => {
   }
   
   // Split text by double line breaks to identify paragraph blocks
+  // Use a more precise regex that preserves the structure
   const paragraphBlocks = text.split(/\n\s*\n/);
   
   const processedParagraphs = paragraphBlocks.map(block => {
-    const trimmedBlock = block.trim();
+    // Don't trim the block too aggressively - only trim start/end whitespace
+    const cleanBlock = block.replace(/^\s+|\s+$/g, '');
     
-    // Skip empty blocks
-    if (!trimmedBlock) {
+    // Skip completely empty blocks
+    if (!cleanBlock) {
       return '';
     }
     
     // Within each paragraph block, convert single newlines to <br> tags
     // This preserves intentional line breaks within paragraphs
-    const linesWithBreaks = trimmedBlock
+    // Don't filter out empty lines - they might be intentional spacing
+    const linesWithBreaks = cleanBlock
       .split(/\n/)
-      .map(line => line.trim())
-      .filter(line => line.length > 0)
+      .map(line => line) // Keep lines as they are, don't trim individual lines
       .join('<br>');
     
     return `<p>${linesWithBreaks}</p>`;
-  }).filter(p => p.length > 0); // Remove empty paragraphs
+  }).filter(p => p.length > 0); // Remove only completely empty paragraphs
   
   // Join all paragraphs with some spacing
   return processedParagraphs.join('\n\n');
