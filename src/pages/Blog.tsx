@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React from 'react';
 import MainLayout from '@/components/MainLayout';
 import { Link } from 'react-router-dom';
 import { useBlogPosts } from '@/hooks/useBlogPosts';
@@ -14,12 +14,11 @@ import { useLanguage } from '@/hooks/useLanguage';
 const Blog = () => {
   const { currentLanguage } = useLanguage();
   const { isAdmin } = useAdmin();
-  const { posts, loading } = useBlogPosts(isAdmin, currentLanguage); // Pass isAdmin to fetch drafts
-  const [selectedLanguage, setSelectedLanguage] = useState(currentLanguage);
+  const { posts, loading } = useBlogPosts(isAdmin, currentLanguage);
 
-  // Filter posts based on admin status and selected language
+  // Filter posts based on admin status and current language
   const filteredPosts = posts.filter(post => {
-    const languageMatch = post.language === selectedLanguage;
+    const languageMatch = post.language === currentLanguage;
     
     // If user is admin, show all posts. If not, only show published posts
     if (isAdmin) {
@@ -53,10 +52,7 @@ const Blog = () => {
 
         {/* Language Selector and Admin Controls */}
         <div className="flex justify-between items-center mb-8">
-          <BlogLanguageSelector 
-            selectedLanguage={selectedLanguage}
-            onLanguageChange={setSelectedLanguage}
-          />
+          <BlogLanguageSelector />
           
           {isAdmin && (
             <Button variant="outline" asChild>
@@ -136,7 +132,7 @@ const Blog = () => {
           <div className="text-center py-16">
             <h3 className="text-lg font-medium mb-2">No blog posts found</h3>
             <p className="text-muted-foreground">
-              {selectedLanguage !== 'en' 
+              {currentLanguage !== 'en' 
                 ? `No posts available in the selected language.` 
                 : 'Check back soon for new content.'}
             </p>
