@@ -1,124 +1,145 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import MainLayout from '@/components/MainLayout';
-import { useLanguage } from '@/hooks/useLanguage';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, Plus, Loader2 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { useBlogPosts } from '@/hooks/useBlogPosts';
 import { useAdmin } from '@/hooks/useAdmin';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Loader2, Calendar, Clock, Eye, Settings } from 'lucide-react';
 import BlogLanguageSelector from '@/components/blog/BlogLanguageSelector';
-import { OptimizedImage } from '@/components/ui/optimized-image';
+import { useLanguage } from '@/hooks/useLanguage';
 
 const Blog = () => {
-  const { t } = useLanguage();
-  const { posts, loading, error } = useBlogPosts();
+  const { currentLanguage } = useLanguage();
   const { isAdmin } = useAdmin();
+  const { posts, loading } = useBlogPosts(isAdmin, currentLanguage); // Pass isAdmin to fetch drafts
+  const [selectedLanguage, setSelectedLanguage] = useState(currentLanguage);
+
+  // Filter posts based on admin status and selected language
+  const filteredPosts = posts.filter(post => {
+    const languageMatch = post.language === selectedLanguage;
+    
+    // If user is admin, show all posts. If not, only show published posts
+    if (isAdmin) {
+      return languageMatch;
+    } else {
+      return languageMatch && post.status === 'published';
+    }
+  });
+
+  if (loading) {
+    return (
+      <MainLayout>
+        <div className="container mx-auto px-4 py-12 flex flex-col items-center justify-center min-h-[50vh]">
+          <Loader2 className="h-12 w-12 animate-spin text-medical-600" />
+          <p className="mt-4 text-lg">Loading blog posts...</p>
+        </div>
+      </MainLayout>
+    );
+  }
 
   return (
     <MainLayout>
       <div className="container mx-auto px-4 py-12">
-        <div className="flex justify-between items-center mb-8">
-          <div>
-            <Button variant="ghost" asChild className="mb-4">
-              <Link to="/" className="flex items-center">
-                <ArrowLeft className="mr-2 h-4 w-4" />
-                {t?.common?.home || "Home"}
-              </Link>
-            </Button>
-            <h1 className="text-4xl font-bold mb-4">{t?.blog?.title || "Latest from Our Blog"}</h1>
-            <p className="text-lg text-muted-foreground max-w-2xl">
-              {t?.blog?.subtitle || "Insights, stories, and tips for healthcare professionals and recruiters"}
-            </p>
-          </div>
-          
-          <div className="flex items-center gap-4">
-            <BlogLanguageSelector />
-            {isAdmin && (
-              <Button asChild>
-                <Link to="/admin/blog/new" className="flex items-center">
-                  <Plus className="mr-2 h-4 w-4" />
-                  New Post
-                </Link>
-              </Button>
-            )}
-          </div>
+        {/* Header Section */}
+        <div className="text-center mb-12">
+          <h1 className="text-4xl font-bold mb-4">Solvia Blog</h1>
+          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+            Insights, updates, and expertise from the healthcare recruitment industry
+          </p>
         </div>
 
-        {loading ? (
-          <div className="flex justify-center py-20">
-            <Loader2 className="h-12 w-12 animate-spin text-medical-600" />
-          </div>
-        ) : error ? (
-          <div className="text-center py-20">
-            <p className="text-lg text-red-500">Failed to load blog posts. Please try again later.</p>
-          </div>
-        ) : posts.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1">
-            {posts.map((blog) => (
-              <Card key={blog.id} className="border-0 hover:shadow-lg hover:scale-[1.01] transition-all duration-300 h-[450px] flex flex-col">
-                <CardContent className="p-4 flex flex-col h-full">
-                  {blog.imageUrl && (
-                    <div className="mb-3">
-                      <OptimizedImage
-                        src={blog.imageUrl}
-                        alt={blog.title}
-                        aspectRatio={16 / 9}
-                        className="rounded-md"
-                        containerClassName="w-full"
-                      />
+        {/* Language Selector and Admin Controls */}
+        <div className="flex justify-between items-center mb-8">
+          <BlogLanguageSelector 
+            selectedLanguage={selectedLanguage}
+            onLanguageChange={setSelectedLanguage}
+          />
+          
+          {isAdmin && (
+            <Button variant="outline" asChild>
+              <Link to="/admin/blog" className="flex items-center">
+                <Settings className="mr-2 h-4 w-4" />
+                Manage Blog
+              </Link>
+            </Button>
+          )}
+        </div>
+
+        {/* Blog Posts Grid */}
+        {filteredPosts.length > 0 ? (
+          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+            {filteredPosts.map((post) => (
+              <Card key={post.id} className="group hover:shadow-lg transition-shadow duration-300">
+                {post.imageUrl && (
+                  <div className="aspect-[16/9] overflow-hidden rounded-t-lg">
+                    <img
+                      src={post.imageUrl}
+                      alt={post.title}
+                      className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
+                    />
+                  </div>
+                )}
+                
+                <CardHeader>
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center gap-2">
+                      {post.category && (
+                        <Badge variant="secondary" className="text-xs">
+                          {post.category}
+                        </Badge>
+                      )}
+                      {isAdmin && post.status === 'draft' && (
+                        <Badge variant="outline" className="text-xs bg-gray-100">
+                          Draft
+                        </Badge>
+                      )}
                     </div>
-                  )}
-                  <div className="flex items-center text-sm text-muted-foreground mb-2">
-                    <span>{blog.readTime}</span>
-                  </div>
-                  <h3 className="blog-title text-xl font-semibold mb-3 line-clamp-3">{blog.title}</h3>
-                  <div className="flex items-center gap-2 mb-2">
-                    {blog.category && (
-                      <Badge variant="outline" className="text-xs bg-blue-100 text-blue-800">
-                        {blog.category}
-                      </Badge>
-                    )}
-                    {blog.language && (
-                      <Badge variant="outline" className="text-xs">
-                        {blog.language.toUpperCase()}
-                      </Badge>
-                    )}
-                    {isAdmin && blog.status === 'draft' && (
-                      <Badge variant="outline" className="text-xs bg-yellow-100 text-yellow-800">
-                        Draft
-                      </Badge>
+                    {post.readTime && (
+                      <div className="flex items-center text-sm text-muted-foreground">
+                        <Clock className="h-3 w-3 mr-1" />
+                        {post.readTime}
+                      </div>
                     )}
                   </div>
-                  <p className="text-muted-foreground mb-3 flex-grow line-clamp-5 text-sm leading-relaxed">{blog.excerpt}</p>
-                  {blog.author && (
-                    <p className="text-sm text-muted-foreground mb-3">By {blog.author}</p>
-                  )}
-                  <div className="mt-auto pt-2">
-                    <Link
-                      to={`/blog/${blog.id}`}
-                      className="text-medical-600 hover:text-medical-700 font-medium inline-flex items-center group"
-                    >
-                      {t?.blog?.readMore || "Read More"}
-                      <ArrowLeft className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform rotate-180" />
-                    </Link>
+                  
+                  <h2 className="text-xl font-semibold group-hover:text-primary transition-colors line-clamp-2 blog-title">
+                    {post.title}
+                  </h2>
+                </CardHeader>
+                
+                <CardContent>
+                  <p className="text-muted-foreground mb-4 line-clamp-3">
+                    {post.excerpt}
+                  </p>
+                  
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center text-sm text-muted-foreground">
+                      <Calendar className="h-3 w-3 mr-1" />
+                      {new Date(post.date).toLocaleDateString()}
+                    </div>
+                    
+                    <Button variant="ghost" size="sm" asChild>
+                      <Link to={`/blog/${post.id}`} className="flex items-center">
+                        <Eye className="h-3 w-3 mr-1" />
+                        Read More
+                      </Link>
+                    </Button>
                   </div>
                 </CardContent>
               </Card>
             ))}
           </div>
         ) : (
-          <div className="text-center py-20">
-            <p className="text-xl">No blog posts found.</p>
-            {isAdmin && (
-              <Button asChild className="mt-4">
-                <Link to="/admin/blog/new">
-                  Create your first post
-                </Link>
-              </Button>
-            )}
+          <div className="text-center py-16">
+            <h3 className="text-lg font-medium mb-2">No blog posts found</h3>
+            <p className="text-muted-foreground">
+              {selectedLanguage !== 'en' 
+                ? `No posts available in the selected language.` 
+                : 'Check back soon for new content.'}
+            </p>
           </div>
         )}
       </div>

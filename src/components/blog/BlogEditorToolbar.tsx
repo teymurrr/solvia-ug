@@ -4,14 +4,29 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Link, Bold, Italic } from 'lucide-react';
+import { 
+  Link, 
+  Bold, 
+  Italic, 
+  Heading1,
+  Heading2,
+  Heading3,
+  Heading4,
+  Heading5,
+  Heading6
+} from 'lucide-react';
 
 interface BlogEditorToolbarProps {
   onInsertLink: (linkText: string, url: string) => void;
   onFormatText: (format: 'bold' | 'italic') => void;
+  onInsertHeading: (level: 1 | 2 | 3 | 4 | 5 | 6) => void;
 }
 
-const BlogEditorToolbar: React.FC<BlogEditorToolbarProps> = ({ onInsertLink, onFormatText }) => {
+const BlogEditorToolbar: React.FC<BlogEditorToolbarProps> = ({ 
+  onInsertLink, 
+  onFormatText,
+  onInsertHeading 
+}) => {
   const [linkDialogOpen, setLinkDialogOpen] = useState(false);
   const [linkText, setLinkText] = useState('');
   const [linkUrl, setLinkUrl] = useState('');
@@ -24,6 +39,15 @@ const BlogEditorToolbar: React.FC<BlogEditorToolbarProps> = ({ onInsertLink, onF
       setLinkDialogOpen(false);
     }
   };
+
+  const headingButtons = [
+    { level: 1 as const, icon: Heading1, label: 'H1' },
+    { level: 2 as const, icon: Heading2, label: 'H2' },
+    { level: 3 as const, icon: Heading3, label: 'H3' },
+    { level: 4 as const, icon: Heading4, label: 'H4' },
+    { level: 5 as const, icon: Heading5, label: 'H5' },
+    { level: 6 as const, icon: Heading6, label: 'H6' },
+  ];
 
   return (
     <div className="flex items-center gap-2 p-2 bg-gray-50 border border-gray-200 rounded-t-md">
@@ -46,6 +70,25 @@ const BlogEditorToolbar: React.FC<BlogEditorToolbarProps> = ({ onInsertLink, onF
       >
         <Italic className="h-3 w-3" />
       </Button>
+      
+      <div className="w-px h-6 bg-gray-300 mx-1" />
+      
+      {/* Heading buttons */}
+      <div className="flex items-center gap-1">
+        {headingButtons.map(({ level, icon: Icon, label }) => (
+          <Button
+            key={level}
+            type="button"
+            variant="outline"
+            size="sm"
+            onClick={() => onInsertHeading(level)}
+            className="h-8 text-xs"
+            title={`Insert ${label} heading`}
+          >
+            <Icon className="h-3 w-3" />
+          </Button>
+        ))}
+      </div>
       
       <div className="w-px h-6 bg-gray-300 mx-1" />
       

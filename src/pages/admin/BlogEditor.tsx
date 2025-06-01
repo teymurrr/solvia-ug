@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import MainLayout from '@/components/MainLayout';
 import { useNavigate, Link, useParams } from 'react-router-dom';
@@ -305,6 +306,28 @@ const BlogEditor = () => {
       }
     }
   };
+
+  const handleInsertHeading = (level: 1 | 2 | 3 | 4 | 5 | 6) => {
+    if (contentTextareaRef.current) {
+      const textarea = contentTextareaRef.current;
+      const start = textarea.selectionStart;
+      const end = textarea.selectionEnd;
+      const selectedText = formData.content.substring(start, end);
+      
+      const headingText = selectedText || 'Heading text';
+      const headingHtml = `<h${level}>${headingText}</h${level}>`;
+      const newContent = formData.content.substring(0, start) + headingHtml + formData.content.substring(end);
+      
+      setFormData(prev => ({ ...prev, content: newContent }));
+      
+      // Focus back and select the heading text
+      setTimeout(() => {
+        textarea.focus();
+        const newPosition = start + `<h${level}>`.length;
+        textarea.setSelectionRange(newPosition, newPosition + headingText.length);
+      }, 0);
+    }
+  };
   
   if (isLoading) {
     return (
@@ -431,12 +454,13 @@ const BlogEditor = () => {
                       <BlogEditorToolbar 
                         onInsertLink={handleInsertLink}
                         onFormatText={handleFormatText}
+                        onInsertHeading={handleInsertHeading}
                       />
                       <Textarea
                         ref={contentTextareaRef}
                         id="content"
                         name="content"
-                        placeholder="Write your post content here... Each new line will become a new paragraph when published."
+                        placeholder="Write your post content here... Use the toolbar to add headings, formatting, and links."
                         value={formData.content}
                         onChange={handleInputChange}
                         className="min-h-[300px] rounded-t-none border-t-0 focus:border-t focus:rounded-t-md"
@@ -444,7 +468,7 @@ const BlogEditor = () => {
                       />
                     </div>
                     <p className="text-sm text-muted-foreground mt-2">
-                      💡 Tip: Use the toolbar to add links and formatting. Each line break will create a new paragraph.
+                      💡 Tip: Use the toolbar to add headings, links and formatting. Each line break will create a new paragraph.
                     </p>
                   </TabsContent>
                   <TabsContent value="preview" className="mt-4">
