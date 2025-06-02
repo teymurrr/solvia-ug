@@ -37,37 +37,9 @@ export default defineConfig(({ mode }) => ({
           'charts': ['recharts'],
           'query': ['@tanstack/react-query'],
           
-          // Landing page specific
-          'landing': [
-            'src/components/landing/HeroSection.tsx',
-            'src/components/landing/WhySolviaSection.tsx',
-            'src/components/landing/CTASection.tsx'
-          ],
-          
-          // Heavy sections split separately
-          'timeline': ['src/components/landing/TimelineSection.tsx', 'src/components/ui/timeline.tsx'],
-          'professionals': ['src/components/landing/ProfessionalsSection.tsx'],
-          'vacancies': ['src/components/landing/VacanciesSection.tsx'],
-          'blog': ['src/components/landing/BlogSection.tsx'],
-          'learning': ['src/components/landing/LearningSection.tsx'],
-          'insights': ['src/components/landing/InsightsSection.tsx'],
-          
-          // Dashboard components (loaded only when needed)
-          'dashboard': [
-            'src/pages/ProfessionalDashboard.tsx',
-            'src/pages/InstitutionDashboard.tsx'
-          ],
-          
           // Utils and helpers
           'utils': ['clsx', 'tailwind-merge', 'class-variance-authority', 'date-fns'],
-          'icons': ['lucide-react'],
-          
-          // i18n split by language
-          'i18n-en': ['src/utils/i18n/languages/en'],
-          'i18n-de': ['src/utils/i18n/languages/de'],
-          'i18n-es': ['src/utils/i18n/languages/es'],
-          'i18n-fr': ['src/utils/i18n/languages/fr'],
-          'i18n-ru': ['src/utils/i18n/languages/ru']
+          'icons': ['lucide-react']
         },
         
         // Optimize chunk sizes
