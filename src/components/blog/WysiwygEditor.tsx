@@ -65,6 +65,16 @@ const WysiwygEditor: React.FC<WysiwygEditorProps> = ({
     executeCommand('formatBlock', `h${level}`);
   };
 
+  const handlePaste = (e: React.ClipboardEvent) => {
+    e.preventDefault();
+    const paste = e.clipboardData.getData('text/html') || e.clipboardData.getData('text/plain');
+    
+    if (paste) {
+      document.execCommand('insertHTML', false, paste);
+      handleInput();
+    }
+  };
+
   return (
     <div className={`border rounded-md ${className}`}>
       {/* Toolbar */}
@@ -211,22 +221,25 @@ const WysiwygEditor: React.FC<WysiwygEditorProps> = ({
         ref={editorRef}
         contentEditable
         onInput={handleInput}
+        onPaste={handlePaste}
         className="min-h-[400px] p-4 focus:outline-none prose prose-sm max-w-none"
         style={{ 
           whiteSpace: 'pre-wrap',
           wordWrap: 'break-word'
         }}
-        data-placeholder={placeholder}
         suppressContentEditableWarning={true}
       />
 
-      <style jsx>{`
-        [contenteditable]:empty:before {
-          content: attr(data-placeholder);
-          color: #9ca3af;
-          pointer-events: none;
-        }
-      `}</style>
+      {/* CSS for placeholder */}
+      <style dangerouslySetInnerHTML={{
+        __html: `
+          [contenteditable]:empty:before {
+            content: "${placeholder}";
+            color: #9ca3af;
+            pointer-events: none;
+          }
+        `
+      }} />
     </div>
   );
 };

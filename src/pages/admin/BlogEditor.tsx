@@ -10,30 +10,12 @@ import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Switch } from '@/components/ui/switch';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { ArrowLeft, Save, Upload, Image, Loader2, Clock, Languages, Eye } from 'lucide-react';
+import { ArrowLeft, Save, Upload, Image, Loader2, Clock, Languages } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
-import { 
-  preprocessText, 
-  insertLinkAtPosition, 
-  getCursorPosition,
-  getTextSelection,
-  formatTextAtPosition,
-  insertHeadingAtPosition,
-  insertListAtPosition,
-  insertBlockquoteAtPosition,
-  insertCodeAtPosition,
-  insertImageAtPosition,
-  insertVideoAtPosition,
-  setTextAlignment,
-  insertDividerAtPosition,
-  setFontSize,
-  setTextColor,
-  countWords
-} from '@/utils/textProcessor';
-import BlogEditorToolbar from '@/components/blog/BlogEditorToolbar';
+import { preprocessText, countWords } from '@/utils/textProcessor';
+import WysiwygEditor from '@/components/blog/WysiwygEditor';
 
 interface BlogFormData {
   title: string;
@@ -87,12 +69,8 @@ const BlogEditor = () => {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [isUploading, setIsUploading] = useState(false);
-  const [activeTab, setActiveTab] = useState<'edit' | 'preview'>('edit');
-  const [undoStack, setUndoStack] = useState<string[]>([]);
-  const [redoStack, setRedoStack] = useState<string[]>([]);
   const { toast } = useToast();
   const { user } = useAuth();
-  const contentTextareaRef = useRef<HTMLTextAreaElement>(null);
 
   const isLoading = adminLoading || (isEditing && postLoading);
   const wordCount = countWords(formData.content);
@@ -110,28 +88,19 @@ const BlogEditor = () => {
     if (!isEditing || !formData.content) return;
     
     const autoSaveTimer = setTimeout(() => {
-      // Auto-save logic here - could save to localStorage or draft
       console.log('Auto-saving draft...');
-    }, 30000); // Auto-save every 30 seconds
+    }, 30000);
 
     return () => clearTimeout(autoSaveTimer);
   }, [formData.content, isEditing]);
 
-  // Save to undo stack
-  const saveToUndoStack = (content: string) => {
-    setUndoStack(prev => [...prev.slice(-19), content]); // Keep last 20 states
-    setRedoStack([]); // Clear redo stack when new change is made
-  };
-
   useEffect(() => {
-    // Redirect if user is not admin
     if (!adminLoading && !isAdmin) {
       navigate('/', { replace: true });
     }
   }, [adminLoading, isAdmin, navigate]);
 
   useEffect(() => {
-    // Populate form with post data if editing
     if (isEditing && post) {
       const postData = {
         title: post.title,
@@ -163,16 +132,17 @@ const BlogEditor = () => {
       ...prev,
       title: newTitle,
       slug: !isEditing ? generateSlug(newTitle) : prev.slug,
-      metaTitle: newTitle, // Auto-populate meta title
+      metaTitle: newTitle,
     }));
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    if (name === 'content') {
-      saveToUndoStack(formData.content);
-    }
     setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleContentChange = (value: string) => {
+    setFormData(prev => ({ ...prev, content: value }));
   };
 
   const handleSelectChange = (name: string, value: string) => {
@@ -189,222 +159,6 @@ const BlogEditor = () => {
         setImagePreview(reader.result as string);
       };
       reader.readAsDataURL(file);
-    }
-  };
-
-  // Enhanced toolbar handlers
-  const handleInsertLink = (linkText: string, url: string, openInNewTab: boolean) => {
-    if (contentTextareaRef.current) {
-      const textarea = contentTextareaRef.current;
-      const cursorPosition = getCursorPosition(textarea);
-      saveToUndoStack(formData.content);
-      const newContent = insertLinkAtPosition(formData.content, cursorPosition, linkText, url, openInNewTab);
-      
-      setFormData(prev => ({ ...prev, content: newContent }));
-      
-      setTimeout(() => {
-        textarea.focus();
-        const newPosition = cursorPosition + `<a href="${url}"${openInNewTab ? ' target="_blank" rel="noopener noreferrer"' : ''}>${linkText}</a>`.length;
-        textarea.setSelectionRange(newPosition, newPosition);
-      }, 0);
-    }
-  };
-
-  const handleFormatText = (format: 'bold' | 'italic' | 'underline' | 'strikethrough') => {
-    if (contentTextareaRef.current) {
-      const textarea = contentTextareaRef.current;
-      const selection = getTextSelection(textarea);
-      
-      if (selection.text) {
-        saveToUndoStack(formData.content);
-        const newContent = formatTextAtPosition(formData.content, selection.start, selection.end, format);
-        setFormData(prev => ({ ...prev, content: newContent }));
-        
-        setTimeout(() => {
-          textarea.focus();
-          textarea.setSelectionRange(selection.start, selection.start + newContent.substring(selection.start).indexOf(`</${format === 'bold' ? 'strong' : format === 'italic' ? 'em' : format}>`) + `</${format === 'bold' ? 'strong' : format === 'italic' ? 'em' : format}>`.length);
-        }, 0);
-      }
-    }
-  };
-
-  const handleInsertHeading = (level: 1 | 2 | 3 | 4) => {
-    if (contentTextareaRef.current) {
-      const textarea = contentTextareaRef.current;
-      const selection = getTextSelection(textarea);
-      saveToUndoStack(formData.content);
-      
-      const headingText = selection.text || `Heading ${level}`;
-      const newContent = insertHeadingAtPosition(formData.content, selection.start, level, headingText);
-      
-      setFormData(prev => ({ ...prev, content: newContent }));
-      
-      setTimeout(() => {
-        textarea.focus();
-        const newPosition = selection.start + `<h${level}>`.length;
-        textarea.setSelectionRange(newPosition, newPosition + headingText.length);
-      }, 0);
-    }
-  };
-
-  const handleInsertList = (type: 'bullet' | 'numbered') => {
-    if (contentTextareaRef.current) {
-      const textarea = contentTextareaRef.current;
-      const selection = getTextSelection(textarea);
-      saveToUndoStack(formData.content);
-      
-      // Use the updated function that handles selected text properly
-      const newContent = insertListAtPosition(formData.content, selection.start, selection.end, type);
-      
-      setFormData(prev => ({ ...prev, content: newContent }));
-      
-      setTimeout(() => {
-        textarea.focus();
-      }, 0);
-    }
-  };
-
-  const handleInsertBlockquote = () => {
-    if (contentTextareaRef.current) {
-      const textarea = contentTextareaRef.current;
-      const cursorPosition = getCursorPosition(textarea);
-      saveToUndoStack(formData.content);
-      const newContent = insertBlockquoteAtPosition(formData.content, cursorPosition);
-      
-      setFormData(prev => ({ ...prev, content: newContent }));
-      
-      setTimeout(() => {
-        textarea.focus();
-      }, 0);
-    }
-  };
-
-  const handleInsertCode = (type: 'inline' | 'block') => {
-    if (contentTextareaRef.current) {
-      const textarea = contentTextareaRef.current;
-      const cursorPosition = getCursorPosition(textarea);
-      saveToUndoStack(formData.content);
-      const newContent = insertCodeAtPosition(formData.content, cursorPosition, type);
-      
-      setFormData(prev => ({ ...prev, content: newContent }));
-      
-      setTimeout(() => {
-        textarea.focus();
-      }, 0);
-    }
-  };
-
-  const handleInsertImage = (url: string, altText: string, caption?: string) => {
-    if (contentTextareaRef.current) {
-      const textarea = contentTextareaRef.current;
-      const cursorPosition = getCursorPosition(textarea);
-      saveToUndoStack(formData.content);
-      const newContent = insertImageAtPosition(formData.content, cursorPosition, url, altText, caption);
-      
-      setFormData(prev => ({ ...prev, content: newContent }));
-      
-      setTimeout(() => {
-        textarea.focus();
-      }, 0);
-    }
-  };
-
-  const handleInsertVideo = (url: string) => {
-    if (contentTextareaRef.current) {
-      const textarea = contentTextareaRef.current;
-      const cursorPosition = getCursorPosition(textarea);
-      saveToUndoStack(formData.content);
-      const newContent = insertVideoAtPosition(formData.content, cursorPosition, url);
-      
-      setFormData(prev => ({ ...prev, content: newContent }));
-      
-      setTimeout(() => {
-        textarea.focus();
-      }, 0);
-    }
-  };
-
-  const handleSetAlignment = (align: 'left' | 'center' | 'right') => {
-    if (contentTextareaRef.current) {
-      const textarea = contentTextareaRef.current;
-      const selection = getTextSelection(textarea);
-      
-      if (selection.text) {
-        saveToUndoStack(formData.content);
-        const newContent = setTextAlignment(formData.content, selection.start, selection.end, align);
-        setFormData(prev => ({ ...prev, content: newContent }));
-        
-        setTimeout(() => {
-          textarea.focus();
-        }, 0);
-      }
-    }
-  };
-
-  const handleInsertDivider = () => {
-    if (contentTextareaRef.current) {
-      const textarea = contentTextareaRef.current;
-      const cursorPosition = getCursorPosition(textarea);
-      saveToUndoStack(formData.content);
-      const newContent = insertDividerAtPosition(formData.content, cursorPosition);
-      
-      setFormData(prev => ({ ...prev, content: newContent }));
-      
-      setTimeout(() => {
-        textarea.focus();
-      }, 0);
-    }
-  };
-
-  const handleUndo = () => {
-    if (undoStack.length > 0) {
-      const previousContent = undoStack[undoStack.length - 1];
-      setRedoStack(prev => [...prev, formData.content]);
-      setUndoStack(prev => prev.slice(0, -1));
-      setFormData(prev => ({ ...prev, content: previousContent }));
-    }
-  };
-
-  const handleRedo = () => {
-    if (redoStack.length > 0) {
-      const nextContent = redoStack[redoStack.length - 1];
-      setUndoStack(prev => [...prev, formData.content]);
-      setRedoStack(prev => prev.slice(0, -1));
-      setFormData(prev => ({ ...prev, content: nextContent }));
-    }
-  };
-
-  const handleSetFontSize = (size: string) => {
-    if (contentTextareaRef.current) {
-      const textarea = contentTextareaRef.current;
-      const selection = getTextSelection(textarea);
-      
-      if (selection.text) {
-        saveToUndoStack(formData.content);
-        const newContent = setFontSize(formData.content, selection.start, selection.end, size);
-        setFormData(prev => ({ ...prev, content: newContent }));
-        
-        setTimeout(() => {
-          textarea.focus();
-        }, 0);
-      }
-    }
-  };
-
-  const handleSetTextColor = (color: string) => {
-    if (contentTextareaRef.current) {
-      const textarea = contentTextareaRef.current;
-      const selection = getTextSelection(textarea);
-      
-      if (selection.text) {
-        saveToUndoStack(formData.content);
-        const newContent = setTextColor(formData.content, selection.start, selection.end, color);
-        setFormData(prev => ({ ...prev, content: newContent }));
-        
-        setTimeout(() => {
-          textarea.focus();
-        }, 0);
-      }
     }
   };
 
@@ -640,147 +394,101 @@ const BlogEditor = () => {
 
               <div>
                 <Label htmlFor="content">Content <span className="text-red-500">*</span></Label>
-                <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as 'edit' | 'preview')} className="w-full">
-                  <TabsList className="grid w-full grid-cols-2">
-                    <TabsTrigger value="edit">Edit</TabsTrigger>
-                    <TabsTrigger value="preview" className="flex items-center">
-                      <Eye className="mr-2 h-4 w-4" />
-                      Preview
-                    </TabsTrigger>
-                  </TabsList>
-                  <TabsContent value="edit" className="mt-4">
-                    <div className="space-y-0">
-                      <BlogEditorToolbar 
-                        onInsertLink={handleInsertLink}
-                        onFormatText={handleFormatText}
-                        onInsertHeading={handleInsertHeading}
-                        onInsertList={handleInsertList}
-                        onInsertBlockquote={handleInsertBlockquote}
-                        onInsertCode={handleInsertCode}
-                        onInsertImage={handleInsertImage}
-                        onInsertVideo={handleInsertVideo}
-                        onSetAlignment={handleSetAlignment}
-                        onInsertDivider={handleInsertDivider}
-                        onUndo={handleUndo}
-                        onRedo={handleRedo}
-                        onSetFontSize={handleSetFontSize}
-                        onSetTextColor={handleSetTextColor}
-                        wordCount={wordCount}
-                      />
-                      <Textarea
-                        ref={contentTextareaRef}
-                        id="content"
-                        name="content"
-                        placeholder="Write your post content here... Use the toolbar to add formatting, headings, links, and media."
-                        value={formData.content}
-                        onChange={handleInputChange}
-                        className="min-h-[400px] rounded-t-none border-t-0 focus:border-t focus:rounded-t-md font-mono"
-                        required
-                        style={{
-                          fontFamily: 'ui-monospace, SFMono-Regular, "SF Mono", Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
-                          fontSize: '14px',
-                          lineHeight: '1.5'
-                        }}
-                      />
+                <div className="mt-2">
+                  <WysiwygEditor
+                    value={formData.content}
+                    onChange={handleContentChange}
+                    placeholder="Write your post content here... Use the toolbar to add formatting, headings, links, and media."
+                  />
+                </div>
+                <div className="mt-2 text-sm text-gray-500">
+                  Word count: {wordCount}
+                </div>
+                <div className="mt-4 space-y-4 text-sm text-gray-500 p-4" style={{ backgroundColor: 'transparent', color: '#9ca3af' }}>
+                  <div className="space-y-3">
+                    <h4 className="font-medium text-gray-600">💡 Tips</h4>
+                    
+                    <div>
+                      <h5 className="font-medium text-gray-600">1. Focus on One Main Keyword per Blog Post</h5>
+                      <p>Choose a specific, relevant keyword (e.g., "prevent aging naturally" or "AI skin analysis") and build your post around it. Use it in:</p>
+                      <ul className="list-disc pl-5 space-y-1">
+                        <li>The title</li>
+                        <li>First paragraph</li>
+                        <li>At least one subheading (H2 or H3)</li>
+                        <li>Alt-text of an image</li>
+                        <li>Meta description</li>
+                        <li>URL slug (e.g., /ai-skin-analysis-guide)</li>
+                      </ul>
                     </div>
-                    <div className="mt-4 space-y-4 text-sm text-gray-500 p-4">
-                      <div className="space-y-3">
-                        <h4 className="font-medium text-gray-600">💡 Tips</h4>
-                        
-                        <div>
-                          <h5 className="font-medium text-gray-600">1. Focus on One Main Keyword per Blog Post</h5>
-                          <p>Choose a specific, relevant keyword (e.g., "prevent aging naturally" or "AI skin analysis") and build your post around it. Use it in:</p>
-                          <ul className="list-disc pl-5 space-y-1">
-                            <li>The title</li>
-                            <li>First paragraph</li>
-                            <li>At least one subheading (H2 or H3)</li>
-                            <li>Alt-text of an image</li>
-                            <li>Meta description</li>
-                            <li>URL slug (e.g., /ai-skin-analysis-guide)</li>
-                          </ul>
-                        </div>
 
-                        <div>
-                          <h5 className="font-medium text-gray-600">2. Write for Humans First, Search Engines Second</h5>
-                          <p>Google rewards helpful content. Make sure your blog:</p>
-                          <ul className="list-disc pl-5 space-y-1">
-                            <li>Solves a specific problem</li>
-                            <li>Is easy to read (short paragraphs, bullet points)</li>
-                            <li>Has a natural, conversational tone</li>
-                          </ul>
-                        </div>
-
-                        <div>
-                          <h5 className="font-medium text-gray-600">3. Structure Content with Clear Headings</h5>
-                          <p>Use H1 (title), H2 (section headings), and H3 (subpoints) to create a logical flow. It helps SEO and makes the blog easier to scan.</p>
-                        </div>
-
-                        <div>
-                          <h5 className="font-medium text-gray-600">4. Use Internal Linking</h5>
-                          <p>Link to other relevant blog posts or key pages on your site (e.g., homepage, skin analysis feature, "Join Waitlist" page). It keeps readers on your site longer and boosts authority.</p>
-                        </div>
-
-                        <div>
-                          <h5 className="font-medium text-gray-600">5. Add External Links to Reputable Sources</h5>
-                          <p>Reference studies or expert content from trusted sources (e.g., dermatology research). It shows credibility and Google appreciates it.</p>
-                        </div>
-
-                        <div>
-                          <h5 className="font-medium text-gray-600">6. Write Meta Titles & Descriptions</h5>
-                          <p>Every blog should have:</p>
-                          <ul className="list-disc pl-5 space-y-1">
-                            <li>A meta title (60 characters max)</li>
-                            <li>A meta description (150–160 characters)</li>
-                          </ul>
-                          <p>Include your main keyword and make it compelling to boost click-through rates.</p>
-                        </div>
-
-                        <div>
-                          <h5 className="font-medium text-gray-600">7. Use High-Quality Images with Alt Text</h5>
-                          <p>Add relevant, original images (before/after, charts, product demos).</p>
-                          <p>Use descriptive alt text with keywords to improve image SEO.</p>
-                        </div>
-
-                        <div>
-                          <h5 className="font-medium text-gray-600">8. Keep it Fresh & Updated</h5>
-                          <p>Google favors updated content. Revisit older blogs every 3–6 months to:</p>
-                          <ul className="list-disc pl-5 space-y-1">
-                            <li>Update statistics</li>
-                            <li>Add new findings</li>
-                            <li>Improve formatting</li>
-                            <li>Replace broken links</li>
-                          </ul>
-                        </div>
-
-                        <div>
-                          <h5 className="font-medium text-gray-600">9. Write Long-Form Content (800–1500 words)</h5>
-                          <p>Longer posts (when useful) tend to rank better. Combine deep insights, real examples, and clear takeaways.</p>
-                        </div>
-
-                        <div>
-                          <h5 className="font-medium text-gray-600">10. Add a Clear Call to Action (CTA) Relevant to Doctors or Recruiters</h5>
-                          <p>At the end of each blog post, guide your readers toward the next step. Examples for a healthcare recruitment platform could be:</p>
-                          <ul className="list-disc pl-5 space-y-1">
-                            <li><strong>For Hospitals/Recruiters:</strong> "Browse qualified nurses and doctors now" or "Book a meeting to discuss your staffing needs."</li>
-                            <li><strong>For Medical Professionals:</strong> "Apply to join our platform" or "Check out our latest job opportunities in Germany."</li>
-                          </ul>
-                          <p>Make sure CTAs are visually distinct and appear mid-post as well as at the end when possible.</p>
-                        </div>
-                      </div>
+                    <div>
+                      <h5 className="font-medium text-gray-600">2. Write for Humans First, Search Engines Second</h5>
+                      <p>Google rewards helpful content. Make sure your blog:</p>
+                      <ul className="list-disc pl-5 space-y-1">
+                        <li>Solves a specific problem</li>
+                        <li>Is easy to read (short paragraphs, bullet points)</li>
+                        <li>Has a natural, conversational tone</li>
+                      </ul>
                     </div>
-                  </TabsContent>
-                  <TabsContent value="preview" className="mt-4">
-                    <div className="border rounded-md p-4 min-h-[400px] bg-gray-50">
-                      <h4 className="font-medium mb-2">Preview:</h4>
-                      <div 
-                        className="prose prose-sm max-w-none blog-content"
-                        dangerouslySetInnerHTML={{ 
-                          __html: formData.content ? preprocessText(formData.content) : '<p class="text-muted-foreground">Start typing to see preview...</p>' 
-                        }} 
-                      />
+
+                    <div>
+                      <h5 className="font-medium text-gray-600">3. Structure Content with Clear Headings</h5>
+                      <p>Use H1 (title), H2 (section headings), and H3 (subpoints) to create a logical flow. It helps SEO and makes the blog easier to scan.</p>
                     </div>
-                  </TabsContent>
-                </Tabs>
+
+                    <div>
+                      <h5 className="font-medium text-gray-600">4. Use Internal Linking</h5>
+                      <p>Link to other relevant blog posts or key pages on your site (e.g., homepage, skin analysis feature, "Join Waitlist" page). It keeps readers on your site longer and boosts authority.</p>
+                    </div>
+
+                    <div>
+                      <h5 className="font-medium text-gray-600">5. Add External Links to Reputable Sources</h5>
+                      <p>Reference studies or expert content from trusted sources (e.g., dermatology research). It shows credibility and Google appreciates it.</p>
+                    </div>
+
+                    <div>
+                      <h5 className="font-medium text-gray-600">6. Write Meta Titles & Descriptions</h5>
+                      <p>Every blog should have:</p>
+                      <ul className="list-disc pl-5 space-y-1">
+                        <li>A meta title (60 characters max)</li>
+                        <li>A meta description (150–160 characters)</li>
+                      </ul>
+                      <p>Include your main keyword and make it compelling to boost click-through rates.</p>
+                    </div>
+
+                    <div>
+                      <h5 className="font-medium text-gray-600">7. Use High-Quality Images with Alt Text</h5>
+                      <p>Add relevant, original images (before/after, charts, product demos).</p>
+                      <p>Use descriptive alt text with keywords to improve image SEO.</p>
+                    </div>
+
+                    <div>
+                      <h5 className="font-medium text-gray-600">8. Keep it Fresh & Updated</h5>
+                      <p>Google favors updated content. Revisit older blogs every 3–6 months to:</p>
+                      <ul className="list-disc pl-5 space-y-1">
+                        <li>Update statistics</li>
+                        <li>Add new findings</li>
+                        <li>Improve formatting</li>
+                        <li>Replace broken links</li>
+                      </ul>
+                    </div>
+
+                    <div>
+                      <h5 className="font-medium text-gray-600">9. Write Long-Form Content (800–1500 words)</h5>
+                      <p>Longer posts (when useful) tend to rank better. Combine deep insights, real examples, and clear takeaways.</p>
+                    </div>
+
+                    <div>
+                      <h5 className="font-medium text-gray-600">10. Add a Clear Call to Action (CTA) Relevant to Doctors or Recruiters</h5>
+                      <p>At the end of each blog post, guide your readers toward the next step. Examples for a healthcare recruitment platform could be:</p>
+                      <ul className="list-disc pl-5 space-y-1">
+                        <li><strong>For Hospitals/Recruiters:</strong> "Browse qualified nurses and doctors now" or "Book a meeting to discuss your staffing needs."</li>
+                        <li><strong>For Medical Professionals:</strong> "Apply to join our platform" or "Check out our latest job opportunities in Germany."</li>
+                      </ul>
+                      <p>Make sure CTAs are visually distinct and appear mid-post as well as at the end when possible.</p>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
 
