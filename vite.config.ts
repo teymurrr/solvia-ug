@@ -1,3 +1,4 @@
+
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
@@ -27,12 +28,11 @@ export default defineConfig(({ mode }) => ({
           vendor: ['react', 'react-dom'],
           router: ['react-router-dom'],
           
-          // UI components split by usage
+          // UI components
           'ui-core': ['@radix-ui/react-dialog', '@radix-ui/react-dropdown-menu', '@radix-ui/react-toast'],
           'ui-form': ['@radix-ui/react-checkbox', '@radix-ui/react-select', '@radix-ui/react-radio-group'],
-          'ui-data': ['@radix-ui/react-accordion', '@radix-ui/react-tabs', '@radix-ui/react-collapsible'],
           
-          // Heavy components
+          // Heavy libraries
           'supabase': ['@supabase/supabase-js'],
           'charts': ['recharts'],
           'query': ['@tanstack/react-query'],
@@ -43,20 +43,14 @@ export default defineConfig(({ mode }) => ({
         },
         
         // Optimize chunk sizes
-        chunkFileNames: (chunkInfo) => {
-          const facadeModuleId = chunkInfo.facadeModuleId ? path.basename(chunkInfo.facadeModuleId, '.tsx') : 'chunk';
-          return `assets/[name]-[hash].js`;
-        },
+        chunkFileNames: 'assets/[name]-[hash].js',
         
         // Add cache headers via file naming
         assetFileNames: (assetInfo) => {
-          // Handle undefined assetInfo.name
           if (!assetInfo.name) {
             return `assets/[name]-[hash][extname]`;
           }
           
-          const info = assetInfo.name.split('.');
-          const ext = info[info.length - 1];
           if (/\.(css)$/.test(assetInfo.name)) {
             return `assets/css/[name]-[hash][extname]`;
           }
@@ -68,15 +62,6 @@ export default defineConfig(({ mode }) => ({
           }
           return `assets/[name]-[hash][extname]`;
         }
-      },
-      
-      // External dependencies that shouldn't be bundled
-      external: (id) => {
-        // Keep tracking scripts external
-        if (id.includes('googletagmanager') || id.includes('facebook') || id.includes('hotjar')) {
-          return true;
-        }
-        return false;
       }
     },
     
@@ -85,7 +70,7 @@ export default defineConfig(({ mode }) => ({
     minify: 'esbuild',
     cssMinify: true,
     reportCompressedSize: false,
-    chunkSizeWarningLimit: 500, // Lower threshold to catch large chunks
+    chunkSizeWarningLimit: 500,
     
     // CSS code splitting
     cssCodeSplit: true,
@@ -94,7 +79,7 @@ export default defineConfig(({ mode }) => ({
     sourcemap: mode === 'development',
     
     // Aggressive compression
-    assetsInlineLimit: 4096, // Inline small assets
+    assetsInlineLimit: 4096
   },
   
   // Optimize dependencies
@@ -103,23 +88,12 @@ export default defineConfig(({ mode }) => ({
       'react',
       'react-dom',
       'react-router-dom'
-    ],
-    exclude: [
-      // Exclude heavy libraries from pre-bundling to enable better code splitting
-      '@supabase/supabase-js',
-      'recharts',
-      '@tanstack/react-query'
     ]
   },
   
   // Modern CSS features
   css: {
-    devSourcemap: mode === 'development',
-    postcss: {
-      plugins: [
-        // Add autoprefixer for better browser support
-      ]
-    }
+    devSourcemap: mode === 'development'
   },
   
   // Experimental features for better performance

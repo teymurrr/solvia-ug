@@ -2,10 +2,9 @@
 import React, { Suspense } from 'react';
 import MainLayout from '@/components/MainLayout';
 import HeroSection from '@/components/landing/HeroSection';
-import LazySection from '@/components/ui/lazy-section';
 import { featuredVacancies, featuredProfessionals } from '@/data/landingPageData';
 
-// Lazy load heavy components with optimized chunks
+// Lazy load only the heavy components that are below the fold
 const WhySolviaSectionOptimized = React.lazy(() => import('@/components/landing/WhySolviaSectionOptimized'));
 const TimelineSection = React.lazy(() => import('@/components/landing/TimelineSection'));
 const ProfessionalsSection = React.lazy(() => import('@/components/landing/ProfessionalsSection'));
@@ -15,12 +14,12 @@ const BlogSection = React.lazy(() => import('@/components/landing/BlogSection'))
 const LearningSection = React.lazy(() => import('@/components/landing/LearningSection'));
 const CTASection = React.lazy(() => import('@/components/landing/CTASection'));
 
-// Optimized loading skeletons
-const OptimizedSkeleton = React.memo(({ height, bgColor }: { height: string; bgColor: string }) => (
-  <div className={`${height} ${bgColor} animate-pulse`} />
-));
-
-OptimizedSkeleton.displayName = 'OptimizedSkeleton';
+// Simple loading fallback
+const LoadingFallback = ({ height }: { height: string }) => (
+  <div className={`${height} bg-gray-100 animate-pulse flex items-center justify-center`}>
+    <div className="text-gray-500">Loading...</div>
+  </div>
+);
 
 const Index = () => {
   return (
@@ -28,62 +27,38 @@ const Index = () => {
       {/* Critical above-the-fold content - load immediately */}
       <HeroSection />
       
-      {/* Below-the-fold sections - lazy load with optimized fallbacks */}
-      <LazySection 
-        fallback={<OptimizedSkeleton height="h-64" bgColor="bg-gray-50" />}
-        rootMargin="50px"
-      >
+      {/* Below-the-fold sections with simplified lazy loading */}
+      <Suspense fallback={<LoadingFallback height="h-64" />}>
         <WhySolviaSectionOptimized />
-      </LazySection>
+      </Suspense>
       
-      <LazySection 
-        fallback={<OptimizedSkeleton height="h-80" bgColor="bg-white" />}
-        rootMargin="100px"
-      >
+      <Suspense fallback={<LoadingFallback height="h-80" />}>
         <TimelineSection />
-      </LazySection>
+      </Suspense>
       
-      <LazySection 
-        fallback={<OptimizedSkeleton height="h-96" bgColor="bg-white" />}
-        rootMargin="150px"
-      >
+      <Suspense fallback={<LoadingFallback height="h-96" />}>
         <ProfessionalsSection professionals={featuredProfessionals} />
-      </LazySection>
+      </Suspense>
       
-      <LazySection 
-        fallback={<OptimizedSkeleton height="h-96" bgColor="bg-white" />}
-        rootMargin="150px"
-      >
+      <Suspense fallback={<LoadingFallback height="h-96" />}>
         <VacanciesSection vacancies={featuredVacancies} />
-      </LazySection>
+      </Suspense>
       
-      <LazySection 
-        fallback={<OptimizedSkeleton height="h-64" bgColor="bg-gray-50" />}
-        rootMargin="200px"
-      >
+      <Suspense fallback={<LoadingFallback height="h-64" />}>
         <InsightsSection />
-      </LazySection>
+      </Suspense>
       
-      <LazySection 
-        fallback={<OptimizedSkeleton height="h-80" bgColor="bg-white" />}
-        rootMargin="200px"
-      >
+      <Suspense fallback={<LoadingFallback height="h-80" />}>
         <BlogSection />
-      </LazySection>
+      </Suspense>
       
-      <LazySection 
-        fallback={<OptimizedSkeleton height="h-96" bgColor="bg-blue-50" />}
-        rootMargin="200px"
-      >
+      <Suspense fallback={<LoadingFallback height="h-96" />}>
         <LearningSection />
-      </LazySection>
+      </Suspense>
       
-      <LazySection 
-        fallback={<OptimizedSkeleton height="h-64" bgColor="bg-gradient-to-r from-blue-600 to-blue-700" />}
-        rootMargin="200px"
-      >
+      <Suspense fallback={<LoadingFallback height="h-64" />}>
         <CTASection />
-      </LazySection>
+      </Suspense>
     </MainLayout>
   );
 };
