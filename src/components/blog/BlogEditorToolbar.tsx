@@ -106,6 +106,10 @@ const BlogEditorToolbar: React.FC<BlogEditorToolbarProps> = ({
     }
   };
 
+  const handleCheckboxChange = (checked: boolean | "indeterminate") => {
+    setOpenInNewTab(checked === true);
+  };
+
   const colors = [
     { name: 'Black', value: '#000000' },
     { name: 'Dark Gray', value: '#4a4a4a' },
@@ -398,7 +402,7 @@ const BlogEditorToolbar: React.FC<BlogEditorToolbarProps> = ({
                 <Checkbox
                   id="newTab"
                   checked={openInNewTab}
-                  onCheckedChange={setOpenInNewTab}
+                  onCheckedChange={handleCheckboxChange}
                 />
                 <Label htmlFor="newTab">Open in new tab</Label>
               </div>
