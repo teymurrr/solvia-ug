@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import MainLayout from '@/components/MainLayout';
 import { useNavigate, Link, useParams } from 'react-router-dom';
@@ -251,9 +250,11 @@ const BlogEditor = () => {
   const handleInsertList = (type: 'bullet' | 'numbered') => {
     if (contentTextareaRef.current) {
       const textarea = contentTextareaRef.current;
-      const cursorPosition = getCursorPosition(textarea);
+      const selection = getTextSelection(textarea);
       saveToUndoStack(formData.content);
-      const newContent = insertListAtPosition(formData.content, cursorPosition, type);
+      
+      // Use the updated function that handles selected text properly
+      const newContent = insertListAtPosition(formData.content, selection.start, selection.end, type);
       
       setFormData(prev => ({ ...prev, content: newContent }));
       
@@ -673,8 +674,13 @@ const BlogEditor = () => {
                         placeholder="Write your post content here... Use the toolbar to add formatting, headings, links, and media."
                         value={formData.content}
                         onChange={handleInputChange}
-                        className="min-h-[400px] rounded-t-none border-t-0 focus:border-t focus:rounded-t-md"
+                        className="min-h-[400px] rounded-t-none border-t-0 focus:border-t focus:rounded-t-md font-mono"
                         required
+                        style={{
+                          fontFamily: 'ui-monospace, SFMono-Regular, "SF Mono", Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
+                          fontSize: '14px',
+                          lineHeight: '1.5'
+                        }}
                       />
                     </div>
                     <div className="mt-4 space-y-4 text-sm text-gray-500 p-4">

@@ -49,7 +49,7 @@ export const insertLinkAtPosition = (text: string, position: number, linkText: s
   return text.slice(0, position) + linkHtml + text.slice(position);
 };
 
-// Format text with various styles
+// Format text with various styles - now handles selected text properly
 export const formatTextAtPosition = (text: string, start: number, end: number, format: 'bold' | 'italic' | 'underline' | 'strikethrough'): string => {
   const selectedText = text.substring(start, end);
   if (!selectedText) return text;
@@ -84,11 +84,24 @@ export const insertHeadingAtPosition = (text: string, position: number, level: 1
   return text.slice(0, position) + headingHtml + text.slice(position);
 };
 
-// Insert list at position
-export const insertListAtPosition = (text: string, position: number, type: 'bullet' | 'numbered'): string => {
-  const listTag = type === 'bullet' ? 'ul' : 'ol';
-  const listHtml = `<${listTag}>\n<li>List item 1</li>\n<li>List item 2</li>\n<li>List item 3</li>\n</${listTag}>`;
-  return text.slice(0, position) + listHtml + text.slice(position);
+// Updated list insertion to work with selected text
+export const insertListAtPosition = (text: string, start: number, end: number, type: 'bullet' | 'numbered'): string => {
+  const selectedText = text.substring(start, end);
+  
+  if (selectedText) {
+    // If text is selected, convert it to a list
+    const lines = selectedText.split('\n').filter(line => line.trim());
+    const listTag = type === 'bullet' ? 'ul' : 'ol';
+    const listItems = lines.map(line => `<li>${line.trim()}</li>`).join('\n');
+    const listHtml = `<${listTag}>\n${listItems}\n</${listTag}>`;
+    
+    return text.substring(0, start) + listHtml + text.substring(end);
+  } else {
+    // If no text is selected, insert a default list at cursor position
+    const listTag = type === 'bullet' ? 'ul' : 'ol';
+    const listHtml = `<${listTag}>\n<li>List item 1</li>\n<li>List item 2</li>\n<li>List item 3</li>\n</${listTag}>`;
+    return text.slice(0, start) + listHtml + text.slice(start);
+  }
 };
 
 // Insert blockquote at position
