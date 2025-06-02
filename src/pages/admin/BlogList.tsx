@@ -2,9 +2,8 @@
 import React, { useState } from 'react';
 import MainLayout from '@/components/MainLayout';
 import { useNavigate, Link } from 'react-router-dom';
-import { useAdmin } from '@/hooks/useAdmin';
-import { useOwner } from '@/hooks/useOwner';
-import { useBlogPosts } from '@/hooks/useBlogPosts';
+import { useBlogPostsOptimized } from '@/hooks/useBlogPostsOptimized';
+import { useAuthOptimized } from '@/hooks/useAuthOptimized';
 import { Button } from '@/components/ui/button';
 import { 
   Table, 
@@ -21,9 +20,7 @@ import {
   Trash2, 
   Eye,
   AlertTriangle,
-  Loader2,
-  Settings,
-  Languages
+  Settings
 } from 'lucide-react';
 import {
   AlertDialog,
@@ -39,28 +36,23 @@ import { Badge } from '@/components/ui/badge';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
+import BlogListSkeleton from '@/components/ui/blog-list-skeleton';
 
-const AdminBlogList = () => {
+const AdminBlogList = React.memo(() => {
   const navigate = useNavigate();
-  const { isAdmin, loading: adminLoading } = useAdmin();
-  const { isOwner, loading: ownerLoading } = useOwner();
-  const { posts, loading } = useBlogPosts(true); // Fetch all posts including drafts
+  const { isAdmin, isOwner, loading: authLoading } = useAuthOptimized();
+  const { posts, loading } = useBlogPostsOptimized(true);
   const { toast } = useToast();
   const { user } = useAuth();
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [postToDelete, setPostToDelete] = useState<string | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
 
-  console.log('🔍 [BlogList] Component rendering...');
-  console.log('🔍 [BlogList] isAdmin:', isAdmin, 'adminLoading:', adminLoading);
-  console.log('🔍 [BlogList] isOwner:', isOwner, 'ownerLoading:', ownerLoading);
-  console.log('🔍 [BlogList] Current user email:', user?.email);
-
   React.useEffect(() => {
-    if (!adminLoading && !isAdmin) {
+    if (!authLoading && !isAdmin) {
       navigate('/', { replace: true });
     }
-  }, [adminLoading, isAdmin, navigate]);
+  }, [authLoading, isAdmin, navigate]);
 
   const handleDelete = async () => {
     if (!postToDelete) return;
@@ -80,7 +72,6 @@ const AdminBlogList = () => {
         description: 'Blog post deleted successfully',
       });
       
-      // Force reload to refresh the list
       navigate(0);
     } catch (error) {
       console.error('Error deleting post:', error);
@@ -112,12 +103,23 @@ const AdminBlogList = () => {
     return flags[language as keyof typeof flags] || '🌐';
   };
   
-  if (adminLoading || loading) {
+  if (authLoading || loading) {
     return (
       <MainLayout>
-        <div className="container mx-auto px-4 py-12 flex flex-col items-center justify-center min-h-[50vh]">
-          <Loader2 className="h-12 w-12 animate-spin text-medical-600" />
-          <p className="mt-4 text-lg">Loading...</p>
+        <div className="container mx-auto px-4 py-12">
+          <div className="flex justify-between items-center mb-8">
+            <div>
+              <Button variant="ghost" asChild className="mb-4">
+                <Link to="/blog" className="flex items-center">
+                  <ArrowLeft className="mr-2 h-4 w-4" />
+                  Back to Blog
+                </Link>
+              </Button>
+              <h1 className="text-3xl font-bold">Blog Administration</h1>
+              <p className="text-muted-foreground">Manage your blog posts</p>
+            </div>
+          </div>
+          <BlogListSkeleton />
         </div>
       </MainLayout>
     );
@@ -127,7 +129,6 @@ const AdminBlogList = () => {
     return null;
   }
 
-  // Check if current user is the specific owner
   const isSpecificOwner = user?.email === 'tmammadovv@gmail.com';
 
   return (
@@ -143,20 +144,9 @@ const AdminBlogList = () => {
             </Button>
             <h1 className="text-3xl font-bold">Blog Administration</h1>
             <p className="text-muted-foreground">Manage your blog posts</p>
-            
-            {/* Temporary debug info - remove after fixing */}
-            {process.env.NODE_ENV === 'development' && (
-              <div className="mt-2 p-2 bg-yellow-100 text-xs rounded">
-                <p>Debug: User email: {user?.email}</p>
-                <p>Debug: isOwner: {isOwner.toString()}</p>
-                <p>Debug: ownerLoading: {ownerLoading.toString()}</p>
-                <p>Debug: isSpecificOwner: {isSpecificOwner.toString()}</p>
-              </div>
-            )}
           </div>
           
           <div className="flex gap-2">
-            {/* Show the manage admins button only for owner - using multiple checks for reliability */}
             {(isOwner || isSpecificOwner) && (
               <Button variant="outline" asChild>
                 <Link to="/admin/manage-admins" className="flex items-center">
@@ -206,7 +196,7 @@ const AdminBlogList = () => {
                       </div>
                     </TableCell>
                     <TableCell>{post.category || '—'}</TableCell>
-                    <TableCell>{new Date(post.date).toLocaleDateString()}</TableCell>
+                    <TableCell>{new Date(post.created_at).toLocaleDateString()}</TableCell>
                     <TableCell className="text-right">
                       <div className="flex justify-end space-x-2">
                         <Button variant="ghost" size="sm" asChild>
@@ -265,20 +255,15 @@ const AdminBlogList = () => {
               disabled={isDeleting}
               className="bg-red-600 hover:bg-red-700"
             >
-              {isDeleting ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Deleting...
-                </>
-              ) : (
-                <>Delete</>
-              )}
+              {isDeleting ? 'Deleting...' : 'Delete'}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
     </MainLayout>
   );
-};
+});
+
+AdminBlogList.displayName = 'AdminBlogList';
 
 export default AdminBlogList;

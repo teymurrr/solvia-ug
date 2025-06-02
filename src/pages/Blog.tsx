@@ -2,25 +2,24 @@
 import React from 'react';
 import MainLayout from '@/components/MainLayout';
 import { Link } from 'react-router-dom';
-import { useBlogPosts } from '@/hooks/useBlogPosts';
-import { useAdmin } from '@/hooks/useAdmin';
+import { useBlogPostsOptimized } from '@/hooks/useBlogPostsOptimized';
+import { useAuthOptimized } from '@/hooks/useAuthOptimized';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Loader2, Calendar, Clock, Eye, Settings } from 'lucide-react';
+import { Calendar, Clock, Eye, Settings } from 'lucide-react';
 import BlogLanguageSelector from '@/components/blog/BlogLanguageSelector';
 import { useLanguage } from '@/hooks/useLanguage';
+import BlogListSkeleton from '@/components/ui/blog-list-skeleton';
 
-const Blog = () => {
+const Blog = React.memo(() => {
   const { currentLanguage } = useLanguage();
-  const { isAdmin } = useAdmin();
-  const { posts, loading } = useBlogPosts(isAdmin, currentLanguage);
+  const { isAdmin } = useAuthOptimized();
+  const { posts, loading } = useBlogPostsOptimized(isAdmin, currentLanguage);
 
-  // Filter posts based on admin status and current language
   const filteredPosts = posts.filter(post => {
     const languageMatch = post.language === currentLanguage;
     
-    // If user is admin, show all posts. If not, only show published posts
     if (isAdmin) {
       return languageMatch;
     } else {
@@ -31,9 +30,14 @@ const Blog = () => {
   if (loading) {
     return (
       <MainLayout>
-        <div className="container mx-auto px-4 py-12 flex flex-col items-center justify-center min-h-[50vh]">
-          <Loader2 className="h-12 w-12 animate-spin text-medical-600" />
-          <p className="mt-4 text-lg">Loading blog posts...</p>
+        <div className="container mx-auto px-4 py-12">
+          <div className="text-center mb-12">
+            <h1 className="text-4xl font-bold mb-4">Solvia Blog</h1>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+              Insights, updates, and expertise from the healthcare recruitment industry
+            </p>
+          </div>
+          <BlogListSkeleton />
         </div>
       </MainLayout>
     );
@@ -42,7 +46,6 @@ const Blog = () => {
   return (
     <MainLayout>
       <div className="container mx-auto px-4 py-12">
-        {/* Header Section */}
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold mb-4">Solvia Blog</h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
@@ -50,7 +53,6 @@ const Blog = () => {
           </p>
         </div>
 
-        {/* Language Selector and Admin Controls */}
         <div className="flex justify-between items-center mb-8">
           <BlogLanguageSelector />
           
@@ -64,21 +66,10 @@ const Blog = () => {
           )}
         </div>
 
-        {/* Blog Posts Grid */}
         {filteredPosts.length > 0 ? (
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
             {filteredPosts.map((post) => (
               <Card key={post.id} className="group hover:shadow-lg transition-shadow duration-300">
-                {post.imageUrl && (
-                  <div className="aspect-[16/9] overflow-hidden rounded-t-lg">
-                    <img
-                      src={post.imageUrl}
-                      alt={post.title}
-                      className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300"
-                    />
-                  </div>
-                )}
-                
                 <CardHeader>
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center gap-2">
@@ -93,12 +84,6 @@ const Blog = () => {
                         </Badge>
                       )}
                     </div>
-                    {post.readTime && (
-                      <div className="flex items-center text-sm text-muted-foreground">
-                        <Clock className="h-3 w-3 mr-1" />
-                        {post.readTime}
-                      </div>
-                    )}
                   </div>
                   
                   <h2 className="text-xl font-semibold group-hover:text-primary transition-colors line-clamp-2 blog-title">
@@ -107,14 +92,10 @@ const Blog = () => {
                 </CardHeader>
                 
                 <CardContent>
-                  <p className="text-muted-foreground mb-4 line-clamp-3">
-                    {post.excerpt}
-                  </p>
-                  
                   <div className="flex items-center justify-between">
                     <div className="flex items-center text-sm text-muted-foreground">
                       <Calendar className="h-3 w-3 mr-1" />
-                      {new Date(post.date).toLocaleDateString()}
+                      {new Date(post.created_at).toLocaleDateString()}
                     </div>
                     
                     <Button variant="ghost" size="sm" asChild>
@@ -141,6 +122,8 @@ const Blog = () => {
       </div>
     </MainLayout>
   );
-};
+});
+
+Blog.displayName = 'Blog';
 
 export default Blog;
