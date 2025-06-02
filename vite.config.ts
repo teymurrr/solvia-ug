@@ -20,7 +20,6 @@ export default defineConfig(({ mode }) => ({
     },
   },
   build: {
-    target: 'es2020',
     rollupOptions: {
       output: {
         manualChunks: {
@@ -79,6 +78,11 @@ export default defineConfig(({ mode }) => ({
         
         // Add cache headers via file naming
         assetFileNames: (assetInfo) => {
+          // Handle undefined assetInfo.name
+          if (!assetInfo.name) {
+            return `assets/[name]-[hash][extname]`;
+          }
+          
           const info = assetInfo.name.split('.');
           const ext = info[info.length - 1];
           if (/\.(css)$/.test(assetInfo.name)) {
