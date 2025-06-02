@@ -21,8 +21,7 @@ import {
   Undo,
   Redo,
   Type,
-  Palette,
-  Save
+  Palette
 } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
@@ -59,7 +58,6 @@ const WysiwygEditor: React.FC<WysiwygEditorProps> = ({
   const [imageAlt, setImageAlt] = useState('');
   const [imageCaption, setImageCaption] = useState('');
   const [videoUrl, setVideoUrl] = useState('');
-  const [showMarkdown, setShowMarkdown] = useState(false);
 
   // Auto-save functionality
   useEffect(() => {
@@ -804,35 +802,6 @@ const WysiwygEditor: React.FC<WysiwygEditorProps> = ({
           </Button>
         </div>
 
-        <div className="w-px h-6 bg-gray-300 mx-1" />
-
-        {/* Auto-save & Utilities */}
-        <div className="flex items-center gap-2">
-          <Button
-            type="button"
-            variant="outline"
-            size="sm"
-            onClick={() => setShowMarkdown(!showMarkdown)}
-            className="h-8 text-xs"
-            title="Toggle Markdown View"
-          >
-            {showMarkdown ? 'WYSIWYG' : 'Markdown'}
-          </Button>
-
-          {onAutoSave && (
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              onClick={onAutoSave}
-              className="h-8"
-              title="Save Draft"
-            >
-              <Save className="h-3 w-3" />
-            </Button>
-          )}
-        </div>
-
         {/* Word Count */}
         <div className="ml-auto flex items-center text-sm text-muted-foreground">
           <span>{wordCount} words</span>
@@ -840,31 +809,22 @@ const WysiwygEditor: React.FC<WysiwygEditorProps> = ({
       </div>
 
       {/* Editor */}
-      {showMarkdown ? (
-        <textarea
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-          className="w-full min-h-[400px] p-4 font-mono text-sm resize-none focus:outline-none"
-          placeholder="Write in Markdown..."
-        />
-      ) : (
-        <div
-          ref={editorRef}
-          contentEditable
-          onInput={handleInput}
-          onPaste={handlePaste}
-          onKeyDown={handleKeyDown}
-          className="min-h-[400px] p-4 focus:outline-none prose prose-sm max-w-none"
-          style={{ 
-            whiteSpace: 'pre-wrap',
-            wordWrap: 'break-word',
-            lineHeight: '1.6'
-          }}
-          suppressContentEditableWarning={true}
-        />
-      )}
+      <div
+        ref={editorRef}
+        contentEditable
+        onInput={handleInput}
+        onPaste={handlePaste}
+        onKeyDown={handleKeyDown}
+        className="min-h-[400px] p-4 focus:outline-none prose prose-sm max-w-none"
+        style={{ 
+          whiteSpace: 'pre-wrap',
+          wordWrap: 'break-word',
+          lineHeight: '1.6'
+        }}
+        suppressContentEditableWarning={true}
+      />
 
-      {/* Placeholder CSS */}
+      {/* Enhanced Placeholder and List CSS */}
       <style dangerouslySetInnerHTML={{
         __html: `
           [contenteditable]:empty:before {
@@ -926,13 +886,29 @@ const WysiwygEditor: React.FC<WysiwygEditorProps> = ({
             padding: 0;
           }
           
-          [contenteditable] ul, [contenteditable] ol {
+          [contenteditable] ul {
             margin: 1em 0;
             padding-left: 2em;
+            list-style-type: disc;
+          }
+          
+          [contenteditable] ol {
+            margin: 1em 0;
+            padding-left: 2em;
+            list-style-type: decimal;
           }
           
           [contenteditable] li {
             margin: 0.5em 0;
+            display: list-item;
+          }
+          
+          [contenteditable] ul li {
+            list-style-type: disc;
+          }
+          
+          [contenteditable] ol li {
+            list-style-type: decimal;
           }
           
           [contenteditable] hr {

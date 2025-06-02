@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import MainLayout from '@/components/MainLayout';
 import { useNavigate, Link, useParams } from 'react-router-dom';
@@ -15,7 +14,6 @@ import { ArrowLeft, Save, Upload, Image, Loader2, Clock, Languages } from 'lucid
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
-import { preprocessText } from '@/utils/textProcessor';
 import WysiwygEditor from '@/components/blog/WysiwygEditor';
 
 interface BlogFormData {
@@ -100,7 +98,7 @@ const BlogEditor = () => {
         category: post.category || '',
         readTime: post.readTime || '',
         imageUrl: post.imageUrl || '',
-        status: post.status || 'draft',
+        status: (post.status || 'draft') as 'draft' | 'published',
         language: post.language || 'en',
         post_group_id: post.post_group_id,
         metaTitle: '',
@@ -191,17 +189,15 @@ const BlogEditor = () => {
     if (!user || !formData.title) return;
 
     try {
-      const processedContent = preprocessText(formData.content);
-      
       const blogData = {
         title: formData.title,
         slug: formData.slug || generateSlug(formData.title),
         excerpt: formData.excerpt,
-        content: processedContent,
+        content: formData.content, // Keep HTML formatting intact
         image_url: formData.imageUrl,
         category: formData.category || null,
         read_time: formData.readTime || null,
-        status: 'draft', // Always save as draft during auto-save
+        status: 'draft' as const, // Always save as draft during auto-save
         language: formData.language,
         post_group_id: formData.post_group_id || null,
       };
@@ -257,13 +253,11 @@ const BlogEditor = () => {
         }
       }
       
-      const processedContent = preprocessText(formData.content);
-      
       const blogData = {
         title: formData.title,
         slug: formData.slug || generateSlug(formData.title),
         excerpt: formData.excerpt,
-        content: processedContent,
+        content: formData.content, // Keep HTML formatting intact
         image_url: imageUrl,
         category: formData.category || null,
         read_time: formData.readTime || null,
