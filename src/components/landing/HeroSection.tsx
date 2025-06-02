@@ -36,17 +36,22 @@ const HeroSection = React.memo(() => {
       <div className="container mx-auto px-4 py-16 md:py-24 relative z-10">
         <div className="max-w-3xl mx-auto text-center space-y-6">
           <h1 className="text-5xl md:text-6xl lg:text-[72px] font-bold tracking-tight">
-            {heroData.title} <span className={`phrase-rotate font-medium text-primary ${isAnimating ? 'fade-out-up' : 'fade-in-down'}`}>{heroData.rotatingPhrases[currentPhraseIndex]}</span>
+            {heroData.title} <span 
+              className={`phrase-rotate font-medium text-primary ${isAnimating ? 'fade-out-up' : 'fade-in-down'}`}
+              style={{ contain: 'layout' }}
+            >
+              {heroData.rotatingPhrases[currentPhraseIndex]}
+            </span>
           </h1>
           <p className="text-lg md:text-xl lg:text-[22px] text-muted-foreground">
             {heroData.subtitle}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center mt-8">
             <Button size="lg" asChild>
-              <Link to="/signup">{heroData.findJob}</Link>
+              <Link to="/signup" rel="prefetch">{heroData.findJob}</Link>
             </Button>
             <Button size="lg" variant="outline" asChild>
-              <Link to="/signup">{heroData.findTalent}</Link>
+              <Link to="/signup" rel="prefetch">{heroData.findTalent}</Link>
             </Button>
           </div>
         </div>
