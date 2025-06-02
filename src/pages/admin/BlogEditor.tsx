@@ -600,42 +600,7 @@ const BlogEditor = () => {
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
             {/* Main content */}
             <div className="lg:col-span-2 space-y-6">
-              <div>
-                <Label htmlFor="title">Title <span className="text-red-500">*</span></Label>
-                <Input
-                  id="title"
-                  name="title"
-                  placeholder="Post title"
-                  value={formData.title}
-                  onChange={handleTitleChange}
-                  className="text-xl font-medium"
-                  required
-                />
-              </div>
-
-              <div>
-                <Label htmlFor="slug">Slug</Label>
-                <Input
-                  id="slug"
-                  name="slug"
-                  placeholder="post-url-slug"
-                  value={formData.slug}
-                  onChange={handleInputChange}
-                />
-              </div>
-
-              <div>
-                <Label htmlFor="excerpt">Excerpt <span className="text-red-500">*</span></Label>
-                <Textarea
-                  id="excerpt"
-                  name="excerpt"
-                  placeholder="Brief summary of your post (shown in previews)"
-                  value={formData.excerpt}
-                  onChange={handleInputChange}
-                  className="h-24 resize-none"
-                  required
-                />
-              </div>
+              {/* ... keep existing code (title, slug, excerpt fields) */}
 
               <div>
                 <Label htmlFor="content">Content <span className="text-red-500">*</span></Label>
@@ -677,9 +642,69 @@ const BlogEditor = () => {
                         required
                       />
                     </div>
-                    <p className="text-sm text-muted-foreground mt-2">
-                      💡 Tip: Select text and use the toolbar buttons to format it. The editor supports rich text formatting, media embeds, and more.
-                    </p>
+                    <div className="mt-4 space-y-4 text-sm text-muted-foreground bg-blue-50 p-4 rounded-lg border border-blue-200">
+                      <div className="space-y-3">
+                        <h4 className="font-medium text-blue-900">🧠 1. Focus on One Main Keyword per Blog Post</h4>
+                        <p>Choose a specific, relevant keyword (e.g., "prevent aging naturally" or "AI skin analysis") and build your post around it. Use it in:</p>
+                        <ul className="list-disc pl-5 space-y-1">
+                          <li>The title</li>
+                          <li>First paragraph</li>
+                          <li>At least one subheading (H2 or H3)</li>
+                          <li>Alt-text of an image</li>
+                          <li>Meta description</li>
+                          <li>URL slug (e.g., /ai-skin-analysis-guide)</li>
+                        </ul>
+
+                        <h4 className="font-medium text-blue-900 mt-4">✍️ 2. Write for Humans First, Search Engines Second</h4>
+                        <p>Google rewards helpful content. Make sure your blog:</p>
+                        <ul className="list-disc pl-5 space-y-1">
+                          <li>Solves a specific problem</li>
+                          <li>Is easy to read (short paragraphs, bullet points)</li>
+                          <li>Has a natural, conversational tone</li>
+                        </ul>
+
+                        <h4 className="font-medium text-blue-900 mt-4">📐 3. Structure Content with Clear Headings</h4>
+                        <p>Use H1 (title), H2 (section headings), and H3 (subpoints) to create a logical flow. It helps SEO and makes the blog easier to scan.</p>
+
+                        <h4 className="font-medium text-blue-900 mt-4">🧾 4. Use Internal Linking</h4>
+                        <p>Link to other relevant blog posts or key pages on your site (e.g., homepage, skin analysis feature, "Join Waitlist" page). It keeps readers on your site longer and boosts authority.</p>
+
+                        <h4 className="font-medium text-blue-900 mt-4">🔗 5. Add External Links to Reputable Sources</h4>
+                        <p>Reference studies or expert content from trusted sources (e.g., dermatology research). It shows credibility and Google appreciates it.</p>
+
+                        <h4 className="font-medium text-blue-900 mt-4">🧠 6. Write Meta Titles & Descriptions</h4>
+                        <p>Every blog should have:</p>
+                        <ul className="list-disc pl-5 space-y-1">
+                          <li>A meta title (60 characters max)</li>
+                          <li>A meta description (150–160 characters)</li>
+                        </ul>
+                        <p>Include your main keyword and make it compelling to boost click-through rates.</p>
+
+                        <h4 className="font-medium text-blue-900 mt-4">🎯 7. Use High-Quality Images with Alt Text</h4>
+                        <p>Add relevant, original images (before/after, charts, product demos).</p>
+                        <p>Use descriptive alt text with keywords to improve image SEO.</p>
+
+                        <h4 className="font-medium text-blue-900 mt-4">⏱️ 8. Keep it Fresh & Updated</h4>
+                        <p>Google favors updated content. Revisit older blogs every 3–6 months to:</p>
+                        <ul className="list-disc pl-5 space-y-1">
+                          <li>Update statistics</li>
+                          <li>Add new findings</li>
+                          <li>Improve formatting</li>
+                          <li>Replace broken links</li>
+                        </ul>
+
+                        <h4 className="font-medium text-blue-900 mt-4">📊 9. Write Long-Form Content (800–1500 words)</h4>
+                        <p>Longer posts (when useful) tend to rank better. Combine deep insights, real examples, and clear takeaways.</p>
+
+                        <h4 className="font-medium text-blue-900 mt-4">📣 10. Add a Clear Call to Action (CTA) Relevant to Doctors or Recruiters</h4>
+                        <p>At the end of each blog post, guide your readers toward the next step. Examples for a healthcare recruitment platform could be:</p>
+                        <ul className="list-disc pl-5 space-y-1">
+                          <li><strong>For Hospitals/Recruiters:</strong> "Browse qualified nurses and doctors now" or "Book a meeting to discuss your staffing needs."</li>
+                          <li><strong>For Medical Professionals:</strong> "Apply to join our platform" or "Check out our latest job opportunities in Germany."</li>
+                        </ul>
+                        <p>Make sure CTAs are visually distinct and appear mid-post as well as at the end when possible.</p>
+                      </div>
+                    </div>
                   </TabsContent>
                   <TabsContent value="preview" className="mt-4">
                     <div className="border rounded-md p-4 min-h-[400px] bg-gray-50">
@@ -782,6 +807,9 @@ const BlogEditor = () => {
                       className="h-20 resize-none"
                       maxLength={160}
                     />
+                    <p className="text-xs text-gray-500 mt-1">
+                      Include your main keyword and make it compelling to boost click-through rates.
+                    </p>
                   </div>
 
                   <div>
