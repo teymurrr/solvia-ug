@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
+
+import React, { useState, useEffect } from 'react';
 import MainLayout from '@/components/MainLayout';
 import { useNavigate, Link, useParams } from 'react-router-dom';
 import { useAdmin } from '@/hooks/useAdmin';
@@ -14,7 +15,7 @@ import { ArrowLeft, Save, Upload, Image, Loader2, Clock, Languages } from 'lucid
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
-import { preprocessText, countWords } from '@/utils/textProcessor';
+import { preprocessText } from '@/utils/textProcessor';
 import WysiwygEditor from '@/components/blog/WysiwygEditor';
 
 interface BlogFormData {
@@ -69,11 +70,11 @@ const BlogEditor = () => {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [isUploading, setIsUploading] = useState(false);
+  const [lastSaved, setLastSaved] = useState<Date | null>(null);
   const { toast } = useToast();
   const { user } = useAuth();
 
   const isLoading = adminLoading || (isEditing && postLoading);
-  const wordCount = countWords(formData.content);
 
   // Generate slug from title
   const generateSlug = (title: string) => {
@@ -82,17 +83,6 @@ const BlogEditor = () => {
       .replace(/[^\w\s]/gi, '')
       .replace(/\s+/g, '-');
   };
-
-  // Auto-save functionality
-  useEffect(() => {
-    if (!isEditing || !formData.content) return;
-    
-    const autoSaveTimer = setTimeout(() => {
-      console.log('Auto-saving draft...');
-    }, 30000);
-
-    return () => clearTimeout(autoSaveTimer);
-  }, [formData.content, isEditing]);
 
   useEffect(() => {
     if (!adminLoading && !isAdmin) {
@@ -194,6 +184,49 @@ const BlogEditor = () => {
       return null;
     } finally {
       setIsUploading(false);
+    }
+  };
+
+  const handleAutoSave = async () => {
+    if (!user || !formData.title) return;
+
+    try {
+      const processedContent = preprocessText(formData.content);
+      
+      const blogData = {
+        title: formData.title,
+        slug: formData.slug || generateSlug(formData.title),
+        excerpt: formData.excerpt,
+        content: processedContent,
+        image_url: formData.imageUrl,
+        category: formData.category || null,
+        read_time: formData.readTime || null,
+        status: 'draft', // Always save as draft during auto-save
+        language: formData.language,
+        post_group_id: formData.post_group_id || null,
+      };
+      
+      if (isEditing) {
+        await supabase
+          .from('blog_posts')
+          .update({
+            ...blogData,
+            updated_at: new Date().toISOString(),
+          })
+          .eq('id', id);
+      } else {
+        await supabase
+          .from('blog_posts')
+          .insert({
+            ...blogData,
+            author_id: user.id,
+          });
+      }
+      
+      setLastSaved(new Date());
+      console.log('Auto-saved at', new Date().toLocaleTimeString());
+    } catch (error) {
+      console.error('Auto-save failed:', error);
     }
   };
 
@@ -312,6 +345,11 @@ const BlogEditor = () => {
             <h1 className="text-3xl font-bold">
               {isEditing ? 'Edit Blog Post' : 'Create New Blog Post'}
             </h1>
+            {lastSaved && (
+              <p className="text-sm text-gray-500 mt-2">
+                Last saved: {lastSaved.toLocaleTimeString()}
+              </p>
+            )}
           </div>
           
           <div className="flex items-center space-x-4">
@@ -398,12 +436,11 @@ const BlogEditor = () => {
                   <WysiwygEditor
                     value={formData.content}
                     onChange={handleContentChange}
+                    onAutoSave={handleAutoSave}
                     placeholder="Write your post content here... Use the toolbar to add formatting, headings, links, and media."
                   />
                 </div>
-                <div className="mt-2 text-sm text-gray-500">
-                  Word count: {wordCount}
-                </div>
+                
                 <div className="mt-4 space-y-4 text-sm text-gray-500 p-4" style={{ backgroundColor: 'transparent', color: '#9ca3af' }}>
                   <div className="space-y-3">
                     <h4 className="font-medium text-gray-600">💡 Tips</h4>
