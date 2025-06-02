@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import MainLayout from '@/components/MainLayout';
 import { useNavigate, Link, useParams } from 'react-router-dom';
@@ -16,7 +15,24 @@ import { ArrowLeft, Save, Upload, Image, Loader2, Clock, Languages, Eye } from '
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
-import { preprocessText, insertLinkAtPosition, getCursorPosition } from '@/utils/textProcessor';
+import { 
+  preprocessText, 
+  insertLinkAtPosition, 
+  getCursorPosition,
+  getTextSelection,
+  formatTextAtPosition,
+  insertHeadingAtPosition,
+  insertListAtPosition,
+  insertBlockquoteAtPosition,
+  insertCodeAtPosition,
+  insertImageAtPosition,
+  insertVideoAtPosition,
+  setTextAlignment,
+  insertDividerAtPosition,
+  setFontSize,
+  setTextColor,
+  countWords
+} from '@/utils/textProcessor';
 import BlogEditorToolbar from '@/components/blog/BlogEditorToolbar';
 
 interface BlogFormData {
@@ -30,6 +46,10 @@ interface BlogFormData {
   status: 'draft' | 'published';
   language: string;
   post_group_id?: string;
+  metaTitle: string;
+  metaDescription: string;
+  tags: string;
+  publishDate: string;
 }
 
 const initialFormData: BlogFormData = {
@@ -42,6 +62,10 @@ const initialFormData: BlogFormData = {
   imageUrl: '',
   status: 'draft',
   language: 'en',
+  metaTitle: '',
+  metaDescription: '',
+  tags: '',
+  publishDate: '',
 };
 
 const languages = [
@@ -64,11 +88,14 @@ const BlogEditor = () => {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [activeTab, setActiveTab] = useState<'edit' | 'preview'>('edit');
+  const [undoStack, setUndoStack] = useState<string[]>([]);
+  const [redoStack, setRedoStack] = useState<string[]>([]);
   const { toast } = useToast();
   const { user } = useAuth();
   const contentTextareaRef = useRef<HTMLTextAreaElement>(null);
 
   const isLoading = adminLoading || (isEditing && postLoading);
+  const wordCount = countWords(formData.content);
 
   // Generate slug from title
   const generateSlug = (title: string) => {
@@ -76,6 +103,24 @@ const BlogEditor = () => {
       .toLowerCase()
       .replace(/[^\w\s]/gi, '')
       .replace(/\s+/g, '-');
+  };
+
+  // Auto-save functionality
+  useEffect(() => {
+    if (!isEditing || !formData.content) return;
+    
+    const autoSaveTimer = setTimeout(() => {
+      // Auto-save logic here - could save to localStorage or draft
+      console.log('Auto-saving draft...');
+    }, 30000); // Auto-save every 30 seconds
+
+    return () => clearTimeout(autoSaveTimer);
+  }, [formData.content, isEditing]);
+
+  // Save to undo stack
+  const saveToUndoStack = (content: string) => {
+    setUndoStack(prev => [...prev.slice(-19), content]); // Keep last 20 states
+    setRedoStack([]); // Clear redo stack when new change is made
   };
 
   useEffect(() => {
@@ -88,7 +133,7 @@ const BlogEditor = () => {
   useEffect(() => {
     // Populate form with post data if editing
     if (isEditing && post) {
-      setFormData({
+      const postData = {
         title: post.title,
         slug: post.slug,
         excerpt: post.excerpt,
@@ -99,7 +144,12 @@ const BlogEditor = () => {
         status: post.status || 'draft',
         language: post.language || 'en',
         post_group_id: post.post_group_id,
-      });
+        metaTitle: '',
+        metaDescription: '',
+        tags: '',
+        publishDate: '',
+      };
+      setFormData(postData);
 
       if (post.imageUrl) {
         setImagePreview(post.imageUrl);
@@ -112,13 +162,16 @@ const BlogEditor = () => {
     setFormData(prev => ({
       ...prev,
       title: newTitle,
-      // Auto-generate slug if title changes and we're creating a new post
       slug: !isEditing ? generateSlug(newTitle) : prev.slug,
+      metaTitle: newTitle, // Auto-populate meta title
     }));
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
+    if (name === 'content') {
+      saveToUndoStack(formData.content);
+    }
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
@@ -131,7 +184,6 @@ const BlogEditor = () => {
     if (file) {
       setImageFile(file);
       
-      // Create a preview
       const reader = new FileReader();
       reader.onloadend = () => {
         setImagePreview(reader.result as string);
@@ -140,9 +192,222 @@ const BlogEditor = () => {
     }
   };
 
+  // Enhanced toolbar handlers
+  const handleInsertLink = (linkText: string, url: string, openInNewTab: boolean) => {
+    if (contentTextareaRef.current) {
+      const textarea = contentTextareaRef.current;
+      const cursorPosition = getCursorPosition(textarea);
+      saveToUndoStack(formData.content);
+      const newContent = insertLinkAtPosition(formData.content, cursorPosition, linkText, url, openInNewTab);
+      
+      setFormData(prev => ({ ...prev, content: newContent }));
+      
+      setTimeout(() => {
+        textarea.focus();
+        const newPosition = cursorPosition + `<a href="${url}"${openInNewTab ? ' target="_blank" rel="noopener noreferrer"' : ''}>${linkText}</a>`.length;
+        textarea.setSelectionRange(newPosition, newPosition);
+      }, 0);
+    }
+  };
+
+  const handleFormatText = (format: 'bold' | 'italic' | 'underline' | 'strikethrough') => {
+    if (contentTextareaRef.current) {
+      const textarea = contentTextareaRef.current;
+      const selection = getTextSelection(textarea);
+      
+      if (selection.text) {
+        saveToUndoStack(formData.content);
+        const newContent = formatTextAtPosition(formData.content, selection.start, selection.end, format);
+        setFormData(prev => ({ ...prev, content: newContent }));
+        
+        setTimeout(() => {
+          textarea.focus();
+          textarea.setSelectionRange(selection.start, selection.start + newContent.substring(selection.start).indexOf(`</${format === 'bold' ? 'strong' : format === 'italic' ? 'em' : format}>`) + `</${format === 'bold' ? 'strong' : format === 'italic' ? 'em' : format}>`.length);
+        }, 0);
+      }
+    }
+  };
+
+  const handleInsertHeading = (level: 1 | 2 | 3 | 4) => {
+    if (contentTextareaRef.current) {
+      const textarea = contentTextareaRef.current;
+      const selection = getTextSelection(textarea);
+      saveToUndoStack(formData.content);
+      
+      const headingText = selection.text || `Heading ${level}`;
+      const newContent = insertHeadingAtPosition(formData.content, selection.start, level, headingText);
+      
+      setFormData(prev => ({ ...prev, content: newContent }));
+      
+      setTimeout(() => {
+        textarea.focus();
+        const newPosition = selection.start + `<h${level}>`.length;
+        textarea.setSelectionRange(newPosition, newPosition + headingText.length);
+      }, 0);
+    }
+  };
+
+  const handleInsertList = (type: 'bullet' | 'numbered') => {
+    if (contentTextareaRef.current) {
+      const textarea = contentTextareaRef.current;
+      const cursorPosition = getCursorPosition(textarea);
+      saveToUndoStack(formData.content);
+      const newContent = insertListAtPosition(formData.content, cursorPosition, type);
+      
+      setFormData(prev => ({ ...prev, content: newContent }));
+      
+      setTimeout(() => {
+        textarea.focus();
+      }, 0);
+    }
+  };
+
+  const handleInsertBlockquote = () => {
+    if (contentTextareaRef.current) {
+      const textarea = contentTextareaRef.current;
+      const cursorPosition = getCursorPosition(textarea);
+      saveToUndoStack(formData.content);
+      const newContent = insertBlockquoteAtPosition(formData.content, cursorPosition);
+      
+      setFormData(prev => ({ ...prev, content: newContent }));
+      
+      setTimeout(() => {
+        textarea.focus();
+      }, 0);
+    }
+  };
+
+  const handleInsertCode = (type: 'inline' | 'block') => {
+    if (contentTextareaRef.current) {
+      const textarea = contentTextareaRef.current;
+      const cursorPosition = getCursorPosition(textarea);
+      saveToUndoStack(formData.content);
+      const newContent = insertCodeAtPosition(formData.content, cursorPosition, type);
+      
+      setFormData(prev => ({ ...prev, content: newContent }));
+      
+      setTimeout(() => {
+        textarea.focus();
+      }, 0);
+    }
+  };
+
+  const handleInsertImage = (url: string, altText: string, caption?: string) => {
+    if (contentTextareaRef.current) {
+      const textarea = contentTextareaRef.current;
+      const cursorPosition = getCursorPosition(textarea);
+      saveToUndoStack(formData.content);
+      const newContent = insertImageAtPosition(formData.content, cursorPosition, url, altText, caption);
+      
+      setFormData(prev => ({ ...prev, content: newContent }));
+      
+      setTimeout(() => {
+        textarea.focus();
+      }, 0);
+    }
+  };
+
+  const handleInsertVideo = (url: string) => {
+    if (contentTextareaRef.current) {
+      const textarea = contentTextareaRef.current;
+      const cursorPosition = getCursorPosition(textarea);
+      saveToUndoStack(formData.content);
+      const newContent = insertVideoAtPosition(formData.content, cursorPosition, url);
+      
+      setFormData(prev => ({ ...prev, content: newContent }));
+      
+      setTimeout(() => {
+        textarea.focus();
+      }, 0);
+    }
+  };
+
+  const handleSetAlignment = (align: 'left' | 'center' | 'right') => {
+    if (contentTextareaRef.current) {
+      const textarea = contentTextareaRef.current;
+      const selection = getTextSelection(textarea);
+      
+      if (selection.text) {
+        saveToUndoStack(formData.content);
+        const newContent = setTextAlignment(formData.content, selection.start, selection.end, align);
+        setFormData(prev => ({ ...prev, content: newContent }));
+        
+        setTimeout(() => {
+          textarea.focus();
+        }, 0);
+      }
+    }
+  };
+
+  const handleInsertDivider = () => {
+    if (contentTextareaRef.current) {
+      const textarea = contentTextareaRef.current;
+      const cursorPosition = getCursorPosition(textarea);
+      saveToUndoStack(formData.content);
+      const newContent = insertDividerAtPosition(formData.content, cursorPosition);
+      
+      setFormData(prev => ({ ...prev, content: newContent }));
+      
+      setTimeout(() => {
+        textarea.focus();
+      }, 0);
+    }
+  };
+
+  const handleUndo = () => {
+    if (undoStack.length > 0) {
+      const previousContent = undoStack[undoStack.length - 1];
+      setRedoStack(prev => [...prev, formData.content]);
+      setUndoStack(prev => prev.slice(0, -1));
+      setFormData(prev => ({ ...prev, content: previousContent }));
+    }
+  };
+
+  const handleRedo = () => {
+    if (redoStack.length > 0) {
+      const nextContent = redoStack[redoStack.length - 1];
+      setUndoStack(prev => [...prev, formData.content]);
+      setRedoStack(prev => prev.slice(0, -1));
+      setFormData(prev => ({ ...prev, content: nextContent }));
+    }
+  };
+
+  const handleSetFontSize = (size: string) => {
+    if (contentTextareaRef.current) {
+      const textarea = contentTextareaRef.current;
+      const selection = getTextSelection(textarea);
+      
+      if (selection.text) {
+        saveToUndoStack(formData.content);
+        const newContent = setFontSize(formData.content, selection.start, selection.end, size);
+        setFormData(prev => ({ ...prev, content: newContent }));
+        
+        setTimeout(() => {
+          textarea.focus();
+        }, 0);
+      }
+    }
+  };
+
+  const handleSetTextColor = (color: string) => {
+    if (contentTextareaRef.current) {
+      const textarea = contentTextareaRef.current;
+      const selection = getTextSelection(textarea);
+      
+      if (selection.text) {
+        saveToUndoStack(formData.content);
+        const newContent = setTextColor(formData.content, selection.start, selection.end, color);
+        setFormData(prev => ({ ...prev, content: newContent }));
+        
+        setTimeout(() => {
+          textarea.focus();
+        }, 0);
+      }
+    }
+  };
+
   const uploadImage = async (): Promise<string | null> => {
     if (!imageFile) {
-      // If there's an existing image URL but no new file, return the existing URL
       return formData.imageUrl || null;
     }
 
@@ -158,7 +423,6 @@ const BlogEditor = () => {
 
       if (uploadError) throw uploadError;
 
-      // Get the public URL
       const { data: { publicUrl } } = supabase.storage
         .from('blog_images')
         .getPublicUrl(filePath);
@@ -192,12 +456,10 @@ const BlogEditor = () => {
     setIsSubmitting(true);
     
     try {
-      // Validate form
       if (!formData.title || !formData.excerpt || !formData.content) {
         throw new Error('Please fill in all required fields: title, excerpt, and content.');
       }
       
-      // Upload image if provided
       let imageUrl = formData.imageUrl;
       if (imageFile) {
         const uploadedUrl = await uploadImage();
@@ -206,14 +468,13 @@ const BlogEditor = () => {
         }
       }
       
-      // Preprocess the content to preserve formatting
       const processedContent = preprocessText(formData.content);
       
       const blogData = {
         title: formData.title,
         slug: formData.slug || generateSlug(formData.title),
         excerpt: formData.excerpt,
-        content: processedContent, // Use preprocessed content
+        content: processedContent,
         image_url: imageUrl,
         category: formData.category || null,
         read_time: formData.readTime || null,
@@ -253,7 +514,6 @@ const BlogEditor = () => {
         });
       }
       
-      // Redirect to blog list
       navigate('/admin/blog');
     } catch (error: any) {
       console.error('Error saving post:', error);
@@ -264,68 +524,6 @@ const BlogEditor = () => {
       });
     } finally {
       setIsSubmitting(false);
-    }
-  };
-
-  const handleInsertLink = (linkText: string, url: string) => {
-    if (contentTextareaRef.current) {
-      const textarea = contentTextareaRef.current;
-      const cursorPosition = getCursorPosition(textarea);
-      const newContent = insertLinkAtPosition(formData.content, cursorPosition, linkText, url);
-      
-      setFormData(prev => ({ ...prev, content: newContent }));
-      
-      // Focus back to textarea and position cursor after the inserted link
-      setTimeout(() => {
-        textarea.focus();
-        const newPosition = cursorPosition + `<a href="${url}" target="_blank" rel="noopener noreferrer">${linkText}</a>`.length;
-        textarea.setSelectionRange(newPosition, newPosition);
-      }, 0);
-    }
-  };
-
-  const handleFormatText = (format: 'bold' | 'italic') => {
-    if (contentTextareaRef.current) {
-      const textarea = contentTextareaRef.current;
-      const start = textarea.selectionStart;
-      const end = textarea.selectionEnd;
-      const selectedText = formData.content.substring(start, end);
-      
-      if (selectedText) {
-        const tag = format === 'bold' ? 'strong' : 'em';
-        const formattedText = `<${tag}>${selectedText}</${tag}>`;
-        const newContent = formData.content.substring(0, start) + formattedText + formData.content.substring(end);
-        
-        setFormData(prev => ({ ...prev, content: newContent }));
-        
-        // Focus back and select the formatted text
-        setTimeout(() => {
-          textarea.focus();
-          textarea.setSelectionRange(start, start + formattedText.length);
-        }, 0);
-      }
-    }
-  };
-
-  const handleInsertHeading = (level: 1 | 2 | 3 | 4 | 5 | 6) => {
-    if (contentTextareaRef.current) {
-      const textarea = contentTextareaRef.current;
-      const start = textarea.selectionStart;
-      const end = textarea.selectionEnd;
-      const selectedText = formData.content.substring(start, end);
-      
-      const headingText = selectedText || 'Heading text';
-      const headingHtml = `<h${level}>${headingText}</h${level}>`;
-      const newContent = formData.content.substring(0, start) + headingHtml + formData.content.substring(end);
-      
-      setFormData(prev => ({ ...prev, content: newContent }));
-      
-      // Focus back and select the heading text
-      setTimeout(() => {
-        textarea.focus();
-        const newPosition = start + `<h${level}>`.length;
-        textarea.setSelectionRange(newPosition, newPosition + headingText.length);
-      }, 0);
     }
   };
   
@@ -455,24 +653,36 @@ const BlogEditor = () => {
                         onInsertLink={handleInsertLink}
                         onFormatText={handleFormatText}
                         onInsertHeading={handleInsertHeading}
+                        onInsertList={handleInsertList}
+                        onInsertBlockquote={handleInsertBlockquote}
+                        onInsertCode={handleInsertCode}
+                        onInsertImage={handleInsertImage}
+                        onInsertVideo={handleInsertVideo}
+                        onSetAlignment={handleSetAlignment}
+                        onInsertDivider={handleInsertDivider}
+                        onUndo={handleUndo}
+                        onRedo={handleRedo}
+                        onSetFontSize={handleSetFontSize}
+                        onSetTextColor={handleSetTextColor}
+                        wordCount={wordCount}
                       />
                       <Textarea
                         ref={contentTextareaRef}
                         id="content"
                         name="content"
-                        placeholder="Write your post content here... Use the toolbar to add headings, formatting, and links."
+                        placeholder="Write your post content here... Use the toolbar to add formatting, headings, links, and media."
                         value={formData.content}
                         onChange={handleInputChange}
-                        className="min-h-[300px] rounded-t-none border-t-0 focus:border-t focus:rounded-t-md"
+                        className="min-h-[400px] rounded-t-none border-t-0 focus:border-t focus:rounded-t-md"
                         required
                       />
                     </div>
                     <p className="text-sm text-muted-foreground mt-2">
-                      💡 Tip: Use the toolbar to add headings, links and formatting. Each line break will create a new paragraph.
+                      💡 Tip: Select text and use the toolbar buttons to format it. The editor supports rich text formatting, media embeds, and more.
                     </p>
                   </TabsContent>
                   <TabsContent value="preview" className="mt-4">
-                    <div className="border rounded-md p-4 min-h-[300px] bg-gray-50">
+                    <div className="border rounded-md p-4 min-h-[400px] bg-gray-50">
                       <h4 className="font-medium mb-2">Preview:</h4>
                       <div 
                         className="prose prose-sm max-w-none blog-content"
@@ -488,6 +698,7 @@ const BlogEditor = () => {
 
             {/* Sidebar/settings */}
             <div className="space-y-6">
+              {/* Post Settings */}
               <div className="bg-gray-50 rounded-lg p-6 border border-gray-200">
                 <h3 className="font-medium mb-4">Post Settings</h3>
                 
@@ -538,6 +749,59 @@ const BlogEditor = () => {
                       name="readTime"
                       placeholder="e.g., '5 min read'"
                       value={formData.readTime}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* SEO & Publishing Controls */}
+              <div className="bg-blue-50 rounded-lg p-6 border border-blue-200">
+                <h3 className="font-medium mb-4">SEO & Publishing</h3>
+                
+                <div className="space-y-4">
+                  <div>
+                    <Label htmlFor="metaTitle">Meta Title</Label>
+                    <Input
+                      id="metaTitle"
+                      name="metaTitle"
+                      placeholder="SEO title (auto-filled from title)"
+                      value={formData.metaTitle}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+
+                  <div>
+                    <Label htmlFor="metaDescription">Meta Description</Label>
+                    <Textarea
+                      id="metaDescription"
+                      name="metaDescription"
+                      placeholder="SEO description (150-160 characters)"
+                      value={formData.metaDescription}
+                      onChange={handleInputChange}
+                      className="h-20 resize-none"
+                      maxLength={160}
+                    />
+                  </div>
+
+                  <div>
+                    <Label htmlFor="tags">Tags</Label>
+                    <Input
+                      id="tags"
+                      name="tags"
+                      placeholder="tag1, tag2, tag3"
+                      value={formData.tags}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+
+                  <div>
+                    <Label htmlFor="publishDate">Publish Date</Label>
+                    <Input
+                      id="publishDate"
+                      name="publishDate"
+                      type="datetime-local"
+                      value={formData.publishDate}
                       onChange={handleInputChange}
                     />
                   </div>
