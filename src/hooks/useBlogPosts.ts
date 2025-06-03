@@ -148,7 +148,11 @@ export const useSingleBlogPost = (id: string | undefined) => {
             status,
             author_id,
             language,
-            post_group_id
+            post_group_id,
+            meta_title,
+            meta_description,
+            tags,
+            publish_date
           `)
           .eq('id', id)
           .maybeSingle();
@@ -172,6 +176,10 @@ export const useSingleBlogPost = (id: string | undefined) => {
             post_group_id: data.post_group_id,
             created_at: data.created_at,
             updated_at: data.updated_at,
+            meta_title: data.meta_title,
+            meta_description: data.meta_description,
+            tags: data.tags,
+            publish_date: data.publish_date,
           };
           
           setPost(formattedPost);
