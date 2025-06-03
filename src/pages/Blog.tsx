@@ -18,15 +18,24 @@ const Blog = React.memo(() => {
   const { isAdmin } = useAuthOptimized();
   const { posts, loading } = useBlogPostsOptimized(isAdmin, currentLanguage);
 
+  console.log('Current language:', currentLanguage);
+  console.log('All posts fetched:', posts);
+  console.log('Posts count:', posts.length);
+
   const filteredPosts = posts.filter(post => {
     const languageMatch = post.language === currentLanguage;
+    console.log(`Post "${post.title}" - Language: ${post.language}, Current: ${currentLanguage}, Match: ${languageMatch}`);
     
     if (isAdmin) {
       return languageMatch;
     } else {
-      return languageMatch && post.status === 'published';
+      const statusMatch = post.status === 'published';
+      console.log(`Post "${post.title}" - Status: ${post.status}, Published: ${statusMatch}`);
+      return languageMatch && statusMatch;
     }
   });
+
+  console.log('Filtered posts:', filteredPosts);
 
   if (loading) {
     return (
@@ -123,12 +132,28 @@ const Blog = React.memo(() => {
           </div>
         ) : (
           <div className="text-center py-16">
-            <h3 className="text-lg font-medium mb-2">No blog posts found</h3>
-            <p className="text-muted-foreground">
-              {currentLanguage !== 'en' 
-                ? `No posts available in the selected language.` 
-                : 'Check back soon for new content.'}
+            <h3 className="text-lg font-medium mb-2">
+              {currentLanguage === 'es' ? 'No se encontraron publicaciones de blog' : 'No blog posts found'}
+            </h3>
+            <p className="text-muted-foreground mb-4">
+              {currentLanguage === 'es' 
+                ? `No hay publicaciones disponibles en español. Total de publicaciones: ${posts.length}` 
+                : `No posts available in the selected language. Total posts: ${posts.length}`}
             </p>
+            {isAdmin && (
+              <div className="space-y-2">
+                <p className="text-sm text-gray-600">
+                  {currentLanguage === 'es' 
+                    ? 'Como administrador, puedes crear nuevas publicaciones o cambiar el idioma de las existentes.' 
+                    : 'As an admin, you can create new posts or change the language of existing posts.'}
+                </p>
+                <Button asChild>
+                  <Link to="/admin/blog">
+                    {currentLanguage === 'es' ? 'Gestionar Blog' : 'Manage Blog'}
+                  </Link>
+                </Button>
+              </div>
+            )}
           </div>
         )}
       </div>
