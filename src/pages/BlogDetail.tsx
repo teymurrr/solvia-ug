@@ -1,3 +1,4 @@
+
 import React, { useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import MainLayout from '@/components/MainLayout';
@@ -30,7 +31,7 @@ const BlogDetail = () => {
       <MainLayout>
         <div className="container mx-auto px-4 py-12 flex flex-col items-center justify-center">
           <Loader2 className="h-12 w-12 animate-spin text-medical-600" />
-          <p className="mt-4 text-lg">Loading post...</p>
+          <p className="mt-4 text-lg">{t.blog.loading}</p>
         </div>
       </MainLayout>
     );
@@ -42,7 +43,7 @@ const BlogDetail = () => {
         <div className="container mx-auto px-4 py-12 flex flex-col items-center justify-center">
           <h1 className="text-2xl font-bold mb-4">Blog post not found</h1>
           <Button asChild>
-            <Link to="/blog">Back to Blog</Link>
+            <Link to="/blog">{t.blog.backToBlog}</Link>
           </Button>
         </div>
       </MainLayout>
@@ -56,7 +57,7 @@ const BlogDetail = () => {
           <Button variant="ghost" asChild className="flex items-center">
             <Link to="/blog">
               <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to Blog
+              {t.blog.backToBlog}
             </Link>
           </Button>
           

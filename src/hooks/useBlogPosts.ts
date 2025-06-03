@@ -1,10 +1,29 @@
-
 import { useState, useEffect } from 'react';
-import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
-import { BlogPost } from '@/types/landing';
-import { useAuth } from '@/contexts/AuthContext';
-import { useLanguage } from '@/hooks/useLanguage';
+import { useToast } from '@/hooks/use-toast';
+
+export interface BlogPost {
+  id: string;
+  title: string;
+  content: string;
+  excerpt: string;
+  slug: string;
+  status: 'draft' | 'published';
+  category: string | null;
+  created_at: string;
+  updated_at: string;
+  author_id: string;
+  language: string;
+  date: string;
+  readTime: string;
+  author?: string;
+  imageUrl?: string;
+  meta_title?: string | null;
+  meta_description?: string | null;
+  tags?: string | null;
+  publish_date?: string | null;
+  post_group_id?: string | null;
+}
 
 export const useBlogPosts = (fetchDrafts = false, language?: string) => {
   const [posts, setPosts] = useState<BlogPost[]>([]);

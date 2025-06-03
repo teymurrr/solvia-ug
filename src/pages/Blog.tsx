@@ -14,7 +14,7 @@ import BlogListSkeleton from '@/components/ui/blog-list-skeleton';
 import { OptimizedImage } from '@/components/ui/optimized-image';
 
 const Blog = React.memo(() => {
-  const { currentLanguage } = useLanguage();
+  const { currentLanguage, t } = useLanguage();
   const { isAdmin } = useAuthOptimized();
   const { posts, loading } = useBlogPostsOptimized(isAdmin, currentLanguage);
 
@@ -35,7 +35,7 @@ const Blog = React.memo(() => {
           <div className="text-center mb-12">
             <h1 className="text-4xl font-bold mb-4">Solvia Blog</h1>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Insights, updates, and expertise from the healthcare recruitment industry
+              {t.blog.subtitle}
             </p>
           </div>
           <BlogListSkeleton />
@@ -50,7 +50,7 @@ const Blog = React.memo(() => {
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold mb-4">Solvia Blog</h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Insights, updates, and expertise from the healthcare recruitment industry
+            {t.blog.subtitle}
           </p>
         </div>
 
@@ -113,7 +113,7 @@ const Blog = React.memo(() => {
                     <Button variant="ghost" size="sm" asChild>
                       <Link to={`/blog/${post.id}`} className="flex items-center">
                         <Eye className="h-3 w-3 mr-1" />
-                        Read More
+                        {t.blog.readMore}
                       </Link>
                     </Button>
                   </div>
