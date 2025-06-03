@@ -7,10 +7,11 @@ import { useAuthOptimized } from '@/hooks/useAuthOptimized';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Calendar, Clock, Eye, Settings } from 'lucide-react';
+import { Calendar, Eye, Settings } from 'lucide-react';
 import BlogLanguageSelector from '@/components/blog/BlogLanguageSelector';
 import { useLanguage } from '@/hooks/useLanguage';
 import BlogListSkeleton from '@/components/ui/blog-list-skeleton';
+import { OptimizedImage } from '@/components/ui/optimized-image';
 
 const Blog = React.memo(() => {
   const { currentLanguage } = useLanguage();
@@ -69,7 +70,18 @@ const Blog = React.memo(() => {
         {filteredPosts.length > 0 ? (
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
             {filteredPosts.map((post) => (
-              <Card key={post.id} className="group hover:shadow-lg transition-shadow duration-300">
+              <Card key={post.id} className="group hover:shadow-lg transition-shadow duration-300 overflow-hidden">
+                {post.image_url && (
+                  <div className="aspect-[16/9] overflow-hidden">
+                    <OptimizedImage
+                      src={post.image_url}
+                      alt={post.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      useAspectRatio={false}
+                    />
+                  </div>
+                )}
+                
                 <CardHeader>
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center gap-2">
