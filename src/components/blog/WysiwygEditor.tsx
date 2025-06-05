@@ -16,12 +16,12 @@ import {
   AlignLeft,
   AlignCenter,
   AlignRight,
+  AlignJustify,
   Minus,
   Undo,
   Redo,
   Type,
-  Palette,
-  AlignJustify
+  Palette
 } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
@@ -327,7 +327,7 @@ const WysiwygEditor: React.FC<WysiwygEditorProps> = ({
     }
   };
 
-  const setAlignment = (align: 'left' | 'center' | 'right') => {
+  const setAlignment = (align: 'left' | 'center' | 'right' | 'justify') => {
     executeCommand('justify' + align.charAt(0).toUpperCase() + align.slice(1));
   };
 
@@ -693,6 +693,20 @@ const WysiwygEditor: React.FC<WysiwygEditorProps> = ({
             title="Align Right"
           >
             <AlignRight className="h-3 w-3" />
+          </Button>
+
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            onMouseDown={(e) => {
+              e.preventDefault();
+              setAlignment('justify');
+            }}
+            className="h-8"
+            title="Justify Text"
+          >
+            <AlignJustify className="h-3 w-3" />
           </Button>
         </div>
 
