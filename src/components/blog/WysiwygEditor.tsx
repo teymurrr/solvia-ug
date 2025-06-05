@@ -118,48 +118,116 @@ const WysiwygEditor: React.FC<WysiwygEditorProps> = ({
 
   const setLineSpacing = (spacing: string) => {
     const selection = window.getSelection();
-    if (selection && selection.rangeCount > 0) {
-      const range = selection.getRangeAt(0);
+    if (!selection || selection.rangeCount === 0) return;
+
+    const range = selection.getRangeAt(0);
+    
+    // Check if entire content is selected or nearly entire content
+    const editorContent = editorRef.current;
+    if (!editorContent) return;
+
+    const isFullSelection = selection.toString().length > editorContent.textContent!.length * 0.9;
+    
+    if (isFullSelection) {
+      // Apply to entire editor content
+      const allBlockElements = editorContent.querySelectorAll('p, div, h1, h2, h3, h4, h5, h6, blockquote, li, pre');
+      allBlockElements.forEach((element) => {
+        (element as HTMLElement).style.lineHeight = spacing;
+      });
       
-      // If there's a selection, wrap it in a span with line-height
-      if (!selection.isCollapsed) {
-        const span = document.createElement('span');
-        span.style.lineHeight = spacing;
-        
-        try {
-          range.surroundContents(span);
-        } catch (e) {
-          // If surroundContents fails, insert HTML instead
-          const contents = range.extractContents();
-          span.appendChild(contents);
-          range.insertNode(span);
+      // Also apply to the editor itself for any direct text
+      editorContent.style.lineHeight = spacing;
+    } else if (!selection.isCollapsed) {
+      // Text is selected - find all block elements that intersect with the selection
+      const startContainer = range.startContainer;
+      const endContainer = range.endContainer;
+      
+      // Get all block elements that contain the selection
+      const blockElements = new Set<HTMLElement>();
+      
+      // Find block element containing start of selection
+      let startBlock = startContainer.nodeType === Node.TEXT_NODE ? startContainer.parentElement : startContainer as HTMLElement;
+      while (startBlock && startBlock !== editorContent) {
+        if (['P', 'DIV', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'BLOCKQUOTE', 'LI', 'PRE'].includes(startBlock.tagName)) {
+          blockElements.add(startBlock);
+          break;
         }
-      } else {
-        // If no selection, apply to the current paragraph/block element
-        let element = range.commonAncestorContainer;
-        
-        // Find the closest block element
-        while (element && element.nodeType !== Node.ELEMENT_NODE) {
-          element = element.parentNode;
+        startBlock = startBlock.parentElement;
+      }
+      
+      // Find block element containing end of selection
+      let endBlock = endContainer.nodeType === Node.TEXT_NODE ? endContainer.parentElement : endContainer as HTMLElement;
+      while (endBlock && endBlock !== editorContent) {
+        if (['P', 'DIV', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'BLOCKQUOTE', 'LI', 'PRE'].includes(endBlock.tagName)) {
+          blockElements.add(endBlock);
+          break;
         }
+        endBlock = endBlock.parentElement;
+      }
+      
+      // Find all block elements between start and end
+      if (startBlock && endBlock && startBlock !== endBlock) {
+        let walker = document.createTreeWalker(
+          editorContent,
+          NodeFilter.SHOW_ELEMENT,
+          {
+            acceptNode: (node) => {
+              const element = node as HTMLElement;
+              if (['P', 'DIV', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'BLOCKQUOTE', 'LI', 'PRE'].includes(element.tagName)) {
+                return NodeFilter.FILTER_ACCEPT;
+              }
+              return NodeFilter.FILTER_SKIP;
+            }
+          }
+        );
         
-        if (element && element.nodeType === Node.ELEMENT_NODE) {
-          // Find the closest block element (p, div, h1-h6, etc.)
-          while (element && !['P', 'DIV', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'BLOCKQUOTE', 'LI'].includes((element as Element).tagName)) {
-            element = element.parentNode;
+        let currentNode = walker.nextNode();
+        let foundStart = false;
+        
+        while (currentNode) {
+          if (currentNode === startBlock) {
+            foundStart = true;
           }
           
-          if (element) {
-            (element as HTMLElement).style.lineHeight = spacing;
+          if (foundStart) {
+            blockElements.add(currentNode as HTMLElement);
           }
+          
+          if (currentNode === endBlock) {
+            break;
+          }
+          
+          currentNode = walker.nextNode();
         }
       }
       
-      selection.removeAllRanges();
-      editorRef.current?.focus();
-      handleInput();
-      saveToHistory();
+      // Apply line spacing to all found block elements
+      blockElements.forEach((element) => {
+        element.style.lineHeight = spacing;
+      });
+      
+    } else {
+      // No selection (just cursor position) - apply to current block element
+      let currentElement = range.commonAncestorContainer;
+      
+      // Find the closest block element
+      while (currentElement && currentElement !== editorContent) {
+        if (currentElement.nodeType === Node.ELEMENT_NODE) {
+          const element = currentElement as HTMLElement;
+          if (['P', 'DIV', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'BLOCKQUOTE', 'LI', 'PRE'].includes(element.tagName)) {
+            element.style.lineHeight = spacing;
+            break;
+          }
+        }
+        currentElement = currentElement.parentNode;
+      }
     }
+    
+    // Clear selection and refocus editor
+    selection.removeAllRanges();
+    editorRef.current?.focus();
+    handleInput();
+    saveToHistory();
   };
 
   const insertLink = () => {
