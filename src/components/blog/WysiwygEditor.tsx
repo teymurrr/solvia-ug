@@ -1,4 +1,3 @@
-
 import React, { useRef, useEffect, useState, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { 
@@ -21,7 +20,8 @@ import {
   Undo,
   Redo,
   Type,
-  Palette
+  Palette,
+  AlignJustify
 } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
@@ -114,6 +114,52 @@ const WysiwygEditor: React.FC<WysiwygEditorProps> = ({
 
   const formatHeading = (level: number) => {
     executeCommand('formatBlock', `h${level}`);
+  };
+
+  const setLineSpacing = (spacing: string) => {
+    const selection = window.getSelection();
+    if (selection && selection.rangeCount > 0) {
+      const range = selection.getRangeAt(0);
+      
+      // If there's a selection, wrap it in a span with line-height
+      if (!selection.isCollapsed) {
+        const span = document.createElement('span');
+        span.style.lineHeight = spacing;
+        
+        try {
+          range.surroundContents(span);
+        } catch (e) {
+          // If surroundContents fails, insert HTML instead
+          const contents = range.extractContents();
+          span.appendChild(contents);
+          range.insertNode(span);
+        }
+      } else {
+        // If no selection, apply to the current paragraph/block element
+        let element = range.commonAncestorContainer;
+        
+        // Find the closest block element
+        while (element && element.nodeType !== Node.ELEMENT_NODE) {
+          element = element.parentNode;
+        }
+        
+        if (element && element.nodeType === Node.ELEMENT_NODE) {
+          // Find the closest block element (p, div, h1-h6, etc.)
+          while (element && !['P', 'DIV', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'BLOCKQUOTE', 'LI'].includes((element as Element).tagName)) {
+            element = element.parentNode;
+          }
+          
+          if (element) {
+            (element as HTMLElement).style.lineHeight = spacing;
+          }
+        }
+      }
+      
+      selection.removeAllRanges();
+      editorRef.current?.focus();
+      handleInput();
+      saveToHistory();
+    }
   };
 
   const insertLink = () => {
@@ -292,6 +338,15 @@ const WysiwygEditor: React.FC<WysiwygEditorProps> = ({
     { name: 'Normal', value: '3' },
     { name: 'Large', value: '5' },
     { name: 'Extra Large', value: '7' },
+  ];
+
+  const lineSpacingOptions = [
+    { name: 'Single', value: '1.0' },
+    { name: 'Compact', value: '1.2' },
+    { name: 'Normal', value: '1.5' },
+    { name: 'Relaxed', value: '1.8' },
+    { name: 'Double', value: '2.0' },
+    { name: 'Extra', value: '2.5' },
   ];
 
   return (
@@ -575,7 +630,7 @@ const WysiwygEditor: React.FC<WysiwygEditorProps> = ({
 
         <div className="w-px h-6 bg-gray-300 mx-1" />
 
-        {/* Font Size & Color */}
+        {/* Font Size, Line Spacing & Color */}
         <div className="flex items-center gap-1">
           <Select onValueChange={setFontSize}>
             <SelectTrigger className="h-8 w-20 text-xs">
@@ -585,6 +640,19 @@ const WysiwygEditor: React.FC<WysiwygEditorProps> = ({
               {fontSizes.map((size) => (
                 <SelectItem key={size.value} value={size.value}>
                   {size.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+
+          <Select onValueChange={setLineSpacing}>
+            <SelectTrigger className="h-8 w-20 text-xs">
+              <AlignJustify className="h-3 w-3" />
+            </SelectTrigger>
+            <SelectContent>
+              {lineSpacingOptions.map((spacing) => (
+                <SelectItem key={spacing.value} value={spacing.value}>
+                  {spacing.name}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -818,8 +886,7 @@ const WysiwygEditor: React.FC<WysiwygEditorProps> = ({
         className="min-h-[400px] p-4 focus:outline-none prose prose-sm max-w-none"
         style={{ 
           whiteSpace: 'pre-wrap',
-          wordWrap: 'break-word',
-          lineHeight: '1.6'
+          wordWrap: 'break-word'
         }}
         suppressContentEditableWarning={true}
       />
