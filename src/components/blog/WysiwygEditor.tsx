@@ -328,7 +328,11 @@ const WysiwygEditor: React.FC<WysiwygEditorProps> = ({
   };
 
   const setAlignment = (align: 'left' | 'center' | 'right' | 'justify') => {
-    executeCommand('justify' + align.charAt(0).toUpperCase() + align.slice(1));
+    if (align === 'justify') {
+      executeCommand('justifyFull');
+    } else {
+      executeCommand('justify' + align.charAt(0).toUpperCase() + align.slice(1));
+    }
   };
 
   const insertDivider = () => {
