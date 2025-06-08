@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Calendar } from 'lucide-react';
@@ -76,7 +75,6 @@ const BlogSection: React.FC<BlogSectionProps> = ({ posts: propsPosts }) => {
                   </CardHeader>
                   
                   <CardContent>
-                    <p className="text-muted-foreground mb-3 line-clamp-3 text-sm leading-relaxed">{blog.excerpt}</p>
                     <div className="flex items-center text-sm text-muted-foreground">
                       <Calendar className="h-3 w-3 mr-1" />
                       <span>{blog.readTime}</span>
