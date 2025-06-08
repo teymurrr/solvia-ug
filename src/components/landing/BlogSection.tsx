@@ -1,9 +1,10 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Calendar } from 'lucide-react';
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { BlogPost } from '@/types/landing';
 import { useLanguage } from '@/hooks/useLanguage';
 import { useBlogPosts } from '@/hooks/useBlogPosts';
@@ -46,24 +47,40 @@ const BlogSection: React.FC<BlogSectionProps> = ({ posts: propsPosts }) => {
                 className="block h-full"
                 aria-label={`Read blog post: ${blog.title}`}
               >
-                <Card className="border-0 hover:shadow-lg hover:scale-[1.02] transition-all duration-300 h-[350px] flex flex-col cursor-pointer">
-                  <CardContent className="p-4 flex flex-col h-full">
-                    {blog.imageUrl && (
-                      <div className="mb-3">
-                        <OptimizedImage
-                          src={blog.imageUrl}
-                          alt={blog.title}
-                          aspectRatio={16 / 9}
-                          className="rounded-md"
-                          containerClassName="w-full"
-                        />
+                <Card className="group hover:shadow-lg transition-shadow duration-300 overflow-hidden cursor-pointer h-full">
+                  {blog.imageUrl && (
+                    <div className="aspect-[16/9] overflow-hidden">
+                      <OptimizedImage
+                        src={blog.imageUrl}
+                        alt={blog.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        useAspectRatio={false}
+                      />
+                    </div>
+                  )}
+                  
+                  <CardHeader>
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center gap-2">
+                        {blog.category && (
+                          <Badge variant="secondary" className="text-xs">
+                            {blog.category}
+                          </Badge>
+                        )}
                       </div>
-                    )}
-                    <div className="flex items-center text-sm text-muted-foreground mb-2">
+                    </div>
+                    
+                    <h3 className="text-xl font-semibold group-hover:text-primary transition-colors line-clamp-2 blog-title">
+                      {blog.title}
+                    </h3>
+                  </CardHeader>
+                  
+                  <CardContent>
+                    <p className="text-muted-foreground mb-3 line-clamp-3 text-sm leading-relaxed">{blog.excerpt}</p>
+                    <div className="flex items-center text-sm text-muted-foreground">
+                      <Calendar className="h-3 w-3 mr-1" />
                       <span>{blog.readTime}</span>
                     </div>
-                    <h3 className="blog-title text-lg font-semibold mb-2 line-clamp-2">{blog.title}</h3>
-                    <p className="text-muted-foreground mb-3 flex-grow line-clamp-3 text-sm leading-relaxed">{blog.excerpt}</p>
                   </CardContent>
                 </Card>
               </Link>
