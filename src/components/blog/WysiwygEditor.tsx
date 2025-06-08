@@ -260,13 +260,10 @@ const WysiwygEditor: React.FC<WysiwygEditorProps> = ({
       const fileExt = file.name.split('.').pop();
       const fileName = `blog-image-${Date.now()}-${Math.random().toString(36).substring(2, 11)}.${fileExt}`;
       
+      // Upload without onUploadProgress to fix the build error
       const { error: uploadError, data } = await supabase.storage
         .from('blog_images')
-        .upload(fileName, file, {
-          onUploadProgress: (progress) => {
-            setUploadProgress(Math.round((progress.loaded / progress.total) * 100));
-          }
-        });
+        .upload(fileName, file);
 
       if (uploadError) {
         console.error('Upload error:', uploadError);
@@ -277,6 +274,7 @@ const WysiwygEditor: React.FC<WysiwygEditorProps> = ({
         .from('blog_images')
         .getPublicUrl(fileName);
 
+      setUploadProgress(100);
       return publicUrl;
     } catch (error) {
       console.error('Error uploading image:', error);
@@ -333,10 +331,15 @@ const WysiwygEditor: React.FC<WysiwygEditorProps> = ({
     }
     
     if (finalImageUrl && imageAlt) {
-      let imageHtml = `<img src="${finalImageUrl}" alt="${imageAlt}" style="max-width: 100%; height: auto;" />`;
+      // Focus the editor first to ensure the insertion happens at the right place
+      editorRef.current?.focus();
+      
+      let imageHtml = `<img src="${finalImageUrl}" alt="${imageAlt}" style="max-width: 100%; height: auto; display: block; margin: 10px 0;" />`;
       if (imageCaption) {
-        imageHtml = `<figure>${imageHtml}<figcaption>${imageCaption}</figcaption></figure>`;
+        imageHtml = `<figure style="margin: 10px 0;">${imageHtml}<figcaption style="text-align: center; font-style: italic; color: #666; margin-top: 5px;">${imageCaption}</figcaption></figure>`;
       }
+      
+      // Insert the image HTML
       executeCommand('insertHTML', imageHtml);
       
       // Reset form
@@ -352,6 +355,12 @@ const WysiwygEditor: React.FC<WysiwygEditorProps> = ({
       toast({
         title: 'Image Inserted',
         description: 'Image has been successfully inserted into the blog.',
+      });
+    } else {
+      toast({
+        title: 'Missing Information',
+        description: 'Please provide both an image and alt text.',
+        variant: 'destructive',
       });
     }
   };
