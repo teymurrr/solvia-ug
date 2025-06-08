@@ -76,14 +76,15 @@ const WhySolviaSectionOptimized = React.memo(() => {
                 {sectionData.description}
               </p>
               
-              <div className="flex gap-12 mt-8">
-                <div>
-                  <span className="text-[70px] font-bold text-primary">200+</span>
-                  <p className="text-gray-600 text-lg">{sectionData.stats.positions}</p>
+              {/* Fixed mobile responsive stats section */}
+              <div className="flex flex-col sm:flex-row gap-6 sm:gap-12 mt-8">
+                <div className="text-center sm:text-left">
+                  <span className="text-[50px] sm:text-[70px] font-bold text-primary block">200+</span>
+                  <p className="text-gray-600 text-base sm:text-lg">{sectionData.stats.positions}</p>
                 </div>
-                <div>
-                  <span className="text-[70px] font-bold text-primary">1000+</span>
-                  <p className="text-gray-600 text-lg">{sectionData.stats.professionals}</p>
+                <div className="text-center sm:text-left">
+                  <span className="text-[50px] sm:text-[70px] font-bold text-primary block">1000+</span>
+                  <p className="text-gray-600 text-base sm:text-lg">{sectionData.stats.professionals}</p>
                 </div>
               </div>
             </div>
