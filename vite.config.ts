@@ -104,16 +104,21 @@ export default defineConfig(({ mode }) => ({
     assetsInlineLimit: 2048 // Smaller inline limit for mobile
   },
   
-  // Optimize dependencies
+  // Optimize dependencies - Fixed Supabase module resolution
   optimizeDeps: {
     include: [
       'react',
       'react-dom',
       'react-router-dom',
-      'lucide-react'
+      'lucide-react',
+      '@supabase/supabase-js',
+      '@supabase/postgrest-js',
+      '@supabase/realtime-js',
+      '@supabase/storage-js',
+      '@supabase/gotrue-js'
     ],
-    // Exclude heavy deps from pre-bundling to allow for better splitting
-    exclude: ['@supabase/supabase-js', 'recharts']
+    // Remove exclusions that were causing module resolution issues
+    exclude: []
   },
   
   // Modern CSS features
