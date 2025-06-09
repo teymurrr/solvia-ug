@@ -1,7 +1,7 @@
 
 import React, { Suspense } from 'react';
 import MainLayout from '@/components/MainLayout';
-import HeroSectionLCP from '@/components/landing/HeroSectionLCP';
+import HeroSection from '@/components/landing/HeroSection';
 import { featuredVacancies, featuredProfessionals } from '@/data/landingPageData';
 
 // Lazy load only the heavy components that are below the fold
@@ -14,18 +14,18 @@ const BlogSection = React.lazy(() => import('@/components/landing/BlogSection'))
 const LearningSection = React.lazy(() => import('@/components/landing/LearningSection'));
 const CTASection = React.lazy(() => import('@/components/landing/CTASection'));
 
-// Optimized loading fallback - minimal and fast
+// Optimized loading fallback - smaller and faster
 const LoadingFallback = ({ height }: { height: string }) => (
-  <div className={`${height} loading-fallback`}>
-    <div className="spinner"></div>
+  <div className={`${height} bg-gray-50 flex items-center justify-center`}>
+    <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
   </div>
 );
 
 const Index = () => {
   return (
     <MainLayout>
-      {/* Critical above-the-fold content - optimized for LCP */}
-      <HeroSectionLCP />
+      {/* Critical above-the-fold content - load immediately */}
+      <HeroSection />
       
       {/* Below-the-fold sections with optimized lazy loading */}
       <Suspense fallback={<LoadingFallback height="h-48" />}>
