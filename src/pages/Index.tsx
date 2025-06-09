@@ -1,7 +1,7 @@
 
 import React, { Suspense } from 'react';
 import MainLayout from '@/components/MainLayout';
-import HeroSection from '@/components/landing/HeroSection';
+import HeroSectionOptimized from '@/components/landing/HeroSectionOptimized';
 import { featuredVacancies, featuredProfessionals } from '@/data/landingPageData';
 
 // Lazy load only the heavy components that are below the fold
@@ -24,8 +24,8 @@ const LoadingFallback = ({ height }: { height: string }) => (
 const Index = () => {
   return (
     <MainLayout>
-      {/* Critical above-the-fold content - load immediately */}
-      <HeroSection />
+      {/* Critical above-the-fold content - load immediately with optimized hero */}
+      <HeroSectionOptimized />
       
       {/* Below-the-fold sections with optimized lazy loading */}
       <Suspense fallback={<LoadingFallback height="h-48" />}>
