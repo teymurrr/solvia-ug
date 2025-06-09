@@ -21,8 +21,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
-    <link rel="dns-prefetch" href="https://connect.facebook.net" />
-    <link rel="dns-prefetch" href="https://static.hotjar.com" />
     
     <!-- Preload critical resources -->
     <link rel="preload" href="/src/main.tsx" as="script" />
@@ -63,6 +61,11 @@
       .bg-gradient-to-r { background-image: linear-gradient(to right, var(--tw-gradient-stops)); }
       .from-blue-600 { --tw-gradient-from: #2563eb; --tw-gradient-to: rgb(37 99 235 / 0); --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to); }
       .to-blue-700 { --tw-gradient-to: #1d4ed8; }
+      /* Mobile-first optimizations */
+      @media (max-width: 768px) {
+        .text-\[42px\] { font-size: 32px; }
+        .container { padding-left: 0.75rem; padding-right: 0.75rem; }
+      }
     </style>
   </head>
 
@@ -92,9 +95,8 @@
       }
     </script>
     
-    <!-- Load tracking scripts after page load (non-blocking) -->
+    <!-- Load Google Analytics after page load (non-blocking) -->
     <script>
-      // Load Google Analytics after page load
       window.addEventListener('load', function() {
         const gaScript = document.createElement('script');
         gaScript.async = true;
@@ -108,54 +110,6 @@
           gtag('config', 'G-JEZQDDWEWX');
         };
       });
-      
-      // Load Hotjar after user interaction or 3 seconds
-      let hotjarLoaded = false;
-      function loadHotjar() {
-        if (hotjarLoaded) return;
-        hotjarLoaded = true;
-        (function(h,o,t,j,a,r){
-            h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
-            h._hjSettings={hjid:6383558,hjsv:6};
-            a=o.getElementsByTagName('head')[0];
-            r=o.createElement('script');r.async=1;
-            r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
-            a.appendChild(r);
-        })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
-      }
-      
-      // Load Hotjar after user interaction or timeout
-      ['click', 'scroll', 'keydown'].forEach(event => {
-        document.addEventListener(event, loadHotjar, { once: true });
-      });
-      setTimeout(loadHotjar, 3000);
-      
-      // Load Facebook Pixel after user interaction or 2 seconds
-      let fbPixelLoaded = false;
-      function loadFBPixel() {
-        if (fbPixelLoaded) return;
-        fbPixelLoaded = true;
-        !function(f,b,e,v,n,t,s)
-        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-        n.queue=[];t=b.createElement(e);t.async=!0;
-        t.src=v;s=b.getElementsByTagName(e)[0];
-        s.parentNode.insertBefore(t,s)}(window, document,'script',
-        'https://connect.facebook.net/en_US/fbevents.js');
-        fbq('init', '1382965126351606');
-        fbq('track', 'PageView');
-      }
-      
-      ['click', 'scroll'].forEach(event => {
-        document.addEventListener(event, loadFBPixel, { once: true });
-      });
-      setTimeout(loadFBPixel, 2000);
     </script>
-    
-    <!-- Facebook Pixel noscript fallback -->
-    <noscript><img height="1" width="1" style="display:none"
-    src="https://www.facebook.com/tr?id=1382965126351606&ev=PageView&noscript=1"
-    /></noscript>
   </body>
 </html>

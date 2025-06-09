@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
@@ -52,14 +53,15 @@ export const useBlogStatistics = () => {
       if (statsError) throw statsError;
       
       // Type-safe parsing of the JSON response
-      if (statsData && typeof statsData === 'object') {
+      if (statsData && typeof statsData === 'object' && !Array.isArray(statsData)) {
+        const data = statsData as Record<string, any>;
         const typedStats: BlogStatistics = {
-          total_posts: Number(statsData.total_posts) || 0,
-          posts_this_month: Number(statsData.posts_this_month) || 0,
-          total_views: Number(statsData.total_views) || 0,
-          views_this_month: Number(statsData.views_this_month) || 0,
-          total_likes: Number(statsData.total_likes) || 0,
-          total_comments: Number(statsData.total_comments) || 0,
+          total_posts: Number(data.total_posts) || 0,
+          posts_this_month: Number(data.posts_this_month) || 0,
+          total_views: Number(data.total_views) || 0,
+          views_this_month: Number(data.views_this_month) || 0,
+          total_likes: Number(data.total_likes) || 0,
+          total_comments: Number(data.total_comments) || 0,
         };
         setStatistics(typedStats);
       }

@@ -14,10 +14,10 @@ const BlogSection = React.lazy(() => import('@/components/landing/BlogSection'))
 const LearningSection = React.lazy(() => import('@/components/landing/LearningSection'));
 const CTASection = React.lazy(() => import('@/components/landing/CTASection'));
 
-// Simple loading fallback
+// Optimized loading fallback - smaller and faster
 const LoadingFallback = ({ height }: { height: string }) => (
-  <div className={`${height} bg-gray-100 animate-pulse flex items-center justify-center`}>
-    <div className="text-gray-500">Loading...</div>
+  <div className={`${height} bg-gray-50 flex items-center justify-center`}>
+    <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
   </div>
 );
 
@@ -27,36 +27,36 @@ const Index = () => {
       {/* Critical above-the-fold content - load immediately */}
       <HeroSection />
       
-      {/* Below-the-fold sections with simplified lazy loading */}
-      <Suspense fallback={<LoadingFallback height="h-64" />}>
+      {/* Below-the-fold sections with optimized lazy loading */}
+      <Suspense fallback={<LoadingFallback height="h-48" />}>
         <WhySolviaSectionOptimized />
       </Suspense>
       
-      <Suspense fallback={<LoadingFallback height="h-80" />}>
+      <Suspense fallback={<LoadingFallback height="h-64" />}>
         <TimelineSection />
       </Suspense>
       
-      <Suspense fallback={<LoadingFallback height="h-96" />}>
+      <Suspense fallback={<LoadingFallback height="h-80" />}>
         <ProfessionalsSection professionals={featuredProfessionals} />
       </Suspense>
       
-      <Suspense fallback={<LoadingFallback height="h-96" />}>
+      <Suspense fallback={<LoadingFallback height="h-80" />}>
         <VacanciesSection vacancies={featuredVacancies} />
       </Suspense>
       
-      <Suspense fallback={<LoadingFallback height="h-64" />}>
+      <Suspense fallback={<LoadingFallback height="h-48" />}>
         <InsightsSection />
       </Suspense>
       
-      <Suspense fallback={<LoadingFallback height="h-80" />}>
+      <Suspense fallback={<LoadingFallback height="h-64" />}>
         <BlogSection />
       </Suspense>
       
-      <Suspense fallback={<LoadingFallback height="h-96" />}>
+      <Suspense fallback={<LoadingFallback height="h-80" />}>
         <LearningSection />
       </Suspense>
       
-      <Suspense fallback={<LoadingFallback height="h-64" />}>
+      <Suspense fallback={<LoadingFallback height="h-48" />}>
         <CTASection />
       </Suspense>
     </MainLayout>
