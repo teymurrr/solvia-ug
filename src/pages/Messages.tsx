@@ -118,7 +118,10 @@ const Messages = () => {
   
   const handleSendReply = () => {
     if (!replyText || !activeConversation || !user) {
-      toast.error("Cannot send empty message");
+      uiToast({
+        title: "Cannot send empty message",
+        variant: "destructive",
+      });
       return;
     }
     

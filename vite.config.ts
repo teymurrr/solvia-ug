@@ -1,4 +1,3 @@
-
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
@@ -127,8 +126,8 @@ export default defineConfig(({ mode }) => ({
     target: 'es2020',
     minify: 'esbuild',
     cssMinify: true,
-    reportCompressedSize: true, // Enable to see compression benefits
-    chunkSizeWarningLimit: 150, // Even smaller chunks for better caching and compression
+    reportCompressedSize: true,
+    chunkSizeWarningLimit: 150,
     
     // CSS code splitting for better compression
     cssCodeSplit: true,
@@ -137,14 +136,7 @@ export default defineConfig(({ mode }) => ({
     sourcemap: mode === 'development',
     
     // More aggressive compression settings
-    assetsInlineLimit: 512, // Smaller inline limit for better compression
-    
-    // Enable compression for all text-based assets
-    rollupOptions: {
-      ...this.rollupOptions,
-      external: [],
-      plugins: []
-    }
+    assetsInlineLimit: 512
   },
   
   // Optimize dependencies and fix conflicts

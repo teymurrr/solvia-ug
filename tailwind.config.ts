@@ -7,6 +7,7 @@ const config: Config = {
     "./components/**/*.{ts,tsx}",
     "./app/**/*.{ts,tsx}",
     "./src/**/*.{ts,tsx}",
+    "./index.html",
   ],
   prefix: "",
   theme: {
@@ -75,30 +76,27 @@ const config: Config = {
     },
   },
   plugins: [require("tailwindcss-animate")],
-  // Aggressive CSS purging for smaller bundle sizes
-  purge: {
-    enabled: process.env.NODE_ENV === 'production',
-    content: [
-      "./src/**/*.{js,jsx,ts,tsx}",
-      "./index.html",
-    ],
-    options: {
-      safelist: [
-        // Keep critical utility classes
-        'text-[42px]',
-        'hero-gradient',
-        'animate-pulse',
-        'aspect-ratio',
-        /^bg-/, // Keep background utilities
-        /^text-/, // Keep text utilities
-        /^border-/, // Keep border utilities
-      ],
-      // Remove unused CSS more aggressively
-      defaultExtractor: (content) => {
-        return content.match(/[\w-/:]+(?<!:)/g) || [];
-      },
+  // Updated safelist configuration for Tailwind CSS v3.0
+  safelist: [
+    // Keep critical utility classes
+    'text-[42px]',
+    'hero-gradient',
+    'animate-pulse',
+    'aspect-ratio',
+    // Updated pattern syntax for v3.0
+    {
+      pattern: /^bg-.+/,
+      variants: ['hover', 'focus'],
     },
-  },
+    {
+      pattern: /^text-.+/,
+      variants: ['hover', 'focus'],
+    },
+    {
+      pattern: /^border-.+/,
+      variants: ['hover', 'focus'],
+    },
+  ],
 };
 
 export default config;
