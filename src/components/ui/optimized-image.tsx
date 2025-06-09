@@ -26,19 +26,26 @@ export function OptimizedImage({
   maxWidth = "100%",
   fitMode = "cover",
   useAspectRatio = true,
-  sizes,
+  sizes = "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw",
   ...props
 }: OptimizedImageProps) {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
 
-  // Generate WebP and fallback sources
-  const getOptimizedSrc = (originalSrc: string) => {
+  // Generate WebP and AVIF sources for modern browsers
+  const getOptimizedSources = (originalSrc: string) => {
     if (originalSrc.startsWith('/lovable-uploads/')) {
-      return originalSrc;
+      const baseName = originalSrc.split('.')[0];
+      return {
+        avif: `${baseName}.avif`,
+        webp: `${baseName}.webp`,
+        original: originalSrc
+      };
     }
-    return originalSrc;
+    return { original: originalSrc };
   };
+
+  const sources = getOptimizedSources(src);
 
   const imageContent = (
     <div className="relative w-full h-full">
@@ -46,8 +53,17 @@ export function OptimizedImage({
         <div className="absolute inset-0 bg-gray-200 animate-pulse rounded-lg" />
       )}
       <picture>
+        {/* AVIF format for maximum compression (newest browsers) */}
+        {sources.avif && (
+          <source srcSet={sources.avif} type="image/avif" sizes={sizes} />
+        )}
+        {/* WebP format for better compression (modern browsers) */}
+        {sources.webp && (
+          <source srcSet={sources.webp} type="image/webp" sizes={sizes} />
+        )}
+        {/* Fallback to original format */}
         <img
-          src={getOptimizedSrc(src)}
+          src={sources.original}
           alt={alt}
           className={cn(
             "w-full h-full transition-all duration-300",

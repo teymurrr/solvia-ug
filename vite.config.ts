@@ -53,6 +53,7 @@ export default defineConfig(({ mode }) => ({
           
           // Heavy libraries - defer loading
           'charts': ['recharts'],
+          'notifications': ['sonner'],
           
           // Route-specific chunks
           'landing-core': [
@@ -96,13 +97,13 @@ export default defineConfig(({ mode }) => ({
           'icons': ['lucide-react']
         },
         
-        // Optimize chunk sizes for mobile
+        // Optimize chunk sizes for mobile with compression
         chunkFileNames: (chunkInfo) => {
           const name = chunkInfo.name || 'chunk';
           return `assets/js/${name}-[hash].js`;
         },
         
-        // Optimize asset naming
+        // Optimize asset naming with compression support
         assetFileNames: (assetInfo) => {
           if (!assetInfo.name) {
             return `assets/[name]-[hash][extname]`;
@@ -111,7 +112,7 @@ export default defineConfig(({ mode }) => ({
           if (/\.(css)$/.test(assetInfo.name)) {
             return `assets/css/[name]-[hash][extname]`;
           }
-          if (/\.(png|jpe?g|svg|gif|tiff|bmp|ico|webp)$/i.test(assetInfo.name)) {
+          if (/\.(png|jpe?g|svg|gif|tiff|bmp|ico|webp|avif)$/i.test(assetInfo.name)) {
             return `assets/images/[name]-[hash][extname]`;
           }
           if (/\.(woff2?|eot|ttf|otf)$/i.test(assetInfo.name)) {
@@ -122,58 +123,83 @@ export default defineConfig(({ mode }) => ({
       }
     },
     
-    // Aggressive optimizations for mobile
+    // Aggressive optimizations for mobile with compression
     target: 'es2020',
     minify: 'esbuild',
     cssMinify: true,
-    reportCompressedSize: false,
-    chunkSizeWarningLimit: 200, // Smaller chunks for better caching
+    reportCompressedSize: true, // Enable to see compression benefits
+    chunkSizeWarningLimit: 150, // Even smaller chunks for better caching and compression
     
-    // CSS code splitting
+    // CSS code splitting for better compression
     cssCodeSplit: true,
     
     // Sourcemap only for debugging in dev
     sourcemap: mode === 'development',
     
-    // More aggressive compression
-    assetsInlineLimit: 1024 // Smaller inline limit
+    // More aggressive compression settings
+    assetsInlineLimit: 512, // Smaller inline limit for better compression
+    
+    // Enable compression for all text-based assets
+    rollupOptions: {
+      ...this.rollupOptions,
+      external: [],
+      plugins: []
+    }
   },
   
-  // Optimize dependencies and fix Supabase ESM/CJS conflict
+  // Optimize dependencies and fix conflicts
   optimizeDeps: {
     include: [
       'react',
       'react-dom',
       'react-router-dom',
       'lucide-react',
-      '@supabase/supabase-js'
+      '@supabase/supabase-js',
+      'sonner'
     ],
-    // Exclude heavy dependencies from pre-bundling
+    // Exclude heavy dependencies from pre-bundling for better compression
     exclude: [
       'recharts'
     ],
-    // Force ESM for Supabase to resolve module conflicts
+    // Force ESM for better tree-shaking and compression
     esbuildOptions: {
-      target: 'es2020'
+      target: 'es2020',
+      treeShaking: true
     }
   },
   
-  // Modern CSS features
+  // Modern CSS features with compression optimization
   css: {
-    devSourcemap: mode === 'development'
+    devSourcemap: mode === 'development',
+    // Enable CSS compression and optimization
+    postcss: {
+      plugins: []
+    }
   },
   
-  // Enhanced build optimizations
+  // Enhanced build optimizations with compression focus
   esbuild: {
     target: 'es2020',
     legalComments: 'none',
     treeShaking: true,
-    // Remove console logs in production
-    drop: mode === 'production' ? ['console', 'debugger'] : []
+    // Remove console logs in production for smaller bundles
+    drop: mode === 'production' ? ['console', 'debugger'] : [],
+    // Enable minification for better compression
+    minifyIdentifiers: mode === 'production',
+    minifySyntax: mode === 'production',
+    minifyWhitespace: mode === 'production'
   },
 
   // Define globals to resolve module conflicts
   define: {
     global: 'globalThis',
+  },
+
+  // Enable server compression for development preview
+  preview: {
+    headers: {
+      'Cache-Control': 'public, max-age=31536000',
+      'Content-Encoding': 'gzip'
+    }
   }
 }));

@@ -17,7 +17,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 
 const Messages = () => {
   const navigate = useNavigate();
-  const { toast } = useToast();
+  const { toast: uiToast } = useToast();
   const { user, userType } = useAuth();
   const { messages, addMessage, markAsRead, markConversationAsRead, unreadCount } = useMessages();
   
@@ -87,7 +87,7 @@ const Messages = () => {
 
   const handleSendMessage = () => {
     if (!newMessageData.recipient_id || !newMessageData.content) {
-      toast({
+      uiToast({
         title: "Missing information",
         description: "Please fill in all required fields",
         variant: "destructive",
@@ -102,7 +102,7 @@ const Messages = () => {
       content: newMessageData.content,
     });
 
-    toast({
+    uiToast({
       title: "Message sent",
       description: "Your message has been sent successfully",
     });
@@ -118,7 +118,7 @@ const Messages = () => {
   
   const handleSendReply = () => {
     if (!replyText || !activeConversation || !user) {
-      sonnerToast.error("Cannot send empty message");
+      toast.error("Cannot send empty message");
       return;
     }
     
@@ -373,7 +373,7 @@ const Messages = () => {
               <Send className="mr-2 h-4 w-4" />
               Send Message
             </Button>
-          </DialogFooter>
+            </DialogFooter>
         </DialogContent>
       </Dialog>
     </MainLayout>
