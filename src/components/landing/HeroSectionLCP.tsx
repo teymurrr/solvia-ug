@@ -19,7 +19,6 @@ const HeroSectionLCP = React.memo(() => {
   
   return (
     <section className="hero-section">
-      <div className="hero-gradient" />
       <div className="container hero-content">
         <div className="hero-inner no-layout-shift">
           <h1 className="hero-title">
