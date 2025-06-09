@@ -13,13 +13,15 @@ interface LanguageContextType {
   currentLanguage: string;
   setLanguage: (lang: string) => void;
   t: any;
+  isLoaded: boolean;
 }
 
-// Create context with default values
+// Create context with default values (English as fallback)
 const LanguageContext = createContext<LanguageContextType>({
   currentLanguage: 'en',
   setLanguage: () => {},
   t: en,
+  isLoaded: true,
 });
 
 // Define props for provider
@@ -31,15 +33,7 @@ interface LanguageProviderProps {
 export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) => {
   const [currentLanguage, setCurrentLanguage] = useState<string>('en');
   const [translations, setTranslations] = useState<any>(en);
-
-  // Effect to load language from localStorage on component mount
-  useEffect(() => {
-    const storedLanguage = localStorage.getItem('language');
-    if (storedLanguage) {
-      setCurrentLanguage(storedLanguage);
-      switchLanguage(storedLanguage);
-    }
-  }, []);
+  const [isLoaded, setIsLoaded] = useState<boolean>(true);
 
   // Function to switch language
   const switchLanguage = (lang: string) => {
@@ -62,17 +56,39 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
       default:
         setTranslations(en);
     }
+    setIsLoaded(true);
   };
+
+  // Effect to load language from localStorage on component mount
+  useEffect(() => {
+    try {
+      const storedLanguage = localStorage.getItem('language');
+      if (storedLanguage && storedLanguage !== currentLanguage) {
+        setCurrentLanguage(storedLanguage);
+        switchLanguage(storedLanguage);
+      }
+    } catch (error) {
+      console.error('Error loading language from localStorage:', error);
+      // Continue with default English if localStorage fails
+    }
+  }, []);
 
   // Function to set language and save to localStorage
   const setLanguage = (lang: string) => {
-    localStorage.setItem('language', lang);
-    setCurrentLanguage(lang);
-    switchLanguage(lang);
+    try {
+      localStorage.setItem('language', lang);
+      setCurrentLanguage(lang);
+      switchLanguage(lang);
+    } catch (error) {
+      console.error('Error saving language to localStorage:', error);
+      // Still update the language even if localStorage fails
+      setCurrentLanguage(lang);
+      switchLanguage(lang);
+    }
   };
 
   return (
-    <LanguageContext.Provider value={{ currentLanguage, setLanguage, t: translations }}>
+    <LanguageContext.Provider value={{ currentLanguage, setLanguage, t: translations, isLoaded }}>
       {children}
     </LanguageContext.Provider>
   );
