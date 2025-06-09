@@ -15,11 +15,13 @@ export const createLazyComponent = <T extends React.ComponentType<any>>(
 ) => {
   const LazyComponent = lazy(importFunc);
   
-  return React.forwardRef<any, React.ComponentProps<T>>((props, ref) => (
+  const WrappedComponent = (props: React.ComponentProps<T>) => (
     <Suspense fallback={<OptimizedFallback height={fallbackHeight} />}>
-      <LazyComponent {...props} ref={ref} />
+      <LazyComponent {...props} />
     </Suspense>
-  ));
+  );
+  
+  return WrappedComponent;
 };
 
 // Intersection observer based lazy loading for below-the-fold content

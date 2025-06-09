@@ -1,3 +1,4 @@
+
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
@@ -138,19 +139,23 @@ export default defineConfig(({ mode }) => ({
     assetsInlineLimit: 1024 // Smaller inline limit
   },
   
-  // Optimize dependencies
+  // Optimize dependencies and fix Supabase ESM/CJS conflict
   optimizeDeps: {
     include: [
       'react',
       'react-dom',
       'react-router-dom',
-      'lucide-react'
+      'lucide-react',
+      '@supabase/supabase-js'
     ],
     // Exclude heavy dependencies from pre-bundling
     exclude: [
-      'recharts',
-      '@supabase/supabase-js'
-    ]
+      'recharts'
+    ],
+    // Force ESM for Supabase to resolve module conflicts
+    esbuildOptions: {
+      target: 'es2020'
+    }
   },
   
   // Modern CSS features
@@ -165,5 +170,10 @@ export default defineConfig(({ mode }) => ({
     treeShaking: true,
     // Remove console logs in production
     drop: mode === 'production' ? ['console', 'debugger'] : []
+  },
+
+  // Define globals to resolve module conflicts
+  define: {
+    global: 'globalThis',
   }
 }));
