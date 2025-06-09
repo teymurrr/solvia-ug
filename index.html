@@ -22,7 +22,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
     
-    <!-- Preload critical resources -->
+    <!-- Preload only critical resources -->
     <link rel="preload" href="/src/main.tsx" as="script" />
     <link rel="modulepreload" href="/src/pages/Index.tsx" />
     <link rel="modulepreload" href="/src/components/landing/HeroSection.tsx" />
@@ -76,28 +76,34 @@
     <link rel="preload" href="/src/index.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="/src/index.css"></noscript>
     
-    <!-- IMPORTANT: DO NOT REMOVE THIS SCRIPT TAG OR THIS VERY COMMENT! -->
-    <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
+    <!-- Main application script -->
     <script type="module" src="/src/main.tsx"></script>
     
-    <!-- Service Worker Registration -->
+    <!-- Defer Service Worker Registration until after critical content loads -->
     <script>
-      if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-          navigator.serviceWorker.register('/sw.js')
-            .then((registration) => {
-              console.log('SW registered: ', registration);
-            })
-            .catch((registrationError) => {
-              console.log('SW registration failed: ', registrationError);
-            });
-        });
-      }
+      window.addEventListener('load', () => {
+        setTimeout(() => {
+          if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js')
+              .then((registration) => {
+                console.log('SW registered: ', registration);
+              })
+              .catch((registrationError) => {
+                console.log('SW registration failed: ', registrationError);
+              });
+          }
+        }, 1000);
+      });
     </script>
     
-    <!-- Load Google Analytics after page load (non-blocking) -->
+    <!-- Defer Google Analytics until after user interaction or 3 seconds -->
     <script>
-      window.addEventListener('load', function() {
+      let gaLoaded = false;
+      
+      function loadGA() {
+        if (gaLoaded) return;
+        gaLoaded = true;
+        
         const gaScript = document.createElement('script');
         gaScript.async = true;
         gaScript.src = 'https://www.googletagmanager.com/gtag/js?id=G-JEZQDDWEWX';
@@ -109,7 +115,15 @@
           gtag('js', new Date());
           gtag('config', 'G-JEZQDDWEWX');
         };
+      }
+      
+      // Load GA after user interaction
+      ['click', 'scroll', 'keydown'].forEach(event => {
+        document.addEventListener(event, loadGA, { once: true, passive: true });
       });
+      
+      // Fallback: load GA after 3 seconds if no interaction
+      setTimeout(loadGA, 3000);
     </script>
   </body>
 </html>

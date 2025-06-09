@@ -1,74 +1,80 @@
+
 import { lazy, Suspense, useState, useEffect } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import AdminRoute from "@/components/AdminRoute";
 import OwnerRoute from "@/components/OwnerRoute";
 import { useAuth } from "@/contexts/AuthContext";
+import { createLazyComponent } from "@/utils/lazyLoad";
 
-// Simple loading component
+// Optimized loading component
 const LoadingFallback = () => (
   <div className="flex items-center justify-center h-screen">
-    <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+    <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
   </div>
 );
 
-// Landing page components - import individually for better error handling
+// Critical route components - load immediately
 const Index = lazy(() => import("@/pages/Index"));
-const About = lazy(() => import("@/pages/About"));
-const Contact = lazy(() => import("@/pages/Contact"));
-const Privacy = lazy(() => import("@/pages/Privacy"));
-const Terms = lazy(() => import("@/pages/Terms"));
-const EmployersLanding = lazy(() => import("@/pages/EmployersLanding"));
-const Blog = lazy(() => import("@/pages/Blog"));
-const BlogDetail = lazy(() => import("@/pages/BlogDetail"));
 
-// Auth pages - import individually instead of bundling
-const Signup = lazy(() => import("@/pages/Signup"));
-const ProfessionalSignup = lazy(() => import("@/pages/ProfessionalSignup"));
-const InstitutionSignup = lazy(() => import("@/pages/InstitutionSignup"));
-const Login = lazy(() => import("@/pages/Login"));
-const EmailConfirmationRequired = lazy(() => import("@/pages/EmailConfirmationRequired"));
-const AuthCallback = lazy(() => import("@/pages/AuthCallback"));
+// Auth pages - high priority
+const authComponents = {
+  Signup: createLazyComponent(() => import("@/pages/Signup")),
+  ProfessionalSignup: createLazyComponent(() => import("@/pages/ProfessionalSignup")),
+  InstitutionSignup: createLazyComponent(() => import("@/pages/InstitutionSignup")),
+  Login: createLazyComponent(() => import("@/pages/Login")),
+  EmailConfirmationRequired: createLazyComponent(() => import("@/pages/EmailConfirmationRequired")),
+  AuthCallback: createLazyComponent(() => import("@/pages/AuthCallback"))
+};
 
-// Dashboard pages
-const ProfessionalDashboard = lazy(() => import("@/pages/ProfessionalDashboard"));
-const InstitutionDashboard = lazy(() => import("@/pages/InstitutionDashboard"));
+// Dashboard pages - medium priority
+const dashboardComponents = {
+  ProfessionalDashboard: createLazyComponent(() => import("@/pages/ProfessionalDashboard")),
+  InstitutionDashboard: createLazyComponent(() => import("@/pages/InstitutionDashboard"))
+};
 
-// Admin pages - blog management
-const AdminBlogList = lazy(() => import("@/pages/admin/BlogList"));
-const BlogEditor = lazy(() => import("@/pages/admin/BlogEditor"));
-const AdminManagement = lazy(() => import("@/pages/admin/AdminManagement"));
-const BlogStatistics = lazy(() => import("@/pages/admin/BlogStatistics"));
+// Landing pages - defer loading
+const landingComponents = {
+  About: createLazyComponent(() => import("@/pages/About"), 'h-96'),
+  Contact: createLazyComponent(() => import("@/pages/Contact"), 'h-64'),
+  Privacy: createLazyComponent(() => import("@/pages/Privacy"), 'h-96'),
+  Terms: createLazyComponent(() => import("@/pages/Terms"), 'h-96'),
+  EmployersLanding: createLazyComponent(() => import("@/pages/EmployersLanding"), 'h-96'),
+  Blog: createLazyComponent(() => import("@/pages/Blog"), 'h-80'),
+  BlogDetail: createLazyComponent(() => import("@/pages/BlogDetail"), 'h-96')
+};
 
-// Other pages - load individually as needed
-const SolviaLearning = lazy(() => import("@/pages/SolviaLearning"));
-const Professionals = lazy(() => import("@/pages/Professionals"));
-const Institutions = lazy(() => import("@/pages/Institutions"));
-const NotFound = lazy(() => import("@/pages/NotFound"));
+// Admin pages - lowest priority, load on demand
+const adminComponents = {
+  AdminBlogList: createLazyComponent(() => import("@/pages/admin/BlogList")),
+  BlogEditor: createLazyComponent(() => import("@/pages/admin/BlogEditor")),
+  AdminManagement: createLazyComponent(() => import("@/pages/admin/AdminManagement")),
+  BlogStatistics: createLazyComponent(() => import("@/pages/admin/BlogStatistics"))
+};
 
-// Vacancy related pages
-const Vacancies = lazy(() => import("@/pages/Vacancies"));
-const VacancyDetail = lazy(() => import("@/pages/VacancyDetail"));
-const VacancyApply = lazy(() => import("@/pages/VacancyApply"));
-
-// Messaging page
-const Messages = lazy(() => import("@/pages/Messages"));
-
-// Insights page
-const Insights = lazy(() => import("@/pages/Insights"));
+// Feature pages - defer loading
+const featureComponents = {
+  SolviaLearning: createLazyComponent(() => import("@/pages/SolviaLearning"), 'h-80'),
+  Professionals: createLazyComponent(() => import("@/pages/Professionals"), 'h-80'),
+  Institutions: createLazyComponent(() => import("@/pages/Institutions"), 'h-80'),
+  Vacancies: createLazyComponent(() => import("@/pages/Vacancies"), 'h-80'),
+  VacancyDetail: createLazyComponent(() => import("@/pages/VacancyDetail"), 'h-96'),
+  VacancyApply: createLazyComponent(() => import("@/pages/VacancyApply"), 'h-64'),
+  Messages: createLazyComponent(() => import("@/pages/Messages"), 'h-64'),
+  Insights: createLazyComponent(() => import("@/pages/Insights"), 'h-80'),
+  NotFound: createLazyComponent(() => import("@/pages/NotFound"), 'h-64')
+};
 
 const AppRoutes = () => {
   const { isLoggedIn, userType } = useAuth();
   const [isInitialized, setIsInitialized] = useState(false);
   
-  // Only render routes once auth state is determined
   useEffect(() => {
     if (isLoggedIn !== undefined) {
       setIsInitialized(true);
     }
   }, [isLoggedIn]);
 
-  // Redirect logged-in users to their respective dashboards
   const renderIndex = () => {
     if (isLoggedIn) {
       if (userType === 'professional') {
@@ -88,139 +94,50 @@ const AppRoutes = () => {
     <Suspense fallback={<LoadingFallback />}>
       <Routes>
         <Route path="/" element={renderIndex()} />
-        <Route path="/about" element={<About />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/privacy" element={<Privacy />} />
-        <Route path="/terms" element={<Terms />} />
-        <Route path="/employers" element={<EmployersLanding />} />
-        <Route path="/blog" element={<Blog />} />
-        <Route path="/blog/:id" element={<BlogDetail />} />
         
-        {/* Admin blog management routes */}
-        <Route
-          path="/admin/blog"
-          element={
-            <AdminRoute>
-              <AdminBlogList />
-            </AdminRoute>
-          }
-        />
-        <Route
-          path="/admin/blog/new"
-          element={
-            <AdminRoute>
-              <BlogEditor />
-            </AdminRoute>
-          }
-        />
-        <Route
-          path="/admin/blog/edit/:id"
-          element={
-            <AdminRoute>
-              <BlogEditor />
-            </AdminRoute>
-          }
-        />
+        {/* Landing pages */}
+        <Route path="/about" element={<landingComponents.About />} />
+        <Route path="/contact" element={<landingComponents.Contact />} />
+        <Route path="/privacy" element={<landingComponents.Privacy />} />
+        <Route path="/terms" element={<landingComponents.Terms />} />
+        <Route path="/employers" element={<landingComponents.EmployersLanding />} />
+        <Route path="/blog" element={<landingComponents.Blog />} />
+        <Route path="/blog/:id" element={<landingComponents.BlogDetail />} />
         
-        {/* Owner-only admin management route */}
-        <Route
-          path="/admin/manage-admins"
-          element={
-            <OwnerRoute>
-              <AdminManagement />
-            </OwnerRoute>
-          }
-        />
-        
-        {/* Admin blog statistics route */}
-        <Route 
-          path="/admin/blog/statistics" 
-          element={
-            <AdminRoute>
-              <BlogStatistics />
-            </AdminRoute>
-          } 
-        />
+        {/* Admin routes */}
+        <Route path="/admin/blog" element={<AdminRoute><adminComponents.AdminBlogList /></AdminRoute>} />
+        <Route path="/admin/blog/new" element={<AdminRoute><adminComponents.BlogEditor /></AdminRoute>} />
+        <Route path="/admin/blog/edit/:id" element={<AdminRoute><adminComponents.BlogEditor /></AdminRoute>} />
+        <Route path="/admin/manage-admins" element={<OwnerRoute><adminComponents.AdminManagement /></OwnerRoute>} />
+        <Route path="/admin/blog/statistics" element={<AdminRoute><adminComponents.BlogStatistics /></AdminRoute>} />
         
         {/* Auth routes */}
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/signup/professional" element={<ProfessionalSignup />} />
-        <Route path="/signup/institution" element={<InstitutionSignup />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/confirm-email" element={<EmailConfirmationRequired />} />
-        <Route path="/auth/callback" element={<AuthCallback />} />
+        <Route path="/signup" element={<authComponents.Signup />} />
+        <Route path="/signup/professional" element={<authComponents.ProfessionalSignup />} />
+        <Route path="/signup/institution" element={<authComponents.InstitutionSignup />} />
+        <Route path="/login" element={<authComponents.Login />} />
+        <Route path="/confirm-email" element={<authComponents.EmailConfirmationRequired />} />
+        <Route path="/auth/callback" element={<authComponents.AuthCallback />} />
+        <Route path="/auth/*" element={<authComponents.AuthCallback />} />
         
-        {/* Make sure we have a wildcard handler for the auth paths */}
-        <Route path="/auth/*" element={<AuthCallback />} />
+        {/* Feature routes */}
+        <Route path="/learning" element={<featureComponents.SolviaLearning />} />
+        <Route path="/vacancies" element={<featureComponents.Vacancies />} />
+        <Route path="/vacancies/:id" element={<featureComponents.VacancyDetail />} />
+        <Route path="/vacancies/:id/apply" element={<ProtectedRoute userType="professional"><featureComponents.VacancyApply /></ProtectedRoute>} />
         
-        <Route path="/learning" element={<SolviaLearning />} />
-
-        {/* Vacancy routes */}
-        <Route path="/vacancies" element={<Vacancies />} />
-        <Route path="/vacancies/:id" element={<VacancyDetail />} />
-        <Route
-          path="/vacancies/:id/apply"
-          element={
-            <ProtectedRoute userType="professional">
-              <VacancyApply />
-            </ProtectedRoute>
-          }
-        />
-
         {/* Protected routes */}
-        <Route
-          path="/insights"
-          element={
-            <ProtectedRoute userType="institution">
-              <Insights />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/dashboard/professional"
-          element={
-            <ProtectedRoute userType="professional">
-              <ProfessionalDashboard />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/dashboard/institution"
-          element={
-            <ProtectedRoute userType="institution">
-              <InstitutionDashboard />
-            </ProtectedRoute>
-          }
-        />
+        <Route path="/insights" element={<ProtectedRoute userType="institution"><featureComponents.Insights /></ProtectedRoute>} />
+        <Route path="/dashboard/professional" element={<ProtectedRoute userType="professional"><dashboardComponents.ProfessionalDashboard /></ProtectedRoute>} />
+        <Route path="/dashboard/institution" element={<ProtectedRoute userType="institution"><dashboardComponents.InstitutionDashboard /></ProtectedRoute>} />
         
         {/* Messages routes */}
-        <Route
-          path="/messages"
-          element={
-            <ProtectedRoute>
-              <Messages />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/messages/new"
-          element={
-            <ProtectedRoute>
-              <Messages />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/messages/:id"
-          element={
-            <ProtectedRoute>
-              <Messages />
-            </ProtectedRoute>
-          }
-        />
+        <Route path="/messages" element={<ProtectedRoute><featureComponents.Messages /></ProtectedRoute>} />
+        <Route path="/messages/new" element={<ProtectedRoute><featureComponents.Messages /></ProtectedRoute>} />
+        <Route path="/messages/:id" element={<ProtectedRoute><featureComponents.Messages /></ProtectedRoute>} />
         
         {/* Fallback route */}
-        <Route path="*" element={<NotFound />} />
+        <Route path="*" element={<featureComponents.NotFound />} />
       </Routes>
     </Suspense>
   );

@@ -1,4 +1,3 @@
-
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
@@ -24,31 +23,54 @@ export default defineConfig(({ mode }) => ({
     rollupOptions: {
       output: {
         manualChunks: {
-          // Core vendor libraries
-          vendor: ['react', 'react-dom'],
-          router: ['react-router-dom'],
+          // Core vendor libraries - keep minimal
+          'vendor-core': ['react', 'react-dom'],
+          'vendor-router': ['react-router-dom'],
           
-          // UI components - optimized grouping
-          'ui-core': ['@radix-ui/react-dialog', '@radix-ui/react-dropdown-menu', '@radix-ui/react-toast'],
-          'ui-form': ['@radix-ui/react-checkbox', '@radix-ui/react-select', '@radix-ui/react-radio-group'],
+          // UI components - split by usage pattern
+          'ui-essential': [
+            '@radix-ui/react-slot', 
+            '@radix-ui/react-dialog', 
+            '@radix-ui/react-dropdown-menu'
+          ],
+          'ui-forms': [
+            '@radix-ui/react-checkbox', 
+            '@radix-ui/react-select', 
+            '@radix-ui/react-radio-group',
+            'react-hook-form',
+            '@hookform/resolvers'
+          ],
+          'ui-complex': [
+            '@radix-ui/react-accordion',
+            '@radix-ui/react-tabs',
+            '@radix-ui/react-toast',
+            '@radix-ui/react-navigation-menu'
+          ],
           
-          // Heavy libraries
-          'supabase': ['@supabase/supabase-js'],
+          // Auth and data
+          'auth-data': ['@supabase/supabase-js', '@tanstack/react-query'],
+          
+          // Heavy libraries - defer loading
           'charts': ['recharts'],
-          'query': ['@tanstack/react-query'],
           
-          // Landing page components - bundle together
-          'landing': [
+          // Route-specific chunks
+          'landing-core': [
+            '/src/components/landing/HeroSection',
+            '/src/components/landing/WhySolviaSectionOptimized'
+          ],
+          'landing-secondary': [
             '/src/components/landing/TimelineSection',
             '/src/components/landing/ProfessionalsSection',
-            '/src/components/landing/VacanciesSection',
+            '/src/components/landing/VacanciesSection'
+          ],
+          'landing-tertiary': [
             '/src/components/landing/InsightsSection',
             '/src/components/landing/BlogSection',
             '/src/components/landing/LearningSection',
             '/src/components/landing/CTASection'
           ],
           
-          // Admin components
+          // Admin features - separate bundle
           'admin': [
             '/src/components/admin/blog/StatisticCard',
             '/src/components/admin/blog/BlogViewsChart',
@@ -56,18 +78,30 @@ export default defineConfig(({ mode }) => ({
             '/src/components/admin/blog/CategoryDistributionChart'
           ],
           
-          // Utils and helpers
+          // Dashboard features
+          'dashboard-professional': [
+            '/src/components/professional-dashboard/FilterBar',
+            '/src/components/professional-dashboard/VacancySearch',
+            '/src/components/professional-dashboard/ProfileCard'
+          ],
+          'dashboard-institution': [
+            '/src/components/institution-dashboard/DashboardHeader',
+            '/src/components/institution-dashboard/TalentsTab',
+            '/src/components/institution-dashboard/VacanciesTab'
+          ],
+          
+          // Utilities and helpers
           'utils': ['clsx', 'tailwind-merge', 'class-variance-authority', 'date-fns'],
           'icons': ['lucide-react']
         },
         
         // Optimize chunk sizes for mobile
         chunkFileNames: (chunkInfo) => {
-          const facadeModuleId = chunkInfo.facadeModuleId ? chunkInfo.facadeModuleId.split('/').pop() : 'chunk';
-          return `assets/js/[name]-[hash].js`;
+          const name = chunkInfo.name || 'chunk';
+          return `assets/js/${name}-[hash].js`;
         },
         
-        // Add cache headers via file naming
+        // Optimize asset naming
         assetFileNames: (assetInfo) => {
           if (!assetInfo.name) {
             return `assets/[name]-[hash][extname]`;
@@ -87,12 +121,12 @@ export default defineConfig(({ mode }) => ({
       }
     },
     
-    // Modern build optimizations for mobile
+    // Aggressive optimizations for mobile
     target: 'es2020',
     minify: 'esbuild',
     cssMinify: true,
     reportCompressedSize: false,
-    chunkSizeWarningLimit: 300, // Smaller chunks for mobile
+    chunkSizeWarningLimit: 200, // Smaller chunks for better caching
     
     // CSS code splitting
     cssCodeSplit: true,
@@ -100,25 +134,23 @@ export default defineConfig(({ mode }) => ({
     // Sourcemap only for debugging in dev
     sourcemap: mode === 'development',
     
-    // Aggressive compression for mobile
-    assetsInlineLimit: 2048 // Smaller inline limit for mobile
+    // More aggressive compression
+    assetsInlineLimit: 1024 // Smaller inline limit
   },
   
-  // Optimize dependencies - Fixed Supabase module resolution
+  // Optimize dependencies
   optimizeDeps: {
     include: [
       'react',
       'react-dom',
       'react-router-dom',
-      'lucide-react',
-      '@supabase/supabase-js',
-      '@supabase/postgrest-js',
-      '@supabase/realtime-js',
-      '@supabase/storage-js',
-      '@supabase/gotrue-js'
+      'lucide-react'
     ],
-    // Remove exclusions that were causing module resolution issues
-    exclude: []
+    // Exclude heavy dependencies from pre-bundling
+    exclude: [
+      'recharts',
+      '@supabase/supabase-js'
+    ]
   },
   
   // Modern CSS features
@@ -126,12 +158,12 @@ export default defineConfig(({ mode }) => ({
     devSourcemap: mode === 'development'
   },
   
-  // Experimental features for better performance
+  // Enhanced build optimizations
   esbuild: {
     target: 'es2020',
     legalComments: 'none',
     treeShaking: true,
-    // Remove console logs in production for mobile performance
+    // Remove console logs in production
     drop: mode === 'production' ? ['console', 'debugger'] : []
   }
 }));
