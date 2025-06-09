@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
@@ -52,7 +51,18 @@ export const useBlogStatistics = () => {
       
       if (statsError) throw statsError;
       
-      setStatistics(statsData);
+      // Type-safe parsing of the JSON response
+      if (statsData && typeof statsData === 'object') {
+        const typedStats: BlogStatistics = {
+          total_posts: Number(statsData.total_posts) || 0,
+          posts_this_month: Number(statsData.posts_this_month) || 0,
+          total_views: Number(statsData.total_views) || 0,
+          views_this_month: Number(statsData.views_this_month) || 0,
+          total_likes: Number(statsData.total_likes) || 0,
+          total_comments: Number(statsData.total_comments) || 0,
+        };
+        setStatistics(typedStats);
+      }
 
       // Get top viewed posts
       const { data: topViewed, error: topViewedError } = await supabase
