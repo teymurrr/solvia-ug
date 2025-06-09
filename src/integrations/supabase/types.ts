@@ -85,70 +85,6 @@ export type Database = {
           },
         ]
       }
-      blog_post_likes: {
-        Row: {
-          blog_post_id: string
-          created_at: string
-          id: string
-          user_id: string
-        }
-        Insert: {
-          blog_post_id: string
-          created_at?: string
-          id?: string
-          user_id: string
-        }
-        Update: {
-          blog_post_id?: string
-          created_at?: string
-          id?: string
-          user_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "blog_post_likes_blog_post_id_fkey"
-            columns: ["blog_post_id"]
-            isOneToOne: false
-            referencedRelation: "blog_posts"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      blog_post_views: {
-        Row: {
-          blog_post_id: string
-          id: string
-          ip_address: unknown | null
-          user_agent: string | null
-          user_id: string | null
-          viewed_at: string
-        }
-        Insert: {
-          blog_post_id: string
-          id?: string
-          ip_address?: unknown | null
-          user_agent?: string | null
-          user_id?: string | null
-          viewed_at?: string
-        }
-        Update: {
-          blog_post_id?: string
-          id?: string
-          ip_address?: unknown | null
-          user_agent?: string | null
-          user_id?: string | null
-          viewed_at?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "blog_post_views_blog_post_id_fkey"
-            columns: ["blog_post_id"]
-            isOneToOne: false
-            referencedRelation: "blog_posts"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       blog_posts: {
         Row: {
           author_id: string
@@ -159,18 +95,12 @@ export type Database = {
           id: string
           image_url: string | null
           language: string
-          like_count: number | null
-          meta_description: string | null
-          meta_title: string | null
           post_group_id: string | null
-          publish_date: string | null
           read_time: string | null
           slug: string
           status: Database["public"]["Enums"]["blog_post_status"]
-          tags: string | null
           title: string
           updated_at: string
-          view_count: number | null
         }
         Insert: {
           author_id: string
@@ -181,18 +111,12 @@ export type Database = {
           id?: string
           image_url?: string | null
           language?: string
-          like_count?: number | null
-          meta_description?: string | null
-          meta_title?: string | null
           post_group_id?: string | null
-          publish_date?: string | null
           read_time?: string | null
           slug: string
           status?: Database["public"]["Enums"]["blog_post_status"]
-          tags?: string | null
           title: string
           updated_at?: string
-          view_count?: number | null
         }
         Update: {
           author_id?: string
@@ -203,18 +127,12 @@ export type Database = {
           id?: string
           image_url?: string | null
           language?: string
-          like_count?: number | null
-          meta_description?: string | null
-          meta_title?: string | null
           post_group_id?: string | null
-          publish_date?: string | null
           read_time?: string | null
           slug?: string
           status?: Database["public"]["Enums"]["blog_post_status"]
-          tags?: string | null
           title?: string
           updated_at?: string
-          view_count?: number | null
         }
         Relationships: []
       }
@@ -540,28 +458,12 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      get_blog_statistics: {
-        Args: { start_date?: string; end_date?: string }
-        Returns: Json
-      }
       get_user_type: {
         Args: { user_id: string }
         Returns: string
       }
-      increment_blog_view_count: {
-        Args: {
-          post_id: string
-          viewer_ip?: unknown
-          viewer_user_agent?: string
-        }
-        Returns: undefined
-      }
       is_admin: {
-        Args: Record<PropertyKey, never> | { uid: string }
-        Returns: boolean
-      }
-      toggle_blog_post_like: {
-        Args: { post_id: string }
+        Args: { uid: string }
         Returns: boolean
       }
     }

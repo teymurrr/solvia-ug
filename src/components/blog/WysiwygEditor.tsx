@@ -1,3 +1,4 @@
+
 import React, { useRef, useEffect, useState, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { 
@@ -16,23 +17,17 @@ import {
   AlignLeft,
   AlignCenter,
   AlignRight,
-  AlignJustify,
   Minus,
   Undo,
   Redo,
   Type,
-  Palette,
-  Upload,
-  Loader2
+  Palette
 } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { supabase } from '@/integrations/supabase/client';
-import { useToast } from '@/hooks/use-toast';
 
 interface WysiwygEditorProps {
   value: string;
@@ -50,7 +45,6 @@ const WysiwygEditor: React.FC<WysiwygEditorProps> = ({
   onAutoSave
 }) => {
   const editorRef = useRef<HTMLDivElement>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
   const [history, setHistory] = useState<string[]>([]);
   const [historyIndex, setHistoryIndex] = useState(-1);
   const [wordCount, setWordCount] = useState(0);
@@ -64,10 +58,6 @@ const WysiwygEditor: React.FC<WysiwygEditorProps> = ({
   const [imageAlt, setImageAlt] = useState('');
   const [imageCaption, setImageCaption] = useState('');
   const [videoUrl, setVideoUrl] = useState('');
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [isUploading, setIsUploading] = useState(false);
-  const [uploadProgress, setUploadProgress] = useState(0);
-  const { toast } = useToast();
 
   // Auto-save functionality
   useEffect(() => {
@@ -126,120 +116,6 @@ const WysiwygEditor: React.FC<WysiwygEditorProps> = ({
     executeCommand('formatBlock', `h${level}`);
   };
 
-  const setLineSpacing = (spacing: string) => {
-    const selection = window.getSelection();
-    if (!selection || selection.rangeCount === 0) return;
-
-    const range = selection.getRangeAt(0);
-    
-    // Check if entire content is selected or nearly entire content
-    const editorContent = editorRef.current;
-    if (!editorContent) return;
-
-    const isFullSelection = selection.toString().length > editorContent.textContent!.length * 0.9;
-    
-    if (isFullSelection) {
-      // Apply to entire editor content
-      const allBlockElements = editorContent.querySelectorAll('p, div, h1, h2, h3, h4, h5, h6, blockquote, li, pre');
-      allBlockElements.forEach((element) => {
-        (element as HTMLElement).style.lineHeight = spacing;
-      });
-      
-      // Also apply to the editor itself for any direct text
-      editorContent.style.lineHeight = spacing;
-    } else if (!selection.isCollapsed) {
-      // Text is selected - find all block elements that intersect with the selection
-      const startContainer = range.startContainer;
-      const endContainer = range.endContainer;
-      
-      // Get all block elements that contain the selection
-      const blockElements = new Set<HTMLElement>();
-      
-      // Find block element containing start of selection
-      let startBlock = startContainer.nodeType === Node.TEXT_NODE ? startContainer.parentElement : startContainer as HTMLElement;
-      while (startBlock && startBlock !== editorContent) {
-        if (['P', 'DIV', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'BLOCKQUOTE', 'LI', 'PRE'].includes(startBlock.tagName)) {
-          blockElements.add(startBlock);
-          break;
-        }
-        startBlock = startBlock.parentElement;
-      }
-      
-      // Find block element containing end of selection
-      let endBlock = endContainer.nodeType === Node.TEXT_NODE ? endContainer.parentElement : endContainer as HTMLElement;
-      while (endBlock && endBlock !== editorContent) {
-        if (['P', 'DIV', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'BLOCKQUOTE', 'LI', 'PRE'].includes(endBlock.tagName)) {
-          blockElements.add(endBlock);
-          break;
-        }
-        endBlock = endBlock.parentElement;
-      }
-      
-      // Find all block elements between start and end
-      if (startBlock && endBlock && startBlock !== endBlock) {
-        let walker = document.createTreeWalker(
-          editorContent,
-          NodeFilter.SHOW_ELEMENT,
-          {
-            acceptNode: (node) => {
-              const element = node as HTMLElement;
-              if (['P', 'DIV', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'BLOCKQUOTE', 'LI', 'PRE'].includes(element.tagName)) {
-                return NodeFilter.FILTER_ACCEPT;
-              }
-              return NodeFilter.FILTER_SKIP;
-            }
-          }
-        );
-        
-        let currentNode = walker.nextNode();
-        let foundStart = false;
-        
-        while (currentNode) {
-          if (currentNode === startBlock) {
-            foundStart = true;
-          }
-          
-          if (foundStart) {
-            blockElements.add(currentNode as HTMLElement);
-          }
-          
-          if (currentNode === endBlock) {
-            break;
-          }
-          
-          currentNode = walker.nextNode();
-        }
-      }
-      
-      // Apply line spacing to all found block elements
-      blockElements.forEach((element) => {
-        element.style.lineHeight = spacing;
-      });
-      
-    } else {
-      // No selection (just cursor position) - apply to current block element
-      let currentElement = range.commonAncestorContainer;
-      
-      // Find the closest block element
-      while (currentElement && currentElement !== editorContent) {
-        if (currentElement.nodeType === Node.ELEMENT_NODE) {
-          const element = currentElement as HTMLElement;
-          if (['P', 'DIV', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'BLOCKQUOTE', 'LI', 'PRE'].includes(element.tagName)) {
-            element.style.lineHeight = spacing;
-            break;
-          }
-        }
-        currentElement = currentElement.parentNode;
-      }
-    }
-    
-    // Clear selection and refocus editor
-    selection.removeAllRanges();
-    editorRef.current?.focus();
-    handleInput();
-    saveToHistory();
-  };
-
   const insertLink = () => {
     if (linkText && linkUrl) {
       const target = openInNewTab ? ' target="_blank" rel="noopener noreferrer"' : '';
@@ -252,116 +128,17 @@ const WysiwygEditor: React.FC<WysiwygEditorProps> = ({
     }
   };
 
-  const uploadImageFile = async (file: File): Promise<string | null> => {
-    setIsUploading(true);
-    setUploadProgress(0);
-    
-    try {
-      const fileExt = file.name.split('.').pop();
-      const fileName = `blog-image-${Date.now()}-${Math.random().toString(36).substring(2, 11)}.${fileExt}`;
-      
-      // Upload without onUploadProgress to fix the build error
-      const { error: uploadError, data } = await supabase.storage
-        .from('blog_images')
-        .upload(fileName, file);
-
-      if (uploadError) {
-        console.error('Upload error:', uploadError);
-        throw uploadError;
-      }
-
-      const { data: { publicUrl } } = supabase.storage
-        .from('blog_images')
-        .getPublicUrl(fileName);
-
-      setUploadProgress(100);
-      return publicUrl;
-    } catch (error) {
-      console.error('Error uploading image:', error);
-      toast({
-        title: 'Upload Failed',
-        description: 'Failed to upload image. Please try again.',
-        variant: 'destructive',
-      });
-      return null;
-    } finally {
-      setIsUploading(false);
-      setUploadProgress(0);
-    }
-  };
-
-  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      // Validate file type
-      if (!file.type.startsWith('image/')) {
-        toast({
-          title: 'Invalid File Type',
-          description: 'Please select an image file.',
-          variant: 'destructive',
-        });
-        return;
-      }
-      
-      // Validate file size (max 5MB)
-      if (file.size > 5 * 1024 * 1024) {
-        toast({
-          title: 'File Too Large',
-          description: 'Please select an image smaller than 5MB.',
-          variant: 'destructive',
-        });
-        return;
-      }
-      
-      setSelectedFile(file);
-      setImageAlt(file.name.split('.')[0]); // Auto-fill alt text with filename
-    }
-  };
-
-  const insertImage = async () => {
-    let finalImageUrl = imageUrl;
-    
-    // If a file is selected, upload it first
-    if (selectedFile) {
-      const uploadedUrl = await uploadImageFile(selectedFile);
-      if (!uploadedUrl) {
-        return; // Upload failed, don't proceed
-      }
-      finalImageUrl = uploadedUrl;
-    }
-    
-    if (finalImageUrl && imageAlt) {
-      // Focus the editor first to ensure the insertion happens at the right place
-      editorRef.current?.focus();
-      
-      let imageHtml = `<img src="${finalImageUrl}" alt="${imageAlt}" style="max-width: 100%; height: auto; display: block; margin: 10px 0;" />`;
+  const insertImage = () => {
+    if (imageUrl && imageAlt) {
+      let imageHtml = `<img src="${imageUrl}" alt="${imageAlt}" style="max-width: 100%; height: auto;" />`;
       if (imageCaption) {
-        imageHtml = `<figure style="margin: 10px 0;">${imageHtml}<figcaption style="text-align: center; font-style: italic; color: #666; margin-top: 5px;">${imageCaption}</figcaption></figure>`;
+        imageHtml = `<figure>${imageHtml}<figcaption>${imageCaption}</figcaption></figure>`;
       }
-      
-      // Insert the image HTML
       executeCommand('insertHTML', imageHtml);
-      
-      // Reset form
       setImageUrl('');
       setImageAlt('');
       setImageCaption('');
-      setSelectedFile(null);
-      if (fileInputRef.current) {
-        fileInputRef.current.value = '';
-      }
       setImageDialogOpen(false);
-      
-      toast({
-        title: 'Image Inserted',
-        description: 'Image has been successfully inserted into the blog.',
-      });
-    } else {
-      toast({
-        title: 'Missing Information',
-        description: 'Please provide both an image and alt text.',
-        variant: 'destructive',
-      });
     }
   };
 
@@ -436,12 +213,8 @@ const WysiwygEditor: React.FC<WysiwygEditorProps> = ({
     }
   };
 
-  const setAlignment = (align: 'left' | 'center' | 'right' | 'justify') => {
-    if (align === 'justify') {
-      executeCommand('justifyFull');
-    } else {
-      executeCommand('justify' + align.charAt(0).toUpperCase() + align.slice(1));
-    }
+  const setAlignment = (align: 'left' | 'center' | 'right') => {
+    executeCommand('justify' + align.charAt(0).toUpperCase() + align.slice(1));
   };
 
   const insertDivider = () => {
@@ -519,15 +292,6 @@ const WysiwygEditor: React.FC<WysiwygEditorProps> = ({
     { name: 'Normal', value: '3' },
     { name: 'Large', value: '5' },
     { name: 'Extra Large', value: '7' },
-  ];
-
-  const lineSpacingOptions = [
-    { name: 'Single', value: '1.0' },
-    { name: 'Compact', value: '1.2' },
-    { name: 'Normal', value: '1.5' },
-    { name: 'Relaxed', value: '1.8' },
-    { name: 'Double', value: '2.0' },
-    { name: 'Extra', value: '2.5' },
   ];
 
   return (
@@ -807,25 +571,11 @@ const WysiwygEditor: React.FC<WysiwygEditorProps> = ({
           >
             <AlignRight className="h-3 w-3" />
           </Button>
-
-          <Button
-            type="button"
-            variant="outline"
-            size="sm"
-            onMouseDown={(e) => {
-              e.preventDefault();
-              setAlignment('justify');
-            }}
-            className="h-8"
-            title="Justify Text"
-          >
-            <AlignJustify className="h-3 w-3" />
-          </Button>
         </div>
 
         <div className="w-px h-6 bg-gray-300 mx-1" />
 
-        {/* Font Size, Line Spacing & Color */}
+        {/* Font Size & Color */}
         <div className="flex items-center gap-1">
           <Select onValueChange={setFontSize}>
             <SelectTrigger className="h-8 w-20 text-xs">
@@ -835,19 +585,6 @@ const WysiwygEditor: React.FC<WysiwygEditorProps> = ({
               {fontSizes.map((size) => (
                 <SelectItem key={size.value} value={size.value}>
                   {size.name}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-
-          <Select onValueChange={setLineSpacing}>
-            <SelectTrigger className="h-8 w-20 text-xs">
-              <AlignJustify className="h-3 w-3" />
-            </SelectTrigger>
-            <SelectContent>
-              {lineSpacingOptions.map((spacing) => (
-                <SelectItem key={spacing.value} value={spacing.value}>
-                  {spacing.name}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -956,70 +693,16 @@ const WysiwygEditor: React.FC<WysiwygEditorProps> = ({
               <DialogHeader>
                 <DialogTitle>Insert Image</DialogTitle>
               </DialogHeader>
-              
-              <Tabs defaultValue="upload" className="w-full">
-                <TabsList className="grid w-full grid-cols-2">
-                  <TabsTrigger value="upload">Upload File</TabsTrigger>
-                  <TabsTrigger value="url">Image URL</TabsTrigger>
-                </TabsList>
-                
-                <TabsContent value="upload" className="space-y-4">
-                  <div>
-                    <Label htmlFor="imageFile">Select Image File</Label>
-                    <div className="mt-2">
-                      <Input
-                        ref={fileInputRef}
-                        id="imageFile"
-                        type="file"
-                        accept="image/*"
-                        onChange={handleFileSelect}
-                        disabled={isUploading}
-                      />
-                      {selectedFile && (
-                        <div className="mt-2 p-2 bg-gray-50 rounded border">
-                          <div className="flex items-center gap-2">
-                            <Image className="h-4 w-4" />
-                            <span className="text-sm">{selectedFile.name}</span>
-                            <span className="text-xs text-gray-500">
-                              ({Math.round(selectedFile.size / 1024)} KB)
-                            </span>
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                  
-                  {isUploading && (
-                    <div className="space-y-2">
-                      <div className="flex items-center gap-2">
-                        <Loader2 className="h-4 w-4 animate-spin" />
-                        <span className="text-sm">Uploading... {uploadProgress}%</span>
-                      </div>
-                      <div className="w-full bg-gray-200 rounded-full h-2">
-                        <div 
-                          className="bg-blue-600 h-2 rounded-full transition-all duration-300" 
-                          style={{ width: `${uploadProgress}%` }}
-                        />
-                      </div>
-                    </div>
-                  )}
-                </TabsContent>
-                
-                <TabsContent value="url" className="space-y-4">
-                  <div>
-                    <Label htmlFor="imageUrl">Image URL</Label>
-                    <Input
-                      id="imageUrl"
-                      placeholder="https://example.com/image.jpg"
-                      value={imageUrl}
-                      onChange={(e) => setImageUrl(e.target.value)}
-                      disabled={isUploading}
-                    />
-                  </div>
-                </TabsContent>
-              </Tabs>
-
               <div className="space-y-4">
+                <div>
+                  <Label htmlFor="imageUrl">Image URL</Label>
+                  <Input
+                    id="imageUrl"
+                    placeholder="https://example.com/image.jpg"
+                    value={imageUrl}
+                    onChange={(e) => setImageUrl(e.target.value)}
+                  />
+                </div>
                 <div>
                   <Label htmlFor="imageAlt">Alt Text (required)</Label>
                   <Input
@@ -1027,7 +710,6 @@ const WysiwygEditor: React.FC<WysiwygEditorProps> = ({
                     placeholder="Describe the image"
                     value={imageAlt}
                     onChange={(e) => setImageAlt(e.target.value)}
-                    disabled={isUploading}
                   />
                 </div>
                 <div>
@@ -1037,7 +719,6 @@ const WysiwygEditor: React.FC<WysiwygEditorProps> = ({
                     placeholder="Image caption"
                     value={imageCaption}
                     onChange={(e) => setImageCaption(e.target.value)}
-                    disabled={isUploading}
                   />
                 </div>
                 <div className="flex justify-end gap-2">
@@ -1045,23 +726,15 @@ const WysiwygEditor: React.FC<WysiwygEditorProps> = ({
                     type="button"
                     variant="outline"
                     onClick={() => setImageDialogOpen(false)}
-                    disabled={isUploading}
                   >
                     Cancel
                   </Button>
                   <Button
                     type="button"
                     onClick={insertImage}
-                    disabled={(!selectedFile && !imageUrl) || !imageAlt || isUploading}
+                    disabled={!imageUrl || !imageAlt}
                   >
-                    {isUploading ? (
-                      <>
-                        <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                        Uploading...
-                      </>
-                    ) : (
-                      'Insert Image'
-                    )}
+                    Insert Image
                   </Button>
                 </div>
               </div>
@@ -1145,7 +818,8 @@ const WysiwygEditor: React.FC<WysiwygEditorProps> = ({
         className="min-h-[400px] p-4 focus:outline-none prose prose-sm max-w-none"
         style={{ 
           whiteSpace: 'pre-wrap',
-          wordWrap: 'break-word'
+          wordWrap: 'break-word',
+          lineHeight: '1.6'
         }}
         suppressContentEditableWarning={true}
       />

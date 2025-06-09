@@ -14,11 +14,6 @@ interface OptimizedBlogPost {
   language: string;
   created_at: string;
   author_id: string;
-  image_url: string | null;
-  meta_title: string | null;
-  meta_description: string | null;
-  tags: string | null;
-  publish_date: string | null;
 }
 
 export const useBlogPostsOptimized = (fetchDrafts = false, language?: string) => {
@@ -36,7 +31,7 @@ export const useBlogPostsOptimized = (fetchDrafts = false, language?: string) =>
       try {
         setLoading(true);
         
-        // Include image_url and SEO fields for better functionality
+        // Optimized query - exclude content field for better performance
         let query = supabase
           .from('blog_posts')
           .select(`
@@ -47,12 +42,7 @@ export const useBlogPostsOptimized = (fetchDrafts = false, language?: string) =>
             created_at,
             status,
             author_id,
-            language,
-            image_url,
-            meta_title,
-            meta_description,
-            tags,
-            publish_date
+            language
           `)
           .eq('language', queryLanguage)
           .order('created_at', { ascending: false });

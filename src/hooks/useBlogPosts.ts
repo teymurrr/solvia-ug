@@ -1,32 +1,10 @@
 
 import { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
+import { BlogPost } from '@/types/landing';
 import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/hooks/useLanguage';
-
-export interface BlogPost {
-  id: string;
-  title: string;
-  content: string;
-  excerpt: string;
-  slug: string;
-  status: 'draft' | 'published';
-  category: string | null;
-  created_at: string;
-  updated_at: string;
-  author_id: string;
-  language: string;
-  date: string;
-  readTime: string;
-  author?: string;
-  imageUrl?: string;
-  meta_title?: string | null;
-  meta_description?: string | null;
-  tags?: string | null;
-  publish_date?: string | null;
-  post_group_id?: string | null;
-}
 
 export const useBlogPosts = (fetchDrafts = false, language?: string) => {
   const [posts, setPosts] = useState<BlogPost[]>([]);
@@ -89,8 +67,6 @@ export const useBlogPosts = (fetchDrafts = false, language?: string) => {
           status: post.status,
           language: post.language,
           post_group_id: post.post_group_id,
-          created_at: post.created_at,
-          updated_at: post.updated_at,
         }));
         
         setPosts(formattedPosts);
@@ -148,11 +124,7 @@ export const useSingleBlogPost = (id: string | undefined) => {
             status,
             author_id,
             language,
-            post_group_id,
-            meta_title,
-            meta_description,
-            tags,
-            publish_date
+            post_group_id
           `)
           .eq('id', id)
           .maybeSingle();
@@ -174,12 +146,6 @@ export const useSingleBlogPost = (id: string | undefined) => {
             status: data.status,
             language: data.language,
             post_group_id: data.post_group_id,
-            created_at: data.created_at,
-            updated_at: data.updated_at,
-            meta_title: data.meta_title,
-            meta_description: data.meta_description,
-            tags: data.tags,
-            publish_date: data.publish_date,
           };
           
           setPost(formattedPost);
@@ -189,7 +155,7 @@ export const useSingleBlogPost = (id: string | undefined) => {
             const { data: translationsData } = await supabase
               .from('blog_posts')
               .select(`
-                id, title, language, status, created_at, updated_at
+                id, title, language, status
               `)
               .eq('post_group_id', data.post_group_id)
               .neq('id', id);
@@ -202,11 +168,8 @@ export const useSingleBlogPost = (id: string | undefined) => {
                 excerpt: '',
                 content: '',
                 imageUrl: '',
-                date: t.created_at,
+                date: '',
                 author_id: '',
-                category: null,
-                readTime: '',
-                post_group_id: data.post_group_id,
               })));
             }
           }

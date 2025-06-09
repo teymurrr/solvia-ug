@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import MainLayout from '@/components/MainLayout';
 import { useNavigate, Link } from 'react-router-dom';
@@ -19,8 +20,7 @@ import {
   Trash2, 
   Eye,
   AlertTriangle,
-  Settings,
-  BarChart3
+  Settings
 } from 'lucide-react';
 import {
   AlertDialog,
@@ -147,13 +147,6 @@ const AdminBlogList = React.memo(() => {
           </div>
           
           <div className="flex gap-2">
-            <Button variant="outline" asChild>
-              <Link to="/admin/blog/statistics" className="flex items-center">
-                <BarChart3 className="mr-2 h-4 w-4" />
-                Statistics
-              </Link>
-            </Button>
-            
             {(isOwner || isSpecificOwner) && (
               <Button variant="outline" asChild>
                 <Link to="/admin/manage-admins" className="flex items-center">
