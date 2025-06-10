@@ -101,20 +101,12 @@ const SolviaLearning = () => {
                 </div>
               </div>
               <div className="order-1 lg:order-2">
-                <div className="grid grid-cols-1 gap-6">
-                  <OptimizedImage
-                    src="/lovable-uploads/6076d717-f7de-4fe6-b318-20bfcd6e2aa6.png"
-                    alt="Medical professionals in online German language class"
-                    className="rounded-lg shadow-lg"
-                    aspectRatio={16/10}
-                  />
-                  <OptimizedImage
-                    src="/lovable-uploads/50866c4f-dae7-4f12-82b4-78f2002e281a.png"
-                    alt="Doctor studying German medical terminology"
-                    className="rounded-lg shadow-lg"
-                    aspectRatio={16/10}
-                  />
-                </div>
+                <OptimizedImage
+                  src="/lovable-uploads/50866c4f-dae7-4f12-82b4-78f2002e281a.png"
+                  alt="Person studying German medical terminology"
+                  className="rounded-lg shadow-lg w-full"
+                  aspectRatio={4/3}
+                />
               </div>
             </div>
           </div>
@@ -127,27 +119,42 @@ const SolviaLearning = () => {
           <div className="max-w-6xl mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
               <div>
-                <div className="grid grid-cols-1 gap-6">
-                  <OptimizedImage
-                    src="/lovable-uploads/431c73d2-5785-4d33-8f35-d11742c829e0.png"
-                    alt="FSP exam simulation environment"
-                    className="rounded-lg shadow-lg"
-                    aspectRatio={16/10}
-                  />
-                  <Card className="bg-gradient-to-br from-primary/10 to-blue-50 border-none shadow-lg">
-                    <CardContent className="p-6">
-                      <div className="space-y-3">
-                        <div className="flex items-center space-x-3 p-3 bg-white rounded-lg">
-                          <div className="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-semibold text-sm">1</div>
-                          <span className="font-medium text-sm">Anamnesis Training</span>
+                <OptimizedImage
+                  src="/lovable-uploads/431c73d2-5785-4d33-8f35-d11742c829e0.png"
+                  alt="FSP exam simulation environment"
+                  className="rounded-lg shadow-lg mb-8"
+                  aspectRatio={16/10}
+                />
+                <div className="grid grid-cols-1 gap-4">
+                  <Card className="bg-gradient-to-r from-primary/10 to-blue-50 border-none shadow-md">
+                    <CardContent className="p-4">
+                      <div className="flex items-center space-x-4">
+                        <div className="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center font-bold text-lg">1</div>
+                        <div>
+                          <h4 className="font-semibold text-gray-900">Anamnesis Training</h4>
+                          <p className="text-sm text-gray-600">Master patient history taking</p>
                         </div>
-                        <div className="flex items-center space-x-3 p-3 bg-white rounded-lg">
-                          <div className="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-semibold text-sm">2</div>
-                          <span className="font-medium text-sm">Findings Discussion</span>
+                      </div>
+                    </CardContent>
+                  </Card>
+                  <Card className="bg-gradient-to-r from-blue-50 to-primary/10 border-none shadow-md">
+                    <CardContent className="p-4">
+                      <div className="flex items-center space-x-4">
+                        <div className="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center font-bold text-lg">2</div>
+                        <div>
+                          <h4 className="font-semibold text-gray-900">Findings Discussion</h4>
+                          <p className="text-sm text-gray-600">Present and discuss medical findings</p>
                         </div>
-                        <div className="flex items-center space-x-3 p-3 bg-white rounded-lg">
-                          <div className="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-semibold text-sm">3</div>
-                          <span className="font-medium text-sm">Doctor Dialogue</span>
+                      </div>
+                    </CardContent>
+                  </Card>
+                  <Card className="bg-gradient-to-r from-primary/10 to-blue-50 border-none shadow-md">
+                    <CardContent className="p-4">
+                      <div className="flex items-center space-x-4">
+                        <div className="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center font-bold text-lg">3</div>
+                        <div>
+                          <h4 className="font-semibold text-gray-900">Doctor Dialogue</h4>
+                          <p className="text-sm text-gray-600">Professional medical communication</p>
                         </div>
                       </div>
                     </CardContent>
