@@ -14,6 +14,7 @@ import { about } from './about';
 import { dashboard } from './dashboard';
 import { auth } from './auth';
 import { contact } from './contact';
+import { forDoctors } from './forDoctors';
 
 export const en = {
   hero,
@@ -30,5 +31,6 @@ export const en = {
   about,
   dashboard,
   auth,
-  contact
+  contact,
+  forDoctors
 };

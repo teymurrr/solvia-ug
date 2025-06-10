@@ -16,6 +16,7 @@ import { auth } from './auth';
 import { contact } from './contact';
 import { terms } from './terms';
 import { application } from './application';
+import { forDoctors } from './forDoctors';
 
 export const es = {
   hero,
@@ -34,5 +35,6 @@ export const es = {
   auth,
   contact,
   terms,
-  application
+  application,
+  forDoctors
 };
