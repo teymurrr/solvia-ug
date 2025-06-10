@@ -13,11 +13,11 @@ export const learning = {
     description: "Nuestros cursos de alemán están diseñados para profesionales de la salud ocupados. Con contexto médico real, instrucción experta y formatos flexibles, te ayudaremos a hablar con confianza en hospitales, exámenes y más allá.",
     cta: "Explorar Más",
     features: [
-      "De A1 a C1 – Alemán General y Médico",
-      "Clases en Vivo Online + Opciones de Ritmo Propio",
-      "Preparación para Examen TELC B2-C1 Medizin",
-      "Diálogos Médicos Realistas y Escenarios con Pacientes",
-      "Seguimiento de Progreso y Retroalimentación con IA"
+      "Alemán General y Médico de A1 a C1 - Plan de estudios estructurado desde principiante hasta avanzado con vocabulario médico incluido desde las primeras etapas",
+      "Opciones de Aprendizaje Flexibles - Elige entre clases en vivo, módulos a tu ritmo o formatos híbridos, diseñados para profesionales con horarios ocupados",
+      "Preparación para TELC B2-C1 Medizin - Obtén práctica específica para el examen de idioma médico más reconocido y aceptado en toda Alemania",
+      "Herramientas de Práctica Interactivas - Tarjetas de vocabulario, ejercicios de pronunciación y simulaciones de conversaciones médico-paciente",
+      "Seguimiento de Progreso - Monitorea tus avances y recibe recordatorios para sesiones de práctica, tareas y exámenes"
     ]
   },
   fspCourses: {
@@ -26,11 +26,11 @@ export const learning = {
     description: "El FSP es un paso crítico para ejercer en Alemania. Nuestro curso te brinda estructura, práctica y orientación experta para tener éxito en tu primer intento.",
     cta: "Explorar Más",
     features: [
-      "Currículo FSP Completo (Anamnesis, Hallazgos, Diálogo Médico)",
-      "Mentoría Personalizada con Entrenadores FSP",
-      "Simulaciones Basadas en Casos Reales",
-      "Simuladores de Examen y Pruebas de Práctica",
-      "Retroalimentación de Profesionales Médicos"
+      "Currículo FSP Completo - Lecciones estructuradas que reflejan el formato real del examen: anamnesis, discusión de hallazgos y comunicación médica",
+      "Exámenes de Práctica - Múltiples simulacros completos del FSP con retroalimentación de entrenadores certificados",
+      "Mentoría Personalizada - Recibe comentarios personales de profesionales médicos que han aprobado el FSP",
+      "Escenarios de Casos Reales - Entrena con casos clínicos realistas para desarrollar vocabulario y confianza",
+      "App de Simulación de Examen (Próximamente) - Practica en cualquier momento con nuestra herramienta digital que simula el entorno FSP"
     ],
     steps: [
       {
@@ -90,5 +90,6 @@ export const learning = {
       title: "¡Gracias!",
       message: "Tu formulario ha sido enviado exitosamente."
     }
-  }
+  },
+  exploreCourses: "Explorar Cursos"
 };

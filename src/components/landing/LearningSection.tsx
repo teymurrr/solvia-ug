@@ -10,7 +10,17 @@ const LearningSection = () => {
 
   const renderFeatureList = (features: string[]) => {
     return features.map((feature, index) => {
-      const [title, description] = feature.split(' - ');
+      // Handle both formats: with and without descriptions
+      let title = feature;
+      let description = '';
+      
+      // Check if the feature has a title-description format using " - " as separator
+      if (feature.includes(' - ')) {
+        const parts = feature.split(' - ');
+        title = parts[0];
+        description = parts[1];
+      }
+      
       return (
         <li key={index} className="flex items-start space-x-3 mb-6">
           <div className="flex-shrink-0 mt-1">
@@ -28,6 +38,23 @@ const LearningSection = () => {
       );
     });
   };
+
+  // Default feature lists if translations are not available
+  const germanCourseFeatures = t?.learning?.germanCourses?.features || [
+    "General + Medical German Levels A1 to C1 - Structured curriculum from beginner to advanced with medical vocabulary included from the early stages.",
+    "Flexible Learning Options - Choose between live online classes, self-paced modules, or hybrid formats—designed for professionals with busy schedules.",
+    "TELC B2-C1 Medizin Preparation - Get targeted practice for the most recognized medical language exam, accepted across Germany.",
+    "Interactive Practice Tools - Vocabulary flashcards, pronunciation drills, and doctor-patient conversation simulations.",
+    "Progress Tracking - Follow your learning milestones and get reminders for practice sessions, assignments, and exams."
+  ];
+
+  const fspCourseFeatures = t?.learning?.fspCourses?.features || [
+    "Complete FSP Curriculum - Structured lessons that mirror the real exam format: anamnesis, findings discussion, and doctor-to-doctor communication.",
+    "Practice Examinations - Multiple full-length mock FSP exams with feedback from certified trainers.",
+    "One-on-One Mentoring - Access personal feedback from medical professionals who've passed the FSP themselves.",
+    "Real-life Case Scenarios - Train with realistic clinical cases to build both vocabulary and confidence.",
+    "Exam Simulation App (Coming soon) - Practice anytime with our digital tool that simulates the FSP environment."
+  ];
 
   return (
     <section className="py-16 bg-gradient-to-br from-blue-50 to-white">
@@ -52,13 +79,7 @@ const LearningSection = () => {
             <div className="mb-4">
               <p className="font-medium text-sm text-primary mb-4">✅ What's included:</p>
               <ul className="space-y-0">
-                {renderFeatureList(t?.learning?.germanCourses?.features || [
-                  "General + Medical German Levels A1 to C1 - Structured curriculum from beginner to advanced with medical vocabulary included from the early stages.",
-                  "Flexible Learning Options - Choose between live online classes, self-paced modules, or hybrid formats—designed for professionals with busy schedules.",
-                  "TELC B2-C1 Medizin Preparation - Get targeted practice for the most recognized medical language exam, accepted across Germany.",
-                  "Interactive Practice Tools - Vocabulary flashcards, pronunciation drills, and doctor-patient conversation simulations.",
-                  "Progress Tracking - Follow your learning milestones and get reminders for practice sessions, assignments, and exams."
-                ])}
+                {renderFeatureList(germanCourseFeatures)}
               </ul>
             </div>
           </div>
@@ -73,13 +94,7 @@ const LearningSection = () => {
             <div className="mb-4">
               <p className="font-medium text-sm text-primary mb-4">✅ What's included:</p>
               <ul className="space-y-0">
-                {renderFeatureList(t?.learning?.fspCourses?.features || [
-                  "Complete FSP Curriculum - Structured lessons that mirror the real exam format: anamnesis, findings discussion, and doctor-to-doctor communication.",
-                  "Practice Examinations - Multiple full-length mock FSP exams with feedback from certified trainers.",
-                  "One-on-One Mentoring - Access personal feedback from medical professionals who've passed the FSP themselves.",
-                  "Real-life Case Scenarios - Train with realistic clinical cases to build both vocabulary and confidence.",
-                  "Exam Simulation App (Coming soon) - Practice anytime with our digital tool that simulates the FSP environment."
-                ])}
+                {renderFeatureList(fspCourseFeatures)}
               </ul>
             </div>
           </div>
