@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import MainLayout from '@/components/MainLayout';
 import { Button } from '@/components/ui/button';
@@ -110,7 +111,15 @@ const SolviaLearning = () => {
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight">
-              {t?.learning?.hero?.title || 'Advance Your Medical Career with Solvia Learning'}
+              {t?.learning?.hero?.title ? (
+                <>
+                  Impulsa tu Carrera Médica con <span className="text-primary">Solvia Learning</span>
+                </>
+              ) : (
+                <>
+                  Advance Your Medical Career with <span className="text-primary">Solvia Learning</span>
+                </>
+              )}
             </h1>
             <p className="text-xl md:text-2xl text-gray-600 mb-8 leading-relaxed">
               {t?.learning?.hero?.subtitle || 'Specialized German Language and FSP Preparation Courses for International Doctors'}
@@ -341,7 +350,9 @@ const SolviaLearning = () => {
                             Completa el formulario para una <span className="text-primary">Consultoría Gratuita</span>
                           </>
                         ) : (
-                          'Fill the form for a Free Consultancy'
+                          <>
+                            Fill the form for a <span className="text-primary">Free Consultancy</span>
+                          </>
                         )}
                       </h2>
                       <p className="text-gray-600">
