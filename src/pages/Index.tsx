@@ -2,11 +2,10 @@
 import React, { Suspense } from 'react';
 import MainLayout from '@/components/MainLayout';
 import HeroSection from '@/components/landing/HeroSection';
-import LazySection from '@/components/ui/lazy-section';
 import { featuredVacancies, featuredProfessionals } from '@/data/landingPageData';
 
-// Lazy load heavy components
-const WhySolviaSection = React.lazy(() => import('@/components/landing/WhySolviaSection'));
+// Lazy load only the heavy components that are below the fold
+const WhySolviaSectionOptimized = React.lazy(() => import('@/components/landing/WhySolviaSectionOptimized'));
 const TimelineSection = React.lazy(() => import('@/components/landing/TimelineSection'));
 const ProfessionalsSection = React.lazy(() => import('@/components/landing/ProfessionalsSection'));
 const VacanciesSection = React.lazy(() => import('@/components/landing/VacanciesSection'));
@@ -15,44 +14,51 @@ const BlogSection = React.lazy(() => import('@/components/landing/BlogSection'))
 const LearningSection = React.lazy(() => import('@/components/landing/LearningSection'));
 const CTASection = React.lazy(() => import('@/components/landing/CTASection'));
 
+// Simple loading fallback
+const LoadingFallback = ({ height }: { height: string }) => (
+  <div className={`${height} bg-gray-100 animate-pulse flex items-center justify-center`}>
+    <div className="text-gray-500">Loading...</div>
+  </div>
+);
+
 const Index = () => {
   return (
     <MainLayout>
       {/* Critical above-the-fold content - load immediately */}
       <HeroSection />
       
-      {/* Below-the-fold sections - lazy load */}
-      <LazySection fallback={<div className="h-64 bg-gray-50 animate-pulse" />}>
-        <WhySolviaSection />
-      </LazySection>
+      {/* Below-the-fold sections with simplified lazy loading */}
+      <Suspense fallback={<LoadingFallback height="h-64" />}>
+        <WhySolviaSectionOptimized />
+      </Suspense>
       
-      <LazySection fallback={<div className="h-80 bg-white animate-pulse" />}>
+      <Suspense fallback={<LoadingFallback height="h-80" />}>
         <TimelineSection />
-      </LazySection>
+      </Suspense>
       
-      <LazySection fallback={<div className="h-96 bg-white animate-pulse" />}>
+      <Suspense fallback={<LoadingFallback height="h-96" />}>
         <ProfessionalsSection professionals={featuredProfessionals} />
-      </LazySection>
+      </Suspense>
       
-      <LazySection fallback={<div className="h-96 bg-white animate-pulse" />}>
+      <Suspense fallback={<LoadingFallback height="h-96" />}>
         <VacanciesSection vacancies={featuredVacancies} />
-      </LazySection>
+      </Suspense>
       
-      <LazySection fallback={<div className="h-64 bg-gray-50 animate-pulse" />}>
+      <Suspense fallback={<LoadingFallback height="h-64" />}>
         <InsightsSection />
-      </LazySection>
+      </Suspense>
       
-      <LazySection fallback={<div className="h-80 bg-white animate-pulse" />}>
+      <Suspense fallback={<LoadingFallback height="h-80" />}>
         <BlogSection />
-      </LazySection>
+      </Suspense>
       
-      <LazySection fallback={<div className="h-96 bg-blue-50 animate-pulse" />}>
+      <Suspense fallback={<LoadingFallback height="h-96" />}>
         <LearningSection />
-      </LazySection>
+      </Suspense>
       
-      <LazySection fallback={<div className="h-64 bg-gradient-to-r from-blue-600 to-blue-700 animate-pulse" />}>
+      <Suspense fallback={<LoadingFallback height="h-64" />}>
         <CTASection />
-      </LazySection>
+      </Suspense>
     </MainLayout>
   );
 };

@@ -1,10 +1,32 @@
 
 import { useState, useEffect } from 'react';
-import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
-import { BlogPost } from '@/types/landing';
+import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/hooks/useLanguage';
+
+export interface BlogPost {
+  id: string;
+  title: string;
+  content: string;
+  excerpt: string;
+  slug: string;
+  status: 'draft' | 'published';
+  category: string | null;
+  created_at: string;
+  updated_at: string;
+  author_id: string;
+  language: string;
+  date: string;
+  readTime: string;
+  author?: string;
+  imageUrl?: string;
+  meta_title?: string | null;
+  meta_description?: string | null;
+  tags?: string | null;
+  publish_date?: string | null;
+  post_group_id?: string | null;
+}
 
 export const useBlogPosts = (fetchDrafts = false, language?: string) => {
   const [posts, setPosts] = useState<BlogPost[]>([]);
@@ -67,6 +89,8 @@ export const useBlogPosts = (fetchDrafts = false, language?: string) => {
           status: post.status,
           language: post.language,
           post_group_id: post.post_group_id,
+          created_at: post.created_at,
+          updated_at: post.updated_at,
         }));
         
         setPosts(formattedPosts);
@@ -146,6 +170,8 @@ export const useSingleBlogPost = (id: string | undefined) => {
             status: data.status,
             language: data.language,
             post_group_id: data.post_group_id,
+            created_at: data.created_at,
+            updated_at: data.updated_at,
           };
           
           setPost(formattedPost);
@@ -155,7 +181,7 @@ export const useSingleBlogPost = (id: string | undefined) => {
             const { data: translationsData } = await supabase
               .from('blog_posts')
               .select(`
-                id, title, language, status
+                id, title, language, status, created_at, updated_at
               `)
               .eq('post_group_id', data.post_group_id)
               .neq('id', id);
@@ -168,8 +194,11 @@ export const useSingleBlogPost = (id: string | undefined) => {
                 excerpt: '',
                 content: '',
                 imageUrl: '',
-                date: '',
+                date: t.created_at,
                 author_id: '',
+                category: null,
+                readTime: '',
+                post_group_id: data.post_group_id,
               })));
             }
           }

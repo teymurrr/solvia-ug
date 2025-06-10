@@ -24,29 +24,82 @@ export default defineConfig(({ mode }) => ({
     rollupOptions: {
       output: {
         manualChunks: {
-          vendor: ['react', 'react-dom', 'react-router-dom'],
-          ui: ['@radix-ui/react-dialog', '@radix-ui/react-dropdown-menu', '@radix-ui/react-toast'],
-          supabase: ['@supabase/supabase-js'],
-          charts: ['recharts'],
-          utils: ['clsx', 'tailwind-merge', 'class-variance-authority'],
+          // Core vendor libraries
+          vendor: ['react', 'react-dom'],
+          router: ['react-router-dom'],
+          
+          // UI components
+          'ui-core': ['@radix-ui/react-dialog', '@radix-ui/react-dropdown-menu', '@radix-ui/react-toast'],
+          'ui-form': ['@radix-ui/react-checkbox', '@radix-ui/react-select', '@radix-ui/react-radio-group'],
+          
+          // Heavy libraries
+          'supabase': ['@supabase/supabase-js'],
+          'charts': ['recharts'],
+          'query': ['@tanstack/react-query'],
+          
+          // Utils and helpers
+          'utils': ['clsx', 'tailwind-merge', 'class-variance-authority', 'date-fns'],
+          'icons': ['lucide-react']
         },
-      },
+        
+        // Optimize chunk sizes
+        chunkFileNames: 'assets/[name]-[hash].js',
+        
+        // Add cache headers via file naming
+        assetFileNames: (assetInfo) => {
+          if (!assetInfo.name) {
+            return `assets/[name]-[hash][extname]`;
+          }
+          
+          if (/\.(css)$/.test(assetInfo.name)) {
+            return `assets/css/[name]-[hash][extname]`;
+          }
+          if (/\.(png|jpe?g|svg|gif|tiff|bmp|ico)$/i.test(assetInfo.name)) {
+            return `assets/images/[name]-[hash][extname]`;
+          }
+          if (/\.(woff2?|eot|ttf|otf)$/i.test(assetInfo.name)) {
+            return `assets/fonts/[name]-[hash][extname]`;
+          }
+          return `assets/[name]-[hash][extname]`;
+        }
+      }
     },
+    
+    // Modern build optimizations
     target: 'esnext',
     minify: 'esbuild',
     cssMinify: true,
     reportCompressedSize: false,
-    chunkSizeWarningLimit: 1000,
+    chunkSizeWarningLimit: 500,
+    
+    // CSS code splitting
+    cssCodeSplit: true,
+    
+    // Sourcemap only for debugging in dev
+    sourcemap: mode === 'development',
+    
+    // Aggressive compression
+    assetsInlineLimit: 4096
   },
+  
+  // Optimize dependencies
   optimizeDeps: {
     include: [
       'react',
       'react-dom',
-      'react-router-dom',
-      '@supabase/supabase-js',
-      '@radix-ui/react-dialog',
-      '@radix-ui/react-dropdown-menu',
-      '@radix-ui/react-toast',
-    ],
+      'react-router-dom'
+    ]
   },
+  
+  // Modern CSS features
+  css: {
+    devSourcemap: mode === 'development'
+  },
+  
+  // Experimental features for better performance
+  esbuild: {
+    target: 'es2020',
+    legalComments: 'none',
+    treeShaking: true
+  }
 }));

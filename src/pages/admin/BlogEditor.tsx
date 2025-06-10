@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import MainLayout from '@/components/MainLayout';
 import { useNavigate, Link, useParams } from 'react-router-dom';
@@ -101,10 +102,10 @@ const BlogEditor = () => {
         status: (post.status || 'draft') as 'draft' | 'published',
         language: post.language || 'en',
         post_group_id: post.post_group_id,
-        metaTitle: '',
-        metaDescription: '',
-        tags: '',
-        publishDate: '',
+        metaTitle: post.meta_title || '',
+        metaDescription: post.meta_description || '',
+        tags: post.tags || '',
+        publishDate: post.publish_date ? new Date(post.publish_date).toISOString().slice(0, 16) : '',
       };
       setFormData(postData);
 
@@ -193,13 +194,17 @@ const BlogEditor = () => {
         title: formData.title,
         slug: formData.slug || generateSlug(formData.title),
         excerpt: formData.excerpt,
-        content: formData.content, // Keep HTML formatting intact
+        content: formData.content,
         image_url: formData.imageUrl,
         category: formData.category || null,
         read_time: formData.readTime || null,
-        status: 'draft' as const, // Always save as draft during auto-save
+        status: 'draft' as const,
         language: formData.language,
         post_group_id: formData.post_group_id || null,
+        meta_title: formData.metaTitle || null,
+        meta_description: formData.metaDescription || null,
+        tags: formData.tags || null,
+        publish_date: formData.publishDate ? new Date(formData.publishDate).toISOString() : null,
       };
       
       if (isEditing) {
@@ -257,13 +262,17 @@ const BlogEditor = () => {
         title: formData.title,
         slug: formData.slug || generateSlug(formData.title),
         excerpt: formData.excerpt,
-        content: formData.content, // Keep HTML formatting intact
+        content: formData.content,
         image_url: imageUrl,
         category: formData.category || null,
         read_time: formData.readTime || null,
         status: formData.status,
         language: formData.language,
         post_group_id: formData.post_group_id || null,
+        meta_title: formData.metaTitle || null,
+        meta_description: formData.metaDescription || null,
+        tags: formData.tags || null,
+        publish_date: formData.publishDate ? new Date(formData.publishDate).toISOString() : null,
       };
       
       if (isEditing) {
@@ -610,7 +619,7 @@ const BlogEditor = () => {
                       maxLength={160}
                     />
                     <p className="text-xs text-gray-500 mt-1">
-                      Include your main keyword and make it compelling to boost click-through rates.
+                      {formData.metaDescription.length}/160 characters
                     </p>
                   </div>
 

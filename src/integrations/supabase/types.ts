@@ -95,10 +95,14 @@ export type Database = {
           id: string
           image_url: string | null
           language: string
+          meta_description: string | null
+          meta_title: string | null
           post_group_id: string | null
+          publish_date: string | null
           read_time: string | null
           slug: string
           status: Database["public"]["Enums"]["blog_post_status"]
+          tags: string | null
           title: string
           updated_at: string
         }
@@ -111,10 +115,14 @@ export type Database = {
           id?: string
           image_url?: string | null
           language?: string
+          meta_description?: string | null
+          meta_title?: string | null
           post_group_id?: string | null
+          publish_date?: string | null
           read_time?: string | null
           slug: string
           status?: Database["public"]["Enums"]["blog_post_status"]
+          tags?: string | null
           title: string
           updated_at?: string
         }
@@ -127,10 +135,14 @@ export type Database = {
           id?: string
           image_url?: string | null
           language?: string
+          meta_description?: string | null
+          meta_title?: string | null
           post_group_id?: string | null
+          publish_date?: string | null
           read_time?: string | null
           slug?: string
           status?: Database["public"]["Enums"]["blog_post_status"]
+          tags?: string | null
           title?: string
           updated_at?: string
         }
