@@ -1,6 +1,7 @@
-
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { OptimizedImage } from '@/components/ui/optimized-image';
+import { Button } from '@/components/ui/button';
 import { Quote } from 'lucide-react';
 
 const SuccessStoriesSection = () => {
@@ -108,19 +109,21 @@ const SuccessStoriesSection = () => {
             ))}
           </div>
 
-          {/* Call to action */}
+          {/* Call to action button */}
           <div className="text-center mt-16">
-            <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-6 py-3 rounded-full font-medium">
-              <span>Join thousands of doctors who chose Solvia</span>
-              <div className="flex -space-x-2">
-                <div className="w-6 h-6 bg-green-500 rounded-full border-2 border-white"></div>
-                <div className="w-6 h-6 bg-blue-500 rounded-full border-2 border-white"></div>
-                <div className="w-6 h-6 bg-purple-500 rounded-full border-2 border-white"></div>
-                <div className="w-6 h-6 bg-orange-500 rounded-full border-2 border-white flex items-center justify-center text-xs text-white font-bold">
-                  +
+            <Button asChild size="lg" className="text-lg px-8 py-6">
+              <Link to="/signup/professional" className="flex items-center gap-3">
+                Join thousands of doctors who chose Solvia
+                <div className="flex -space-x-2">
+                  <div className="w-6 h-6 bg-green-500 rounded-full border-2 border-white"></div>
+                  <div className="w-6 h-6 bg-blue-500 rounded-full border-2 border-white"></div>
+                  <div className="w-6 h-6 bg-purple-500 rounded-full border-2 border-white"></div>
+                  <div className="w-6 h-6 bg-orange-500 rounded-full border-2 border-white flex items-center justify-center text-xs text-white font-bold">
+                    +
+                  </div>
                 </div>
-              </div>
-            </div>
+              </Link>
+            </Button>
           </div>
         </div>
       </div>
