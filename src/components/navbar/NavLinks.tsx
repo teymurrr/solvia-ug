@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Home, Heart, BarChart, LayoutDashboard, BookOpen, FileText } from 'lucide-react';
+import { Home, Heart, BarChart, LayoutDashboard, BookOpen, FileText, Stethoscope } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
 
 interface NavLinksProps {
@@ -23,6 +23,16 @@ const NavLinks: React.FC<NavLinksProps> = ({ isLoggedIn, userType }) => {
             <Home className="h-5 w-5 text-gray-600 group-hover:text-gray-900" />
           </div>
           <span className="text-sm text-gray-600 group-hover:text-gray-900">{t?.common?.home || "Home"}</span>
+        </Link>
+
+        <Link
+          to="/for-doctors"
+          className="flex flex-col items-center group"
+        >
+          <div className="p-2 rounded-full group-hover:bg-gray-100 transition-colors">
+            <Stethoscope className="h-5 w-5 text-gray-600 group-hover:text-gray-900" />
+          </div>
+          <span className="text-sm text-gray-600 group-hover:text-gray-900">For Doctors</span>
         </Link>
 
         <Link
