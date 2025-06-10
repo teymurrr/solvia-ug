@@ -47,7 +47,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
               onClick={onClose}
             >
               <Stethoscope className="h-5 w-5 text-gray-600" />
-              <span>For Doctors</span>
+              <span>{t?.common?.forDoctors || "For Doctors"}</span>
             </Link>
             
             <Link

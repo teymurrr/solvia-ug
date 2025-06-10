@@ -22,7 +22,7 @@ const NavLinks: React.FC<NavLinksProps> = ({ isLoggedIn, userType }) => {
           <div className="p-2 rounded-full group-hover:bg-gray-100 transition-colors">
             <Stethoscope className="h-5 w-5 text-gray-600 group-hover:text-gray-900" />
           </div>
-          <span className="text-sm text-gray-600 group-hover:text-gray-900">For Doctors</span>
+          <span className="text-sm text-gray-600 group-hover:text-gray-900">{t?.common?.forDoctors || "For Doctors"}</span>
         </Link>
 
         <Link

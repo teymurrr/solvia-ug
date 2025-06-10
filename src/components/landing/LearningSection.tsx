@@ -79,7 +79,7 @@ const LearningSection = () => {
             <h3 className="text-xl font-semibold mb-2">{t?.learning?.germanCourses?.title || "German Language Courses"}</h3>
             <p className="text-gray-600 mb-4">{t?.learning?.germanCourses?.subtitle || "Whether you're just starting or need focused training for the medical field, our language programs are built with your goals in mind."}</p>
             <div className="mb-4">
-              <p className="font-medium text-sm text-primary mb-4">✅ What's included:</p>
+              <p className="font-medium text-sm text-primary mb-4">{t?.common?.whatsIncluded || "✅ What's included:"}</p>
               <ul className="space-y-0">
                 {renderFeatureList(germanCourseFeatures)}
               </ul>
@@ -94,7 +94,7 @@ const LearningSection = () => {
             <h3 className="text-xl font-semibold mb-2">{t?.learning?.fspCourses?.title || "FSP Preparation Courses"}</h3>
             <p className="text-gray-600 mb-4">{t?.learning?.fspCourses?.subtitle || "The Fachsprachprüfung (FSP) is a specialized language and communication exam required for Approbation. We've created a full support system to help you succeed—on your first try."}</p>
             <div className="mb-4">
-              <p className="font-medium text-sm text-primary mb-4">✅ What's included:</p>
+              <p className="font-medium text-sm text-primary mb-4">{t?.common?.whatsIncluded || "✅ What's included:"}</p>
               <ul className="space-y-0">
                 {renderFeatureList(fspCourseFeatures)}
               </ul>
