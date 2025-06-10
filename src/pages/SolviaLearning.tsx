@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import MainLayout from '@/components/MainLayout';
 import { Button } from '@/components/ui/button';
@@ -79,6 +80,13 @@ const SolviaLearning = () => {
                   expert instruction, and flexible formats, we'll help you speak confidently in hospitals, 
                   exams, and beyond.
                 </p>
+                <Button 
+                  size="lg" 
+                  onClick={scrollToForm}
+                  className="bg-primary hover:bg-primary/90 text-white px-6 py-3"
+                >
+                  Explore More
+                </Button>
               </div>
               <div>
                 <div className="space-y-4">
@@ -159,7 +167,7 @@ const SolviaLearning = () => {
                   The FSP is a critical step toward practicing in Germany. Our course gives you structure, 
                   practice, and expert guidance to succeed on your first attempt.
                 </p>
-                <div className="space-y-4">
+                <div className="space-y-4 mb-8">
                   {[
                     { icon: Target, title: "Full FSP Curriculum (Anamnesis, Findings, Doctor Dialogue)" },
                     { icon: Users, title: "One-on-One Mentoring with FSP Coaches" },
@@ -178,6 +186,13 @@ const SolviaLearning = () => {
                     </div>
                   ))}
                 </div>
+                <Button 
+                  size="lg" 
+                  onClick={scrollToForm}
+                  className="bg-primary hover:bg-primary/90 text-white px-6 py-3"
+                >
+                  Explore More
+                </Button>
               </div>
             </div>
           </div>
