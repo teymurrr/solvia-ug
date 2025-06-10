@@ -218,5 +218,3 @@ const AppRoutes = () => {
 };
 
 export default AppRoutes;
-
-</initial_code>
