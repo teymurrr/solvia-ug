@@ -3,11 +3,32 @@ import React from 'react';
 import MainLayout from '@/components/MainLayout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { BookOpen, GraduationCap, Globe, Clock } from 'lucide-react';
+import { BookOpen, GraduationCap, Globe, Check } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
 
 const SolviaLearning = () => {
   const { t } = useLanguage();
+
+  const renderFeatureList = (features: string[]) => {
+    return features.map((feature, index) => {
+      const [title, description] = feature.split(' - ');
+      return (
+        <li key={index} className="flex items-start space-x-3 mb-4">
+          <div className="flex-shrink-0 mt-1">
+            <div className="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center">
+              <Check className="w-3 h-3 text-primary" />
+            </div>
+          </div>
+          <div className="flex-1">
+            <div className="font-semibold text-gray-900 text-sm mb-1">{title}</div>
+            {description && (
+              <div className="text-gray-600 text-sm leading-relaxed">{description}</div>
+            )}
+          </div>
+        </li>
+      );
+    });
+  };
 
   return (
     <MainLayout>
@@ -35,23 +56,15 @@ const SolviaLearning = () => {
               </CardHeader>
               <CardContent>
                 <div className="mb-4">
-                  <p className="font-medium text-sm text-primary mb-3">✅ What's included:</p>
-                  <ul className="space-y-3">
-                    {(t?.learning?.germanCourses?.features || [
+                  <p className="font-medium text-sm text-primary mb-4">✅ What's included:</p>
+                  <ul className="space-y-0">
+                    {renderFeatureList(t?.learning?.germanCourses?.features || [
                       "General + Medical German Levels A1 to C1 - Structured curriculum from beginner to advanced with medical vocabulary included from the early stages.",
                       "Flexible Learning Options - Choose between live online classes, self-paced modules, or hybrid formats—designed for professionals with busy schedules.",
                       "TELC B2-C1 Medizin Preparation - Get targeted practice for the most recognized medical language exam, accepted across Germany.",
                       "Interactive Practice Tools - Vocabulary flashcards, pronunciation drills, and doctor-patient conversation simulations.",
                       "Progress Tracking - Follow your learning milestones and get reminders for practice sessions, assignments, and exams."
-                    ]).map((feature, index) => {
-                      const [title, description] = feature.split(' - ');
-                      return (
-                        <li key={index} className="text-sm">
-                          <span className="font-medium text-gray-900">{title}</span>
-                          {description && <span className="text-gray-600"> - {description}</span>}
-                        </li>
-                      );
-                    })}
+                    ])}
                   </ul>
                 </div>
               </CardContent>
@@ -71,23 +84,15 @@ const SolviaLearning = () => {
               </CardHeader>
               <CardContent>
                 <div className="mb-4">
-                  <p className="font-medium text-sm text-primary mb-3">✅ What's included:</p>
-                  <ul className="space-y-3">
-                    {(t?.learning?.fspCourses?.features || [
+                  <p className="font-medium text-sm text-primary mb-4">✅ What's included:</p>
+                  <ul className="space-y-0">
+                    {renderFeatureList(t?.learning?.fspCourses?.features || [
                       "Complete FSP Curriculum - Structured lessons that mirror the real exam format: anamnesis, findings discussion, and doctor-to-doctor communication.",
                       "Practice Examinations - Multiple full-length mock FSP exams with feedback from certified trainers.",
                       "One-on-One Mentoring - Access personal feedback from medical professionals who've passed the FSP themselves.",
                       "Real-life Case Scenarios - Train with realistic clinical cases to build both vocabulary and confidence.",
                       "Exam Simulation App (Coming soon) - Practice anytime with our digital tool that simulates the FSP environment."
-                    ]).map((feature, index) => {
-                      const [title, description] = feature.split(' - ');
-                      return (
-                        <li key={index} className="text-sm">
-                          <span className="font-medium text-gray-900">{title}</span>
-                          {description && <span className="text-gray-600"> - {description}</span>}
-                        </li>
-                      );
-                    })}
+                    ])}
                   </ul>
                 </div>
               </CardContent>
