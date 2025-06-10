@@ -21,6 +21,7 @@ const Terms = lazy(() => import("@/pages/Terms"));
 const EmployersLanding = lazy(() => import("@/pages/EmployersLanding"));
 const Blog = lazy(() => import("@/pages/Blog"));
 const BlogDetail = lazy(() => import("@/pages/BlogDetail"));
+const ForDoctors = lazy(() => import("@/pages/ForDoctors"));
 
 // Auth pages - import individually instead of bundling
 const Signup = lazy(() => import("@/pages/Signup"));
@@ -87,6 +88,7 @@ const AppRoutes = () => {
     <Suspense fallback={<LoadingFallback />}>
       <Routes>
         <Route path="/" element={renderIndex()} />
+        <Route path="/for-doctors" element={<ForDoctors />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/privacy" element={<Privacy />} />
@@ -216,3 +218,5 @@ const AppRoutes = () => {
 };
 
 export default AppRoutes;
+
+</initial_code>
