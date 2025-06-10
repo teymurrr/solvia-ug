@@ -9,43 +9,43 @@ const OpenPositionsSection = () => {
   const positions = [
     {
       id: 1,
-      title: "Cardiologist",
-      hospital: "University Hospital Munich",
-      location: "Munich, Bavaria",
-      type: "Full-time",
-      posted: "2 days ago",
-      description: "Join our team of expert cardiologists in providing cardiac care.",
-      requirements: ["German C1 level", "EU medical license", "3+ years experience"]
+      title: "Cardiólogo",
+      hospital: "Hospital Universitario de Múnich",
+      location: "Múnich, Baviera",
+      type: "Tiempo completo",
+      posted: "Hace 2 días",
+      description: "Únete a nuestro equipo de cardiólogos expertos brindando atención cardíaca.",
+      requirements: ["Alemán nivel C1", "Licencia médica europea", "3+ años de experiencia"]
     },
     {
       id: 2,
-      title: "Emergency Medicine Physician",
-      hospital: "Charité Berlin",
-      location: "Berlin",
-      type: "Full-time",
-      posted: "1 week ago",
-      description: "Work in one of Germany's leading emergency departments.",
-      requirements: ["German B2+ level", "Emergency medicine training", "Flexibility"]
+      title: "Médico de Urgencias",
+      hospital: "Charité Berlín",
+      location: "Berlín",
+      type: "Tiempo completo",
+      posted: "Hace 1 semana",
+      description: "Trabaja en uno de los departamentos de emergencias más importantes de Alemania.",
+      requirements: ["Alemán nivel B2+", "Formación en medicina de urgencias", "Flexibilidad"]
     },
     {
       id: 3,
-      title: "Pediatrician",
-      hospital: "Hamburg Medical Center",
-      location: "Hamburg",
-      type: "Full-time",
-      posted: "3 days ago",
-      description: "Provide comprehensive pediatric care in a modern facility.",
-      requirements: ["German C1 level", "Pediatric specialization", "Team player"]
+      title: "Pediatra",
+      hospital: "Centro Médico de Hamburgo",
+      location: "Hamburgo",
+      type: "Tiempo completo",
+      posted: "Hace 3 días",
+      description: "Brinda atención pediátrica integral en una instalación moderna.",
+      requirements: ["Alemán nivel C1", "Especialización en pediatría", "Trabajo en equipo"]
     },
     {
       id: 4,
-      title: "Anesthesiologist",
-      hospital: "Frankfurt General Hospital",
+      title: "Anestesiólogo",
+      hospital: "Hospital General de Frankfurt",
       location: "Frankfurt, Hesse",
-      type: "Full-time",
-      posted: "5 days ago",
-      description: "Join our anesthesiology team in a high-volume hospital.",
-      requirements: ["German B2+ level", "Anesthesia certification", "Critical care experience"]
+      type: "Tiempo completo",
+      posted: "Hace 5 días",
+      description: "Únete a nuestro equipo de anestesiología en un hospital de alto volumen.",
+      requirements: ["Alemán nivel B2+", "Certificación en anestesia", "Experiencia en cuidados críticos"]
     }
   ];
 
@@ -55,10 +55,10 @@ const OpenPositionsSection = () => {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              Open Positions
+              Posiciones Abiertas
             </h2>
             <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-              Discover exciting opportunities at leading healthcare institutions across Germany
+              Descubre oportunidades emocionantes en instituciones de salud líderes en toda Alemania
             </p>
           </div>
           
@@ -84,7 +84,7 @@ const OpenPositionsSection = () => {
                 <CardContent>
                   <p className="text-muted-foreground mb-4">{position.description}</p>
                   <div className="mb-4">
-                    <h4 className="font-medium mb-2">Key Requirements:</h4>
+                    <h4 className="font-medium mb-2">Requisitos Clave:</h4>
                     <ul className="space-y-1">
                       {position.requirements.map((req, index) => (
                         <li key={index} className="flex items-center text-sm">
@@ -95,7 +95,7 @@ const OpenPositionsSection = () => {
                     </ul>
                   </div>
                   <Button variant="outline" className="w-full">
-                    View Details
+                    Ver Detalles
                   </Button>
                 </CardContent>
               </Card>
@@ -105,7 +105,7 @@ const OpenPositionsSection = () => {
           <div className="flex justify-center">
             <Button variant="outline" asChild className="group border-primary text-primary hover:bg-primary/10">
               <Link to="/signup/professional" className="flex items-center">
-                View All Positions
+                Ver Todas las Posiciones
                 <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </Link>
             </Button>
