@@ -10,28 +10,32 @@ import {
 const FAQSection = () => {
   const faqs = [
     {
-      question: "How long does the recognition process take?",
-      answer: "The recognition process typically takes 3-6 months, depending on your documents and the state you're applying to. We help you prepare all required documents and guide you through each step to minimize delays."
+      question: "Who can apply through Solvia?",
+      answer: "Solvia is for doctors who have completed their medical degree outside of Germany or Austria and want to practice there. We work with both EU and non-EU citizens and guide you through every step—from recognition to relocation."
     },
     {
-      question: "Do I need to speak German before applying?",
-      answer: "You need at least B2 level German for most medical positions, plus medical German certification (FSP exam). Our platform connects you with specialized German language courses designed for healthcare professionals."
+      question: "Do I need to speak German before starting with Solvia?",
+      answer: "No. You don't need to speak German when you begin. Solvia helps you from zero to certification. We connect you with high-quality language courses and support you in preparing for the medical German exam (FSP)."
     },
     {
-      question: "What documents do I need for degree recognition?",
-      answer: "You'll need your medical degree, transcripts, certificate of good standing, work experience certificates, and language certificates. All documents must be translated and apostilled. We provide a complete checklist and help you organize everything."
+      question: "What is the Approbation process?",
+      answer: "Approbation is the official medical license that allows you to work as a doctor in Germany or Austria. Solvia helps you understand which documents you need, submit your application correctly, and prepare for any required exams."
     },
     {
-      question: "Can Solvia help me find a job before moving to Germany?",
-      answer: "Yes! We work with verified hospitals and clinics that are actively recruiting international doctors. Many of our users receive job offers before arriving in Germany, which helps with visa applications."
+      question: "Can I get a job before moving to Germany or Austria?",
+      answer: "Yes. Many of our doctors receive job offers before arriving. Solvia connects you with trusted hospitals that are open to international candidates and help arrange interviews and contracts remotely."
     },
     {
-      question: "What is the FSP exam and when do I need to take it?",
-      answer: "The FSP (Fachsprachprüfung) is a medical German language exam required for medical license recognition. You typically take it after completing B2 German and before starting work. We offer specialized FSP preparation courses."
+      question: "How long does the process take?",
+      answer: "It depends on your current level of German, document readiness, and the region where you apply. On average, it takes between 9 to 18 months from registration to starting your job—but Solvia helps reduce delays."
     },
     {
       question: "Is Solvia free to use?",
-      answer: "Solvia offers both free and premium features. You can access basic information, checklists, and some resources for free. Premium features include personalized guidance, document review, and direct employer connections."
+      answer: "Creating an account and accessing basic resources is free. We also offer optional paid support packages that include document translation, 1-on-1 coaching, and fast-track job placement."
+    },
+    {
+      question: "Can I move with my family?",
+      answer: "Absolutely. Solvia supports doctors who relocate with spouses and children, including help with visa processes, housing, school registration, and family reunification."
     }
   ];
 
