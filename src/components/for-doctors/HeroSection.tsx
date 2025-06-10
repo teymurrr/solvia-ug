@@ -17,7 +17,7 @@ const HeroSection = () => {
           </p>
           <div className="flex justify-center mt-8">
             <Button size="lg" asChild>
-              <Link to="/signup">Create your account and access all the free information</Link>
+              <Link to="/signup">Access to all the free information</Link>
             </Button>
           </div>
         </div>
