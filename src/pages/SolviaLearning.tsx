@@ -70,8 +70,13 @@ const SolviaLearning = () => {
   };
 
   const scrollToForm = () => {
+    console.log('Button clicked - scrolling to form');
     const formSection = document.getElementById('signup-form');
-    formSection?.scrollIntoView({ behavior: 'smooth' });
+    if (formSection) {
+      formSection.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      console.error('Form section not found');
+    }
   };
 
   // Fixed testimonials data with proper structure
@@ -114,13 +119,13 @@ const SolviaLearning = () => {
             <Button 
               size="lg" 
               onClick={scrollToForm}
-              className="bg-primary hover:bg-primary/90 text-white px-8 py-4 text-lg"
+              className="bg-primary hover:bg-primary/90 text-white px-8 py-4 text-lg relative z-10 cursor-pointer"
             >
               {t?.learning?.hero?.cta || 'Sign Up for Free Consultation'}
             </Button>
           </div>
         </div>
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmMGY5ZmYiIGZpbGwtb3BhY2l0eT0iMC4xIj48Y2lyY2xlIGN4PSIzMCIgY3k9IjMwIiByPSIyIi8+PC9nPjwvZz48L3N2Zz4=')] opacity-30"></div>
+        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmMGY5ZmYiIGZpbGwtb3BhY2l0eT0iMC4xIj48Y2lyY2xlIGN4PSIzMCIgY3k9IjMwIiByPSIyIi8+PC9nPjwvZz48L3N2Zz4=')] opacity-30 pointer-events-none"></div>
       </section>
 
       {/* German Language Courses Section */}
