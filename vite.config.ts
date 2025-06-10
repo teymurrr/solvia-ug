@@ -28,13 +28,12 @@ export default defineConfig(({ mode }) => ({
           vendor: ['react', 'react-dom'],
           router: ['react-router-dom'],
           
-          // UI components
+          // UI components (removed charts entry)
           'ui-core': ['@radix-ui/react-dialog', '@radix-ui/react-dropdown-menu', '@radix-ui/react-toast'],
           'ui-form': ['@radix-ui/react-checkbox', '@radix-ui/react-select', '@radix-ui/react-radio-group'],
           
           // Heavy libraries
           'supabase': ['@supabase/supabase-js'],
-          'charts': ['recharts'],
           'query': ['@tanstack/react-query'],
           
           // Utils and helpers
