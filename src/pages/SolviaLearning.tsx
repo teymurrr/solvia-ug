@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import MainLayout from '@/components/MainLayout';
 import { Button } from '@/components/ui/button';
@@ -129,9 +128,6 @@ const SolviaLearning = () => {
                     "Progress Tracking & AI-Powered Feedback"
                   ]).map((feature, index) => (
                     <div key={index} className="flex items-start space-x-3">
-                      <div className="flex-shrink-0 w-5 h-5 rounded-full bg-green-100 flex items-center justify-center mt-0.5">
-                        <Check className="w-3 h-3 text-green-600" />
-                      </div>
                       <div className="flex items-center space-x-3">
                         {[BookOpen, Clock, Award, MessageCircle, Target][index] && (
                           React.createElement([BookOpen, Clock, Award, MessageCircle, Target][index], {
@@ -196,9 +192,6 @@ const SolviaLearning = () => {
                     "Feedback from Medical Professionals"
                   ]).map((feature, index) => (
                     <div key={index} className="flex items-start space-x-3">
-                      <div className="flex-shrink-0 w-5 h-5 rounded-full bg-green-100 flex items-center justify-center mt-0.5">
-                        <Check className="w-3 h-3 text-green-600" />
-                      </div>
                       <div className="flex items-center space-x-3">
                         {[Target, Users, MessageCircle, Award, Check][index] && (
                           React.createElement([Target, Users, MessageCircle, Award, Check][index], {
