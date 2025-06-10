@@ -1,4 +1,5 @@
 
+
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
@@ -42,10 +43,15 @@ export default defineConfig(({ mode }) => ({
           'icons': ['lucide-react']
         },
         
-        // Optimize chunk sizes
-        chunkFileNames: 'assets/[name]-[hash].js',
+        // Optimize chunk sizes with cache-friendly naming
+        chunkFileNames: (chunkInfo) => {
+          const facadeModuleId = chunkInfo.facadeModuleId
+            ? chunkInfo.facadeModuleId.split('/').pop()?.replace('.tsx', '').replace('.ts', '')
+            : 'chunk';
+          return `assets/js/[name]-[hash].js`;
+        },
         
-        // Add cache headers via file naming
+        // Enhanced asset file names for better cache control
         assetFileNames: (assetInfo) => {
           if (!assetInfo.name) {
             return `assets/[name]-[hash][extname]`;
@@ -54,7 +60,7 @@ export default defineConfig(({ mode }) => ({
           if (/\.(css)$/.test(assetInfo.name)) {
             return `assets/css/[name]-[hash][extname]`;
           }
-          if (/\.(png|jpe?g|svg|gif|tiff|bmp|ico)$/i.test(assetInfo.name)) {
+          if (/\.(png|jpe?g|svg|gif|tiff|bmp|ico|webp|avif)$/i.test(assetInfo.name)) {
             return `assets/images/[name]-[hash][extname]`;
           }
           if (/\.(woff2?|eot|ttf|otf)$/i.test(assetInfo.name)) {
@@ -72,14 +78,17 @@ export default defineConfig(({ mode }) => ({
     reportCompressedSize: false,
     chunkSizeWarningLimit: 500,
     
-    // CSS code splitting
+    // CSS code splitting for better caching
     cssCodeSplit: true,
     
     // Sourcemap only for debugging in dev
     sourcemap: mode === 'development',
     
-    // Aggressive compression
-    assetsInlineLimit: 4096
+    // Aggressive compression with better cache headers
+    assetsInlineLimit: 4096,
+    
+    // Enable long-term caching with content hashing
+    manifest: true
   },
   
   // Optimize dependencies
@@ -91,15 +100,24 @@ export default defineConfig(({ mode }) => ({
     ]
   },
   
-  // Modern CSS features
+  // Modern CSS features with better caching
   css: {
-    devSourcemap: mode === 'development'
+    devSourcemap: mode === 'development',
+    postcss: {
+      plugins: []
+    }
   },
   
-  // Experimental features for better performance
+  // Experimental features for better performance and caching
   esbuild: {
     target: 'es2020',
     legalComments: 'none',
-    treeShaking: true
+    treeShaking: true,
+    // Add cache-friendly settings
+    keepNames: false,
+    minifyIdentifiers: true,
+    minifySyntax: true,
+    minifyWhitespace: true
   }
 }));
+
