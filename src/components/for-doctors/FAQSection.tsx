@@ -10,32 +10,32 @@ import {
 const FAQSection = () => {
   const faqs = [
     {
-      question: "¿Quién puede aplicar a través de Solvia?",
-      answer: "Solvia es para médicos que han completado su carrera de medicina fuera de Alemania o Austria y quieren ejercer ahí. Trabajamos tanto con ciudadanos de la UE como de fuera de la UE y te guiamos en cada paso—desde el reconocimiento hasta la mudanza."
+      question: "Who can apply through Solvia?",
+      answer: "Solvia is for doctors who have completed their medical degree outside of Germany or Austria and want to practice there. We work with both EU and non-EU citizens and guide you through every step—from recognition to relocation."
     },
     {
-      question: "¿Necesito hablar alemán antes de empezar con Solvia?",
-      answer: "No. No necesitas hablar alemán cuando empiezas. Solvia te ayuda desde cero hasta la certificación. Te conectamos con cursos de idioma de alta calidad y te apoyamos en la preparación para el examen de alemán médico (FSP)."
+      question: "Do I need to speak German before starting with Solvia?",
+      answer: "No. You don't need to speak German when you begin. Solvia helps you from zero to certification. We connect you with high-quality language courses and support you in preparing for the medical German exam (FSP)."
     },
     {
-      question: "¿Qué es el proceso de Approbation?",
-      answer: "La Approbation es la licencia médica oficial que te permite trabajar como médico en Alemania o Austria. Solvia te ayuda a entender qué documentos necesitas, presentar tu solicitud correctamente y prepararte para cualquier examen requerido."
+      question: "What is the Approbation process?",
+      answer: "Approbation is the official medical license that allows you to work as a doctor in Germany or Austria. Solvia helps you understand which documents you need, submit your application correctly, and prepare for any required exams."
     },
     {
-      question: "¿Puedo conseguir trabajo antes de mudarme a Alemania o Austria?",
-      answer: "Sí. Muchos de nuestros médicos reciben ofertas de trabajo antes de llegar. Solvia te conecta con hospitales de confianza que están abiertos a candidatos internacionales y ayuda a coordinar entrevistas y contratos de forma remota."
+      question: "Can I get a job before moving to Germany or Austria?",
+      answer: "Yes. Many of our doctors receive job offers before arriving. Solvia connects you with trusted hospitals that are open to international candidates and help arrange interviews and contracts remotely."
     },
     {
-      question: "¿Cuánto tiempo toma el proceso?",
-      answer: "Depende de tu nivel actual de alemán, preparación de documentos y la región donde apliques. En promedio, toma entre 9 a 18 meses desde el registro hasta empezar tu trabajo—pero Solvia ayuda a reducir los retrasos."
+      question: "How long does the process take?",
+      answer: "It depends on your current level of German, document readiness, and the region where you apply. On average, it takes between 9 to 18 months from registration to starting your job—but Solvia helps reduce delays."
     },
     {
-      question: "¿Es Solvia gratuito?",
-      answer: "Crear una cuenta y acceder a recursos básicos es gratis. También ofrecemos paquetes de apoyo pagos opcionales que incluyen traducción de documentos, coaching 1 a 1 y colocación laboral rápida."
+      question: "Is Solvia free to use?",
+      answer: "Creating an account and accessing basic resources is free. We also offer optional paid support packages that include document translation, 1-on-1 coaching, and fast-track job placement."
     },
     {
-      question: "¿Puedo mudarme con mi familia?",
-      answer: "Absolutamente. Solvia apoya a médicos que se mudan con cónyuges e hijos, incluyendo ayuda con procesos de visa, vivienda, inscripción escolar y reunificación familiar."
+      question: "Can I move with my family?",
+      answer: "Absolutely. Solvia supports doctors who relocate with spouses and children, including help with visa processes, housing, school registration, and family reunification."
     }
   ];
 
@@ -44,10 +44,10 @@ const FAQSection = () => {
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-6">
-            Preguntas Frecuentes
+            Frequently Asked Questions
           </h2>
           <p className="text-lg text-muted-foreground text-center mb-12 max-w-3xl mx-auto">
-            Obtén respuestas a las preguntas más comunes sobre trabajar como médico en Alemania
+            Get answers to the most common questions about working as a doctor in Germany
           </p>
           
           <Accordion type="single" collapsible className="w-full">

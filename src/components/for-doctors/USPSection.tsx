@@ -6,23 +6,23 @@ const USPSection = () => {
   const usps = [
     {
       icon: Check,
-      title: "Te acompañamos en cada paso",
-      description: "Desde el reconocimiento de tu título y el examen FSP hasta la búsqueda de trabajo, visa y vivienda—te guiamos paso a paso en una sola plataforma."
+      title: "Guidance at every step",
+      description: "From degree recognition and the FSP exam to job search, visa, and housing—we guide you through every step in one single platform."
     },
     {
       icon: Check,
-      title: "Plataforma inteligente con toque humano",
-      description: "Sigue tu progreso, sube documentos y recibe recordatorios. Y si necesitas ayuda, nuestro equipo está a solo un mensaje de distancia."
+      title: "Smart platform with a human touch",
+      description: "Track your progress, upload documents, and receive reminders. And if you need help, our team is just one message away."
     },
     {
       icon: Check,
-      title: "Especialistas en médicos internacionales",
-      description: "Entendemos los desafíos únicos que enfrentan los profesionales de América Latina, Asia, África o Europa del Este. Sabemos qué funciona—y te ayudamos a evitar errores comunes."
+      title: "Specialists in international doctors",
+      description: "We understand the unique challenges faced by professionals from Latin America, Asia, Africa, or Eastern Europe. We know what works—and help you avoid common mistakes."
     },
     {
       icon: Check,
-      title: "Acceso directo a empleadores de confianza",
-      description: "Trabajamos con hospitales verificados que valoran el talento internacional. Tú te enfocas en prepararte—nosotros te conectamos con las oportunidades correctas."
+      title: "Direct access to trusted employers",
+      description: "We work with verified hospitals that value international talent. You focus on preparing—we connect you with the right opportunities."
     }
   ];
 
@@ -31,10 +31,10 @@ const USPSection = () => {
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-6">
-            Esto es lo que nos hace diferentes:
+            This is what sets us apart:
           </h2>
           <p className="text-lg text-muted-foreground text-center mb-12 max-w-3xl mx-auto">
-            Miles de médicos enfrentan un proceso complejo al mudarse a Alemania. En Solvia, lo hacemos simple. Esto es lo que nos diferencia:
+            Thousands of doctors face a complex process when moving to Germany. At Solvia, we make it simple. Here's what makes us different:
           </p>
           
           <div className="grid md:grid-cols-2 gap-8">

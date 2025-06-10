@@ -10,14 +10,14 @@ const HeroSection = () => {
       <div className="container mx-auto px-4 py-16 md:py-24 relative z-10">
         <div className="max-w-4xl mx-auto text-center space-y-6">
           <h1 className="text-5xl md:text-6xl lg:text-[72px] font-bold tracking-tight">
-            Tu camino para trabajar como médico en Alemania o Austria comienza aquí
+            Your journey to working as a doctor in Germany or Austria starts here
           </h1>
           <p className="text-lg md:text-xl lg:text-[22px] text-muted-foreground">
-            Solvia es la plataforma digital que simplifica tu proceso: reconocimiento, idioma, trabajo y mudanza—todo en un solo lugar.
+            Solvia is the digital platform that simplifies your journey: recognition, language, job, and relocation—all in one place.
           </p>
           <div className="flex justify-center mt-8">
             <Button size="lg" asChild>
-              <Link to="/signup">Accede a toda la información gratuita</Link>
+              <Link to="/signup">Access to all the free information</Link>
             </Button>
           </div>
         </div>

@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { OptimizedImage } from '@/components/ui/optimized-image';
@@ -10,33 +9,33 @@ const SuccessStoriesSection = () => {
     {
       name: "María Fernanda",
       country: "Colombia",
-      specialty: "Pediatra en Berlín",
-      quote: "Ni siquiera sabía por dónde empezar, pero Solvia me guió paso a paso.",
-      story: "María Fernanda, pediatra de Medellín, soñaba con trabajar en Europa pero se sentía abrumada por el proceso. A través de Solvia, aprendió exactamente qué documentos necesitaba, cómo hacer reconocer su título y dónde inscribirse en cursos de alemán. Gracias a la preparación para el examen FSP y coaching para entrevistas, recibió una oferta de trabajo en una clínica pediátrica de Berlín. Hoy trabaja en un hospital moderno, vive con su esposo y está iniciando la reunificación familiar.",
+      specialty: "Pediatrician in Berlin",
+      quote: "I didn't even know where to start, but Solvia guided me step by step.",
+      story: "María Fernanda, a pediatrician from Medellín, dreamed of working in Europe but felt overwhelmed by the process. Through Solvia, she learned exactly which documents were needed, how to get her degree recognized, and where to enroll in German courses. Thanks to FSP exam prep and interview coaching, she received a job offer at a pediatric clinic in Berlin. Today, she works in a modern hospital, lives with her husband, and is starting family reunification.",
       image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&h=400&fit=crop&crop=face"
     },
     {
       name: "Luis Felipe",
-      country: "México",
-      specialty: "Neurólogo en Baviera",
-      quote: "Gracias a Solvia, conseguí una oferta de trabajo antes de llegar a Alemania.",
-      story: "Luis Felipe tenía años de experiencia como neurólogo en Monterrey y buscaba un ambiente de trabajo más tecnológico. Solvia le ayudó a traducir sus documentos, encontrar un empleador que valorara su especialidad y gestionar su visa desde México. También se unió a clases intensivas de alemán médico y a un grupo de WhatsApp con compañeros médicos latinos. Hoy trabaja en un hospital universitario en Baviera y ya está involucrado en proyectos de investigación.",
+      country: "Mexico",
+      specialty: "Neurologist in Bavaria",
+      quote: "Thanks to Solvia, I got a job offer before I even arrived in Germany.",
+      story: "Luis Felipe had years of experience as a neurologist in Monterrey and was seeking a more tech-driven work environment. Solvia helped him translate his documents, find an employer who valued his specialty, and arrange his visa from Mexico. He also joined intensive medical German classes and a WhatsApp group with fellow Latin doctors. Today, he works at a university hospital in Bavaria and is already involved in research projects.",
       image: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=400&h=400&fit=crop&crop=face"
     },
     {
       name: "Camila",
       country: "Argentina",
-      specialty: "Médica General en Renania del Norte",
-      quote: "Sin Solvia, no habría aprobado el examen de alemán médico.",
-      story: "Camila trabajaba como médica general en Córdoba pero siempre soñó con mudarse a Europa. Después de meses de confusión y sin respuestas claras, encontró Solvia—y todo cambió. Recibió asesoría personalizada, un plan paso a paso para el reconocimiento y lecciones específicas para aprobar el examen FSP. Lo logró en su primer intento y ahora atiende pacientes en un centro de salud en Düsseldorf.",
+      specialty: "General Practitioner in North Rhine",
+      quote: "Without Solvia, I wouldn't have passed the medical German exam.",
+      story: "Camila was working as a GP in Córdoba but had always dreamed of moving to Europe. After months of confusion and no clear answers, she found Solvia—and everything changed. She received personalized advice, a step-by-step recognition plan, and specific lessons to pass the FSP exam. She succeeded on her first try and now treats patients at a health center in Düsseldorf.",
       image: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=400&h=400&fit=crop&crop=face"
     },
     {
       name: "Diego",
       country: "Chile",
-      specialty: "Cirujano Cardiovascular en Hamburgo",
-      quote: "Solvia me ayudó no solo a encontrar trabajo, sino también a establecerme con mi familia.",
-      story: "Diego, cirujano cardiovascular de Santiago, tenía una carrera establecida pero buscaba nuevos desafíos. Con Solvia, consiguió el reconocimiento de su título, aprobó el examen FSP y recibió una oferta de un hospital en Hamburgo. El equipo también lo apoyó con la búsqueda de vivienda, registro en la ciudad e inscripción de sus hijos en el colegio. Hoy Diego trabaja en uno de los centros quirúrgicos más importantes de Alemania, y su familia está completamente integrada.",
+      specialty: "Cardiovascular Surgeon in Hamburg",
+      quote: "Solvia helped me not just find a job, but also settle in with my family.",
+      story: "Diego, a cardiovascular surgeon from Santiago, had an established career but was looking for new challenges. With Solvia, he got his degree recognized, passed the FSP exam, and received an offer from a hospital in Hamburg. The team also supported him with housing search, city registration, and enrolling his children in school. Today, Diego works at one of Germany's top surgical centers, and his family is fully integrated.",
       image: "https://images.unsplash.com/photo-1582750433449-648ed127bb54?w=400&h=400&fit=crop&crop=face"
     }
   ];
@@ -47,10 +46,10 @@ const SuccessStoriesSection = () => {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
-              Historias Reales de Éxito
+              Real Success Stories
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Conoce a médicos que transformaron sus carreras con Solvia y ahora prosperan en Alemania
+              Meet doctors who transformed their careers with Solvia and are now thriving in Germany
             </p>
           </div>
           
@@ -68,7 +67,7 @@ const SuccessStoriesSection = () => {
                     <div className="relative">
                       <OptimizedImage
                         src={story.image}
-                        alt={`${story.name} - Historia de Éxito`}
+                        alt={`${story.name} - Success Story`}
                         className="w-16 h-16 rounded-full object-cover ring-4 ring-primary/20"
                         useAspectRatio={false}
                       />
@@ -85,7 +84,7 @@ const SuccessStoriesSection = () => {
                         {story.specialty}
                       </p>
                       <p className="text-sm text-muted-foreground">
-                        Originalmente de {story.country}
+                        Originally from {story.country}
                       </p>
                     </div>
                   </div>
@@ -114,7 +113,7 @@ const SuccessStoriesSection = () => {
           <div className="text-center mt-16">
             <Button asChild size="lg" className="text-lg px-8 py-6">
               <Link to="/signup/professional" className="flex items-center gap-3">
-                Únete a miles de médicos que eligieron Solvia
+                Join thousands of doctors who chose Solvia
                 <div className="flex -space-x-2">
                   <div className="w-6 h-6 bg-green-500 rounded-full border-2 border-white"></div>
                   <div className="w-6 h-6 bg-blue-500 rounded-full border-2 border-white"></div>
