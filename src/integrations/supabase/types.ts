@@ -368,6 +368,42 @@ export type Database = {
           },
         ]
       }
+      learning_form_submissions: {
+        Row: {
+          country: string
+          created_at: string
+          email: string
+          fsp_preparation: boolean
+          full_name: string
+          german_language: boolean
+          id: string
+          profession: string
+          updated_at: string
+        }
+        Insert: {
+          country: string
+          created_at?: string
+          email: string
+          fsp_preparation?: boolean
+          full_name: string
+          german_language?: boolean
+          id?: string
+          profession: string
+          updated_at?: string
+        }
+        Update: {
+          country?: string
+          created_at?: string
+          email?: string
+          fsp_preparation?: boolean
+          full_name?: string
+          german_language?: boolean
+          id?: string
+          profession?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       professional_profiles: {
         Row: {
           about: string | null

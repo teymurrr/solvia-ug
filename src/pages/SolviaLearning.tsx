@@ -7,6 +7,8 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Card, CardContent } from '@/components/ui/card';
 import { Check, Clock, BookOpen, MessageCircle, Users, Target, Award, Play, Video, Quote } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
+import { supabase } from '@/integrations/supabase/client';
+import { toast } from 'sonner';
 
 const SolviaLearning = () => {
   const { t } = useLanguage();
@@ -19,16 +21,51 @@ const SolviaLearning = () => {
     fspPreparation: false
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleInputChange = (field: string, value: string | boolean) => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Here you would typically send the data to your backend
-    console.log('Form submitted:', formData);
-    setIsSubmitted(true);
+    
+    // Validate form
+    if (!formData.fullName || !formData.country || !formData.email || !formData.profession) {
+      toast.error('Please fill in all required fields');
+      return;
+    }
+
+    if (!formData.germanLanguage && !formData.fspPreparation) {
+      toast.error('Please select at least one area of interest');
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      console.log('Submitting form:', formData);
+      
+      const { data, error } = await supabase.functions.invoke('submit-learning-form', {
+        body: formData
+      });
+
+      if (error) {
+        console.error('Supabase function error:', error);
+        throw new Error(error.message || 'Failed to submit form');
+      }
+
+      console.log('Form submitted successfully:', data);
+      
+      setIsSubmitted(true);
+      toast.success('Thank you! Your form has been submitted successfully. Check your email for confirmation.');
+      
+    } catch (error: any) {
+      console.error('Form submission error:', error);
+      toast.error(error.message || 'Failed to submit form. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const scrollToForm = () => {
@@ -319,6 +356,7 @@ const SolviaLearning = () => {
                           onChange={(e) => handleInputChange('fullName', e.target.value)}
                           className="mt-1"
                           required
+                          disabled={isSubmitting}
                         />
                       </div>
                       <div>
@@ -332,6 +370,7 @@ const SolviaLearning = () => {
                           onChange={(e) => handleInputChange('country', e.target.value)}
                           className="mt-1"
                           required
+                          disabled={isSubmitting}
                         />
                       </div>
                       <div>
@@ -345,6 +384,7 @@ const SolviaLearning = () => {
                           onChange={(e) => handleInputChange('email', e.target.value)}
                           className="mt-1"
                           required
+                          disabled={isSubmitting}
                         />
                       </div>
                       <div>
@@ -359,6 +399,7 @@ const SolviaLearning = () => {
                           className="mt-1"
                           placeholder={t?.learning?.signupForm?.fields?.professionPlaceholder || 'e.g., Doctor, Nurse, Medical Student'}
                           required
+                          disabled={isSubmitting}
                         />
                       </div>
                       <div>
@@ -371,6 +412,7 @@ const SolviaLearning = () => {
                               id="germanLanguage"
                               checked={formData.germanLanguage}
                               onCheckedChange={(checked) => handleInputChange('germanLanguage', checked)}
+                              disabled={isSubmitting}
                             />
                             <Label htmlFor="germanLanguage" className="text-sm text-gray-700">
                               {t?.learning?.signupForm?.interests?.germanLanguage || 'German Language Courses'}
@@ -381,6 +423,7 @@ const SolviaLearning = () => {
                               id="fspPreparation"
                               checked={formData.fspPreparation}
                               onCheckedChange={(checked) => handleInputChange('fspPreparation', checked)}
+                              disabled={isSubmitting}
                             />
                             <Label htmlFor="fspPreparation" className="text-sm text-gray-700">
                               {t?.learning?.signupForm?.interests?.fspPreparation || 'FSP Preparation'}
@@ -388,8 +431,12 @@ const SolviaLearning = () => {
                           </div>
                         </div>
                       </div>
-                      <Button type="submit" className="w-full bg-primary hover:bg-primary/90 text-white py-3">
-                        {t?.learning?.signupForm?.submit || 'Submit'}
+                      <Button 
+                        type="submit" 
+                        className="w-full bg-primary hover:bg-primary/90 text-white py-3"
+                        disabled={isSubmitting}
+                      >
+                        {isSubmitting ? 'Submitting...' : (t?.learning?.signupForm?.submit || 'Submit')}
                       </Button>
                     </form>
                   </>
