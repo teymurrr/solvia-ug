@@ -239,11 +239,10 @@ const SolviaLearning = () => {
                   <CardContent className="p-6">
                     <div className="flex items-start space-x-4 mb-4">
                       <div className="flex-shrink-0">
-                        <OptimizedImage
+                        <img
                           src={testimonial.image}
                           alt={testimonial.name}
                           className="w-12 h-12 rounded-full object-cover"
-                          useAspectRatio={false}
                         />
                       </div>
                       <div className="flex-1">
@@ -271,11 +270,10 @@ const SolviaLearning = () => {
                     <CardContent className="p-6">
                       <div className="flex items-start space-x-4 mb-4">
                         <div className="flex-shrink-0">
-                          <OptimizedImage
+                          <img
                             src={testimonial.image}
                             alt={testimonial.name}
                             className="w-12 h-12 rounded-full object-cover"
-                            useAspectRatio={false}
                           />
                         </div>
                         <div className="flex-1">
