@@ -68,7 +68,7 @@ const SolviaLearning = () => {
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-              <div className="order-2 lg:order-1">
+              <div>
                 <h2 className="text-4xl font-bold text-gray-900 mb-4">
                   German Language Courses
                 </h2>
@@ -80,6 +80,8 @@ const SolviaLearning = () => {
                   expert instruction, and flexible formats, we'll help you speak confidently in hospitals, 
                   exams, and beyond.
                 </p>
+              </div>
+              <div>
                 <div className="space-y-4">
                   {[
                     { icon: BookOpen, title: "From A1 to C1 – General & Medical German" },
@@ -99,14 +101,6 @@ const SolviaLearning = () => {
                     </div>
                   ))}
                 </div>
-              </div>
-              <div className="order-1 lg:order-2">
-                <OptimizedImage
-                  src="/lovable-uploads/50866c4f-dae7-4f12-82b4-78f2002e281a.png"
-                  alt="Person studying German medical terminology"
-                  className="rounded-lg shadow-lg w-full"
-                  aspectRatio={4/3}
-                />
               </div>
             </div>
           </div>
