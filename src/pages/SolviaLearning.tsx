@@ -1,105 +1,298 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import MainLayout from '@/components/MainLayout';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { BookOpen, GraduationCap, Globe, Check } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Card, CardContent } from '@/components/ui/card';
+import { Check, Clock, BookOpen, MessageCircle, Users, Target, Award } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
 
 const SolviaLearning = () => {
   const { t } = useLanguage();
+  const [formData, setFormData] = useState({
+    fullName: '',
+    country: '',
+    email: '',
+    profession: '',
+    germanLanguage: false,
+    fspPreparation: false
+  });
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const renderFeatureList = (features: string[]) => {
-    return features.map((feature, index) => {
-      const [title, description] = feature.split(' - ');
-      return (
-        <li key={index} className="flex items-start space-x-3 mb-4">
-          <div className="flex-shrink-0 mt-1">
-            <div className="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center">
-              <Check className="w-3 h-3 text-primary" />
-            </div>
-          </div>
-          <div className="flex-1">
-            <div className="font-semibold text-gray-900 text-sm mb-1">{title}</div>
-            {description && (
-              <div className="text-gray-600 text-sm leading-relaxed">{description}</div>
-            )}
-          </div>
-        </li>
-      );
-    });
+  const handleInputChange = (field: string, value: string | boolean) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Here you would typically send the data to your backend
+    console.log('Form submitted:', formData);
+    setIsSubmitted(true);
+  };
+
+  const scrollToForm = () => {
+    const formSection = document.getElementById('signup-form');
+    formSection?.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
     <MainLayout>
-      <div className="container mx-auto py-12 px-4">
-        <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold text-primary mb-4">{t?.learning?.title || "Solvia Learning"}</h1>
-            <p className="text-lg text-muted-foreground">
-              {t?.learning?.subtitle || "Enhance your medical career with our specialized German language and FSP courses"}
+      {/* Hero Section */}
+      <section className="relative bg-gradient-to-br from-primary/5 via-blue-50 to-white py-20">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto text-center">
+            <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight">
+              Advance Your Medical Career with{' '}
+              <span className="text-primary">Solvia Learning</span>
+            </h1>
+            <p className="text-xl md:text-2xl text-gray-600 mb-8 leading-relaxed">
+              Specialized German Language and FSP Preparation Courses for International Doctors
             </p>
+            <Button 
+              size="lg" 
+              onClick={scrollToForm}
+              className="bg-primary hover:bg-primary/90 text-white px-8 py-4 text-lg"
+            >
+              Sign Up for Free Consultation
+            </Button>
           </div>
+        </div>
+        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmMGY5ZmYiIGZpbGwtb3BhY2l0eT0iMC4xIj48Y2lyY2xlIGN4PSIzMCIgY3k9IjMwIiByPSIyIi8+PC9nPjwvZz48L3N2Zz4=')] opacity-30"></div>
+      </section>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-            {/* German Language Courses */}
-            <Card className="relative overflow-hidden">
-              <div className="absolute top-4 right-4">
-                <Badge variant="comingSoon">{t?.insights?.comingSoon || "Coming Soon"}</Badge>
+      {/* German Language Courses Section */}
+      <section className="py-20 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="max-w-6xl mx-auto">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+              <div className="order-2 lg:order-1">
+                <h2 className="text-4xl font-bold text-gray-900 mb-4">
+                  German Language Courses
+                </h2>
+                <h3 className="text-xl text-primary font-semibold mb-6">
+                  Learn German the Smart Way—From Basic to Medical Proficiency
+                </h3>
+                <p className="text-lg text-gray-600 mb-8 leading-relaxed">
+                  Our German courses are built for busy healthcare professionals. With real medical context, 
+                  expert instruction, and flexible formats, we'll help you speak confidently in hospitals, 
+                  exams, and beyond.
+                </p>
+                <div className="space-y-4">
+                  {[
+                    { icon: BookOpen, title: "From A1 to C1 – General & Medical German" },
+                    { icon: Clock, title: "Live Online Classes + Self-Paced Options" },
+                    { icon: Award, title: "TELC B2-C1 Medizin Exam Preparation" },
+                    { icon: MessageCircle, title: "Realistic Medical Dialogues & Patient Scenarios" },
+                    { icon: Target, title: "Progress Tracking & AI-Powered Feedback" }
+                  ].map((feature, index) => (
+                    <div key={index} className="flex items-start space-x-3">
+                      <div className="flex-shrink-0 w-6 h-6 rounded-full bg-green-100 flex items-center justify-center mt-0.5">
+                        <Check className="w-4 h-4 text-green-600" />
+                      </div>
+                      <div className="flex items-center space-x-3">
+                        <feature.icon className="w-5 h-5 text-primary" />
+                        <span className="text-gray-700 font-medium">{feature.title}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
-              <CardHeader>
-                <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
-                  <Globe className="h-6 w-6 text-primary" />
-                </div>
-                <CardTitle>{t?.learning?.germanCourses?.title || "German Language Courses"}</CardTitle>
-                <CardDescription>{t?.learning?.germanCourses?.subtitle || "Whether you're just starting or need focused training for the medical field, our language programs are built with your goals in mind."}</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="mb-4">
-                  <p className="font-medium text-sm text-primary mb-4">✅ What's included:</p>
-                  <ul className="space-y-0">
-                    {renderFeatureList(t?.learning?.germanCourses?.features || [
-                      "General + Medical German Levels A1 to C1 - Structured curriculum from beginner to advanced with medical vocabulary included from the early stages.",
-                      "Flexible Learning Options - Choose between live online classes, self-paced modules, or hybrid formats—designed for professionals with busy schedules.",
-                      "TELC B2-C1 Medizin Preparation - Get targeted practice for the most recognized medical language exam, accepted across Germany.",
-                      "Interactive Practice Tools - Vocabulary flashcards, pronunciation drills, and doctor-patient conversation simulations.",
-                      "Progress Tracking - Follow your learning milestones and get reminders for practice sessions, assignments, and exams."
-                    ])}
-                  </ul>
-                </div>
-              </CardContent>
-            </Card>
+              <div className="order-1 lg:order-2">
+                <Card className="bg-gradient-to-br from-blue-50 to-primary/10 border-none shadow-lg">
+                  <CardContent className="p-8">
+                    <div className="aspect-video bg-white rounded-lg shadow-md flex items-center justify-center">
+                      <div className="text-center">
+                        <BookOpen className="w-16 h-16 text-primary mx-auto mb-4" />
+                        <p className="text-gray-600">Interactive Learning Interface</p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-            {/* FSP Courses */}
-            <Card className="relative overflow-hidden">
-              <div className="absolute top-4 right-4">
-                <Badge variant="comingSoon">{t?.insights?.comingSoon || "Coming Soon"}</Badge>
+      {/* FSP Preparation Courses Section */}
+      <section className="py-20 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <div className="max-w-6xl mx-auto">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+              <div>
+                <Card className="bg-gradient-to-br from-primary/10 to-blue-50 border-none shadow-lg">
+                  <CardContent className="p-8">
+                    <div className="space-y-4">
+                      <div className="flex items-center space-x-3 p-4 bg-white rounded-lg">
+                        <div className="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-semibold">1</div>
+                        <span className="font-medium">Anamnesis Training</span>
+                      </div>
+                      <div className="flex items-center space-x-3 p-4 bg-white rounded-lg">
+                        <div className="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-semibold">2</div>
+                        <span className="font-medium">Findings Discussion</span>
+                      </div>
+                      <div className="flex items-center space-x-3 p-4 bg-white rounded-lg">
+                        <div className="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-semibold">3</div>
+                        <span className="font-medium">Doctor Dialogue</span>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
               </div>
-              <CardHeader>
-                <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
-                  <GraduationCap className="h-6 w-6 text-primary" />
+              <div>
+                <h2 className="text-4xl font-bold text-gray-900 mb-4">
+                  FSP Preparation Courses
+                </h2>
+                <h3 className="text-xl text-primary font-semibold mb-6">
+                  Master the Fachsprachprüfung with Confidence
+                </h3>
+                <p className="text-lg text-gray-600 mb-8 leading-relaxed">
+                  The FSP is a critical step toward practicing in Germany. Our course gives you structure, 
+                  practice, and expert guidance to succeed on your first attempt.
+                </p>
+                <div className="space-y-4">
+                  {[
+                    { icon: Target, title: "Full FSP Curriculum (Anamnesis, Findings, Doctor Dialogue)" },
+                    { icon: Users, title: "One-on-One Mentoring with FSP Coaches" },
+                    { icon: MessageCircle, title: "Real Case-Based Simulations" },
+                    { icon: Award, title: "Exam Simulators & Mock Tests" },
+                    { icon: Check, title: "Feedback from Medical Professionals" }
+                  ].map((feature, index) => (
+                    <div key={index} className="flex items-start space-x-3">
+                      <div className="flex-shrink-0 w-6 h-6 rounded-full bg-green-100 flex items-center justify-center mt-0.5">
+                        <Check className="w-4 h-4 text-green-600" />
+                      </div>
+                      <div className="flex items-center space-x-3">
+                        <feature.icon className="w-5 h-5 text-primary" />
+                        <span className="text-gray-700 font-medium">{feature.title}</span>
+                      </div>
+                    </div>
+                  ))}
                 </div>
-                <CardTitle>{t?.learning?.fspCourses?.title || "FSP Preparation Courses"}</CardTitle>
-                <CardDescription>{t?.learning?.fspCourses?.subtitle || "The Fachsprachprüfung (FSP) is a specialized language and communication exam required for Approbation. We've created a full support system to help you succeed—on your first try."}</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="mb-4">
-                  <p className="font-medium text-sm text-primary mb-4">✅ What's included:</p>
-                  <ul className="space-y-0">
-                    {renderFeatureList(t?.learning?.fspCourses?.features || [
-                      "Complete FSP Curriculum - Structured lessons that mirror the real exam format: anamnesis, findings discussion, and doctor-to-doctor communication.",
-                      "Practice Examinations - Multiple full-length mock FSP exams with feedback from certified trainers.",
-                      "One-on-One Mentoring - Access personal feedback from medical professionals who've passed the FSP themselves.",
-                      "Real-life Case Scenarios - Train with realistic clinical cases to build both vocabulary and confidence.",
-                      "Exam Simulation App (Coming soon) - Practice anytime with our digital tool that simulates the FSP environment."
-                    ])}
-                  </ul>
-                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Sign-Up Form Section */}
+      <section id="signup-form" className="py-20 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="max-w-2xl mx-auto">
+            <Card className="shadow-xl border-none">
+              <CardContent className="p-8">
+                {!isSubmitted ? (
+                  <>
+                    <div className="text-center mb-8">
+                      <h2 className="text-3xl font-bold text-gray-900 mb-4">
+                        Join Our Waitlist
+                      </h2>
+                      <p className="text-gray-600">
+                        Be the first to know when our courses launch and get exclusive early access.
+                      </p>
+                    </div>
+                    <form onSubmit={handleSubmit} className="space-y-6">
+                      <div>
+                        <Label htmlFor="fullName" className="text-sm font-medium text-gray-700">
+                          Full Name
+                        </Label>
+                        <Input
+                          id="fullName"
+                          type="text"
+                          value={formData.fullName}
+                          onChange={(e) => handleInputChange('fullName', e.target.value)}
+                          className="mt-1"
+                          required
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="country" className="text-sm font-medium text-gray-700">
+                          Country of Residence
+                        </Label>
+                        <Input
+                          id="country"
+                          type="text"
+                          value={formData.country}
+                          onChange={(e) => handleInputChange('country', e.target.value)}
+                          className="mt-1"
+                          required
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="email" className="text-sm font-medium text-gray-700">
+                          Email Address
+                        </Label>
+                        <Input
+                          id="email"
+                          type="email"
+                          value={formData.email}
+                          onChange={(e) => handleInputChange('email', e.target.value)}
+                          className="mt-1"
+                          required
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="profession" className="text-sm font-medium text-gray-700">
+                          Your Profession
+                        </Label>
+                        <Input
+                          id="profession"
+                          type="text"
+                          value={formData.profession}
+                          onChange={(e) => handleInputChange('profession', e.target.value)}
+                          className="mt-1"
+                          placeholder="e.g., Doctor, Nurse, Medical Student"
+                          required
+                        />
+                      </div>
+                      <div>
+                        <Label className="text-sm font-medium text-gray-700 mb-3 block">
+                          What are you interested in?
+                        </Label>
+                        <div className="space-y-3">
+                          <div className="flex items-center space-x-2">
+                            <Checkbox
+                              id="germanLanguage"
+                              checked={formData.germanLanguage}
+                              onCheckedChange={(checked) => handleInputChange('germanLanguage', checked)}
+                            />
+                            <Label htmlFor="germanLanguage" className="text-sm text-gray-700">
+                              German Language Courses
+                            </Label>
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <Checkbox
+                              id="fspPreparation"
+                              checked={formData.fspPreparation}
+                              onCheckedChange={(checked) => handleInputChange('fspPreparation', checked)}
+                            />
+                            <Label htmlFor="fspPreparation" className="text-sm text-gray-700">
+                              FSP Preparation
+                            </Label>
+                          </div>
+                        </div>
+                      </div>
+                      <Button type="submit" className="w-full bg-primary hover:bg-primary/90 text-white py-3">
+                        Submit
+                      </Button>
+                    </form>
+                  </>
+                ) : (
+                  <div className="text-center py-12">
+                    <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <Check className="w-8 h-8 text-green-600" />
+                    </div>
+                    <h3 className="text-2xl font-bold text-gray-900 mb-2">Thank You!</h3>
+                    <p className="text-gray-600">Your form has been submitted successfully.</p>
+                  </div>
+                )}
               </CardContent>
             </Card>
           </div>
         </div>
-      </div>
+      </section>
     </MainLayout>
   );
 };
