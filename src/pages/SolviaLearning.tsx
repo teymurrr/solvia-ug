@@ -6,8 +6,9 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Card, CardContent } from '@/components/ui/card';
-import { Check, Clock, BookOpen, MessageCircle, Users, Target, Award } from 'lucide-react';
+import { Check, Clock, BookOpen, MessageCircle, Users, Target, Award, Play, Video } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
+import { OptimizedImage } from '@/components/ui/optimized-image';
 
 const SolviaLearning = () => {
   const { t } = useLanguage();
@@ -100,16 +101,20 @@ const SolviaLearning = () => {
                 </div>
               </div>
               <div className="order-1 lg:order-2">
-                <Card className="bg-gradient-to-br from-blue-50 to-primary/10 border-none shadow-lg">
-                  <CardContent className="p-8">
-                    <div className="aspect-video bg-white rounded-lg shadow-md flex items-center justify-center">
-                      <div className="text-center">
-                        <BookOpen className="w-16 h-16 text-primary mx-auto mb-4" />
-                        <p className="text-gray-600">Interactive Learning Interface</p>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
+                <div className="grid grid-cols-1 gap-6">
+                  <OptimizedImage
+                    src="/lovable-uploads/6076d717-f7de-4fe6-b318-20bfcd6e2aa6.png"
+                    alt="Medical professionals in online German language class"
+                    className="rounded-lg shadow-lg"
+                    aspectRatio={16/10}
+                  />
+                  <OptimizedImage
+                    src="/lovable-uploads/50866c4f-dae7-4f12-82b4-78f2002e281a.png"
+                    alt="Doctor studying German medical terminology"
+                    className="rounded-lg shadow-lg"
+                    aspectRatio={16/10}
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -122,24 +127,32 @@ const SolviaLearning = () => {
           <div className="max-w-6xl mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
               <div>
-                <Card className="bg-gradient-to-br from-primary/10 to-blue-50 border-none shadow-lg">
-                  <CardContent className="p-8">
-                    <div className="space-y-4">
-                      <div className="flex items-center space-x-3 p-4 bg-white rounded-lg">
-                        <div className="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-semibold">1</div>
-                        <span className="font-medium">Anamnesis Training</span>
+                <div className="grid grid-cols-1 gap-6">
+                  <OptimizedImage
+                    src="/lovable-uploads/431c73d2-5785-4d33-8f35-d11742c829e0.png"
+                    alt="FSP exam simulation environment"
+                    className="rounded-lg shadow-lg"
+                    aspectRatio={16/10}
+                  />
+                  <Card className="bg-gradient-to-br from-primary/10 to-blue-50 border-none shadow-lg">
+                    <CardContent className="p-6">
+                      <div className="space-y-3">
+                        <div className="flex items-center space-x-3 p-3 bg-white rounded-lg">
+                          <div className="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-semibold text-sm">1</div>
+                          <span className="font-medium text-sm">Anamnesis Training</span>
+                        </div>
+                        <div className="flex items-center space-x-3 p-3 bg-white rounded-lg">
+                          <div className="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-semibold text-sm">2</div>
+                          <span className="font-medium text-sm">Findings Discussion</span>
+                        </div>
+                        <div className="flex items-center space-x-3 p-3 bg-white rounded-lg">
+                          <div className="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-semibold text-sm">3</div>
+                          <span className="font-medium text-sm">Doctor Dialogue</span>
+                        </div>
                       </div>
-                      <div className="flex items-center space-x-3 p-4 bg-white rounded-lg">
-                        <div className="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-semibold">2</div>
-                        <span className="font-medium">Findings Discussion</span>
-                      </div>
-                      <div className="flex items-center space-x-3 p-4 bg-white rounded-lg">
-                        <div className="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-semibold">3</div>
-                        <span className="font-medium">Doctor Dialogue</span>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
+                    </CardContent>
+                  </Card>
+                </div>
               </div>
               <div>
                 <h2 className="text-4xl font-bold text-gray-900 mb-4">
@@ -187,7 +200,7 @@ const SolviaLearning = () => {
                   <>
                     <div className="text-center mb-8">
                       <h2 className="text-3xl font-bold text-gray-900 mb-4">
-                        Join Our Waitlist
+                        Fill the form for a <span className="text-blue-900">free consultancy</span>
                       </h2>
                       <p className="text-gray-600">
                         Be the first to know when our courses launch and get exclusive early access.

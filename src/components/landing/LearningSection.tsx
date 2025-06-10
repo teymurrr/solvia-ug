@@ -12,14 +12,14 @@ const LearningSection = () => {
     return features.map((feature, index) => {
       const [title, description] = feature.split(' - ');
       return (
-        <li key={index} className="flex items-start space-x-3 mb-4">
+        <li key={index} className="flex items-start space-x-3 mb-6">
           <div className="flex-shrink-0 mt-1">
             <div className="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center">
               <Check className="w-3 h-3 text-primary" />
             </div>
           </div>
           <div className="flex-1">
-            <div className="font-semibold text-gray-900 text-sm mb-1">{title}</div>
+            <div className="font-semibold text-gray-900 text-sm mb-2">{title}</div>
             {description && (
               <div className="text-gray-600 text-sm leading-relaxed">{description}</div>
             )}
