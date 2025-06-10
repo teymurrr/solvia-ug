@@ -78,12 +78,14 @@ const SuccessStoriesSection = () => {
                 <div className="relative z-10">
                   <div className="flex items-start gap-6 mb-6">
                     <div className="relative">
-                      <OptimizedImage
-                        src={story.image}
-                        alt={`${story.name} - Success Story`}
-                        className="w-16 h-16 rounded-full object-cover ring-4 ring-primary/20"
-                        useAspectRatio={false}
-                      />
+                      <div className="w-16 h-16 rounded-full overflow-hidden ring-4 ring-primary/20">
+                        <OptimizedImage
+                          src={story.image}
+                          alt={`${story.name} - Success Story`}
+                          className="w-full h-full object-cover"
+                          useAspectRatio={false}
+                        />
+                      </div>
                       <div className="absolute -bottom-2 -right-2 w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
                         <div className="w-3 h-3 bg-white rounded-full"></div>
                       </div>
