@@ -73,7 +73,8 @@ const SolviaLearning = () => {
     formSection?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const testimonials = t?.learning?.testimonials?.items || [
+  // Fixed testimonials data with proper structure
+  const testimonials = [
     {
       name: "Dr. Sofia Ramirez",
       profession: "General Practitioner",
@@ -96,16 +97,6 @@ const SolviaLearning = () => {
       image: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=400&h=400&fit=crop&crop=face"
     }
   ];
-
-  // Add images to testimonials
-  const testimonialsWithImages = testimonials.map((testimonial, index) => ({
-    ...testimonial,
-    image: [
-      "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=400&h=400&fit=crop&crop=face",
-      "https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=400&h=400&fit=crop&crop=face",
-      "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=400&h=400&fit=crop&crop=face"
-    ][index]
-  }));
 
   return (
     <MainLayout>
@@ -254,26 +245,29 @@ const SolviaLearning = () => {
       </section>
 
       {/* Testimonials Section */}
-      <section className="py-20 bg-gray-50">
+      <section className="py-20 bg-white">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-12">
               <h2 className="text-4xl font-bold text-gray-900 mb-4">
                 {t?.learning?.testimonials?.title || 'What Our Learners Say'}
               </h2>
+              <p className="text-xl text-gray-600">
+                Real success stories from doctors who transformed their careers with Solvia Learning
+              </p>
             </div>
             
             {/* Desktop Grid Layout */}
             <div className="hidden md:grid md:grid-cols-1 lg:grid-cols-3 gap-8">
-              {testimonialsWithImages.map((testimonial, index) => (
-                <Card key={index} className="bg-white shadow-lg border-none hover:shadow-xl transition-shadow duration-300">
+              {testimonials.map((testimonial, index) => (
+                <Card key={index} className="bg-white shadow-lg border border-gray-200 hover:shadow-xl transition-shadow duration-300">
                   <CardContent className="p-6">
                     <div className="flex items-start space-x-4 mb-4">
                       <div className="flex-shrink-0">
                         <img
                           src={testimonial.image}
                           alt={testimonial.name}
-                          className="w-12 h-12 rounded-full object-cover"
+                          className="w-12 h-12 rounded-full object-cover ring-2 ring-primary/20"
                         />
                       </div>
                       <div className="flex-1">
@@ -296,15 +290,15 @@ const SolviaLearning = () => {
             {/* Mobile Horizontal Scroll */}
             <div className="md:hidden">
               <div className="flex space-x-6 overflow-x-auto pb-4 snap-x snap-mandatory">
-                {testimonialsWithImages.map((testimonial, index) => (
-                  <Card key={index} className="flex-shrink-0 w-80 bg-white shadow-lg border-none snap-start">
+                {testimonials.map((testimonial, index) => (
+                  <Card key={index} className="flex-shrink-0 w-80 bg-white shadow-lg border border-gray-200 snap-start">
                     <CardContent className="p-6">
                       <div className="flex items-start space-x-4 mb-4">
                         <div className="flex-shrink-0">
                           <img
                             src={testimonial.image}
                             alt={testimonial.name}
-                            className="w-12 h-12 rounded-full object-cover"
+                            className="w-12 h-12 rounded-full object-cover ring-2 ring-primary/20"
                           />
                         </div>
                         <div className="flex-1">
@@ -463,3 +457,5 @@ const SolviaLearning = () => {
 };
 
 export default SolviaLearning;
+
+</edits_to_apply>
