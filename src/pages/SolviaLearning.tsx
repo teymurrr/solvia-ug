@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import MainLayout from '@/components/MainLayout';
 import { Button } from '@/components/ui/button';
@@ -6,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Card, CardContent } from '@/components/ui/card';
-import { Check, Clock, BookOpen, MessageCircle, Users, Target, Award, Play, Video } from 'lucide-react';
+import { Check, Clock, BookOpen, MessageCircle, Users, Target, Award, Play, Video, Quote } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
 import { OptimizedImage } from '@/components/ui/optimized-image';
 
@@ -37,6 +36,30 @@ const SolviaLearning = () => {
     const formSection = document.getElementById('signup-form');
     formSection?.scrollIntoView({ behavior: 'smooth' });
   };
+
+  const testimonials = [
+    {
+      name: "Dr. Sofia Ramirez",
+      profession: "General Practitioner",
+      country: "Colombia",
+      quote: "I was worried about learning German while working full time, but Solvia made it so manageable. The medical focus helped me feel confident speaking with patients. The TELC preparation was exactly what I needed.",
+      image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=400&h=400&fit=crop&crop=face"
+    },
+    {
+      name: "Dr. Luis Herrera",
+      profession: "Internal Medicine Resident",
+      country: "Mexico",
+      quote: "The FSP mentoring was a game changer. I passed my exam on the first try! They gave me real cases to practice with and very honest feedback. I felt like I was learning with friends.",
+      image: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=400&h=400&fit=crop&crop=face"
+    },
+    {
+      name: "Dr. Camila Torres",
+      profession: "Pediatrician",
+      country: "Argentina",
+      quote: "What I liked most was the flexibility. I could join live classes or watch them later. Plus, the one-on-one coaching gave me the confidence to present findings in German like a native doctor.",
+      image: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=400&h=400&fit=crop&crop=face"
+    }
+  ];
 
   return (
     <MainLayout>
@@ -193,6 +216,83 @@ const SolviaLearning = () => {
                 >
                   Explore More
                 </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials Section */}
+      <section className="py-20 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="text-4xl font-bold text-gray-900 mb-4">
+                What Our Learners Say
+              </h2>
+            </div>
+            
+            {/* Desktop Grid Layout */}
+            <div className="hidden md:grid md:grid-cols-1 lg:grid-cols-3 gap-8">
+              {testimonials.map((testimonial, index) => (
+                <Card key={index} className="bg-white shadow-lg border-none hover:shadow-xl transition-shadow duration-300">
+                  <CardContent className="p-6">
+                    <div className="flex items-start space-x-4 mb-4">
+                      <div className="flex-shrink-0">
+                        <OptimizedImage
+                          src={testimonial.image}
+                          alt={testimonial.name}
+                          className="w-12 h-12 rounded-full object-cover"
+                          useAspectRatio={false}
+                        />
+                      </div>
+                      <div className="flex-1">
+                        <h4 className="font-semibold text-gray-900 text-sm">{testimonial.name}</h4>
+                        <p className="text-sm text-gray-600">{testimonial.profession}</p>
+                        <p className="text-sm text-primary font-medium">{testimonial.country}</p>
+                      </div>
+                    </div>
+                    <div className="relative">
+                      <Quote className="absolute -top-2 -left-1 w-6 h-6 text-primary/20" />
+                      <p className="text-gray-700 leading-relaxed pl-6 italic">
+                        "{testimonial.quote}"
+                      </p>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+            
+            {/* Mobile Horizontal Scroll */}
+            <div className="md:hidden">
+              <div className="flex space-x-6 overflow-x-auto pb-4 snap-x snap-mandatory">
+                {testimonials.map((testimonial, index) => (
+                  <Card key={index} className="flex-shrink-0 w-80 bg-white shadow-lg border-none snap-start">
+                    <CardContent className="p-6">
+                      <div className="flex items-start space-x-4 mb-4">
+                        <div className="flex-shrink-0">
+                          <OptimizedImage
+                            src={testimonial.image}
+                            alt={testimonial.name}
+                            className="w-12 h-12 rounded-full object-cover"
+                            useAspectRatio={false}
+                          />
+                        </div>
+                        <div className="flex-1">
+                          <h4 className="font-semibold text-gray-900 text-sm">{testimonial.name}</h4>
+                          <p className="text-sm text-gray-600">{testimonial.profession}</p>
+                          <p className="text-sm text-primary font-medium">{testimonial.country}</p>
+                        </div>
+                      </div>
+                      <div className="relative">
+                        <Quote className="absolute -top-2 -left-1 w-6 h-6 text-primary/20" />
+                        <p className="text-gray-700 leading-relaxed pl-6 italic">
+                          "{testimonial.quote}"
+                        </p>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
               </div>
             </div>
           </div>
