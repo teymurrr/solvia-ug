@@ -31,23 +31,29 @@ const SolviaLearning = () => {
                   <Globe className="h-6 w-6 text-primary" />
                 </div>
                 <CardTitle>{t?.learning?.germanCourses?.title || "German Language Courses"}</CardTitle>
-                <CardDescription>{t?.learning?.germanCourses?.subtitle || "Master medical German with our specialized courses"}</CardDescription>
+                <CardDescription>{t?.learning?.germanCourses?.subtitle || "Whether you're just starting or need focused training for the medical field, our language programs are built with your goals in mind."}</CardDescription>
               </CardHeader>
               <CardContent>
-                <ul className="space-y-2">
-                  <li className="flex items-center gap-2">
-                    <BookOpen className="h-4 w-4 text-primary" />
-                    <span>{t?.learning?.germanCourses?.features?.[0] || "Basic to Advanced Medical German"}</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <Clock className="h-4 w-4 text-primary" />
-                    <span>{t?.learning?.germanCourses?.features?.[1] || "Flexible Learning Schedule"}</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <GraduationCap className="h-4 w-4 text-primary" />
-                    <span>{t?.learning?.germanCourses?.features?.[2] || "Telc Medical Preparation"}</span>
-                  </li>
-                </ul>
+                <div className="mb-4">
+                  <p className="font-medium text-sm text-primary mb-3">✅ What's included:</p>
+                  <ul className="space-y-3">
+                    {(t?.learning?.germanCourses?.features || [
+                      "General + Medical German Levels A1 to C1 - Structured curriculum from beginner to advanced with medical vocabulary included from the early stages.",
+                      "Flexible Learning Options - Choose between live online classes, self-paced modules, or hybrid formats—designed for professionals with busy schedules.",
+                      "TELC B2-C1 Medizin Preparation - Get targeted practice for the most recognized medical language exam, accepted across Germany.",
+                      "Interactive Practice Tools - Vocabulary flashcards, pronunciation drills, and doctor-patient conversation simulations.",
+                      "Progress Tracking - Follow your learning milestones and get reminders for practice sessions, assignments, and exams."
+                    ]).map((feature, index) => {
+                      const [title, description] = feature.split(' - ');
+                      return (
+                        <li key={index} className="text-sm">
+                          <span className="font-medium text-gray-900">{title}</span>
+                          {description && <span className="text-gray-600"> - {description}</span>}
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
               </CardContent>
             </Card>
 
@@ -61,23 +67,29 @@ const SolviaLearning = () => {
                   <GraduationCap className="h-6 w-6 text-primary" />
                 </div>
                 <CardTitle>{t?.learning?.fspCourses?.title || "FSP Preparation Courses"}</CardTitle>
-                <CardDescription>{t?.learning?.fspCourses?.subtitle || "Comprehensive preparation for your medical license in Germany"}</CardDescription>
+                <CardDescription>{t?.learning?.fspCourses?.subtitle || "The Fachsprachprüfung (FSP) is a specialized language and communication exam required for Approbation. We've created a full support system to help you succeed—on your first try."}</CardDescription>
               </CardHeader>
               <CardContent>
-                <ul className="space-y-2">
-                  <li className="flex items-center gap-2">
-                    <BookOpen className="h-4 w-4 text-primary" />
-                    <span>{t?.learning?.fspCourses?.features?.[0] || "Complete FSP Study Materials"}</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <Clock className="h-4 w-4 text-primary" />
-                    <span>{t?.learning?.fspCourses?.features?.[1] || "Practice Examinations"}</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <GraduationCap className="h-4 w-4 text-primary" />
-                    <span>{t?.learning?.fspCourses?.features?.[2] || "One-on-One Mentoring"}</span>
-                  </li>
-                </ul>
+                <div className="mb-4">
+                  <p className="font-medium text-sm text-primary mb-3">✅ What's included:</p>
+                  <ul className="space-y-3">
+                    {(t?.learning?.fspCourses?.features || [
+                      "Complete FSP Curriculum - Structured lessons that mirror the real exam format: anamnesis, findings discussion, and doctor-to-doctor communication.",
+                      "Practice Examinations - Multiple full-length mock FSP exams with feedback from certified trainers.",
+                      "One-on-One Mentoring - Access personal feedback from medical professionals who've passed the FSP themselves.",
+                      "Real-life Case Scenarios - Train with realistic clinical cases to build both vocabulary and confidence.",
+                      "Exam Simulation App (Coming soon) - Practice anytime with our digital tool that simulates the FSP environment."
+                    ]).map((feature, index) => {
+                      const [title, description] = feature.split(' - ');
+                      return (
+                        <li key={index} className="text-sm">
+                          <span className="font-medium text-gray-900">{title}</span>
+                          {description && <span className="text-gray-600"> - {description}</span>}
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
               </CardContent>
             </Card>
           </div>
