@@ -336,7 +336,13 @@ const SolviaLearning = () => {
                   <>
                     <div className="text-center mb-8">
                       <h2 className="text-3xl font-bold text-gray-900 mb-4">
-                        {t?.learning?.signupForm?.title || 'Fill the form for a Free Consultancy'}
+                        {t?.learning?.signupForm?.title ? (
+                          <>
+                            Completa el formulario para una <span className="text-primary">Consultoría Gratuita</span>
+                          </>
+                        ) : (
+                          'Fill the form for a Free Consultancy'
+                        )}
                       </h2>
                       <p className="text-gray-600">
                         {t?.learning?.signupForm?.subtitle || 'Be the first to know when our courses launch and get exclusive early access.'}
