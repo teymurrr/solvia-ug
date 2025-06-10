@@ -122,7 +122,7 @@ export const forDoctors = {
         specialty: "Pediatra en Berlín",
         quote: "Ni siquiera sabía por dónde empezar, pero Solvia me guió paso a paso.",
         story: "María Fernanda, una pediatra de Medellín, soñaba con trabajar en Europa pero se sentía abrumada por el proceso. A través de Solvia, aprendió exactamente qué documentos necesitaba, cómo hacer reconocer su título y dónde inscribirse en cursos de alemán. Gracias a la preparación para el examen FSP y el coaching de entrevistas, recibió una oferta de trabajo en una clínica pediátrica en Berlín. Hoy trabaja en un hospital moderno, vive con su esposo y está iniciando la reunificación familiar.",
-        image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&h=400&fit=crop&crop=face"
+        image: "/lovable-uploads/fb51f001-5b4c-4c12-9bff-ec7776fda396.png"
       },
       {
         name: "Luis Felipe",
@@ -130,7 +130,7 @@ export const forDoctors = {
         specialty: "Neurólogo en Baviera",
         quote: "Gracias a Solvia, conseguí una oferta de trabajo antes de llegar a Alemania.",
         story: "Luis Felipe tenía años de experiencia como neurólogo en Monterrey y buscaba un ambiente de trabajo más tecnológico. Solvia le ayudó a traducir sus documentos, encontrar un empleador que valorara su especialidad y gestionar su visa desde México. También se unió a clases intensivas de alemán médico y a un grupo de WhatsApp con otros médicos latinos. Hoy trabaja en un hospital universitario en Baviera y ya está involucrado en proyectos de investigación.",
-        image: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=400&h=400&fit=crop&crop=face"
+        image: "/lovable-uploads/cc32bcf9-0674-4d4f-9316-3ce0790f675e.png"
       },
       {
         name: "Camila",
@@ -146,7 +146,7 @@ export const forDoctors = {
         specialty: "Cirujano Cardiovascular en Hamburgo",
         quote: "Solvia no solo me ayudó a encontrar trabajo, sino también a establecerme con mi familia.",
         story: "Diego, un cirujano cardiovascular de Santiago, tenía una carrera establecida pero buscaba nuevos desafíos. Con Solvia, logró el reconocimiento de su título, aprobó el examen FSP y recibió una oferta de un hospital en Hamburgo. El equipo también lo apoyó con la búsqueda de vivienda, registro en la ciudad e inscripción de sus hijos en la escuela. Hoy Diego trabaja en uno de los centros quirúrgicos más importantes de Alemania y su familia está completamente integrada.",
-        image: "https://images.unsplash.com/photo-1582750433449-648ed127bb54?w=400&h=400&fit=crop&crop=face"
+        image: "/lovable-uploads/5f708227-020b-4f86-ae6e-6ad00443ec94.png"
       }
     ]
   }

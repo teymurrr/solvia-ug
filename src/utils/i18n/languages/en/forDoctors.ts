@@ -122,7 +122,7 @@ export const forDoctors = {
         specialty: "Pediatrician in Berlin",
         quote: "I didn't even know where to start, but Solvia guided me step by step.",
         story: "María Fernanda, a pediatrician from Medellín, dreamed of working in Europe but felt overwhelmed by the process. Through Solvia, she learned exactly which documents were needed, how to get her degree recognized, and where to enroll in German courses. Thanks to FSP exam prep and interview coaching, she received a job offer at a pediatric clinic in Berlin. Today, she works in a modern hospital, lives with her husband, and is starting family reunification.",
-        image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&h=400&fit=crop&crop=face"
+        image: "/lovable-uploads/fb51f001-5b4c-4c12-9bff-ec7776fda396.png"
       },
       {
         name: "Luis Felipe",
@@ -130,7 +130,7 @@ export const forDoctors = {
         specialty: "Neurologist in Bavaria",
         quote: "Thanks to Solvia, I got a job offer before I even arrived in Germany.",
         story: "Luis Felipe had years of experience as a neurologist in Monterrey and was seeking a more tech-driven work environment. Solvia helped him translate his documents, find an employer who valued his specialty, and arrange his visa from Mexico. He also joined intensive medical German classes and a WhatsApp group with fellow Latin doctors. Today, he works at a university hospital in Bavaria and is already involved in research projects.",
-        image: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=400&h=400&fit=crop&crop=face"
+        image: "/lovable-uploads/cc32bcf9-0674-4d4f-9316-3ce0790f675e.png"
       },
       {
         name: "Camila",
@@ -146,7 +146,7 @@ export const forDoctors = {
         specialty: "Cardiovascular Surgeon in Hamburg",
         quote: "Solvia helped me not just find a job, but also settle in with my family.",
         story: "Diego, a cardiovascular surgeon from Santiago, had an established career but was looking for new challenges. With Solvia, he got his degree recognized, passed the FSP exam, and received an offer from a hospital in Hamburg. The team also supported him with housing search, city registration, and enrolling his children in school. Today, Diego works at one of Germany's top surgical centers, and his family is fully integrated.",
-        image: "https://images.unsplash.com/photo-1582750433449-648ed127bb54?w=400&h=400&fit=crop&crop=face"
+        image: "/lovable-uploads/5f708227-020b-4f86-ae6e-6ad00443ec94.png"
       }
     ]
   }
