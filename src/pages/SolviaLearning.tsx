@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import MainLayout from '@/components/MainLayout';
 import { Button } from '@/components/ui/button';
@@ -7,7 +8,6 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Card, CardContent } from '@/components/ui/card';
 import { Check, Clock, BookOpen, MessageCircle, Users, Target, Award, Play, Video, Quote } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
-import { OptimizedImage } from '@/components/ui/optimized-image';
 
 const SolviaLearning = () => {
   const { t } = useLanguage();
@@ -37,7 +37,7 @@ const SolviaLearning = () => {
     formSection?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const testimonials = [
+  const testimonials = t?.learning?.testimonials?.items || [
     {
       name: "Dr. Sofia Ramirez",
       profession: "General Practitioner",
@@ -61,6 +61,16 @@ const SolviaLearning = () => {
     }
   ];
 
+  // Add images to testimonials
+  const testimonialsWithImages = testimonials.map((testimonial, index) => ({
+    ...testimonial,
+    image: [
+      "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=400&h=400&fit=crop&crop=face",
+      "https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=400&h=400&fit=crop&crop=face",
+      "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=400&h=400&fit=crop&crop=face"
+    ][index]
+  }));
+
   return (
     <MainLayout>
       {/* Hero Section */}
@@ -68,18 +78,18 @@ const SolviaLearning = () => {
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight">
-              Advance Your Medical Career with{' '}
+              {t?.learning?.hero?.title || 'Advance Your Medical Career with'}{' '}
               <span className="text-primary">Solvia Learning</span>
             </h1>
             <p className="text-xl md:text-2xl text-gray-600 mb-8 leading-relaxed">
-              Specialized German Language and FSP Preparation Courses for International Doctors
+              {t?.learning?.hero?.subtitle || 'Specialized German Language and FSP Preparation Courses for International Doctors'}
             </p>
             <Button 
               size="lg" 
               onClick={scrollToForm}
               className="bg-primary hover:bg-primary/90 text-white px-8 py-4 text-lg"
             >
-              Sign Up for Free Consultation
+              {t?.learning?.hero?.cta || 'Sign Up for Free Consultation'}
             </Button>
           </div>
         </div>
@@ -93,40 +103,42 @@ const SolviaLearning = () => {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
               <div>
                 <h2 className="text-4xl font-bold text-gray-900 mb-4">
-                  German Language Courses
+                  {t?.learning?.germanCourses?.title || 'German Language Courses'}
                 </h2>
                 <h3 className="text-xl text-primary font-semibold mb-6">
-                  Learn German the Smart Way—From Basic to Medical Proficiency
+                  {t?.learning?.germanCourses?.subtitle || 'Learn German the Smart Way—From Basic to Medical Proficiency'}
                 </h3>
                 <p className="text-lg text-gray-600 mb-8 leading-relaxed">
-                  Our German courses are built for busy healthcare professionals. With real medical context, 
-                  expert instruction, and flexible formats, we'll help you speak confidently in hospitals, 
-                  exams, and beyond.
+                  {t?.learning?.germanCourses?.description || 'Our German courses are built for busy healthcare professionals. With real medical context, expert instruction, and flexible formats, we\'ll help you speak confidently in hospitals, exams, and beyond.'}
                 </p>
                 <Button 
                   size="lg" 
                   onClick={scrollToForm}
                   className="bg-primary hover:bg-primary/90 text-white px-6 py-3"
                 >
-                  Explore More
+                  {t?.learning?.germanCourses?.cta || 'Explore More'}
                 </Button>
               </div>
               <div>
                 <div className="space-y-4">
-                  {[
-                    { icon: BookOpen, title: "From A1 to C1 – General & Medical German" },
-                    { icon: Clock, title: "Live Online Classes + Self-Paced Options" },
-                    { icon: Award, title: "TELC B2-C1 Medizin Exam Preparation" },
-                    { icon: MessageCircle, title: "Realistic Medical Dialogues & Patient Scenarios" },
-                    { icon: Target, title: "Progress Tracking & AI-Powered Feedback" }
-                  ].map((feature, index) => (
+                  {(t?.learning?.germanCourses?.features || [
+                    "From A1 to C1 – General & Medical German",
+                    "Live Online Classes + Self-Paced Options",
+                    "TELC B2-C1 Medizin Exam Preparation",
+                    "Realistic Medical Dialogues & Patient Scenarios",
+                    "Progress Tracking & AI-Powered Feedback"
+                  ]).map((feature, index) => (
                     <div key={index} className="flex items-start space-x-3">
                       <div className="flex-shrink-0 w-6 h-6 rounded-full bg-green-100 flex items-center justify-center mt-0.5">
                         <Check className="w-4 h-4 text-green-600" />
                       </div>
                       <div className="flex items-center space-x-3">
-                        <feature.icon className="w-5 h-5 text-primary" />
-                        <span className="text-gray-700 font-medium">{feature.title}</span>
+                        {[BookOpen, Clock, Award, MessageCircle, Target][index] && (
+                          React.createElement([BookOpen, Clock, Award, MessageCircle, Target][index], {
+                            className: "w-5 h-5 text-primary"
+                          })
+                        )}
+                        <span className="text-gray-700 font-medium">{feature}</span>
                       </div>
                     </div>
                   ))}
@@ -144,67 +156,56 @@ const SolviaLearning = () => {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
               <div>
                 <div className="grid grid-cols-1 gap-4">
-                  <Card className="bg-gradient-to-r from-primary/10 to-blue-50 border-none shadow-md">
-                    <CardContent className="p-4">
-                      <div className="flex items-center space-x-4">
-                        <div className="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center font-bold text-lg">1</div>
-                        <div>
-                          <h4 className="font-semibold text-gray-900">Anamnesis Training</h4>
-                          <p className="text-sm text-gray-600">Master patient history taking</p>
+                  {(t?.learning?.fspCourses?.steps || [
+                    { title: "Anamnesis Training", description: "Master patient history taking" },
+                    { title: "Findings Discussion", description: "Present and discuss medical findings" },
+                    { title: "Doctor Dialogue", description: "Professional medical communication" }
+                  ]).map((step, index) => (
+                    <Card key={index} className="bg-gradient-to-r from-primary/10 to-blue-50 border-none shadow-md">
+                      <CardContent className="p-4">
+                        <div className="flex items-center space-x-4">
+                          <div className="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center font-bold text-lg">
+                            {index + 1}
+                          </div>
+                          <div>
+                            <h4 className="font-semibold text-gray-900">{step.title}</h4>
+                            <p className="text-sm text-gray-600">{step.description}</p>
+                          </div>
                         </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                  <Card className="bg-gradient-to-r from-blue-50 to-primary/10 border-none shadow-md">
-                    <CardContent className="p-4">
-                      <div className="flex items-center space-x-4">
-                        <div className="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center font-bold text-lg">2</div>
-                        <div>
-                          <h4 className="font-semibold text-gray-900">Findings Discussion</h4>
-                          <p className="text-sm text-gray-600">Present and discuss medical findings</p>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                  <Card className="bg-gradient-to-r from-primary/10 to-blue-50 border-none shadow-md">
-                    <CardContent className="p-4">
-                      <div className="flex items-center space-x-4">
-                        <div className="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center font-bold text-lg">3</div>
-                        <div>
-                          <h4 className="font-semibold text-gray-900">Doctor Dialogue</h4>
-                          <p className="text-sm text-gray-600">Professional medical communication</p>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
+                      </CardContent>
+                    </Card>
+                  ))}
                 </div>
               </div>
               <div>
                 <h2 className="text-4xl font-bold text-gray-900 mb-4">
-                  FSP Preparation Courses
+                  {t?.learning?.fspCourses?.title || 'FSP Preparation Courses'}
                 </h2>
                 <h3 className="text-xl text-primary font-semibold mb-6">
-                  Master the Fachsprachprüfung with Confidence
+                  {t?.learning?.fspCourses?.subtitle || 'Master the Fachsprachprüfung with Confidence'}
                 </h3>
                 <p className="text-lg text-gray-600 mb-8 leading-relaxed">
-                  The FSP is a critical step toward practicing in Germany. Our course gives you structure, 
-                  practice, and expert guidance to succeed on your first attempt.
+                  {t?.learning?.fspCourses?.description || 'The FSP is a critical step toward practicing in Germany. Our course gives you structure, practice, and expert guidance to succeed on your first attempt.'}
                 </p>
                 <div className="space-y-4 mb-8">
-                  {[
-                    { icon: Target, title: "Full FSP Curriculum (Anamnesis, Findings, Doctor Dialogue)" },
-                    { icon: Users, title: "One-on-One Mentoring with FSP Coaches" },
-                    { icon: MessageCircle, title: "Real Case-Based Simulations" },
-                    { icon: Award, title: "Exam Simulators & Mock Tests" },
-                    { icon: Check, title: "Feedback from Medical Professionals" }
-                  ].map((feature, index) => (
+                  {(t?.learning?.fspCourses?.features || [
+                    "Full FSP Curriculum (Anamnesis, Findings, Doctor Dialogue)",
+                    "One-on-One Mentoring with FSP Coaches",
+                    "Real Case-Based Simulations",
+                    "Exam Simulators & Mock Tests",
+                    "Feedback from Medical Professionals"
+                  ]).map((feature, index) => (
                     <div key={index} className="flex items-start space-x-3">
                       <div className="flex-shrink-0 w-6 h-6 rounded-full bg-green-100 flex items-center justify-center mt-0.5">
                         <Check className="w-4 h-4 text-green-600" />
                       </div>
                       <div className="flex items-center space-x-3">
-                        <feature.icon className="w-5 h-5 text-primary" />
-                        <span className="text-gray-700 font-medium">{feature.title}</span>
+                        {[Target, Users, MessageCircle, Award, Check][index] && (
+                          React.createElement([Target, Users, MessageCircle, Award, Check][index], {
+                            className: "w-5 h-5 text-primary"
+                          })
+                        )}
+                        <span className="text-gray-700 font-medium">{feature}</span>
                       </div>
                     </div>
                   ))}
@@ -214,7 +215,7 @@ const SolviaLearning = () => {
                   onClick={scrollToForm}
                   className="bg-primary hover:bg-primary/90 text-white px-6 py-3"
                 >
-                  Explore More
+                  {t?.learning?.fspCourses?.cta || 'Explore More'}
                 </Button>
               </div>
             </div>
@@ -228,13 +229,13 @@ const SolviaLearning = () => {
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-12">
               <h2 className="text-4xl font-bold text-gray-900 mb-4">
-                What Our Learners Say
+                {t?.learning?.testimonials?.title || 'What Our Learners Say'}
               </h2>
             </div>
             
             {/* Desktop Grid Layout */}
             <div className="hidden md:grid md:grid-cols-1 lg:grid-cols-3 gap-8">
-              {testimonials.map((testimonial, index) => (
+              {testimonialsWithImages.map((testimonial, index) => (
                 <Card key={index} className="bg-white shadow-lg border-none hover:shadow-xl transition-shadow duration-300">
                   <CardContent className="p-6">
                     <div className="flex items-start space-x-4 mb-4">
@@ -265,7 +266,7 @@ const SolviaLearning = () => {
             {/* Mobile Horizontal Scroll */}
             <div className="md:hidden">
               <div className="flex space-x-6 overflow-x-auto pb-4 snap-x snap-mandatory">
-                {testimonials.map((testimonial, index) => (
+                {testimonialsWithImages.map((testimonial, index) => (
                   <Card key={index} className="flex-shrink-0 w-80 bg-white shadow-lg border-none snap-start">
                     <CardContent className="p-6">
                       <div className="flex items-start space-x-4 mb-4">
@@ -307,16 +308,16 @@ const SolviaLearning = () => {
                   <>
                     <div className="text-center mb-8">
                       <h2 className="text-3xl font-bold text-gray-900 mb-4">
-                        Fill the form for a <span className="text-blue-900">free consultancy</span>
+                        {t?.learning?.signupForm?.title || 'Fill the form for a'} <span className="text-blue-900">{t?.learning?.signupForm?.title?.includes('consultoría') ? 'consultoría gratuita' : 'free consultancy'}</span>
                       </h2>
                       <p className="text-gray-600">
-                        Be the first to know when our courses launch and get exclusive early access.
+                        {t?.learning?.signupForm?.subtitle || 'Be the first to know when our courses launch and get exclusive early access.'}
                       </p>
                     </div>
                     <form onSubmit={handleSubmit} className="space-y-6">
                       <div>
                         <Label htmlFor="fullName" className="text-sm font-medium text-gray-700">
-                          Full Name
+                          {t?.learning?.signupForm?.fields?.fullName || 'Full Name'}
                         </Label>
                         <Input
                           id="fullName"
@@ -329,7 +330,7 @@ const SolviaLearning = () => {
                       </div>
                       <div>
                         <Label htmlFor="country" className="text-sm font-medium text-gray-700">
-                          Country of Residence
+                          {t?.learning?.signupForm?.fields?.country || 'Country of Residence'}
                         </Label>
                         <Input
                           id="country"
@@ -342,7 +343,7 @@ const SolviaLearning = () => {
                       </div>
                       <div>
                         <Label htmlFor="email" className="text-sm font-medium text-gray-700">
-                          Email Address
+                          {t?.learning?.signupForm?.fields?.email || 'Email Address'}
                         </Label>
                         <Input
                           id="email"
@@ -355,7 +356,7 @@ const SolviaLearning = () => {
                       </div>
                       <div>
                         <Label htmlFor="profession" className="text-sm font-medium text-gray-700">
-                          Your Profession
+                          {t?.learning?.signupForm?.fields?.profession || 'Your Profession'}
                         </Label>
                         <Input
                           id="profession"
@@ -363,13 +364,13 @@ const SolviaLearning = () => {
                           value={formData.profession}
                           onChange={(e) => handleInputChange('profession', e.target.value)}
                           className="mt-1"
-                          placeholder="e.g., Doctor, Nurse, Medical Student"
+                          placeholder={t?.learning?.signupForm?.fields?.professionPlaceholder || 'e.g., Doctor, Nurse, Medical Student'}
                           required
                         />
                       </div>
                       <div>
                         <Label className="text-sm font-medium text-gray-700 mb-3 block">
-                          What are you interested in?
+                          {t?.learning?.signupForm?.interests?.title || 'What are you interested in?'}
                         </Label>
                         <div className="space-y-3">
                           <div className="flex items-center space-x-2">
@@ -379,7 +380,7 @@ const SolviaLearning = () => {
                               onCheckedChange={(checked) => handleInputChange('germanLanguage', checked)}
                             />
                             <Label htmlFor="germanLanguage" className="text-sm text-gray-700">
-                              German Language Courses
+                              {t?.learning?.signupForm?.interests?.germanLanguage || 'German Language Courses'}
                             </Label>
                           </div>
                           <div className="flex items-center space-x-2">
@@ -389,13 +390,13 @@ const SolviaLearning = () => {
                               onCheckedChange={(checked) => handleInputChange('fspPreparation', checked)}
                             />
                             <Label htmlFor="fspPreparation" className="text-sm text-gray-700">
-                              FSP Preparation
+                              {t?.learning?.signupForm?.interests?.fspPreparation || 'FSP Preparation'}
                             </Label>
                           </div>
                         </div>
                       </div>
                       <Button type="submit" className="w-full bg-primary hover:bg-primary/90 text-white py-3">
-                        Submit
+                        {t?.learning?.signupForm?.submit || 'Submit'}
                       </Button>
                     </form>
                   </>
@@ -404,8 +405,12 @@ const SolviaLearning = () => {
                     <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
                       <Check className="w-8 h-8 text-green-600" />
                     </div>
-                    <h3 className="text-2xl font-bold text-gray-900 mb-2">Thank You!</h3>
-                    <p className="text-gray-600">Your form has been submitted successfully.</p>
+                    <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                      {t?.learning?.signupForm?.success?.title || 'Thank You!'}
+                    </h3>
+                    <p className="text-gray-600">
+                      {t?.learning?.signupForm?.success?.message || 'Your form has been submitted successfully.'}
+                    </p>
                   </div>
                 )}
               </CardContent>
