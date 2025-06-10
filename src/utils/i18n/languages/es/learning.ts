@@ -1,4 +1,3 @@
-
 export const learning = {
   title: "Solvia Learning",
   subtitle: "Cursos Especializados de Alemán Médico y Preparación FSP para Médicos Internacionales",
