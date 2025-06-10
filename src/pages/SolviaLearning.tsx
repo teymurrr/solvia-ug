@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import MainLayout from '@/components/MainLayout';
 import { Button } from '@/components/ui/button';
@@ -456,5 +457,3 @@ const SolviaLearning = () => {
 };
 
 export default SolviaLearning;
-
-</edits_to_apply>
