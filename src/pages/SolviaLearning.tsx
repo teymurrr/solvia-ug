@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import MainLayout from '@/components/MainLayout';
 import { Button } from '@/components/ui/button';
@@ -113,12 +112,6 @@ const SolviaLearning = () => {
           <div className="max-w-6xl mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
               <div>
-                <OptimizedImage
-                  src="/lovable-uploads/431c73d2-5785-4d33-8f35-d11742c829e0.png"
-                  alt="FSP exam simulation environment"
-                  className="rounded-lg shadow-lg mb-8"
-                  aspectRatio={16/10}
-                />
                 <div className="grid grid-cols-1 gap-4">
                   <Card className="bg-gradient-to-r from-primary/10 to-blue-50 border-none shadow-md">
                     <CardContent className="p-4">
