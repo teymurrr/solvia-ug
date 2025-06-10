@@ -105,7 +105,7 @@ const SolviaLearning = () => {
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight">
-              {t?.learning?.hero?.title || 'Advance Your Medical Career with Solvia Learning'}
+              Advance Your Medical Career with <span className="text-primary">Solvia Learning</span>
             </h1>
             <p className="text-xl md:text-2xl text-gray-600 mb-8 leading-relaxed">
               {t?.learning?.hero?.subtitle || 'Specialized German Language and FSP Preparation Courses for International Doctors'}
@@ -331,7 +331,7 @@ const SolviaLearning = () => {
                   <>
                     <div className="text-center mb-8">
                       <h2 className="text-3xl font-bold text-gray-900 mb-4">
-                        {t?.learning?.signupForm?.title || 'Fill the form for a'} <span className="text-blue-900">{t?.learning?.signupForm?.title?.includes('consultoría') ? 'consultoría gratuita' : 'free consultancy'}</span>
+                        Fill the form for a <span className="text-primary">Free Consultancy</span>
                       </h2>
                       <p className="text-gray-600">
                         {t?.learning?.signupForm?.subtitle || 'Be the first to know when our courses launch and get exclusive early access.'}
@@ -456,3 +456,5 @@ const SolviaLearning = () => {
 };
 
 export default SolviaLearning;
+
+</edits_to_apply>
