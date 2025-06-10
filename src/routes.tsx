@@ -1,3 +1,4 @@
+
 import { lazy, Suspense, useState, useEffect } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import ProtectedRoute from "@/components/ProtectedRoute";
@@ -69,7 +70,7 @@ const AppRoutes = () => {
   }, [isLoggedIn]);
 
   // Redirect logged-in users to their respective dashboards
-  const renderIndex = () => {
+  const renderHomePage = () => {
     if (isLoggedIn) {
       if (userType === 'professional') {
         return <Navigate to="/dashboard/professional" replace />;
@@ -77,7 +78,8 @@ const AppRoutes = () => {
         return <Navigate to="/dashboard/institution" replace />;
       }
     }
-    return <Index />;
+    // For non-logged-in users, show ForDoctors page as the main landing page
+    return <ForDoctors />;
   };
   
   if (!isInitialized) {
@@ -87,7 +89,8 @@ const AppRoutes = () => {
   return (
     <Suspense fallback={<LoadingFallback />}>
       <Routes>
-        <Route path="/" element={renderIndex()} />
+        <Route path="/" element={renderHomePage()} />
+        <Route path="/home" element={<Index />} />
         <Route path="/for-doctors" element={<ForDoctors />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
