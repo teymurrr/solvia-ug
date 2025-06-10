@@ -457,5 +457,3 @@ const SolviaLearning = () => {
 };
 
 export default SolviaLearning;
-
-</edits_to_apply>
