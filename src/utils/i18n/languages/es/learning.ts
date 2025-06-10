@@ -71,7 +71,7 @@ export const learning = {
     ]
   },
   signupForm: {
-    title: "Completa el formulario para una consultoría gratuita",
+    title: "Completa el formulario para una Consultoría Gratuita",
     subtitle: "Sé el primero en saber cuándo lancemos nuestros cursos y obtén acceso exclusivo temprano.",
     fields: {
       fullName: "Nombre Completo",
