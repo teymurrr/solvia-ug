@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Calendar, Eye } from 'lucide-react';
+import { ArrowRight, Calendar } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -41,55 +41,48 @@ const BlogSection: React.FC<BlogSectionProps> = ({ posts: propsPosts }) => {
         ) : displayPosts.length > 0 ? (
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
             {displayPosts.map((post) => (
-              <Card key={post.id} className="group hover:shadow-lg transition-shadow duration-300 overflow-hidden">
-                {post.imageUrl && (
-                  <div className="aspect-[16/9] overflow-hidden">
-                    <OptimizedImage
-                      src={post.imageUrl}
-                      alt={post.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                      useAspectRatio={false}
-                    />
-                  </div>
-                )}
-                
-                <CardHeader>
-                  <div className="flex items-center justify-between mb-2">
-                    <div className="flex items-center gap-2">
-                      {post.category && (
-                        <Badge variant="secondary" className="text-xs">
-                          {post.category}
-                        </Badge>
-                      )}
-                      {post.status === 'draft' && (
-                        <Badge variant="outline" className="text-xs bg-gray-100">
-                          Draft
-                        </Badge>
-                      )}
+              <Link key={post.id} to={`/blog/${post.id}`} className="block">
+                <Card className="group hover:shadow-lg transition-shadow duration-300 overflow-hidden cursor-pointer h-full">
+                  {post.imageUrl && (
+                    <div className="aspect-[16/9] overflow-hidden">
+                      <OptimizedImage
+                        src={post.imageUrl}
+                        alt={post.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        useAspectRatio={false}
+                      />
                     </div>
-                  </div>
+                  )}
                   
-                  <h2 className="text-xl font-semibold group-hover:text-primary transition-colors line-clamp-2 blog-title">
-                    {post.title}
-                  </h2>
-                </CardHeader>
-                
-                <CardContent>
-                  <div className="flex items-center justify-between">
+                  <CardHeader>
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center gap-2">
+                        {post.category && (
+                          <Badge variant="secondary" className="text-xs">
+                            {post.category}
+                          </Badge>
+                        )}
+                        {post.status === 'draft' && (
+                          <Badge variant="outline" className="text-xs bg-gray-100">
+                            Draft
+                          </Badge>
+                        )}
+                      </div>
+                    </div>
+                    
+                    <h2 className="text-xl font-semibold group-hover:text-primary transition-colors line-clamp-2 blog-title">
+                      {post.title}
+                    </h2>
+                  </CardHeader>
+                  
+                  <CardContent>
                     <div className="flex items-center text-sm text-muted-foreground">
                       <Calendar className="h-3 w-3 mr-1" />
                       {new Date(post.date).toLocaleDateString()}
                     </div>
-                    
-                    <Button variant="ghost" size="sm" asChild>
-                      <Link to={`/blog/${post.id}`} className="flex items-center">
-                        <Eye className="h-3 w-3 mr-1" />
-                        {t?.blog?.readMore || "Read More"}
-                      </Link>
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
+                  </CardContent>
+                </Card>
+              </Link>
             ))}
           </div>
         ) : (
