@@ -15,6 +15,7 @@ import { dashboard } from './dashboard';
 import { auth } from './auth';
 import { contact } from './contact';
 import { forDoctors } from './forDoctors';
+import { cookies } from './cookies';
 
 export const en = {
   hero,
@@ -32,5 +33,6 @@ export const en = {
   dashboard,
   auth,
   contact,
-  forDoctors
+  forDoctors,
+  cookies
 };

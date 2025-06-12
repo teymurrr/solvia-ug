@@ -17,6 +17,7 @@ import { contact } from './contact';
 import { terms } from './terms';
 import { application } from './application';
 import { forDoctors } from './forDoctors';
+import { cookies } from './cookies';
 
 export const es = {
   hero,
@@ -36,5 +37,6 @@ export const es = {
   contact,
   terms,
   application,
-  forDoctors
+  forDoctors,
+  cookies
 };

@@ -33,69 +33,45 @@ const CookiePreferences = () => {
 
   const handleSave = () => {
     saveConsent(localConsent);
-    toast.success(
-      t?.currentLanguage === 'es' 
-        ? 'Preferencias de cookies guardadas' 
-        : 'Cookie preferences saved'
-    );
+    toast.success(t?.cookies?.toast?.preferencesSaved || 'Cookie preferences saved');
   };
 
   const handleReset = () => {
     resetConsent();
-    toast.success(
-      t?.currentLanguage === 'es'
-        ? 'Preferencias de cookies restablecidas'
-        : 'Cookie preferences reset'
-    );
+    toast.success(t?.cookies?.toast?.preferencesReset || 'Cookie preferences reset');
   };
 
   const cookieCategories = [
     {
       key: 'essential' as const,
       icon: Shield,
-      title: t?.currentLanguage === 'es' ? 'Cookies Esenciales' : 'Essential Cookies',
-      description: t?.currentLanguage === 'es'
-        ? 'Estas cookies son necesarias para el funcionamiento básico del sitio web y no se pueden desactivar.'
-        : 'These cookies are necessary for basic website functionality and cannot be disabled.',
-      examples: t?.currentLanguage === 'es'
-        ? 'Autenticación, configuración de seguridad, recordar preferencias de idioma'
-        : 'Authentication, security settings, language preferences',
+      title: t?.cookies?.categories?.essential?.title || 'Essential Cookies',
+      description: t?.cookies?.categories?.essential?.description || 'These cookies are necessary for basic website functionality and cannot be disabled.',
+      examples: t?.cookies?.categories?.essential?.examples || 'Authentication, security settings, language preferences',
       required: true,
     },
     {
       key: 'analytics' as const,
       icon: BarChart3,
-      title: t?.currentLanguage === 'es' ? 'Cookies Analíticas' : 'Analytics Cookies',
-      description: t?.currentLanguage === 'es'
-        ? 'Nos ayudan a entender cómo los visitantes interactúan con nuestro sitio web recopilando y reportando información de forma anónima.'
-        : 'Help us understand how visitors interact with our website by collecting and reporting information anonymously.',
-      examples: t?.currentLanguage === 'es'
-        ? 'Google Analytics, conteo de páginas vistas, tiempo en el sitio'
-        : 'Google Analytics, page view counts, time on site',
+      title: t?.cookies?.categories?.analytics?.title || 'Analytics Cookies',
+      description: t?.cookies?.categories?.analytics?.description || 'Help us understand how visitors interact with our website by collecting and reporting information anonymously.',
+      examples: t?.cookies?.categories?.analytics?.examples || 'Google Analytics, page view counts, time on site',
       required: false,
     },
     {
       key: 'marketing' as const,
       icon: Target,
-      title: t?.currentLanguage === 'es' ? 'Cookies de Marketing' : 'Marketing Cookies',
-      description: t?.currentLanguage === 'es'
-        ? 'Se utilizan para hacer que los mensajes publicitarios sean más relevantes para ti y medir la efectividad de las campañas publicitarias.'
-        : 'Used to make advertising messages more relevant to you and measure the effectiveness of advertising campaigns.',
-      examples: t?.currentLanguage === 'es'
-        ? 'Facebook Pixel, Google Ads, seguimiento de conversiones'
-        : 'Facebook Pixel, Google Ads, conversion tracking',
+      title: t?.cookies?.categories?.marketing?.title || 'Marketing Cookies',
+      description: t?.cookies?.categories?.marketing?.description || 'Used to make advertising messages more relevant to you and measure the effectiveness of advertising campaigns.',
+      examples: t?.cookies?.categories?.marketing?.examples || 'Facebook Pixel, Google Ads, conversion tracking',
       required: false,
     },
     {
       key: 'functional' as const,
       icon: Wrench,
-      title: t?.currentLanguage === 'es' ? 'Cookies Funcionales' : 'Functional Cookies',
-      description: t?.currentLanguage === 'es'
-        ? 'Permiten que el sitio web proporcione funcionalidades mejoradas y personalización, como recordar tus elecciones.'
-        : 'Enable the website to provide enhanced functionality and personalization, such as remembering your choices.',
-      examples: t?.currentLanguage === 'es'
-        ? 'Preferencias de tema, estado de la barra lateral, configuración de usuario'
-        : 'Theme preferences, sidebar state, user settings',
+      title: t?.cookies?.categories?.functional?.title || 'Functional Cookies',
+      description: t?.cookies?.categories?.functional?.description || 'Enable the website to provide enhanced functionality and personalization, such as remembering your choices.',
+      examples: t?.cookies?.categories?.functional?.examples || 'Theme preferences, sidebar state, user settings',
       required: false,
     },
   ];
@@ -106,13 +82,10 @@ const CookiePreferences = () => {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Cookie className="w-5 h-5 text-primary" />
-            {t?.currentLanguage === 'es' ? 'Configuración de Cookies' : 'Cookie Settings'}
+            {t?.cookies?.preferences?.title || 'Cookie Settings'}
           </CardTitle>
           <CardDescription>
-            {t?.currentLanguage === 'es'
-              ? 'Administra tus preferencias de cookies y controla qué datos recopilamos.'
-              : 'Manage your cookie preferences and control what data we collect.'
-            }
+            {t?.cookies?.preferences?.description || 'Manage your cookie preferences and control what data we collect.'}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
@@ -120,17 +93,14 @@ const CookiePreferences = () => {
             <div className="p-4 bg-gray-50 rounded-lg">
               <div className="flex justify-between items-center mb-2">
                 <h4 className="font-medium text-gray-900">
-                  {t?.currentLanguage === 'es' ? 'Estado actual' : 'Current Status'}
+                  {t?.cookies?.preferences?.currentStatus || 'Current Status'}
                 </h4>
                 <Badge variant="outline" className="text-green-600 border-green-200">
-                  {t?.currentLanguage === 'es' ? 'Configurado' : 'Configured'}
+                  {t?.cookies?.preferences?.configured || 'Configured'}
                 </Badge>
               </div>
               <p className="text-sm text-gray-600">
-                {t?.currentLanguage === 'es' 
-                  ? `Consentimiento dado el: ${new Date(preferences.consentDate).toLocaleDateString('es-ES')}`
-                  : `Consent given on: ${new Date(preferences.consentDate).toLocaleDateString()}`
-                }
+                {t?.cookies?.preferences?.consentGiven || 'Consent given on:'} {new Date(preferences.consentDate).toLocaleDateString()}
               </p>
             </div>
           )}
@@ -152,7 +122,7 @@ const CookiePreferences = () => {
                             <h4 className="font-medium text-gray-900">{category.title}</h4>
                             {category.required && (
                               <Badge variant="secondary" className="text-xs">
-                                {t?.currentLanguage === 'es' ? 'Requerido' : 'Required'}
+                                {t?.cookies?.categories?.essential?.required || 'Required'}
                               </Badge>
                             )}
                           </div>
@@ -192,11 +162,11 @@ const CookiePreferences = () => {
 
           <div className="flex gap-3 pt-4 border-t">
             <Button onClick={handleSave} className="flex-1">
-              {t?.currentLanguage === 'es' ? 'Guardar Preferencias' : 'Save Preferences'}
+              {t?.cookies?.preferences?.savePreferences || 'Save Preferences'}
             </Button>
             <Button variant="outline" onClick={handleReset} className="flex items-center gap-2">
               <RotateCcw className="w-4 h-4" />
-              {t?.currentLanguage === 'es' ? 'Restablecer' : 'Reset'}
+              {t?.cookies?.preferences?.reset || 'Reset'}
             </Button>
           </div>
         </CardContent>

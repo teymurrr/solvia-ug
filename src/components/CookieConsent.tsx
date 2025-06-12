@@ -47,37 +47,29 @@ const CookieConsent = () => {
     {
       key: 'essential' as const,
       icon: Shield,
-      title: t?.currentLanguage === 'es' ? 'Esenciales' : 'Essential',
-      description: t?.currentLanguage === 'es' 
-        ? 'Necesarias para el funcionamiento básico del sitio web'
-        : 'Necessary for basic website functionality',
+      title: t?.cookies?.categories?.essential?.title || 'Essential',
+      description: t?.cookies?.categories?.essential?.description || 'Necessary for basic website functionality',
       required: true,
     },
     {
       key: 'analytics' as const,
       icon: BarChart3,
-      title: t?.currentLanguage === 'es' ? 'Analíticas' : 'Analytics',
-      description: t?.currentLanguage === 'es'
-        ? 'Nos ayudan a entender cómo los usuarios interactúan con nuestro sitio web'
-        : 'Help us understand how visitors interact with our website',
+      title: t?.cookies?.categories?.analytics?.title || 'Analytics',
+      description: t?.cookies?.categories?.analytics?.description || 'Help us understand how visitors interact with our website',
       required: false,
     },
     {
       key: 'marketing' as const,
       icon: Target,
-      title: t?.currentLanguage === 'es' ? 'Marketing' : 'Marketing',
-      description: t?.currentLanguage === 'es'
-        ? 'Utilizadas para mostrar anuncios relevantes y medir la efectividad de las campañas'
-        : 'Used to show relevant ads and measure campaign effectiveness',
+      title: t?.cookies?.categories?.marketing?.title || 'Marketing',
+      description: t?.cookies?.categories?.marketing?.description || 'Used to show relevant ads and measure campaign effectiveness',
       required: false,
     },
     {
       key: 'functional' as const,
       icon: Wrench,
-      title: t?.currentLanguage === 'es' ? 'Funcionales' : 'Functional',
-      description: t?.currentLanguage === 'es'
-        ? 'Mejoran la funcionalidad y personalización del sitio web'
-        : 'Enhance website functionality and personalization',
+      title: t?.cookies?.categories?.functional?.title || 'Functional',
+      description: t?.cookies?.categories?.functional?.description || 'Enhance website functionality and personalization',
       required: false,
     },
   ];
@@ -94,16 +86,10 @@ const CookieConsent = () => {
             <div className="flex-1 space-y-4">
               <div>
                 <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                  {t?.currentLanguage === 'es' 
-                    ? 'Respetamos tu privacidad' 
-                    : 'We respect your privacy'
-                  }
+                  {t?.cookies?.banner?.title || 'We respect your privacy'}
                 </h3>
                 <p className="text-sm text-gray-600 leading-relaxed">
-                  {t?.currentLanguage === 'es'
-                    ? 'Utilizamos cookies para mejorar tu experiencia, proporcionar funciones de redes sociales y analizar nuestro tráfico. Puedes elegir qué cookies aceptar.'
-                    : 'We use cookies to enhance your experience, provide social media features, and analyze our traffic. You can choose which cookies to accept.'
-                  }
+                  {t?.cookies?.banner?.description || 'We use cookies to enhance your experience, provide social media features, and analyze our traffic. You can choose which cookies to accept.'}
                 </p>
               </div>
 
@@ -112,7 +98,7 @@ const CookieConsent = () => {
                   onClick={acceptAll}
                   className="bg-primary hover:bg-primary/90 text-white"
                 >
-                  {t?.currentLanguage === 'es' ? 'Aceptar todas' : 'Accept All'}
+                  {t?.cookies?.banner?.acceptAll || 'Accept All'}
                 </Button>
                 
                 <Button
@@ -120,14 +106,14 @@ const CookieConsent = () => {
                   variant="outline"
                   className="border-gray-300"
                 >
-                  {t?.currentLanguage === 'es' ? 'Solo esenciales' : 'Essential Only'}
+                  {t?.cookies?.banner?.essentialOnly || 'Essential Only'}
                 </Button>
 
                 <Dialog open={showDetails} onOpenChange={setShowDetails}>
                   <DialogTrigger asChild>
                     <Button variant="ghost" className="text-gray-600 hover:text-gray-900">
                       <Settings className="w-4 h-4 mr-2" />
-                      {t?.currentLanguage === 'es' ? 'Personalizar' : 'Customize'}
+                      {t?.cookies?.banner?.customize || 'Customize'}
                     </Button>
                   </DialogTrigger>
                   
@@ -135,16 +121,10 @@ const CookieConsent = () => {
                     <DialogHeader>
                       <DialogTitle className="flex items-center gap-2">
                         <Cookie className="w-5 h-5 text-primary" />
-                        {t?.currentLanguage === 'es' 
-                          ? 'Configuración de Cookies' 
-                          : 'Cookie Settings'
-                        }
+                        {t?.cookies?.preferences?.title || 'Cookie Settings'}
                       </DialogTitle>
                       <DialogDescription>
-                        {t?.currentLanguage === 'es'
-                          ? 'Elige qué tipos de cookies quieres permitir. Puedes cambiar estas preferencias en cualquier momento.'
-                          : 'Choose which types of cookies you want to allow. You can change these preferences at any time.'
-                        }
+                        {t?.cookies?.preferences?.description || 'Choose which types of cookies you want to allow. You can change these preferences at any time.'}
                       </DialogDescription>
                     </DialogHeader>
 
@@ -164,7 +144,7 @@ const CookieConsent = () => {
                                     <h4 className="font-medium text-gray-900">{category.title}</h4>
                                     {category.required && (
                                       <span className="text-xs text-gray-500">
-                                        {t?.currentLanguage === 'es' ? '(Requerido)' : '(Required)'}
+                                        ({t?.cookies?.categories?.essential?.required || 'Required'})
                                       </span>
                                     )}
                                   </div>
@@ -196,14 +176,14 @@ const CookieConsent = () => {
 
                     <div className="flex gap-3 pt-4 border-t">
                       <Button onClick={handleSaveCustom} className="flex-1">
-                        {t?.currentLanguage === 'es' ? 'Guardar preferencias' : 'Save Preferences'}
+                        {t?.cookies?.preferences?.saveCustom || 'Save Preferences'}
                       </Button>
                       <Button 
                         variant="outline" 
                         onClick={() => setShowDetails(false)}
                         className="flex-1"
                       >
-                        {t?.currentLanguage === 'es' ? 'Cancelar' : 'Cancel'}
+                        {t?.cookies?.preferences?.cancel || 'Cancel'}
                       </Button>
                     </div>
                   </DialogContent>
