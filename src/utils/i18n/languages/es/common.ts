@@ -44,6 +44,6 @@ export const common = {
   viewAll: "Ver todo",
   forEmployers: "Para Empleadores",
   forDoctors: "Para Médicos",
-  learning: "Solvia Learning",
+  learning: "Aprender",
   whatsIncluded: "✅ Qué incluye:"
 };
