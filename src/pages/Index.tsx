@@ -27,6 +27,11 @@ const Index = () => {
       {/* Critical above-the-fold content - load immediately */}
       <HeroSection />
       
+      {/* Open Positions section moved right after hero */}
+      <Suspense fallback={<LoadingFallback height="h-96" />}>
+        <VacanciesSection vacancies={featuredVacancies} />
+      </Suspense>
+      
       {/* Below-the-fold sections with simplified lazy loading */}
       <Suspense fallback={<LoadingFallback height="h-64" />}>
         <WhySolviaSectionOptimized />
@@ -38,10 +43,6 @@ const Index = () => {
       
       <Suspense fallback={<LoadingFallback height="h-96" />}>
         <ProfessionalsSection professionals={featuredProfessionals} />
-      </Suspense>
-      
-      <Suspense fallback={<LoadingFallback height="h-96" />}>
-        <VacanciesSection vacancies={featuredVacancies} />
       </Suspense>
       
       <Suspense fallback={<LoadingFallback height="h-64" />}>
