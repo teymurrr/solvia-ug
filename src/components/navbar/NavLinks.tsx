@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Home, Heart, BarChart, LayoutDashboard, BookOpen, FileText, Stethoscope } from 'lucide-react';
@@ -36,13 +35,13 @@ const NavLinks: React.FC<NavLinksProps> = ({ isLoggedIn, userType }) => {
         </Link>
 
         <Link
-          to="/about"
+          to="/blog"
           className="flex flex-col items-center group"
         >
           <div className="p-2 rounded-full group-hover:bg-gray-100 transition-colors">
-            <Heart className="h-5 w-5 text-gray-600 group-hover:text-gray-900" />
+            <FileText className="h-5 w-5 text-gray-600 group-hover:text-gray-900" />
           </div>
-          <span className="text-sm text-gray-600 group-hover:text-gray-900">{t?.common?.about || "About Us"}</span>
+          <span className="text-sm text-gray-600 group-hover:text-gray-900">{t?.blog?.title || "Blog"}</span>
         </Link>
       </div>
     );

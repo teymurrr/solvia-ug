@@ -1,8 +1,7 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Badge } from '@/components/ui/badge';
-import { Home, Briefcase, HelpCircle, LayoutDashboard, BookOpen, BarChart, Stethoscope } from 'lucide-react';
+import { Home, Briefcase, FileText, LayoutDashboard, BookOpen, BarChart, Stethoscope } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
 
 interface MobileMenuProps {
@@ -60,12 +59,12 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
             </Link>
 
             <Link
-              to="/about"
+              to="/blog"
               className="flex items-center space-x-3 px-4 py-2 hover:bg-gray-50"
               onClick={onClose}
             >
-              <HelpCircle className="h-5 w-5 text-gray-600" />
-              <span>{t?.common?.about || "About"}</span>
+              <FileText className="h-5 w-5 text-gray-600" />
+              <span>{t?.blog?.title || "Blog"}</span>
             </Link>
           </>
         )}
