@@ -13,7 +13,7 @@ const StorySection = () => {
           <div className="flex flex-col md:flex-row gap-12 items-center">
             <div className="md:w-1/2">
               <OptimizedImage 
-                src="/lovable-uploads/431c73d2-5785-4d33-8f35-d11742c829e0.png" 
+                src="/lovable-uploads/10e21b82-cfb8-44fa-ab45-7988189d9857.png" 
                 alt="Solvia Logo"
                 className="rounded-lg shadow-lg" 
                 width={500}
