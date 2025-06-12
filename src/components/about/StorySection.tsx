@@ -18,7 +18,9 @@ const StorySection = () => {
                 className="rounded-lg shadow-lg" 
                 width={500}
                 height={350}
-                priority={true} // Load this image with high priority
+                priority={true}
+                fitMode="contain"
+                useAspectRatio={false}
               />
             </div>
             
