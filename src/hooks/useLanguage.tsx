@@ -1,5 +1,6 @@
 
 import React, { createContext, useState, useContext, useEffect, ReactNode } from 'react';
+import { useCookies } from './useCookies';
 
 // Import language files
 import { en } from '../utils/i18n/languages/en/index';
@@ -31,15 +32,16 @@ interface LanguageProviderProps {
 export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) => {
   const [currentLanguage, setCurrentLanguage] = useState<string>('en');
   const [translations, setTranslations] = useState<any>(en);
+  const { setCookie, getCookie } = useCookies();
 
-  // Effect to load language from localStorage on component mount
+  // Effect to load language from cookies on component mount
   useEffect(() => {
-    const storedLanguage = localStorage.getItem('language');
+    const storedLanguage = getCookie('language') || localStorage.getItem('language');
     if (storedLanguage) {
       setCurrentLanguage(storedLanguage);
       switchLanguage(storedLanguage);
     }
-  }, []);
+  }, [getCookie]);
 
   // Function to switch language
   const switchLanguage = (lang: string) => {
@@ -64,8 +66,10 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
     }
   };
 
-  // Function to set language and save to localStorage
+  // Function to set language and save to cookies and localStorage
   const setLanguage = (lang: string) => {
+    // Save to both cookies (GDPR compliant) and localStorage (fallback)
+    setCookie('language', lang, 'essential', { expires: 365 });
     localStorage.setItem('language', lang);
     setCurrentLanguage(lang);
     switchLanguage(lang);

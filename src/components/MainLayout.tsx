@@ -2,6 +2,7 @@
 import React from 'react';
 import Navbar from './Navbar';
 import Footer from './Footer';
+import CookieConsent from './CookieConsent';
 import { Toaster } from './ui/toaster';
 
 interface MainLayoutProps {
@@ -17,6 +18,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children, hideEditProfile }) =>
         {children}
       </main>
       <Footer />
+      <CookieConsent />
       <Toaster />
     </div>
   );
