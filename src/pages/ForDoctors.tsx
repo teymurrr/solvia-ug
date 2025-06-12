@@ -7,6 +7,7 @@ import SuccessStoriesSection from '@/components/for-doctors/SuccessStoriesSectio
 import OpenPositionsSection from '@/components/for-doctors/OpenPositionsSection';
 import LearningSection from '@/components/landing/LearningSection';
 import FAQSection from '@/components/for-doctors/FAQSection';
+import BlogSection from '@/components/landing/BlogSection';
 
 const ForDoctors = () => {
   return (
@@ -16,6 +17,7 @@ const ForDoctors = () => {
       <SuccessStoriesSection />
       <OpenPositionsSection />
       <LearningSection />
+      <BlogSection />
       <FAQSection />
     </MainLayout>
   );
