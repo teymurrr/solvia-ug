@@ -40,36 +40,35 @@ const BlogSection: React.FC<BlogSectionProps> = ({ posts: propsPosts }) => {
         ) : displayPosts.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {displayPosts.map((blog) => (
-              <Card key={blog.id} className="border-0 hover:shadow-lg hover:scale-[1.02] transition-all duration-300 h-[280px] flex flex-col">
-                <CardContent className="p-4 flex flex-col h-full">
-                  {blog.imageUrl && (
-                    <div className="mb-4">
-                      <OptimizedImage
-                        src={blog.imageUrl}
-                        alt={blog.title}
-                        aspectRatio={16 / 9}
-                        className="rounded-md"
-                        containerClassName="w-full"
-                      />
-                    </div>
-                  )}
-                  <div className="flex-grow flex flex-col justify-between">
-                    <h3 className="blog-title text-lg font-semibold mb-3 line-clamp-2">{blog.title}</h3>
-                    <div className="flex items-center justify-between">
-                      <div className="text-sm text-muted-foreground">
-                        <span>{blog.readTime}</span>
+              <Link key={blog.id} to={`/blog/${blog.id}`} className="block">
+                <Card className="border-0 hover:shadow-lg hover:scale-[1.02] transition-all duration-300 h-[280px] flex flex-col cursor-pointer">
+                  <CardContent className="p-4 flex flex-col h-full">
+                    {blog.imageUrl && (
+                      <div className="mb-4">
+                        <OptimizedImage
+                          src={blog.imageUrl}
+                          alt={blog.title}
+                          aspectRatio={16 / 9}
+                          className="rounded-md"
+                          containerClassName="w-full"
+                        />
                       </div>
-                      <Link
-                        to={`/blog/${blog.id}`}
-                        className="text-medical-600 hover:text-medical-700 font-medium inline-flex items-center group"
-                      >
-                        {t?.blog?.readMore || "Read More"}
-                        <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                      </Link>
+                    )}
+                    <div className="flex-grow flex flex-col justify-between">
+                      <h3 className="blog-title text-lg font-semibold mb-3 line-clamp-2">{blog.title}</h3>
+                      <div className="flex items-center justify-between">
+                        <div className="text-sm text-muted-foreground">
+                          <span>{blog.readTime}</span>
+                        </div>
+                        <div className="text-medical-600 hover:text-medical-700 font-medium inline-flex items-center group">
+                          {t?.blog?.readMore || "Read More"}
+                          <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </CardContent>
-              </Card>
+                  </CardContent>
+                </Card>
+              </Link>
             ))}
           </div>
         ) : (
