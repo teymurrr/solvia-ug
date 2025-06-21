@@ -1,13 +1,16 @@
 
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { ArrowRight, MapPin, Clock } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useLanguage } from '@/hooks/useLanguage';
+import { useAuth } from '@/contexts/AuthContext';
 
 const OpenPositionsSection = () => {
   const { t } = useLanguage();
+  const { isLoggedIn } = useAuth();
+  const navigate = useNavigate();
 
   const getPositions = () => {
     if (t?.forDoctors?.positions?.items) {
@@ -61,6 +64,15 @@ const OpenPositionsSection = () => {
 
   const positions = getPositions();
 
+  const handleViewDetails = (positionId: number) => {
+    if (!isLoggedIn) {
+      navigate('/signup/professional');
+    } else {
+      // Navigate to vacancy details if logged in
+      navigate(`/vacancies/${positionId}`);
+    }
+  };
+
   return (
     <section className="py-20 bg-white">
       <div className="container mx-auto px-4">
@@ -108,7 +120,11 @@ const OpenPositionsSection = () => {
                       ))}
                     </ul>
                   </div>
-                  <Button variant="outline" className="w-full">
+                  <Button 
+                    variant="outline" 
+                    className="w-full"
+                    onClick={() => handleViewDetails(position.id || index + 1)}
+                  >
                     {t?.forDoctors?.positions?.viewDetails || "View Details"}
                   </Button>
                 </CardContent>
