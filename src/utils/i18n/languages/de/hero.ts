@@ -1,8 +1,7 @@
 
 export const hero = {
-  title: 'Wo Ärzte und Kliniken zusammenfinden',
-  subtitle: 'Digitale Plattform, auf der Krankenhäuser direkt geprüfte Ärzte und Pflegekräfte treffen',
-  findJob: 'Stelle finden',
-  findTalent: 'Fachkräfte finden',
-  rotatingPhrases: ['keine Agenturen', 'keine versteckten Gebühren', 'keine Verzögerungen']
+  title: 'Als Medizinische Fachkraft in Deutschland oder Österreich arbeiten',
+  subtitle: 'Solvia hilft internationalen Ärzten, Pflegekräften und anderen medizinischen Fachkräften dabei, eine Lizenz zu erhalten, ihr Deutsch zu verbessern und Jobs zu finden—Schritt für Schritt, auf einer Plattform.',
+  cta: 'Meinen Weg beginnen',
+  supportText: 'Kostenloser Start | Persönliche Unterstützung | Beratung in mehreren Sprachen'
 };

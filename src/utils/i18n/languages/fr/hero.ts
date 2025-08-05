@@ -1,8 +1,7 @@
 
 export const hero = {
-  title: 'Où médecins et cliniques se rencontrent',
-  subtitle: 'Plateforme numérique où les hôpitaux rencontrent directement des médecins et infirmiers pré-sélectionnés',
-  findJob: 'Trouver un poste',
-  findTalent: 'Trouver des talents',
-  rotatingPhrases: ['sans agences', 'sans frais cachés', 'sans délais']
+  title: 'Travaillez comme Professionnel Médical en Allemagne ou en Autriche',
+  subtitle: 'Solvia aide les médecins, infirmiers et autres professionnels médicaux internationaux à obtenir leurs licences, améliorer leur allemand et décrocher des emplois—étape par étape, sur une plateforme.',
+  cta: 'Commencer Mon Parcours',
+  supportText: 'Gratuit pour commencer | Support personnalisé | Guidance en plusieurs langues'
 };
