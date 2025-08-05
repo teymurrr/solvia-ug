@@ -13,39 +13,7 @@ const NavLinks: React.FC<NavLinksProps> = ({ isLoggedIn, userType }) => {
   const { t } = useLanguage();
 
   if (!isLoggedIn) {
-    return (
-      <div className="flex justify-center space-x-8 flex-1">
-        <Link
-          to="/"
-          className="flex flex-col items-center group"
-        >
-          <div className="p-2 rounded-full group-hover:bg-gray-100 transition-colors">
-            <Stethoscope className="h-5 w-5 text-gray-600 group-hover:text-gray-900" />
-          </div>
-          <span className="text-sm text-gray-600 group-hover:text-gray-900">{t?.common?.forDoctors || "For Doctors"}</span>
-        </Link>
-
-        <Link
-          to="/learning"
-          className="flex flex-col items-center group"
-        >
-          <div className="p-2 rounded-full group-hover:bg-gray-100 transition-colors">
-            <BookOpen className="h-5 w-5 text-gray-600 group-hover:text-gray-900" />
-          </div>
-          <span className="text-sm text-gray-600 group-hover:text-gray-900">{t?.common?.learning || "Learning"}</span>
-        </Link>
-
-        <Link
-          to="/blog"
-          className="flex flex-col items-center group"
-        >
-          <div className="p-2 rounded-full group-hover:bg-gray-100 transition-colors">
-            <FileText className="h-5 w-5 text-gray-600 group-hover:text-gray-900" />
-          </div>
-          <span className="text-sm text-gray-600 group-hover:text-gray-900">{t?.blog?.title || "Blog"}</span>
-        </Link>
-      </div>
-    );
+    return null;
   }
 
   if (userType === 'professional') {
@@ -59,26 +27,6 @@ const NavLinks: React.FC<NavLinksProps> = ({ isLoggedIn, userType }) => {
             <LayoutDashboard className="h-5 w-5 text-gray-600 group-hover:text-gray-900" />
           </div>
           <span className="text-sm text-gray-600 group-hover:text-gray-900">{t?.common?.dashboard || "Dashboard"}</span>
-        </Link>
-
-        <Link
-          to="/learning"
-          className="flex flex-col items-center group"
-        >
-          <div className="p-2 rounded-full group-hover:bg-gray-100 transition-colors">
-            <BookOpen className="h-5 w-5 text-gray-600 group-hover:text-gray-900" />
-          </div>
-          <span className="text-sm text-gray-600 group-hover:text-gray-900">{t?.common?.learning || "Solvia Learning"}</span>
-        </Link>
-
-        <Link
-          to="/blog"
-          className="flex flex-col items-center group"
-        >
-          <div className="p-2 rounded-full group-hover:bg-gray-100 transition-colors">
-            <FileText className="h-5 w-5 text-gray-600 group-hover:text-gray-900" />
-          </div>
-          <span className="text-sm text-gray-600 group-hover:text-gray-900">Wiki</span>
         </Link>
       </div>
     );

@@ -33,39 +33,12 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
         {!isLoggedIn && (
           <>
             <Link
-              to="/"
-              className="flex items-center space-x-3 px-4 py-2 hover:bg-gray-50"
-              onClick={onClose}
-            >
-              <Stethoscope className="h-5 w-5 text-gray-600" />
-              <span>{t?.common?.forDoctors || "For Doctors"}</span>
-            </Link>
-
-            <Link
-              to="/learning"
-              className="flex items-center space-x-3 px-4 py-2 hover:bg-gray-50"
-              onClick={onClose}
-            >
-              <BookOpen className="h-5 w-5 text-gray-600" />
-              <span>{t?.common?.learning || "Learning"}</span>
-            </Link>
-            
-            <Link
               to="/employers"
               className="flex items-center space-x-3 px-4 py-2 hover:bg-gray-50"
               onClick={onClose}
             >
               <Briefcase className="h-5 w-5 text-gray-600" />
               <span>{t?.common?.forEmployers || "For Employers"}</span>
-            </Link>
-
-            <Link
-              to="/blog"
-              className="flex items-center space-x-3 px-4 py-2 hover:bg-gray-50"
-              onClick={onClose}
-            >
-              <FileText className="h-5 w-5 text-gray-600" />
-              <span>{t?.blog?.title || "Blog"}</span>
             </Link>
           </>
         )}
@@ -79,15 +52,6 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
             >
               <LayoutDashboard className="h-5 w-5 text-gray-600" />
               <span>{t?.common?.dashboard || "Dashboard"}</span>
-            </Link>
-
-            <Link
-              to="/learning"
-              className="flex items-center space-x-3 px-4 py-2 hover:bg-gray-50"
-              onClick={onClose}
-            >
-              <BookOpen className="h-5 w-5 text-gray-600" />
-              <span>{t?.common?.learning || "Solvia Learning"}</span>
             </Link>
           </>
         )}
