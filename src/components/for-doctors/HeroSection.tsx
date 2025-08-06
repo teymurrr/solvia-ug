@@ -18,10 +18,13 @@ const HeroSection = () => {
           <p className="text-lg md:text-xl lg:text-[22px] text-muted-foreground">
             {t?.forDoctors?.hero?.subtitle || "Solvia is the digital platform that simplifies your journey: recognition, language, job, and relocation—all in one place."}
           </p>
-          <div className="flex justify-center mt-8">
+          <div className="flex flex-col items-center space-y-4 mt-8">
             <Button size="lg" asChild>
               <Link to="/signup">{t?.forDoctors?.hero?.cta || "Access to all the free information"}</Link>
             </Button>
+            <p className="text-sm text-muted-foreground">
+              {t?.forDoctors?.hero?.supportText || "Free to start | Personalized support | Guidance in multiple languages"}
+            </p>
           </div>
         </div>
       </div>
