@@ -3,7 +3,8 @@ export const forDoctors = {
   hero: {
     title: "Trabaja como Profesional Médico en Alemania o Austria",
     subtitle: "Solvia ayuda a médicos, enfermeras y otros profesionales médicos internacionales a obtener licencias, mejorar su alemán y conseguir empleos—paso a paso, en una plataforma.",
-    cta: "Accede a toda la información gratuita"
+    cta: "Accede a toda la información gratuita",
+    supportText: "Gratis para empezar | Apoyo personalizado | Orientación en múltiples idiomas"
   },
   usp: {
     title: "Esto es lo que nos diferencia:",
