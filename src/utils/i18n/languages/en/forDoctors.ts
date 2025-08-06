@@ -2,7 +2,7 @@
 export const forDoctors = {
   hero: {
     title: "Work as a Medical Professional in Germany or Austria",
-    subtitle: "Solvia is the digital platform that simplifies your journey: recognition, language, job, and relocation—all in one place.",
+    subtitle: "Solvia helps international doctors, nurses, and other medical professionals get licensed, improve their German, and secure jobs—step by step, in one platform.",
     cta: "Access to all the free information"
   },
   usp: {
