@@ -78,20 +78,20 @@ const SuccessStoriesSection = () => {
   };
 
   return (
-    <section className="py-20 bg-gradient-to-br from-primary/5 to-secondary/10 overflow-hidden">
+    <section className="py-12 bg-gradient-to-br from-primary/5 to-secondary/10 overflow-hidden">
       <div className="container mx-auto px-4">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center mb-10">
+            <h2 className="text-2xl md:text-3xl font-bold mb-4 bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
               {t?.forDoctors?.successStories?.title || "Real Success Stories"}
             </h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+            <p className="text-base text-muted-foreground max-w-2xl mx-auto">
               {t?.forDoctors?.successStories?.subtitle || "Meet doctors who transformed their careers with Solvia and are now thriving in Germany"}
             </p>
           </div>
           
           {/* Carousel Container */}
-          <div className="relative max-w-4xl mx-auto">
+          <div className="relative max-w-3xl mx-auto">
             {/* Main Carousel */}
             <div className="relative overflow-hidden rounded-3xl bg-card/50 backdrop-blur-sm border border-border/50 shadow-2xl">
               <div 
@@ -99,12 +99,12 @@ const SuccessStoriesSection = () => {
                 style={{ transform: `translateX(-${currentSlide * 100}%)` }}
               >
                 {stories.map((story: any, index: number) => (
-                  <div key={index} className="w-full flex-shrink-0 p-8 md:p-12">
-                    <div className="flex flex-col md:flex-row items-center gap-8">
+                  <div key={index} className="w-full flex-shrink-0 p-6 md:p-8">
+                    <div className="flex flex-col md:flex-row items-center gap-6">
                       {/* Image Section */}
                       <div className="flex-shrink-0">
                         <div className="relative">
-                          <div className="w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden ring-4 ring-primary/20 shadow-lg">
+                          <div className="w-24 h-24 md:w-28 md:h-28 rounded-full overflow-hidden ring-4 ring-primary/20 shadow-lg">
                             <OptimizedImage
                               src={story.image}
                               alt={`${story.name} - Success Story`}
@@ -124,11 +124,11 @@ const SuccessStoriesSection = () => {
                       
                       {/* Content Section */}
                       <div className="flex-1 text-center md:text-left">
-                        <div className="mb-6">
-                          <h3 className="text-2xl md:text-3xl font-bold text-foreground mb-2">
+                        <div className="mb-4">
+                          <h3 className="text-xl md:text-2xl font-bold text-foreground mb-2">
                             {story.name}
                           </h3>
-                          <p className="text-primary font-semibold text-lg mb-1">
+                          <p className="text-primary font-semibold text-base mb-1">
                             {story.specialty}
                           </p>
                           <p className="text-muted-foreground">
@@ -137,8 +137,8 @@ const SuccessStoriesSection = () => {
                         </div>
 
                         <div className="relative">
-                          <Quote className="h-12 w-12 text-primary/20 mb-4 mx-auto md:mx-0" />
-                          <blockquote className="text-xl md:text-2xl font-medium text-foreground italic leading-relaxed">
+                          <Quote className="h-8 w-8 text-primary/20 mb-3 mx-auto md:mx-0" />
+                          <blockquote className="text-lg md:text-xl font-medium text-foreground italic leading-relaxed">
                             "{story.quote}"
                           </blockquote>
                         </div>
@@ -194,8 +194,8 @@ const SuccessStoriesSection = () => {
           </div>
 
           {/* Call to action button */}
-          <div className="text-center mt-16">
-            <Button asChild size="lg" className="text-lg px-8 py-6 hover-scale">
+          <div className="text-center mt-12">
+            <Button asChild size="default" className="text-base px-6 py-3 hover-scale">
               <Link to="/signup/professional" className="flex items-center gap-3">
                 {t?.forDoctors?.successStories?.ctaText || "Join thousands of doctors who chose Solvia"}
                 <div className="flex -space-x-2">
