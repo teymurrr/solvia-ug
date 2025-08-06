@@ -1,7 +1,7 @@
 
 export const forDoctors = {
   hero: {
-    title: "Tu camino para trabajar como médico en Alemania o Austria comienza aquí",
+    title: "Trabaja como Profesional Médico en Alemania o Austria",
     subtitle: "Solvia es la plataforma digital que simplifica tu viaje: reconocimiento, idioma, trabajo y reubicación, todo en un solo lugar.",
     cta: "Accede a toda la información gratuita"
   },

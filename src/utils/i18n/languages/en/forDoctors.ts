@@ -1,7 +1,7 @@
 
 export const forDoctors = {
   hero: {
-    title: "Your journey to working as a doctor in Germany or Austria starts here",
+    title: "Work as a Medical Professional in Germany or Austria",
     subtitle: "Solvia is the digital platform that simplifies your journey: recognition, language, job, and relocation—all in one place.",
     cta: "Access to all the free information"
   },
