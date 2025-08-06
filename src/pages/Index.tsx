@@ -27,16 +27,17 @@ const Index = () => {
       {/* Critical above-the-fold content - load immediately */}
       <HeroSection />
       
-      {/* Open Positions section moved right after hero */}
+      {/* Why Solvia section moved right after hero */}
+      <Suspense fallback={<LoadingFallback height="h-64" />}>
+        <WhySolviaSectionOptimized />
+      </Suspense>
+      
+      {/* Open Positions section */}
       <Suspense fallback={<LoadingFallback height="h-96" />}>
         <VacanciesSection vacancies={featuredVacancies} />
       </Suspense>
       
       {/* Below-the-fold sections with simplified lazy loading */}
-      <Suspense fallback={<LoadingFallback height="h-64" />}>
-        <WhySolviaSectionOptimized />
-      </Suspense>
-      
       <Suspense fallback={<LoadingFallback height="h-80" />}>
         <TimelineSection />
       </Suspense>
