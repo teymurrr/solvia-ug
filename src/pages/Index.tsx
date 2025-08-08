@@ -5,7 +5,7 @@ import HeroSection from '@/components/landing/HeroSection';
 import { featuredVacancies, featuredProfessionals } from '@/data/landingPageData';
 
 // Lazy load only the heavy components that are below the fold
-const WhySolviaSectionOptimized = React.lazy(() => import('@/components/landing/WhySolviaSectionOptimized'));
+const PathToSuccessSection = React.lazy(() => import('@/components/landing/PathToSuccessSection'));
 const TimelineSection = React.lazy(() => import('@/components/landing/TimelineSection'));
 const ProfessionalsSection = React.lazy(() => import('@/components/landing/ProfessionalsSection'));
 const VacanciesSection = React.lazy(() => import('@/components/landing/VacanciesSection'));
@@ -29,7 +29,7 @@ const Index = () => {
       
       {/* Why Solvia section moved right after hero */}
       <Suspense fallback={<LoadingFallback height="h-64" />}>
-        <WhySolviaSectionOptimized />
+        <PathToSuccessSection />
       </Suspense>
       
       {/* Open Positions section */}
