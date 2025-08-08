@@ -57,7 +57,7 @@ const SuccessStoriesSection = () => {
     
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % stories.length);
-    }, 5000);
+    }, 3000);
 
     return () => clearInterval(interval);
   }, [isAutoPlaying, stories.length]);
@@ -149,22 +149,24 @@ const SuccessStoriesSection = () => {
               </div>
               
               {/* Navigation Arrows */}
-              <button
-                onClick={prevSlide}
-                className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-background/80 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg border border-border/50 hover:bg-background hover:scale-110 transition-all duration-200"
-                aria-label="Previous testimonial"
-              >
-                <ChevronLeft className="h-6 w-6 text-foreground" />
-              </button>
-              
-              <button
-                onClick={nextSlide}
-                className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-background/80 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg border border-border/50 hover:bg-background hover:scale-110 transition-all duration-200"
-                aria-label="Next testimonial"
-              >
-                <ChevronRight className="h-6 w-6 text-foreground" />
-              </button>
             </div>
+            
+            {/* Navigation Arrows */}
+            <button
+              onClick={prevSlide}
+              className="absolute -left-6 md:-left-10 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 bg-background/80 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg border border-border/50 hover:bg-background hover:scale-110 transition-all duration-200 z-10"
+              aria-label="Previous testimonial"
+            >
+              <ChevronLeft className="h-6 w-6 text-foreground" />
+            </button>
+            
+            <button
+              onClick={nextSlide}
+              className="absolute -right-6 md:-right-10 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 bg-background/80 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg border border-border/50 hover:bg-background hover:scale-110 transition-all duration-200 z-10"
+              aria-label="Next testimonial"
+            >
+              <ChevronRight className="h-6 w-6 text-foreground" />
+            </button>
             
             {/* Dots Indicator */}
             <div className="flex justify-center mt-8 gap-3">
