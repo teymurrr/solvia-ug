@@ -3,7 +3,7 @@ import React from 'react';
 import MainLayout from '@/components/MainLayout';
 import HeroSection from '@/components/for-doctors/HeroSection';
 import OpenPositionsSection from '@/components/for-doctors/OpenPositionsSection';
-import USPSection from '@/components/for-doctors/USPSection';
+import PathToSuccessSection from '@/components/landing/PathToSuccessSection';
 import SuccessStoriesSection from '@/components/for-doctors/SuccessStoriesSection';
 import LearningSection from '@/components/landing/LearningSection';
 import FAQSection from '@/components/for-doctors/FAQSection';
@@ -14,7 +14,7 @@ const ForDoctors = () => {
     <MainLayout>
       <HeroSection />
       <OpenPositionsSection />
-      <USPSection />
+      <PathToSuccessSection />
       <SuccessStoriesSection />
       <LearningSection />
       <BlogSection />
