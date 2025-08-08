@@ -36,6 +36,7 @@ export const InstitutionSignupForm = () => {
   });
 
   const onSubmit = async (data: InstitutionSignupFormValues) => {
+    if (isSubmitting) return;
     try {
       setIsSubmitting(true);
       
@@ -48,17 +49,17 @@ export const InstitutionSignupForm = () => {
       });
       
       toast({
-        title: "Account created",
-        description: "Your institution account has been created successfully. Please check your email to confirm your account.",
+        title: t.common.success,
+        description: t.auth.confirmEmailSent + ' ' + (data.email || ''),
       });
       
       navigate('/confirm-email');
     } catch (error) {
       console.error('Institution Signup error:', error);
       toast({
-        title: "Signup Failed",
-        description: "There was an error creating your account. Please try again.",
-        variant: "destructive",
+        title: t.common.error,
+        description: 'There was an error creating your account. Please try again.',
+        variant: 'destructive',
       });
     } finally {
       setIsSubmitting(false);

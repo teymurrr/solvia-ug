@@ -7,6 +7,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import MainLayout from '@/components/MainLayout';
 import { useToast } from '@/hooks/use-toast';
 import { useLanguage } from '@/hooks/useLanguage';
+import { supabase } from '@/integrations/supabase/client';
 
 const EmailConfirmationRequired = () => {
   const { toast } = useToast();
@@ -14,12 +15,17 @@ const EmailConfirmationRequired = () => {
   const email = localStorage.getItem('pendingConfirmationEmail');
 
   const handleResendEmail = async () => {
-    // In a real implementation, we would call an API to resend the confirmation email
-    // For now, we'll just show a toast
-    toast({
-      title: t.auth.confirmationEmailSent,
-      description: t.auth.checkInboxForLink,
+    if (!email) return;
+    const { error } = await supabase.auth.resend({
+      type: 'signup',
+      email,
     });
+
+    if (error) {
+      toast({ title: t.common.error, description: error.message, variant: 'destructive' });
+    } else {
+      toast({ title: t.auth.confirmationEmailSent, description: t.auth.checkInboxForLink });
+    }
   };
 
   return (

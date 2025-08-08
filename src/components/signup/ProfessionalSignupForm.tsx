@@ -38,6 +38,7 @@ export const ProfessionalSignupForm: React.FC = () => {
   });
 
   const onSubmit = async (data: ProfessionalSignupFormValues) => {
+    if (isSubmitting) return;
     try {
       setIsSubmitting(true);
       
@@ -50,17 +51,17 @@ export const ProfessionalSignupForm: React.FC = () => {
       });
 
       toast({
-        title: "Account created",
-        description: "Your professional account has been created successfully. Please check your email to confirm your account.",
+        title: t.common.success,
+        description: t.auth.confirmEmailSent + ' ' + (data.email || ''),
       });
       
       navigate('/confirm-email');
     } catch (error) {
       console.error('Signup error:', error);
       toast({
-        title: "Account creation failed",
-        description: "An error occurred during signup. This email might already be registered.",
-        variant: "destructive"
+        title: t.common.error,
+        description: 'An error occurred during signup. This email might already be registered.',
+        variant: 'destructive'
       });
     } finally {
       setIsSubmitting(false);

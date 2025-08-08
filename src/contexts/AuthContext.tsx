@@ -148,6 +148,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         password,
         options: {
           data: metadata,
+          emailRedirectTo: `${window.location.origin}/auth/callback`,
         },
       });
       
