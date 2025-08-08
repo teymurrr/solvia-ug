@@ -182,15 +182,6 @@ const SuccessStoriesSection = () => {
               ))}
             </div>
 
-            {/* Progress Bar */}
-            <div className="mt-6 max-w-md mx-auto">
-              <div className="h-1 bg-primary/20 rounded-full overflow-hidden">
-                <div 
-                  className="h-full bg-primary rounded-full transition-all duration-300"
-                  style={{ width: `${((currentSlide + 1) / stories.length) * 100}%` }}
-                />
-              </div>
-            </div>
           </div>
 
           {/* Call to action button */}
