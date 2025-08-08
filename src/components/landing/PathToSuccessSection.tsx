@@ -2,20 +2,12 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { UserCheck, FileText, BookOpen, Stethoscope, Building2, Plane } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import {
-  Stepper,
-  StepperIndicator,
-  StepperItem,
-  StepperSeparator,
-  StepperTitle,
-  StepperTrigger,
-  StepperDescription,
-} from '@/components/ui/stepper';
+import { Card, CardContent } from '@/components/ui/card';
 
-// Enhanced "Your Path to Success with Solvia" section
-// - Desktop: horizontal stepper with animated progress bar and details panel
-// - Mobile: vertical stepper timeline with clear progression
-// - Uses design system tokens (no hard-coded colors)
+// Non-interactive, scroll-friendly vertical timeline
+// - Mobile: single column with left rail
+// - Desktop: alternating cards with center timeline
+// - Uses design tokens only (no hard-coded colors)
 
 const steps = [
   {
@@ -57,11 +49,6 @@ const steps = [
 ] as const;
 
 const PathToSuccessSection = () => {
-  const [activeStep, setActiveStep] = React.useState<number>(1);
-  const total = steps.length;
-  const progress = total > 1 ? ((activeStep - 1) / (total - 1)) * 100 : 0;
-  const current = steps[activeStep - 1];
-
   return (
     <section id="path-to-success" className="py-16 bg-background">
       <div className="container mx-auto px-4">
@@ -72,83 +59,52 @@ const PathToSuccessSection = () => {
           </p>
         </header>
 
-        {/* Mobile: vertical stepper timeline */}
-        <div className="md:hidden relative">
-          <Stepper value={activeStep} onValueChange={setActiveStep} orientation="vertical">
-            {steps.map(({ title, description, Icon }, idx) => (
-              <StepperItem
-                key={title}
-                step={idx + 1}
-                className="relative items-start [&:not(:last-child)]:flex-1"
-              >
-                <StepperTrigger className="items-start pb-8 last:pb-0">
-                  <StepperIndicator />
-                  <div className="mt-0.5 px-2 text-left">
-                    <StepperTitle className="text-base font-semibold leading-snug">{title}</StepperTitle>
-                    <StepperDescription className="text-muted-foreground mt-1">
-                      {description}
-                    </StepperDescription>
+        {/* Timeline */}
+        <div className="relative max-w-5xl mx-auto">
+          {/* Rail */}
+          <div
+            className="absolute left-4 top-0 h-full w-px bg-border md:left-1/2 md:-translate-x-1/2"
+            aria-hidden
+          />
+
+          <ol className="space-y-10 md:space-y-14">
+            {steps.map(({ title, description, Icon }, idx) => {
+              const isRight = idx % 2 === 1;
+              return (
+                <li key={title} className="relative">
+                  {/* Marker */}
+                  <div
+                    className="absolute left-4 md:left-1/2 md:-translate-x-1/2 top-1.5 z-10"
+                    aria-hidden
+                  >
+                    <div className="flex h-10 w-10 items-center justify-center rounded-full border bg-card text-primary shadow-sm">
+                      <span className="sr-only">Step {idx + 1}</span>
+                      <Icon className="h-5 w-5" aria-hidden />
+                    </div>
                   </div>
-                </StepperTrigger>
-                {idx + 1 < steps.length && (
-                  <StepperSeparator className="absolute inset-y-0 left-3 top-[calc(1.5rem+0.125rem)] -order-1 m-0 -translate-x-1/2 group-data-[orientation=vertical]/stepper:h-[calc(100%-1.5rem-0.25rem)]" />
-                )}
-              </StepperItem>
-            ))}
-          </Stepper>
-        </div>
 
-        {/* Desktop: horizontal stepper with animated progress bar */}
-        <div className="hidden md:block">
-          <div className="relative">
-            {/* Background track */}
-            <div className="absolute top-7 left-0 right-0 h-1 bg-border/60 rounded" aria-hidden />
-            {/* Progress fill */}
-            <div
-              className="absolute top-7 left-0 h-1 bg-primary rounded transition-all duration-300"
-              style={{ width: `${progress}%` }}
-              aria-hidden
-            />
-
-            <Stepper value={activeStep} onValueChange={setActiveStep} orientation="horizontal">
-              <ol className="grid grid-cols-3 lg:grid-cols-6 gap-6">
-                {steps.map(({ title, Icon }, idx) => (
-                  <StepperItem key={title} step={idx + 1} className="relative">
-                    <StepperTrigger className="flex flex-col items-center gap-2 px-2 py-3">
-                      <div className="flex h-12 w-12 items-center justify-center rounded-full border bg-card text-primary shadow-sm">
-                        <span className="sr-only">Step {idx + 1}</span>
-                        <Icon className="h-5 w-5" aria-hidden />
-                      </div>
-                      <div className="text-xs font-medium text-primary">Step {idx + 1}</div>
-                      <StepperTitle className="text-sm font-semibold text-center leading-snug">
-                        {title}
-                      </StepperTitle>
-                    </StepperTrigger>
-                    {idx + 1 < steps.length && (
-                      <StepperSeparator className="absolute top-7 left-1/2 right-[-50%] h-px" />
-                    )}
-                  </StepperItem>
-                ))}
-              </ol>
-            </Stepper>
-          </div>
-
-          {/* Active step details */}
-          <article
-            className="mt-8 mx-auto max-w-3xl rounded-lg border bg-card p-6 shadow-sm animate-fade-in"
-            aria-live="polite"
-          >
-            <div className="flex items-start gap-4">
-              <div className="flex h-12 w-12 items-center justify-center rounded-full border bg-background text-primary">
-                <current.Icon className="h-5 w-5" aria-hidden />
-              </div>
-              <div>
-                <div className="text-sm font-medium text-primary">Step {activeStep} of {total}</div>
-                <h3 className="mt-1 text-xl font-semibold leading-snug">{current.title}</h3>
-                <p className="mt-2 text-muted-foreground">{current.description}</p>
-              </div>
-            </div>
-          </article>
+                  <div className="md:grid md:grid-cols-2 md:gap-12 items-start">
+                    <div
+                      className={
+                        [
+                          'pl-12 md:pl-0',
+                          isRight ? 'md:col-start-2' : '',
+                        ].join(' ')
+                      }
+                    >
+                      <Card className="animate-fade-in">
+                        <CardContent className="pt-6">
+                          <div className="text-sm font-medium text-primary">Step {idx + 1}</div>
+                          <h3 className="mt-1 text-xl font-semibold leading-snug">{title}</h3>
+                          <p className="mt-2 text-muted-foreground">{description}</p>
+                        </CardContent>
+                      </Card>
+                    </div>
+                  </div>
+                </li>
+              );
+            })}
+          </ol>
         </div>
 
         <div className="mt-12 flex justify-center">
