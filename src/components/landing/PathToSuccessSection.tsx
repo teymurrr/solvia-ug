@@ -4,10 +4,10 @@ import { UserCheck, FileText, BookOpen, Stethoscope, Building2, Plane } from 'lu
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 
-// Non-interactive, scroll-linked vertical timeline with sticky progress bar
+// Non-interactive, scroll-linked vertical timeline
 // - Mobile: single column with left rail
 // - Desktop: alternating cards with center timeline
-// - Progress bar sticks to the top of the viewport while the section is in view
+// - Progress fill animates along the vertical rail between step icons
 // - Uses design system tokens only
 
 const steps = [
@@ -113,30 +113,17 @@ const PathToSuccessSection = () => {
           </p>
         </header>
 
-        {/* Sticky progress bar */}
-        <div className="sticky top-0 z-10 -mx-4 mb-8 bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60 pointer-events-none">
-          <div className="container mx-auto px-4 py-3">
-            <div
-              className="h-1.5 w-full rounded bg-border/60 overflow-hidden"
-              role="progressbar"
-              aria-label="Path progress"
-              aria-valuemin={0}
-              aria-valuemax={100}
-              aria-valuenow={pct}
-            >
-              <div
-                className="h-full bg-primary transition-[width] duration-150"
-                style={{ width: `${pct}%` }}
-              />
-            </div>
-          </div>
-        </div>
-
         {/* Timeline */}
         <div className="relative max-w-5xl mx-auto">
-          {/* Rail */}
+          {/* Background rail */}
           <div
-            className="absolute left-4 top-0 h-full w-px bg-border md:left-1/2 md:-translate-x-1/2"
+            className="absolute left-4 top-0 bottom-0 w-px bg-border md:left-1/2 md:-translate-x-1/2 z-0"
+            aria-hidden
+          />
+          {/* Progress fill along rail */}
+          <div
+            className="absolute left-4 top-0 w-px bg-primary md:left-1/2 md:-translate-x-1/2 z-0 transition-[height] duration-150"
+            style={{ height: `${pct}%` }}
             aria-hidden
           />
 
