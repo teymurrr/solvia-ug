@@ -189,10 +189,10 @@ const TestimonialsSection = () => {
 
           {/* Call to action */}
           <div className="text-center mt-16">
-            <div className="inline-flex flex-col items-center gap-6 p-8 bg-card/50 backdrop-blur-sm rounded-2xl border border-border/50 shadow-lg">
-            <div className="text-center">
-              <h3 className="text-2xl font-bold mb-2">{t?.successStories?.joinSuccess || "Join Their Success"}</h3>
-              <p className="text-muted-foreground">{t?.successStories?.joinSubtext || "Thousands of healthcare professionals chose Solvia to transform their careers"}</p>
+            <div className="inline-flex flex-col items-center gap-6 p-6 md:p-8 bg-card/50 backdrop-blur-sm rounded-2xl border border-border/50 shadow-lg max-w-2xl mx-auto">
+            <div className="text-center px-4">
+              <h3 className="text-xl md:text-2xl font-bold mb-2">{t?.successStories?.joinSuccess || "Join Their Success"}</h3>
+              <p className="text-sm md:text-base text-muted-foreground leading-relaxed">{t?.successStories?.joinSubtext || "Thousands of healthcare professionals chose Solvia to transform their careers"}</p>
             </div>
               <Button asChild size="lg" className="text-lg px-8 py-4 group">
                 <Link to="/signup/professional" className="flex items-center gap-3">
