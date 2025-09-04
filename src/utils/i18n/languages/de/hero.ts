@@ -1,7 +1,6 @@
 
 export const hero = {
-  title: 'Als Medizinische Fachkraft in Deutschland oder Österreich arbeiten',
-  subtitle: 'Solvia hilft internationalen Ärzten, Pflegekräften und anderen medizinischen Fachkräften dabei, eine Lizenz zu erhalten, ihr Deutsch zu verbessern und Jobs zu finden—Schritt für Schritt, auf einer Plattform.',
-  cta: 'Meinen Weg beginnen',
-  supportText: 'Kostenloser Start | Persönliche Unterstützung | Beratung in mehreren Sprachen'
+  title: 'Ihr neuer Job im europäischen Gesundheitswesen wartet auf Sie.',
+  subtitle: 'Solvia hilft Ihnen dabei, Ihre Lizenz zu erhalten, die Sprache zu lernen und einen Job zu finden - alles auf einer Plattform.',
+  cta: 'Jetzt kostenlos anmelden'
 };
