@@ -1,8 +1,9 @@
 
 export const hero = {
   title: 'Ihr neuer Job im europäischen Gesundheitswesen wartet auf Sie.',
-  subtitle: 'Solvia hilft Ihnen dabei, Ihre Lizenz zu erhalten, die Sprache zu lernen und einen Job zu finden - alles auf einer Plattform.',
+  subtitle: 'Solvia hilft Ihnen dabei, Ihre Lizenz zu erhalten, die Sprache zu lernen und einen Job zu finden.',
   cta: 'Jetzt kostenlos anmelden',
+  learnMore: 'Mehr erfahren',
   searchPlaceholder: 'Stellentitel, Fachrichtung oder Stichwort...',
   locationPlaceholder: 'Standort...',
   searchButton: 'Jobs suchen',

@@ -84,7 +84,7 @@ const TestimonialsSection = () => {
           <div className="max-w-4xl mx-auto text-center mb-16">
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 rounded-full mb-6">
               <Users className="h-5 w-5 text-primary" />
-              <span className="text-sm font-medium text-primary">Success Stories</span>
+              <span className="text-sm font-medium text-primary">{t?.successStories?.title || "Success Stories"}</span>
             </div>
             <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
               {t?.forDoctors?.successStories?.title || "Real Success Stories"}

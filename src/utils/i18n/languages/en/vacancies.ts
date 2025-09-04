@@ -4,7 +4,9 @@ export const vacancies = {
   subtitle: 'Explore exciting opportunities at leading healthcare institutions',
   viewAll: 'View All',
   viewMore: 'View More',
+  viewDetails: 'View Details',
   posted: 'Posted',
+  postedRecently: 'Posted recently',
   application: 'Application',
   applications: 'Applications',
   description: 'Description',
@@ -13,5 +15,12 @@ export const vacancies = {
   apply: 'Apply Now',
   save: 'Save',
   saved: 'Saved',
-  positions: 'Active Positions'
+  positions: 'Active Positions',
+  latestOpportunities: 'Latest Opportunities',
+  readyToFindJob: {
+    title: 'Ready to Find Your Dream Job?',
+    subtitle: 'Join thousands of healthcare professionals who found their perfect role',
+    browsePosistions: 'Browse All Positions',
+    getHelp: 'Get Personal Help'
+  }
 };

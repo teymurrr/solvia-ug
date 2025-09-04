@@ -14,8 +14,9 @@ import { about } from './about';
 import { dashboard } from './dashboard';
 import { auth } from './auth';
 import { contact } from './contact';
-
 import { forDoctors } from './forDoctors';
+import { howItWorks } from './howItWorks';
+import { successStories } from './successStories';
 
 export const ru = {
   hero,
@@ -33,5 +34,7 @@ export const ru = {
   dashboard,
   auth,
   contact,
-  forDoctors
+  forDoctors,
+  howItWorks,
+  successStories
 };

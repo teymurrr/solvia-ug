@@ -24,8 +24,8 @@ const HowItWorksSection = () => {
 
   return (
     <section className="py-16 bg-gray-50">
-      <div className="container mx-auto px-4">
-        <h2 className="text-3xl font-bold text-center mb-12">How It Works</h2>
+        <div className="max-w-4xl mx-auto text-center mb-16">
+          <h2 className="text-3xl font-bold text-center mb-12">{t?.howItWorks?.title || "How It Works"}</h2>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
           {steps.map((step, index) => (

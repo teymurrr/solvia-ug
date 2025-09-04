@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { ArrowRight, MapPin, Building2, Clock, Euro, Star, Briefcase } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
+import { useProtectedAction } from '@/hooks/useProtectedAction';
 
 interface VacanciesSectionRedesignedProps {
   vacancies: any[];
@@ -12,6 +13,8 @@ interface VacanciesSectionRedesignedProps {
 
 const VacanciesSectionRedesigned: React.FC<VacanciesSectionRedesignedProps> = ({ vacancies }) => {
   const { t } = useLanguage();
+  const navigate = useNavigate();
+  const { handleProtectedAction } = useProtectedAction();
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
   
   const title = t?.vacancies?.title || "Open Positions";
@@ -23,10 +26,10 @@ const VacanciesSectionRedesigned: React.FC<VacanciesSectionRedesignedProps> = ({
       <div className="container mx-auto px-4">
         {/* Header */}
         <div className="max-w-4xl mx-auto text-center mb-16">
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 rounded-full mb-6">
-            <Briefcase className="h-5 w-5 text-primary" />
-            <span className="text-sm font-medium text-primary">Latest Opportunities</span>
-          </div>
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 rounded-full mb-6">
+              <Briefcase className="h-5 w-5 text-primary" />
+              <span className="text-sm font-medium text-primary">{t?.vacancies?.latestOpportunities || "Latest Opportunities"}</span>
+            </div>
           <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
             {title}
           </h2>
@@ -109,19 +112,17 @@ const VacanciesSectionRedesigned: React.FC<VacanciesSectionRedesignedProps> = ({
                 <div className="flex items-center justify-between pt-4 border-t border-border/50">
                   <div className="flex items-center gap-2 text-sm text-muted-foreground">
                     <Clock className="h-4 w-4" />
-                    <span>Posted {vacancy.postedDate}</span>
+                    <span>{t?.vacancies?.postedRecently || "Posted recently"}</span>
                   </div>
                   
                   <Button 
                     variant="ghost" 
                     size="sm"
                     className="group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300"
-                    asChild
+                    onClick={() => handleProtectedAction(() => navigate(`/vacancy/${vacancy.id}`))}
                   >
-                    <Link to={`/vacancy/${vacancy.id}`} className="flex items-center gap-2">
-                      View Details
-                      <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                    </Link>
+                    {t?.vacancies?.viewDetails || "View Details"}
+                    <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform ml-2" />
                   </Button>
                 </div>
 
@@ -136,19 +137,17 @@ const VacanciesSectionRedesigned: React.FC<VacanciesSectionRedesignedProps> = ({
         <div className="text-center">
           <div className="inline-flex flex-col items-center gap-4 p-8 bg-card/50 backdrop-blur-sm rounded-2xl border border-border/50 shadow-lg">
             <div className="text-center mb-4">
-              <h3 className="text-2xl font-bold mb-2">Ready to Find Your Dream Job?</h3>
-              <p className="text-muted-foreground">Join thousands of healthcare professionals who found their perfect role</p>
+              <h3 className="text-2xl font-bold mb-2">{t?.vacancies?.readyToFindJob?.title || "Ready to Find Your Dream Job?"}</h3>
+              <p className="text-muted-foreground">{t?.vacancies?.readyToFindJob?.subtitle || "Join thousands of healthcare professionals who found their perfect role"}</p>
             </div>
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button size="lg" asChild className="group">
-                <Link to="/signup/professional" className="flex items-center gap-2">
-                  Browse All Positions
-                  <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                </Link>
+              <Button size="lg" onClick={() => handleProtectedAction(() => navigate('/vacancies'))} className="group">
+                {t?.vacancies?.readyToFindJob?.browsePosistions || "Browse All Positions"}
+                <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform ml-2" />
               </Button>
               <Button size="lg" variant="outline" asChild>
                 <Link to="/contact">
-                  Get Personal Help
+                  {t?.vacancies?.readyToFindJob?.getHelp || "Get Personal Help"}
                 </Link>
               </Button>
             </div>
