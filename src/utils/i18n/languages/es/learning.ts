@@ -1,14 +1,16 @@
 export const learning = {
   title: "Solvia Learning",
-  subtitle: "Cursos Especializados de Alemán Médico y Preparación FSP para Médicos Internacionales",
+  subtitle: "Mejora tu carrera médica con nuestros cursos especializados de alemán médico y preparación FSP",
+  advanceCareer: "Avanza en Tu Carrera",
+  startJourney: "Comienza Tu Viaje de Aprendizaje Hoy",
   hero: {
     title: "Impulsa tu Carrera Médica con Solvia Learning",
     subtitle: "Cursos Especializados de Alemán Médico y Preparación FSP para Médicos Internacionales",
     cta: "Regístrate para Consulta Gratuita"
   },
   germanCourses: {
-    title: "Cursos de Alemán Médico",
-    subtitle: "Aprende Alemán de Forma Inteligente—Desde Básico hasta Competencia Médica",
+    title: 'Alemán Médico A1-C1',
+    subtitle: 'Domina el alemán médico con nuestros cursos especializados',
     description: "Nuestros cursos de alemán están diseñados para profesionales de la salud ocupados. Con contexto médico real, instrucción experta y formatos flexibles, te ayudaremos a hablar con confianza en hospitales, exámenes y más allá.",
     cta: "Explorar Más",
     features: [
@@ -20,8 +22,8 @@ export const learning = {
     ]
   },
   fspCourses: {
-    title: "Cursos de Preparación FSP",
-    subtitle: "Domina la Fachsprachprüfung con Confianza",
+    title: 'Preparación del Examen FSP',
+    subtitle: 'Preparación integral para tu licencia médica en Alemania',
     description: "El FSP es un paso crítico para ejercer en Alemania. Nuestro curso te brinda estructura, práctica y orientación experta para tener éxito en tu primer intento.",
     cta: "Explorar Más",
     features: [
@@ -90,8 +92,8 @@ export const learning = {
       message: "Tu formulario ha sido enviado exitosamente."
     }
   },
-  exploreCourses: "Explorar Cursos",
-  startLearningJourney: "Comienza tu Viaje de Aprendizaje Hoy",
+  exploreCourses: 'Explorar Cursos',
+  startLearningJourney: "Comienza Tu Viaje de Aprendizaje Hoy",
   joinProfessionals: "Únete a más de 3,700 profesionales de la salud que eligieron Solvia Learning",
   exploreAllCourses: "Explorar Todos los Cursos",
   getFreeConsultation: "Obtener Consulta Gratuita",

@@ -1,7 +1,7 @@
 
-const CACHE_NAME = 'solvia-v2';
-const STATIC_CACHE_NAME = 'solvia-static-v2';
-const DYNAMIC_CACHE_NAME = 'solvia-dynamic-v2';
+const CACHE_NAME = 'solvia-v3';
+const STATIC_CACHE_NAME = 'solvia-static-v3';
+const DYNAMIC_CACHE_NAME = 'solvia-dynamic-v3';
 
 // Cache static assets (removed root path as it's dynamic content)
 const STATIC_ASSETS = [
@@ -48,7 +48,8 @@ self.addEventListener('activate', (event) => {
             .filter((cacheName) => 
               // Remove old caches and any caches not from this version
               cacheName.startsWith('solvia-v1') || 
-              (!cacheName.startsWith('solvia-v2') && cacheName.startsWith('solvia-'))
+              cacheName.startsWith('solvia-v2') ||
+              (!cacheName.startsWith('solvia-v3') && cacheName.startsWith('solvia-'))
             )
             .map((cacheName) => caches.delete(cacheName))
         );

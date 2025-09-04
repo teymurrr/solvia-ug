@@ -2,8 +2,10 @@
 export const learning = {
   title: "Formation Solvia",
   subtitle: "Améliorez votre carrière médicale avec nos cours spécialisés d'allemand médical et de préparation FSP",
+  advanceCareer: "Faites Progresser Votre Carrière",
+  startJourney: "Commencez Votre Parcours d'Apprentissage Aujourd'hui",
   germanCourses: {
-    title: 'Cours d\'allemand médical',
+    title: 'Allemand Médical A1-C1',
     subtitle: 'Maîtrisez l\'allemand médical avec nos cours spécialisés',
     features: [
       'Allemand général et médical de A1 à C1 - Programme structuré du niveau débutant à avancé avec vocabulaire médical inclus dès les premières étapes',
@@ -14,7 +16,7 @@ export const learning = {
     ]
   },
   fspCourses: {
-    title: 'Cours de préparation FSP',
+    title: 'Préparation à l\'Examen FSP',
     subtitle: 'Préparation complète pour votre licence médicale en Allemagne',
     features: [
       'Programme FSP complet - Leçons structurées reflétant le format réel de l\'examen: anamnèse, discussion des résultats et communication médicale',
@@ -24,5 +26,12 @@ export const learning = {
       'Application de simulation d\'examen (Prochainement) - Pratiquez à tout moment avec notre outil numérique simulant l\'environnement FSP'
     ]
   },
-  exploreCourses: 'Explorer les cours'
+  exploreCourses: 'Explorer les cours',
+  startLearningJourney: "Commencez Votre Parcours d'Apprentissage Aujourd'hui",
+  joinProfessionals: "Rejoignez plus de 3 700 professionnels de santé qui ont choisi Solvia Learning",
+  exploreAllCourses: "Explorer Tous les Cours",
+  getFreeConsultation: "Consultation Gratuite",
+  students: "étudiants",
+  rating: "note",
+  passRate: "taux de réussite"
 };

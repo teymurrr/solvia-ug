@@ -2,7 +2,7 @@
 import React, { Suspense } from 'react';
 import MainLayout from '@/components/MainLayout';
 import HeroSectionWithSearch from '@/components/landing/HeroSectionWithSearch';
-import HowItWorksSection from '@/components/landing/HowItWorksSection';
+import PathToSuccessSection from '@/components/landing/PathToSuccessSection';
 import { featuredVacancies } from '@/data/landingPageData';
 
 // Lazy load only the heavy components that are below the fold
@@ -25,9 +25,9 @@ const Index = () => {
       {/* Critical above-the-fold content - load immediately */}
       <HeroSectionWithSearch />
       
-      {/* How It Works section */}
-      <div id="how-it-works">
-        <HowItWorksSection />
+      {/* Path to Success section - 5 steps timeline */}
+      <div id="path-to-success">
+        <PathToSuccessSection />
       </div>
       
       {/* Open Positions section - redesigned */}

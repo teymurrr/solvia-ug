@@ -20,6 +20,7 @@ import { forDoctors } from './forDoctors';
 import { cookies } from './cookies';
 import { howItWorks } from './howItWorks';
 import { successStories } from './successStories';
+import { pathToSuccess } from './pathToSuccess';
 
 export const es = {
   hero,
@@ -42,5 +43,6 @@ export const es = {
   forDoctors,
   cookies,
   howItWorks,
-  successStories
+  successStories,
+  pathToSuccess
 };

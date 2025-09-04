@@ -1,10 +1,12 @@
 
 export const learning = {
-  title: 'Solvia Learning',
-  subtitle: 'Enhance your medical career with our specialized German language and FSP courses',
+  title: "Solvia Learning",
+  subtitle: "Enhance your medical career with our specialized German language and FSP courses",
+  advanceCareer: "Advance Your Career",
+  startJourney: "Start Your Learning Journey Today",
   germanCourses: {
-    title: 'German Language Courses',
-    subtitle: 'Whether you\'re just starting or need focused training for the medical field, our language programs are built with your goals in mind.',
+    title: 'Medical German A1-C1',
+    subtitle: 'Master medical German with our specialized courses',
     features: [
       'General + Medical German Levels A1 to C1 - Structured curriculum from beginner to advanced with medical vocabulary included from the early stages.',
       'Flexible Learning Options - Choose between live online classes, self-paced modules, or hybrid formats—designed for professionals with busy schedules.',
@@ -14,8 +16,8 @@ export const learning = {
     ]
   },
   fspCourses: {
-    title: 'FSP Preparation Courses',
-    subtitle: 'The Fachsprachprüfung (FSP) is a specialized language and communication exam required for Approbation. We\'ve created a full support system to help you succeed—on your first try.',
+    title: 'FSP Exam Preparation',
+    subtitle: 'Comprehensive preparation for your medical license in Germany',
     features: [
       'Complete FSP Curriculum - Structured lessons that mirror the real exam format: anamnesis, findings discussion, and doctor-to-doctor communication.',
       'Practice Examinations - Multiple full-length mock FSP exams with feedback from certified trainers.',

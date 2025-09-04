@@ -27,7 +27,9 @@ export const vacancies = {
     fullTime: 'Tiempo completo',
     partTime: 'Tiempo parcial',
     temporary: 'Temporal',
-    contract: 'Contrato'
+    contract: 'Contrato',
+    fulltime: 'Tiempo completo',
+    parttime: 'Tiempo parcial'
   },
   jobTitles: {
     doctor: 'Médico',

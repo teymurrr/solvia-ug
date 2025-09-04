@@ -17,6 +17,7 @@ import { contact } from './contact';
 import { forDoctors } from './forDoctors';
 import { howItWorks } from './howItWorks';
 import { successStories } from './successStories';
+import { pathToSuccess } from './pathToSuccess';
 
 export const ru = {
   hero,
@@ -36,5 +37,6 @@ export const ru = {
   contact,
   forDoctors,
   howItWorks,
-  successStories
+  successStories,
+  pathToSuccess
 };

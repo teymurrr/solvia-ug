@@ -131,7 +131,7 @@ const VacancyCard: React.FC<VacancyCardProps> = ({
               {specialty}
             </Badge>
             <Badge variant="outline" className="bg-gray-50">
-              {jobType}
+              {t?.vacancies?.jobTypes?.[jobType?.toLowerCase()?.replace(/[-\s]/g, '')] || jobType}
             </Badge>
             {salary && (
               <Badge variant="outline" className="bg-gray-50">

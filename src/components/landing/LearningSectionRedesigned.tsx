@@ -11,6 +11,7 @@ const LearningSectionRedesigned = () => {
 
   const courses = [
     {
+      titleKey: "germanCourses.title",
       title: "Medical German A1-C1",
       description: "Complete German language courses specifically designed for healthcare professionals",
       features: ["Medical vocabulary focus", "Interactive lessons", "Native speaker instructors"],
@@ -22,6 +23,7 @@ const LearningSectionRedesigned = () => {
       color: "from-blue-500 to-cyan-500"
     },
     {
+      titleKey: "fspCourses.title",
       title: "FSP Exam Preparation",
       description: "Intensive preparation for the Fachsprachprüfung with proven success methods",
       features: ["Mock exams", "1-on-1 coaching", "95% pass rate"],
@@ -41,7 +43,7 @@ const LearningSectionRedesigned = () => {
         <div className="max-w-4xl mx-auto text-center mb-16">
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-secondary/10 rounded-full mb-6">
             <GraduationCap className="h-5 w-5 text-secondary" />
-            <span className="text-sm font-medium text-secondary">Advance Your Career</span>
+            <span className="text-sm font-medium text-secondary">{t?.learning?.advanceCareer || "Advance Your Career"}</span>
           </div>
           <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
             {t?.learning?.title || "Solvia Learning"}
@@ -77,7 +79,9 @@ const LearningSectionRedesigned = () => {
                       <IconComponent className="h-8 w-8 text-white" />
                     </div>
                     <div className="flex-1">
-                      <h3 className="text-2xl font-bold mb-2">{course.title}</h3>
+                      <h3 className="text-2xl font-bold mb-2">
+                        {course.titleKey ? t?.learning?.[course.titleKey.split('.')[0]]?.[course.titleKey.split('.')[1]] || course.title : course.title}
+                      </h3>
                       <div className="flex items-center gap-4 text-sm text-muted-foreground">
                         <div className="flex items-center gap-1">
                           <Clock className="h-4 w-4" />
