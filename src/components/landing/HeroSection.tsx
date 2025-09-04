@@ -9,10 +9,9 @@ const HeroSection = React.memo(() => {
   
   // Memoize translations to prevent unnecessary recalculations
   const heroData = useMemo(() => ({
-    title: t?.hero?.title || "Work as a Medical Professional in Germany or Austria",
-    subtitle: t?.hero?.subtitle || "Solvia helps international doctors, nurses, and other medical professionals get licensed, improve their German, and secure jobs—step by step, in one platform.",
-    cta: t?.hero?.cta || "Start My Journey",
-    supportText: t?.hero?.supportText || "Free to start | Personalized support | Guidance in multiple languages"
+    title: t?.hero?.title || "Your new job in European Healthcare awaits you.",
+    subtitle: t?.hero?.subtitle || "Solvia helps you get your licence, learn the language and find a job - all in one platform.",
+    cta: t?.hero?.cta || "Sign up now for free"
   }), [t]);
   
   return (
@@ -30,9 +29,6 @@ const HeroSection = React.memo(() => {
             <Button size="lg" asChild>
               <Link to="/signup" rel="prefetch">{heroData.cta}</Link>
             </Button>
-            <p className="text-sm text-muted-foreground">
-              {heroData.supportText}
-            </p>
           </div>
         </div>
       </div>

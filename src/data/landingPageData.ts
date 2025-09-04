@@ -134,12 +134,7 @@ export const featuredVacancies = [
     institution: 'Berlin Medical Center',
     location: 'Berlin, Germany',
     jobType: 'Full-time',
-    description: 'Join our team of expert cardiologists in providing world-class cardiac care.',
-    requirements: [
-      'Board certification in Cardiology',
-      'Minimum 5 years experience',
-      'Fluent in German (C1) and English'
-    ],
+    salary: '€85,000 - €120,000',
     postedDate: '2025-04-01',
     applicationDeadline: '2025-05-15'
   },
@@ -149,12 +144,7 @@ export const featuredVacancies = [
     institution: 'Madrid Health Clinic',
     location: 'Madrid, Spain',
     jobType: 'Part-time',
-    description: 'Seeking experienced pediatric nurses to join our growing team.',
-    requirements: [
-      'Registered Nurse certification',
-      'Pediatric care experience',
-      'Spanish language proficiency'
-    ],
+    salary: '€35,000 - €45,000',
     postedDate: '2025-04-10',
     applicationDeadline: '2025-05-20'
   },
@@ -164,12 +154,7 @@ export const featuredVacancies = [
     institution: 'Vienna General Hospital',
     location: 'Vienna, Austria',
     jobType: 'Full-time',
-    description: 'Join our emergency department team providing critical care services.',
-    requirements: [
-      'Emergency Medicine certification',
-      'Minimum 3 years experience',
-      'German language proficiency (B2)'
-    ],
+    salary: '€75,000 - €95,000',
     postedDate: '2025-04-05',
     applicationDeadline: '2025-05-25'
   },
@@ -179,12 +164,7 @@ export const featuredVacancies = [
     institution: 'Swiss Rehab Center',
     location: 'Zurich, Switzerland',
     jobType: 'Full-time',
-    description: 'Experienced physiotherapist needed for our rehabilitation center.',
-    requirements: [
-      'Physiotherapy license',
-      'Sports medicine experience',
-      'German and English proficiency'
-    ],
+    salary: '€65,000 - €80,000',
     postedDate: '2025-04-08',
     applicationDeadline: '2025-05-30'
   }

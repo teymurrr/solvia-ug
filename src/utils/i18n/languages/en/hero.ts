@@ -1,7 +1,6 @@
 
 export const hero = {
-  title: 'Work as a Medical Professional in Germany or Austria',
-  subtitle: 'Solvia helps international doctors, nurses, and other medical professionals get licensed, improve their German, and secure jobs—step by step, in one platform.',
-  cta: 'Start My Journey',
-  supportText: 'Free to start | Personalized support | Guidance in multiple languages'
+  title: 'Your new job in European Healthcare awaits you.',
+  subtitle: 'Solvia helps you get your licence, learn the language and find a job - all in one platform.',
+  cta: 'Sign up now for free'
 };

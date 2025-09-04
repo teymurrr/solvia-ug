@@ -12,39 +12,33 @@ import { Card, CardContent } from '@/components/ui/card';
 
 const steps = [
   {
-    title: 'Personal Plan',
+    title: 'Sign-up',
     description:
-      'We assess your background and create a customized roadmap for your journey to Germany or Austria.',
+      'Access all information for moving and connect to a community of doctors all with the same goal: Working in Europe.',
     Icon: UserCheck,
   },
   {
-    title: 'Document & License Guidance',
+    title: 'Work Licence guidance',
     description:
-      'Understand which documents are needed, how to get them legalized, and how to begin the Approbation (or Anerkennung) process.',
+      'Customized help to get your diploma fast tracked.',
     Icon: FileText,
   },
   {
-    title: 'Language Preparation',
+    title: 'Solvia Fast-Track Language Method',
     description:
-      'Join our A1–C1 German courses with medical content included from the start. Prepare for TELC and FSP exams.',
+      'Join our language courses. Science based language classes for faster learning.',
     Icon: BookOpen,
   },
   {
-    title: 'FSP Exam Support',
+    title: 'AI Job Matching',
     description:
-      'For doctors and dentists: Practice real clinical cases, take mock exams, and receive personal coaching from certified trainers.',
+      'Find your new job for higher pay and best job satisfaction.',
     Icon: Stethoscope,
-  },
-  {
-    title: 'Job Matching',
-    description:
-      'We connect you with verified hospitals and clinics that value international professionals and guide you through the interview process.',
-    Icon: Building2,
   },
   {
     title: 'Relocation & Integration',
     description:
-      'From visa support to housing, registration, and family reunification—we help you settle in with confidence.',
+      'Get tips & tricks on living in Europe and jumpstart your career.',
     Icon: Plane,
   },
 ] as const;
@@ -107,7 +101,7 @@ const PathToSuccessSection = () => {
     <section id="path-to-success" ref={sectionRef} className="py-16 bg-background">
       <div className="container mx-auto px-4">
         <header className="max-w-2xl mx-auto text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Your Path to Success with Solvia</h2>
+          <h2 className="text-3xl md:text-4xl font-bold tracking-tight">How it works</h2>
           <p className="mt-3 text-muted-foreground">
             We support you at every stage — from recognition to relocation.
           </p>
