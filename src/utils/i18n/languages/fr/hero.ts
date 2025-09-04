@@ -14,5 +14,9 @@ export const hero = {
     physiotherapist: 'Kinésithérapeute',
     dentist: 'Dentiste',
     pharmacist: 'Pharmacien/ne'
+  },
+  socialProof: {
+    professionalsHelped: '5 000+ professionnels aidés',
+    successRate: '95% de taux de réussite'
   }
 };

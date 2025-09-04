@@ -14,5 +14,9 @@ export const hero = {
     physiotherapist: 'Physiotherapist',
     dentist: 'Dentist',
     pharmacist: 'Pharmacist'
+  },
+  socialProof: {
+    professionalsHelped: '5,000+ professionals helped',
+    successRate: '95% success rate'
   }
 };

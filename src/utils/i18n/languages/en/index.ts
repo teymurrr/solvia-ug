@@ -16,6 +16,8 @@ import { auth } from './auth';
 import { contact } from './contact';
 import { forDoctors } from './forDoctors';
 import { cookies } from './cookies';
+import { howItWorks } from './howItWorks';
+import { successStories } from './successStories';
 
 export const en = {
   hero,
@@ -34,5 +36,7 @@ export const en = {
   auth,
   contact,
   forDoctors,
-  cookies
+  cookies,
+  howItWorks,
+  successStories
 };

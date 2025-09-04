@@ -14,5 +14,9 @@ export const hero = {
     physiotherapist: 'Physiotherapeut/in',
     dentist: 'Zahnarzt/Zahnärztin',
     pharmacist: 'Apotheker/in'
+  },
+  socialProof: {
+    professionalsHelped: '5.000+ Fachkräfte geholfen',
+    successRate: '95% Erfolgsquote'
   }
 };

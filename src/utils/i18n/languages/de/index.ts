@@ -15,6 +15,8 @@ import { dashboard } from './dashboard';
 import { auth } from './auth';
 import { contact } from './contact';
 import { forDoctors } from './forDoctors';
+import { howItWorks } from './howItWorks';
+import { successStories } from './successStories';
 
 export const de = {
   hero,
@@ -32,5 +34,7 @@ export const de = {
   dashboard,
   auth,
   contact,
-  forDoctors
+  forDoctors,
+  howItWorks,
+  successStories
 };

@@ -18,6 +18,8 @@ import { terms } from './terms';
 import { application } from './application';
 import { forDoctors } from './forDoctors';
 import { cookies } from './cookies';
+import { howItWorks } from './howItWorks';
+import { successStories } from './successStories';
 
 export const es = {
   hero,
@@ -38,5 +40,7 @@ export const es = {
   terms,
   application,
   forDoctors,
-  cookies
+  cookies,
+  howItWorks,
+  successStories
 };

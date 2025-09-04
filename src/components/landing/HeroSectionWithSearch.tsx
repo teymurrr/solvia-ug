@@ -4,12 +4,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Search, MapPin, Briefcase } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
-import { useProtectedAction } from '@/hooks/useProtectedAction';
+import { useAuth } from '@/contexts/AuthContext';
+import { useToast } from '@/hooks/use-toast';
 
 const HeroSectionWithSearch = React.memo(() => {
   const { t } = useLanguage();
   const navigate = useNavigate();
-  const { handleProtectedAction } = useProtectedAction();
+  const { isLoggedIn } = useAuth();
+  const { toast } = useToast();
   const [searchQuery, setSearchQuery] = useState('');
   const [location, setLocation] = useState('');
   
@@ -18,6 +20,7 @@ const HeroSectionWithSearch = React.memo(() => {
     title: t?.hero?.title || "Your new job in European Healthcare awaits you.",
     subtitle: t?.hero?.subtitle || "Solvia helps you get your licence, learn the language and find a job - all in one platform.",
     cta: t?.hero?.cta || "Sign up now for free",
+    learnMore: t?.hero?.learnMore || "Learn More",
     searchPlaceholder: t?.hero?.searchPlaceholder || "Job title, specialty, or keyword...",
     locationPlaceholder: t?.hero?.locationPlaceholder || "Location...",
     searchButton: t?.hero?.searchButton || "Search Jobs",
@@ -28,18 +31,63 @@ const HeroSectionWithSearch = React.memo(() => {
       physiotherapist: 'Physiotherapist',
       dentist: 'Dentist',
       pharmacist: 'Pharmacist'
+    },
+    socialProof: {
+      professionalsHelped: t?.hero?.socialProof?.professionalsHelped || "5,000+ professionals helped",
+      successRate: t?.hero?.socialProof?.successRate || "95% success rate"
     }
   }), [t]);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    handleProtectedAction(() => {
+    if (isLoggedIn) {
       // Navigate to vacancies page with search parameters
       const params = new URLSearchParams();
       if (searchQuery) params.set('search', searchQuery);
       if (location) params.set('location', location);
       navigate(`/vacancies?${params.toString()}`);
-    });
+    } else {
+      // Show friendly message encouraging signup
+      const friendlyMessages = {
+        en: {
+          title: "Ready to explore opportunities? 🚀",
+          description: "Join thousands of healthcare professionals who found their dream job with Solvia!"
+        },
+        es: {
+          title: "¿Listo para explorar oportunidades? 🚀", 
+          description: "¡Únete a miles de profesionales sanitarios que encontraron su trabajo ideal con Solvia!"
+        },
+        de: {
+          title: "Bereit, Möglichkeiten zu erkunden? 🚀",
+          description: "Schließen Sie sich Tausenden von Gesundheitsfachkräften an, die mit Solvia ihren Traumjob gefunden haben!"
+        },
+        fr: {
+          title: "Prêt à explorer les opportunités? 🚀",
+          description: "Rejoignez des milliers de professionnels de santé qui ont trouvé leur emploi idéal avec Solvia!"
+        },
+        ru: {
+          title: "Готовы исследовать возможности? 🚀",
+          description: "Присоединяйтесь к тысячам медицинских специалистов, которые нашли работу мечты с Solvia!"
+        }
+      };
+      
+      const currentLang = t?.hero?.title ? 
+        (t.hero.title.includes('European Healthcare') ? 'en' :
+         t.hero.title.includes('sistema sanitario europeo') ? 'es' :
+         t.hero.title.includes('europäischen Gesundheitswesen') ? 'de' :
+         t.hero.title.includes('système de santé européen') ? 'fr' :
+         t.hero.title.includes('европейской медицине') ? 'ru' : 'en') : 'en';
+      
+      const message = friendlyMessages[currentLang as keyof typeof friendlyMessages];
+      
+      toast({
+        title: message.title,
+        description: message.description,
+        duration: 5000,
+      });
+      
+      navigate('/signup');
+    }
   };
 
   const scrollToHowItWorks = () => {
@@ -125,7 +173,7 @@ const HeroSectionWithSearch = React.memo(() => {
                 <Link to="/signup" rel="prefetch">{heroData.cta}</Link>
               </Button>
               <Button size="lg" variant="outline" onClick={scrollToHowItWorks} className="text-lg px-8 py-4">
-                Learn More
+                {heroData.learnMore}
               </Button>
             </div>
             
@@ -133,14 +181,26 @@ const HeroSectionWithSearch = React.memo(() => {
             <div className="flex items-center gap-6 text-sm text-muted-foreground">
               <div className="flex items-center gap-2">
                 <div className="flex -space-x-1">
-                  <div className="w-8 h-8 bg-green-500 rounded-full border-2 border-background"></div>
-                  <div className="w-8 h-8 bg-blue-500 rounded-full border-2 border-background"></div>
-                  <div className="w-8 h-8 bg-purple-500 rounded-full border-2 background"></div>
+                  <img 
+                    src="/lovable-uploads/fb51f001-5b4c-4c12-9bff-ec7776fda396.png" 
+                    alt="Professional 1" 
+                    className="w-8 h-8 rounded-full border-2 border-background object-cover"
+                  />
+                  <img 
+                    src="/lovable-uploads/cc32bcf9-0674-4d4f-9316-3ce0790f675e.png" 
+                    alt="Professional 2" 
+                    className="w-8 h-8 rounded-full border-2 border-background object-cover"
+                  />
+                  <img 
+                    src="/lovable-uploads/5f708227-020b-4f86-ae6e-6ad00443ec94.png" 
+                    alt="Professional 3" 
+                    className="w-8 h-8 rounded-full border-2 border-background object-cover"
+                  />
                 </div>
-                <span>5,000+ professionals helped</span>
+                <span>{heroData.socialProof.professionalsHelped}</span>
               </div>
               <div className="text-muted-foreground">•</div>
-              <span>95% success rate</span>
+              <span>{heroData.socialProof.successRate}</span>
             </div>
           </div>
         </div>

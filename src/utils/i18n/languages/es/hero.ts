@@ -3,8 +3,8 @@ export const hero = {
   title: 'Tu nuevo trabajo en el sistema sanitario europeo te espera.',
   subtitle: 'Solvia te ayuda a obtener tu licencia, aprender el idioma y encontrar un trabajo.',
   cta: 'Regístrate ahora gratis',
-  learnMore: 'Aprender más',
-  searchPlaceholder: 'Puesto de trabajo, especialidad o palabra clave...',
+  learnMore: 'Más información',
+  searchPlaceholder: 'Puesto de trabajo',
   locationPlaceholder: 'Ubicación...',
   searchButton: 'Buscar trabajos',
   popularSearches: 'Búsquedas populares:',
@@ -14,5 +14,9 @@ export const hero = {
     physiotherapist: 'Fisioterapeuta',
     dentist: 'Dentista',
     pharmacist: 'Farmacéutico/a'
+  },
+  socialProof: {
+    professionalsHelped: '5.000+ profesionales ayudados',
+    successRate: 'Índice del éxito 95%'
   }
 };
