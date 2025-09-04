@@ -13,8 +13,8 @@ const ForDoctors = () => {
   return (
     <MainLayout>
       <HeroSection />
-      <OpenPositionsSection />
       <PathToSuccessSection />
+      <OpenPositionsSection />
       <SuccessStoriesSection />
       <LearningSection />
       <BlogSection />

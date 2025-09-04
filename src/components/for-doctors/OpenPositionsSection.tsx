@@ -26,8 +26,7 @@ const OpenPositionsSection = () => {
         location: "Munich, Bavaria",
         type: "Full-time",
         posted: "2 days ago",
-        description: "Join our team of expert cardiologists in providing cardiac care.",
-        requirements: ["German C1 level", "EU medical license", "3+ years experience"]
+        salary: "€75,000 - €95,000"
       },
       {
         id: 2,
@@ -36,8 +35,7 @@ const OpenPositionsSection = () => {
         location: "Berlin",
         type: "Full-time",
         posted: "1 week ago",
-        description: "Work in one of Germany's leading emergency departments.",
-        requirements: ["German B2+ level", "Emergency medicine training", "Flexibility"]
+        salary: "€70,000 - €90,000"
       },
       {
         id: 3,
@@ -46,8 +44,7 @@ const OpenPositionsSection = () => {
         location: "Hamburg",
         type: "Full-time",
         posted: "3 days ago",
-        description: "Provide comprehensive pediatric care in a modern facility.",
-        requirements: ["German C1 level", "Pediatric specialization", "Team player"]
+        salary: "€68,000 - €85,000"
       },
       {
         id: 4,
@@ -56,8 +53,7 @@ const OpenPositionsSection = () => {
         location: "Frankfurt, Hesse",
         type: "Full-time",
         posted: "5 days ago",
-        description: "Join our anesthesiology team in a high-volume hospital.",
-        requirements: ["German B2+ level", "Anesthesia certification", "Critical care experience"]
+        salary: "€80,000 - €100,000"
       }
     ];
   };
@@ -106,19 +102,11 @@ const OpenPositionsSection = () => {
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground mb-4">{position.description}</p>
                   <div className="mb-4">
-                    <h4 className="font-medium mb-2">
-                      {t?.forDoctors?.positions?.keyRequirements || "Key Requirements:"}
-                    </h4>
-                    <ul className="space-y-1">
-                      {position.requirements?.map((req: string, reqIndex: number) => (
-                        <li key={reqIndex} className="flex items-center text-sm">
-                          <span className="h-1.5 w-1.5 rounded-full bg-primary mr-2"></span>
-                          {req}
-                        </li>
-                      ))}
-                    </ul>
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-muted-foreground">{position.type}</span>
+                      <span className="font-semibold text-primary">{position.salary}</span>
+                    </div>
                   </div>
                   <Button 
                     variant="outline" 
