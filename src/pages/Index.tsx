@@ -1,17 +1,14 @@
 
 import React, { Suspense } from 'react';
 import MainLayout from '@/components/MainLayout';
-import HeroSection from '@/components/landing/HeroSection';
-import { featuredVacancies, featuredProfessionals } from '@/data/landingPageData';
+import HeroSectionWithSearch from '@/components/landing/HeroSectionWithSearch';
+import { featuredVacancies } from '@/data/landingPageData';
 
 // Lazy load only the heavy components that are below the fold
-const PathToSuccessSection = React.lazy(() => import('@/components/landing/PathToSuccessSection'));
-const TimelineSection = React.lazy(() => import('@/components/landing/TimelineSection'));
-const ProfessionalsSection = React.lazy(() => import('@/components/landing/ProfessionalsSection'));
-const VacanciesSection = React.lazy(() => import('@/components/landing/VacanciesSection'));
-const InsightsSection = React.lazy(() => import('@/components/landing/InsightsSection'));
+const VacanciesSectionRedesigned = React.lazy(() => import('@/components/landing/VacanciesSectionRedesigned'));
+const TestimonialsSection = React.lazy(() => import('@/components/landing/TestimonialsSection'));
 const BlogSection = React.lazy(() => import('@/components/landing/BlogSection'));
-const LearningSection = React.lazy(() => import('@/components/landing/LearningSection'));
+const LearningSectionRedesigned = React.lazy(() => import('@/components/landing/LearningSectionRedesigned'));
 const CTASection = React.lazy(() => import('@/components/landing/CTASection'));
 
 // Simple loading fallback
@@ -25,37 +22,25 @@ const Index = () => {
   return (
     <MainLayout>
       {/* Critical above-the-fold content - load immediately */}
-      <HeroSection />
+      <HeroSectionWithSearch />
       
-      {/* Why Solvia section moved right after hero */}
-      <Suspense fallback={<LoadingFallback height="h-64" />}>
-        <PathToSuccessSection />
-      </Suspense>
-      
-      {/* Open Positions section */}
+      {/* Open Positions section - redesigned */}
       <Suspense fallback={<LoadingFallback height="h-96" />}>
-        <VacanciesSection vacancies={featuredVacancies} />
+        <VacanciesSectionRedesigned vacancies={featuredVacancies} />
       </Suspense>
       
-      {/* Below-the-fold sections with simplified lazy loading */}
-      <Suspense fallback={<LoadingFallback height="h-80" />}>
-        <TimelineSection />
-      </Suspense>
-      
+      {/* Testimonials section - replaces professionals */}
       <Suspense fallback={<LoadingFallback height="h-96" />}>
-        <ProfessionalsSection professionals={featuredProfessionals} />
+        <TestimonialsSection />
       </Suspense>
       
-      <Suspense fallback={<LoadingFallback height="h-64" />}>
-        <InsightsSection />
+      {/* Learning section - redesigned and moved before blog */}
+      <Suspense fallback={<LoadingFallback height="h-96" />}>
+        <LearningSectionRedesigned />
       </Suspense>
       
       <Suspense fallback={<LoadingFallback height="h-80" />}>
         <BlogSection />
-      </Suspense>
-      
-      <Suspense fallback={<LoadingFallback height="h-96" />}>
-        <LearningSection />
       </Suspense>
       
       <Suspense fallback={<LoadingFallback height="h-64" />}>
