@@ -144,10 +144,10 @@ const LearningSectionRedesigned = () => {
 
         {/* Bottom CTA */}
         <div className="text-center">
-          <div className="inline-flex flex-col items-center gap-6 p-8 bg-card/50 backdrop-blur-sm rounded-2xl border border-border/50 shadow-lg max-w-2xl">
-            <div className="text-center">
-              <h3 className="text-2xl font-bold mb-2">{t?.learning?.startLearningJourney || "Start Your Learning Journey Today"}</h3>
-              <p className="text-muted-foreground">{t?.learning?.joinProfessionals || "Join over 1000+ healthcare professionals who chose Solvia Learning"}</p>
+          <div className="inline-flex flex-col items-center gap-4 md:gap-6 p-4 md:p-8 bg-card/50 backdrop-blur-sm rounded-2xl border border-border/50 shadow-lg max-w-2xl mx-auto">
+            <div className="text-center px-2">
+              <h3 className="text-lg md:text-xl lg:text-2xl font-bold mb-2 leading-tight">{t?.learning?.startLearningJourney || "Start Your Learning Journey Today"}</h3>
+              <p className="text-sm md:text-base text-muted-foreground leading-relaxed">{t?.learning?.joinProfessionals || "Join over 1000+ healthcare professionals who chose Solvia Learning"}</p>
             </div>
             
             <div className="flex flex-col sm:flex-row gap-4 w-full">
@@ -165,21 +165,21 @@ const LearningSectionRedesigned = () => {
             </div>
 
             {/* Social proof */}
-            <div className="flex items-center gap-6 text-sm text-muted-foreground pt-4 border-t border-border/50 w-full justify-center">
+            <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-6 text-xs sm:text-sm text-muted-foreground pt-4 border-t border-border/50 w-full justify-center">
               <div className="flex items-center gap-2">
                 <div className="flex -space-x-1">
-                  <div className="w-6 h-6 bg-green-500 rounded-full border-2 border-background"></div>
-                  <div className="w-6 h-6 bg-blue-500 rounded-full border-2 border-background"></div>
-                  <div className="w-6 h-6 bg-purple-500 rounded-full border-2 border-background"></div>
+                  <div className="w-5 h-5 sm:w-6 sm:h-6 bg-green-500 rounded-full border-2 border-background"></div>
+                  <div className="w-5 h-5 sm:w-6 sm:h-6 bg-blue-500 rounded-full border-2 border-background"></div>
+                  <div className="w-5 h-5 sm:w-6 sm:h-6 bg-purple-500 rounded-full border-2 border-background"></div>
                 </div>
                 <span>1000+ {t?.learning?.students || "students"}</span>
               </div>
               <div className="flex items-center gap-1">
-                <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                <Star className="h-3 w-3 sm:h-4 sm:w-4 fill-yellow-400 text-yellow-400" />
                 <span>4.9/5 {t?.learning?.rating || "rating"}</span>
               </div>
               <div className="flex items-center gap-1">
-                <CheckCircle className="h-4 w-4 text-green-500" />
+                <CheckCircle className="h-3 w-3 sm:h-4 sm:w-4 text-green-500" />
                 <span>95% {t?.learning?.passRate || "pass rate"}</span>
               </div>
             </div>
