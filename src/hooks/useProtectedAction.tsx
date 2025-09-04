@@ -15,7 +15,7 @@ export const useProtectedAction = () => {
       toast({
         title: "Authentication Required",
         description: "Please sign up or log in to access this feature.",
-        variant: "destructive",
+        variant: "default",
       });
       navigate(signupPath);
     }

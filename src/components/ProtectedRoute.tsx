@@ -21,7 +21,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, userType }) =
         toast({
           title: "Authentication Required",
           description: "Please sign in to access this page.",
-          variant: "destructive",
+          variant: "default",
         });
         navigate("/login", { replace: true });
         return;
