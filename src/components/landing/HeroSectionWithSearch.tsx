@@ -4,10 +4,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Search, MapPin, Briefcase } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
+import { useProtectedAction } from '@/hooks/useProtectedAction';
 
 const HeroSectionWithSearch = React.memo(() => {
   const { t } = useLanguage();
   const navigate = useNavigate();
+  const { handleProtectedAction } = useProtectedAction();
   const [searchQuery, setSearchQuery] = useState('');
   const [location, setLocation] = useState('');
   
@@ -15,16 +17,36 @@ const HeroSectionWithSearch = React.memo(() => {
   const heroData = useMemo(() => ({
     title: t?.hero?.title || "Your new job in European Healthcare awaits you.",
     subtitle: t?.hero?.subtitle || "Solvia helps you get your licence, learn the language and find a job - all in one platform.",
-    cta: t?.hero?.cta || "Sign up now for free"
+    cta: t?.hero?.cta || "Sign up now for free",
+    searchPlaceholder: t?.hero?.searchPlaceholder || "Job title, specialty, or keyword...",
+    locationPlaceholder: t?.hero?.locationPlaceholder || "Location...",
+    searchButton: t?.hero?.searchButton || "Search Jobs",
+    popularSearches: t?.hero?.popularSearches || "Popular searches:",
+    searchTerms: t?.hero?.searchTerms || {
+      nurse: 'Nurse',
+      doctor: 'Doctor', 
+      physiotherapist: 'Physiotherapist',
+      dentist: 'Dentist',
+      pharmacist: 'Pharmacist'
+    }
   }), [t]);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    // Navigate to vacancies page with search parameters
-    const params = new URLSearchParams();
-    if (searchQuery) params.set('search', searchQuery);
-    if (location) params.set('location', location);
-    navigate(`/vacancies?${params.toString()}`);
+    handleProtectedAction(() => {
+      // Navigate to vacancies page with search parameters
+      const params = new URLSearchParams();
+      if (searchQuery) params.set('search', searchQuery);
+      if (location) params.set('location', location);
+      navigate(`/vacancies?${params.toString()}`);
+    });
+  };
+
+  const scrollToHowItWorks = () => {
+    const element = document.getElementById('how-it-works');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
   };
   
   return (
@@ -48,7 +70,7 @@ const HeroSectionWithSearch = React.memo(() => {
                   <Briefcase className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
                   <Input
                     type="text"
-                    placeholder="Job title, specialty, or keyword..."
+                    placeholder={heroData.searchPlaceholder}
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     className="pl-12 h-14 text-lg border-0 bg-background/50 focus:bg-background transition-colors"
@@ -60,7 +82,7 @@ const HeroSectionWithSearch = React.memo(() => {
                   <MapPin className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
                   <Input
                     type="text"
-                    placeholder="Location..."
+                    placeholder={heroData.locationPlaceholder}
                     value={location}
                     onChange={(e) => setLocation(e.target.value)}
                     className="pl-12 h-14 text-lg border-0 bg-background/50 focus:bg-background transition-colors"
@@ -74,24 +96,24 @@ const HeroSectionWithSearch = React.memo(() => {
                   className="h-14 px-8 text-lg group"
                 >
                   <Search className="h-5 w-5 mr-2 group-hover:scale-110 transition-transform" />
-                  Search Jobs
+                  {heroData.searchButton}
                 </Button>
               </div>
               
               {/* Popular searches */}
               <div className="mt-6 text-center">
-                <p className="text-sm text-muted-foreground mb-3">Popular searches:</p>
+                <p className="text-sm text-muted-foreground mb-3">{heroData.popularSearches}</p>
                 <div className="flex flex-wrap justify-center gap-2">
-                  {['Nurse', 'Doctor', 'Physiotherapist', 'Dentist', 'Pharmacist'].map((term) => (
-                    <button
-                      key={term}
-                      type="button"
-                      onClick={() => setSearchQuery(term)}
-                      className="px-4 py-2 text-sm bg-primary/10 text-primary rounded-full hover:bg-primary/20 transition-colors"
-                    >
-                      {term}
-                    </button>
-                  ))}
+                   {Object.entries(heroData.searchTerms).map(([key, term]) => (
+                     <button
+                       key={key}
+                       type="button"
+                       onClick={() => setSearchQuery(String(term))}
+                       className="px-4 py-2 text-sm bg-primary/10 text-primary rounded-full hover:bg-primary/20 transition-colors"
+                     >
+                       {String(term)}
+                     </button>
+                   ))}
                 </div>
               </div>
             </form>
@@ -102,8 +124,8 @@ const HeroSectionWithSearch = React.memo(() => {
               <Button size="lg" asChild className="text-lg px-8 py-4">
                 <Link to="/signup" rel="prefetch">{heroData.cta}</Link>
               </Button>
-              <Button size="lg" variant="outline" asChild className="text-lg px-8 py-4">
-                <Link to="/for-doctors">Learn More</Link>
+              <Button size="lg" variant="outline" onClick={scrollToHowItWorks} className="text-lg px-8 py-4">
+                Learn More
               </Button>
             </div>
             

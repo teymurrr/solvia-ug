@@ -2,5 +2,16 @@
 export const hero = {
   title: 'Ihr neuer Job im europäischen Gesundheitswesen wartet auf Sie.',
   subtitle: 'Solvia hilft Ihnen dabei, Ihre Lizenz zu erhalten, die Sprache zu lernen und einen Job zu finden - alles auf einer Plattform.',
-  cta: 'Jetzt kostenlos anmelden'
+  cta: 'Jetzt kostenlos anmelden',
+  searchPlaceholder: 'Stellentitel, Fachrichtung oder Stichwort...',
+  locationPlaceholder: 'Standort...',
+  searchButton: 'Jobs suchen',
+  popularSearches: 'Beliebte Suchen:',
+  searchTerms: {
+    nurse: 'Krankenpfleger/in',
+    doctor: 'Arzt/Ärztin',
+    physiotherapist: 'Physiotherapeut/in',
+    dentist: 'Zahnarzt/Zahnärztin',
+    pharmacist: 'Apotheker/in'
+  }
 };
