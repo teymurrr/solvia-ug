@@ -15,6 +15,8 @@ import { dashboard } from './dashboard';
 import { auth } from './auth';
 import { contact } from './contact';
 
+import { forDoctors } from './forDoctors';
+
 export const ru = {
   hero,
   vacancies,
@@ -30,5 +32,6 @@ export const ru = {
   about,
   dashboard,
   auth,
-  contact
+  contact,
+  forDoctors
 };
