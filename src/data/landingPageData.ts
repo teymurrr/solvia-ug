@@ -131,8 +131,10 @@ export const featuredVacancies = [
   {
     id: '1',
     title: 'Senior Cardiologist',
+    titleKey: 'cardiologist',
     institution: 'Berlin Medical Center',
     location: 'Berlin, Germany',
+    locationKey: 'berlin',
     jobType: 'Full-time',
     salary: '€85,000 - €120,000',
     postedDate: '2025-04-01',
@@ -141,8 +143,10 @@ export const featuredVacancies = [
   {
     id: '2',
     title: 'Pediatric Nurse',
+    titleKey: 'pediatricNurse',
     institution: 'Madrid Health Clinic',
     location: 'Madrid, Spain',
+    locationKey: 'madrid',
     jobType: 'Part-time',
     salary: '€35,000 - €45,000',
     postedDate: '2025-04-10',
@@ -151,8 +155,10 @@ export const featuredVacancies = [
   {
     id: '3',
     title: 'Emergency Physician',
+    titleKey: 'emergencyDoctor',
     institution: 'Vienna General Hospital',
     location: 'Vienna, Austria',
+    locationKey: 'vienna',
     jobType: 'Full-time',
     salary: '€75,000 - €95,000',
     postedDate: '2025-04-05',
@@ -161,8 +167,10 @@ export const featuredVacancies = [
   {
     id: '4',
     title: 'Physiotherapist',
+    titleKey: 'physiotherapist',
     institution: 'Swiss Rehab Center',
     location: 'Zurich, Switzerland',
+    locationKey: 'zurich',
     jobType: 'Full-time',
     salary: '€65,000 - €80,000',
     postedDate: '2025-04-08',

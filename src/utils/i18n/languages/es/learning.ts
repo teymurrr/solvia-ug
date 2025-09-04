@@ -90,5 +90,12 @@ export const learning = {
       message: "Tu formulario ha sido enviado exitosamente."
     }
   },
-  exploreCourses: "Explorar Cursos"
+  exploreCourses: "Explorar Cursos",
+  startLearningJourney: "Comienza tu Viaje de Aprendizaje Hoy",
+  joinProfessionals: "Únete a más de 3,700 profesionales de la salud que eligieron Solvia Learning",
+  exploreAllCourses: "Explorar Todos los Cursos",
+  getFreeConsultation: "Obtener Consulta Gratuita",
+  students: "estudiantes",
+  rating: "calificación",
+  passRate: "tasa de aprobación"
 };

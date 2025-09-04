@@ -24,5 +24,12 @@ export const learning = {
       'Prüfungssimulations-App (Bald verfügbar) - Üben Sie jederzeit mit unserem digitalen Tool, das die FSP-Umgebung simuliert.'
     ]
   },
-  exploreCourses: 'Kurse entdecken'
+  exploreCourses: 'Kurse entdecken',
+  startLearningJourney: "Beginnen Sie Ihre Lernreise heute",
+  joinProfessionals: "Schließen Sie sich über 3.700 Gesundheitsfachkräften an, die Solvia Learning gewählt haben",
+  exploreAllCourses: "Alle Kurse erkunden",
+  getFreeConsultation: "Kostenlose Beratung erhalten",
+  students: "Studenten",
+  rating: "Bewertung",
+  passRate: "Bestehensquote"
 };

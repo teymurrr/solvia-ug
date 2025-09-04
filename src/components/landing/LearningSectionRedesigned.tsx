@@ -47,7 +47,7 @@ const LearningSectionRedesigned = () => {
             {t?.learning?.title || "Solvia Learning"}
           </h2>
           <p className="text-xl text-muted-foreground leading-relaxed max-w-3xl mx-auto">
-            Master Medical German and pass your FSP exam with our specialized courses designed by healthcare professionals, for healthcare professionals.
+            {t?.learning?.subtitle || "Master Medical German and pass your FSP exam with our specialized courses designed by healthcare professionals, for healthcare professionals."}
           </p>
         </div>
 
@@ -85,7 +85,7 @@ const LearningSectionRedesigned = () => {
                         </div>
                         <div className="flex items-center gap-1">
                           <Users className="h-4 w-4" />
-                          {course.students} students
+                          {course.students} {t?.learning?.students || "students"}
                         </div>
                         <div className="flex items-center gap-1">
                           <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
@@ -117,7 +117,7 @@ const LearningSectionRedesigned = () => {
                     asChild
                   >
                     <Link to="/learning" className="flex items-center justify-center gap-2">
-                      Learn More
+                      {t?.learning?.exploreCourses || "Learn More"}
                       <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
                     </Link>
                   </Button>
@@ -134,20 +134,20 @@ const LearningSectionRedesigned = () => {
         <div className="text-center">
           <div className="inline-flex flex-col items-center gap-6 p-8 bg-card/50 backdrop-blur-sm rounded-2xl border border-border/50 shadow-lg max-w-2xl">
             <div className="text-center">
-              <h3 className="text-2xl font-bold mb-2">Start Your Learning Journey Today</h3>
-              <p className="text-muted-foreground">Join over 3,700 healthcare professionals who chose Solvia Learning</p>
+              <h3 className="text-2xl font-bold mb-2">{t?.learning?.startLearningJourney || "Start Your Learning Journey Today"}</h3>
+              <p className="text-muted-foreground">{t?.learning?.joinProfessionals || "Join over 3,700 healthcare professionals who chose Solvia Learning"}</p>
             </div>
             
             <div className="flex flex-col sm:flex-row gap-4 w-full">
               <Button size="lg" asChild className="group flex-1">
                 <Link to="/learning" className="flex items-center justify-center gap-2">
-                  Explore All Courses
+                  {t?.learning?.exploreAllCourses || "Explore All Courses"}
                   <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
                 </Link>
               </Button>
               <Button size="lg" variant="outline" asChild className="flex-1">
                 <Link to="/contact">
-                  Get Free Consultation
+                  {t?.learning?.getFreeConsultation || "Get Free Consultation"}
                 </Link>
               </Button>
             </div>
@@ -160,15 +160,15 @@ const LearningSectionRedesigned = () => {
                   <div className="w-6 h-6 bg-blue-500 rounded-full border-2 border-background"></div>
                   <div className="w-6 h-6 bg-purple-500 rounded-full border-2 border-background"></div>
                 </div>
-                <span>3,700+ students</span>
+                <span>3,700+ {t?.learning?.students || "students"}</span>
               </div>
               <div className="flex items-center gap-1">
                 <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                <span>4.9/5 rating</span>
+                <span>4.9/5 {t?.learning?.rating || "rating"}</span>
               </div>
               <div className="flex items-center gap-1">
                 <CheckCircle className="h-4 w-4 text-green-500" />
-                <span>95% pass rate</span>
+                <span>95% {t?.learning?.passRate || "pass rate"}</span>
               </div>
             </div>
           </div>

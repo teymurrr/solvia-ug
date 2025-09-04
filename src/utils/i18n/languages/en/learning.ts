@@ -24,5 +24,12 @@ export const learning = {
       'Exam Simulation App (Coming soon) - Practice anytime with our digital tool that simulates the FSP environment.'
     ]
   },
-  exploreCourses: 'Explore Courses'
+  exploreCourses: 'Explore Courses',
+  startLearningJourney: "Start Your Learning Journey Today",
+  joinProfessionals: "Join over 3,700 healthcare professionals who chose Solvia Learning",
+  exploreAllCourses: "Explore All Courses",
+  getFreeConsultation: "Get Free Consultation",
+  students: "students",
+  rating: "rating",
+  passRate: "pass rate"
 };

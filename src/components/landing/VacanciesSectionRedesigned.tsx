@@ -57,7 +57,9 @@ const VacanciesSectionRedesigned: React.FC<VacanciesSectionRedesignedProps> = ({
                       <Building2 className="h-6 w-6 text-primary" />
                     </div>
                     <div>
-                      <h3 className="font-bold text-lg mb-1">{vacancy.title}</h3>
+                      <h3 className="font-bold text-lg mb-1">
+                        {t?.vacancies?.jobTitles?.[vacancy.titleKey] || vacancy.title}
+                      </h3>
                       <p className="text-primary font-semibold">{vacancy.institution}</p>
                     </div>
                   </div>
@@ -71,12 +73,14 @@ const VacanciesSectionRedesigned: React.FC<VacanciesSectionRedesignedProps> = ({
                 <div className="space-y-4 mb-6">
                   <div className="flex items-center gap-2 text-muted-foreground">
                     <MapPin className="h-4 w-4 text-primary" />
-                    <span className="text-sm">{vacancy.location}</span>
+                    <span className="text-sm">
+                      {t?.vacancies?.locations?.[vacancy.locationKey] || vacancy.location}
+                    </span>
                   </div>
                   
                   <div className="flex flex-wrap gap-2">
                     <Badge variant="outline" className="text-xs">
-                      {vacancy.jobType}
+                      {t?.vacancies?.jobTypes?.[vacancy.jobType?.toLowerCase()?.replace('-', '')] || vacancy.jobType}
                     </Badge>
                     {vacancy.salary && (
                       <Badge variant="outline" className="text-xs flex items-center gap-1">
