@@ -23,5 +23,19 @@ export const vacancies = {
     browsePosistions: 'Alle Positionen durchsuchen',
     getHelp: 'Persönliche Hilfe erhalten'
   },
-  publishedDaysAgo: 'Vor {days} Tagen veröffentlicht'
+  publishedDaysAgo: 'Vor {days} Tagen veröffentlicht',
+  jobTitles: {
+    doctor: 'Arzt/Ärztin',
+    cardiologist: 'Kardiologe/Kardiologin',
+    nurse: 'Krankenpfleger/in',
+    pediatricNurse: 'Kinderkrankenpfleger/in',
+    neurologist: 'Neurologe/Neurologin',
+    emergencyDoctor: 'Notarzt/Notärztin',
+    familyDoctor: 'Hausarzt/Hausärztin',
+    labTechnician: 'Labortechniker/in',
+    physiotherapist: 'Physiotherapeut/in',
+    anesthesiologist: 'Anästhesist/in',
+    pediatrician: 'Kinderarzt/Kinderärztin',
+    surgeon: 'Chirurg/Chirurgin'
+  }
 };
