@@ -6,6 +6,7 @@ export const vacancies = {
   viewMore: 'View More',
   viewDetails: 'View Details',
   posted: 'Posted',
+  publishedDaysAgo: 'Published {days} days ago',
   postedRecently: 'Posted recently',
   application: 'Application',
   applications: 'Applications',

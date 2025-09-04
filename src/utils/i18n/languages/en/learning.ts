@@ -33,5 +33,7 @@ export const learning = {
   getFreeConsultation: "Get Free Consultation",
   students: "students",
   rating: "rating",
-  passRate: "pass rate"
+  passRate: "pass rate",
+  mostPopular: "Most Popular",
+  bestResults: "Best Results"
 };

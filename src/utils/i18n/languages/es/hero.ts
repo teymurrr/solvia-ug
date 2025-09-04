@@ -16,7 +16,7 @@ export const hero = {
     pharmacist: 'Farmacéutico/a'
   },
   socialProof: {
-    professionalsHelped: '5.000+ profesionales ayudados',
+    professionalsHelped: '1000+ profesionales ayudados',
     successRate: 'Índice del éxito 95%'
   }
 };

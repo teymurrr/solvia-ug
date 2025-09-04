@@ -33,7 +33,7 @@ const HeroSectionWithSearch = React.memo(() => {
       pharmacist: 'Pharmacist'
     },
     socialProof: {
-      professionalsHelped: t?.hero?.socialProof?.professionalsHelped || "5,000+ professionals helped",
+      professionalsHelped: t?.hero?.socialProof?.professionalsHelped || "1000+ professionals helped",
       successRate: t?.hero?.socialProof?.successRate || "95% success rate"
     }
   }), [t]);
@@ -109,7 +109,6 @@ const HeroSectionWithSearch = React.memo(() => {
             {heroData.subtitle}
           </p>
           
-          {/* Search Bar */}
           <div className="max-w-4xl mx-auto mt-12">
             <form onSubmit={handleSearch} className="bg-card/80 backdrop-blur-sm rounded-2xl shadow-2xl border border-border/50 p-6">
               <div className="flex flex-col md:flex-row gap-4 items-center">
@@ -167,18 +166,9 @@ const HeroSectionWithSearch = React.memo(() => {
             </form>
           </div>
 
-          <div className="flex flex-col items-center space-y-6 mt-12">
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Button size="lg" asChild className="text-lg px-8 py-4">
-                <Link to="/signup" rel="prefetch">{heroData.cta}</Link>
-              </Button>
-              <Button size="lg" variant="outline" onClick={scrollToHowItWorks} className="text-lg px-8 py-4">
-                {heroData.learnMore}
-              </Button>
-            </div>
             
             {/* Social proof */}
-            <div className="flex items-center gap-6 text-sm text-muted-foreground">
+            <div className="flex items-center gap-6 text-sm text-muted-foreground mt-12">
               <div className="flex items-center gap-2">
                 <div className="flex -space-x-1">
                   <img 
@@ -202,7 +192,6 @@ const HeroSectionWithSearch = React.memo(() => {
               <div className="text-muted-foreground">•</div>
               <span>{heroData.socialProof.successRate}</span>
             </div>
-          </div>
         </div>
       </div>
     </section>

@@ -33,5 +33,7 @@ export const learning = {
   getFreeConsultation: "Consultation Gratuite",
   students: "étudiants",
   rating: "note",
-  passRate: "taux de réussite"
+  passRate: "taux de réussite",
+  mostPopular: "Le plus populaire",
+  bestResults: "Meilleurs résultats"
 };

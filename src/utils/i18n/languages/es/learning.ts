@@ -1,5 +1,5 @@
 export const learning = {
-  title: "Solvia Learning",
+  title: "Aprendizaje Solvia",
   subtitle: "Mejora tu carrera médica con nuestros cursos especializados de alemán médico y preparación FSP",
   advanceCareer: "Avanza en Tu Carrera",
   startJourney: "Comienza Tu Viaje de Aprendizaje Hoy",
@@ -94,10 +94,12 @@ export const learning = {
   },
   exploreCourses: 'Explorar Cursos',
   startLearningJourney: "Comienza Tu Viaje de Aprendizaje Hoy",
-  joinProfessionals: "Únete a más de 3,700 profesionales de la salud que eligieron Solvia Learning",
+  joinProfessionals: "Únete a más de 1000 profesionales de la salud que eligieron Aprendizaje Solvia",
   exploreAllCourses: "Explorar Todos los Cursos",
   getFreeConsultation: "Obtener Consulta Gratuita",
   students: "estudiantes",
   rating: "calificación",
-  passRate: "tasa de aprobación"
+  passRate: "tasa de aprobación",
+  mostPopular: "Lo más popular",
+  bestResults: "Mejores resultados"
 };

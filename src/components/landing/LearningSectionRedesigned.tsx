@@ -16,9 +16,9 @@ const LearningSectionRedesigned = () => {
       description: "Complete German language courses specifically designed for healthcare professionals",
       features: ["Medical vocabulary focus", "Interactive lessons", "Native speaker instructors"],
       duration: "6-12 months",
-      students: "2,500+",
+      students: "1000+",
       rating: 4.9,
-      highlight: "Most Popular",
+      highlight: t?.learning?.mostPopular || "Most Popular",
       icon: Globe,
       color: "from-blue-500 to-cyan-500"
     },
@@ -30,7 +30,7 @@ const LearningSectionRedesigned = () => {
       duration: "3-6 months",
       students: "1,200+",
       rating: 4.8,
-      highlight: "Best Results",
+      highlight: t?.learning?.bestResults || "Best Results",
       icon: Award,
       color: "from-green-500 to-emerald-500"
     }

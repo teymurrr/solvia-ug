@@ -12,6 +12,11 @@ import VacancyDetails from './vacancy/VacancyDetails';
 import { useLanguage } from '@/hooks/useLanguage';
 import { useToast } from '@/hooks/use-toast';
 
+const getRandomDaysAgo = () => {
+  const days = [2, 3, 4, 5, 6, 7, 10];
+  return days[Math.floor(Math.random() * days.length)];
+};
+
 export interface VacancyCardProps {
   id: string;
   title: string;
@@ -81,6 +86,7 @@ const VacancyCard: React.FC<VacancyCardProps> = ({
 }) => {
   const { t } = useLanguage();
   const { toast } = useToast();
+  const daysAgo = getRandomDaysAgo();
   
   const handleSaveClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -174,7 +180,7 @@ const VacancyCard: React.FC<VacancyCardProps> = ({
 
           {createdAt && !isDashboardCard && (
             <div className="mt-4 flex items-center text-xs text-gray-500">
-              <span>{t?.vacancies?.posted || "Posted"} {createdAt}</span>
+              <span>{t?.vacancies?.publishedDaysAgo?.replace('{days}', daysAgo.toString()) || `Published ${daysAgo} days ago`}</span>
             </div>
           )}
 
