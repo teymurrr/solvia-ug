@@ -13,9 +13,13 @@ const LearningSectionRedesigned = () => {
     {
       titleKey: "germanCourses.title",
       title: "Medical German A1-C1",
-      description: "Complete German language courses specifically designed for healthcare professionals",
-      features: ["Medical vocabulary focus", "Interactive lessons", "Native speaker instructors"],
-      duration: "6-12 months",
+      description: t?.learning?.courseDescription1 || "Complete German language courses specifically designed for healthcare professionals",
+      features: [
+        t?.learning?.medicalVocabularyFocus || "Medical vocabulary focus", 
+        t?.learning?.interactiveLessons || "Interactive lessons", 
+        t?.learning?.nativeSpeakerInstructors || "Native speaker instructors"
+      ],
+      duration: t?.learning?.duration6to12 || "6-12 months",
       students: "1000+",
       rating: 4.9,
       highlight: t?.learning?.mostPopular || "Most Popular",
@@ -25,9 +29,13 @@ const LearningSectionRedesigned = () => {
     {
       titleKey: "fspCourses.title",
       title: "FSP Exam Preparation",
-      description: "Intensive preparation for the Fachsprachprüfung with proven success methods",
-      features: ["Mock exams", "1-on-1 coaching", "95% pass rate"],
-      duration: "3-6 months",
+      description: t?.learning?.courseDescription2 || "Intensive preparation for the Fachsprachprüfung with proven success methods",
+      features: [
+        t?.learning?.mockExams || "Mock exams", 
+        t?.learning?.oneOnOneCoaching || "1-on-1 coaching", 
+        t?.learning?.passRatePercent || "95% pass rate"
+      ],
+      duration: t?.learning?.duration3to6 || "3-6 months",
       students: "1,200+",
       rating: 4.8,
       highlight: t?.learning?.bestResults || "Best Results",
@@ -139,7 +147,7 @@ const LearningSectionRedesigned = () => {
           <div className="inline-flex flex-col items-center gap-6 p-8 bg-card/50 backdrop-blur-sm rounded-2xl border border-border/50 shadow-lg max-w-2xl">
             <div className="text-center">
               <h3 className="text-2xl font-bold mb-2">{t?.learning?.startLearningJourney || "Start Your Learning Journey Today"}</h3>
-              <p className="text-muted-foreground">{t?.learning?.joinProfessionals || "Join over 3,700 healthcare professionals who chose Solvia Learning"}</p>
+              <p className="text-muted-foreground">{t?.learning?.joinProfessionals || "Join over 1000+ healthcare professionals who chose Solvia Learning"}</p>
             </div>
             
             <div className="flex flex-col sm:flex-row gap-4 w-full">
@@ -164,7 +172,7 @@ const LearningSectionRedesigned = () => {
                   <div className="w-6 h-6 bg-blue-500 rounded-full border-2 border-background"></div>
                   <div className="w-6 h-6 bg-purple-500 rounded-full border-2 border-background"></div>
                 </div>
-                <span>3,700+ {t?.learning?.students || "students"}</span>
+                <span>1000+ {t?.learning?.students || "students"}</span>
               </div>
               <div className="flex items-center gap-1">
                 <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />

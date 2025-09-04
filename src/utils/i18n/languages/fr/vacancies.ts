@@ -22,5 +22,6 @@ export const vacancies = {
     subtitle: 'Rejoignez des milliers de professionnels de santé qui ont trouvé leur rôle parfait',
     browsePosistions: 'Parcourir toutes les positions',
     getHelp: 'Obtenir de l\'aide personnelle'
-  }
+  },
+  publishedDaysAgo: 'Publié il y a {days} jours'
 };

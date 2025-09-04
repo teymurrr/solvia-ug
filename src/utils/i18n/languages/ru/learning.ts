@@ -33,5 +33,15 @@ export const learning = {
   rating: "рейтинг",
   passRate: "процент успеха",
   mostPopular: "Самые популярные",
-  bestResults: "Лучшие результаты"
+  bestResults: "Лучшие результаты",
+  duration6to12: "6-12 месяцев",
+  duration3to6: "3-6 месяцев",
+  courseDescription1: "Полные курсы немецкого языка, специально разработанные для медицинских работников",
+  courseDescription2: "Интенсивная подготовка к Fachsprachprüfung с проверенными методами успеха",
+  medicalVocabularyFocus: "Упор на медицинскую лексику",
+  interactiveLessons: "Интерактивные уроки",
+  nativeSpeakerInstructors: "Преподаватели-носители языка",
+  mockExams: "Пробные экзамены",
+  oneOnOneCoaching: "Индивидуальные занятия",
+  passRatePercent: "95% успешной сдачи"
 };

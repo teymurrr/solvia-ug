@@ -22,5 +22,6 @@ export const vacancies = {
     subtitle: 'Schließen Sie sich Tausenden von Gesundheitsfachkräften an, die ihre perfekte Rolle gefunden haben',
     browsePosistions: 'Alle Positionen durchsuchen',
     getHelp: 'Persönliche Hilfe erhalten'
-  }
+  },
+  publishedDaysAgo: 'Vor {days} Tagen veröffentlicht'
 };
