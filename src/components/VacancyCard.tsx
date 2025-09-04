@@ -150,16 +150,16 @@ const VacancyCard: React.FC<VacancyCardProps> = ({
             )}
           </div>
 
-          {/* Always display description */}
-          {description && (
+          {/* Display description only if showDescription is true */}
+          {showDescription && description && (
             <div className="mt-4">
               <h4 className="text-sm font-medium mb-1">{t?.vacancies?.description || "Description"}</h4>
               <p className="text-sm text-gray-600 line-clamp-4">{description}</p>
             </div>
           )}
 
-          {/* Always display requirements */}
-          {requirements && requirements.length > 0 && (
+          {/* Display requirements only if showRequirements is true */}
+          {showRequirements && requirements && requirements.length > 0 && (
             <div className="mt-4">
               <h4 className="text-sm font-medium mb-1">{t?.vacancies?.keyRequirements || "Key Requirements"}</h4>
               <ul className="text-sm text-gray-600 pl-5">
