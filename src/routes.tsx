@@ -78,8 +78,8 @@ const AppRoutes = () => {
         return <Navigate to="/dashboard/institution" replace />;
       }
     }
-    // For non-logged-in users, show ForDoctors page as the main landing page
-    return <ForDoctors />;
+    // For non-logged-in users, show Index page as the main landing page
+    return <Index />;
   };
   
   if (!isInitialized) {
