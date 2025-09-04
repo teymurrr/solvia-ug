@@ -2,30 +2,33 @@
 import React from 'react';
 import { FileCheck, Building2, Rocket } from 'lucide-react';
 import { Card, CardContent } from "@/components/ui/card";
+import { useLanguage } from '@/hooks/useLanguage';
 
 const HowItWorksSection = () => {
+  const { t } = useLanguage();
+  
   const steps = [
     {
       icon: <FileCheck className="h-12 w-12 text-[#006ae6]" />,
-      title: "Create Your Profile",
-      description: "Fill in your professional details, certifications, and preferences to showcase your expertise."
+      title: t?.howItWorks?.steps?.step1?.title || "Create Your Profile",
+      description: t?.howItWorks?.steps?.step1?.description || "Fill in your professional details, certifications, and preferences to showcase your expertise."
     },
     {
       icon: <Building2 className="h-12 w-12 text-[#006ae6]" />,
-      title: "Match with Employers",
-      description: "Connect with healthcare institutions that match your skills and career preferences."
+      title: t?.howItWorks?.steps?.step2?.title || "Match with Employers",
+      description: t?.howItWorks?.steps?.step2?.description || "Connect with healthcare institutions that match your skills and career preferences."
     },
     {
       icon: <Rocket className="h-12 w-12 text-[#006ae6]" />,
-      title: "Start Your Journey",
-      description: "Begin your new role with comprehensive support for relocation and onboarding."
+      title: t?.howItWorks?.steps?.step3?.title || "Start Your Journey",
+      description: t?.howItWorks?.steps?.step3?.description || "Begin your new role with comprehensive support for relocation and onboarding."
     }
   ];
 
   return (
-    <section className="py-16 bg-gray-50">
-        <div className="max-w-4xl mx-auto text-center mb-16">
-          <h2 className="text-3xl font-bold text-center mb-12">{t?.howItWorks?.title || "How It Works"}</h2>
+    <section id="how-it-works" className="py-16 bg-gray-50">
+      <div className="container mx-auto px-4">
+        <h2 className="text-3xl font-bold text-center mb-12">{t?.howItWorks?.title || "How It Works"}</h2>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
           {steps.map((step, index) => (
