@@ -1,11 +1,10 @@
 
-const CACHE_NAME = 'solvia-v1';
-const STATIC_CACHE_NAME = 'solvia-static-v1';
-const DYNAMIC_CACHE_NAME = 'solvia-dynamic-v1';
+const CACHE_NAME = 'solvia-v2';
+const STATIC_CACHE_NAME = 'solvia-static-v2';
+const DYNAMIC_CACHE_NAME = 'solvia-dynamic-v2';
 
-// Cache static assets
+// Cache static assets (removed root path as it's dynamic content)
 const STATIC_ASSETS = [
-  '/',
   '/src/main.tsx',
   '/src/index.css',
   '/manifest.json'
@@ -19,14 +18,14 @@ const CACHE_STRATEGIES = {
     /\/assets\//,
     /\/lovable-uploads\//
   ],
-  // Network first for API calls
+  // Network first for API calls and dynamic pages
   networkFirst: [
     /\/api\//,
-    /supabase/
+    /supabase/,
+    /\/$/  // Root path should always get fresh content
   ],
-  // Stale while revalidate for pages
+  // Stale while revalidate for other pages
   staleWhileRevalidate: [
-    /\/$/,
     /\/about/,
     /\/contact/
   ]
@@ -46,7 +45,11 @@ self.addEventListener('activate', (event) => {
       .then((cacheNames) => {
         return Promise.all(
           cacheNames
-            .filter((cacheName) => !cacheName.startsWith('solvia-'))
+            .filter((cacheName) => 
+              // Remove old caches and any caches not from this version
+              cacheName.startsWith('solvia-v1') || 
+              (!cacheName.startsWith('solvia-v2') && cacheName.startsWith('solvia-'))
+            )
             .map((cacheName) => caches.delete(cacheName))
         );
       })
