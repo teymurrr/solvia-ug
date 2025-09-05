@@ -95,20 +95,23 @@ const TestimonialsSection = () => {
           </div>
           
           {/* Carousel Container */}
-          <div className="relative max-w-4xl mx-auto">
+          <div className="relative max-w-4xl mx-auto px-4 sm:px-6 md:px-0">
             {/* Main Carousel */}
             <div className="relative overflow-hidden rounded-3xl bg-card/80 backdrop-blur-sm border border-border/50 shadow-2xl">
               <div 
-                className="flex transition-transform duration-700 ease-out"
-                style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+                className="flex transition-transform duration-700 ease-out w-full"
+                style={{ 
+                  transform: `translateX(-${currentSlide * 100}%)`,
+                  width: `${stories.length * 100}%`
+                }}
               >
                 {stories.map((story: any, index: number) => (
-                  <div key={index} className="w-full flex-shrink-0 p-8 md:p-12">
-                    <div className="flex flex-col md:flex-row items-center gap-8 max-w-4xl mx-auto">
+                  <div key={index} className="flex-shrink-0 p-4 sm:p-6 md:p-8 lg:p-12" style={{ width: `${100 / stories.length}%` }}>
+                    <div className="flex flex-col md:flex-row items-center gap-6 md:gap-8 w-full max-w-3xl mx-auto">
                       {/* Image Section */}
-                      <div className="flex-shrink-0">
-                        <div className="relative">
-                          <div className="w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden ring-4 ring-primary/20 shadow-xl">
+                      <div className="flex-shrink-0 relative">
+                        <div className="relative mx-auto w-28 h-28 sm:w-32 sm:h-32 md:w-40 md:h-40">
+                          <div className="w-full h-full rounded-full overflow-hidden ring-4 ring-primary/20 shadow-xl">
                             <OptimizedImage
                               src={story.image}
                               alt={`${story.name} - Success Story`}
@@ -116,13 +119,13 @@ const TestimonialsSection = () => {
                               useAspectRatio={false}
                             />
                           </div>
-                          {/* Success indicator */}
-                          <div className="absolute -bottom-2 -right-2 w-10 h-10 bg-green-500 rounded-full flex items-center justify-center shadow-lg">
-                            <div className="w-5 h-5 bg-white rounded-full"></div>
+                          {/* Success indicator - positioned safely within bounds */}
+                          <div className="absolute bottom-0 right-0 w-8 h-8 md:w-10 md:h-10 bg-green-500 rounded-full flex items-center justify-center shadow-lg">
+                            <div className="w-3 h-3 md:w-5 md:h-5 bg-white rounded-full"></div>
                           </div>
-                          {/* Floating elements */}
-                          <div className="absolute -top-3 -left-3 w-8 h-8 bg-primary/20 rounded-full animate-pulse"></div>
-                          <div className="absolute top-6 -right-6 w-6 h-6 bg-secondary/30 rounded-full animate-pulse delay-500"></div>
+                          {/* Floating elements - positioned safely within bounds */}
+                          <div className="absolute top-1 left-1 w-6 h-6 md:w-8 md:h-8 bg-primary/20 rounded-full animate-pulse"></div>
+                          <div className="absolute top-6 right-1 w-4 h-4 md:w-6 md:h-6 bg-secondary/30 rounded-full animate-pulse delay-500"></div>
                         </div>
                       </div>
                       
@@ -156,18 +159,18 @@ const TestimonialsSection = () => {
             {/* Navigation Arrows */}
             <button
               onClick={prevSlide}
-              className="absolute -left-6 md:-left-12 top-1/2 -translate-y-1/2 w-12 h-12 md:w-16 md:h-16 bg-card/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-xl border border-border/50 hover:bg-card hover:scale-110 transition-all duration-200 z-10"
+              className="absolute left-2 sm:-left-4 md:-left-8 lg:-left-12 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16 bg-card/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-xl border border-border/50 hover:bg-card hover:scale-110 transition-all duration-200 z-10"
               aria-label="Previous testimonial"
             >
-              <ChevronLeft className="h-6 w-6 md:h-8 md:w-8 text-foreground" />
+              <ChevronLeft className="h-4 w-4 sm:h-6 sm:w-6 md:h-8 md:w-8 text-foreground" />
             </button>
             
             <button
               onClick={nextSlide}
-              className="absolute -right-6 md:-right-12 top-1/2 -translate-y-1/2 w-12 h-12 md:w-16 md:h-16 bg-card/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-xl border border-border/50 hover:bg-card hover:scale-110 transition-all duration-200 z-10"
+              className="absolute right-2 sm:-right-4 md:-right-8 lg:-right-12 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16 bg-card/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-xl border border-border/50 hover:bg-card hover:scale-110 transition-all duration-200 z-10"
               aria-label="Next testimonial"
             >
-              <ChevronRight className="h-6 w-6 md:h-8 md:w-8 text-foreground" />
+              <ChevronRight className="h-4 w-4 sm:h-6 sm:w-6 md:h-8 md:w-8 text-foreground" />
             </button>
             
             {/* Dots Indicator */}

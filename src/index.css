@@ -88,6 +88,12 @@
 @layer base {
   * {
     @apply border-border;
+    box-sizing: border-box;
+  }
+
+  html, body {
+    overflow-x: hidden;
+    max-width: 100%;
   }
 
   body {
@@ -95,6 +101,11 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     font-display: swap;
+  }
+
+  img, video, iframe, embed, object {
+    max-width: 100%;
+    height: auto;
   }
 }
 
