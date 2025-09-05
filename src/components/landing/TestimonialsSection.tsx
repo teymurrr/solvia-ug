@@ -86,7 +86,7 @@ const TestimonialsSection = () => {
               <Users className="h-5 w-5 text-primary" />
               <span className="text-sm font-medium text-primary">{t?.successStories?.title || "Success Stories"}</span>
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
+            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-foreground">
               {t?.forDoctors?.successStories?.title || "Real Success Stories"}
             </h2>
             <p className="text-xl text-muted-foreground leading-relaxed">
@@ -188,25 +188,15 @@ const TestimonialsSection = () => {
           </div>
 
           {/* Call to action */}
-          <div className="text-center mt-16">
-            <div className="mx-4 max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl 2xl:max-w-2xl mx-auto">
-              <div className="p-6 md:p-8 bg-gradient-to-br from-primary/5 to-secondary/5 rounded-3xl border border-border/30 shadow-xl backdrop-blur-sm">
-                <div className="text-center mb-6">
-                  <h3 className="text-base sm:text-lg md:text-xl lg:text-2xl font-bold text-foreground leading-tight break-words">
-                    {t?.successStories?.joinSuccess || "Join the success of thousands of doctors who chose Solvia"}
-                  </h3>
-                </div>
-                <Button asChild size="lg" className="w-full sm:w-auto px-8 py-4 text-base md:text-lg font-semibold">
-                  <Link to="/signup/professional" className="flex items-center justify-center gap-3">
+          <div className="flex justify-center mt-16 px-4">
+            <div className="w-full max-w-md">
+              <div className="bg-card border border-border rounded-2xl p-6 shadow-lg text-center">
+                <h3 className="text-lg font-semibold text-foreground mb-4 leading-snug">
+                  {t?.successStories?.joinSuccess || "Join thousands of doctors who chose Solvia"}
+                </h3>
+                <Button asChild size="lg" className="w-full">
+                  <Link to="/signup/professional">
                     {t?.forDoctors?.successStories?.ctaText || "Start Your Journey"}
-                    <div className="flex -space-x-1">
-                      <div className="w-5 h-5 bg-green-500 rounded-full border-2 border-white animate-pulse"></div>
-                      <div className="w-5 h-5 bg-blue-500 rounded-full border-2 border-white animate-pulse delay-100"></div>
-                      <div className="w-5 h-5 bg-purple-500 rounded-full border-2 border-white animate-pulse delay-200"></div>
-                      <div className="w-5 h-5 bg-orange-500 rounded-full border-2 border-white flex items-center justify-center text-xs text-white font-bold">
-                        +
-                      </div>
-                    </div>
                   </Link>
                 </Button>
               </div>

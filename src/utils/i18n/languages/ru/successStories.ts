@@ -3,5 +3,5 @@ export const successStories = {
   subtitle: 'Познакомьтесь с медицинскими специалистами, которые изменили свою карьеру с Solvia',
   originallyFrom: 'Родом из',
   ctaText: 'Начните свой путь',
-  joinSuccess: 'Присоединяйтесь к успеху тысяч врачей, выбравших Solvia'
+  joinSuccess: 'Присоединяйтесь к тысячам врачей, выбравших Solvia'
 };
