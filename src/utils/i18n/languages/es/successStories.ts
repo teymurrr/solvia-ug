@@ -3,6 +3,5 @@ export const successStories = {
   subtitle: 'Conoce a los profesionales de la salud que transformaron sus carreras con Solvia',
   originallyFrom: 'Originalmente de',
   ctaText: 'Comienza Tu Viaje',
-  joinSuccess: 'Únete al Éxito',
-  joinSubtext: 'Miles de profesionales eligieron Solvia para transformar sus carreras'
+  joinSuccess: 'Únete al éxito de miles de médicos que eligieron Solvia'
 };

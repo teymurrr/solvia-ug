@@ -188,25 +188,28 @@ const TestimonialsSection = () => {
           </div>
 
           {/* Call to action */}
-          <div className="text-center mt-16 mx-4 md:mx-auto">
-            <div className="inline-flex flex-col items-center gap-4 md:gap-6 p-4 md:p-6 lg:p-8 bg-card/50 backdrop-blur-sm rounded-2xl border border-border/50 shadow-lg max-w-sm md:max-w-lg lg:max-w-2xl mx-auto">
-            <div className="text-center px-2 md:px-4">
-              <h3 className="text-lg md:text-xl lg:text-2xl font-bold mb-2 leading-tight break-words">{t?.successStories?.joinSuccess || "Join Their Success"}</h3>
-              <p className="text-xs md:text-sm lg:text-base text-muted-foreground leading-relaxed break-words">{t?.successStories?.joinSubtext || "Thousands of healthcare professionals chose Solvia to transform their careers"}</p>
-            </div>
-              <Button asChild size="lg" className="text-lg px-8 py-4 group">
-                <Link to="/signup/professional" className="flex items-center gap-3">
-                  {t?.forDoctors?.successStories?.ctaText || "Start Your Journey"}
-                  <div className="flex -space-x-2">
-                    <div className="w-6 h-6 bg-green-500 rounded-full border-2 border-white animate-pulse"></div>
-                    <div className="w-6 h-6 bg-blue-500 rounded-full border-2 border-white animate-pulse delay-100"></div>
-                    <div className="w-6 h-6 bg-purple-500 rounded-full border-2 border-white animate-pulse delay-200"></div>
-                    <div className="w-6 h-6 bg-orange-500 rounded-full border-2 border-white flex items-center justify-center text-xs text-white font-bold">
-                      +
+          <div className="text-center mt-16">
+            <div className="mx-4 max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl 2xl:max-w-2xl mx-auto">
+              <div className="p-6 md:p-8 bg-gradient-to-br from-primary/5 to-secondary/5 rounded-3xl border border-border/30 shadow-xl backdrop-blur-sm">
+                <div className="text-center mb-6">
+                  <h3 className="text-base sm:text-lg md:text-xl lg:text-2xl font-bold text-foreground leading-tight break-words">
+                    {t?.successStories?.joinSuccess || "Join the success of thousands of doctors who chose Solvia"}
+                  </h3>
+                </div>
+                <Button asChild size="lg" className="w-full sm:w-auto px-8 py-4 text-base md:text-lg font-semibold">
+                  <Link to="/signup/professional" className="flex items-center justify-center gap-3">
+                    {t?.forDoctors?.successStories?.ctaText || "Start Your Journey"}
+                    <div className="flex -space-x-1">
+                      <div className="w-5 h-5 bg-green-500 rounded-full border-2 border-white animate-pulse"></div>
+                      <div className="w-5 h-5 bg-blue-500 rounded-full border-2 border-white animate-pulse delay-100"></div>
+                      <div className="w-5 h-5 bg-purple-500 rounded-full border-2 border-white animate-pulse delay-200"></div>
+                      <div className="w-5 h-5 bg-orange-500 rounded-full border-2 border-white flex items-center justify-center text-xs text-white font-bold">
+                        +
+                      </div>
                     </div>
-                  </div>
-                </Link>
-              </Button>
+                  </Link>
+                </Button>
+              </div>
             </div>
           </div>
         </div>

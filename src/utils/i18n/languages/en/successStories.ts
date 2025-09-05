@@ -3,6 +3,5 @@ export const successStories = {
   subtitle: 'Meet the healthcare professionals who transformed their careers with Solvia',
   originallyFrom: 'Originally from',
   ctaText: 'Start Your Journey',
-  joinSuccess: 'Join Their Success',
-  joinSubtext: 'Thousands of healthcare professionals chose Solvia to transform their careers'
+  joinSuccess: 'Join the success of thousands of doctors who chose Solvia'
 };
