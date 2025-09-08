@@ -11,11 +11,17 @@ const TestimonialsSection = () => {
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
 
   const getStories = () => {
-    if (t?.forDoctors?.successStories?.stories) {
+    // Primary: Try to get stories from forDoctors.successStories.stories
+    if (t?.forDoctors?.successStories?.stories && Array.isArray(t.forDoctors.successStories.stories) && t.forDoctors.successStories.stories.length > 0) {
       return t.forDoctors.successStories.stories;
     }
     
-    // Fallback to English with updated images
+    // Fallback: Try to get from root successStories if exists
+    if (t?.successStories?.stories && Array.isArray(t.successStories.stories) && t.successStories.stories.length > 0) {
+      return t.successStories.stories;
+    }
+    
+    // Final fallback: Hardcoded English stories
     return [
       {
         name: "María Fernanda",
@@ -49,10 +55,16 @@ const TestimonialsSection = () => {
   };
 
   const stories = getStories();
+  
+  // Reset carousel to first slide when stories change (e.g., language switch)
+  useEffect(() => {
+    setCurrentSlide(0);
+    setIsAutoPlaying(true);
+  }, [stories.length, t]);
 
   // Auto-play functionality
   useEffect(() => {
-    if (!isAutoPlaying) return;
+    if (!isAutoPlaying || stories.length <= 1) return;
     
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % stories.length);
@@ -76,6 +88,11 @@ const TestimonialsSection = () => {
     setIsAutoPlaying(false);
   };
 
+  // Ensure we have valid stories array
+  if (!stories || stories.length === 0) {
+    return null;
+  }
+
   return (
     <section className="py-16 bg-gradient-to-br from-secondary/5 via-background to-primary/5">
       <div className="container mx-auto px-4">
@@ -84,7 +101,9 @@ const TestimonialsSection = () => {
           <div className="max-w-4xl mx-auto text-center mb-16">
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 rounded-full mb-6">
               <Users className="h-5 w-5 text-primary" />
-              <span className="text-sm font-medium text-primary">{t?.successStories?.title || "Success Stories"}</span>
+              <span className="text-sm font-medium text-primary">
+                {t?.successStories?.title || t?.forDoctors?.successStories?.title || "Success Stories"}
+              </span>
             </div>
             <h2 className="text-4xl md:text-5xl font-bold mb-6 text-foreground">
               {t?.forDoctors?.successStories?.title || "Real Success Stories"}
@@ -106,7 +125,7 @@ const TestimonialsSection = () => {
                 }}
               >
                 {stories.map((story: any, index: number) => (
-                  <div key={index} className="flex-shrink-0 p-4 sm:p-6 md:p-8 lg:p-12" style={{ width: `${100 / stories.length}%` }}>
+                  <div key={`${story.name}-${index}`} className="flex-shrink-0 p-4 sm:p-6 md:p-8 lg:p-12" style={{ width: `${100 / stories.length}%` }}>
                     <div className="flex flex-col md:flex-row items-center gap-6 md:gap-8 w-full max-w-3xl mx-auto">
                       {/* Image Section */}
                       <div className="flex-shrink-0 relative">
@@ -139,7 +158,7 @@ const TestimonialsSection = () => {
                             {story.specialty}
                           </p>
                           <p className="text-muted-foreground text-base">
-                            {t?.forDoctors?.successStories?.originallyFrom || "Originally from"} {story.country}
+                            {t?.forDoctors?.successStories?.originallyFrom || t?.successStories?.originallyFrom || "Originally from"} {story.country}
                           </p>
                         </div>
 
@@ -156,38 +175,44 @@ const TestimonialsSection = () => {
               </div>
             </div>
             
-            {/* Navigation Arrows */}
-            <button
-              onClick={prevSlide}
-              className="absolute left-2 sm:-left-4 md:-left-8 lg:-left-12 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16 bg-card/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-xl border border-border/50 hover:bg-card hover:scale-110 transition-all duration-200 z-10"
-              aria-label="Previous testimonial"
-            >
-              <ChevronLeft className="h-4 w-4 sm:h-6 sm:w-6 md:h-8 md:w-8 text-foreground" />
-            </button>
-            
-            <button
-              onClick={nextSlide}
-              className="absolute right-2 sm:-right-4 md:-right-8 lg:-right-12 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16 bg-card/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-xl border border-border/50 hover:bg-card hover:scale-110 transition-all duration-200 z-10"
-              aria-label="Next testimonial"
-            >
-              <ChevronRight className="h-4 w-4 sm:h-6 sm:w-6 md:h-8 md:w-8 text-foreground" />
-            </button>
-            
-            {/* Dots Indicator */}
-            <div className="flex justify-center mt-10 gap-4">
-              {stories.map((_, index) => (
+            {/* Navigation Arrows - Only show if more than 1 story */}
+            {stories.length > 1 && (
+              <>
                 <button
-                  key={index}
-                  onClick={() => goToSlide(index)}
-                  className={`w-4 h-4 rounded-full transition-all duration-300 ${
-                    index === currentSlide 
-                      ? 'bg-primary scale-125 shadow-lg' 
-                      : 'bg-primary/30 hover:bg-primary/50'
-                  }`}
-                  aria-label={`Go to testimonial ${index + 1}`}
-                />
-              ))}
-            </div>
+                  onClick={prevSlide}
+                  className="absolute left-2 sm:-left-2 md:-left-4 lg:-left-6 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 bg-card/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-xl border border-border/50 hover:bg-card hover:scale-110 transition-all duration-200 z-10"
+                  aria-label="Previous testimonial"
+                >
+                  <ChevronLeft className="h-4 w-4 sm:h-6 sm:w-6 md:h-7 md:w-7 text-foreground" />
+                </button>
+                
+                <button
+                  onClick={nextSlide}
+                  className="absolute right-2 sm:-right-2 md:-right-4 lg:-right-6 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 bg-card/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-xl border border-border/50 hover:bg-card hover:scale-110 transition-all duration-200 z-10"
+                  aria-label="Next testimonial"
+                >
+                  <ChevronRight className="h-4 w-4 sm:h-6 sm:w-6 md:h-7 md:w-7 text-foreground" />
+                </button>
+              </>
+            )}
+            
+            {/* Dots Indicator - Only show if more than 1 story */}
+            {stories.length > 1 && (
+              <div className="flex justify-center mt-10 gap-4">
+                {stories.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => goToSlide(index)}
+                    className={`w-4 h-4 rounded-full transition-all duration-300 ${
+                      index === currentSlide 
+                        ? 'bg-primary scale-125 shadow-lg' 
+                        : 'bg-primary/30 hover:bg-primary/50'
+                    }`}
+                    aria-label={`Go to testimonial ${index + 1}`}
+                  />
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Call to action */}
@@ -195,7 +220,7 @@ const TestimonialsSection = () => {
             <div className="w-full max-w-sm">
               <div className="bg-card border border-border rounded-2xl p-6 shadow-lg text-center">
                 <h3 className="text-base font-semibold text-foreground mb-4 leading-snug">
-                  {t?.successStories?.joinSuccess || "Start your success story now"}
+                  {t?.successStories?.ctaText || "Start your success story now"}
                 </h3>
                 <Button asChild size="lg" className="w-full text-sm px-4 py-3">
                   <Link to="/signup/professional">
