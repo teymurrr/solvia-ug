@@ -50,6 +50,9 @@ export const ProfessionalSignupForm: React.FC = () => {
         open_to_relocation: data.isOpenToRelocation,
       });
 
+      // Store email for confirmation page
+      localStorage.setItem('pendingConfirmationEmail', data.email);
+
       toast({
         title: t.common.success,
         description: t.auth.confirmEmailSent + ' ' + (data.email || ''),

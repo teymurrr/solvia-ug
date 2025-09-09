@@ -73,5 +73,11 @@ export const auth = {
   alreadyConfirmed: 'Уже подтвердили?',
   signIn: 'Войти',
   confirmationEmailSent: 'Письмо с подтверждением отправлено',
-  checkInboxForLink: 'Пожалуйста, проверьте вашу электронную почту для получения ссылки подтверждения'
+  checkInboxForLink: 'Пожалуйста, проверьте вашу электронную почту для получения ссылки подтверждения',
+  
+  // Signup Links
+  wantInstitutionSignup: 'Хотите зарегистрироваться как учреждение?',
+  institutionSignup: 'Регистрация учреждения',
+  alreadyHaveAccountSignup: 'Уже есть аккаунт?',
+  loginSignup: 'Войти'
 };

@@ -73,5 +73,11 @@ export const auth = {
   alreadyConfirmed: 'Already confirmed?',
   signIn: 'Sign in',
   confirmationEmailSent: 'Confirmation email sent',
-  checkInboxForLink: 'Please check your inbox for the confirmation link'
+  checkInboxForLink: 'Please check your inbox for the confirmation link',
+  
+  // Signup Links
+  wantInstitutionSignup: 'Want to sign up as an institution?',
+  institutionSignup: 'Institution signup',
+  alreadyHaveAccountSignup: 'Already have an account?',
+  loginSignup: 'Log in'
 };

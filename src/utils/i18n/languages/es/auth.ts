@@ -73,5 +73,11 @@ export const auth = {
   alreadyConfirmed: '¿Ya confirmó?',
   signIn: 'Iniciar sesión',
   confirmationEmailSent: 'Correo de confirmación enviado',
-  checkInboxForLink: 'Por favor revise su bandeja de entrada para ver el enlace de confirmación'
+  checkInboxForLink: 'Por favor revise su bandeja de entrada para ver el enlace de confirmación',
+  
+  // Signup Links
+  wantInstitutionSignup: '¿Quieres registrarte como institución?',
+  institutionSignup: 'Regístrate como institución',
+  alreadyHaveAccountSignup: '¿Ya tienes una cuenta?',
+  loginSignup: 'Iniciar sesión'
 };

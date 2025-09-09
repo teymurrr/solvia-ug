@@ -73,5 +73,11 @@ export const auth = {
   alreadyConfirmed: 'Déjà confirmé ?',
   signIn: 'Se connecter',
   confirmationEmailSent: 'Email de confirmation envoyé',
-  checkInboxForLink: 'Veuillez vérifier votre boîte de réception pour le lien de confirmation'
+  checkInboxForLink: 'Veuillez vérifier votre boîte de réception pour le lien de confirmation',
+  
+  // Signup Links
+  wantInstitutionSignup: 'Vous souhaitez vous inscrire en tant qu\'institution ?',
+  institutionSignup: 'Inscription institution',
+  alreadyHaveAccountSignup: 'Vous avez déjà un compte ?',
+  loginSignup: 'Se connecter'
 };

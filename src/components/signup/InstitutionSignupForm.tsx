@@ -48,6 +48,9 @@ export const InstitutionSignupForm = () => {
         website: data.website,
       });
       
+      // Store email for confirmation page
+      localStorage.setItem('pendingConfirmationEmail', data.email);
+      
       toast({
         title: t.common.success,
         description: t.auth.confirmEmailSent + ' ' + (data.email || ''),

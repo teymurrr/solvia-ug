@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Mail, AlertTriangle, Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -13,18 +13,51 @@ const EmailConfirmationRequired = () => {
   const { toast } = useToast();
   const { t } = useLanguage();
   const email = localStorage.getItem('pendingConfirmationEmail');
+  const [cooldownTime, setCooldownTime] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (cooldownTime > 0) {
+      timer = setTimeout(() => setCooldownTime(cooldownTime - 1), 1000);
+    }
+    return () => clearTimeout(timer);
+  }, [cooldownTime]);
 
   const handleResendEmail = async () => {
-    if (!email) return;
-    const { error } = await supabase.auth.resend({
-      type: 'signup',
-      email,
-    });
+    if (!email || cooldownTime > 0 || isLoading) return;
+    
+    setIsLoading(true);
+    try {
+      const { error } = await supabase.auth.resend({
+        type: 'signup',
+        email,
+        options: {
+          emailRedirectTo: `${window.location.origin}/auth/callback`
+        }
+      });
 
-    if (error) {
-      toast({ title: t.common.error, description: error.message, variant: 'destructive' });
-    } else {
-      toast({ title: t.auth.confirmationEmailSent, description: t.auth.checkInboxForLink });
+      if (error) {
+        toast({ 
+          title: t.common.error, 
+          description: error.message, 
+          variant: 'destructive' 
+        });
+      } else {
+        toast({ 
+          title: t.auth.confirmationEmailSent, 
+          description: t.auth.checkInboxForLink 
+        });
+        setCooldownTime(60); // 60 second cooldown
+      }
+    } catch (err) {
+      toast({ 
+        title: t.common.error, 
+        description: 'Failed to resend email', 
+        variant: 'destructive' 
+      });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -80,8 +113,9 @@ const EmailConfirmationRequired = () => {
               onClick={handleResendEmail}
               variant="outline" 
               className="w-full"
+              disabled={cooldownTime > 0 || isLoading}
             >
-              {t.auth.resendEmail}
+              {isLoading ? 'Sending...' : cooldownTime > 0 ? `Wait ${cooldownTime}s` : t.auth.resendEmail}
             </Button>
             <div className="text-sm text-center text-muted-foreground">
               {t.auth.alreadyConfirmed}{" "}
