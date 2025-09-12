@@ -65,7 +65,7 @@ const VacanciesSectionRedesigned: React.FC<VacanciesSectionRedesignedProps> = ({
                   </div>
                   <Badge variant="secondary" className="bg-green-100 text-green-700 border-green-200">
                     <Star className="h-3 w-3 mr-1" />
-                    Featured
+                    {t?.vacancies?.featured || 'Featured'}
                   </Badge>
                 </div>
 

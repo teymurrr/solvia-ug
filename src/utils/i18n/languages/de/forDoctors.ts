@@ -113,7 +113,7 @@ export const forDoctors = {
     title: "Echte Erfolgsgeschichten",
     subtitle: "Lernen Sie Ärzte kennen, die ihre Karriere mit Solvia verwandelt haben und jetzt in Deutschland erfolgreich sind",
     originallyFrom: "Ursprünglich aus",
-    ctaText: "Schließen Sie sich Tausenden von Ärzten an, die Solvia gewählt haben",
+    ctaText: "Schließen Sie sich Tausenden von Ärzten an",
     stories: [
       {
         name: "María Fernanda",
