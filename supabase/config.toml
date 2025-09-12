@@ -1,9 +1,1 @@
-
 project_id = "ehrxpaxvyuwiwqclqkyh"
-
-[storage.blog_images]
-public = true
-avif_autodetection = false
-
-[functions.make-admin]
-verify_jwt = true
