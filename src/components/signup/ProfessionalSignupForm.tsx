@@ -59,11 +59,28 @@ export const ProfessionalSignupForm: React.FC = () => {
       });
       
       navigate('/confirm-email');
-    } catch (error) {
+    } catch (error: any) {
       console.error('Signup error:', error);
+      
+      let errorMessage = 'An error occurred during signup.';
+      
+      if (error?.message) {
+        if (error.message.includes('email rate limit exceeded') || error.message.includes('429')) {
+          errorMessage = 'Too many signup attempts. Please wait a few minutes before trying again.';
+        } else if (error.message.includes('User already registered')) {
+          errorMessage = 'This email is already registered. Please try logging in instead.';
+        } else if (error.message.includes('Invalid email')) {
+          errorMessage = 'Please enter a valid email address.';
+        } else if (error.message.includes('Password')) {
+          errorMessage = 'Password does not meet requirements. Please check your password.';
+        } else {
+          errorMessage = error.message;
+        }
+      }
+      
       toast({
         title: t.common.error,
-        description: 'An error occurred during signup. This email might already be registered.',
+        description: errorMessage,
         variant: 'destructive'
       });
     } finally {

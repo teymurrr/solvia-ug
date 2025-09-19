@@ -57,11 +57,28 @@ export const InstitutionSignupForm = () => {
       });
       
       navigate('/confirm-email');
-    } catch (error) {
+    } catch (error: any) {
       console.error('Institution Signup error:', error);
+      
+      let errorMessage = 'There was an error creating your account. Please try again.';
+      
+      if (error?.message) {
+        if (error.message.includes('email rate limit exceeded') || error.message.includes('429')) {
+          errorMessage = 'Too many signup attempts. Please wait a few minutes before trying again.';
+        } else if (error.message.includes('User already registered')) {
+          errorMessage = 'This email is already registered. Please try logging in instead.';
+        } else if (error.message.includes('Invalid email')) {
+          errorMessage = 'Please enter a valid email address.';
+        } else if (error.message.includes('Password')) {
+          errorMessage = 'Password does not meet requirements. Please check your password.';
+        } else {
+          errorMessage = error.message;
+        }
+      }
+      
       toast({
         title: t.common.error,
-        description: 'There was an error creating your account. Please try again.',
+        description: errorMessage,
         variant: 'destructive',
       });
     } finally {
