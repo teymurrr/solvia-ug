@@ -62,17 +62,20 @@ export const InstitutionSignupForm = () => {
       
       let errorMessage = 'There was an error creating your account. Please try again.';
       
-      if (error?.message) {
-        if (error.message.includes('email rate limit exceeded') || error.message.includes('429')) {
-          errorMessage = 'Too many signup attempts. Please wait a few minutes before trying again.';
-        } else if (error.message.includes('User already registered')) {
+      const msg: string | undefined = error?.message;
+      const status: number | undefined = error?.status;
+      
+      if (msg) {
+        if (status === 429 || /over_email_send_rate_limit|rate limit|too many/i.test(msg)) {
+          errorMessage = 'Too many signup attempts. Please wait 1–2 minutes, then try again.';
+        } else if (/User already registered/i.test(msg)) {
           errorMessage = 'This email is already registered. Please try logging in instead.';
-        } else if (error.message.includes('Invalid email')) {
+        } else if (/Invalid email/i.test(msg)) {
           errorMessage = 'Please enter a valid email address.';
-        } else if (error.message.includes('Password')) {
+        } else if (/Password/i.test(msg)) {
           errorMessage = 'Password does not meet requirements. Please check your password.';
         } else {
-          errorMessage = error.message;
+          errorMessage = msg;
         }
       }
       
