@@ -58,6 +58,11 @@ const Messages = lazy(() => import("@/pages/Messages"));
 // Insights page
 const Insights = lazy(() => import("@/pages/Insights"));
 
+// Payment pages
+const PaymentSuccess = lazy(() => import("@/pages/PaymentSuccess"));
+const PaymentCancelled = lazy(() => import("@/pages/PaymentCancelled"));
+const HomologationPayment = lazy(() => import("@/pages/HomologationPayment"));
+
 const AppRoutes = () => {
   const { isLoggedIn, userType } = useAuth();
   const [isInitialized, setIsInitialized] = useState(false);
@@ -212,6 +217,11 @@ const AppRoutes = () => {
             </ProtectedRoute>
           }
         />
+        
+        {/* Payment routes */}
+        <Route path="/payment-success" element={<PaymentSuccess />} />
+        <Route path="/payment-cancelled" element={<PaymentCancelled />} />
+        <Route path="/homologation-payment" element={<HomologationPayment />} />
         
         {/* Fallback route */}
         <Route path="*" element={<NotFound />} />
