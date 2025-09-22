@@ -18,6 +18,7 @@ import { forDoctors } from './forDoctors';
 import { howItWorks } from './howItWorks';
 import { successStories } from './successStories';
 import { pathToSuccess } from './pathToSuccess';
+import { payments } from './payments';
 
 export const de = {
   hero,
@@ -38,5 +39,6 @@ export const de = {
   forDoctors,
   howItWorks,
   successStories,
-  pathToSuccess
+  pathToSuccess,
+  payments
 };

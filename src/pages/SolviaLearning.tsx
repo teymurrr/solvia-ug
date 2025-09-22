@@ -124,13 +124,22 @@ const SolviaLearning = () => {
             <p className="text-xl md:text-2xl text-gray-600 mb-8 leading-relaxed">
               {t?.learning?.hero?.subtitle || 'Specialized German Language and FSP Preparation Courses for International Doctors'}
             </p>
-            <Button 
-              size="lg" 
-              onClick={scrollToForm}
-              className="bg-primary hover:bg-primary/90 text-white px-8 py-4 text-lg relative z-10 cursor-pointer"
-            >
-              {t?.learning?.hero?.cta || 'Sign Up for Free Consultation'}
-            </Button>
+                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                  <Button 
+                    size="lg" 
+                    onClick={scrollToForm}
+                    className="bg-primary hover:bg-primary/90 text-white px-8 py-4 text-lg relative z-10 cursor-pointer"
+                  >
+                    {t?.learning?.hero?.cta || 'Sign Up for Free Consultation'}
+                  </Button>
+                  <Button 
+                    size="lg" 
+                    onClick={() => window.location.href = '/homologation-payment'}
+                    className="bg-green-600 hover:bg-green-700 text-white px-8 py-4 text-lg relative z-10 cursor-pointer"
+                  >
+                    Start Homologation Process - €759
+                  </Button>
+                </div>
           </div>
         </div>
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmMGY5ZmYiIGZpbGwtb3BhY2l0eT0iMC4xIj48Y2lyY2xlIGN4PSIzMCIgY3k9IjMwIiByPSIyIi8+PC9nPjwvZz48L3N2Zz4=')] opacity-30 pointer-events-none"></div>

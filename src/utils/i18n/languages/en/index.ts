@@ -19,6 +19,7 @@ import { cookies } from './cookies';
 import { howItWorks } from './howItWorks';
 import { successStories } from './successStories';
 import { pathToSuccess } from './pathToSuccess';
+import { payments } from './payments';
 
 export const en = {
   hero,
@@ -40,5 +41,6 @@ export const en = {
   cookies,
   howItWorks,
   successStories,
-  pathToSuccess
+  pathToSuccess,
+  payments
 };
