@@ -179,5 +179,11 @@ export const dashboard: DashboardTranslations = {
     browseVacancies: "Explorar Vacantes",
     vacancyRemoved: "Vacante eliminada",
     vacancyRemovedDesc: "La vacante ha sido eliminada de tu lista de guardados."
+  },
+  homologation: {
+    title: "Consiga el reconocimiento de su diploma",
+    description: "Inicie su proceso de homologación para ejercer medicina en Alemania",
+    ctaButton: "Iniciar proceso de homologación",
+    benefits: "Reconocimiento oficial de su diploma médico para ejercer en Alemania"
   }
 };

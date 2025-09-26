@@ -170,5 +170,11 @@ export const dashboard: DashboardTranslations = {
     browseVacancies: "Parcourir les postes",
     vacancyRemoved: "Poste supprimé",
     vacancyRemovedDesc: "Le poste a été supprimé de votre liste d'enregistrements."
+  },
+  homologation: {
+    title: "Faites reconnaître votre diplôme",
+    description: "Commencez votre processus d'homologation pour pratiquer la médecine en Allemagne",
+    ctaButton: "Démarrer le processus d'homologation",
+    benefits: "Reconnaissance officielle de votre diplôme médical pour exercer en Allemagne"
   }
 };

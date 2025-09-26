@@ -71,5 +71,11 @@ export const dashboard = {
     resetFilters: "Reset filters",
     search: "Search",
     searchPlaceholder: "Search by title, location, or keyword..."
+  },
+  homologation: {
+    title: "Get Your Diploma Recognized",
+    description: "Start your homologation process to practice medicine in Germany",
+    ctaButton: "Start Homologation Process",
+    benefits: "Official recognition of your medical diploma for practice in Germany"
   }
 };

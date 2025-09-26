@@ -236,4 +236,10 @@ export interface DashboardTranslations {
   profileUpdated?: string;
   profileError?: string;
   incompleteProfile?: string;
+  homologation?: {
+    title: string;
+    description: string;
+    ctaButton: string;
+    benefits: string;
+  };
 }

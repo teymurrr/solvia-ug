@@ -186,5 +186,11 @@ export const dashboard = {
     location: 'Standort',
     specialty: 'Fachgebiet',
     type: 'Art'
+  },
+  homologation: {
+    title: "Lassen Sie Ihr Diplom anerkennen",
+    description: "Starten Sie Ihren Homologationsprozess, um in Deutschland Medizin praktizieren zu können",
+    ctaButton: "Homologationsprozess starten",
+    benefits: "Offizielle Anerkennung Ihres Medizindiploms für die Praxis in Deutschland"
   }
 };

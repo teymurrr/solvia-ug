@@ -281,6 +281,31 @@ const ProfessionalDashboard: React.FC = () => {
                 )}
               </CardContent>
             </Card>
+
+            {/* Diploma Recognition CTA Section */}
+            <Card className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950/30 dark:to-indigo-950/30 border-blue-200 dark:border-blue-800">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-blue-900 dark:text-blue-100">
+                  <GraduationCap className="h-5 w-5" />
+                  {t?.dashboard?.homologation?.title || "Get Your Diploma Recognized"}
+                </CardTitle>
+                <CardDescription className="text-blue-700 dark:text-blue-200">
+                  {t?.dashboard?.homologation?.description || "Start your homologation process to practice medicine in Germany"}
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-blue-600 dark:text-blue-300 mb-4">
+                  {t?.dashboard?.homologation?.benefits || "Official recognition of your medical diploma for practice in Germany"}
+                </p>
+                <button
+                  onClick={() => window.location.href = '/homologation-payment'}
+                  className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background bg-blue-600 text-white hover:bg-blue-700 h-10 py-2 px-6"
+                >
+                  <GraduationCap className="h-4 w-4 mr-2" />
+                  {t?.dashboard?.homologation?.ctaButton || "Start Homologation Process"}
+                </button>
+              </CardContent>
+            </Card>
           </TabsContent>
 
           <TabsContent value="vacancies" className="space-y-6">
