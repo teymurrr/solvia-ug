@@ -8,7 +8,7 @@ export const forDoctors = {
     title: "Histoires de Réussite Réelles",
     subtitle: "Rencontrez les médecins qui ont transformé leur carrière avec Solvia et prospèrent maintenant en Allemagne",
     originallyFrom: "Originaire de",
-    ctaText: "Rejoignez des milliers de médecins qui ont choisi Solvia",
+    ctaText: "Rejoignez des milliers de médecins",
     stories: [
       {
         name: "María Fernanda",
