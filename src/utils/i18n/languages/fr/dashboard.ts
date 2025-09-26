@@ -2,7 +2,7 @@
 import { DashboardTranslations } from "../../types";
 
 export const dashboard: DashboardTranslations = {
-  title: "Tableau de bord",
+  title: "Tableau de Bord Professionnel",
   subtitle: "Gérez votre profil et consultez les opportunités",
   welcome: "Bienvenue dans votre tableau de bord",
   vacancies: {

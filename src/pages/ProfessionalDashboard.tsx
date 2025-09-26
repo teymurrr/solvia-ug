@@ -238,6 +238,15 @@ const ProfessionalDashboard: React.FC = () => {
             <h1 className="text-3xl font-bold">{t?.dashboard?.title || "Professional Dashboard"}</h1>
             <p className="text-muted-foreground">{t?.dashboard?.subtitle || "Manage your profile and view opportunities"}</p>
           </div>
+          <div className="flex-shrink-0">
+            <button
+              onClick={() => window.location.href = '/homologation-payment'}
+              className="inline-flex items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-blue-600 to-blue-700 text-white hover:from-blue-700 hover:to-blue-800 transition-all duration-200 px-4 py-3 text-sm font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+            >
+              <GraduationCap className="h-4 w-4" />
+              {t?.dashboard?.homologation?.ctaButton || "Start Homologation Process"}
+            </button>
+          </div>
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
@@ -279,31 +288,6 @@ const ProfessionalDashboard: React.FC = () => {
                     </button>
                   </div>
                 )}
-              </CardContent>
-            </Card>
-
-            {/* Diploma Recognition CTA Section */}
-            <Card className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950/30 dark:to-indigo-950/30 border-blue-200 dark:border-blue-800">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-blue-900 dark:text-blue-100">
-                  <GraduationCap className="h-5 w-5" />
-                  {t?.dashboard?.homologation?.title || "Get Your Diploma Recognized"}
-                </CardTitle>
-                <CardDescription className="text-blue-700 dark:text-blue-200">
-                  {t?.dashboard?.homologation?.description || "Start your homologation process to practice medicine in Germany"}
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-blue-600 dark:text-blue-300 mb-4">
-                  {t?.dashboard?.homologation?.benefits || "Official recognition of your medical diploma for practice in Germany"}
-                </p>
-                <button
-                  onClick={() => window.location.href = '/homologation-payment'}
-                  className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background bg-blue-600 text-white hover:bg-blue-700 h-10 py-2 px-6"
-                >
-                  <GraduationCap className="h-4 w-4 mr-2" />
-                  {t?.dashboard?.homologation?.ctaButton || "Start Homologation Process"}
-                </button>
               </CardContent>
             </Card>
           </TabsContent>

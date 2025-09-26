@@ -1,5 +1,7 @@
 
 export const dashboard = {
+  title: "Professional Dashboard",
+  subtitle: "Manage your profile and view opportunities",
   profile: {
     title: "Profile",
     description: "Your professional profile",

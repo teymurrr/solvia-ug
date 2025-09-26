@@ -1,7 +1,8 @@
 
 export const dashboard = {
+  title: 'Professionelles Dashboard',
+  subtitle: 'Verwalten Sie Ihr Profil und sehen Sie Möglichkeiten',
   // Common
-  title: 'Dashboard',
   description: 'Verwalten Sie Ihr Konto und Ihre Daten',
   createProfile: 'Profil erstellen',
   completeProfile: 'Profil vervollständigen',
