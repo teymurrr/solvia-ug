@@ -91,7 +91,7 @@ const Privacy = () => {
           "• Portar sus datos a otro proveedor",
           "• Retirar el consentimiento en cualquier momento",
           "También tiene derecho a presentar una queja ante su autoridad local de protección de datos.",
-          "Para ejercer sus derechos, contáctenos en:\n📧 teymur.mammadov@thesolvia.com"
+          "Para ejercer sus derechos, contáctenos en:\n📧 David.rehrl@thesolvia.com"
         ]
       },
       transfers: {
@@ -214,7 +214,7 @@ const Privacy = () => {
           "• Port your data to another provider",
           "• Withdraw consent at any time",
           "You also have the right to lodge a complaint with your local data protection authority.",
-          "To exercise your rights, contact us at:\n📧 teymur.mammadov@thesolvia.com"
+          "To exercise your rights, contact us at:\n📧 David.rehrl@thesolvia.com"
         ]
       },
       transfers: {
