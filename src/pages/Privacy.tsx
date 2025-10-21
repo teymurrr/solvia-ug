@@ -17,7 +17,7 @@ const Privacy = () => {
         content: [
           "Solvia es una plataforma de carreras sanitarias que conecta a profesionales de la salud (como médicos y enfermeras) con empleadores (como hospitales e instituciones de atención).",
           "Solvia FlexKapG\nFN 646976k\nSchmiedingerstraße 16\n5020, Salzburg\nAustria",
-          "Email: info@solvia.eu",
+          "Email: David.rehrl@thesolvia.com",
           "Actuamos como Responsable del Tratamiento de sus datos personales bajo el RGPD."
         ]
       },
@@ -123,7 +123,7 @@ const Privacy = () => {
         content: [
           "Para cualquier pregunta, solicitud o queja, contacte:",
           "Solvia FlexKapG\nFN 646976k\n📍 Schmiedingerstraße 16\n5020, Salzburg\nAustria",
-          "📧 info@solvia.eu"
+          "📧 David.rehrl@thesolvia.com"
         ]
       }
     }
@@ -140,7 +140,7 @@ const Privacy = () => {
         content: [
           "Solvia is a healthcare career platform that connects healthcare professionals (such as doctors and nurses) with employers (such as hospitals and care institutions).",
           "Solvia FlexKapG\nFN 646976k\nSchmiedingerstraße 16\n5020, Salzburg\nAustria",
-          "Email: info@solvia.eu",
+          "Email: David.rehrl@thesolvia.com",
           "We act as the Data Controller for your personal data under GDPR."
         ]
       },
@@ -246,7 +246,7 @@ const Privacy = () => {
         content: [
           "For any questions, requests, or complaints, contact:",
           "Solvia FlexKapG\nFN 646976k\n📍 Schmiedingerstraße 16\n5020, Salzburg\nAustria",
-          "📧 info@solvia.eu"
+          "📧 David.rehrl@thesolvia.com"
         ]
       }
     }

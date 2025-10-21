@@ -29,8 +29,8 @@ const Impressum = () => {
             <div className="bg-card p-6 rounded-lg border">
               <p className="mb-2">
                 <span className="font-medium">{t?.impressum?.contact?.email || "Email"}:</span>{" "}
-                <a href="mailto:info@solvia.eu" className="text-primary hover:underline">
-                  info@solvia.eu
+                <a href="mailto:David.rehrl@thesolvia.com" className="text-primary hover:underline">
+                  David.rehrl@thesolvia.com
                 </a>
               </p>
             </div>

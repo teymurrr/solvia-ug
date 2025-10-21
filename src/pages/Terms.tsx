@@ -28,7 +28,7 @@ const Terms = () => {
               {t?.terms?.introduction?.address || "Schmiedingerstraße 16\n5020, Salzburg\nAustria"}
             </p>
             <p className="mt-4">
-              {t?.terms?.introduction?.email || "📧 Email: info@solvia.eu"}
+              {t?.terms?.introduction?.email || "📧 Email: David.rehrl@thesolvia.com"}
             </p>
             
             <h2 className="text-2xl font-semibold mt-8 mb-4">{t?.terms?.eligibility?.title || "2. Eligibility"}</h2>
@@ -179,7 +179,7 @@ const Terms = () => {
               {t?.terms?.contact?.address || "📍 Schmiedingerstraße 16\n5020, Salzburg\nAustria"}
             </p>
             <p className="mt-4">
-              {t?.terms?.contact?.email || "📧 info@solvia.eu"}
+              {t?.terms?.contact?.email || "📧 David.rehrl@thesolvia.com"}
             </p>
           </div>
         </div>

@@ -9,7 +9,7 @@ export const terms = {
     company: "Solvia FlexKapG",
     registrationNumber: "FN 646976k",
     address: "Schmiedingerstraße 16\n5020, Salzburg\nAustria",
-    email: "📧 Correo electrónico: info@solvia.eu"
+    email: "📧 Correo electrónico: David.rehrl@thesolvia.com"
   },
   eligibility: {
     title: "2. Elegibilidad",
@@ -106,6 +106,6 @@ export const terms = {
     company: "Solvia FlexKapG",
     registrationNumber: "FN 646976k",
     address: "📍 Schmiedingerstraße 16\n5020, Salzburg\nAustria",
-    email: "📧 info@solvia.eu"
+    email: "📧 David.rehrl@thesolvia.com"
   }
 };
