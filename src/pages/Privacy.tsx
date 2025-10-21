@@ -16,8 +16,8 @@ const Privacy = () => {
         title: "1. Quiénes Somos",
         content: [
           "Solvia es una plataforma de carreras sanitarias que conecta a profesionales de la salud (como médicos y enfermeras) con empleadores (como hospitales e instituciones de atención).",
-          "Solvia GmbH\nRudolfstraße 21, Apt 08\n60327 Frankfurt am Main\nHessen, Alemania",
-          "Email: teymur.mammadov@thesolvia.com",
+          "Solvia FlexKapG\nFN 646976k\nSchmiedingerstraße 16\n5020, Salzburg\nAustria",
+          "Email: info@solvia.eu",
           "Actuamos como Responsable del Tratamiento de sus datos personales bajo el RGPD."
         ]
       },
@@ -122,8 +122,8 @@ const Privacy = () => {
         title: "11. Contáctenos",
         content: [
           "Para cualquier pregunta, solicitud o queja, contacte:",
-          "Solvia GmbH\n📍 Rudolfstraße 21, Apt 08\n60327 Frankfurt am Main\nHessen, Alemania",
-          "📧 teymur.mammadov@thesolvia.com"
+          "Solvia FlexKapG\nFN 646976k\n📍 Schmiedingerstraße 16\n5020, Salzburg\nAustria",
+          "📧 info@solvia.eu"
         ]
       }
     }
@@ -139,8 +139,8 @@ const Privacy = () => {
         title: "1. Who We Are",
         content: [
           "Solvia is a healthcare career platform that connects healthcare professionals (such as doctors and nurses) with employers (such as hospitals and care institutions).",
-          "Solvia GmbH\nRudolfstraße 21, Apt 08\n60327 Frankfurt am Main\nHessen, Germany",
-          "Email: teymur.mammadov@thesolvia.com",
+          "Solvia FlexKapG\nFN 646976k\nSchmiedingerstraße 16\n5020, Salzburg\nAustria",
+          "Email: info@solvia.eu",
           "We act as the Data Controller for your personal data under GDPR."
         ]
       },
@@ -245,8 +245,8 @@ const Privacy = () => {
         title: "11. Contact Us",
         content: [
           "For any questions, requests, or complaints, contact:",
-          "Solvia GmbH\n📍 Rudolfstraße 21, Apt 08\n60327 Frankfurt am Main\nHessen, Germany",
-          "📧 teymur.mammadov@thesolvia.com"
+          "Solvia FlexKapG\nFN 646976k\n📍 Schmiedingerstraße 16\n5020, Salzburg\nAustria",
+          "📧 info@solvia.eu"
         ]
       }
     }

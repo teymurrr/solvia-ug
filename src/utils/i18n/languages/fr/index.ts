@@ -15,6 +15,7 @@ import { dashboard } from './dashboard';
 import { auth } from './auth';
 import { contact } from './contact';
 import { forDoctors } from './forDoctors';
+import { impressum } from './impressum';
 import { howItWorks } from './howItWorks';
 import { successStories } from './successStories';
 import { pathToSuccess } from './pathToSuccess';
@@ -37,6 +38,7 @@ export const fr = {
   auth,
   contact,
   forDoctors,
+  impressum,
   howItWorks,
   successStories,
   pathToSuccess,

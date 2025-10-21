@@ -18,6 +18,7 @@ import { terms } from './terms';
 import { application } from './application';
 import { forDoctors } from './forDoctors';
 import { cookies } from './cookies';
+import { impressum } from './impressum';
 import { howItWorks } from './howItWorks';
 import { successStories } from './successStories';
 import { pathToSuccess } from './pathToSuccess';
@@ -43,6 +44,7 @@ export const es = {
   application,
   forDoctors,
   cookies,
+  impressum,
   howItWorks,
   successStories,
   pathToSuccess,

@@ -15,19 +15,20 @@ const Terms = () => {
           
           <div className="prose prose-slate max-w-none">
             <p className="mb-6">
-              {t?.terms?.introduction?.content || "Welcome to Solvia, a digital platform operated by Solvia UG, designed to connect healthcare professionals with employers across Europe. By accessing or using our services, you agree to be bound by the following Terms of Service."}
+              {t?.terms?.introduction?.content || "Welcome to Solvia, a digital platform operated by Solvia FlexKapG, designed to connect healthcare professionals with employers across Europe. By accessing or using our services, you agree to be bound by the following Terms of Service."}
             </p>
             
             <h2 className="text-2xl font-semibold mt-8 mb-4">{t?.terms?.introduction?.title || "1. Introduction"}</h2>
             <p>
-              {t?.terms?.introduction?.paragraph || "These Terms govern your use of the website, services, and features offered by Solvia UG. If you do not agree with these terms, please do not use our services."}
+              {t?.terms?.introduction?.paragraph || "These Terms govern your use of the website, services, and features offered by Solvia FlexKapG. If you do not agree with these terms, please do not use our services."}
             </p>
             <p className="mt-4">
-              {t?.terms?.introduction?.company || "Solvia UG"}<br />
-              {t?.terms?.introduction?.address || "Rudolfstraße 21, Apt 08\n60327 Frankfurt am Main\nHessen, Germany"}
+              {t?.terms?.introduction?.company || "Solvia FlexKapG"}<br />
+              {t?.terms?.introduction?.registrationNumber || "FN 646976k"}<br />
+              {t?.terms?.introduction?.address || "Schmiedingerstraße 16\n5020, Salzburg\nAustria"}
             </p>
             <p className="mt-4">
-              {t?.terms?.introduction?.email || "📧 Email: teymur.mammadov@thesolvia.com"}
+              {t?.terms?.introduction?.email || "📧 Email: info@solvia.eu"}
             </p>
             
             <h2 className="text-2xl font-semibold mt-8 mb-4">{t?.terms?.eligibility?.title || "2. Eligibility"}</h2>
@@ -114,7 +115,7 @@ const Terms = () => {
             
             <h2 className="text-2xl font-semibold mt-8 mb-4">{t?.terms?.intellectualProperty?.title || "7. Intellectual Property"}</h2>
             <p>
-              {t?.terms?.intellectualProperty?.content || "All content, software, branding, and designs on Solvia are the property of Solvia UG or its licensors. You may not copy, modify, or distribute any part of the platform without express written permission."}
+              {t?.terms?.intellectualProperty?.content || "All content, software, branding, and designs on Solvia are the property of Solvia FlexKapG or its licensors. You may not copy, modify, or distribute any part of the platform without express written permission."}
             </p>
             <p className="mt-4">
               {t?.terms?.intellectualProperty?.userContent || "You retain ownership of your uploaded CVs, documents, and profile content."}
@@ -144,7 +145,7 @@ const Terms = () => {
             
             <h2 className="text-2xl font-semibold mt-8 mb-4">{t?.terms?.limitationOfLiability?.title || "10. Limitation of Liability"}</h2>
             <p>{t?.terms?.limitationOfLiability?.intro || "Solvia is provided \"as is.\" We do not guarantee uninterrupted service or error-free functionality."}</p>
-            <p className="mt-4">{t?.terms?.limitationOfLiability?.disclaimer || "To the fullest extent permitted by law, Solvia UG is not liable for:"}</p>
+            <p className="mt-4">{t?.terms?.limitationOfLiability?.disclaimer || "To the fullest extent permitted by law, Solvia FlexKapG is not liable for:"}</p>
             <ul className="list-disc pl-6 mt-4 space-y-2">
               {t?.terms?.limitationOfLiability?.limitations?.map((limitation: string, index: number) => (
                 <li key={index}>{limitation}</li>
@@ -165,7 +166,7 @@ const Terms = () => {
             
             <h2 className="text-2xl font-semibold mt-8 mb-4">{t?.terms?.governingLaw?.title || "12. Governing Law"}</h2>
             <p>
-              {t?.terms?.governingLaw?.content || "These Terms are governed by the laws of Germany, without regard to conflict of law principles. Any legal disputes shall be subject to the jurisdiction of the courts in Frankfurt am Main, Germany."}
+              {t?.terms?.governingLaw?.content || "These Terms are governed by the laws of Austria, without regard to conflict of law principles. Any legal disputes shall be subject to the jurisdiction of the courts in Salzburg, Austria."}
             </p>
             
             <h2 className="text-2xl font-semibold mt-8 mb-4">{t?.terms?.contact?.title || "13. Contact"}</h2>
@@ -173,11 +174,12 @@ const Terms = () => {
               {t?.terms?.contact?.intro || "For questions about these Terms, contact:"}
             </p>
             <p className="mt-4">
-              {t?.terms?.contact?.company || "Solvia UG"}<br />
-              {t?.terms?.contact?.address || "📍 Rudolfstraße 21, Apt 08\n60327 Frankfurt am Main\nHessen, Germany"}
+              {t?.terms?.contact?.company || "Solvia FlexKapG"}<br />
+              {t?.terms?.contact?.registrationNumber || "FN 646976k"}<br />
+              {t?.terms?.contact?.address || "📍 Schmiedingerstraße 16\n5020, Salzburg\nAustria"}
             </p>
             <p className="mt-4">
-              {t?.terms?.contact?.email || "📧 teymur.mammadov@thesolvia.com"}
+              {t?.terms?.contact?.email || "📧 info@solvia.eu"}
             </p>
           </div>
         </div>

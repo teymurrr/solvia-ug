@@ -121,6 +121,11 @@ const Footer: React.FC = () => {
                   {t?.footer?.termsOfService || "Terms of Service"}
                 </Link>
               </li>
+              <li>
+                <Link to="/impressum" className="text-sm text-muted-foreground hover:text-medical-600 transition-colors">
+                  {t?.footer?.impressum || "Impressum"}
+                </Link>
+              </li>
             </ul>
           </div>
         </div>

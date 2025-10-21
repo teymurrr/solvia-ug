@@ -10,5 +10,6 @@ export const footer = {
   privacy: "Politique de confidentialité",
   copyright: "© 2025 Solvia. Tous droits réservés.",
   language: "Langue",
+  impressum: "Mentions légales",
   tagline: "Mise en relation de professionnels médicaux qualifiés avec des établissements de santé dans le monde entier."
 };

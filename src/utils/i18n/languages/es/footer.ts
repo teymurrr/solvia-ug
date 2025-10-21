@@ -20,5 +20,6 @@ export const footer = {
   postPositions: "Publicar posiciones",
   searchProfessionals: "Buscar profesionales",
   company: "Empresa",
+  impressum: "Aviso legal",
   tagline: "Conectando profesionales médicos cualificados con instituciones sanitarias en todo el mundo."
 };

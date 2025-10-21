@@ -16,6 +16,7 @@ import { auth } from './auth';
 import { contact } from './contact';
 import { forDoctors } from './forDoctors';
 import { cookies } from './cookies';
+import { impressum } from './impressum';
 import { howItWorks } from './howItWorks';
 import { successStories } from './successStories';
 import { pathToSuccess } from './pathToSuccess';
@@ -39,6 +40,7 @@ export const en = {
   contact,
   forDoctors,
   cookies,
+  impressum,
   howItWorks,
   successStories,
   pathToSuccess,

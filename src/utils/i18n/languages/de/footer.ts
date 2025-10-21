@@ -21,5 +21,6 @@ export const footer = {
   postPositions: "Positionen veröffentlichen",
   searchProfessionals: "Fachkräfte suchen",
   company: "Unternehmen",
+  impressum: "Impressum",
   tagline: "Wir verbinden qualifizierte medizinische Fachkräfte mit Gesundheitseinrichtungen weltweit."
 };

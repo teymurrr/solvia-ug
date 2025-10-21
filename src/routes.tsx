@@ -19,6 +19,7 @@ const About = lazy(() => import("@/pages/About"));
 const Contact = lazy(() => import("@/pages/Contact"));
 const Privacy = lazy(() => import("@/pages/Privacy"));
 const Terms = lazy(() => import("@/pages/Terms"));
+const Impressum = lazy(() => import("@/pages/Impressum"));
 const EmployersLanding = lazy(() => import("@/pages/EmployersLanding"));
 const Blog = lazy(() => import("@/pages/Blog"));
 const BlogDetail = lazy(() => import("@/pages/BlogDetail"));
@@ -101,6 +102,7 @@ const AppRoutes = () => {
         <Route path="/contact" element={<Contact />} />
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/terms" element={<Terms />} />
+        <Route path="/impressum" element={<Impressum />} />
         <Route path="/employers" element={<EmployersLanding />} />
         <Route path="/blog" element={<Blog />} />
         <Route path="/blog/:id" element={<BlogDetail />} />
