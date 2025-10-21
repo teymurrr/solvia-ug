@@ -16,7 +16,7 @@ export const hero = {
     pharmacist: 'Pharmacien/ne'
   },
   socialProof: {
-    professionalsHelped: '5 000+ professionnels aidés',
+    professionalsHelped: '230+ professionnels aidés',
     successRate: '95% de taux de réussite'
   }
 };

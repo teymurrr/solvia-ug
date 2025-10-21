@@ -16,7 +16,7 @@ export const hero = {
     pharmacist: 'Pharmacist'
   },
   socialProof: {
-    professionalsHelped: '1000+ professionals helped',
+    professionalsHelped: '230+ professionals helped',
     successRate: '95% success rate'
   }
 };

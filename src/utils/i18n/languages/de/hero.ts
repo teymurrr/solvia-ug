@@ -16,7 +16,7 @@ export const hero = {
     pharmacist: 'Apotheker/in'
   },
   socialProof: {
-    professionalsHelped: '5.000+ Fachkräfte geholfen',
+    professionalsHelped: '230+ Fachkräfte geholfen',
     successRate: '95% Erfolgsquote'
   }
 };
