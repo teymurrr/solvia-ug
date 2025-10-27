@@ -131,9 +131,22 @@ const Footer: React.FC = () => {
         </div>
         
         <div className="mt-12 pt-6 border-t flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-sm text-muted-foreground">
-            © {new Date().getFullYear()} Solvia Global Hub. {t?.footer?.allRightsReserved || "All rights reserved"}
-          </p>
+          <div className="flex flex-col md:flex-row items-center gap-2 md:gap-4 text-sm text-muted-foreground">
+            <p>
+              © {new Date().getFullYear()} Solvia Global Hub. {t?.footer?.allRightsReserved || "All rights reserved"}
+            </p>
+            <p>
+              {t?.footer?.aiPoweredBy || "AI powered by"}{" "}
+              <a 
+                href="https://opxon.com/en/" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-medical-600 hover:text-medical-700 transition-colors font-medium"
+              >
+                Opxon
+              </a>
+            </p>
+          </div>
           <div className="flex gap-4">
             <a 
               href="https://www.instagram.com/thesolvia/" 

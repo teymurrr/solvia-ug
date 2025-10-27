@@ -14,5 +14,6 @@ export const footer = {
   aboutUs: "About Us",
   contact: "Contact",
   impressum: "Impressum",
-  tagline: "Connecting qualified medical professionals with healthcare institutions worldwide."
+  tagline: "Connecting qualified medical professionals with healthcare institutions worldwide.",
+  aiPoweredBy: "AI powered by"
 };

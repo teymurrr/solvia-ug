@@ -22,5 +22,6 @@ export const footer = {
   searchProfessionals: "Fachkräfte suchen",
   company: "Unternehmen",
   impressum: "Impressum",
-  tagline: "Wir verbinden qualifizierte medizinische Fachkräfte mit Gesundheitseinrichtungen weltweit."
+  tagline: "Wir verbinden qualifizierte medizinische Fachkräfte mit Gesundheitseinrichtungen weltweit.",
+  aiPoweredBy: "KI angetrieben von"
 };
