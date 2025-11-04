@@ -1,17 +1,13 @@
 import React, { useMemo, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Search, MapPin, Briefcase } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
-import { useAuth } from '@/contexts/AuthContext';
-import { useToast } from '@/hooks/use-toast';
 
 const HeroSectionWithSearch = React.memo(() => {
   const { t } = useLanguage();
   const navigate = useNavigate();
-  const { isLoggedIn } = useAuth();
-  const { toast } = useToast();
   const [searchQuery, setSearchQuery] = useState('');
   const [location, setLocation] = useState('');
   
@@ -40,54 +36,11 @@ const HeroSectionWithSearch = React.memo(() => {
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    if (isLoggedIn) {
-      // Navigate to vacancies page with search parameters
-      const params = new URLSearchParams();
-      if (searchQuery) params.set('search', searchQuery);
-      if (location) params.set('location', location);
-      navigate(`/vacancies?${params.toString()}`);
-    } else {
-      // Show friendly message encouraging signup
-      const friendlyMessages = {
-        en: {
-          title: "Ready to explore opportunities? 🚀",
-          description: "Join thousands of healthcare professionals who found their dream job with Solvia!"
-        },
-        es: {
-          title: "¿Listo para explorar oportunidades? 🚀", 
-          description: "¡Únete a miles de profesionales sanitarios que encontraron su trabajo ideal con Solvia!"
-        },
-        de: {
-          title: "Bereit, Möglichkeiten zu erkunden? 🚀",
-          description: "Schließen Sie sich Tausenden von Gesundheitsfachkräften an, die mit Solvia ihren Traumjob gefunden haben!"
-        },
-        fr: {
-          title: "Prêt à explorer les opportunités? 🚀",
-          description: "Rejoignez des milliers de professionnels de santé qui ont trouvé leur emploi idéal avec Solvia!"
-        },
-        ru: {
-          title: "Готовы исследовать возможности? 🚀",
-          description: "Присоединяйтесь к тысячам медицинских специалистов, которые нашли работу мечты с Solvia!"
-        }
-      };
-      
-      const currentLang = t?.hero?.title ? 
-        (t.hero.title.includes('European Healthcare') ? 'en' :
-         t.hero.title.includes('sistema sanitario europeo') ? 'es' :
-         t.hero.title.includes('europäischen Gesundheitswesen') ? 'de' :
-         t.hero.title.includes('système de santé européen') ? 'fr' :
-         t.hero.title.includes('европейской медицине') ? 'ru' : 'en') : 'en';
-      
-      const message = friendlyMessages[currentLang as keyof typeof friendlyMessages];
-      
-      toast({
-        title: message.title,
-        description: message.description,
-        duration: 5000,
-      });
-      
-      navigate('/signup');
-    }
+    // Navigate to vacancies page with search parameters
+    const params = new URLSearchParams();
+    if (searchQuery) params.set('search', searchQuery);
+    if (location) params.set('location', location);
+    navigate(`/vacancies?${params.toString()}`);
   };
 
   const scrollToHowItWorks = () => {
