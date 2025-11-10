@@ -45,5 +45,6 @@ export const common = {
   forEmployers: "Para Empleadores",
   forDoctors: "Para Médicos",
   learning: "Aprender",
-  whatsIncluded: "✅ Qué incluye:"
+  whatsIncluded: "✅ Qué incluye:",
+  vacancies: "Vacantes"
 };

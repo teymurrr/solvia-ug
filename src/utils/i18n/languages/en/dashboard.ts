@@ -67,12 +67,16 @@ export const dashboard = {
     markAsPending: "Mark as Pending"
   },
   vacancies: {
+    title: "Available Vacancies",
+    description: "Explore open positions in healthcare institutions",
     jobType: "Job Type",
     country: "Country",
     city: "City",
     resetFilters: "Reset filters",
     search: "Search",
-    searchPlaceholder: "Search by title, location, or keyword..."
+    searchPlaceholder: "Search by title, location, or keyword...",
+    noVacanciesFound: "No vacancies found",
+    noVacanciesDesc: "Try adjusting your search criteria"
   },
   homologation: {
     title: "Get Your Diploma Recognized",

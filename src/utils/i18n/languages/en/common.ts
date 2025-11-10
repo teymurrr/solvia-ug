@@ -45,5 +45,6 @@ export const common = {
   forEmployers: "For Employers",
   forDoctors: "For Doctors",
   learning: "Solvia Learning",
-  whatsIncluded: "✅ What's included:"
+  whatsIncluded: "✅ What's included:",
+  vacancies: "Vacancies"
 };

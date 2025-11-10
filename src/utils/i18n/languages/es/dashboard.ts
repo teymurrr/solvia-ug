@@ -22,6 +22,7 @@ export const dashboard: DashboardTranslations = {
     title: "Últimas ofertas de empleo",
     subtitle:
       "Descubre las oportunidades laborales más recientes en el sector sanitario. ¡Encuentra tu próximo empleo hoy mismo!",
+    description: "Explora puestos abiertos en instituciones de salud",
     viewAll: "Ver todas las ofertas",
     viewMore: "Ver más",
     posted: "Publicado",
@@ -38,7 +39,6 @@ export const dashboard: DashboardTranslations = {
     location: "Ubicación",
     institution: "Institución",
     department: "Departamento",
-    description: "Descripción",
     requirements: "Requisitos",
     jobType: "Tipo de Trabajo",
     country: "País",

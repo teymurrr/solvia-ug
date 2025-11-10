@@ -8,6 +8,7 @@ export const dashboard: DashboardTranslations = {
   vacancies: {
     title: "Postes vacants",
     subtitle: "Explorez les postes ouverts dans les établissements de santé",
+    description: "Explorez les postes ouverts dans les établissements de santé",
     viewAll: "Voir tout",
     viewMore: "Voir plus",
     posted: "Publié",
@@ -24,7 +25,6 @@ export const dashboard: DashboardTranslations = {
     location: "Emplacement",
     institution: "Institution",
     department: "Département",
-    description: "Description",
     requirements: "Exigences"
   },
   profile: {

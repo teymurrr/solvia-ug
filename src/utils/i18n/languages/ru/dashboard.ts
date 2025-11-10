@@ -171,10 +171,19 @@ export const dashboard = {
 
   // Vacancies-related properties for FilterBar component
   vacancies: {
+    title: 'Доступные вакансии',
+    description: 'Исследуйте открытые вакансии в медицинских учреждениях',
     search: 'Поиск',
     location: 'Местоположение',
     specialty: 'Специальность',
-    type: 'Тип'
+    type: 'Тип',
+    jobType: 'Тип работы',
+    country: 'Страна',
+    city: 'Город',
+    resetFilters: 'Сбросить фильтры',
+    searchPlaceholder: 'Поиск по названию, местоположению или ключевому слову...',
+    noVacanciesFound: 'Вакансии не найдены',
+    noVacanciesDesc: 'Попробуйте изменить критерии поиска'
   },
   homologation: {
     title: "Получите признание своего диплома",

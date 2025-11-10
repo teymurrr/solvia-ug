@@ -183,10 +183,19 @@ export const dashboard = {
 
   // Vacancies-related properties for FilterBar component
   vacancies: {
+    title: 'Verfügbare Stellen',
+    description: 'Erkunden Sie offene Stellen in Gesundheitseinrichtungen',
     search: 'Suchen',
     location: 'Standort',
     specialty: 'Fachgebiet',
-    type: 'Art'
+    type: 'Art',
+    jobType: 'Arbeitsart',
+    country: 'Land',
+    city: 'Stadt',
+    resetFilters: 'Filter zurücksetzen',
+    searchPlaceholder: 'Nach Titel, Ort oder Stichwort suchen...',
+    noVacanciesFound: 'Keine Stellen gefunden',
+    noVacanciesDesc: 'Versuchen Sie, Ihre Suchkriterien anzupassen'
   },
   homologation: {
     title: "Lassen Sie Ihr Diplom anerkennen",
