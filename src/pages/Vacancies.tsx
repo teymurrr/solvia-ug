@@ -28,87 +28,8 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from '@/components/ui/pagination';
-
-const sampleVacancies = [
-  {
-    id: '1',
-    title: 'Neurologist',
-    institution: 'Berlin Medical Center',
-    location: 'Berlin, Germany',
-    jobType: 'Full-time',
-    specialty: 'Neurology',
-    profession: 'Doctor',
-    description: 'We are looking for an experienced neurologist to join our team...',
-    requirements: ['5+ years of experience', 'German language (B2)', 'Board certification'],
-    postedDate: '2025-03-15',
-    applicationDeadline: '2025-05-15',
-  },
-  {
-    id: '2',
-    title: 'Pediatric Nurse',
-    institution: 'Vienna Children\'s Hospital',
-    location: 'Vienna, Austria',
-    jobType: 'Part-time',
-    specialty: 'Pediatrics',
-    profession: 'Nurse',
-    description: 'Join our pediatric department as a part-time nurse...',
-    requirements: ['3+ years in pediatric care', 'German language (B2)', 'Registered nurse certification'],
-    postedDate: '2025-03-20',
-    applicationDeadline: '2025-05-01',
-  },
-  {
-    id: '3',
-    title: 'General Practitioner',
-    institution: 'Stockholm Health Center',
-    location: 'Stockholm, Sweden',
-    jobType: 'Full-time',
-    specialty: 'Family Medicine',
-    profession: 'Doctor',
-    description: 'General practitioner needed for primary care center...',
-    requirements: ['Medical license', 'Swedish language (B1)', 'Experience with electronic health records'],
-    postedDate: '2025-03-25',
-    applicationDeadline: '2025-04-30',
-  },
-  {
-    id: '4',
-    title: 'Emergency Room Nurse',
-    institution: 'Barcelona General Hospital',
-    location: 'Barcelona, Spain',
-    jobType: 'Full-time',
-    specialty: 'Emergency Medicine',
-    profession: 'Nurse',
-    description: 'Seeking experienced emergency room nurses...',
-    requirements: ['Critical care certification', 'Spanish language (B2)', '2+ years in emergency medicine'],
-    postedDate: '2025-03-10',
-    applicationDeadline: '2025-04-10',
-  },
-  {
-    id: '5',
-    title: 'Medical Intern',
-    institution: 'Amsterdam University Medical Center',
-    location: 'Amsterdam, Netherlands',
-    jobType: 'Internship',
-    specialty: 'Various',
-    profession: 'Doctor',
-    description: 'Medical internship opportunity for recent graduates...',
-    requirements: ['Medical degree', 'Dutch or English language (B2)', 'Recent graduate'],
-    postedDate: '2025-03-05',
-    applicationDeadline: '2025-04-15',
-  },
-  {
-    id: '6',
-    title: 'Volunteer Nurse',
-    institution: 'Lisbon Community Clinic',
-    location: 'Lisbon, Portugal',
-    jobType: 'Volunteer',
-    specialty: 'Community Health',
-    profession: 'Nurse',
-    description: 'Volunteer opportunities for nurses in community health...',
-    requirements: ['Nursing certification', 'Portuguese or English language (A2)', 'Passion for community service'],
-    postedDate: '2025-03-01',
-    applicationDeadline: '2025-05-30',
-  },
-];
+import { useVacancies } from '@/hooks/useVacancies';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const getUniqueValues = (data: any[], property: string) => {
   return [...new Set(data.map(item => item[property]))];
@@ -132,27 +53,30 @@ const getJobTypeIcon = (jobType: string) => {
 const ITEMS_PER_PAGE = 20;
 
 const Vacancies = () => {
+  const { vacancies, loading } = useVacancies();
   const [searchQuery, setSearchQuery] = useState('');
-  const [searchResults, setSearchResults] = useState(sampleVacancies);
+  const [searchResults, setSearchResults] = useState(vacancies);
   const [filtersVisible, setFiltersVisible] = useState(false);
   const [activeFilters, setActiveFilters] = useState<string[]>([]);
   
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const [paginatedResults, setPaginatedResults] = useState<typeof sampleVacancies>([]);
+  const [paginatedResults, setPaginatedResults] = useState(vacancies);
   
   const [selectedJobTypes, setSelectedJobTypes] = useState<string[]>([]);
-  const [selectedLocation, setSelectedLocation] = useState<string>('all_locations');
+  const [selectedCountry, setSelectedCountry] = useState<string>('all_countries');
+  const [selectedCity, setSelectedCity] = useState<string>('all_cities');
   const [selectedProfession, setSelectedProfession] = useState<string>('all_professions');
   const [selectedSpecialty, setSelectedSpecialty] = useState<string>('all_specialties');
   
   const [savedVacancies, setSavedVacancies] = useState<string[]>([]);
 
-  // Extract unique values for filters right here in the component
-  const jobTypes = getUniqueValues(sampleVacancies, 'jobType');
-  const locations = getUniqueValues(sampleVacancies, 'location');
-  const professions = getUniqueValues(sampleVacancies, 'profession');
-  const specialties = getUniqueValues(sampleVacancies, 'specialty');
+  // Extract unique values for filters from real vacancies
+  const jobTypes = getUniqueValues(vacancies, 'job_type');
+  const countries = getUniqueValues(vacancies.filter(v => v.country), 'country');
+  const cities = getUniqueValues(vacancies.filter(v => v.city), 'city');
+  const professions = getUniqueValues(vacancies.filter(v => v.profession), 'profession');
+  const specialties = getUniqueValues(vacancies.filter(v => v.specialty), 'specialty');
 
   useEffect(() => {
     const savedVacanciesData = localStorage.getItem('savedVacancies');
@@ -186,19 +110,24 @@ const Vacancies = () => {
   };
 
   const applyFilters = () => {
-    const filtered = sampleVacancies.filter(vacancy => {
+    const filtered = vacancies.filter(vacancy => {
       if (searchQuery && 
           !vacancy.title.toLowerCase().includes(searchQuery.toLowerCase()) && 
           !vacancy.description.toLowerCase().includes(searchQuery.toLowerCase()) &&
-          !vacancy.institution.toLowerCase().includes(searchQuery.toLowerCase())) {
+          !vacancy.institution.toLowerCase().includes(searchQuery.toLowerCase()) &&
+          !vacancy.location.toLowerCase().includes(searchQuery.toLowerCase())) {
         return false;
       }
       
-      if (selectedJobTypes.length > 0 && !selectedJobTypes.includes(vacancy.jobType)) {
+      if (selectedJobTypes.length > 0 && !selectedJobTypes.includes(vacancy.job_type)) {
         return false;
       }
       
-      if (selectedLocation !== 'all_locations' && !vacancy.location.includes(selectedLocation)) {
+      if (selectedCountry !== 'all_countries' && vacancy.country !== selectedCountry) {
+        return false;
+      }
+      
+      if (selectedCity !== 'all_cities' && vacancy.city !== selectedCity) {
         return false;
       }
       
@@ -221,8 +150,11 @@ const Vacancies = () => {
     if (selectedJobTypes.length > 0) {
       newActiveFilters.push(...selectedJobTypes);
     }
-    if (selectedLocation !== 'all_locations') {
-      newActiveFilters.push(selectedLocation);
+    if (selectedCountry !== 'all_countries') {
+      newActiveFilters.push(selectedCountry);
+    }
+    if (selectedCity !== 'all_cities') {
+      newActiveFilters.push(selectedCity);
     }
     if (selectedProfession !== 'all_professions') {
       newActiveFilters.push(selectedProfession);
@@ -245,16 +177,23 @@ const Vacancies = () => {
   const resetFilters = () => {
     setSearchQuery('');
     setSelectedJobTypes([]);
-    setSelectedLocation('all_locations');
+    setSelectedCountry('all_countries');
+    setSelectedCity('all_cities');
     setSelectedProfession('all_professions');
     setSelectedSpecialty('all_specialties');
     setActiveFilters([]);
-    setSearchResults(sampleVacancies);
+    setSearchResults(vacancies);
   };
 
   useEffect(() => {
-    applyFilters();
-  }, [selectedJobTypes, selectedLocation, selectedProfession, selectedSpecialty]);
+    if (vacancies.length > 0) {
+      applyFilters();
+    }
+  }, [selectedJobTypes, selectedCountry, selectedCity, selectedProfession, selectedSpecialty, vacancies]);
+
+  useEffect(() => {
+    setSearchResults(vacancies);
+  }, [vacancies]);
 
   useEffect(() => {
     const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
@@ -358,17 +297,19 @@ const Vacancies = () => {
                     {filter}
                     <X 
                       className="ml-1 h-3 w-3 cursor-pointer" 
-                      onClick={() => {
-                        if (selectedJobTypes.includes(filter)) {
-                          setSelectedJobTypes(selectedJobTypes.filter(type => type !== filter));
-                        } else if (selectedLocation === filter) {
-                          setSelectedLocation('');
-                        } else if (selectedProfession === filter) {
-                          setSelectedProfession('');
-                        } else if (selectedSpecialty === filter) {
-                          setSelectedSpecialty('');
-                        }
-                      }} 
+                  onClick={() => {
+                    if (selectedJobTypes.includes(filter)) {
+                      setSelectedJobTypes(selectedJobTypes.filter(type => type !== filter));
+                    } else if (selectedCountry === filter) {
+                      setSelectedCountry('all_countries');
+                    } else if (selectedCity === filter) {
+                      setSelectedCity('all_cities');
+                    } else if (selectedProfession === filter) {
+                      setSelectedProfession('all_professions');
+                    } else if (selectedSpecialty === filter) {
+                      setSelectedSpecialty('all_specialties');
+                    }
+                  }}
                     />
                   </Badge>
                 ))}
@@ -422,16 +363,33 @@ const Vacancies = () => {
                 </div>
                 
                 <div>
-                  <h3 className="text-sm font-medium mb-2">Location</h3>
-                  <Select value={selectedLocation} onValueChange={setSelectedLocation}>
+                  <h3 className="text-sm font-medium mb-2">Country</h3>
+                  <Select value={selectedCountry} onValueChange={setSelectedCountry}>
                     <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Select location" />
+                      <SelectValue placeholder="Select country" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="all_locations">All locations</SelectItem>
-                      {locations.map((location) => (
-                        <SelectItem key={location} value={location.split(',')[1].trim()}>
-                          {location}
+                      <SelectItem value="all_countries">All countries</SelectItem>
+                      {countries.map((country) => (
+                        <SelectItem key={country} value={country}>
+                          {country}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                
+                <div>
+                  <h3 className="text-sm font-medium mb-2">City</h3>
+                  <Select value={selectedCity} onValueChange={setSelectedCity}>
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Select city" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all_cities">All cities</SelectItem>
+                      {cities.map((city) => (
+                        <SelectItem key={city} value={city}>
+                          {city}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -483,37 +441,51 @@ const Vacancies = () => {
             </aside>
             
             <div className="flex-1">
-              <div className="flex justify-between items-center mb-6">
-                <h3 className="font-medium">
-                  {searchResults.length} {searchResults.length === 1 ? 'Vacancy' : 'Vacancies'}
-                </h3>
-                
-                <Select defaultValue="newest">
-                  <SelectTrigger className="w-[180px]">
-                    <SelectValue placeholder="Sort by" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="newest">Newest first</SelectItem>
-                    <SelectItem value="oldest">Oldest first</SelectItem>
-                    <SelectItem value="title-asc">Title (A-Z)</SelectItem>
-                    <SelectItem value="title-desc">Title (Z-A)</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              
-              {searchResults.length > 0 ? (
+              {loading ? (
+                <div className="space-y-6">
+                  {[1, 2, 3].map((i) => (
+                    <div key={i} className="border rounded-lg p-6">
+                      <Skeleton className="h-6 w-3/4 mb-4" />
+                      <Skeleton className="h-4 w-1/2 mb-2" />
+                      <Skeleton className="h-4 w-full mb-2" />
+                      <Skeleton className="h-4 w-full" />
+                    </div>
+                  ))}
+                </div>
+              ) : (
                 <>
-                  <div className="grid grid-cols-1 gap-6">
-                    {paginatedResults.map((vacancy) => (
-                      <VacancyCard
-                        key={vacancy.id}
-                        {...vacancy}
-                        showSaveOption={true}
-                        isSaved={savedVacancies.includes(vacancy.id)}
-                        onSaveToggle={toggleSaveVacancy}
-                      />
-                    ))}
+                  <div className="flex justify-between items-center mb-6">
+                    <h3 className="font-medium">
+                      {searchResults.length} {searchResults.length === 1 ? 'Vacancy' : 'Vacancies'}
+                    </h3>
+                    
+                    <Select defaultValue="newest">
+                      <SelectTrigger className="w-[180px]">
+                        <SelectValue placeholder="Sort by" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="newest">Newest first</SelectItem>
+                        <SelectItem value="oldest">Oldest first</SelectItem>
+                        <SelectItem value="title-asc">Title (A-Z)</SelectItem>
+                        <SelectItem value="title-desc">Title (Z-A)</SelectItem>
+                      </SelectContent>
+                    </Select>
                   </div>
+                  
+                  {searchResults.length > 0 ? (
+                    <>
+                      <div className="grid grid-cols-1 gap-6">
+                        {paginatedResults.map((vacancy) => (
+                          <VacancyCard
+                            key={vacancy.id}
+                            {...vacancy}
+                            jobType={vacancy.job_type}
+                            showSaveOption={true}
+                            isSaved={savedVacancies.includes(vacancy.id)}
+                            onSaveToggle={toggleSaveVacancy}
+                          />
+                        ))}
+                      </div>
                   
                   {totalPages > 1 && (
                     <Pagination className="my-8">
@@ -563,6 +535,8 @@ const Vacancies = () => {
                     Reset Filters
                   </Button>
                 </div>
+              )}
+                </>
               )}
             </div>
           </div>
