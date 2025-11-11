@@ -18,5 +18,9 @@ export const hero = {
   socialProof: {
     professionalsHelped: '230+ professionals helped',
     successRate: '95% success rate'
+  },
+  homologationBanner: {
+    text: 'Need license recognition? Our Homologation Service handles all the paperwork for you.',
+    cta: 'Learn More'
   }
 };

@@ -18,5 +18,9 @@ export const hero = {
   socialProof: {
     professionalsHelped: '230+ Fachkräfte geholfen',
     successRate: '95% Erfolgsquote'
+  },
+  homologationBanner: {
+    text: 'Benötigen Sie Anerkennung? Unser Homologationsservice übernimmt alle Formalitäten für Sie.',
+    cta: 'Mehr erfahren'
   }
 };

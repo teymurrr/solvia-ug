@@ -18,5 +18,9 @@ export const hero = {
   socialProof: {
     professionalsHelped: '230+ professionnels aidés',
     successRate: '95% de taux de réussite'
+  },
+  homologationBanner: {
+    text: 'Besoin de reconnaissance de diplôme? Notre service d\'homologation s\'occupe de toute la paperasse.',
+    cta: 'En savoir plus'
   }
 };

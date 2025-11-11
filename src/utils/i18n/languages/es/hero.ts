@@ -18,5 +18,9 @@ export const hero = {
   socialProof: {
     professionalsHelped: '230+ profesionales ayudados',
     successRate: 'Índice del éxito 95%'
+  },
+  homologationBanner: {
+    text: '¿Necesita reconocimiento de título? Nuestro servicio de homologación maneja todo el papeleo.',
+    cta: 'Más información'
   }
 };

@@ -31,6 +31,10 @@ const HeroSectionWithSearch = React.memo(() => {
     socialProof: {
       professionalsHelped: t?.hero?.socialProof?.professionalsHelped || "1000+ professionals helped",
       successRate: t?.hero?.socialProof?.successRate || "95% success rate"
+    },
+    homologationBanner: {
+      text: t?.hero?.homologationBanner?.text || "Need license recognition? Our Homologation Service handles all the paperwork for you.",
+      cta: t?.hero?.homologationBanner?.cta || "Learn More"
     }
   }), [t]);
 
@@ -119,6 +123,22 @@ const HeroSectionWithSearch = React.memo(() => {
             </form>
           </div>
 
+          {/* Homologation Service Banner */}
+          <div className="mt-6 max-w-4xl mx-auto">
+            <button
+              onClick={() => navigate('/homologation-payment')}
+              className="w-full bg-primary/5 hover:bg-primary/10 border border-primary/20 rounded-xl px-6 py-4 transition-colors group"
+            >
+              <div className="flex items-center justify-between gap-4">
+                <p className="text-sm text-foreground/80 text-left flex-1">
+                  {heroData.homologationBanner.text}
+                </p>
+                <span className="text-sm font-medium text-primary group-hover:translate-x-1 transition-transform whitespace-nowrap">
+                  {heroData.homologationBanner.cta} →
+                </span>
+              </div>
+            </button>
+          </div>
             
             {/* Social proof */}
             <div className="flex items-center gap-6 text-sm text-muted-foreground mt-12">

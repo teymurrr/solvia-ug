@@ -18,5 +18,9 @@ export const hero = {
   socialProof: {
     professionalsHelped: '230+ специалистов помогли',
     successRate: '95% успешности'
+  },
+  homologationBanner: {
+    text: 'Нужно признание диплома? Наш сервис гомологации возьмет на себя все документы.',
+    cta: 'Узнать больше'
   }
 };
