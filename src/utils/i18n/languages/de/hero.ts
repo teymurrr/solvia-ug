@@ -1,7 +1,7 @@
 
 export const hero = {
-  title: 'Ihre Karriere im europäischen Gesundheitswesen beginnt hier',
-  subtitle: 'Wählen Sie Ihren Weg: Anerkennung erhalten oder Traumjob finden',
+  title: 'Ihr neuer Job im europäischen Gesundheitswesen erwartet Sie.',
+  subtitle: 'Solvia hilft Ihnen dabei, Ihre Lizenz zu erhalten, die Sprache zu lernen und einen Job zu finden.',
   cta: 'Jetzt kostenlos anmelden',
   learnMore: 'Mehr erfahren',
   searchPlaceholder: 'Stellentitel, Fachrichtung oder Stichwort...',
@@ -19,18 +19,8 @@ export const hero = {
     professionalsHelped: '230+ Fachkräfte geholfen',
     successRate: '95% Erfolgsquote'
   },
-  pathCards: {
-    jobs: {
-      title: 'Finden Sie Ihren Traumjob',
-      subtitle: 'Stellen im Gesundheitswesen in Europa durchsuchen',
-      searchCta: 'Jobs durchsuchen',
-      badge: 'Bereits zertifiziert?'
-    },
-    homologation: {
-      title: 'Lassen Sie Ihre Lizenz anerkennen',
-      subtitle: 'Starten Sie noch heute Ihren Anerkennungsprozess',
-      cta: 'Anerkennung starten',
-      badge: 'Neu in Europa?'
-    }
+  homologationBanner: {
+    text: 'Benötigen Sie Anerkennung? Unser Homologationsservice übernimmt alle Formalitäten für Sie.',
+    cta: 'Mehr erfahren'
   }
 };

@@ -1,7 +1,7 @@
 
 export const hero = {
-  title: 'Your European Healthcare Career Starts Here',
-  subtitle: 'Choose your path: Get certified or find your dream job',
+  title: 'Your new job in European Healthcare awaits you.',
+  subtitle: 'Solvia helps you get your licence, learn the language and find a job.',
   cta: 'Sign up now for free',
   learnMore: 'Learn More',
   searchPlaceholder: 'Job title, specialty, or keyword...',
@@ -19,18 +19,8 @@ export const hero = {
     professionalsHelped: '230+ professionals helped',
     successRate: '95% success rate'
   },
-  pathCards: {
-    jobs: {
-      title: 'Find Your Dream Job',
-      subtitle: 'Browse healthcare positions across Europe',
-      searchCta: 'Browse Jobs',
-      badge: 'Already certified?'
-    },
-    homologation: {
-      title: 'Get Your License Recognized',
-      subtitle: 'Start your certification process today',
-      cta: 'Start Certification',
-      badge: 'New to Europe?'
-    }
+  homologationBanner: {
+    text: 'Need license recognition? Our Homologation Service handles all the paperwork for you.',
+    cta: 'Learn More'
   }
 };

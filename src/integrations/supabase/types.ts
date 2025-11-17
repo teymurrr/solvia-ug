@@ -123,7 +123,7 @@ export type Database = {
         Row: {
           blog_post_id: string
           id: string
-          ip_address: unknown
+          ip_address: unknown | null
           user_agent: string | null
           user_id: string | null
           viewed_at: string
@@ -131,7 +131,7 @@ export type Database = {
         Insert: {
           blog_post_id: string
           id?: string
-          ip_address?: unknown
+          ip_address?: unknown | null
           user_agent?: string | null
           user_id?: string | null
           viewed_at?: string
@@ -139,7 +139,7 @@ export type Database = {
         Update: {
           blog_post_id?: string
           id?: string
-          ip_address?: unknown
+          ip_address?: unknown | null
           user_agent?: string | null
           user_id?: string | null
           viewed_at?: string
@@ -684,7 +684,10 @@ export type Database = {
         Args: { end_date?: string; start_date?: string }
         Returns: Json
       }
-      get_user_type: { Args: { user_id: string }; Returns: string }
+      get_user_type: {
+        Args: { user_id: string }
+        Returns: string
+      }
       increment_blog_view_count: {
         Args: {
           post_id: string
@@ -693,10 +696,14 @@ export type Database = {
         }
         Returns: undefined
       }
-      is_admin:
-        | { Args: never; Returns: boolean }
-        | { Args: { uid: string }; Returns: boolean }
-      toggle_blog_post_like: { Args: { post_id: string }; Returns: boolean }
+      is_admin: {
+        Args: Record<PropertyKey, never> | { uid: string }
+        Returns: boolean
+      }
+      toggle_blog_post_like: {
+        Args: { post_id: string }
+        Returns: boolean
+      }
     }
     Enums: {
       blog_post_status: "draft" | "published"
