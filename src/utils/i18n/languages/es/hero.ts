@@ -1,7 +1,7 @@
 
 export const hero = {
-  title: 'El sistema sanitario europeo te espera.',
-  subtitle: 'Solvia te ayuda a obtener tu licencia, aprender el idioma y encontrar un trabajo.',
+  title: 'Tu carrera sanitaria europea comienza aquí',
+  subtitle: 'Elige tu camino: Obtén certificación o encuentra tu trabajo',
   cta: 'Regístrate ahora gratis',
   learnMore: 'Más información',
   searchPlaceholder: 'Puesto de trabajo',
@@ -22,13 +22,13 @@ export const hero = {
   pathCards: {
     jobs: {
       title: 'Encuentra tu trabajo soñado',
-      subtitle: 'Busca entre miles de puestos de salud en Europa',
-      searchCta: 'Buscar trabajos',
+      subtitle: 'Explora puestos de salud en Europa',
+      searchCta: 'Explorar trabajos',
       badge: '¿Ya certificado?'
     },
     homologation: {
       title: 'Reconoce tu licencia',
-      subtitle: 'Acelera tu proceso de certificación de diploma',
+      subtitle: 'Inicia tu proceso de certificación hoy',
       cta: 'Iniciar certificación',
       badge: '¿Nuevo en Europa?'
     }
