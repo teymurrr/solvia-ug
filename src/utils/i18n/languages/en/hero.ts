@@ -19,8 +19,17 @@ export const hero = {
     professionalsHelped: '230+ professionals helped',
     successRate: '95% success rate'
   },
-  homologationBanner: {
-    text: 'Need license recognition? Our Homologation Service handles all the paperwork for you.',
-    cta: 'Learn More'
+  pathCards: {
+    jobs: {
+      title: 'Find Your Dream Job',
+      subtitle: 'Search thousands of healthcare positions across Europe',
+      searchCta: 'Search Jobs'
+    },
+    homologation: {
+      title: 'Get Your License Recognized',
+      subtitle: 'Fast-track your diploma certification process',
+      cta: 'Start Certification',
+      badge: 'Expert guidance'
+    }
   }
 };

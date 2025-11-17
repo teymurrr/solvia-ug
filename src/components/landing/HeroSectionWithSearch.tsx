@@ -2,7 +2,7 @@ import React, { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, MapPin, Briefcase } from 'lucide-react';
+import { Search, MapPin, Briefcase, Award } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
 
 const HeroSectionWithSearch = React.memo(() => {
@@ -13,28 +13,37 @@ const HeroSectionWithSearch = React.memo(() => {
   
   // Memoize translations to prevent unnecessary recalculations
   const heroData = useMemo(() => ({
-    title: t?.hero?.title || "Your new job in European Healthcare awaits you.",
-    subtitle: t?.hero?.subtitle || "Solvia helps you get your licence, learn the language and find a job - all in one platform.",
-    cta: t?.hero?.cta || "Sign up now for free",
-    learnMore: t?.hero?.learnMore || "Learn More",
-    searchPlaceholder: t?.hero?.searchPlaceholder || "Job title, specialty, or keyword...",
-    locationPlaceholder: t?.hero?.locationPlaceholder || "Location...",
-    searchButton: t?.hero?.searchButton || "Search Jobs",
-    popularSearches: t?.hero?.popularSearches || "Popular searches:",
-    searchTerms: t?.hero?.searchTerms || {
-      nurse: 'Nurse',
-      doctor: 'Doctor', 
-      physiotherapist: 'Physiotherapist',
-      dentist: 'Dentist',
-      pharmacist: 'Pharmacist'
+    title: t?.hero?.title || 'Your new job in European Healthcare awaits you.',
+    subtitle: t?.hero?.subtitle || 'Solvia helps you get your licence, learn the language and find a job.',
+    cta: t?.hero?.cta || 'Sign up now for free',
+    learnMore: t?.hero?.learnMore || 'Learn More',
+    searchPlaceholder: t?.hero?.searchPlaceholder || 'Job title, specialty, or keyword...',
+    locationPlaceholder: t?.hero?.locationPlaceholder || 'Location...',
+    searchButton: t?.hero?.searchButton || 'Search Jobs',
+    popularSearches: t?.hero?.popularSearches || 'Popular searches:',
+    searchTerms: {
+      nurse: t?.hero?.searchTerms?.nurse || 'Nurse',
+      doctor: t?.hero?.searchTerms?.doctor || 'Doctor',
+      physiotherapist: t?.hero?.searchTerms?.physiotherapist || 'Physiotherapist',
+      dentist: t?.hero?.searchTerms?.dentist || 'Dentist',
+      pharmacist: t?.hero?.searchTerms?.pharmacist || 'Pharmacist'
     },
     socialProof: {
       professionalsHelped: t?.hero?.socialProof?.professionalsHelped || "1000+ professionals helped",
       successRate: t?.hero?.socialProof?.successRate || "95% success rate"
     },
-    homologationBanner: {
-      text: t?.hero?.homologationBanner?.text || "Need license recognition? Our Homologation Service handles all the paperwork for you.",
-      cta: t?.hero?.homologationBanner?.cta || "Learn More"
+    pathCards: {
+      jobs: {
+        title: t?.hero?.pathCards?.jobs?.title || 'Find Your Dream Job',
+        subtitle: t?.hero?.pathCards?.jobs?.subtitle || 'Search thousands of healthcare positions across Europe',
+        searchCta: t?.hero?.pathCards?.jobs?.searchCta || 'Search Jobs'
+      },
+      homologation: {
+        title: t?.hero?.pathCards?.homologation?.title || 'Get Your License Recognized',
+        subtitle: t?.hero?.pathCards?.homologation?.subtitle || 'Fast-track your diploma certification process',
+        cta: t?.hero?.pathCards?.homologation?.cta || 'Start Certification',
+        badge: t?.hero?.pathCards?.homologation?.badge || 'Expert guidance'
+      }
     }
   }), [t]);
 
@@ -66,78 +75,134 @@ const HeroSectionWithSearch = React.memo(() => {
             {heroData.subtitle}
           </p>
           
-          <div className="max-w-4xl mx-auto mt-12">
-            <form onSubmit={handleSearch} className="bg-card/80 backdrop-blur-sm rounded-2xl shadow-2xl border border-border/50 p-6">
-              <div className="flex flex-col md:flex-row gap-4 items-center">
-                {/* Job Title/Specialty Input */}
-                <div className="relative flex-1">
-                  <Briefcase className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+          {/* Dual Path Cards */}
+          <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-6 mt-12">
+            {/* Job Search Card */}
+            <div className="bg-card/80 backdrop-blur-sm border border-border rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="p-2 bg-primary/10 rounded-lg">
+                  <Briefcase className="h-6 w-6 text-primary" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-semibold text-foreground">
+                    {heroData.pathCards.jobs.title}
+                  </h3>
+                </div>
+              </div>
+              <p className="text-muted-foreground text-sm mb-6">
+                {heroData.pathCards.jobs.subtitle}
+              </p>
+              
+              <form onSubmit={handleSearch} className="space-y-3">
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-5 w-5" />
                   <Input
                     type="text"
                     placeholder={heroData.searchPlaceholder}
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="pl-12 h-14 text-lg border-0 bg-background/50 focus:bg-background transition-colors"
+                    className="pl-10 h-12 bg-background"
                   />
                 </div>
-                
-                {/* Location Input */}
-                <div className="relative flex-1 md:flex-initial md:w-64">
-                  <MapPin className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                <div className="relative">
+                  <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-5 w-5" />
                   <Input
                     type="text"
                     placeholder={heroData.locationPlaceholder}
                     value={location}
                     onChange={(e) => setLocation(e.target.value)}
-                    className="pl-12 h-14 text-lg border-0 bg-background/50 focus:bg-background transition-colors"
+                    className="pl-10 h-12 bg-background"
                   />
                 </div>
-                
-                {/* Search Button */}
-                <Button 
-                  type="submit"
-                  size="lg" 
-                  className="h-14 px-8 text-lg group"
-                >
-                  <Search className="h-5 w-5 mr-2 group-hover:scale-110 transition-transform" />
-                  {heroData.searchButton}
+                <Button type="submit" className="w-full h-12 text-base">
+                  {heroData.pathCards.jobs.searchCta}
                 </Button>
-              </div>
-              
-              {/* Popular searches */}
-              <div className="mt-6 text-center">
-                <p className="text-sm text-muted-foreground mb-3">{heroData.popularSearches}</p>
-                <div className="flex flex-wrap justify-center gap-2">
-                   {Object.entries(heroData.searchTerms).map(([key, term]) => (
-                     <button
-                       key={key}
-                       type="button"
-                       onClick={() => setSearchQuery(String(term))}
-                       className="px-4 py-2 text-sm bg-primary/10 text-primary rounded-full hover:bg-primary/20 transition-colors"
-                     >
-                       {String(term)}
-                     </button>
-                   ))}
+              </form>
+
+              {/* Popular Searches */}
+              <div className="mt-6 pt-6 border-t border-border">
+                <p className="text-xs text-muted-foreground mb-3">
+                  {heroData.popularSearches}
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {Object.values(heroData.searchTerms).map((term) => (
+                    <button
+                      key={term}
+                      onClick={() => {
+                        setSearchQuery(term);
+                        navigate(`/vacancies?search=${encodeURIComponent(term)}`);
+                      }}
+                      className="px-3 py-1.5 text-xs bg-secondary hover:bg-secondary/80 text-secondary-foreground rounded-full transition-colors"
+                    >
+                      {term}
+                    </button>
+                  ))}
                 </div>
               </div>
-            </form>
-          </div>
+            </div>
 
-          {/* Homologation Service Banner */}
-          <div className="mt-6 max-w-4xl mx-auto">
-            <button
-              onClick={() => navigate('/homologation-payment')}
-              className="w-full bg-primary/5 hover:bg-primary/10 border border-primary/20 rounded-xl px-6 py-4 transition-colors group"
-            >
-              <div className="flex items-center justify-between gap-4">
-                <p className="text-sm text-foreground/80 text-left flex-1">
-                  {heroData.homologationBanner.text}
-                </p>
-                <span className="text-sm font-medium text-primary group-hover:translate-x-1 transition-transform whitespace-nowrap">
-                  {heroData.homologationBanner.cta} →
-                </span>
+            {/* License Recognition Card */}
+            <div className="bg-card/80 backdrop-blur-sm border border-border rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="p-2 bg-primary/10 rounded-lg">
+                  <Award className="h-6 w-6 text-primary" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-semibold text-foreground">
+                    {heroData.pathCards.homologation.title}
+                  </h3>
+                </div>
               </div>
-            </button>
+              <p className="text-muted-foreground text-sm mb-6">
+                {heroData.pathCards.homologation.subtitle}
+              </p>
+
+              {/* Key Benefits */}
+              <div className="space-y-4 mb-6">
+                <div className="flex items-start gap-3">
+                  <div className="mt-1 h-5 w-5 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                    <div className="h-2 w-2 rounded-full bg-primary"></div>
+                  </div>
+                  <div>
+                    <p className="text-sm text-foreground font-medium">Complete paperwork handling</p>
+                    <p className="text-xs text-muted-foreground">We manage all documentation</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="mt-1 h-5 w-5 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                    <div className="h-2 w-2 rounded-full bg-primary"></div>
+                  </div>
+                  <div>
+                    <p className="text-sm text-foreground font-medium">Fast-track process</p>
+                    <p className="text-xs text-muted-foreground">Get certified faster</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="mt-1 h-5 w-5 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                    <div className="h-2 w-2 rounded-full bg-primary"></div>
+                  </div>
+                  <div>
+                    <p className="text-sm text-foreground font-medium">{heroData.pathCards.homologation.badge}</p>
+                    <p className="text-xs text-muted-foreground">Professional support throughout</p>
+                  </div>
+                </div>
+              </div>
+
+              <Button 
+                onClick={() => navigate('/homologation-payment')}
+                className="w-full h-12 text-base"
+                variant="default"
+              >
+                {heroData.pathCards.homologation.cta}
+              </Button>
+
+              {/* Trust Badge */}
+              <div className="mt-6 pt-6 border-t border-border text-center">
+                <p className="text-xs text-muted-foreground">
+                  ✓ Trusted by 230+ healthcare professionals
+                </p>
+              </div>
+            </div>
           </div>
             
             {/* Social proof */}

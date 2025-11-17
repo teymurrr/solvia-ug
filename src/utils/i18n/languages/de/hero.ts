@@ -19,8 +19,17 @@ export const hero = {
     professionalsHelped: '230+ Fachkräfte geholfen',
     successRate: '95% Erfolgsquote'
   },
-  homologationBanner: {
-    text: 'Benötigen Sie Anerkennung? Unser Homologationsservice übernimmt alle Formalitäten für Sie.',
-    cta: 'Mehr erfahren'
+  pathCards: {
+    jobs: {
+      title: 'Finden Sie Ihren Traumjob',
+      subtitle: 'Durchsuchen Sie tausende Stellen im Gesundheitswesen in Europa',
+      searchCta: 'Jobs suchen'
+    },
+    homologation: {
+      title: 'Lassen Sie Ihre Lizenz anerkennen',
+      subtitle: 'Beschleunigen Sie Ihre Diplomanerkennung',
+      cta: 'Anerkennung starten',
+      badge: 'Expertenberatung'
+    }
   }
 };
