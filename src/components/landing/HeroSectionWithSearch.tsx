@@ -2,14 +2,13 @@ import React, { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, MapPin, Briefcase, Award } from 'lucide-react';
+import { Search, Briefcase, Award } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
 
 const HeroSectionWithSearch = React.memo(() => {
   const { t } = useLanguage();
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
-  const [location, setLocation] = useState('');
   
   // Memoize translations to prevent unnecessary recalculations
   const heroData = useMemo(() => ({
@@ -52,7 +51,6 @@ const HeroSectionWithSearch = React.memo(() => {
     // Navigate to vacancies page with search parameters
     const params = new URLSearchParams();
     if (searchQuery) params.set('search', searchQuery);
-    if (location) params.set('location', location);
     navigate(`/vacancies?${params.toString()}`);
   };
 
@@ -101,16 +99,6 @@ const HeroSectionWithSearch = React.memo(() => {
                     placeholder={heroData.searchPlaceholder}
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="pl-10 h-12 bg-background"
-                  />
-                </div>
-                <div className="relative">
-                  <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-5 w-5" />
-                  <Input
-                    type="text"
-                    placeholder={heroData.locationPlaceholder}
-                    value={location}
-                    onChange={(e) => setLocation(e.target.value)}
                     className="pl-10 h-12 bg-background"
                   />
                 </div>
