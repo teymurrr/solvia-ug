@@ -52,81 +52,104 @@ const HeroSectionWithSearch = React.memo(() => {
   };
   
   return (
-    <section className="relative overflow-hidden bg-gradient-to-br from-background via-background to-primary/5">
-      <div className="container mx-auto px-4 py-20 md:py-28 relative z-10">
+    <section className="relative overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-br from-background via-primary/5 to-background"></div>
+      
+      <div className="container mx-auto px-4 py-24 md:py-32 relative z-10">
         {/* Hero Header */}
-        <div className="max-w-4xl mx-auto text-center space-y-6 mb-16">
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
+        <div className="max-w-5xl mx-auto text-center mb-20">
+          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-6 animate-fade-in">
             {heroData.title}
           </h1>
-          <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto">
             {heroData.subtitle}
           </p>
         </div>
 
-        {/* Two Path Options */}
-        <div className="max-w-5xl mx-auto">
-          <div className="grid md:grid-cols-2 gap-8 md:gap-12">
+        {/* Two Paths - Split Design */}
+        <div className="max-w-6xl mx-auto">
+          <div className="grid md:grid-cols-2 gap-0 relative">
+            {/* Vertical Divider */}
+            <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-border to-transparent"></div>
+            
             {/* License Recognition Path - LEFT */}
-            <div className="group relative">
-              <div className="absolute -inset-1 bg-gradient-to-r from-primary/20 to-primary/0 rounded-3xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-              <div className="relative bg-card border-2 border-border hover:border-primary/50 rounded-2xl p-10 transition-all duration-300 hover:shadow-2xl hover:-translate-y-1">
-                {/* Path Badge */}
-                <div className="inline-block px-4 py-1.5 bg-primary/10 text-primary text-sm font-medium rounded-full mb-6">
-                  Path 1
+            <div className="relative px-8 md:px-12 py-16 group">
+              <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-l-3xl"></div>
+              
+              <div className="relative space-y-8 text-center md:text-left">
+                {/* Badge */}
+                <div className="inline-flex items-center gap-2">
+                  <div className="h-8 w-1 bg-primary rounded-full"></div>
+                  <span className="text-sm font-semibold text-primary uppercase tracking-wider">
+                    Path 1
+                  </span>
                 </div>
                 
-                {/* Content */}
-                <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">
+                {/* Title */}
+                <h2 className="text-4xl md:text-5xl font-bold leading-tight">
                   {heroData.pathCards.homologation.title}
                 </h2>
-                <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
+                
+                {/* Subtitle */}
+                <p className="text-lg md:text-xl text-muted-foreground">
                   {heroData.pathCards.homologation.subtitle}
                 </p>
                 
                 {/* CTA */}
-                <Button
-                  onClick={() => navigate('/homologation-payment')}
-                  size="lg"
-                  className="w-full h-14 text-lg font-semibold"
-                >
-                  {heroData.pathCards.homologation.cta}
-                </Button>
+                <div>
+                  <Button
+                    onClick={() => navigate('/homologation-payment')}
+                    size="lg"
+                    className="w-full md:w-auto px-8 h-14 text-lg font-semibold group-hover:scale-105 transition-transform"
+                  >
+                    {heroData.pathCards.homologation.cta}
+                    <span className="ml-2 group-hover:translate-x-1 transition-transform inline-block">→</span>
+                  </Button>
+                </div>
               </div>
             </div>
 
             {/* Job Search Path - RIGHT */}
-            <div className="group relative">
-              <div className="absolute -inset-1 bg-gradient-to-l from-primary/20 to-primary/0 rounded-3xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-              <div className="relative bg-card border-2 border-border hover:border-primary/50 rounded-2xl p-10 transition-all duration-300 hover:shadow-2xl hover:-translate-y-1">
-                {/* Path Badge */}
-                <div className="inline-block px-4 py-1.5 bg-primary/10 text-primary text-sm font-medium rounded-full mb-6">
-                  Path 2
+            <div className="relative px-8 md:px-12 py-16 group border-t md:border-t-0 md:border-l-0 border-border">
+              <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-r-3xl"></div>
+              
+              <div className="relative space-y-8 text-center md:text-left">
+                {/* Badge */}
+                <div className="inline-flex items-center gap-2">
+                  <div className="h-8 w-1 bg-primary rounded-full"></div>
+                  <span className="text-sm font-semibold text-primary uppercase tracking-wider">
+                    Path 2
+                  </span>
                 </div>
                 
-                {/* Content */}
-                <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">
+                {/* Title */}
+                <h2 className="text-4xl md:text-5xl font-bold leading-tight">
                   {heroData.pathCards.jobs.title}
                 </h2>
-                <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
+                
+                {/* Subtitle */}
+                <p className="text-lg md:text-xl text-muted-foreground">
                   {heroData.pathCards.jobs.subtitle}
                 </p>
                 
                 {/* CTA */}
-                <Button
-                  onClick={() => navigate('/vacancies')}
-                  size="lg"
-                  className="w-full h-14 text-lg font-semibold"
-                >
-                  {heroData.pathCards.jobs.searchCta}
-                </Button>
+                <div>
+                  <Button
+                    onClick={() => navigate('/vacancies')}
+                    size="lg"
+                    className="w-full md:w-auto px-8 h-14 text-lg font-semibold group-hover:scale-105 transition-transform"
+                  >
+                    {heroData.pathCards.jobs.searchCta}
+                    <span className="ml-2 group-hover:translate-x-1 transition-transform inline-block">→</span>
+                  </Button>
+                </div>
               </div>
             </div>
           </div>
         </div>
 
         {/* Social Proof */}
-        <div className="flex flex-wrap items-center justify-center gap-8 text-sm text-muted-foreground mt-16">
+        <div className="flex flex-wrap items-center justify-center gap-8 text-sm text-muted-foreground mt-20">
           <div className="flex items-center gap-3">
             <div className="flex -space-x-2">
               <img 
