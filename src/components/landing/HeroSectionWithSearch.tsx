@@ -33,13 +33,14 @@ const HeroSectionWithSearch = React.memo(() => {
       jobs: {
         title: t?.hero?.pathCards?.jobs?.title || 'Find Your Dream Job',
         subtitle: t?.hero?.pathCards?.jobs?.subtitle || 'Search thousands of healthcare positions across Europe',
-        searchCta: t?.hero?.pathCards?.jobs?.searchCta || 'Search Jobs'
+        searchCta: t?.hero?.pathCards?.jobs?.searchCta || 'Search Jobs',
+        badge: t?.hero?.pathCards?.jobs?.badge || 'Already certified?'
       },
       homologation: {
         title: t?.hero?.pathCards?.homologation?.title || 'Get Your License Recognized',
         subtitle: t?.hero?.pathCards?.homologation?.subtitle || 'Fast-track your diploma certification process',
         cta: t?.hero?.pathCards?.homologation?.cta || 'Start Certification',
-        badge: t?.hero?.pathCards?.homologation?.badge || 'Expert guidance'
+        badge: t?.hero?.pathCards?.homologation?.badge || 'New to Europe?'
       }
     }
   }), [t]);
@@ -65,57 +66,13 @@ const HeroSectionWithSearch = React.memo(() => {
           
           {/* Dual Path Cards */}
           <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-6 mt-12">
-            {/* Job Search Card */}
-            <div className="bg-card/80 backdrop-blur-sm border border-border rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="p-2 bg-primary/10 rounded-lg">
-                  <Briefcase className="h-6 w-6 text-primary" />
-                </div>
-                <div>
-                  <h3 className="text-xl font-semibold text-foreground">
-                    {heroData.pathCards.jobs.title}
-                  </h3>
-                </div>
-              </div>
-              <p className="text-muted-foreground text-sm mb-6">
-                {heroData.pathCards.jobs.subtitle}
-              </p>
-              
-              <div className="space-y-3">
-                <Button 
-                  onClick={() => navigate('/vacancies')}
-                  className="w-full h-12 text-base"
-                >
-                  {heroData.pathCards.jobs.searchCta}
-                </Button>
-              </div>
-
-              {/* Popular Searches */}
-              <div className="mt-6 pt-6 border-t border-border">
-                <p className="text-xs text-muted-foreground mb-3">
-                  {heroData.popularSearches}
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  {Object.values(heroData.searchTerms).map((term) => (
-                    <button
-                      key={term}
-                      onClick={() => navigate(`/vacancies?search=${encodeURIComponent(term)}`)}
-                      className="px-3 py-1.5 text-xs bg-secondary hover:bg-secondary/80 text-secondary-foreground rounded-full transition-colors"
-                    >
-                      {term}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* License Recognition Card */}
+            {/* License Recognition Card - LEFT */}
             <div className="bg-card/80 backdrop-blur-sm border border-border rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow">
               <div className="flex items-center gap-3 mb-4">
                 <div className="p-2 bg-primary/10 rounded-lg">
                   <Award className="h-6 w-6 text-primary" />
                 </div>
-                <div>
+                <div className="flex-1">
                   <h3 className="text-xl font-semibold text-foreground">
                     {heroData.pathCards.homologation.title}
                   </h3>
@@ -127,11 +84,49 @@ const HeroSectionWithSearch = React.memo(() => {
 
               <Button
                 onClick={() => navigate('/homologation-payment')}
-                className="w-full h-12 text-base"
+                className="w-full h-12 text-base mb-4"
                 variant="default"
               >
                 {heroData.pathCards.homologation.cta}
               </Button>
+
+              {/* Contextual Badge */}
+              <div className="text-center">
+                <span className="inline-block px-3 py-1.5 text-xs bg-primary/10 text-primary rounded-full">
+                  💡 {heroData.pathCards.homologation.badge}
+                </span>
+              </div>
+            </div>
+
+            {/* Job Search Card - RIGHT */}
+            <div className="bg-card/80 backdrop-blur-sm border border-border rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="p-2 bg-primary/10 rounded-lg">
+                  <Briefcase className="h-6 w-6 text-primary" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-xl font-semibold text-foreground">
+                    {heroData.pathCards.jobs.title}
+                  </h3>
+                </div>
+              </div>
+              <p className="text-muted-foreground text-sm mb-8">
+                {heroData.pathCards.jobs.subtitle}
+              </p>
+              
+              <Button 
+                onClick={() => navigate('/vacancies')}
+                className="w-full h-12 text-base mb-4"
+              >
+                {heroData.pathCards.jobs.searchCta}
+              </Button>
+
+              {/* Contextual Badge */}
+              <div className="text-center">
+                <span className="inline-block px-3 py-1.5 text-xs bg-primary/10 text-primary rounded-full">
+                  💡 {heroData.pathCards.jobs.badge}
+                </span>
+              </div>
             </div>
           </div>
             
