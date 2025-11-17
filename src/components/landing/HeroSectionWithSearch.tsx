@@ -1,7 +1,6 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
-import { Briefcase, Award } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
 
 const HeroSectionWithSearch = React.memo(() => {
@@ -53,94 +52,103 @@ const HeroSectionWithSearch = React.memo(() => {
   };
   
   return (
-    <section className="relative overflow-hidden">
-      <div className="hero-gradient absolute inset-0 opacity-20" />
-      <div className="container mx-auto px-4 py-16 md:py-20 relative z-10">
-        <div className="max-w-4xl mx-auto text-center space-y-8">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight">
+    <section className="relative overflow-hidden bg-gradient-to-br from-background via-background to-primary/5">
+      <div className="container mx-auto px-4 py-20 md:py-28 relative z-10">
+        {/* Hero Header */}
+        <div className="max-w-4xl mx-auto text-center space-y-6 mb-16">
+          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
             {heroData.title}
           </h1>
-          <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+          <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto">
             {heroData.subtitle}
           </p>
-          
-          {/* Dual Path Cards */}
-          <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-6 mt-12">
-            {/* License Recognition Card - LEFT */}
-            <div className="bg-card/80 backdrop-blur-sm border border-border rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="p-2 bg-primary/10 rounded-lg">
-                  <Award className="h-6 w-6 text-primary" />
-                </div>
-                <div className="flex-1">
-                  <h3 className="text-xl font-semibold text-foreground">
-                    {heroData.pathCards.homologation.title}
-                  </h3>
-                </div>
-              </div>
-              <p className="text-muted-foreground text-sm mb-8">
-                {heroData.pathCards.homologation.subtitle}
-              </p>
+        </div>
 
-              <Button
-                onClick={() => navigate('/homologation-payment')}
-                className="w-full h-12 text-base"
-                variant="default"
-              >
-                {heroData.pathCards.homologation.cta}
-              </Button>
+        {/* Two Path Options */}
+        <div className="max-w-5xl mx-auto">
+          <div className="grid md:grid-cols-2 gap-8 md:gap-12">
+            {/* License Recognition Path - LEFT */}
+            <div className="group relative">
+              <div className="absolute -inset-1 bg-gradient-to-r from-primary/20 to-primary/0 rounded-3xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="relative bg-card border-2 border-border hover:border-primary/50 rounded-2xl p-10 transition-all duration-300 hover:shadow-2xl hover:-translate-y-1">
+                {/* Path Badge */}
+                <div className="inline-block px-4 py-1.5 bg-primary/10 text-primary text-sm font-medium rounded-full mb-6">
+                  Path 1
+                </div>
+                
+                {/* Content */}
+                <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">
+                  {heroData.pathCards.homologation.title}
+                </h2>
+                <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
+                  {heroData.pathCards.homologation.subtitle}
+                </p>
+                
+                {/* CTA */}
+                <Button
+                  onClick={() => navigate('/homologation-payment')}
+                  size="lg"
+                  className="w-full h-14 text-lg font-semibold"
+                >
+                  {heroData.pathCards.homologation.cta}
+                </Button>
+              </div>
             </div>
 
-            {/* Job Search Card - RIGHT */}
-            <div className="bg-card/80 backdrop-blur-sm border border-border rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="p-2 bg-primary/10 rounded-lg">
-                  <Briefcase className="h-6 w-6 text-primary" />
+            {/* Job Search Path - RIGHT */}
+            <div className="group relative">
+              <div className="absolute -inset-1 bg-gradient-to-l from-primary/20 to-primary/0 rounded-3xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="relative bg-card border-2 border-border hover:border-primary/50 rounded-2xl p-10 transition-all duration-300 hover:shadow-2xl hover:-translate-y-1">
+                {/* Path Badge */}
+                <div className="inline-block px-4 py-1.5 bg-primary/10 text-primary text-sm font-medium rounded-full mb-6">
+                  Path 2
                 </div>
-                <div className="flex-1">
-                  <h3 className="text-xl font-semibold text-foreground">
-                    {heroData.pathCards.jobs.title}
-                  </h3>
-                </div>
+                
+                {/* Content */}
+                <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">
+                  {heroData.pathCards.jobs.title}
+                </h2>
+                <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
+                  {heroData.pathCards.jobs.subtitle}
+                </p>
+                
+                {/* CTA */}
+                <Button
+                  onClick={() => navigate('/vacancies')}
+                  size="lg"
+                  className="w-full h-14 text-lg font-semibold"
+                >
+                  {heroData.pathCards.jobs.searchCta}
+                </Button>
               </div>
-              <p className="text-muted-foreground text-sm mb-8">
-                {heroData.pathCards.jobs.subtitle}
-              </p>
-              
-              <Button 
-                onClick={() => navigate('/vacancies')}
-                className="w-full h-12 text-base"
-              >
-                {heroData.pathCards.jobs.searchCta}
-              </Button>
             </div>
           </div>
-            
-            {/* Social proof */}
-            <div className="flex items-center gap-6 text-sm text-muted-foreground mt-12">
-              <div className="flex items-center gap-2">
-                <div className="flex -space-x-1">
-                  <img 
-                    src="/lovable-uploads/fb51f001-5b4c-4c12-9bff-ec7776fda396.png" 
-                    alt="Professional 1" 
-                    className="w-8 h-8 rounded-full border-2 border-background object-cover"
-                  />
-                  <img 
-                    src="/lovable-uploads/cc32bcf9-0674-4d4f-9316-3ce0790f675e.png" 
-                    alt="Professional 2" 
-                    className="w-8 h-8 rounded-full border-2 border-background object-cover"
-                  />
-                  <img 
-                    src="/lovable-uploads/5f708227-020b-4f86-ae6e-6ad00443ec94.png" 
-                    alt="Professional 3" 
-                    className="w-8 h-8 rounded-full border-2 border-background object-cover"
-                  />
-                </div>
-                <span>{heroData.socialProof.professionalsHelped}</span>
-              </div>
-              <div className="text-muted-foreground">•</div>
-              <span>{heroData.socialProof.successRate}</span>
+        </div>
+
+        {/* Social Proof */}
+        <div className="flex flex-wrap items-center justify-center gap-8 text-sm text-muted-foreground mt-16">
+          <div className="flex items-center gap-3">
+            <div className="flex -space-x-2">
+              <img 
+                src="/lovable-uploads/fb51f001-5b4c-4c12-9bff-ec7776fda396.png" 
+                alt="Professional 1" 
+                className="w-10 h-10 rounded-full border-2 border-background object-cover"
+              />
+              <img 
+                src="/lovable-uploads/cc32bcf9-0674-4d4f-9316-3ce0790f675e.png" 
+                alt="Professional 2" 
+                className="w-10 h-10 rounded-full border-2 border-background object-cover"
+              />
+              <img 
+                src="/lovable-uploads/5f708227-020b-4f86-ae6e-6ad00443ec94.png" 
+                alt="Professional 3" 
+                className="w-10 h-10 rounded-full border-2 border-background object-cover"
+              />
             </div>
+            <span className="font-medium">{heroData.socialProof.professionalsHelped}</span>
+          </div>
+          <div className="text-muted-foreground/40">•</div>
+          <span className="font-medium">{heroData.socialProof.successRate}</span>
         </div>
       </div>
     </section>
