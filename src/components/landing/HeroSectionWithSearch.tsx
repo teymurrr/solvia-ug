@@ -141,42 +141,11 @@ const HeroSectionWithSearch = React.memo(() => {
                   </h3>
                 </div>
               </div>
-              <p className="text-muted-foreground text-sm mb-6">
+              <p className="text-muted-foreground text-sm mb-8">
                 {heroData.pathCards.homologation.subtitle}
               </p>
 
-              {/* Key Benefits */}
-              <div className="space-y-4 mb-6">
-                <div className="flex items-start gap-3">
-                  <div className="mt-1 h-5 w-5 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                    <div className="h-2 w-2 rounded-full bg-primary"></div>
-                  </div>
-                  <div>
-                    <p className="text-sm text-foreground font-medium">Complete paperwork handling</p>
-                    <p className="text-xs text-muted-foreground">We manage all documentation</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <div className="mt-1 h-5 w-5 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                    <div className="h-2 w-2 rounded-full bg-primary"></div>
-                  </div>
-                  <div>
-                    <p className="text-sm text-foreground font-medium">Fast-track process</p>
-                    <p className="text-xs text-muted-foreground">Get certified faster</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <div className="mt-1 h-5 w-5 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                    <div className="h-2 w-2 rounded-full bg-primary"></div>
-                  </div>
-                  <div>
-                    <p className="text-sm text-foreground font-medium">{heroData.pathCards.homologation.badge}</p>
-                    <p className="text-xs text-muted-foreground">Professional support throughout</p>
-                  </div>
-                </div>
-              </div>
-
-              <Button 
+              <Button
                 onClick={() => navigate('/homologation-payment')}
                 className="w-full h-12 text-base"
                 variant="default"
