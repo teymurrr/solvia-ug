@@ -152,13 +152,6 @@ const HeroSectionWithSearch = React.memo(() => {
               >
                 {heroData.pathCards.homologation.cta}
               </Button>
-
-              {/* Trust Badge */}
-              <div className="mt-6 pt-6 border-t border-border text-center">
-                <p className="text-xs text-muted-foreground">
-                  ✓ Trusted by 230+ healthcare professionals
-                </p>
-              </div>
             </div>
           </div>
             
