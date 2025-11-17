@@ -1,14 +1,12 @@
 import React, { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Search, Briefcase, Award } from 'lucide-react';
+import { Briefcase, Award } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
 
 const HeroSectionWithSearch = React.memo(() => {
   const { t } = useLanguage();
   const navigate = useNavigate();
-  const [searchQuery, setSearchQuery] = useState('');
   
   // Memoize translations to prevent unnecessary recalculations
   const heroData = useMemo(() => ({
@@ -45,14 +43,6 @@ const HeroSectionWithSearch = React.memo(() => {
       }
     }
   }), [t]);
-
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Navigate to vacancies page with search parameters
-    const params = new URLSearchParams();
-    if (searchQuery) params.set('search', searchQuery);
-    navigate(`/vacancies?${params.toString()}`);
-  };
 
   const scrollToHowItWorks = () => {
     const element = document.getElementById('how-it-works');
@@ -91,21 +81,14 @@ const HeroSectionWithSearch = React.memo(() => {
                 {heroData.pathCards.jobs.subtitle}
               </p>
               
-              <form onSubmit={handleSearch} className="space-y-3">
-                <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-5 w-5" />
-                  <Input
-                    type="text"
-                    placeholder={heroData.searchPlaceholder}
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="pl-10 h-12 bg-background"
-                  />
-                </div>
-                <Button type="submit" className="w-full h-12 text-base">
+              <div className="space-y-3">
+                <Button 
+                  onClick={() => navigate('/vacancies')}
+                  className="w-full h-12 text-base"
+                >
                   {heroData.pathCards.jobs.searchCta}
                 </Button>
-              </form>
+              </div>
 
               {/* Popular Searches */}
               <div className="mt-6 pt-6 border-t border-border">
@@ -116,10 +99,7 @@ const HeroSectionWithSearch = React.memo(() => {
                   {Object.values(heroData.searchTerms).map((term) => (
                     <button
                       key={term}
-                      onClick={() => {
-                        setSearchQuery(term);
-                        navigate(`/vacancies?search=${encodeURIComponent(term)}`);
-                      }}
+                      onClick={() => navigate(`/vacancies?search=${encodeURIComponent(term)}`)}
                       className="px-3 py-1.5 text-xs bg-secondary hover:bg-secondary/80 text-secondary-foreground rounded-full transition-colors"
                     >
                       {term}
