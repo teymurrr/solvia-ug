@@ -19,8 +19,17 @@ export const hero = {
     professionalsHelped: '230+ professionnels aidés',
     successRate: '95% de taux de réussite'
   },
-  homologationBanner: {
-    text: 'Besoin de reconnaissance de diplôme? Notre service d\'homologation s\'occupe de toute la paperasse.',
-    cta: 'En savoir plus'
+  pathCards: {
+    jobs: {
+      title: 'Trouvez l\'emploi de vos rêves',
+      subtitle: 'Recherchez parmi des milliers de postes dans le secteur de la santé en Europe',
+      searchCta: 'Rechercher des emplois'
+    },
+    homologation: {
+      title: 'Faites reconnaître votre diplôme',
+      subtitle: 'Accélérez votre processus de certification',
+      cta: 'Commencer la certification',
+      badge: 'Accompagnement expert'
+    }
   }
 };

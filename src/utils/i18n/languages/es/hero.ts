@@ -19,8 +19,17 @@ export const hero = {
     professionalsHelped: '230+ profesionales ayudados',
     successRate: 'Índice del éxito 95%'
   },
-  homologationBanner: {
-    text: '¿Necesita reconocimiento de título? Nuestro servicio de homologación maneja todo el papeleo.',
-    cta: 'Más información'
+  pathCards: {
+    jobs: {
+      title: 'Encuentra tu trabajo soñado',
+      subtitle: 'Busca entre miles de puestos de salud en Europa',
+      searchCta: 'Buscar trabajos'
+    },
+    homologation: {
+      title: 'Reconoce tu licencia',
+      subtitle: 'Acelera tu proceso de certificación de diploma',
+      cta: 'Iniciar certificación',
+      badge: 'Guía experta'
+    }
   }
 };
