@@ -23,13 +23,14 @@ export const hero = {
     jobs: {
       title: 'Trouvez l\'emploi de vos rêves',
       subtitle: 'Recherchez parmi des milliers de postes dans le secteur de la santé en Europe',
-      searchCta: 'Rechercher des emplois'
+      searchCta: 'Rechercher des emplois',
+      badge: 'Déjà certifié?'
     },
     homologation: {
       title: 'Faites reconnaître votre diplôme',
       subtitle: 'Accélérez votre processus de certification',
       cta: 'Commencer la certification',
-      badge: 'Accompagnement expert'
+      badge: 'Nouveau en Europe?'
     }
   }
 };
