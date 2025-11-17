@@ -84,18 +84,11 @@ const HeroSectionWithSearch = React.memo(() => {
 
               <Button
                 onClick={() => navigate('/homologation-payment')}
-                className="w-full h-12 text-base mb-4"
+                className="w-full h-12 text-base"
                 variant="default"
               >
                 {heroData.pathCards.homologation.cta}
               </Button>
-
-              {/* Contextual Badge */}
-              <div className="text-center">
-                <span className="inline-block px-3 py-1.5 text-xs bg-primary/10 text-primary rounded-full">
-                  💡 {heroData.pathCards.homologation.badge}
-                </span>
-              </div>
             </div>
 
             {/* Job Search Card - RIGHT */}
@@ -116,17 +109,10 @@ const HeroSectionWithSearch = React.memo(() => {
               
               <Button 
                 onClick={() => navigate('/vacancies')}
-                className="w-full h-12 text-base mb-4"
+                className="w-full h-12 text-base"
               >
                 {heroData.pathCards.jobs.searchCta}
               </Button>
-
-              {/* Contextual Badge */}
-              <div className="text-center">
-                <span className="inline-block px-3 py-1.5 text-xs bg-primary/10 text-primary rounded-full">
-                  💡 {heroData.pathCards.jobs.badge}
-                </span>
-              </div>
             </div>
           </div>
             
