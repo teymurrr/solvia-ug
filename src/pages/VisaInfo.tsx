@@ -37,9 +37,9 @@ const VisaInfo = () => {
     {
       id: 'languageVisa',
       icon: BookOpen,
-      color: 'from-secondary/20 to-secondary/5',
-      iconBg: 'bg-secondary/10',
-      iconColor: 'text-secondary-foreground'
+      color: 'from-accent/20 to-accent/5',
+      iconBg: 'bg-accent/10',
+      iconColor: 'text-accent'
     },
     {
       id: 'studentVisa',
