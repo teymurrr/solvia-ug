@@ -23,6 +23,7 @@ import { howItWorks } from './howItWorks';
 import { successStories } from './successStories';
 import { pathToSuccess } from './pathToSuccess';
 import { payments } from './payments';
+import { visa } from './visa';
 
 export const es = {
   hero,
@@ -48,5 +49,6 @@ export const es = {
   howItWorks,
   successStories,
   pathToSuccess,
-  payments
+  payments,
+  visa
 };
