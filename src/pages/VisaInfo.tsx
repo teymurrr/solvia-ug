@@ -1,145 +1,212 @@
+import { useState } from 'react';
 import { useLanguage } from '@/hooks/useLanguage';
 import MainLayout from '@/components/MainLayout';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { CheckCircle2, Globe, GraduationCap, Briefcase, BookOpen, Users } from 'lucide-react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { CheckCircle2, Globe, GraduationCap, Briefcase, BookOpen, Users, ArrowRight, Sparkles } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 const VisaInfo = () => {
   const { t } = useLanguage();
   const navigate = useNavigate();
+  const [activeTab, setActiveTab] = useState('chancenkarte');
 
   const visaTypes = [
     {
+      id: 'chancenkarte',
       icon: Globe,
-      key: 'chancenkarte',
-      color: 'text-primary'
+      color: 'from-primary/20 to-primary/5',
+      iconBg: 'bg-primary/10',
+      iconColor: 'text-primary'
     },
     {
+      id: 'workVisa',
       icon: Briefcase,
-      key: 'workVisa',
-      color: 'text-accent'
+      color: 'from-accent/20 to-accent/5',
+      iconBg: 'bg-accent/10',
+      iconColor: 'text-accent'
     },
     {
+      id: 'internshipVisa',
       icon: GraduationCap,
-      key: 'internshipVisa',
-      color: 'text-secondary'
+      color: 'from-secondary/20 to-secondary/5',
+      iconBg: 'bg-secondary/10',
+      iconColor: 'text-secondary'
     },
     {
+      id: 'languageVisa',
       icon: BookOpen,
-      key: 'languageVisa',
-      color: 'text-primary'
+      color: 'from-primary/20 to-primary/5',
+      iconBg: 'bg-primary/10',
+      iconColor: 'text-primary'
     },
     {
+      id: 'studentVisa',
       icon: Users,
-      key: 'studentVisa',
-      color: 'text-accent'
+      color: 'from-accent/20 to-accent/5',
+      iconBg: 'bg-accent/10',
+      iconColor: 'text-accent'
     }
   ];
 
   return (
     <MainLayout>
-      <div className="min-h-screen bg-gradient-to-b from-background via-background/95 to-muted/30">
+      <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20">
         {/* Hero Section */}
-        <section className="relative py-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-accent/5 to-secondary/5" />
+        <section className="relative py-16 px-4 sm:px-6 lg:px-8 overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-accent/5 to-transparent" />
+          <div className="absolute top-20 right-10 w-72 h-72 bg-primary/5 rounded-full blur-3xl" />
+          <div className="absolute bottom-10 left-10 w-96 h-96 bg-accent/5 rounded-full blur-3xl" />
+          
           <div className="relative max-w-7xl mx-auto text-center">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-6">
+              <Sparkles className="h-4 w-4" />
+              {t.visa.description}
+            </div>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground mb-6 tracking-tight">
               {t.visa.title}
             </h1>
-            <p className="text-xl text-muted-foreground mb-4 max-w-3xl mx-auto">
+            <p className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto">
               {t.visa.subtitle}
-            </p>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              {t.visa.description}
             </p>
           </div>
         </section>
 
-        {/* Visa Cards Section */}
-        <section className="py-16 px-4 sm:px-6 lg:px-8">
-          <div className="max-w-7xl mx-auto space-y-8">
-            {visaTypes.map((visa, index) => {
-              const Icon = visa.icon;
-              const visaData = t.visa[visa.key as keyof typeof t.visa] as any;
-              
-              return (
-                <Card 
-                  key={visa.key}
-                  className="border-2 hover:border-primary/50 transition-all duration-300 hover:shadow-xl bg-card/50 backdrop-blur-sm"
-                >
-                  <CardHeader className="pb-4">
-                    <div className="flex items-start gap-4">
-                      <div className={`p-3 rounded-xl bg-primary/10 ${visa.color}`}>
-                        <Icon className="h-8 w-8" />
-                      </div>
-                      <div className="flex-1">
-                        <CardTitle className="text-2xl mb-2 text-foreground">
-                          {visaData.title}
-                        </CardTitle>
-                        <CardDescription className="text-base text-muted-foreground">
-                          {visaData.description}
-                        </CardDescription>
-                      </div>
-                    </div>
-                  </CardHeader>
+        {/* Visa Options Tabs */}
+        <section className="py-12 px-4 sm:px-6 lg:px-8">
+          <div className="max-w-7xl mx-auto">
+            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+              <TabsList className="grid w-full grid-cols-2 lg:grid-cols-5 gap-2 h-auto bg-muted/50 p-2 mb-12">
+                {visaTypes.map((visa) => {
+                  const Icon = visa.icon;
+                  const visaData = t.visa[visa.id as keyof typeof t.visa] as any;
                   
-                  <CardContent className="grid md:grid-cols-2 gap-8">
-                    {/* Requirements */}
-                    <div className="space-y-4">
-                      <h3 className="text-lg font-semibold flex items-center gap-2 text-foreground">
-                        <span className="text-primary">✓</span>
-                        {visaData.requirements.title}
-                      </h3>
-                      <ul className="space-y-3">
-                        {visaData.requirements.items.map((item: string, idx: number) => (
-                          <li key={idx} className="flex items-start gap-3">
-                            <CheckCircle2 className="h-5 w-5 text-primary shrink-0 mt-0.5" />
-                            <span className="text-muted-foreground">{item}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
+                  return (
+                    <TabsTrigger
+                      key={visa.id}
+                      value={visa.id}
+                      className="flex flex-col items-center gap-2 py-4 px-3 data-[state=active]:bg-card data-[state=active]:shadow-lg transition-all"
+                    >
+                      <div className={`p-2 rounded-lg ${visa.iconBg}`}>
+                        <Icon className={`h-5 w-5 ${visa.iconColor}`} />
+                      </div>
+                      <span className="text-xs font-medium text-center leading-tight">
+                        {visaData.title}
+                      </span>
+                    </TabsTrigger>
+                  );
+                })}
+              </TabsList>
 
-                    {/* Benefits */}
-                    <div className="space-y-4">
-                      <h3 className="text-lg font-semibold flex items-center gap-2 text-foreground">
-                        <span className="text-accent">★</span>
-                        {visaData.benefits.title}
-                      </h3>
-                      <ul className="space-y-3">
-                        {visaData.benefits.items.map((item: string, idx: number) => (
-                          <li key={idx} className="flex items-start gap-3">
-                            <CheckCircle2 className="h-5 w-5 text-accent shrink-0 mt-0.5" />
-                            <span className="text-muted-foreground">{item}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </CardContent>
-                </Card>
-              );
-            })}
+              {visaTypes.map((visa) => {
+                const Icon = visa.icon;
+                const visaData = t.visa[visa.id as keyof typeof t.visa] as any;
+                
+                return (
+                  <TabsContent key={visa.id} value={visa.id} className="mt-0">
+                    <Card className={`border-2 bg-gradient-to-br ${visa.color} backdrop-blur-sm overflow-hidden`}>
+                      <CardHeader className="pb-6">
+                        <div className="flex items-start gap-4">
+                          <div className={`p-4 rounded-2xl ${visa.iconBg} ${visa.iconColor}`}>
+                            <Icon className="h-10 w-10" />
+                          </div>
+                          <div className="flex-1">
+                            <CardTitle className="text-3xl mb-3 text-foreground">
+                              {visaData.title}
+                            </CardTitle>
+                            <CardDescription className="text-lg text-muted-foreground">
+                              {visaData.description}
+                            </CardDescription>
+                          </div>
+                        </div>
+                      </CardHeader>
+                      
+                      <CardContent className="grid md:grid-cols-2 gap-8 pt-6 border-t border-border/50">
+                        {/* Requirements */}
+                        <div className="space-y-4">
+                          <div className="flex items-center gap-3 mb-6">
+                            <div className="h-8 w-8 rounded-lg bg-primary/10 flex items-center justify-center">
+                              <span className="text-primary font-bold">✓</span>
+                            </div>
+                            <h3 className="text-xl font-semibold text-foreground">
+                              {visaData.requirements.title}
+                            </h3>
+                          </div>
+                          <ul className="space-y-3">
+                            {visaData.requirements.items.map((item: string, idx: number) => (
+                              <li key={idx} className="flex items-start gap-3 group">
+                                <CheckCircle2 className="h-5 w-5 text-primary shrink-0 mt-0.5 group-hover:scale-110 transition-transform" />
+                                <span className="text-muted-foreground leading-relaxed">{item}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+
+                        {/* Benefits */}
+                        <div className="space-y-4">
+                          <div className="flex items-center gap-3 mb-6">
+                            <div className="h-8 w-8 rounded-lg bg-accent/10 flex items-center justify-center">
+                              <span className="text-accent font-bold">★</span>
+                            </div>
+                            <h3 className="text-xl font-semibold text-foreground">
+                              {visaData.benefits.title}
+                            </h3>
+                          </div>
+                          <ul className="space-y-3">
+                            {visaData.benefits.items.map((item: string, idx: number) => (
+                              <li key={idx} className="flex items-start gap-3 group">
+                                <CheckCircle2 className="h-5 w-5 text-accent shrink-0 mt-0.5 group-hover:scale-110 transition-transform" />
+                                <span className="text-muted-foreground leading-relaxed">{item}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </TabsContent>
+                );
+              })}
+            </Tabs>
           </div>
         </section>
 
         {/* CTA Section */}
         <section className="py-20 px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto text-center">
-            <div className="bg-gradient-to-br from-primary/10 via-accent/10 to-secondary/10 rounded-3xl p-12 border-2 border-primary/20">
-              <h2 className="text-3xl sm:text-4xl font-bold mb-4 text-foreground">
-                {t.visa.cta.title}
-              </h2>
-              <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-                {t.visa.cta.description}
-              </p>
-              <Button 
-                size="lg" 
-                className="text-lg px-8 py-6"
-                onClick={() => navigate('/contact')}
-              >
-                {t.visa.cta.button}
-              </Button>
+          <div className="max-w-5xl mx-auto">
+            <div className="relative bg-gradient-to-br from-primary/10 via-accent/5 to-secondary/10 rounded-3xl p-12 border-2 border-primary/20 overflow-hidden">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-primary/10 rounded-full blur-3xl" />
+              <div className="absolute bottom-0 left-0 w-64 h-64 bg-accent/10 rounded-full blur-3xl" />
+              
+              <div className="relative text-center">
+                <h2 className="text-3xl sm:text-4xl font-bold mb-4 text-foreground">
+                  {t.visa.cta.title}
+                </h2>
+                <p className="text-lg text-muted-foreground mb-10 max-w-2xl mx-auto">
+                  {t.visa.cta.description}
+                </p>
+                
+                <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                  <Button 
+                    size="lg" 
+                    className="text-lg px-8 py-6 group"
+                    onClick={() => navigate('/contact')}
+                  >
+                    {t.visa.cta.consultationButton}
+                    <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                  </Button>
+                  
+                  <Button 
+                    size="lg" 
+                    variant="outline"
+                    className="text-lg px-8 py-6 group border-2"
+                    onClick={() => navigate('/homologation-payment')}
+                  >
+                    {t.visa.cta.homologationButton}
+                    <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                  </Button>
+                </div>
+              </div>
             </div>
           </div>
         </section>

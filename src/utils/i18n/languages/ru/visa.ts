@@ -111,6 +111,7 @@ export const visa = {
   cta: {
     title: 'Готовы Начать Свой Путь?',
     description: 'Получите персональные рекомендации о том, какая виза вам подходит',
-    button: 'Связаться с Нами'
+    consultationButton: 'Хочу Консультацию',
+    homologationButton: 'Хочу Признать Мой Титул'
   }
 };

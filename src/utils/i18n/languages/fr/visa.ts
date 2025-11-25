@@ -111,6 +111,7 @@ export const visa = {
   cta: {
     title: 'Prêt à Commencer Votre Parcours?',
     description: 'Obtenez des conseils personnalisés sur le visa qui vous convient',
-    button: 'Nous Contacter'
+    consultationButton: 'Je Veux une Consultation',
+    homologationButton: 'Je Veux Faire Reconnaître mon Titre'
   }
 };

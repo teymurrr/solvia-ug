@@ -111,6 +111,7 @@ export const visa = {
   cta: {
     title: 'Bereit, Ihre Reise zu beginnen?',
     description: 'Erhalten Sie persönliche Beratung, welcher Visumweg für Sie der richtige ist',
-    button: 'Kontaktieren Sie uns'
+    consultationButton: 'Ich möchte eine Beratung',
+    homologationButton: 'Ich möchte meinen Titel anerkennen lassen'
   }
 };
