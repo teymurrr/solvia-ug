@@ -4,7 +4,7 @@ import MainLayout from '@/components/MainLayout';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { CheckCircle2, Globe, GraduationCap, Briefcase, Languages, Users, ArrowRight, Sparkles } from 'lucide-react';
+import { CheckCircle2, Globe, GraduationCap, Briefcase, BookOpen, Users, ArrowRight, Sparkles } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 const VisaInfo = () => {
@@ -36,10 +36,10 @@ const VisaInfo = () => {
     },
     {
       id: 'languageVisa',
-      icon: Languages,
-      color: 'from-primary/20 to-primary/5',
-      iconBg: 'bg-primary/10',
-      iconColor: 'text-primary'
+      icon: BookOpen,
+      color: 'from-secondary/20 to-secondary/5',
+      iconBg: 'bg-secondary/10',
+      iconColor: 'text-secondary-foreground'
     },
     {
       id: 'studentVisa',
@@ -77,22 +77,24 @@ const VisaInfo = () => {
         <section className="py-12 px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto">
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-              <TabsList className="grid w-full grid-cols-2 lg:grid-cols-5 gap-3 h-auto bg-muted/50 p-3 mb-12 rounded-2xl">
+              <TabsList className="grid w-full grid-cols-2 lg:grid-cols-5 gap-4 h-auto bg-transparent p-0 mb-12">
                 {visaTypes.map((visa) => {
                   const Icon = visa.icon;
                   const visaData = t.visa[visa.id as keyof typeof t.visa] as any;
+                  // Extract short title (remove parentheses content)
+                  const shortTitle = visaData.title.split('(')[0].trim();
                   
                   return (
                     <TabsTrigger
                       key={visa.id}
                       value={visa.id}
-                      className="flex flex-col items-center gap-3 py-5 px-3 data-[state=active]:bg-card data-[state=active]:shadow-xl transition-all min-h-[110px] rounded-xl hover:bg-card/50"
+                      className="flex flex-col items-center gap-4 py-6 px-4 data-[state=active]:bg-card data-[state=active]:shadow-2xl data-[state=active]:border-2 data-[state=active]:border-primary/20 bg-card/50 backdrop-blur-sm border border-border/50 transition-all min-h-[140px] rounded-2xl hover:shadow-lg hover:scale-[1.02]"
                     >
-                      <div className={`p-3 rounded-xl ${visa.iconBg} shrink-0`}>
-                        <Icon className={`h-6 w-6 ${visa.iconColor}`} />
+                      <div className={`p-4 rounded-2xl ${visa.iconBg} shrink-0`}>
+                        <Icon className={`h-7 w-7 ${visa.iconColor}`} />
                       </div>
-                      <span className="text-xs lg:text-sm font-semibold text-center leading-tight line-clamp-2 w-full">
-                        {visaData.title}
+                      <span className="text-sm lg:text-base font-semibold text-center leading-snug w-full">
+                        {shortTitle}
                       </span>
                     </TabsTrigger>
                   );
