@@ -86,12 +86,12 @@ const VisaInfo = () => {
                     <TabsTrigger
                       key={visa.id}
                       value={visa.id}
-                      className="flex flex-col items-center gap-2 py-4 px-3 data-[state=active]:bg-card data-[state=active]:shadow-lg transition-all"
+                      className="flex flex-col items-center gap-2 py-4 px-2 data-[state=active]:bg-card data-[state=active]:shadow-lg transition-all min-h-[100px]"
                     >
-                      <div className={`p-2 rounded-lg ${visa.iconBg}`}>
+                      <div className={`p-2 rounded-lg ${visa.iconBg} shrink-0`}>
                         <Icon className={`h-5 w-5 ${visa.iconColor}`} />
                       </div>
-                      <span className="text-xs font-medium text-center leading-tight">
+                      <span className="text-[10px] lg:text-xs font-medium text-center leading-tight line-clamp-2 w-full px-1">
                         {visaData.title}
                       </span>
                     </TabsTrigger>
