@@ -26,7 +26,7 @@ export const visa = {
   },
   
   workVisa: {
-    title: 'Рабочая Виза для Квалифицированных Специалистов',
+    title: 'Рабочая Виза',
     description: 'Эта виза для людей, у которых уже есть предложение о работе в Германии.',
     requirements: {
       title: 'Требования',
@@ -47,7 +47,7 @@ export const visa = {
   },
   
   internshipVisa: {
-    title: 'Виза для Стажировки / Практической Подготовки',
+    title: 'Виза для Стажировки / Обучения',
     description: 'Виза для временных клинических или профессиональных стажировок в Германии.',
     requirements: {
       title: 'Требования',
@@ -88,7 +88,7 @@ export const visa = {
   },
   
   studentVisa: {
-    title: 'Студенческая Виза (Университет или Studienkolleg)',
+    title: 'Студенческая Виза',
     description: 'Для тех, кто хочет учиться в Германии.',
     requirements: {
       title: 'Требования',

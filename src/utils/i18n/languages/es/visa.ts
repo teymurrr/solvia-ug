@@ -26,7 +26,7 @@ export const visa = {
   },
   
   workVisa: {
-    title: 'Visa de Trabajo para Trabajadores Cualificados',
+    title: 'Visa de Trabajo',
     description: 'Esta visa es para personas que ya tienen una oferta de trabajo en Alemania.',
     requirements: {
       title: 'Requisitos',
@@ -47,7 +47,7 @@ export const visa = {
   },
   
   internshipVisa: {
-    title: 'Visa de Prácticas / Formación Práctica',
+    title: 'Visa de Prácticas / Formación',
     description: 'Una visa para prácticas clínicas o profesionales temporales en Alemania.',
     requirements: {
       title: 'Requisitos',
@@ -88,7 +88,7 @@ export const visa = {
   },
   
   studentVisa: {
-    title: 'Visa de Estudiante (Universidad o Studienkolleg)',
+    title: 'Visa de Estudiante',
     description: 'Para aquellos que quieren estudiar en Alemania.',
     requirements: {
       title: 'Requisitos',

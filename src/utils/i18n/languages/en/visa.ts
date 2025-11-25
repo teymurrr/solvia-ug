@@ -26,7 +26,7 @@ export const visa = {
   },
   
   workVisa: {
-    title: 'Work Visa for Skilled Workers (Employment Visa)',
+    title: 'Work Visa',
     description: 'This visa is for people who already have a job offer in Germany.',
     requirements: {
       title: 'Requirements',
@@ -47,7 +47,7 @@ export const visa = {
   },
   
   internshipVisa: {
-    title: 'Internship / Practical Training Visa',
+    title: 'Internship / Training Visa',
     description: 'A visa for temporary clinical or professional internships in Germany.',
     requirements: {
       title: 'Requirements',
@@ -88,7 +88,7 @@ export const visa = {
   },
   
   studentVisa: {
-    title: 'Student Visa (University or Studienkolleg)',
+    title: 'Student Visa',
     description: 'For those who want to study in Germany.',
     requirements: {
       title: 'Requirements',
