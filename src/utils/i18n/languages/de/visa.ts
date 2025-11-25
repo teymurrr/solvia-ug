@@ -26,7 +26,7 @@ export const visa = {
   },
   
   workVisa: {
-    title: 'Arbeitsvisum für Fachkräfte',
+    title: 'Arbeitsvisum',
     description: 'Dieses Visum ist für Personen, die bereits ein Jobangebot in Deutschland haben.',
     requirements: {
       title: 'Voraussetzungen',
@@ -47,7 +47,7 @@ export const visa = {
   },
   
   internshipVisa: {
-    title: 'Praktikumsvisum',
+    title: 'Praktikums- / Ausbildungsvisum',
     description: 'Ein Visum für temporäre klinische oder berufliche Praktika in Deutschland.',
     requirements: {
       title: 'Voraussetzungen',
@@ -88,7 +88,7 @@ export const visa = {
   },
   
   studentVisa: {
-    title: 'Studentenvisum (Universität oder Studienkolleg)',
+    title: 'Studentenvisum',
     description: 'Für diejenigen, die in Deutschland studieren möchten.',
     requirements: {
       title: 'Voraussetzungen',
