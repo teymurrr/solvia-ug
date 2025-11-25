@@ -16,9 +16,9 @@ const VisaInfo = () => {
     {
       id: 'chancenkarte',
       icon: Globe,
-      color: 'from-primary/20 to-primary/5',
-      iconBg: 'bg-primary/10',
-      iconColor: 'text-primary'
+      color: 'from-accent/20 to-accent/5',
+      iconBg: 'bg-accent/10',
+      iconColor: 'text-accent'
     },
     {
       id: 'workVisa',
