@@ -4,7 +4,7 @@ import MainLayout from '@/components/MainLayout';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { CheckCircle2, Globe, GraduationCap, Briefcase, BookOpen, Users, ArrowRight, Sparkles } from 'lucide-react';
+import { CheckCircle2, Globe, GraduationCap, Briefcase, Languages, Users, ArrowRight, Sparkles } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 const VisaInfo = () => {
@@ -36,7 +36,7 @@ const VisaInfo = () => {
     },
     {
       id: 'languageVisa',
-      icon: BookOpen,
+      icon: Languages,
       color: 'from-primary/20 to-primary/5',
       iconBg: 'bg-primary/10',
       iconColor: 'text-primary'
@@ -77,7 +77,7 @@ const VisaInfo = () => {
         <section className="py-12 px-4 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto">
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-              <TabsList className="grid w-full grid-cols-2 lg:grid-cols-5 gap-2 h-auto bg-muted/50 p-2 mb-12">
+              <TabsList className="grid w-full grid-cols-2 lg:grid-cols-5 gap-3 h-auto bg-muted/50 p-3 mb-12 rounded-2xl">
                 {visaTypes.map((visa) => {
                   const Icon = visa.icon;
                   const visaData = t.visa[visa.id as keyof typeof t.visa] as any;
@@ -86,12 +86,12 @@ const VisaInfo = () => {
                     <TabsTrigger
                       key={visa.id}
                       value={visa.id}
-                      className="flex flex-col items-center gap-2 py-4 px-2 data-[state=active]:bg-card data-[state=active]:shadow-lg transition-all min-h-[100px]"
+                      className="flex flex-col items-center gap-3 py-5 px-3 data-[state=active]:bg-card data-[state=active]:shadow-xl transition-all min-h-[110px] rounded-xl hover:bg-card/50"
                     >
-                      <div className={`p-2 rounded-lg ${visa.iconBg} shrink-0`}>
-                        <Icon className={`h-5 w-5 ${visa.iconColor}`} />
+                      <div className={`p-3 rounded-xl ${visa.iconBg} shrink-0`}>
+                        <Icon className={`h-6 w-6 ${visa.iconColor}`} />
                       </div>
-                      <span className="text-[10px] lg:text-xs font-medium text-center leading-tight line-clamp-2 w-full px-1">
+                      <span className="text-xs lg:text-sm font-semibold text-center leading-tight line-clamp-2 w-full">
                         {visaData.title}
                       </span>
                     </TabsTrigger>
