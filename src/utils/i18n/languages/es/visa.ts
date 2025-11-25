@@ -111,6 +111,7 @@ export const visa = {
   cta: {
     title: '¿Listo para Comenzar tu Viaje?',
     description: 'Obtén orientación personalizada sobre qué visa es la adecuada para ti',
-    button: 'Contáctanos'
+    consultationButton: 'Quiero una Consulta',
+    homologationButton: 'Quiero Reconocer mi Título'
   }
 };

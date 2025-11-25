@@ -111,6 +111,7 @@ export const visa = {
   cta: {
     title: 'Ready to Start Your Journey?',
     description: 'Get personalized guidance on which visa pathway is right for you',
-    button: 'Contact Us'
+    consultationButton: 'I Want a Consultation',
+    homologationButton: 'I Want My Title Recognized'
   }
 };
