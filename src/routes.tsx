@@ -24,6 +24,7 @@ const EmployersLanding = lazy(() => import("@/pages/EmployersLanding"));
 const Blog = lazy(() => import("@/pages/Blog"));
 const BlogDetail = lazy(() => import("@/pages/BlogDetail"));
 const ForDoctors = lazy(() => import("@/pages/ForDoctors"));
+const VisaInfo = lazy(() => import("@/pages/VisaInfo"));
 
 // Auth pages - import individually instead of bundling
 const Signup = lazy(() => import("@/pages/Signup"));
@@ -98,6 +99,7 @@ const AppRoutes = () => {
         <Route path="/" element={renderHomePage()} />
         <Route path="/home" element={<Index />} />
         <Route path="/for-doctors" element={<ForDoctors />} />
+        <Route path="/visa-info" element={<VisaInfo />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/privacy" element={<Privacy />} />
