@@ -12,7 +12,7 @@ type WizardStep = 'welcome' | 'country' | 'study-country' | 'doctor-type' | 'doc
 interface WizardData {
   targetCountry?: string;
   studyCountry?: string;
-  doctorType?: 'general' | 'specialist' | 'unsure';
+  doctorType?: 'general' | 'specialist' | 'nurse' | 'dentist' | 'other' | 'unsure';
   documentsReady?: 'yes' | 'no' | 'unsure';
   languageLevel?: string;
 }
@@ -58,7 +58,7 @@ const HomologationWizard = () => {
     setCurrentStep('doctor-type');
   };
 
-  const handleDoctorTypeSelect = (type: 'general' | 'specialist' | 'unsure') => {
+  const handleDoctorTypeSelect = (type: 'general' | 'specialist' | 'nurse' | 'dentist' | 'other' | 'unsure') => {
     setWizardData({ ...wizardData, doctorType: type });
     setCurrentStep('documents');
   };
@@ -213,7 +213,7 @@ const HomologationWizard = () => {
                   className="w-full justify-start text-lg h-auto py-4 hover:bg-primary/5 hover:border-primary transition-all"
                   onClick={() => handleDoctorTypeSelect('general')}
                 >
-                  General doctor
+                  {t.wizard.doctorType.general}
                 </Button>
                 <Button
                   variant="outline"
@@ -221,7 +221,31 @@ const HomologationWizard = () => {
                   className="w-full justify-start text-lg h-auto py-4 hover:bg-primary/5 hover:border-primary transition-all"
                   onClick={() => handleDoctorTypeSelect('specialist')}
                 >
-                  Specialist
+                  {t.wizard.doctorType.specialist}
+                </Button>
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="w-full justify-start text-lg h-auto py-4 hover:bg-primary/5 hover:border-primary transition-all"
+                  onClick={() => handleDoctorTypeSelect('nurse')}
+                >
+                  {t.wizard.doctorType.nurse}
+                </Button>
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="w-full justify-start text-lg h-auto py-4 hover:bg-primary/5 hover:border-primary transition-all"
+                  onClick={() => handleDoctorTypeSelect('dentist')}
+                >
+                  {t.wizard.doctorType.dentist}
+                </Button>
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="w-full justify-start text-lg h-auto py-4 hover:bg-primary/5 hover:border-primary transition-all"
+                  onClick={() => handleDoctorTypeSelect('other')}
+                >
+                  {t.wizard.doctorType.other}
                 </Button>
                 <Button
                   variant="outline"
@@ -229,7 +253,7 @@ const HomologationWizard = () => {
                   className="w-full justify-start text-lg h-auto py-4 hover:bg-accent/5 hover:border-accent transition-all"
                   onClick={() => handleDoctorTypeSelect('unsure')}
                 >
-                  I'm not sure
+                  {t.wizard.doctorType.unsure}
                 </Button>
                 <Button
                   variant="ghost"
@@ -237,7 +261,7 @@ const HomologationWizard = () => {
                   className="w-full mt-4"
                 >
                   <ArrowLeft className="mr-2 h-4 w-4" />
-                  Back
+                  {t.wizard.back}
                 </Button>
               </CardContent>
             </Card>

@@ -18,6 +18,9 @@ export const wizard = {
     subtitle: 'Выберите ваш текущий статус',
     general: 'Врач общей практики',
     specialist: 'Специалист',
+    nurse: 'Медсестра/Медбрат',
+    dentist: 'Стоматолог',
+    other: 'Другой медицинский специалист',
     unsure: 'Я не уверен'
   },
   documents: {

@@ -18,6 +18,9 @@ export const wizard = {
     subtitle: 'Sélectionnez votre statut actuel',
     general: 'Médecin généraliste',
     specialist: 'Spécialiste',
+    nurse: 'Infirmier/ière',
+    dentist: 'Dentiste',
+    other: 'Autre professionnel médical',
     unsure: 'Je ne suis pas sûr'
   },
   documents: {
