@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import MainLayout from '@/components/MainLayout';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { GraduationCap, Globe, Stethoscope, FileCheck, Languages } from 'lucide-react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { GraduationCap, Globe, Stethoscope, FileCheck, Languages, ArrowLeft } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
+import { useNavigate } from 'react-router-dom';
 
 type WizardStep = 'welcome' | 'country' | 'study-country' | 'doctor-type' | 'documents' | 'language';
 
@@ -17,6 +19,7 @@ interface WizardData {
 
 const HomologationWizard = () => {
   const { t } = useLanguage();
+  const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState<WizardStep>('welcome');
   const [wizardData, setWizardData] = useState<WizardData>({});
 
@@ -26,6 +29,17 @@ const HomologationWizard = () => {
     { id: 'spain', name: 'Spain', flag: '🇪🇸' },
     { id: 'italy', name: 'Italy', flag: '🇮🇹' },
     { id: 'france', name: 'France', flag: '🇫🇷' },
+  ];
+
+  const studyCountries = [
+    'Afghanistan', 'Albania', 'Algeria', 'Argentina', 'Australia', 'Austria', 'Bangladesh', 'Belgium',
+    'Bolivia', 'Brazil', 'Bulgaria', 'Canada', 'Chile', 'China', 'Colombia', 'Costa Rica', 'Croatia',
+    'Cuba', 'Czech Republic', 'Denmark', 'Ecuador', 'Egypt', 'Finland', 'France', 'Germany', 'Greece',
+    'Hungary', 'India', 'Indonesia', 'Iran', 'Iraq', 'Ireland', 'Israel', 'Italy', 'Japan', 'Jordan',
+    'Kenya', 'Lebanon', 'Mexico', 'Morocco', 'Netherlands', 'New Zealand', 'Nigeria', 'Norway', 'Pakistan',
+    'Peru', 'Philippines', 'Poland', 'Portugal', 'Romania', 'Russia', 'Saudi Arabia', 'Serbia', 'South Africa',
+    'South Korea', 'Spain', 'Sweden', 'Switzerland', 'Syria', 'Thailand', 'Tunisia', 'Turkey', 'Ukraine',
+    'United Kingdom', 'United States', 'Venezuela', 'Vietnam'
   ];
 
   const languageLevels = ['A1', 'A2', 'B1', 'B2', 'C1', "I don't know"];
@@ -55,9 +69,19 @@ const HomologationWizard = () => {
   };
 
   const handleLanguageSelect = (level: string) => {
-    setWizardData({ ...wizardData, languageLevel: level });
-    // TODO: Navigate to results/guidance page
-    console.log('Wizard completed:', { ...wizardData, languageLevel: level });
+    const completedData = { ...wizardData, languageLevel: level };
+    setWizardData(completedData);
+    console.log('Wizard completed:', completedData);
+    // Navigate to dashboard or results page
+    navigate('/professional-dashboard');
+  };
+
+  const handleBack = () => {
+    const stepOrder: WizardStep[] = ['welcome', 'country', 'study-country', 'doctor-type', 'documents', 'language'];
+    const currentIndex = stepOrder.indexOf(currentStep);
+    if (currentIndex > 0) {
+      setCurrentStep(stepOrder[currentIndex - 1]);
+    }
   };
 
   return (
@@ -104,7 +128,7 @@ const HomologationWizard = () => {
                   Select your target country
                 </CardDescription>
               </CardHeader>
-              <CardContent className="space-y-3">
+              <CardContent className="space-y-4">
                 {countries.map((country) => (
                   <Button
                     key={country.id}
@@ -117,6 +141,14 @@ const HomologationWizard = () => {
                     <span className="font-medium">{country.name}</span>
                   </Button>
                 ))}
+                <Button
+                  variant="ghost"
+                  onClick={handleBack}
+                  className="w-full mt-4"
+                >
+                  <ArrowLeft className="mr-2 h-4 w-4" />
+                  Back
+                </Button>
               </CardContent>
             </Card>
           )}
@@ -129,23 +161,33 @@ const HomologationWizard = () => {
                   <GraduationCap className="h-8 w-8 text-accent" />
                 </div>
                 <CardTitle className="text-2xl md:text-3xl font-bold">
-                  Where did you study medicine?
+                  In which country did you study medicine?
                 </CardTitle>
                 <CardDescription className="text-base md:text-lg">
                   Just choose one country
                 </CardDescription>
               </CardHeader>
-              <CardContent>
-                <input
-                  type="text"
-                  placeholder="Type or select your country..."
-                  className="w-full px-4 py-3 border-2 rounded-md text-lg focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent"
-                  onChange={(e) => {
-                    if (e.target.value) {
-                      handleStudyCountrySelect(e.target.value);
-                    }
-                  }}
-                />
+              <CardContent className="space-y-4">
+                <Select onValueChange={handleStudyCountrySelect}>
+                  <SelectTrigger className="w-full h-12 text-lg">
+                    <SelectValue placeholder="Select your country..." />
+                  </SelectTrigger>
+                  <SelectContent className="max-h-[300px]">
+                    {studyCountries.map((country) => (
+                      <SelectItem key={country} value={country} className="text-lg">
+                        {country}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <Button
+                  variant="ghost"
+                  onClick={handleBack}
+                  className="w-full"
+                >
+                  <ArrowLeft className="mr-2 h-4 w-4" />
+                  Back
+                </Button>
               </CardContent>
             </Card>
           )}
@@ -188,6 +230,14 @@ const HomologationWizard = () => {
                   onClick={() => handleDoctorTypeSelect('unsure')}
                 >
                   I'm not sure
+                </Button>
+                <Button
+                  variant="ghost"
+                  onClick={handleBack}
+                  className="w-full mt-4"
+                >
+                  <ArrowLeft className="mr-2 h-4 w-4" />
+                  Back
                 </Button>
               </CardContent>
             </Card>
@@ -232,6 +282,14 @@ const HomologationWizard = () => {
                 >
                   I have no idea
                 </Button>
+                <Button
+                  variant="ghost"
+                  onClick={handleBack}
+                  className="w-full mt-4"
+                >
+                  <ArrowLeft className="mr-2 h-4 w-4" />
+                  Back
+                </Button>
               </CardContent>
             </Card>
           )}
@@ -250,20 +308,30 @@ const HomologationWizard = () => {
                   For the country you want to work in
                 </CardDescription>
               </CardHeader>
-              <CardContent className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                {languageLevels.map((level) => (
-                  <Button
-                    key={level}
-                    variant="outline"
-                    size="lg"
-                    className={`text-lg h-auto py-6 hover:bg-primary/5 hover:border-primary transition-all ${
-                      level === "I don't know" ? 'col-span-2 md:col-span-3' : ''
-                    }`}
-                    onClick={() => handleLanguageSelect(level)}
-                  >
-                    {level}
-                  </Button>
-                ))}
+              <CardContent className="space-y-4">
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                  {languageLevels.map((level) => (
+                    <Button
+                      key={level}
+                      variant="outline"
+                      size="lg"
+                      className={`text-lg h-auto py-6 hover:bg-primary/5 hover:border-primary transition-all ${
+                        level === "I don't know" ? 'col-span-2 md:col-span-3' : ''
+                      }`}
+                      onClick={() => handleLanguageSelect(level)}
+                    >
+                      {level}
+                    </Button>
+                  ))}
+                </div>
+                <Button
+                  variant="ghost"
+                  onClick={handleBack}
+                  className="w-full"
+                >
+                  <ArrowLeft className="mr-2 h-4 w-4" />
+                  Back
+                </Button>
               </CardContent>
             </Card>
           )}
