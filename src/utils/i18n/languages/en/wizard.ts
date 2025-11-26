@@ -18,6 +18,9 @@ export const wizard = {
     subtitle: 'Select your current status',
     general: 'General doctor',
     specialist: 'Specialist',
+    nurse: 'Nurse',
+    dentist: 'Dentist',
+    other: 'Other medical professional',
     unsure: "I'm not sure"
   },
   documents: {
