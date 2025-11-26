@@ -513,48 +513,63 @@ export type Database = {
           about: string | null
           actively_searching: boolean | null
           created_at: string | null
+          doctor_type: string | null
+          documents_ready: string | null
           first_name: string
           fsp_certificate: boolean | null
           fsp_certificate_file: string | null
           id: string
+          language_level: string | null
           last_name: string
           location: string | null
           open_to_relocation: boolean | null
           profession: string | null
           profile_image: string | null
           specialty: string | null
+          study_country: string | null
+          target_country: string | null
           updated_at: string | null
         }
         Insert: {
           about?: string | null
           actively_searching?: boolean | null
           created_at?: string | null
+          doctor_type?: string | null
+          documents_ready?: string | null
           first_name: string
           fsp_certificate?: boolean | null
           fsp_certificate_file?: string | null
           id: string
+          language_level?: string | null
           last_name: string
           location?: string | null
           open_to_relocation?: boolean | null
           profession?: string | null
           profile_image?: string | null
           specialty?: string | null
+          study_country?: string | null
+          target_country?: string | null
           updated_at?: string | null
         }
         Update: {
           about?: string | null
           actively_searching?: boolean | null
           created_at?: string | null
+          doctor_type?: string | null
+          documents_ready?: string | null
           first_name?: string
           fsp_certificate?: boolean | null
           fsp_certificate_file?: string | null
           id?: string
+          language_level?: string | null
           last_name?: string
           location?: string | null
           open_to_relocation?: boolean | null
           profession?: string | null
           profile_image?: string | null
           specialty?: string | null
+          study_country?: string | null
+          target_country?: string | null
           updated_at?: string | null
         }
         Relationships: []

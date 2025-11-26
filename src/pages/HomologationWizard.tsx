@@ -6,6 +6,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { GraduationCap, Globe, Stethoscope, FileCheck, Languages, ArrowLeft } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '@/contexts/AuthContext';
+import { saveWizardDataToProfile } from '@/services/wizardProfileService';
+import { useToast } from '@/hooks/use-toast';
 
 type WizardStep = 'welcome' | 'country' | 'study-country' | 'doctor-type' | 'documents' | 'language';
 
@@ -20,8 +23,11 @@ interface WizardData {
 const HomologationWizard = () => {
   const { t } = useLanguage();
   const navigate = useNavigate();
+  const { user, isLoggedIn } = useAuth();
+  const { toast } = useToast();
   const [currentStep, setCurrentStep] = useState<WizardStep>('welcome');
   const [wizardData, setWizardData] = useState<WizardData>({});
+  const [isSaving, setIsSaving] = useState(false);
 
   const countries = [
     { id: 'germany', name: 'Germany', flag: '🇩🇪' },
@@ -68,12 +74,53 @@ const HomologationWizard = () => {
     setCurrentStep('language');
   };
 
-  const handleLanguageSelect = (level: string) => {
+  const handleLanguageSelect = async (level: string) => {
     const completedData = { ...wizardData, languageLevel: level };
     setWizardData(completedData);
-    console.log('Wizard completed:', completedData);
-    // Navigate to dashboard or results page
-    navigate('/professional-dashboard');
+    
+    // Check if user is logged in
+    if (!isLoggedIn || !user) {
+      toast({
+        title: "Please log in",
+        description: "You need to be logged in to save your wizard data. Redirecting to signup...",
+        variant: "destructive",
+      });
+      
+      // Store wizard data in localStorage temporarily
+      localStorage.setItem('pendingWizardData', JSON.stringify(completedData));
+      
+      setTimeout(() => {
+        navigate('/professional-signup');
+      }, 2000);
+      return;
+    }
+
+    // Save wizard data to profile
+    setIsSaving(true);
+    try {
+      const result = await saveWizardDataToProfile(user.id, completedData);
+      
+      if (result.success) {
+        toast({
+          title: "Profile updated!",
+          description: "Your preferences have been saved to your profile.",
+        });
+        
+        // Navigate to dashboard
+        navigate('/professional-dashboard');
+      } else {
+        throw new Error('Failed to save wizard data');
+      }
+    } catch (error) {
+      console.error('Error saving wizard data:', error);
+      toast({
+        title: "Error saving data",
+        description: "There was an error saving your preferences. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   const handleBack = () => {
@@ -343,8 +390,9 @@ const HomologationWizard = () => {
                         level === "I don't know" ? 'col-span-2 md:col-span-3' : ''
                       }`}
                       onClick={() => handleLanguageSelect(level)}
+                      disabled={isSaving}
                     >
-                      {level}
+                      {isSaving ? 'Saving...' : level}
                     </Button>
                   ))}
                 </div>
