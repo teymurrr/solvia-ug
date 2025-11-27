@@ -1,12 +1,20 @@
 
 import React from 'react';
-import { User, MapPin, Award } from 'lucide-react';
+import { User, MapPin, Award, Globe } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { ProfileFormValues } from '@/components/professional-profile/types';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { useLanguage } from '@/hooks/useLanguage';
+
+const countryFlags: Record<string, string> = {
+  germany: '🇩🇪',
+  austria: '🇦🇹',
+  spain: '🇪🇸',
+  italy: '🇮🇹',
+  france: '🇫🇷',
+};
 
 interface ProfileCardProps {
   profileData: ProfileFormValues;
@@ -134,8 +142,19 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
             <h3 className="text-sm font-medium text-muted-foreground">
               {profileText.profession || "Profession"}
             </h3>
-            <p>{profileData.profession}</p>
+            <p>{profileData.profession || profileText.notSpecified || "Not specified"}</p>
           </div>
+          {profileData.targetCountry && (
+            <div>
+              <h3 className="text-sm font-medium text-muted-foreground">
+                {profileText.targetCountry || "Target Country"}
+              </h3>
+              <p className="flex items-center gap-2">
+                <span className="text-2xl">{countryFlags[profileData.targetCountry] || '🌍'}</span>
+                <span className="capitalize">{profileData.targetCountry}</span>
+              </p>
+            </div>
+          )}
           <div>
             <h3 className="text-sm font-medium text-muted-foreground">
               {profileText.fspCertificate || "FSP Certificate"}

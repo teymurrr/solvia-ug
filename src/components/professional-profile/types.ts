@@ -32,8 +32,8 @@ export const languageSchema = z.object({
 export const profileFormSchema = z.object({
   firstName: z.string().min(2, "First name must be at least 2 characters."),
   lastName: z.string().min(2, "Last name must be at least 2 characters."),
-  profession: z.string().min(1, "Profession is required."),
-  specialty: z.string().min(2, "Specialty is required."),
+  profession: z.string().optional(),
+  specialty: z.string().optional(),
   email: z.string().email("Please enter a valid email."),
   location: z.string().optional(),
   phone: z.string().optional(), // Added phone field
@@ -46,6 +46,11 @@ export const profileFormSchema = z.object({
   languages: z.array(languageSchema),
   fspCertificate: z.boolean().optional(),
   fspCertificateFile: z.string().optional(),
+  targetCountry: z.string().optional(),
+  studyCountry: z.string().optional(),
+  doctorType: z.string().optional(),
+  documentsReady: z.string().optional(),
+  languageLevel: z.string().optional(),
 });
 
 export type ProfileFormValues = z.infer<typeof profileFormSchema>;
