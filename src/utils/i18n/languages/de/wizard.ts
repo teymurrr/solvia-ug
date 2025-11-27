@@ -2,6 +2,8 @@ export const wizard = {
   welcome: {
     title: 'Willkommen. Ich werde Sie Schritt für Schritt führen.',
     subtitle: 'Sie müssen den Prozess nicht kennen. Beantworten Sie einfach ein paar einfache Fragen.',
+    freeGuideTitle: 'Holen Sie sich Ihren kostenlosen Karriere-Leitfaden!',
+    freeGuideDescription: 'Füllen Sie diesen kurzen Fragebogen aus und erhalten Sie einen umfassenden Leitfaden, der Ihnen hilft, Ihre medizinische Karriere in Ihrem Zielland zu navigieren.',
     start: 'Start'
   },
   targetCountry: {
