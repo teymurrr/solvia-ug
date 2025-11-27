@@ -13,6 +13,7 @@ import { EmailField } from './EmailField';
 import { PasswordFields } from './PasswordFields';
 import { TermsAgreement } from './TermsAgreement';
 import { useLanguage } from '@/hooks/useLanguage';
+import { Gift } from 'lucide-react';
 
 export const ProfessionalSignupForm: React.FC = () => {
   const { toast } = useToast();
@@ -92,6 +93,15 @@ export const ProfessionalSignupForm: React.FC = () => {
         <EmailField form={form} />
         <PasswordFields form={form} />
         <TermsAgreement form={form} />
+        
+        {/* Free Guide Banner */}
+        <div className="bg-primary/5 p-4 rounded-lg border border-primary/20 flex items-start gap-3">
+          <Gift className="h-6 w-6 text-primary flex-shrink-0 mt-0.5" />
+          <div>
+            <p className="font-semibold text-sm text-foreground">{t.auth.freeGuideTitle}</p>
+            <p className="text-sm text-muted-foreground mt-1">{t.auth.freeGuideDescription}</p>
+          </div>
+        </div>
         
         <Button type="submit" className="w-full" disabled={isSubmitting}>
           {isSubmitting ? t.auth.creatingAccount : t.auth.createProfessionalAccount}

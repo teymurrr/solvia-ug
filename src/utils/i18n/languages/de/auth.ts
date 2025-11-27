@@ -61,6 +61,10 @@ export const auth = {
   continueAsProfessional: 'Als Fachkraft fortfahren',
   continueAsInstitution: 'Als Institution fortfahren',
   
+  // Free Guide
+  freeGuideTitle: '🎁 Kostenloser Leitfaden wartet auf Sie!',
+  freeGuideDescription: 'Sobald Sie Ihre E-Mail bestätigt haben, erhalten Sie einen vollständigen Leitfaden, der Ihnen hilft, Ihre medizinische Karriere in Ihrem Zielland zu navigieren.',
+  
   // Email Confirmation
   confirmEmail: 'Bestätigen Sie Ihre E-Mail',
   emailSentTo: 'Wir haben eine Bestätigungs-E-Mail gesendet an:',

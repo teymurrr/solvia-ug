@@ -61,6 +61,10 @@ export const auth = {
   continueAsProfessional: 'Continuer en tant que professionnel',
   continueAsInstitution: 'Continuer en tant qu\'institution',
   
+  // Free Guide
+  freeGuideTitle: '🎁 Guide gratuit vous attend !',
+  freeGuideDescription: 'Une fois que vous aurez confirmé votre email, vous recevrez un guide complet pour vous aider à naviguer dans votre carrière médicale dans votre pays de destination.',
+  
   // Email Confirmation
   confirmEmail: 'Confirmez votre email',
   emailSentTo: 'Nous avons envoyé un email de confirmation à :',
