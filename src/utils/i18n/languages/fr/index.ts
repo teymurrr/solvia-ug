@@ -21,6 +21,7 @@ import { successStories } from './successStories';
 import { pathToSuccess } from './pathToSuccess';
 import { payments } from './payments';
 import { visa } from './visa';
+import { wizard } from './wizard';
 
 export const fr = {
   hero,
@@ -44,5 +45,6 @@ export const fr = {
   successStories,
   pathToSuccess,
   payments,
-  visa
+  visa,
+  wizard
 };

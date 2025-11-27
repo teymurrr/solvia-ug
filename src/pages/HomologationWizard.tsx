@@ -48,7 +48,7 @@ const HomologationWizard = () => {
     'United Kingdom', 'United States', 'Venezuela', 'Vietnam'
   ];
 
-  const languageLevels = ['A1', 'A2', 'B1', 'B2', 'C1', "I don't know"];
+  const getLanguageLevels = () => ['A1', 'A2', 'B1', 'B2', 'C1', t.wizard.language.dontKnow];
 
   const handleStart = () => {
     setCurrentStep('country');
@@ -143,10 +143,10 @@ const HomologationWizard = () => {
                   <GraduationCap className="h-10 w-10 text-primary" />
                 </div>
                 <CardTitle className="text-3xl md:text-4xl font-bold">
-                  Welcome. I will guide you step by step.
+                  {t.wizard.welcome.title}
                 </CardTitle>
                 <CardDescription className="text-lg md:text-xl">
-                  You don't need to know the process. Just answer a few easy questions.
+                  {t.wizard.welcome.subtitle}
                 </CardDescription>
               </CardHeader>
               <CardContent className="flex justify-center pb-8">
@@ -155,7 +155,7 @@ const HomologationWizard = () => {
                   onClick={handleStart}
                   className="text-lg px-12 py-6 h-auto"
                 >
-                  Start
+                  {t.wizard.welcome.start}
                 </Button>
               </CardContent>
             </Card>
@@ -169,10 +169,10 @@ const HomologationWizard = () => {
                   <Globe className="h-8 w-8 text-primary" />
                 </div>
                 <CardTitle className="text-2xl md:text-3xl font-bold">
-                  Where do you want to work?
+                  {t.wizard.targetCountry.title}
                 </CardTitle>
                 <CardDescription className="text-base md:text-lg">
-                  Select your target country
+                  {t.wizard.targetCountry.subtitle}
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -185,7 +185,7 @@ const HomologationWizard = () => {
                     onClick={() => handleCountrySelect(country.id)}
                   >
                     <span className="text-3xl mr-4">{country.flag}</span>
-                    <span className="font-medium">{country.name}</span>
+                    <span className="font-medium">{t.wizard.countries[country.id as keyof typeof t.wizard.countries]}</span>
                   </Button>
                 ))}
                 <Button
@@ -194,7 +194,7 @@ const HomologationWizard = () => {
                   className="w-full mt-4"
                 >
                   <ArrowLeft className="mr-2 h-4 w-4" />
-                  Back
+                  {t.wizard.back}
                 </Button>
               </CardContent>
             </Card>
@@ -208,16 +208,16 @@ const HomologationWizard = () => {
                   <GraduationCap className="h-8 w-8 text-accent" />
                 </div>
                 <CardTitle className="text-2xl md:text-3xl font-bold">
-                  In which country did you study medicine?
+                  {t.wizard.studyCountry.title}
                 </CardTitle>
                 <CardDescription className="text-base md:text-lg">
-                  Just choose one country
+                  {t.wizard.studyCountry.subtitle}
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <Select onValueChange={handleStudyCountrySelect}>
                   <SelectTrigger className="w-full h-12 text-lg">
-                    <SelectValue placeholder="Select your country..." />
+                    <SelectValue placeholder={t.wizard.studyCountry.placeholder} />
                   </SelectTrigger>
                   <SelectContent className="max-h-[300px]">
                     {studyCountries.map((country) => (
@@ -233,7 +233,7 @@ const HomologationWizard = () => {
                   className="w-full"
                 >
                   <ArrowLeft className="mr-2 h-4 w-4" />
-                  Back
+                  {t.wizard.back}
                 </Button>
               </CardContent>
             </Card>
@@ -247,10 +247,10 @@ const HomologationWizard = () => {
                   <Stethoscope className="h-8 w-8 text-primary" />
                 </div>
                 <CardTitle className="text-2xl md:text-3xl font-bold">
-                  Are you a general doctor or a specialist?
+                  {t.wizard.doctorType.title}
                 </CardTitle>
                 <CardDescription className="text-base md:text-lg">
-                  Select your current status
+                  {t.wizard.doctorType.subtitle}
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-3">
@@ -322,10 +322,10 @@ const HomologationWizard = () => {
                   <FileCheck className="h-8 w-8 text-accent" />
                 </div>
                 <CardTitle className="text-2xl md:text-3xl font-bold">
-                  Do you already have some of your documents ready?
+                  {t.wizard.documents.title}
                 </CardTitle>
                 <CardDescription className="text-base md:text-lg">
-                  This helps us guide you better
+                  {t.wizard.documents.subtitle}
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-3">
@@ -335,7 +335,7 @@ const HomologationWizard = () => {
                   className="w-full justify-start text-lg h-auto py-4 hover:bg-primary/5 hover:border-primary transition-all"
                   onClick={() => handleDocumentsSelect('yes')}
                 >
-                  Yes, I have some
+                  {t.wizard.documents.yes}
                 </Button>
                 <Button
                   variant="outline"
@@ -343,7 +343,7 @@ const HomologationWizard = () => {
                   className="w-full justify-start text-lg h-auto py-4 hover:bg-primary/5 hover:border-primary transition-all"
                   onClick={() => handleDocumentsSelect('no')}
                 >
-                  No, I need guidance
+                  {t.wizard.documents.no}
                 </Button>
                 <Button
                   variant="outline"
@@ -351,7 +351,7 @@ const HomologationWizard = () => {
                   className="w-full justify-start text-lg h-auto py-4 hover:bg-accent/5 hover:border-accent transition-all"
                   onClick={() => handleDocumentsSelect('unsure')}
                 >
-                  I have no idea
+                  {t.wizard.documents.unsure}
                 </Button>
                 <Button
                   variant="ghost"
@@ -359,7 +359,7 @@ const HomologationWizard = () => {
                   className="w-full mt-4"
                 >
                   <ArrowLeft className="mr-2 h-4 w-4" />
-                  Back
+                  {t.wizard.back}
                 </Button>
               </CardContent>
             </Card>
@@ -373,21 +373,21 @@ const HomologationWizard = () => {
                   <Languages className="h-8 w-8 text-primary" />
                 </div>
                 <CardTitle className="text-2xl md:text-3xl font-bold">
-                  What is your current language level?
+                  {t.wizard.language.title}
                 </CardTitle>
                 <CardDescription className="text-base md:text-lg">
-                  For the country you want to work in
+                  {t.wizard.language.subtitle}
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                  {languageLevels.map((level) => (
+                  {getLanguageLevels().map((level) => (
                     <Button
                       key={level}
                       variant="outline"
                       size="lg"
                       className={`text-lg h-auto py-6 hover:bg-primary/5 hover:border-primary transition-all ${
-                        level === "I don't know" ? 'col-span-2 md:col-span-3' : ''
+                        level === t.wizard.language.dontKnow ? 'col-span-2 md:col-span-3' : ''
                       }`}
                       onClick={() => handleLanguageSelect(level)}
                       disabled={isSaving}
@@ -402,7 +402,7 @@ const HomologationWizard = () => {
                   className="w-full"
                 >
                   <ArrowLeft className="mr-2 h-4 w-4" />
-                  Back
+                  {t.wizard.back}
                 </Button>
               </CardContent>
             </Card>
