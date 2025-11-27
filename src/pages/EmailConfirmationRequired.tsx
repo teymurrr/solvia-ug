@@ -64,46 +64,58 @@ const EmailConfirmationRequired = () => {
   return (
     <MainLayout>
       <div className="container max-w-md mx-auto py-12">
-        <Card>
-          <CardHeader className="space-y-1">
-            <div className="mx-auto bg-yellow-100 p-3 rounded-full mb-4">
-              <Mail className="h-6 w-6 text-yellow-600" />
+        <Card className="border-2 shadow-xl">
+          <CardHeader className="space-y-3">
+            <div className="mx-auto bg-amber-100 p-4 rounded-full mb-2">
+              <Mail className="h-8 w-8 text-amber-600" />
             </div>
-            <CardTitle className="text-2xl font-bold text-center">{t.auth.confirmEmail}</CardTitle>
-            <CardDescription className="text-center">
-              {t.auth.confirmEmailSent}
+            <CardTitle className="text-2xl md:text-3xl font-bold text-center">
+              {t.auth.confirmEmail}
+            </CardTitle>
+            <CardDescription className="text-center text-base">
+              {t.auth.emailSentTo}
             </CardDescription>
-            <p className="text-center font-medium">{email || 'your email address'}</p>
+            <p className="text-center font-semibold text-lg">{email || 'your email address'}</p>
           </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="bg-amber-50 p-4 rounded-md border border-amber-200">
+          <CardContent className="space-y-6">
+            <div className="bg-amber-50 p-5 rounded-lg border-2 border-amber-200">
               <div className="flex items-start gap-3">
-                <AlertTriangle className="h-5 w-5 text-amber-600 mt-0.5" />
-                <p className="text-sm text-amber-800">
-                  {t.auth.confirmRequired}
+                <AlertTriangle className="h-5 w-5 text-amber-600 mt-0.5 flex-shrink-0" />
+                <p className="text-sm text-amber-900 font-medium">
+                  {t.auth.mustConfirmBeforeLogin}
                 </p>
               </div>
             </div>
-            <div className="space-y-2">
-              <h3 className="text-sm font-medium">{t.auth.nextSteps}</h3>
+            
+            <div className="bg-gradient-to-br from-primary/10 to-accent/10 p-6 rounded-lg border-2 border-primary/20">
+              <h3 className="text-lg font-bold text-center mb-3 text-primary">
+                {t.auth.freeGuideTitle}
+              </h3>
+              <p className="text-center text-sm text-foreground/80">
+                {t.auth.freeGuideDescription}
+              </p>
+            </div>
+
+            <div className="space-y-3">
+              <h3 className="text-base font-semibold">{t.auth.nextSteps}</h3>
               <ul className="space-y-3">
-                <li className="flex items-start gap-2">
-                  <div className="bg-green-100 p-1 rounded-full">
-                    <Check className="h-3.5 w-3.5 text-green-600" />
+                <li className="flex items-start gap-3">
+                  <div className="bg-green-100 p-1.5 rounded-full flex-shrink-0 mt-0.5">
+                    <Check className="h-4 w-4 text-green-600" />
                   </div>
-                  <span className="text-sm">{t.auth.checkInbox}</span>
+                  <span className="text-sm text-foreground/90">{t.auth.checkInbox}</span>
                 </li>
-                <li className="flex items-start gap-2">
-                  <div className="bg-green-100 p-1 rounded-full">
-                    <Check className="h-3.5 w-3.5 text-green-600" />
+                <li className="flex items-start gap-3">
+                  <div className="bg-green-100 p-1.5 rounded-full flex-shrink-0 mt-0.5">
+                    <Check className="h-4 w-4 text-green-600" />
                   </div>
-                  <span className="text-sm">{t.auth.clickLink}</span>
+                  <span className="text-sm text-foreground/90">{t.auth.clickLink}</span>
                 </li>
-                <li className="flex items-start gap-2">
-                  <div className="bg-green-100 p-1 rounded-full">
-                    <Check className="h-3.5 w-3.5 text-green-600" />
+                <li className="flex items-start gap-3">
+                  <div className="bg-green-100 p-1.5 rounded-full flex-shrink-0 mt-0.5">
+                    <Check className="h-4 w-4 text-green-600" />
                   </div>
-                  <span className="text-sm">{t.auth.afterConfirm}</span>
+                  <span className="text-sm text-foreground/90">{t.auth.afterConfirm}</span>
                 </li>
               </ul>
             </div>
@@ -112,16 +124,17 @@ const EmailConfirmationRequired = () => {
             <Button 
               onClick={handleResendEmail}
               variant="outline" 
+              size="lg"
               className="w-full"
               disabled={cooldownTime > 0 || isLoading}
             >
-              {isLoading ? 'Sending...' : cooldownTime > 0 ? `Wait ${cooldownTime}s` : t.auth.resendEmail}
+              {isLoading ? t.auth.sending : cooldownTime > 0 ? `${t.auth.wait} ${cooldownTime}s` : t.auth.resendEmail}
             </Button>
             <div className="text-sm text-center text-muted-foreground">
               {t.auth.alreadyConfirmed}{" "}
               <Link 
                 to="/login"
-                className="text-medical-700 hover:text-medical-800 font-medium"
+                className="text-primary hover:text-primary/80 font-medium underline"
               >
                 {t.auth.signIn}
               </Link>

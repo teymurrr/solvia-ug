@@ -42,11 +42,16 @@ export const wizard = {
     complete: 'Terminer',
     processing: 'Traitement...'
   },
-  name: {
-    title: 'Quel est votre nom?',
-    subtitle: 'Aidez-nous à personnaliser votre expérience',
-    firstNamePlaceholder: 'Prénom',
-    lastNamePlaceholder: 'Nom de famille',
+  firstName: {
+    title: 'Quel est votre prénom?',
+    subtitle: 'Faisons plus ample connaissance',
+    placeholder: 'Prénom',
+    continue: 'Continuer',
+  },
+  lastName: {
+    title: 'Quel est votre nom de famille?',
+    subtitle: 'Plus qu\'une étape',
+    placeholder: 'Nom de famille',
     continue: 'Continuer',
   },
   password: {

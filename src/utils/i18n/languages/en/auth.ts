@@ -63,8 +63,10 @@ export const auth = {
   
   // Email Confirmation
   confirmEmail: 'Confirm Your Email',
-  confirmEmailSent: 'We\'ve sent a confirmation email to:',
-  confirmRequired: 'You must confirm your email before you can sign in to your account.',
+  emailSentTo: 'We\'ve sent a confirmation email to:',
+  mustConfirmBeforeLogin: 'You must confirm your email before you can sign in to your account.',
+  freeGuideTitle: '🎁 Free Guide Waiting for You!',
+  freeGuideDescription: 'Once you confirm your email, you\'ll receive a comprehensive guide to help you navigate your medical career journey in your target country.',
   nextSteps: 'What to do next:',
   checkInbox: 'Check your email inbox for a confirmation link',
   clickLink: 'Click on the link in the email to confirm your account',
@@ -74,6 +76,8 @@ export const auth = {
   signIn: 'Sign in',
   confirmationEmailSent: 'Confirmation email sent',
   checkInboxForLink: 'Please check your inbox for the confirmation link',
+  sending: 'Sending...',
+  wait: 'Wait',
   
   // Signup Links
   wantInstitutionSignup: 'Want to sign up as an institution?',

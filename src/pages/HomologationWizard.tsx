@@ -11,7 +11,7 @@ import { saveWizardDataToProfile } from '@/services/wizardProfileService';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 
-type WizardStep = 'welcome' | 'country' | 'study-country' | 'doctor-type' | 'documents' | 'language' | 'name' | 'email' | 'password';
+type WizardStep = 'welcome' | 'country' | 'study-country' | 'doctor-type' | 'documents' | 'language' | 'firstName' | 'lastName' | 'email' | 'password';
 
 interface WizardData {
   targetCountry?: string;
@@ -82,11 +82,16 @@ const HomologationWizard = () => {
 
   const handleLanguageSelect = (level: string) => {
     setWizardData({ ...wizardData, languageLevel: level });
-    setCurrentStep('name');
+    setCurrentStep('firstName');
   };
 
-  const handleNameSubmit = (firstName: string, lastName: string) => {
-    setWizardData({ ...wizardData, firstName, lastName });
+  const handleFirstNameSubmit = (firstName: string) => {
+    setWizardData({ ...wizardData, firstName });
+    setCurrentStep('lastName');
+  };
+
+  const handleLastNameSubmit = (lastName: string) => {
+    setWizardData({ ...wizardData, lastName });
     setCurrentStep('email');
   };
 
@@ -168,7 +173,7 @@ const HomologationWizard = () => {
   };
 
   const handleBack = () => {
-    const stepOrder: WizardStep[] = ['welcome', 'country', 'study-country', 'doctor-type', 'documents', 'language', 'name', 'email', 'password'];
+    const stepOrder: WizardStep[] = ['welcome', 'country', 'study-country', 'doctor-type', 'documents', 'language', 'firstName', 'lastName', 'email', 'password'];
     const currentIndex = stepOrder.indexOf(currentStep);
     if (currentIndex > 0) {
       setCurrentStep(stepOrder[currentIndex - 1]);
@@ -451,8 +456,8 @@ const HomologationWizard = () => {
             </Card>
           )}
 
-          {/* Name Collection */}
-          {currentStep === 'name' && (
+          {/* First Name Collection */}
+          {currentStep === 'firstName' && (
             <Card className="border-2 shadow-xl animate-in fade-in-50 duration-500">
               <CardHeader className="text-center space-y-2">
                 <div className="mx-auto w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-2">
@@ -461,10 +466,10 @@ const HomologationWizard = () => {
                   </svg>
                 </div>
                 <CardTitle className="text-2xl md:text-3xl font-bold">
-                  {t.wizard.name.title}
+                  {t.wizard.firstName.title}
                 </CardTitle>
                 <CardDescription className="text-base md:text-lg">
-                  {t.wizard.name.subtitle}
+                  {t.wizard.firstName.subtitle}
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -472,33 +477,75 @@ const HomologationWizard = () => {
                   e.preventDefault();
                   const formData = new FormData(e.currentTarget);
                   const firstName = formData.get('firstName') as string;
-                  const lastName = formData.get('lastName') as string;
-                  if (firstName && lastName) {
-                    handleNameSubmit(firstName, lastName);
+                  if (firstName) {
+                    handleFirstNameSubmit(firstName);
                   }
                 }}>
-                  <div className="space-y-3">
-                    <input
-                      type="text"
-                      name="firstName"
-                      required
-                      placeholder={t.wizard.name.firstNamePlaceholder}
-                      className="w-full h-12 px-4 text-lg border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
-                    />
-                    <input
-                      type="text"
-                      name="lastName"
-                      required
-                      placeholder={t.wizard.name.lastNamePlaceholder}
-                      className="w-full h-12 px-4 text-lg border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
-                    />
-                  </div>
+                  <input
+                    type="text"
+                    name="firstName"
+                    required
+                    placeholder={t.wizard.firstName.placeholder}
+                    className="w-full h-12 px-4 text-lg border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                  />
                   <Button
                     type="submit"
                     size="lg"
                     className="w-full mt-4 text-lg h-auto py-4"
                   >
-                    {t.wizard.name.continue}
+                    {t.wizard.firstName.continue}
+                  </Button>
+                </form>
+                <Button
+                  variant="ghost"
+                  onClick={handleBack}
+                  className="w-full"
+                >
+                  <ArrowLeft className="mr-2 h-4 w-4" />
+                  {t.wizard.back}
+                </Button>
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Last Name Collection */}
+          {currentStep === 'lastName' && (
+            <Card className="border-2 shadow-xl animate-in fade-in-50 duration-500">
+              <CardHeader className="text-center space-y-2">
+                <div className="mx-auto w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-2">
+                  <svg className="h-8 w-8 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                  </svg>
+                </div>
+                <CardTitle className="text-2xl md:text-3xl font-bold">
+                  {t.wizard.lastName.title}
+                </CardTitle>
+                <CardDescription className="text-base md:text-lg">
+                  {t.wizard.lastName.subtitle}
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <form onSubmit={(e) => {
+                  e.preventDefault();
+                  const formData = new FormData(e.currentTarget);
+                  const lastName = formData.get('lastName') as string;
+                  if (lastName) {
+                    handleLastNameSubmit(lastName);
+                  }
+                }}>
+                  <input
+                    type="text"
+                    name="lastName"
+                    required
+                    placeholder={t.wizard.lastName.placeholder}
+                    className="w-full h-12 px-4 text-lg border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                  />
+                  <Button
+                    type="submit"
+                    size="lg"
+                    className="w-full mt-4 text-lg h-auto py-4"
+                  >
+                    {t.wizard.lastName.continue}
                   </Button>
                 </form>
                 <Button

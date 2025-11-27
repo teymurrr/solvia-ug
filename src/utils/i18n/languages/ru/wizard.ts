@@ -42,11 +42,16 @@ export const wizard = {
     complete: 'Завершить',
     processing: 'Обработка...'
   },
-  name: {
-    title: 'Как вас зовут?',
-    subtitle: 'Помогите нам персонализировать ваш опыт',
-    firstNamePlaceholder: 'Имя',
-    lastNamePlaceholder: 'Фамилия',
+  firstName: {
+    title: 'Как ваше имя?',
+    subtitle: 'Давайте познакомимся поближе',
+    placeholder: 'Имя',
+    continue: 'Продолжить',
+  },
+  lastName: {
+    title: 'Как ваша фамилия?',
+    subtitle: 'Еще один шаг',
+    placeholder: 'Фамилия',
     continue: 'Продолжить',
   },
   password: {
