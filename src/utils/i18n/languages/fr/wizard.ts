@@ -16,14 +16,14 @@ export const wizard = {
     placeholder: 'Sélectionnez votre pays...'
   },
   doctorType: {
-    title: 'Êtes-vous médecin généraliste ou spécialiste?',
-    subtitle: 'Sélectionnez votre statut actuel',
+    title: 'Quel type de professionnel médical êtes-vous?',
+    subtitle: 'Sélectionnez votre type de profession',
     general: 'Médecin généraliste',
-    specialist: 'Spécialiste',
+    specialist: 'Médecin spécialiste',
     nurse: 'Infirmier/ière',
     dentist: 'Dentiste',
     other: 'Autre professionnel médical',
-    unsure: 'Je ne suis pas sûr'
+    unsure: 'Je ne suis pas encore sûr'
   },
   documents: {
     title: 'Avez-vous déjà préparé certains de vos documents?',
@@ -58,7 +58,7 @@ export const wizard = {
   },
   password: {
     title: 'Créez un mot de passe sécurisé',
-    subtitle: 'Protégez votre compte avec un mot de passe fort',
+    subtitle: 'Dernière étape pour recevoir votre guide d\'homologation gratuit!',
     placeholder: 'Mot de passe (min. 8 caractères)',
     confirmPlaceholder: 'Confirmer le mot de passe',
     complete: 'Créer un compte',

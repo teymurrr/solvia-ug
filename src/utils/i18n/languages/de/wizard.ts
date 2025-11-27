@@ -16,14 +16,14 @@ export const wizard = {
     placeholder: 'Wählen Sie Ihr Land...'
   },
   doctorType: {
-    title: 'Sind Sie Allgemeinarzt oder Facharzt?',
-    subtitle: 'Wählen Sie Ihren aktuellen Status',
+    title: 'Welche Art von medizinischem Fachpersonal sind Sie?',
+    subtitle: 'Wählen Sie Ihren Berufstyp',
     general: 'Allgemeinarzt',
     specialist: 'Facharzt',
     nurse: 'Krankenpfleger/in',
     dentist: 'Zahnarzt/Zahnärztin',
     other: 'Anderer medizinischer Beruf',
-    unsure: 'Ich bin mir nicht sicher'
+    unsure: 'Ich bin mir noch nicht sicher'
   },
   documents: {
     title: 'Haben Sie bereits einige Ihrer Dokumente vorbereitet?',
@@ -58,7 +58,7 @@ export const wizard = {
   },
   password: {
     title: 'Erstellen Sie ein sicheres Passwort',
-    subtitle: 'Schützen Sie Ihr Konto mit einem starken Passwort',
+    subtitle: 'Letzter Schritt, um Ihren kostenlosen Homologations-Leitfaden zu erhalten!',
     placeholder: 'Passwort (mind. 8 Zeichen)',
     confirmPlaceholder: 'Passwort bestätigen',
     complete: 'Konto erstellen',

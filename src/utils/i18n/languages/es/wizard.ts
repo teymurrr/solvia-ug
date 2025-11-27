@@ -16,14 +16,14 @@ export const wizard = {
     placeholder: 'Selecciona tu país...'
   },
   doctorType: {
-    title: '¿Eres médico general o especialista?',
-    subtitle: 'Selecciona tu estado actual',
-    general: 'Médico general',
-    specialist: 'Especialista',
+    title: '¿Qué tipo de profesional médico eres?',
+    subtitle: 'Selecciona tu tipo de profesión',
+    general: 'Médico General',
+    specialist: 'Médico Especialista',
     nurse: 'Enfermero/a',
     dentist: 'Dentista',
     other: 'Otro profesional médico',
-    unsure: 'No estoy seguro'
+    unsure: 'Aún no estoy seguro'
   },
   documents: {
     title: '¿Ya tienes algunos de tus documentos preparados?',
@@ -58,7 +58,7 @@ export const wizard = {
   },
   password: {
     title: 'Crea una contraseña segura',
-    subtitle: 'Mantén tu cuenta segura con una contraseña fuerte',
+    subtitle: '¡Último paso para recibir tu guía de homologación gratuita!',
     placeholder: 'Contraseña (mín. 8 caracteres)',
     confirmPlaceholder: 'Confirmar Contraseña',
     complete: 'Crear Cuenta',

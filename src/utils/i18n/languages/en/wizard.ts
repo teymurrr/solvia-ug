@@ -16,14 +16,14 @@ export const wizard = {
     placeholder: 'Select your country...'
   },
   doctorType: {
-    title: 'Are you a general doctor or a specialist?',
-    subtitle: 'Select your current status',
-    general: 'General doctor',
-    specialist: 'Specialist',
+    title: 'What kind of medical professional are you?',
+    subtitle: 'Select your profession type',
+    general: 'General Practitioner',
+    specialist: 'Specialist Doctor',
     nurse: 'Nurse',
     dentist: 'Dentist',
     other: 'Other medical professional',
-    unsure: "I'm not sure"
+    unsure: "I'm not sure yet"
   },
   documents: {
     title: 'Do you already have some of your documents ready?',
@@ -58,7 +58,7 @@ export const wizard = {
   },
   password: {
     title: "Create a secure password",
-    subtitle: "Keep your account safe with a strong password",
+    subtitle: "Last step for you to receive your free homologation guide!",
     placeholder: "Password (min. 8 characters)",
     confirmPlaceholder: "Confirm Password",
     complete: "Create Account",
