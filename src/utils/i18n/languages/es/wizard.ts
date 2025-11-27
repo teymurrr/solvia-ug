@@ -42,11 +42,16 @@ export const wizard = {
     complete: 'Completar',
     processing: 'Procesando...'
   },
-  name: {
-    title: '¿Cómo te llamas?',
-    subtitle: 'Ayúdanos a personalizar tu experiencia',
-    firstNamePlaceholder: 'Nombre',
-    lastNamePlaceholder: 'Apellido',
+  firstName: {
+    title: '¿Cuál es tu nombre?',
+    subtitle: 'Queremos conocerte mejor',
+    placeholder: 'Nombre',
+    continue: 'Continuar',
+  },
+  lastName: {
+    title: '¿Cuál es tu apellido?',
+    subtitle: 'Solo un paso más',
+    placeholder: 'Apellido',
     continue: 'Continuar',
   },
   password: {

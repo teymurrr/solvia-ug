@@ -63,8 +63,10 @@ export const auth = {
   
   // Email Confirmation
   confirmEmail: 'Bestätigen Sie Ihre E-Mail',
-  confirmEmailSent: 'Wir haben eine Bestätigungs-E-Mail gesendet an:',
-  confirmRequired: 'Sie müssen Ihre E-Mail bestätigen, bevor Sie sich in Ihrem Konto anmelden können.',
+  emailSentTo: 'Wir haben eine Bestätigungs-E-Mail gesendet an:',
+  mustConfirmBeforeLogin: 'Sie müssen Ihre E-Mail bestätigen, bevor Sie sich in Ihrem Konto anmelden können.',
+  freeGuideTitle: '🎁 Kostenloser Leitfaden wartet auf Sie!',
+  freeGuideDescription: 'Sobald Sie Ihre E-Mail bestätigen, erhalten Sie einen umfassenden Leitfaden, der Ihnen hilft, Ihre medizinische Karriere in Ihrem Zielland zu navigieren.',
   nextSteps: 'Nächste Schritte:',
   checkInbox: 'Überprüfen Sie Ihren E-Mail-Eingang auf einen Bestätigungslink',
   clickLink: 'Klicken Sie auf den Link in der E-Mail, um Ihr Konto zu bestätigen',
@@ -74,6 +76,8 @@ export const auth = {
   signIn: 'Anmelden',
   confirmationEmailSent: 'Bestätigungs-E-Mail gesendet',
   checkInboxForLink: 'Bitte überprüfen Sie Ihren Posteingang auf den Bestätigungslink',
+  sending: 'Wird gesendet...',
+  wait: 'Warten',
   
   // Signup Links
   wantInstitutionSignup: 'Möchten Sie sich als Institution anmelden?',
