@@ -9,8 +9,9 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { saveWizardDataToProfile } from '@/services/wizardProfileService';
 import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
 
-type WizardStep = 'welcome' | 'country' | 'study-country' | 'doctor-type' | 'documents' | 'language' | 'email';
+type WizardStep = 'welcome' | 'country' | 'study-country' | 'doctor-type' | 'documents' | 'language' | 'name' | 'email' | 'password';
 
 interface WizardData {
   targetCountry?: string;
@@ -18,13 +19,16 @@ interface WizardData {
   doctorType?: 'general' | 'specialist' | 'nurse' | 'dentist' | 'other' | 'unsure';
   documentsReady?: 'yes' | 'no' | 'unsure';
   languageLevel?: string;
+  firstName?: string;
+  lastName?: string;
   email?: string;
+  password?: string;
 }
 
 const HomologationWizard = () => {
   const { t } = useLanguage();
   const navigate = useNavigate();
-  const { user, isLoggedIn } = useAuth();
+  const { user, isLoggedIn, signUp } = useAuth();
   const { toast } = useToast();
   const [currentStep, setCurrentStep] = useState<WizardStep>('welcome');
   const [wizardData, setWizardData] = useState<WizardData>({});
@@ -77,49 +81,84 @@ const HomologationWizard = () => {
 
   const handleLanguageSelect = (level: string) => {
     setWizardData({ ...wizardData, languageLevel: level });
+    setCurrentStep('name');
+  };
+
+  const handleNameSubmit = (firstName: string, lastName: string) => {
+    setWizardData({ ...wizardData, firstName, lastName });
     setCurrentStep('email');
   };
 
-  const handleEmailSubmit = async (email: string) => {
-    const completedData = { ...wizardData, email };
+  const handleEmailSubmit = (email: string) => {
+    setWizardData({ ...wizardData, email });
+    setCurrentStep('password');
+  };
+
+  const handlePasswordSubmit = async (password: string) => {
+    const completedData = { ...wizardData, password };
     setWizardData(completedData);
     
-    // Check if user is logged in
-    if (!isLoggedIn || !user) {
-      // Store wizard data in localStorage temporarily
-      localStorage.setItem('pendingWizardData', JSON.stringify(completedData));
-      
+    // Check if we have all required data
+    if (!completedData.firstName || !completedData.lastName || !completedData.email || !password) {
       toast({
-        title: "Almost there!",
-        description: "Complete your signup to save your preferences.",
+        title: t.common.error,
+        description: "Missing required information",
+        variant: "destructive",
       });
-      
-      // Navigate to signup with pre-filled data
-      navigate('/signup/professional', { state: { wizardData: completedData } });
       return;
     }
 
-    // Save wizard data to profile
+    // Create account with all collected data
     setIsSaving(true);
     try {
-      const result = await saveWizardDataToProfile(user.id, completedData);
-      
-      if (result.success) {
-        toast({
-          title: "Profile updated!",
-          description: "Your preferences have been saved to your profile.",
-        });
-        
-        // Navigate to dashboard
-        navigate('/dashboard/professional');
-      } else {
-        throw new Error('Failed to save wizard data');
-      }
-    } catch (error) {
-      console.error('Error saving wizard data:', error);
+      // First, create the user account
+      await signUp(completedData.email, password, {
+        first_name: completedData.firstName,
+        last_name: completedData.lastName,
+        user_type: 'professional',
+      });
+
+      // The profile will be created by the trigger, then we update it with wizard data
+      // Since we just signed up, we need to wait a moment for the profile to be created
+      setTimeout(async () => {
+        try {
+          const { data: { user: newUser } } = await supabase.auth.getUser();
+          if (newUser) {
+            await saveWizardDataToProfile(newUser.id, completedData);
+          }
+        } catch (err) {
+          console.error('Error saving wizard data:', err);
+        }
+      }, 2000);
+
+      // Store email for confirmation page
+      localStorage.setItem('pendingConfirmationEmail', completedData.email);
+
       toast({
-        title: "Error saving data",
-        description: "There was an error saving your preferences. Please try again.",
+        title: t.common.success,
+        description: t.wizard.email.complete,
+      });
+      
+      navigate('/confirm-email');
+    } catch (error: any) {
+      console.error('Signup error:', error);
+      
+      let errorMessage = 'An error occurred during signup.';
+      const msg: string | undefined = error?.message;
+      
+      if (msg) {
+        if (/over_email_send_rate_limit|rate limit|too many/i.test(msg)) {
+          errorMessage = 'Too many signup attempts. Please wait 1–2 minutes, then try again.';
+        } else if (/User already registered/i.test(msg)) {
+          errorMessage = 'This email is already registered. Please try logging in instead.';
+        } else {
+          errorMessage = msg;
+        }
+      }
+      
+      toast({
+        title: t.common.error,
+        description: errorMessage,
         variant: "destructive",
       });
     } finally {
@@ -128,7 +167,7 @@ const HomologationWizard = () => {
   };
 
   const handleBack = () => {
-    const stepOrder: WizardStep[] = ['welcome', 'country', 'study-country', 'doctor-type', 'documents', 'language', 'email'];
+    const stepOrder: WizardStep[] = ['welcome', 'country', 'study-country', 'doctor-type', 'documents', 'language', 'name', 'email', 'password'];
     const currentIndex = stepOrder.indexOf(currentStep);
     if (currentIndex > 0) {
       setCurrentStep(stepOrder[currentIndex - 1]);
@@ -411,6 +450,68 @@ const HomologationWizard = () => {
             </Card>
           )}
 
+          {/* Name Collection */}
+          {currentStep === 'name' && (
+            <Card className="border-2 shadow-xl animate-in fade-in-50 duration-500">
+              <CardHeader className="text-center space-y-2">
+                <div className="mx-auto w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-2">
+                  <svg className="h-8 w-8 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                  </svg>
+                </div>
+                <CardTitle className="text-2xl md:text-3xl font-bold">
+                  {t.wizard.name.title}
+                </CardTitle>
+                <CardDescription className="text-base md:text-lg">
+                  {t.wizard.name.subtitle}
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <form onSubmit={(e) => {
+                  e.preventDefault();
+                  const formData = new FormData(e.currentTarget);
+                  const firstName = formData.get('firstName') as string;
+                  const lastName = formData.get('lastName') as string;
+                  if (firstName && lastName) {
+                    handleNameSubmit(firstName, lastName);
+                  }
+                }}>
+                  <div className="space-y-3">
+                    <input
+                      type="text"
+                      name="firstName"
+                      required
+                      placeholder={t.wizard.name.firstNamePlaceholder}
+                      className="w-full h-12 px-4 text-lg border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                    />
+                    <input
+                      type="text"
+                      name="lastName"
+                      required
+                      placeholder={t.wizard.name.lastNamePlaceholder}
+                      className="w-full h-12 px-4 text-lg border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                    />
+                  </div>
+                  <Button
+                    type="submit"
+                    size="lg"
+                    className="w-full mt-4 text-lg h-auto py-4"
+                  >
+                    {t.wizard.name.continue}
+                  </Button>
+                </form>
+                <Button
+                  variant="ghost"
+                  onClick={handleBack}
+                  className="w-full"
+                >
+                  <ArrowLeft className="mr-2 h-4 w-4" />
+                  {t.wizard.back}
+                </Button>
+              </CardContent>
+            </Card>
+          )}
+
           {/* Email Collection */}
           {currentStep === 'email' && (
             <Card className="border-2 shadow-xl animate-in fade-in-50 duration-500">
@@ -447,9 +548,88 @@ const HomologationWizard = () => {
                     type="submit"
                     size="lg"
                     className="w-full mt-4 text-lg h-auto py-4"
+                  >
+                    {t.wizard.email.continue}
+                  </Button>
+                </form>
+                <Button
+                  variant="ghost"
+                  onClick={handleBack}
+                  className="w-full"
+                >
+                  <ArrowLeft className="mr-2 h-4 w-4" />
+                  {t.wizard.back}
+                </Button>
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Password Collection */}
+          {currentStep === 'password' && (
+            <Card className="border-2 shadow-xl animate-in fade-in-50 duration-500">
+              <CardHeader className="text-center space-y-2">
+                <div className="mx-auto w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-2">
+                  <svg className="h-8 w-8 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                  </svg>
+                </div>
+                <CardTitle className="text-2xl md:text-3xl font-bold">
+                  {t.wizard.password.title}
+                </CardTitle>
+                <CardDescription className="text-base md:text-lg">
+                  {t.wizard.password.subtitle}
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <form onSubmit={(e) => {
+                  e.preventDefault();
+                  const formData = new FormData(e.currentTarget);
+                  const password = formData.get('password') as string;
+                  const confirmPassword = formData.get('confirmPassword') as string;
+                  
+                  if (password !== confirmPassword) {
+                    toast({
+                      title: t.common.error,
+                      description: t.wizard.password.mismatch,
+                      variant: "destructive",
+                    });
+                    return;
+                  }
+                  
+                  if (password.length < 8) {
+                    toast({
+                      title: t.common.error,
+                      description: t.wizard.password.tooShort,
+                      variant: "destructive",
+                    });
+                    return;
+                  }
+                  
+                  handlePasswordSubmit(password);
+                }}>
+                  <div className="space-y-3">
+                    <input
+                      type="password"
+                      name="password"
+                      required
+                      placeholder={t.wizard.password.placeholder}
+                      className="w-full h-12 px-4 text-lg border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                    />
+                    <input
+                      type="password"
+                      name="confirmPassword"
+                      required
+                      placeholder={t.wizard.password.confirmPlaceholder}
+                      className="w-full h-12 px-4 text-lg border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                    />
+                  </div>
+                  <Button
+                    type="submit"
+                    size="lg"
+                    className="w-full mt-4 text-lg h-auto py-4"
                     disabled={isSaving}
                   >
-                    {isSaving ? t.wizard.email.processing : t.wizard.email.complete}
+                    {isSaving ? t.wizard.password.creating : t.wizard.password.complete}
                   </Button>
                 </form>
                 <Button
