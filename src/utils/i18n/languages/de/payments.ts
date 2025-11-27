@@ -1,22 +1,53 @@
 export const payments = {
   title: 'Zahlung',
-  homologation: {
-    title: 'Zahlung für Homologationsverfahren',
-    description: 'Schließen Sie Ihre Zahlung für den Homologationsservice ab, um den Prozess zu beginnen',
-    price: '759€',
-    features: [
-      'Vollständige Zeugnisanerkennung',
-      'Unterstützung bei der Dokumentation',
-      'Regulatorische Compliance-Unterstützung',
-      'Expertenberatung während des gesamten Prozesses',
-      'Personalisierte Unterstützung'
-    ]
+  pageTitle: 'Zahlung für Homologationsverfahren',
+  pageDescription: 'Wählen Sie das Paket, das am besten zu Ihren Bedürfnissen passt',
+  popular: 'Beliebteste',
+  oneTime: 'einmalig',
+  selected: 'Ausgewählt',
+  select: 'Paket Auswählen',
+  secure: 'Sichere Zahlung',
+  support: '24h Support',
+  trusted: 'Vertraut von 1000+',
+  loginPrompt: 'Bitte registrieren Sie sich oder melden Sie sich an, um mit dem Zahlungsprozess fortzufahren.',
+  packages: {
+    homologation: {
+      title: 'Basis-Paket',
+      description: 'Vollständige Homologationsunterstützung',
+      features: [
+        'Vollständige Zeugnisanerkennung',
+        'Unterstützung bei der Dokumentation',
+        'Regulatorische Compliance-Unterstützung',
+        'E-Mail-Support'
+      ]
+    },
+    languagePrep: {
+      title: 'Standard-Paket',
+      description: 'Mit Sprachprüfungsvorbereitung',
+      features: [
+        'Alles im Basis-Paket',
+        'Online-Sprachprüfungsvorbereitung',
+        'Übungsmaterialien & Probeprüfungen',
+        'Fortschrittsverfolgung'
+      ]
+    },
+    premiumSupport: {
+      title: 'Premium-Paket',
+      description: 'Vollständige personalisierte Unterstützung',
+      features: [
+        'Alles im Standard-Paket',
+        'Persönliche Unterstützung während des gesamten Prozesses',
+        'Zugang zu Deutschlehrer',
+        'Progressionsunterstützung & Feedback'
+      ]
+    }
   },
   discountCode: {
     label: 'Rabattcode',
     placeholder: 'Rabattcode eingeben',
     apply: 'Anwenden',
     applied: 'Angewendet',
+    remove: 'Entfernen',
     invalid: 'Ungültiger Rabattcode',
     expired: 'Rabattcode ist abgelaufen',
     used: 'Rabattcode wurde vollständig verwendet',
@@ -52,6 +83,7 @@ export const payments = {
     general: 'Ein Fehler ist bei der Zahlungsverarbeitung aufgetreten',
     sessionNotFound: 'Zahlungssitzung nicht gefunden',
     verificationFailed: 'Zahlungsverifikation fehlgeschlagen',
-    networkError: 'Netzwerkfehler. Bitte versuchen Sie es erneut.'
+    networkError: 'Netzwerkfehler. Bitte versuchen Sie es erneut.',
+    selectPackage: 'Bitte wählen Sie ein Paket'
   }
 };
