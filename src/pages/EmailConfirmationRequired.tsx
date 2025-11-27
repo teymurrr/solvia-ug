@@ -87,12 +87,10 @@ const EmailConfirmationRequired = () => {
               </div>
             </div>
             
-            <div className="bg-gradient-to-br from-primary/10 to-accent/10 p-6 rounded-lg border-2 border-primary/20">
-              <h3 className="text-lg font-bold text-center mb-3 text-primary">
-                {t.auth.freeGuideTitle}
-              </h3>
-              <p className="text-center text-sm text-foreground/80">
-                {t.auth.freeGuideDescription}
+            <div className="bg-primary/5 p-4 rounded-lg border border-primary/20 flex items-center gap-3">
+              <span className="text-2xl">🎁</span>
+              <p className="text-sm text-foreground/80">
+                {t.auth.freeGuideReminder}
               </p>
             </div>
 

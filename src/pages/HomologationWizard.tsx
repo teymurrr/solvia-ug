@@ -187,7 +187,7 @@ const HomologationWizard = () => {
           {/* Welcome Screen */}
           {currentStep === 'welcome' && (
             <Card className="border-2 shadow-xl animate-in fade-in-50 duration-500">
-              <CardHeader className="text-center space-y-4 pb-8">
+              <CardHeader className="text-center space-y-4 pb-6">
                 <div className="mx-auto w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center">
                   <GraduationCap className="h-10 w-10 text-primary" />
                 </div>
@@ -198,14 +198,24 @@ const HomologationWizard = () => {
                   {t.wizard.welcome.subtitle}
                 </CardDescription>
               </CardHeader>
-              <CardContent className="flex justify-center pb-8">
-                <Button 
-                  size="lg" 
-                  onClick={handleStart}
-                  className="text-lg px-12 py-6 h-auto"
-                >
-                  {t.wizard.welcome.start}
-                </Button>
+              <CardContent className="space-y-6 pb-8">
+                <div className="bg-gradient-to-br from-primary/10 via-accent/10 to-primary/5 p-6 rounded-xl border-2 border-primary/20">
+                  <h3 className="text-xl md:text-2xl font-bold text-center mb-3 text-primary">
+                    🎁 {t.wizard.welcome.freeGuideTitle}
+                  </h3>
+                  <p className="text-center text-foreground/80">
+                    {t.wizard.welcome.freeGuideDescription}
+                  </p>
+                </div>
+                <div className="flex justify-center">
+                  <Button 
+                    size="lg" 
+                    onClick={handleStart}
+                    className="text-lg px-12 py-6 h-auto"
+                  >
+                    {t.wizard.welcome.start}
+                  </Button>
+                </div>
               </CardContent>
             </Card>
           )}

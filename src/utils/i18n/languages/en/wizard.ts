@@ -2,6 +2,8 @@ export const wizard = {
   welcome: {
     title: 'Welcome. I will guide you step by step.',
     subtitle: "You don't need to know the process. Just answer a few easy questions.",
+    freeGuideTitle: 'Get Your Free Career Guide!',
+    freeGuideDescription: 'Complete this quick questionnaire and receive a comprehensive guide to help you navigate your medical career journey in your target country.',
     start: 'Start'
   },
   targetCountry: {
