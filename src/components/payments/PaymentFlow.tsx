@@ -48,35 +48,35 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
     {
       id: 'homologation',
       icon: <Shield className="w-8 h-8" />,
-      price: 5900,
+      price: 119900,
       features: [
-        t?.payments?.packages?.homologation?.features?.[0] || 'Complete credential verification',
-        t?.payments?.packages?.homologation?.features?.[1] || 'Documentation assistance',
-        t?.payments?.packages?.homologation?.features?.[2] || 'Regulatory compliance support',
-        t?.payments?.packages?.homologation?.features?.[3] || 'Email support',
+        t?.payments?.packages?.homologation?.features?.[0] || 'Complete document review & verification',
+        t?.payments?.packages?.homologation?.features?.[1] || 'Step-by-step application guidance',
+        t?.payments?.packages?.homologation?.features?.[2] || 'Authority communication support',
+        t?.payments?.packages?.homologation?.features?.[3] || 'Email support within 48h',
       ]
     },
     {
       id: 'language_prep',
       icon: <BookOpen className="w-8 h-8" />,
-      price: 9900,
+      price: 139900,
       popular: true,
       features: [
-        t?.payments?.packages?.languagePrep?.features?.[0] || 'Everything in Basic package',
-        t?.payments?.packages?.languagePrep?.features?.[1] || 'Online language exam preparation',
-        t?.payments?.packages?.languagePrep?.features?.[2] || 'Practice materials & mock exams',
-        t?.payments?.packages?.languagePrep?.features?.[3] || 'Progress tracking',
+        t?.payments?.packages?.languagePrep?.features?.[0] || 'Everything in Basic Package',
+        t?.payments?.packages?.languagePrep?.features?.[1] || 'FSP & Fachsprachenprüfung preparation',
+        t?.payments?.packages?.languagePrep?.features?.[2] || 'Medical German course materials',
+        t?.payments?.packages?.languagePrep?.features?.[3] || 'Weekly progress check-ins',
       ]
     },
     {
       id: 'premium_support',
       icon: <GraduationCap className="w-8 h-8" />,
-      price: 11900,
+      price: 259900,
       features: [
-        t?.payments?.packages?.premiumSupport?.features?.[0] || 'Everything in Standard package',
-        t?.payments?.packages?.premiumSupport?.features?.[1] || 'Personal support throughout process',
-        t?.payments?.packages?.premiumSupport?.features?.[2] || 'Access to German teacher',
-        t?.payments?.packages?.premiumSupport?.features?.[3] || 'Progression support & feedback',
+        t?.payments?.packages?.premiumSupport?.features?.[0] || 'Everything in Standard Package',
+        t?.payments?.packages?.premiumSupport?.features?.[1] || 'Personal mentor throughout the process',
+        t?.payments?.packages?.premiumSupport?.features?.[2] || '1-on-1 German lessons with native teacher',
+        t?.payments?.packages?.premiumSupport?.features?.[3] || 'Job placement assistance in Germany',
       ]
     }
   ];

@@ -1,44 +1,44 @@
 export const payments = {
   title: 'Payment',
-  pageTitle: 'Homologation Process Payment',
-  pageDescription: 'Choose the package that best fits your needs',
+  pageTitle: 'Start Your Medical Career in Germany',
+  pageDescription: 'Join 500+ medical professionals who successfully obtained their German license with our expert guidance',
   popular: 'Most Popular',
   oneTime: 'one-time',
   selected: 'Selected',
-  select: 'Select Package',
+  select: 'Choose This Plan',
   secure: 'Secure Payment',
   support: '24h Support',
-  trusted: 'Trusted by 1000+',
+  trusted: 'Trusted by 500+',
   loginPrompt: 'Please sign up or log in to continue with the payment process.',
   packages: {
     homologation: {
       title: 'Basic Package',
-      description: 'Full homologation support',
+      description: 'Essential support for your license recognition',
       features: [
-        'Complete credential verification',
-        'Documentation assistance',
-        'Regulatory compliance support',
-        'Email support'
+        'Complete document review & verification',
+        'Step-by-step application guidance',
+        'Authority communication support',
+        'Email support within 48h'
       ]
     },
     languagePrep: {
       title: 'Standard Package',
-      description: 'With language exam preparation',
+      description: 'Full support + Language exam preparation',
       features: [
-        'Everything in Basic package',
-        'Online language exam preparation',
-        'Practice materials & mock exams',
-        'Progress tracking'
+        'Everything in Basic Package',
+        'FSP & Fachsprachenprüfung preparation',
+        'Medical German course materials',
+        'Weekly progress check-ins'
       ]
     },
     premiumSupport: {
       title: 'Premium Package',
-      description: 'Complete personalized support',
+      description: 'Complete VIP support until you succeed',
       features: [
-        'Everything in Standard package',
-        'Personal support throughout process',
-        'Access to German teacher',
-        'Progression support & feedback'
+        'Everything in Standard Package',
+        'Personal mentor throughout the process',
+        '1-on-1 German lessons with native teacher',
+        'Job placement assistance in Germany'
       ]
     }
   },
@@ -58,7 +58,7 @@ export const payments = {
     originalPrice: 'Original Price',
     discount: 'Discount',
     total: 'Total',
-    proceedToPayment: 'Proceed to Payment',
+    proceedToPayment: 'Start My Journey Now',
     processing: 'Processing...'
   },
   success: {

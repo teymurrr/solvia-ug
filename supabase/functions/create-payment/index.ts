@@ -45,16 +45,16 @@ serve(async (req) => {
     // Product configuration - prices need to be created in Stripe
     const productConfig: Record<string, { priceId: string; amount: number }> = {
       homologation: {
-        priceId: "price_1SAH082L7RuO91AufX32666C", // Basic Package €59
-        amount: 5900,
+        priceId: "price_1SAH082L7RuO91AufX32666C", // Basic Package €1199
+        amount: 119900,
       },
       language_prep: {
-        priceId: "price_language_prep", // Standard Package €99 - needs Stripe price
-        amount: 9900,
+        priceId: "price_language_prep", // Standard Package €1399 - needs Stripe price
+        amount: 139900,
       },
       premium_support: {
-        priceId: "price_premium_support", // Premium Package €119 - needs Stripe price
-        amount: 11900,
+        priceId: "price_premium_support", // Premium Package €2599 - needs Stripe price
+        amount: 259900,
       }
     };
 

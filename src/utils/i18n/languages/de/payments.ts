@@ -1,44 +1,44 @@
 export const payments = {
   title: 'Zahlung',
-  pageTitle: 'Zahlung für Homologationsverfahren',
-  pageDescription: 'Wählen Sie das Paket, das am besten zu Ihren Bedürfnissen passt',
+  pageTitle: 'Starten Sie Ihre Medizinische Karriere in Deutschland',
+  pageDescription: 'Schließen Sie sich über 500 medizinischen Fachkräften an, die mit unserer Expertenbegleitung erfolgreich ihre deutsche Approbation erhalten haben',
   popular: 'Beliebteste',
   oneTime: 'einmalig',
   selected: 'Ausgewählt',
-  select: 'Paket Auswählen',
+  select: 'Diesen Plan Wählen',
   secure: 'Sichere Zahlung',
   support: '24h Support',
-  trusted: 'Vertraut von 1000+',
-  loginPrompt: 'Bitte registrieren Sie sich oder melden Sie sich an, um mit dem Zahlungsprozess fortzufahren.',
+  trusted: 'Vertraut von 500+',
+  loginPrompt: 'Bitte registrieren Sie sich oder melden Sie sich an, um mit dem Zahlungsvorgang fortzufahren.',
   packages: {
     homologation: {
       title: 'Basis-Paket',
-      description: 'Vollständige Homologationsunterstützung',
+      description: 'Wesentliche Unterstützung für Ihre Approbation',
       features: [
-        'Vollständige Zeugnisanerkennung',
-        'Unterstützung bei der Dokumentation',
-        'Regulatorische Compliance-Unterstützung',
-        'E-Mail-Support'
+        'Vollständige Dokumentenprüfung & Verifizierung',
+        'Schritt-für-Schritt Antragsbegleitung',
+        'Behördenkommunikation Unterstützung',
+        'E-Mail-Support innerhalb von 48h'
       ]
     },
     languagePrep: {
       title: 'Standard-Paket',
-      description: 'Mit Sprachprüfungsvorbereitung',
+      description: 'Volle Unterstützung + Sprachprüfungsvorbereitung',
       features: [
-        'Alles im Basis-Paket',
-        'Online-Sprachprüfungsvorbereitung',
-        'Übungsmaterialien & Probeprüfungen',
-        'Fortschrittsverfolgung'
+        'Alles aus dem Basis-Paket',
+        'FSP & Fachsprachenprüfung Vorbereitung',
+        'Medizinisches Deutsch Kursmaterialien',
+        'Wöchentliche Fortschritts-Check-ins'
       ]
     },
     premiumSupport: {
       title: 'Premium-Paket',
-      description: 'Vollständige personalisierte Unterstützung',
+      description: 'Komplette VIP-Betreuung bis zum Erfolg',
       features: [
-        'Alles im Standard-Paket',
-        'Persönliche Unterstützung während des gesamten Prozesses',
-        'Zugang zu Deutschlehrer',
-        'Progressionsunterstützung & Feedback'
+        'Alles aus dem Standard-Paket',
+        'Persönlicher Mentor während des gesamten Prozesses',
+        '1-zu-1 Deutschunterricht mit Muttersprachler',
+        'Unterstützung bei der Jobsuche in Deutschland'
       ]
     }
   },
@@ -51,14 +51,14 @@ export const payments = {
     invalid: 'Ungültiger Rabattcode',
     expired: 'Rabattcode ist abgelaufen',
     used: 'Rabattcode wurde vollständig verwendet',
-    notApplicable: 'Nicht auf dieses Produkt anwendbar'
+    notApplicable: 'Nicht anwendbar auf dieses Produkt'
   },
   summary: {
     title: 'Zahlungsübersicht',
-    originalPrice: 'Ursprünglicher Preis',
+    originalPrice: 'Originalpreis',
     discount: 'Rabatt',
     total: 'Gesamt',
-    proceedToPayment: 'Zur Zahlung',
+    proceedToPayment: 'Jetzt Meinen Weg Starten',
     processing: 'Verarbeitung...'
   },
   success: {
@@ -68,21 +68,21 @@ export const payments = {
     stepsList: [
       'Überprüfen Sie Ihre E-Mail für die Zahlungsbestätigung',
       'Unser Team wird Sie innerhalb von 24 Stunden kontaktieren',
-      'Beginnen Sie Ihren Homologationsprozess'
+      'Beginnen Sie Ihren Approbationsprozess'
     ],
     returnHome: 'Zurück zur Startseite',
-    viewDashboard: 'Dashboard anzeigen'
+    viewDashboard: 'Dashboard Ansehen'
   },
   cancelled: {
     title: 'Zahlung Abgebrochen',
-    message: 'Ihre Zahlung wurde abgebrochen. Es wurden keine Gebühren von Ihrem Konto erhoben.',
+    message: 'Ihre Zahlung wurde abgebrochen. Es wurden keine Gebühren von Ihrem Konto abgebucht.',
     tryAgain: 'Erneut Versuchen',
     returnHome: 'Zurück zur Startseite'
   },
   errors: {
-    general: 'Ein Fehler ist bei der Zahlungsverarbeitung aufgetreten',
+    general: 'Bei der Zahlungsverarbeitung ist ein Fehler aufgetreten',
     sessionNotFound: 'Zahlungssitzung nicht gefunden',
-    verificationFailed: 'Zahlungsverifikation fehlgeschlagen',
+    verificationFailed: 'Zahlungsverifizierung fehlgeschlagen',
     networkError: 'Netzwerkfehler. Bitte versuchen Sie es erneut.',
     selectPackage: 'Bitte wählen Sie ein Paket'
   }

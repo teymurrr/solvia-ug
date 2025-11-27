@@ -1,44 +1,44 @@
 export const payments = {
   title: 'Pago',
-  pageTitle: 'Pago del Proceso de Homologación',
-  pageDescription: 'Elige el paquete que mejor se adapte a tus necesidades',
+  pageTitle: 'Inicia Tu Carrera Médica en Alemania',
+  pageDescription: 'Únete a más de 500 profesionales médicos que obtuvieron exitosamente su licencia alemana con nuestra guía experta',
   popular: 'Más Popular',
   oneTime: 'pago único',
   selected: 'Seleccionado',
-  select: 'Seleccionar Paquete',
+  select: 'Elegir Este Plan',
   secure: 'Pago Seguro',
   support: 'Soporte 24h',
-  trusted: 'Confiado por 1000+',
+  trusted: 'Confiado por 500+',
   loginPrompt: 'Por favor regístrate o inicia sesión para continuar con el proceso de pago.',
   packages: {
     homologation: {
       title: 'Paquete Básico',
-      description: 'Soporte completo de homologación',
+      description: 'Apoyo esencial para tu reconocimiento de licencia',
       features: [
-        'Verificación completa de credenciales',
-        'Asistencia con documentación',
-        'Soporte de cumplimiento regulatorio',
-        'Soporte por email'
+        'Revisión y verificación completa de documentos',
+        'Guía paso a paso para la solicitud',
+        'Apoyo en comunicación con autoridades',
+        'Soporte por email en 48h'
       ]
     },
     languagePrep: {
       title: 'Paquete Estándar',
-      description: 'Con preparación de examen de idioma',
+      description: 'Apoyo completo + Preparación para examen de idioma',
       features: [
-        'Todo en el paquete Básico',
-        'Preparación online para examen de idioma',
-        'Materiales de práctica y exámenes simulados',
-        'Seguimiento de progreso'
+        'Todo lo del Paquete Básico',
+        'Preparación FSP y Fachsprachenprüfung',
+        'Materiales de alemán médico',
+        'Seguimiento semanal de progreso'
       ]
     },
     premiumSupport: {
       title: 'Paquete Premium',
-      description: 'Soporte personalizado completo',
+      description: 'Soporte VIP completo hasta que lo logres',
       features: [
-        'Todo en el paquete Estándar',
-        'Soporte personal durante todo el proceso',
-        'Acceso a profesor de alemán',
-        'Soporte de progresión y retroalimentación'
+        'Todo lo del Paquete Estándar',
+        'Mentor personal durante todo el proceso',
+        'Clases 1 a 1 de alemán con profesor nativo',
+        'Asistencia para encontrar trabajo en Alemania'
       ]
     }
   },
@@ -58,7 +58,7 @@ export const payments = {
     originalPrice: 'Precio Original',
     discount: 'Descuento',
     total: 'Total',
-    proceedToPayment: 'Proceder al Pago',
+    proceedToPayment: 'Comenzar Mi Camino Ahora',
     processing: 'Procesando...'
   },
   success: {
