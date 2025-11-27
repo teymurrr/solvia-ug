@@ -35,6 +35,13 @@ export const wizard = {
     subtitle: 'Para el país donde quieres trabajar',
     dontKnow: 'No lo sé'
   },
+  email: {
+    title: '¿Cuál es tu dirección de correo electrónico?',
+    subtitle: 'La usaremos para crear tu cuenta y mantenerte informado',
+    placeholder: 'tu.correo@ejemplo.com',
+    complete: 'Completar',
+    processing: 'Procesando...'
+  },
   back: 'Atrás',
   countries: {
     germany: 'Alemania',
