@@ -117,25 +117,17 @@ const HomologationWizard = () => {
     // Create account with all collected data
     setIsSaving(true);
     try {
-      // First, create the user account
+      // First, create the user account with all wizard data in metadata
       await signUp(completedData.email, password, {
         first_name: completedData.firstName,
         last_name: completedData.lastName,
         user_type: 'professional',
+        target_country: completedData.targetCountry,
+        study_country: completedData.studyCountry,
+        doctor_type: completedData.doctorType,
+        documents_ready: completedData.documentsReady,
+        language_level: completedData.languageLevel,
       });
-
-      // The profile will be created by the trigger, then we update it with wizard data
-      // Since we just signed up, we need to wait a moment for the profile to be created
-      setTimeout(async () => {
-        try {
-          const { data: { user: newUser } } = await supabase.auth.getUser();
-          if (newUser) {
-            await saveWizardDataToProfile(newUser.id, completedData);
-          }
-        } catch (err) {
-          console.error('Error saving wizard data:', err);
-        }
-      }, 2000);
 
       // Store email for confirmation page
       localStorage.setItem('pendingConfirmationEmail', completedData.email);
