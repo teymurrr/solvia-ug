@@ -1,44 +1,44 @@
 export const payments = {
   title: 'Paiement',
-  pageTitle: 'Paiement du Processus d\'Homologation',
-  pageDescription: 'Choisissez le forfait qui correspond le mieux à vos besoins',
+  pageTitle: 'Commencez Votre Carrière Médicale en Allemagne',
+  pageDescription: 'Rejoignez plus de 500 professionnels médicaux qui ont obtenu avec succès leur licence allemande grâce à notre accompagnement expert',
   popular: 'Plus Populaire',
   oneTime: 'paiement unique',
   selected: 'Sélectionné',
-  select: 'Sélectionner le Forfait',
+  select: 'Choisir Ce Plan',
   secure: 'Paiement Sécurisé',
   support: 'Support 24h',
-  trusted: 'Confiance de 1000+',
+  trusted: 'Approuvé par 500+',
   loginPrompt: 'Veuillez vous inscrire ou vous connecter pour continuer le processus de paiement.',
   packages: {
     homologation: {
       title: 'Forfait Basique',
-      description: 'Support complet d\'homologation',
+      description: 'Accompagnement essentiel pour votre reconnaissance de licence',
       features: [
-        'Vérification complète des identifiants',
-        'Assistance à la documentation',
-        'Support de conformité réglementaire',
-        'Support par email'
+        'Révision et vérification complète des documents',
+        'Guide étape par étape pour la candidature',
+        'Support pour la communication avec les autorités',
+        'Support par email sous 48h'
       ]
     },
     languagePrep: {
       title: 'Forfait Standard',
-      description: 'Avec préparation à l\'examen de langue',
+      description: 'Accompagnement complet + Préparation examen de langue',
       features: [
-        'Tout dans le forfait Basique',
-        'Préparation en ligne à l\'examen de langue',
-        'Matériels de pratique et examens blancs',
-        'Suivi de progression'
+        'Tout le Forfait Basique',
+        'Préparation FSP & Fachsprachenprüfung',
+        'Matériaux de cours d\'allemand médical',
+        'Suivi hebdomadaire des progrès'
       ]
     },
     premiumSupport: {
       title: 'Forfait Premium',
-      description: 'Support personnalisé complet',
+      description: 'Accompagnement VIP complet jusqu\'à votre réussite',
       features: [
-        'Tout dans le forfait Standard',
-        'Support personnel tout au long du processus',
-        'Accès à un professeur d\'allemand',
-        'Support de progression et retours'
+        'Tout le Forfait Standard',
+        'Mentor personnel tout au long du processus',
+        'Cours d\'allemand 1-à-1 avec professeur natif',
+        'Aide à la recherche d\'emploi en Allemagne'
       ]
     }
   },
@@ -58,31 +58,31 @@ export const payments = {
     originalPrice: 'Prix Original',
     discount: 'Réduction',
     total: 'Total',
-    proceedToPayment: 'Procéder au Paiement',
+    proceedToPayment: 'Commencer Mon Parcours Maintenant',
     processing: 'Traitement...'
   },
   success: {
-    title: 'Paiement Réussi !',
+    title: 'Paiement Réussi!',
     message: 'Votre paiement a été traité avec succès. Vous recevrez un email de confirmation sous peu.',
     nextSteps: 'Prochaines Étapes',
     stepsList: [
-      'Vérifiez votre email pour la confirmation du paiement',
+      'Vérifiez votre email pour la confirmation de paiement',
       'Notre équipe vous contactera dans les 24 heures',
       'Commencez votre processus d\'homologation'
     ],
-    returnHome: 'Retourner à l\'Accueil',
+    returnHome: 'Retour à l\'Accueil',
     viewDashboard: 'Voir le Tableau de Bord'
   },
   cancelled: {
     title: 'Paiement Annulé',
-    message: 'Votre paiement a été annulé. Aucun frais n\'a été prélevé sur votre compte.',
+    message: 'Votre paiement a été annulé. Aucun frais n\'a été débité de votre compte.',
     tryAgain: 'Réessayer',
-    returnHome: 'Retourner à l\'Accueil'
+    returnHome: 'Retour à l\'Accueil'
   },
   errors: {
     general: 'Une erreur s\'est produite lors du traitement du paiement',
-    sessionNotFound: 'Session de paiement introuvable',
-    verificationFailed: 'La vérification du paiement a échoué',
+    sessionNotFound: 'Session de paiement non trouvée',
+    verificationFailed: 'Vérification du paiement échouée',
     networkError: 'Erreur réseau. Veuillez réessayer.',
     selectPackage: 'Veuillez sélectionner un forfait'
   }
