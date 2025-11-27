@@ -42,6 +42,23 @@ export const wizard = {
     complete: 'Завершить',
     processing: 'Обработка...'
   },
+  name: {
+    title: 'Как вас зовут?',
+    subtitle: 'Помогите нам персонализировать ваш опыт',
+    firstNamePlaceholder: 'Имя',
+    lastNamePlaceholder: 'Фамилия',
+    continue: 'Продолжить',
+  },
+  password: {
+    title: 'Создайте надежный пароль',
+    subtitle: 'Защитите свою учетную запись надежным паролем',
+    placeholder: 'Пароль (мин. 8 символов)',
+    confirmPlaceholder: 'Подтвердите пароль',
+    complete: 'Создать учетную запись',
+    creating: 'Создание учетной записи...',
+    mismatch: 'Пароли не совпадают',
+    tooShort: 'Пароль должен содержать не менее 8 символов',
+  },
   back: 'Назад',
   countries: {
     germany: 'Германия',

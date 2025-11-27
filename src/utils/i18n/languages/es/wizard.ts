@@ -42,6 +42,23 @@ export const wizard = {
     complete: 'Completar',
     processing: 'Procesando...'
   },
+  name: {
+    title: '¿Cómo te llamas?',
+    subtitle: 'Ayúdanos a personalizar tu experiencia',
+    firstNamePlaceholder: 'Nombre',
+    lastNamePlaceholder: 'Apellido',
+    continue: 'Continuar',
+  },
+  password: {
+    title: 'Crea una contraseña segura',
+    subtitle: 'Mantén tu cuenta segura con una contraseña fuerte',
+    placeholder: 'Contraseña (mín. 8 caracteres)',
+    confirmPlaceholder: 'Confirmar Contraseña',
+    complete: 'Crear Cuenta',
+    creating: 'Creando cuenta...',
+    mismatch: 'Las contraseñas no coinciden',
+    tooShort: 'La contraseña debe tener al menos 8 caracteres',
+  },
   back: 'Atrás',
   countries: {
     germany: 'Alemania',

@@ -42,6 +42,23 @@ export const wizard = {
     complete: 'Complete',
     processing: 'Processing...'
   },
+  name: {
+    title: "What's your name?",
+    subtitle: "Help us personalize your experience",
+    firstNamePlaceholder: "First Name",
+    lastNamePlaceholder: "Last Name",
+    continue: "Continue",
+  },
+  password: {
+    title: "Create a secure password",
+    subtitle: "Keep your account safe with a strong password",
+    placeholder: "Password (min. 8 characters)",
+    confirmPlaceholder: "Confirm Password",
+    complete: "Create Account",
+    creating: "Creating account...",
+    mismatch: "Passwords don't match",
+    tooShort: "Password must be at least 8 characters",
+  },
   back: 'Back',
   countries: {
     germany: 'Germany',
