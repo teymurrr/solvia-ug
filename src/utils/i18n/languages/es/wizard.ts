@@ -58,6 +58,11 @@ export const wizard = {
     creating: 'Creando cuenta...',
     mismatch: 'Las contraseñas no coinciden',
     tooShort: 'La contraseña debe tener al menos 8 caracteres',
+    privacyConsent: 'Acepto la',
+    privacyPolicy: 'Política de Privacidad',
+    and: 'y los',
+    termsOfService: 'Términos de Servicio',
+    privacyError: 'Debes aceptar la Política de Privacidad y los Términos de Servicio'
   },
   back: 'Atrás',
   countries: {

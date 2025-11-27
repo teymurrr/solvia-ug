@@ -33,6 +33,7 @@ const HomologationWizard = () => {
   const [currentStep, setCurrentStep] = useState<WizardStep>('welcome');
   const [wizardData, setWizardData] = useState<WizardData>({});
   const [isSaving, setIsSaving] = useState(false);
+  const [privacyConsent, setPrivacyConsent] = useState(false);
 
   const countries = [
     { id: 'germany', name: 'Germany', flag: '🇩🇪' },
@@ -604,6 +605,15 @@ const HomologationWizard = () => {
                     });
                     return;
                   }
+
+                  if (!privacyConsent) {
+                    toast({
+                      title: t.common.error,
+                      description: t.wizard.password.privacyError,
+                      variant: "destructive",
+                    });
+                    return;
+                  }
                   
                   handlePasswordSubmit(password);
                 }}>
@@ -623,6 +633,27 @@ const HomologationWizard = () => {
                       className="w-full h-12 px-4 text-lg border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
                     />
                   </div>
+                  
+                  <div className="flex items-start gap-3 p-4 bg-muted/50 rounded-lg border border-border mt-4">
+                    <input
+                      type="checkbox"
+                      id="privacy-consent"
+                      checked={privacyConsent}
+                      onChange={(e) => setPrivacyConsent(e.target.checked)}
+                      className="mt-1 h-4 w-4 rounded border-border"
+                    />
+                    <label htmlFor="privacy-consent" className="text-sm text-foreground cursor-pointer leading-relaxed">
+                      {t.wizard.password.privacyConsent}{' '}
+                      <a href="/privacy" target="_blank" className="text-primary underline hover:text-primary/80">
+                        {t.wizard.password.privacyPolicy}
+                      </a>
+                      {' '}{t.wizard.password.and}{' '}
+                      <a href="/terms" target="_blank" className="text-primary underline hover:text-primary/80">
+                        {t.wizard.password.termsOfService}
+                      </a>
+                    </label>
+                  </div>
+
                   <Button
                     type="submit"
                     size="lg"

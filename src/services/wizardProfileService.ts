@@ -16,6 +16,7 @@ export const saveWizardDataToProfile = async (userId: string, wizardData: Wizard
         target_country: wizardData.targetCountry,
         study_country: wizardData.studyCountry,
         doctor_type: wizardData.doctorType,
+        profession: wizardData.doctorType, // Save profession as well
         documents_ready: wizardData.documentsReady,
         language_level: wizardData.languageLevel,
       })
