@@ -8,7 +8,7 @@ const corsHeaders = {
 };
 
 interface PaymentRequest {
-  productType: 'homologation';
+  productType: 'homologation' | 'language_prep' | 'premium_support';
   discountCode?: string;
   locale?: 'en' | 'es' | 'de' | 'fr' | 'ru';
 }
@@ -42,11 +42,19 @@ serve(async (req) => {
       apiVersion: "2025-08-27.basil",
     });
 
-    // Product configuration
-    const productConfig = {
+    // Product configuration - prices need to be created in Stripe
+    const productConfig: Record<string, { priceId: string; amount: number }> = {
       homologation: {
-        priceId: "price_1SAH082L7RuO91AufX32666C",
-        amount: 75900, // €759
+        priceId: "price_1SAH082L7RuO91AufX32666C", // Basic Package €59
+        amount: 5900,
+      },
+      language_prep: {
+        priceId: "price_language_prep", // Standard Package €99 - needs Stripe price
+        amount: 9900,
+      },
+      premium_support: {
+        priceId: "price_premium_support", // Premium Package €119 - needs Stripe price
+        amount: 11900,
       }
     };
 
