@@ -165,7 +165,17 @@ export const dashboard: DashboardTranslations = {
     certificate: "Certificado",
     about: "Sobre mí",
     aboutPlaceholder: "Comparte información sobre tus intereses profesionales, investigación o objetivos profesionales...",
-    incompleteProfile: "Tu perfil está incompleto. Añade más información sobre ti para atraer a posibles empleadores."
+    incompleteProfile: "Tu perfil está incompleto. Añade más información sobre ti para atraer a posibles empleadores.",
+    homologationInfo: "Información de Homologación",
+    targetCountry: "País de Destino",
+    selectTargetCountry: "Selecciona país de destino",
+    studyCountry: "País de Estudios",
+    selectStudyCountry: "Selecciona país de estudios",
+    doctorType: "Tipo de Profesional",
+    selectDoctorType: "Selecciona tipo",
+    documentsReady: "Documentos Listos",
+    selectDocumentsStatus: "Selecciona estado",
+    selectLanguageLevel: "Selecciona nivel"
   },
   saved: {
     title: "Vacantes Guardadas y Aplicadas",

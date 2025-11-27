@@ -94,7 +94,17 @@ export const dashboard: DashboardTranslations = {
     certificate: "Certificat",
     about: "À propos",
     aboutPlaceholder: "Partagez des informations sur vos intérêts professionnels, vos recherches ou vos objectifs de carrière...",
-    incompleteProfile: "Votre profil est incomplet. Ajoutez plus d'informations sur vous-même pour attirer des employeurs potentiels."
+    incompleteProfile: "Votre profil est incomplet. Ajoutez plus d'informations sur vous-même pour attirer des employeurs potentiels.",
+    homologationInfo: "Informations d'Homologation",
+    targetCountry: "Pays de Destination",
+    selectTargetCountry: "Sélectionner le pays de destination",
+    studyCountry: "Pays d'Études",
+    selectStudyCountry: "Sélectionner le pays d'études",
+    doctorType: "Type de Professionnel",
+    selectDoctorType: "Sélectionner le type",
+    documentsReady: "Documents Prêts",
+    selectDocumentsStatus: "Sélectionner le statut",
+    selectLanguageLevel: "Sélectionner le niveau"
   },
   professionals: {
     title: "Professionnels médicaux",

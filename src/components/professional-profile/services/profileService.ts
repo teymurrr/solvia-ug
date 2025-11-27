@@ -27,6 +27,11 @@ export const saveProfileToDb = async (userId: string, data: ProfileFormValues) =
         open_to_relocation: data.openToRelocation,
         fsp_certificate: data.fspCertificate,
         fsp_certificate_file: data.fspCertificateFile,
+        target_country: data.targetCountry,
+        study_country: data.studyCountry,
+        doctor_type: data.doctorType,
+        documents_ready: data.documentsReady,
+        language_level: data.languageLevel,
       });
 
     if (profileError) {
