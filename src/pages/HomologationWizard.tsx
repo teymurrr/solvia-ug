@@ -10,7 +10,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { saveWizardDataToProfile } from '@/services/wizardProfileService';
 import { useToast } from '@/hooks/use-toast';
 
-type WizardStep = 'welcome' | 'country' | 'study-country' | 'doctor-type' | 'documents' | 'language';
+type WizardStep = 'welcome' | 'country' | 'study-country' | 'doctor-type' | 'documents' | 'language' | 'email';
 
 interface WizardData {
   targetCountry?: string;
@@ -18,6 +18,7 @@ interface WizardData {
   doctorType?: 'general' | 'specialist' | 'nurse' | 'dentist' | 'other' | 'unsure';
   documentsReady?: 'yes' | 'no' | 'unsure';
   languageLevel?: string;
+  email?: string;
 }
 
 const HomologationWizard = () => {
@@ -74,24 +75,27 @@ const HomologationWizard = () => {
     setCurrentStep('language');
   };
 
-  const handleLanguageSelect = async (level: string) => {
-    const completedData = { ...wizardData, languageLevel: level };
+  const handleLanguageSelect = (level: string) => {
+    setWizardData({ ...wizardData, languageLevel: level });
+    setCurrentStep('email');
+  };
+
+  const handleEmailSubmit = async (email: string) => {
+    const completedData = { ...wizardData, email };
     setWizardData(completedData);
     
     // Check if user is logged in
     if (!isLoggedIn || !user) {
-      toast({
-        title: "Please log in",
-        description: "You need to be logged in to save your wizard data. Redirecting to signup...",
-        variant: "destructive",
-      });
-      
       // Store wizard data in localStorage temporarily
       localStorage.setItem('pendingWizardData', JSON.stringify(completedData));
       
-      setTimeout(() => {
-        navigate('/professional-signup');
-      }, 2000);
+      toast({
+        title: "Almost there!",
+        description: "Complete your signup to save your preferences.",
+      });
+      
+      // Navigate to signup with pre-filled data
+      navigate('/signup/professional', { state: { wizardData: completedData } });
       return;
     }
 
@@ -107,7 +111,7 @@ const HomologationWizard = () => {
         });
         
         // Navigate to dashboard
-        navigate('/professional-dashboard');
+        navigate('/dashboard/professional');
       } else {
         throw new Error('Failed to save wizard data');
       }
@@ -124,7 +128,7 @@ const HomologationWizard = () => {
   };
 
   const handleBack = () => {
-    const stepOrder: WizardStep[] = ['welcome', 'country', 'study-country', 'doctor-type', 'documents', 'language'];
+    const stepOrder: WizardStep[] = ['welcome', 'country', 'study-country', 'doctor-type', 'documents', 'language', 'email'];
     const currentIndex = stepOrder.indexOf(currentStep);
     if (currentIndex > 0) {
       setCurrentStep(stepOrder[currentIndex - 1]);
@@ -390,12 +394,64 @@ const HomologationWizard = () => {
                         level === t.wizard.language.dontKnow ? 'col-span-2 md:col-span-3' : ''
                       }`}
                       onClick={() => handleLanguageSelect(level)}
-                      disabled={isSaving}
                     >
-                      {isSaving ? 'Saving...' : level}
+                      {level}
                     </Button>
                   ))}
                 </div>
+                <Button
+                  variant="ghost"
+                  onClick={handleBack}
+                  className="w-full"
+                >
+                  <ArrowLeft className="mr-2 h-4 w-4" />
+                  {t.wizard.back}
+                </Button>
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Email Collection */}
+          {currentStep === 'email' && (
+            <Card className="border-2 shadow-xl animate-in fade-in-50 duration-500">
+              <CardHeader className="text-center space-y-2">
+                <div className="mx-auto w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-2">
+                  <svg className="h-8 w-8 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  </svg>
+                </div>
+                <CardTitle className="text-2xl md:text-3xl font-bold">
+                  What's your email address?
+                </CardTitle>
+                <CardDescription className="text-base md:text-lg">
+                  We'll use this to create your account and keep you updated
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <form onSubmit={(e) => {
+                  e.preventDefault();
+                  const formData = new FormData(e.currentTarget);
+                  const email = formData.get('email') as string;
+                  if (email && email.includes('@')) {
+                    handleEmailSubmit(email);
+                  }
+                }}>
+                  <input
+                    type="email"
+                    name="email"
+                    required
+                    placeholder="your.email@example.com"
+                    className="w-full h-12 px-4 text-lg border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                  />
+                  <Button
+                    type="submit"
+                    size="lg"
+                    className="w-full mt-4 text-lg h-auto py-4"
+                    disabled={isSaving}
+                  >
+                    {isSaving ? 'Processing...' : 'Complete'}
+                  </Button>
+                </form>
                 <Button
                   variant="ghost"
                   onClick={handleBack}
