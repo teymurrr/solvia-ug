@@ -24,6 +24,12 @@ interface AuthContextType {
       institution_type?: string;
       location?: string;
       website?: string;
+      // Wizard fields
+      target_country?: string;
+      study_country?: string;
+      doctor_type?: string;
+      documents_ready?: string;
+      language_level?: string;
     }
   ) => Promise<void>;
   signOut: () => Promise<void>;
@@ -140,6 +146,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     institution_type?: string;
     location?: string;
     website?: string;
+    // Wizard fields
+    target_country?: string;
+    study_country?: string;
+    doctor_type?: string;
+    documents_ready?: string;
+    language_level?: string;
   }) => {
     console.log(`Attempting to sign up with email: ${email}`);
     try {
