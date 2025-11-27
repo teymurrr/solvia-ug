@@ -10,7 +10,6 @@ import { useAuth } from '@/contexts/AuthContext';
 import { professionalSignupSchema, ProfessionalSignupFormValues } from '@/schemas/professionalSignupSchema';
 import { NameFields } from './NameFields';
 import { EmailField } from './EmailField';
-import { SpecialtyField } from './SpecialtyField';
 import { PasswordFields } from './PasswordFields';
 import { TermsAgreement } from './TermsAgreement';
 import { RelocationOption } from './RelocationOption';
@@ -31,7 +30,6 @@ export const ProfessionalSignupForm: React.FC = () => {
       email: '',
       password: '',
       confirmPassword: '',
-      specialty: '',
       terms: false,
       isOpenToRelocation: false,
     },
@@ -46,7 +44,6 @@ export const ProfessionalSignupForm: React.FC = () => {
         first_name: data.firstName,
         last_name: data.lastName,
         user_type: 'professional',
-        specialty: data.specialty,
         open_to_relocation: data.isOpenToRelocation,
       });
 
@@ -96,7 +93,6 @@ export const ProfessionalSignupForm: React.FC = () => {
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
         <NameFields form={form} />
         <EmailField form={form} />
-        <SpecialtyField form={form} />
         <RelocationOption form={form} />
         <PasswordFields form={form} />
         <TermsAgreement form={form} />

@@ -421,10 +421,10 @@ const HomologationWizard = () => {
                   </svg>
                 </div>
                 <CardTitle className="text-2xl md:text-3xl font-bold">
-                  What's your email address?
+                  {t.wizard.email.title}
                 </CardTitle>
                 <CardDescription className="text-base md:text-lg">
-                  We'll use this to create your account and keep you updated
+                  {t.wizard.email.subtitle}
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -440,7 +440,7 @@ const HomologationWizard = () => {
                     type="email"
                     name="email"
                     required
-                    placeholder="your.email@example.com"
+                    placeholder={t.wizard.email.placeholder}
                     className="w-full h-12 px-4 text-lg border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
                   />
                   <Button
@@ -449,7 +449,7 @@ const HomologationWizard = () => {
                     className="w-full mt-4 text-lg h-auto py-4"
                     disabled={isSaving}
                   >
-                    {isSaving ? 'Processing...' : 'Complete'}
+                    {isSaving ? t.wizard.email.processing : t.wizard.email.complete}
                   </Button>
                 </form>
                 <Button

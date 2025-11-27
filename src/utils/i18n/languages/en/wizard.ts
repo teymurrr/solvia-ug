@@ -35,6 +35,13 @@ export const wizard = {
     subtitle: 'For the country you want to work in',
     dontKnow: "I don't know"
   },
+  email: {
+    title: "What's your email address?",
+    subtitle: "We'll use this to create your account and keep you updated",
+    placeholder: 'your.email@example.com',
+    complete: 'Complete',
+    processing: 'Processing...'
+  },
   back: 'Back',
   countries: {
     germany: 'Germany',
