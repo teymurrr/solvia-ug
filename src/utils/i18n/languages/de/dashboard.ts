@@ -178,7 +178,17 @@ export const dashboard = {
   // Profile-related properties
   profile: {
     title: 'Ihr Profil',
-    description: 'Wie Sie Institutionen erscheinen'
+    description: 'Wie Sie Institutionen erscheinen',
+    homologationInfo: 'Homologations-Informationen',
+    targetCountry: 'Zielland',
+    selectTargetCountry: 'Zielland auswählen',
+    studyCountry: 'Studienland',
+    selectStudyCountry: 'Studienland auswählen',
+    doctorType: 'Berufstyp',
+    selectDoctorType: 'Typ auswählen',
+    documentsReady: 'Dokumente bereit',
+    selectDocumentsStatus: 'Status auswählen',
+    selectLanguageLevel: 'Niveau auswählen'
   },
 
   // Vacancies-related properties for FilterBar component

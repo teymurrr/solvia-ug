@@ -42,6 +42,7 @@ const InstitutionDashboard = lazy(() => import("@/pages/InstitutionDashboard"));
 const AdminBlogList = lazy(() => import("@/pages/admin/BlogList"));
 const BlogEditor = lazy(() => import("@/pages/admin/BlogEditor"));
 const AdminManagement = lazy(() => import("@/pages/admin/AdminManagement"));
+const UsersManagement = lazy(() => import("@/pages/admin/UsersManagement"));
 
 // Other pages - load individually as needed
 const SolviaLearning = lazy(() => import("@/pages/SolviaLearning"));
@@ -143,6 +144,16 @@ const AppRoutes = () => {
             <OwnerRoute>
               <AdminManagement />
             </OwnerRoute>
+          }
+        />
+        
+        {/* Admin users management route */}
+        <Route
+          path="/admin/users"
+          element={
+            <AdminRoute>
+              <UsersManagement />
+            </AdminRoute>
           }
         />
         

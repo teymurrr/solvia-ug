@@ -166,7 +166,17 @@ export const dashboard = {
   // Profile-related properties
   profile: {
     title: 'Ваш профиль',
-    description: 'Как вас видят учреждения'
+    description: 'Как вас видят учреждения',
+    homologationInfo: 'Информация о гомологации',
+    targetCountry: 'Страна назначения',
+    selectTargetCountry: 'Выберите страну назначения',
+    studyCountry: 'Страна обучения',
+    selectStudyCountry: 'Выберите страну обучения',
+    doctorType: 'Тип специалиста',
+    selectDoctorType: 'Выберите тип',
+    documentsReady: 'Документы готовы',
+    selectDocumentsStatus: 'Выберите статус',
+    selectLanguageLevel: 'Выберите уровень'
   },
 
   // Vacancies-related properties for FilterBar component

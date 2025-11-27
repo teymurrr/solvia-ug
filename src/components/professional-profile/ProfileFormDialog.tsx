@@ -11,6 +11,7 @@ import ExperienceSection from './ExperienceSection';
 import EducationSection from './EducationSection';
 import LanguageSection from './LanguageSection';
 import CertificatesSection from './CertificatesSection';
+import WizardInfoSection from './WizardInfoSection';
 import { useLanguage } from '@/hooks/useLanguage';
 
 interface ProfileFormDialogProps {
@@ -95,6 +96,8 @@ export const ProfileFormDialog: React.FC<ProfileFormDialogProps> = ({
               sfpCertificatePreview={sfpCertificatePreview}
               handleSfpCertificateChange={handleSfpCertificateChange}
             />
+            
+            <WizardInfoSection form={form} />
 
             <div className="flex justify-end gap-2">
               <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>

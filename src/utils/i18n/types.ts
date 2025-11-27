@@ -178,6 +178,16 @@ export interface DashboardTranslations {
     about: string;
     aboutPlaceholder?: string;
     incompleteProfile: string;
+    homologationInfo?: string;
+    targetCountry?: string;
+    selectTargetCountry?: string;
+    studyCountry?: string;
+    selectStudyCountry?: string;
+    doctorType?: string;
+    selectDoctorType?: string;
+    documentsReady?: string;
+    selectDocumentsStatus?: string;
+    selectLanguageLevel?: string;
   };
   saved?: {
     title: string;

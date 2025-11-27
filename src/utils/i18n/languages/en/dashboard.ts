@@ -31,7 +31,18 @@ export const dashboard = {
     in: "in",
     present: "Present",
     uploadCertificate: "Upload FSP Certificate",
-    certificateUploaded: "Certificate uploaded"
+    certificateUploaded: "Certificate uploaded",
+    homologationInfo: "Homologation Information",
+    targetCountry: "Target Country",
+    selectTargetCountry: "Select target country",
+    studyCountry: "Country of Study",
+    selectStudyCountry: "Select study country",
+    doctorType: "Professional Type",
+    selectDoctorType: "Select type",
+    documentsReady: "Documents Ready",
+    selectDocumentsStatus: "Select status",
+    languageLevel: "German Language Level",
+    selectLanguageLevel: "Select level"
   },
   saved: {
     title: "Saved Items",
