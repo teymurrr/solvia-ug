@@ -16,7 +16,7 @@ type WizardStep = 'country' | 'study-country' | 'doctor-type' | 'language' | 'fi
 interface WizardData {
   targetCountry?: string;
   studyCountry?: string;
-  doctorType?: 'general' | 'specialist' | 'nurse' | 'dentist' | 'other' | 'unsure';
+  doctorType?: 'general' | 'specialist' | 'nurse' | 'dentist' | 'other';
   documentsReady?: 'yes' | 'no' | 'unsure';
   languageLevel?: string;
   firstName?: string;
@@ -95,7 +95,7 @@ const HomologationWizard = () => {
     setCurrentStep('doctor-type');
   };
 
-  const handleDoctorTypeSelect = (type: 'general' | 'specialist' | 'nurse' | 'dentist' | 'other' | 'unsure') => {
+  const handleDoctorTypeSelect = (type: 'general' | 'specialist' | 'nurse' | 'dentist' | 'other') => {
     setWizardData({ ...wizardData, doctorType: type });
     setCurrentStep('language');
   };
@@ -337,14 +337,6 @@ const HomologationWizard = () => {
                   onClick={() => handleDoctorTypeSelect('other')}
                 >
                   {t.wizard.doctorType.other}
-                </Button>
-                <Button
-                  variant="outline"
-                  size="lg"
-                  className="w-full justify-start text-lg h-auto py-4 hover:bg-accent/5 hover:border-accent transition-all"
-                  onClick={() => handleDoctorTypeSelect('unsure')}
-                >
-                  {t.wizard.doctorType.unsure}
                 </Button>
                 <Button
                   variant="ghost"
