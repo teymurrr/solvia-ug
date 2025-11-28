@@ -82,7 +82,7 @@ export const wizard = {
     languageLevel: 'Sprachniveau',
     estimatedPrice: 'Geschätzter Preis',
     choosePlanAndPay: 'Paket wählen & bezahlen',
-    createFreeAccount: 'Kostenloses Konto erstellen'
+    bookConsultation: 'Kostenlose Beratung buchen'
   },
   back: 'Zurück',
   countries: {
