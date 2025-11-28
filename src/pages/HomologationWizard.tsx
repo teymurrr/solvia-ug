@@ -3,7 +3,7 @@ import MainLayout from '@/components/MainLayout';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { GraduationCap, Globe, Stethoscope, FileCheck, Languages, ArrowLeft } from 'lucide-react';
+import { GraduationCap, Globe, Stethoscope, FileCheck, Languages, ArrowLeft, CheckCircle2 } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
@@ -11,7 +11,7 @@ import { saveWizardDataToProfile } from '@/services/wizardProfileService';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 
-type WizardStep = 'country' | 'study-country' | 'doctor-type' | 'language' | 'firstName' | 'lastName' | 'email' | 'password';
+type WizardStep = 'country' | 'study-country' | 'doctor-type' | 'language' | 'firstName' | 'lastName' | 'email' | 'summary' | 'password';
 
 interface WizardData {
   targetCountry?: string;
@@ -58,6 +58,32 @@ const HomologationWizard = () => {
 
   const getLanguageLevels = () => ['Mother tongue', 'A1', 'A2', 'B1', 'B2', 'C1', t.wizard.language.dontKnow];
 
+  const calculateEstimatedPrice = (targetCountry?: string): number => {
+    if (targetCountry === 'spain') {
+      return 250;
+    }
+    // Germany, Italy, France, Austria
+    return 750;
+  };
+
+  const getDoctorTypeLabel = (type?: string) => {
+    if (!type) return '';
+    const mapping: Record<string, string> = {
+      'general': t.wizard.doctorType.general,
+      'specialist': t.wizard.doctorType.specialist,
+      'nurse': t.wizard.doctorType.nurse,
+      'dentist': t.wizard.doctorType.dentist,
+      'other': t.wizard.doctorType.other,
+      'unsure': t.wizard.doctorType.unsure
+    };
+    return mapping[type] || type;
+  };
+
+  const getCountryLabel = (countryId?: string) => {
+    if (!countryId) return '';
+    return t.wizard.countries[countryId as keyof typeof t.wizard.countries] || countryId;
+  };
+
   const handleCountrySelect = (countryId: string) => {
     setSelectedTargetCountry(countryId);
     setWizardData({ ...wizardData, targetCountry: countryId });
@@ -91,6 +117,15 @@ const HomologationWizard = () => {
 
   const handleEmailSubmit = (email: string) => {
     setWizardData({ ...wizardData, email });
+    setCurrentStep('summary');
+  };
+
+  const handleChoosePlan = () => {
+    localStorage.setItem('wizardData', JSON.stringify(wizardData));
+    navigate('/homologation-payment');
+  };
+
+  const handleCreateFreeAccount = () => {
     setCurrentStep('password');
   };
 
@@ -159,7 +194,7 @@ const HomologationWizard = () => {
   };
 
   const handleBack = () => {
-    const stepOrder: WizardStep[] = ['country', 'study-country', 'doctor-type', 'language', 'firstName', 'lastName', 'email', 'password'];
+    const stepOrder: WizardStep[] = ['country', 'study-country', 'doctor-type', 'language', 'firstName', 'lastName', 'email', 'summary', 'password'];
     const currentIndex = stepOrder.indexOf(currentStep);
     if (currentIndex > 0) {
       setCurrentStep(stepOrder[currentIndex - 1]);
@@ -509,6 +544,80 @@ const HomologationWizard = () => {
                     {t.wizard.email.continue}
                   </Button>
                 </form>
+                <Button
+                  variant="ghost"
+                  onClick={handleBack}
+                  className="w-full"
+                >
+                  <ArrowLeft className="mr-2 h-4 w-4" />
+                  {t.wizard.back}
+                </Button>
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Summary Step */}
+          {currentStep === 'summary' && (
+            <Card className="border-2 shadow-xl animate-in fade-in-50 duration-500">
+              <CardHeader className="text-center space-y-2">
+                <div className="mx-auto w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-2">
+                  <CheckCircle2 className="h-8 w-8 text-green-600" />
+                </div>
+                <CardTitle className="text-2xl md:text-3xl font-bold">
+                  {t.wizard.summary?.title || 'Summary'}
+                </CardTitle>
+                <CardDescription className="text-base md:text-lg">
+                  {t.wizard.summary?.subtitle || 'Review your information and choose how to continue'}
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                {/* Info Card */}
+                <div className="bg-muted/50 rounded-lg p-4 space-y-3 border border-border">
+                  <div className="flex justify-between items-center py-2 border-b border-border/50">
+                    <span className="text-muted-foreground">{t.wizard.summary?.targetCountry || 'Target country'}</span>
+                    <span className="font-medium">{getCountryLabel(wizardData.targetCountry)}</span>
+                  </div>
+                  <div className="flex justify-between items-center py-2 border-b border-border/50">
+                    <span className="text-muted-foreground">{t.wizard.summary?.studyCountry || 'Study country'}</span>
+                    <span className="font-medium">{wizardData.studyCountry}</span>
+                  </div>
+                  <div className="flex justify-between items-center py-2 border-b border-border/50">
+                    <span className="text-muted-foreground">{t.wizard.summary?.name || 'Name'}</span>
+                    <span className="font-medium">{wizardData.firstName} {wizardData.lastName}</span>
+                  </div>
+                  <div className="flex justify-between items-center py-2 border-b border-border/50">
+                    <span className="text-muted-foreground">{t.wizard.summary?.professionalType || 'Professional type'}</span>
+                    <span className="font-medium">{getDoctorTypeLabel(wizardData.doctorType)}</span>
+                  </div>
+                  <div className="flex justify-between items-center py-2 border-b border-border/50">
+                    <span className="text-muted-foreground">{t.wizard.summary?.languageLevel || 'Language level'}</span>
+                    <span className="font-medium">{wizardData.languageLevel}</span>
+                  </div>
+                  <div className="flex justify-between items-center py-3">
+                    <span className="text-lg font-semibold">{t.wizard.summary?.estimatedPrice || 'Estimated price'}</span>
+                    <span className="text-2xl font-bold text-primary">€{calculateEstimatedPrice(wizardData.targetCountry)}</span>
+                  </div>
+                </div>
+
+                {/* Action Buttons */}
+                <div className="space-y-3">
+                  <Button
+                    size="lg"
+                    className="w-full text-lg h-auto py-4"
+                    onClick={handleChoosePlan}
+                  >
+                    {t.wizard.summary?.choosePlanAndPay || 'Choose package & pay'}
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="lg"
+                    className="w-full text-lg h-auto py-4"
+                    onClick={handleCreateFreeAccount}
+                  >
+                    {t.wizard.summary?.createFreeAccount || 'Create free account'}
+                  </Button>
+                </div>
+
                 <Button
                   variant="ghost"
                   onClick={handleBack}

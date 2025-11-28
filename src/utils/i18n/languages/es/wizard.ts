@@ -72,6 +72,18 @@ export const wizard = {
     termsOfService: 'Términos de Servicio',
     privacyError: 'Debes aceptar la Política de Privacidad y los Términos de Servicio'
   },
+  summary: {
+    title: 'Resumen',
+    subtitle: 'Revisa tu información y elige cómo continuar',
+    targetCountry: 'País destino',
+    studyCountry: 'País de estudio',
+    name: 'Nombre',
+    professionalType: 'Tipo de profesional',
+    languageLevel: 'Nivel de idioma',
+    estimatedPrice: 'Precio estimado',
+    choosePlanAndPay: 'Elegir paquete y pagar',
+    createFreeAccount: 'Crear cuenta gratuita'
+  },
   back: 'Atrás',
   countries: {
     germany: 'Alemania',
