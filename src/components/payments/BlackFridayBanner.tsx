@@ -36,7 +36,7 @@ const BlackFridayBanner: React.FC = () => {
               <Sparkles className="w-4 h-4 text-yellow-400" />
             </div>
             <h3 className="text-white text-xl md:text-2xl font-bold mt-1">
-              {t?.payments?.blackFriday?.title || '20% OFF All Packages!'}
+              {t?.payments?.blackFriday?.title || '25% OFF All Packages!'}
             </h3>
             <p className="text-gray-300 text-sm mt-1">
               {t?.payments?.blackFriday?.subtitle || 'Use code'}{' '}
@@ -49,7 +49,7 @@ const BlackFridayBanner: React.FC = () => {
         
         <div className="flex flex-col items-center md:items-end">
           <div className="text-yellow-400 text-3xl md:text-4xl font-black">
-            -20%
+            -25%
           </div>
           <p className="text-gray-400 text-xs mt-1">
             {t?.payments?.blackFriday?.validUntil || 'Valid until Dec 6'}
