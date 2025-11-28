@@ -41,6 +41,7 @@ export const wizard = {
     title: 'Was ist Ihre E-Mail-Adresse?',
     subtitle: 'Wir verwenden diese, um Ihr Konto zu erstellen und Sie auf dem Laufenden zu halten',
     placeholder: 'ihre.email@beispiel.de',
+    continue: 'Weiter',
     complete: 'Abschließen',
     processing: 'Wird verarbeitet...'
   },
