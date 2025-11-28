@@ -41,6 +41,7 @@ export const wizard = {
     title: 'Quelle est votre adresse e-mail?',
     subtitle: 'Nous l\'utiliserons pour créer votre compte et vous tenir informé',
     placeholder: 'votre.email@exemple.fr',
+    continue: 'Continuer',
     complete: 'Terminer',
     processing: 'Traitement...'
   },
