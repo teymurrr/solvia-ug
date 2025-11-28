@@ -12,8 +12,8 @@ export const payments = {
   loginPrompt: 'Por favor regístrate o inicia sesión para continuar con el proceso de pago.',
   packages: {
     homologation: {
-      title: 'Paquete Básico',
-      description: 'Apoyo esencial para tu reconocimiento de licencia',
+      title: 'Paquete Homologación',
+      description: 'Apoyo completo para tu reconocimiento de licencia',
       features: [
         'Revisión y verificación completa de documentos',
         'Guía paso a paso para la solicitud',
@@ -22,10 +22,10 @@ export const payments = {
       ]
     },
     languagePrep: {
-      title: 'Paquete Estándar',
-      description: 'Apoyo completo + Preparación para examen de idioma',
+      title: 'Paquete Homologación & Alemán',
+      description: 'Homologación + Preparación de idioma alemán',
       features: [
-        'Todo lo del Paquete Básico',
+        'Todo lo del Paquete Homologación',
         'Preparación FSP y Fachsprachenprüfung',
         'Materiales de alemán médico',
         'Seguimiento semanal de progreso'
@@ -33,11 +33,11 @@ export const payments = {
     },
     premiumSupport: {
       title: 'Paquete Premium',
-      description: 'Soporte VIP completo hasta que lo logres',
+      description: 'Asistencia personal y clases 1:1 de alemán',
       features: [
-        'Todo lo del Paquete Estándar',
+        'Todo lo del Paquete Homologación & Alemán',
         'Mentor personal durante todo el proceso',
-        'Clases 1 a 1 de alemán con profesor nativo',
+        'Clases 1:1 de alemán con profesor nativo',
         'Asistencia para encontrar trabajo en Alemania'
       ]
     }

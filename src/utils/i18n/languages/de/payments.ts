@@ -12,8 +12,8 @@ export const payments = {
   loginPrompt: 'Bitte registrieren Sie sich oder melden Sie sich an, um mit dem Zahlungsvorgang fortzufahren.',
   packages: {
     homologation: {
-      title: 'Basis-Paket',
-      description: 'Wesentliche Unterstützung für Ihre Approbation',
+      title: 'Homologations-Paket',
+      description: 'Komplette Unterstützung für Ihre Approbation',
       features: [
         'Vollständige Dokumentenprüfung & Verifizierung',
         'Schritt-für-Schritt Antragsbegleitung',
@@ -22,10 +22,10 @@ export const payments = {
       ]
     },
     languagePrep: {
-      title: 'Standard-Paket',
-      description: 'Volle Unterstützung + Sprachprüfungsvorbereitung',
+      title: 'Homologation & Deutsch Paket',
+      description: 'Homologation + Deutsch-Sprachvorbereitung',
       features: [
-        'Alles aus dem Basis-Paket',
+        'Alles aus dem Homologations-Paket',
         'FSP & Fachsprachenprüfung Vorbereitung',
         'Medizinisches Deutsch Kursmaterialien',
         'Wöchentliche Fortschritts-Check-ins'
@@ -33,11 +33,11 @@ export const payments = {
     },
     premiumSupport: {
       title: 'Premium-Paket',
-      description: 'Komplette VIP-Betreuung bis zum Erfolg',
+      description: 'Persönliche Betreuung & 1:1 Deutschunterricht',
       features: [
-        'Alles aus dem Standard-Paket',
+        'Alles aus dem Homologation & Deutsch Paket',
         'Persönlicher Mentor während des gesamten Prozesses',
-        '1-zu-1 Deutschunterricht mit Muttersprachler',
+        '1:1 Deutschunterricht mit Muttersprachler',
         'Unterstützung bei der Jobsuche in Deutschland'
       ]
     }

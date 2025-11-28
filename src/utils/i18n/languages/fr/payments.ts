@@ -12,8 +12,8 @@ export const payments = {
   loginPrompt: 'Veuillez vous inscrire ou vous connecter pour continuer le processus de paiement.',
   packages: {
     homologation: {
-      title: 'Forfait Basique',
-      description: 'Accompagnement essentiel pour votre reconnaissance de licence',
+      title: 'Forfait Homologation',
+      description: 'Accompagnement complet pour votre homologation',
       features: [
         'Révision et vérification complète des documents',
         'Guide étape par étape pour la candidature',
@@ -22,10 +22,10 @@ export const payments = {
       ]
     },
     languagePrep: {
-      title: 'Forfait Standard',
-      description: 'Accompagnement complet + Préparation examen de langue',
+      title: 'Forfait Homologation & Allemand',
+      description: 'Homologation + Préparation en allemand',
       features: [
-        'Tout le Forfait Basique',
+        'Tout le Forfait Homologation',
         'Préparation FSP & Fachsprachenprüfung',
         'Matériaux de cours d\'allemand médical',
         'Suivi hebdomadaire des progrès'
@@ -33,11 +33,11 @@ export const payments = {
     },
     premiumSupport: {
       title: 'Forfait Premium',
-      description: 'Accompagnement VIP complet jusqu\'à votre réussite',
+      description: 'Assistance personnelle & cours 1:1 d\'allemand',
       features: [
-        'Tout le Forfait Standard',
+        'Tout le Forfait Homologation & Allemand',
         'Mentor personnel tout au long du processus',
-        'Cours d\'allemand 1-à-1 avec professeur natif',
+        'Cours 1:1 d\'allemand avec professeur natif',
         'Aide à la recherche d\'emploi en Allemagne'
       ]
     }
