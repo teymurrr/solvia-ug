@@ -103,5 +103,11 @@ export const payments = {
     networkError: 'Erreur réseau. Veuillez réessayer.',
     selectPackage: 'Veuillez sélectionner un forfait',
     invalidEmail: 'Veuillez entrer une adresse e-mail valide'
+  },
+  popupBlocked: {
+    title: 'Ouvrir la Page de Paiement',
+    description: 'Votre navigateur a bloqué l\'ouverture automatique de la page de paiement. Cliquez sur le bouton ci-dessous pour continuer.',
+    openPayment: 'Ouvrir la Page de Paiement',
+    cancel: 'Annuler'
   }
 };
