@@ -11,7 +11,7 @@ export const wizard = {
     subtitle: 'Select your target country'
   },
   studyCountry: {
-    title: 'In which country did you study medicine?',
+    title: 'In which country did you obtain your medical degree?',
     subtitle: 'Just choose one country',
     placeholder: 'Select your country...'
   },
