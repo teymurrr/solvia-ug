@@ -2,8 +2,6 @@
 import { lazy, Suspense, useState, useEffect } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import ProtectedRoute from "@/components/ProtectedRoute";
-import AdminRoute from "@/components/AdminRoute";
-import OwnerRoute from "@/components/OwnerRoute";
 import { useAuth } from "@/contexts/AuthContext";
 
 // Simple loading component
@@ -22,8 +20,6 @@ const Terms = lazy(() => import("@/pages/Terms"));
 const Impressum = lazy(() => import("@/pages/Impressum"));
 const EmployersLanding = lazy(() => import("@/pages/EmployersLanding"));
 const Blog = lazy(() => import("@/pages/Blog"));
-const BlogDetail = lazy(() => import("@/pages/BlogDetail"));
-const ForDoctors = lazy(() => import("@/pages/ForDoctors"));
 const VisaInfo = lazy(() => import("@/pages/VisaInfo"));
 
 // Auth pages - import individually instead of bundling
@@ -32,17 +28,11 @@ const ProfessionalSignup = lazy(() => import("@/pages/ProfessionalSignup"));
 const InstitutionSignup = lazy(() => import("@/pages/InstitutionSignup"));
 const Login = lazy(() => import("@/pages/Login"));
 const EmailConfirmationRequired = lazy(() => import("@/pages/EmailConfirmationRequired"));
-const AuthCallback = lazy(() => import("@/pages/AuthCallback"));
 
 // Dashboard pages
 const ProfessionalDashboard = lazy(() => import("@/pages/ProfessionalDashboard"));
 const InstitutionDashboard = lazy(() => import("@/pages/InstitutionDashboard"));
 
-// Admin pages - blog management
-const AdminBlogList = lazy(() => import("@/pages/admin/BlogList"));
-const BlogEditor = lazy(() => import("@/pages/admin/BlogEditor"));
-const AdminManagement = lazy(() => import("@/pages/admin/AdminManagement"));
-const UsersManagement = lazy(() => import("@/pages/admin/UsersManagement"));
 
 // Other pages - load individually as needed
 const SolviaLearning = lazy(() => import("@/pages/SolviaLearning"));
@@ -52,8 +42,6 @@ const NotFound = lazy(() => import("@/pages/NotFound"));
 
 // Vacancy related pages
 const Vacancies = lazy(() => import("@/pages/Vacancies"));
-const VacancyDetail = lazy(() => import("@/pages/VacancyDetail"));
-const VacancyApply = lazy(() => import("@/pages/VacancyApply"));
 
 // Messaging page
 const Messages = lazy(() => import("@/pages/Messages"));
@@ -101,7 +89,6 @@ const AppRoutes = () => {
       <Routes>
         <Route path="/" element={renderHomePage()} />
         <Route path="/home" element={<Index />} />
-        <Route path="/for-doctors" element={<ForDoctors />} />
         <Route path="/visa-info" element={<VisaInfo />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
@@ -110,53 +97,6 @@ const AppRoutes = () => {
         <Route path="/impressum" element={<Impressum />} />
         <Route path="/employers" element={<EmployersLanding />} />
         <Route path="/blog" element={<Blog />} />
-        <Route path="/blog/:id" element={<BlogDetail />} />
-        
-        {/* Admin blog management routes */}
-        <Route
-          path="/admin/blog"
-          element={
-            <AdminRoute>
-              <AdminBlogList />
-            </AdminRoute>
-          }
-        />
-        <Route
-          path="/admin/blog/new"
-          element={
-            <AdminRoute>
-              <BlogEditor />
-            </AdminRoute>
-          }
-        />
-        <Route
-          path="/admin/blog/edit/:id"
-          element={
-            <AdminRoute>
-              <BlogEditor />
-            </AdminRoute>
-          }
-        />
-        
-        {/* Owner-only admin management route */}
-        <Route
-          path="/admin/manage-admins"
-          element={
-            <OwnerRoute>
-              <AdminManagement />
-            </OwnerRoute>
-          }
-        />
-        
-        {/* Admin users management route */}
-        <Route
-          path="/admin/users"
-          element={
-            <AdminRoute>
-              <UsersManagement />
-            </AdminRoute>
-          }
-        />
         
         {/* Auth routes */}
         <Route path="/signup" element={<Signup />} />
@@ -164,24 +104,11 @@ const AppRoutes = () => {
         <Route path="/signup/institution" element={<InstitutionSignup />} />
         <Route path="/login" element={<Login />} />
         <Route path="/confirm-email" element={<EmailConfirmationRequired />} />
-        <Route path="/auth/callback" element={<AuthCallback />} />
-        
-        {/* Make sure we have a wildcard handler for the auth paths */}
-        <Route path="/auth/*" element={<AuthCallback />} />
         
         <Route path="/learning" element={<SolviaLearning />} />
 
         {/* Vacancy routes */}
         <Route path="/vacancies" element={<Vacancies />} />
-        <Route path="/vacancies/:id" element={<VacancyDetail />} />
-        <Route
-          path="/vacancies/:id/apply"
-          element={
-            <ProtectedRoute userType="professional">
-              <VacancyApply />
-            </ProtectedRoute>
-          }
-        />
 
         {/* Protected routes */}
         <Route
