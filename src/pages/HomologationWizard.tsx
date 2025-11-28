@@ -11,7 +11,7 @@ import { saveWizardDataToProfile } from '@/services/wizardProfileService';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 
-type WizardStep = 'welcome' | 'country' | 'doctor-type' | 'documents' | 'language' | 'firstName' | 'lastName' | 'email' | 'password';
+type WizardStep = 'country' | 'doctor-type' | 'documents' | 'language' | 'firstName' | 'lastName' | 'email' | 'password';
 
 interface WizardData {
   targetCountry?: string;
@@ -30,7 +30,7 @@ const HomologationWizard = () => {
   const navigate = useNavigate();
   const { user, isLoggedIn, signUp } = useAuth();
   const { toast } = useToast();
-  const [currentStep, setCurrentStep] = useState<WizardStep>('welcome');
+  const [currentStep, setCurrentStep] = useState<WizardStep>('country');
   const [wizardData, setWizardData] = useState<WizardData>({});
   const [isSaving, setIsSaving] = useState(false);
   const [privacyConsent, setPrivacyConsent] = useState(false);
@@ -57,10 +57,6 @@ const HomologationWizard = () => {
   ];
 
   const getLanguageLevels = () => ['A1', 'A2', 'B1', 'B2', 'C1', t.wizard.language.dontKnow];
-
-  const handleStart = () => {
-    setCurrentStep('country');
-  };
 
   const handleCountrySelect = (countryId: string) => {
     setSelectedTargetCountry(countryId);
@@ -167,7 +163,7 @@ const HomologationWizard = () => {
   };
 
   const handleBack = () => {
-    const stepOrder: WizardStep[] = ['welcome', 'country', 'doctor-type', 'documents', 'language', 'firstName', 'lastName', 'email', 'password'];
+    const stepOrder: WizardStep[] = ['country', 'doctor-type', 'documents', 'language', 'firstName', 'lastName', 'email', 'password'];
     const currentIndex = stepOrder.indexOf(currentStep);
     if (currentIndex > 0) {
       setCurrentStep(stepOrder[currentIndex - 1]);
@@ -178,85 +174,64 @@ const HomologationWizard = () => {
     <MainLayout>
       <div className="min-h-screen bg-gradient-to-br from-primary/5 via-accent/5 to-background py-12 md:py-20">
         <div className="container mx-auto px-4 max-w-4xl">
-          {/* Welcome Screen */}
-          {currentStep === 'welcome' && (
+          {/* Country Selection - Combined with welcome message */}
+          {currentStep === 'country' && (
             <Card className="border-2 shadow-xl animate-in fade-in-50 duration-500">
-              <CardHeader className="text-center space-y-4 pb-6">
-                <div className="mx-auto w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center">
-                  <GraduationCap className="h-10 w-10 text-primary" />
+              <CardHeader className="text-center space-y-4 pb-4">
+                <div className="mx-auto w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center">
+                  <GraduationCap className="h-8 w-8 text-primary" />
                 </div>
-                <CardTitle className="text-3xl md:text-4xl font-bold">
+                <CardTitle className="text-2xl md:text-3xl font-bold">
                   {t.wizard.welcome.title}
                 </CardTitle>
-                <CardDescription className="text-lg md:text-xl">
+                <CardDescription className="text-base md:text-lg">
                   {t.wizard.welcome.subtitle}
                 </CardDescription>
               </CardHeader>
-              <CardContent className="space-y-6 pb-8">
-                <div className="bg-gradient-to-br from-primary/10 via-accent/10 to-primary/5 p-6 rounded-xl border-2 border-primary/20">
-                  <h3 className="text-xl md:text-2xl font-bold text-center mb-3 text-primary">
+              <CardContent className="space-y-6">
+                {/* Free Guide Banner */}
+                <div className="bg-gradient-to-br from-primary/10 via-accent/10 to-primary/5 p-4 rounded-xl border border-primary/20">
+                  <h3 className="text-lg font-bold text-center text-primary">
                     🎁 {t.wizard.welcome.freeGuideTitle}
                   </h3>
-                  <p className="text-center text-foreground/80">
+                  <p className="text-center text-sm text-foreground/80 mt-1">
                     {t.wizard.welcome.freeGuideDescription}
                   </p>
                 </div>
-                <div className="flex justify-center">
-                  <Button 
-                    size="lg" 
-                    onClick={handleStart}
-                    className="text-lg px-12 py-6 h-auto"
-                  >
-                    {t.wizard.welcome.start}
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          )}
 
-          {/* Country Selection - Combined target and study country */}
-          {currentStep === 'country' && (
-            <Card className="border-2 shadow-xl animate-in fade-in-50 duration-500">
-              <CardHeader className="text-center space-y-2">
-                <div className="mx-auto w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-2">
-                  <Globe className="h-8 w-8 text-primary" />
-                </div>
-                <CardTitle className="text-2xl md:text-3xl font-bold">
-                  {t.wizard.targetCountry.title}
-                </CardTitle>
-                <CardDescription className="text-base md:text-lg">
-                  {t.wizard.targetCountry.subtitle}
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                {/* Target Country Selection */}
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                  {countries.map((country) => (
-                    <Button
-                      key={country.id}
-                      variant={selectedTargetCountry === country.id ? "default" : "outline"}
-                      size="lg"
-                      className={`flex flex-col items-center justify-center h-auto py-4 px-3 transition-all ${
-                        selectedTargetCountry === country.id 
-                          ? 'ring-2 ring-primary ring-offset-2' 
-                          : 'hover:bg-primary/5 hover:border-primary'
-                      }`}
-                      onClick={() => handleCountrySelect(country.id)}
-                    >
-                      <span className="text-3xl mb-2">{country.flag}</span>
-                      <span className="font-medium text-sm">{t.wizard.countries[country.id as keyof typeof t.wizard.countries]}</span>
-                    </Button>
-                  ))}
+                {/* Target Country Question */}
+                <div className="pt-2">
+                  <h3 className="text-xl font-semibold text-center mb-4">
+                    {t.wizard.targetCountry.title}
+                  </h3>
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                    {countries.map((country) => (
+                      <Button
+                        key={country.id}
+                        variant={selectedTargetCountry === country.id ? "default" : "outline"}
+                        size="lg"
+                        className={`flex flex-col items-center justify-center h-auto py-4 px-3 transition-all ${
+                          selectedTargetCountry === country.id 
+                            ? 'ring-2 ring-primary ring-offset-2' 
+                            : 'hover:bg-primary/5 hover:border-primary'
+                        }`}
+                        onClick={() => handleCountrySelect(country.id)}
+                      >
+                        <span className="text-3xl mb-2">{country.flag}</span>
+                        <span className="font-medium text-sm">{t.wizard.countries[country.id as keyof typeof t.wizard.countries]}</span>
+                      </Button>
+                    ))}
+                  </div>
                 </div>
 
                 {/* Study Country Selection - shown after target country is selected */}
                 {selectedTargetCountry && (
-                  <div className="pt-6 border-t border-border space-y-4 animate-in fade-in-50 duration-300">
+                  <div className="pt-4 border-t border-border space-y-4 animate-in fade-in-50 duration-300">
                     <div className="text-center">
                       <h3 className="text-xl font-semibold text-foreground mb-1">
                         {t.wizard.studyCountry.title}
                       </h3>
-                      <p className="text-muted-foreground">
+                      <p className="text-muted-foreground text-sm">
                         {t.wizard.studyCountry.subtitle}
                       </p>
                     </div>
@@ -274,15 +249,6 @@ const HomologationWizard = () => {
                     </Select>
                   </div>
                 )}
-
-                <Button
-                  variant="ghost"
-                  onClick={handleBack}
-                  className="w-full mt-4"
-                >
-                  <ArrowLeft className="mr-2 h-4 w-4" />
-                  {t.wizard.back}
-                </Button>
               </CardContent>
             </Card>
           )}
