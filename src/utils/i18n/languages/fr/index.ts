@@ -22,6 +22,7 @@ import { pathToSuccess } from './pathToSuccess';
 import { payments } from './payments';
 import { visa } from './visa';
 import { wizard } from './wizard';
+import { countrySelection } from './countrySelection';
 
 export const fr = {
   hero,
@@ -46,5 +47,6 @@ export const fr = {
   pathToSuccess,
   payments,
   visa,
-  wizard
+  wizard,
+  countrySelection
 };

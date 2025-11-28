@@ -25,6 +25,7 @@ import { pathToSuccess } from './pathToSuccess';
 import { payments } from './payments';
 import { visa } from './visa';
 import { wizard } from './wizard';
+import { countrySelection } from './countrySelection';
 
 export const es = {
   hero,
@@ -52,5 +53,6 @@ export const es = {
   pathToSuccess,
   payments,
   visa,
-  wizard
+  wizard,
+  countrySelection
 };
