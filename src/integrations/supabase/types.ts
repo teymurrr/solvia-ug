@@ -418,6 +418,54 @@ export type Database = {
           },
         ]
       }
+      leads: {
+        Row: {
+          converted_at: string | null
+          created_at: string | null
+          doctor_type: string | null
+          email: string
+          first_name: string | null
+          id: string
+          language_level: string | null
+          last_name: string | null
+          source: string | null
+          status: string | null
+          study_country: string | null
+          target_country: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          converted_at?: string | null
+          created_at?: string | null
+          doctor_type?: string | null
+          email: string
+          first_name?: string | null
+          id?: string
+          language_level?: string | null
+          last_name?: string | null
+          source?: string | null
+          status?: string | null
+          study_country?: string | null
+          target_country?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          converted_at?: string | null
+          created_at?: string | null
+          doctor_type?: string | null
+          email?: string
+          first_name?: string | null
+          id?: string
+          language_level?: string | null
+          last_name?: string | null
+          source?: string | null
+          status?: string | null
+          study_country?: string | null
+          target_country?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       learning_form_submissions: {
         Row: {
           country: string
