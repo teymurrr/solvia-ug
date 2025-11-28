@@ -13,6 +13,12 @@ export const payments = {
   emailLabel: 'E-Mail-Adresse',
   emailPlaceholder: 'ihre.email@beispiel.de',
   emailHint: 'Wir senden Ihre Quittung und Zugangsdaten an diese E-Mail',
+  languageNames: {
+    german: 'Deutsch',
+    spanish: 'Spanisch',
+    italian: 'Italienisch',
+    french: 'Französisch',
+  },
   packages: {
     homologation: {
       title: 'Homologations-Paket',
@@ -25,23 +31,25 @@ export const payments = {
       ]
     },
     languagePrep: {
-      title: 'Homologation & Deutsch Paket',
-      description: 'Homologation + Deutsch-Sprachvorbereitung',
+      titleBase: 'Homologation &',
+      descriptionBase: 'Homologation +',
+      descriptionEnd: 'Sprachvorbereitung',
       features: [
         'Alles aus dem Homologations-Paket',
-        'FSP & Fachsprachenprüfung Vorbereitung',
-        'Medizinisches Deutsch Kursmaterialien',
+        'Fachsprachenprüfung Vorbereitung',
+        'Medizinische Sprachkursmaterialien',
         'Wöchentliche Fortschritts-Check-ins'
       ]
     },
     premiumSupport: {
       title: 'Premium-Paket',
-      description: 'Persönliche Betreuung & 1:1 Deutschunterricht',
+      descriptionBase: 'Persönliche Betreuung & 1:1',
+      descriptionEnd: 'Unterricht',
       features: [
-        'Alles aus dem Homologation & Deutsch Paket',
+        'Alles aus dem Homologation & Sprach Paket',
         'Persönlicher Mentor während des gesamten Prozesses',
-        '1:1 Deutschunterricht mit Muttersprachler',
-        'Unterstützung bei der Jobsuche in Deutschland'
+        '1:1 Sprachunterricht mit Muttersprachler',
+        'Unterstützung bei der Jobsuche'
       ]
     }
   },

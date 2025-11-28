@@ -69,6 +69,19 @@ const getCountryFlag = (country: string | null): string => {
   return flags[country || ''] || '🌍';
 };
 
+// Get the language name based on target country
+const getLanguageForCountry = (country: string | null, t: any): string => {
+  const languages: Record<string, string> = {
+    germany: t?.payments?.languageNames?.german || 'German',
+    austria: t?.payments?.languageNames?.german || 'German',
+    spain: t?.payments?.languageNames?.spanish || 'Spanish',
+    italy: t?.payments?.languageNames?.italian || 'Italian',
+    france: t?.payments?.languageNames?.french || 'French',
+  };
+  
+  return languages[country || ''] || (t?.payments?.languageNames?.german || 'German');
+};
+
 const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
   const { t, currentLanguage } = useLanguage();
   const [selectedPackage, setSelectedPackage] = useState<ProductType | null>(null);
@@ -137,24 +150,33 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
   ];
 
   const getPackageTitle = (id: ProductType) => {
+    const languageName = getLanguageForCountry(targetCountry, t);
     switch (id) {
       case 'homologation':
         return t?.payments?.packages?.homologation?.title || 'Homologation Package';
       case 'language_prep':
-        return t?.payments?.packages?.languagePrep?.title || 'Homologation & German Package';
+        // Dynamic language name based on country
+        const langPrepBase = t?.payments?.packages?.languagePrep?.titleBase || 'Homologation &';
+        return `${langPrepBase} ${languageName}`;
       case 'premium_support':
         return t?.payments?.packages?.premiumSupport?.title || 'Premium Package';
     }
   };
 
   const getPackageDescription = (id: ProductType) => {
+    const languageName = getLanguageForCountry(targetCountry, t);
     switch (id) {
       case 'homologation':
         return t?.payments?.packages?.homologation?.description || 'Complete homologation support';
       case 'language_prep':
-        return t?.payments?.packages?.languagePrep?.description || 'Homologation + German language preparation';
+        // Dynamic language name in description
+        const descBase = t?.payments?.packages?.languagePrep?.descriptionBase || 'Homologation +';
+        const descEnd = t?.payments?.packages?.languagePrep?.descriptionEnd || 'language preparation';
+        return `${descBase} ${languageName} ${descEnd}`;
       case 'premium_support':
-        return t?.payments?.packages?.premiumSupport?.description || 'Personal assistance & 1:1 German lessons';
+        const premiumBase = t?.payments?.packages?.premiumSupport?.descriptionBase || 'Personal assistance & 1:1';
+        const premiumEnd = t?.payments?.packages?.premiumSupport?.descriptionEnd || 'lessons';
+        return `${premiumBase} ${languageName} ${premiumEnd}`;
     }
   };
 
