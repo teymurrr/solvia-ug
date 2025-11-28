@@ -598,7 +598,7 @@ const HomologationWizard = () => {
                     className="w-full text-lg h-auto py-4"
                     onClick={handleChoosePlan}
                   >
-                    {t.wizard.summary?.choosePlanAndPay || 'Choose package & pay'}
+                    {t.wizard.summary?.choosePlan || 'Choose package'}
                   </Button>
                   <Button
                     variant="outline"

@@ -12,8 +12,8 @@ export const payments = {
   loginPrompt: 'Please sign up or log in to continue with the payment process.',
   packages: {
     homologation: {
-      title: 'Basic Package',
-      description: 'Essential support for your license recognition',
+      title: 'Homologation Package',
+      description: 'Complete homologation support',
       features: [
         'Complete document review & verification',
         'Step-by-step application guidance',
@@ -22,10 +22,10 @@ export const payments = {
       ]
     },
     languagePrep: {
-      title: 'Standard Package',
-      description: 'Full support + Language exam preparation',
+      title: 'Homologation & German Package',
+      description: 'Homologation + German language preparation',
       features: [
-        'Everything in Basic Package',
+        'Everything in Homologation Package',
         'FSP & Fachsprachenprüfung preparation',
         'Medical German course materials',
         'Weekly progress check-ins'
@@ -33,11 +33,11 @@ export const payments = {
     },
     premiumSupport: {
       title: 'Premium Package',
-      description: 'Complete VIP support until you succeed',
+      description: 'Personal assistance & 1:1 German lessons',
       features: [
-        'Everything in Standard Package',
+        'Everything in Homologation & German Package',
         'Personal mentor throughout the process',
-        '1-on-1 German lessons with native teacher',
+        '1:1 German lessons with native teacher',
         'Job placement assistance in Germany'
       ]
     }

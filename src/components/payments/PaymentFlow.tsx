@@ -84,9 +84,9 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
   const getPackageTitle = (id: ProductType) => {
     switch (id) {
       case 'homologation':
-        return t?.payments?.packages?.homologation?.title || 'Basic Package';
+        return t?.payments?.packages?.homologation?.title || 'Homologation Package';
       case 'language_prep':
-        return t?.payments?.packages?.languagePrep?.title || 'Standard Package';
+        return t?.payments?.packages?.languagePrep?.title || 'Homologation & German Package';
       case 'premium_support':
         return t?.payments?.packages?.premiumSupport?.title || 'Premium Package';
     }
@@ -95,11 +95,11 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
   const getPackageDescription = (id: ProductType) => {
     switch (id) {
       case 'homologation':
-        return t?.payments?.packages?.homologation?.description || 'Full homologation support';
+        return t?.payments?.packages?.homologation?.description || 'Complete homologation support';
       case 'language_prep':
-        return t?.payments?.packages?.languagePrep?.description || 'With language exam preparation';
+        return t?.payments?.packages?.languagePrep?.description || 'Homologation + German language preparation';
       case 'premium_support':
-        return t?.payments?.packages?.premiumSupport?.description || 'Complete personalized support';
+        return t?.payments?.packages?.premiumSupport?.description || 'Personal assistance & 1:1 German lessons';
     }
   };
 

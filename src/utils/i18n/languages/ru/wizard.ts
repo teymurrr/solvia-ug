@@ -81,7 +81,7 @@ export const wizard = {
     professionalType: 'Тип профессионала',
     languageLevel: 'Уровень языка',
     estimatedPrice: 'Ориентировочная цена',
-    choosePlanAndPay: 'Выбрать пакет и оплатить',
+    choosePlan: 'Выбрать пакет',
     bookConsultation: 'Записаться на бесплатную консультацию'
   },
   back: 'Назад',
