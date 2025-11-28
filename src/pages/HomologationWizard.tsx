@@ -115,7 +115,27 @@ const HomologationWizard = () => {
     setCurrentStep('email');
   };
 
-  const handleEmailSubmit = (email: string) => {
+  const handleEmailSubmit = async (email: string) => {
+    // Capture lead data to database (fire and forget - don't block UI)
+    try {
+      await supabase.functions.invoke('capture-lead', {
+        body: {
+          email,
+          firstName: wizardData.firstName,
+          lastName: wizardData.lastName,
+          targetCountry: wizardData.targetCountry,
+          studyCountry: wizardData.studyCountry,
+          doctorType: wizardData.doctorType,
+          languageLevel: wizardData.languageLevel,
+          source: 'wizard'
+        }
+      });
+      console.log('Lead captured successfully');
+    } catch (error) {
+      // Log error but don't block the user flow
+      console.error('Lead capture error:', error);
+    }
+    
     setWizardData({ ...wizardData, email });
     setCurrentStep('summary');
   };
