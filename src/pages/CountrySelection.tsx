@@ -98,15 +98,17 @@ const CountrySelection = () => {
             </div>
 
             {/* Not Sure Section */}
-            <div className="text-center py-8 border-t border-border/50">
-              <p className="text-muted-foreground mb-4 text-lg">
+            <div className="bg-card border border-border rounded-2xl p-8 md:p-12 text-center max-w-2xl mx-auto shadow-sm">
+              <h2 className="text-2xl md:text-3xl font-semibold text-foreground mb-4">
                 {t?.countrySelection?.notSure || "Not sure which country is right for you?"}
+              </h2>
+              <p className="text-muted-foreground mb-6 text-base md:text-lg">
+                {t?.countrySelection?.notSureSubtitle || "Our team can help you choose the best destination based on your profile and goals."}
               </p>
               <Button 
-                variant="outline" 
                 size="lg"
                 onClick={handleScheduleCall}
-                className="gap-2"
+                className="gap-2 h-14 px-8 text-lg font-semibold"
               >
                 <Calendar className="h-5 w-5" />
                 {t?.countrySelection?.scheduleCall || "Schedule a free call with us"}
