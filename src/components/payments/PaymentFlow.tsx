@@ -7,7 +7,7 @@ import { useLanguage } from '@/hooks/useLanguage';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { Check, Shield, Clock, BookOpen, Users, GraduationCap, Star } from 'lucide-react';
-
+import BlackFridayBanner from './BlackFridayBanner';
 type ProductType = 'homologation' | 'language_prep' | 'premium_support';
 
 interface PaymentFlowProps {
@@ -265,6 +265,9 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
 
   return (
     <div className="max-w-5xl mx-auto space-y-8">
+      {/* Black Friday Banner */}
+      <BlackFridayBanner />
+      
       {/* Country Indicator */}
       {targetCountry && (
         <div className="text-center">

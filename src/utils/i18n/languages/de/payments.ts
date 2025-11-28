@@ -1,4 +1,10 @@
 export const payments = {
+  blackFriday: {
+    label: 'Black Friday',
+    title: '20% RABATT auf alle Pakete!',
+    subtitle: 'Code verwenden',
+    validUntil: 'Gültig bis 6. Dez',
+  },
   title: 'Zahlung',
   pageTitle: 'Starten Sie Ihre Medizinische Karriere in Deutschland',
   pageDescription: 'Schließen Sie sich über 500 medizinischen Fachkräften an, die mit unserer Expertenbegleitung erfolgreich ihre deutsche Approbation erhalten haben',
