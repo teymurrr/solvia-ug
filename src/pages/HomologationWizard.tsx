@@ -125,8 +125,8 @@ const HomologationWizard = () => {
     navigate('/homologation-payment');
   };
 
-  const handleCreateFreeAccount = () => {
-    setCurrentStep('password');
+  const handleBookConsultation = () => {
+    window.open('https://calendly.com/david-rehrl-thesolvia/30min', '_blank');
   };
 
   const handlePasswordSubmit = async (password: string) => {
@@ -604,9 +604,9 @@ const HomologationWizard = () => {
                     variant="outline"
                     size="lg"
                     className="w-full text-lg h-auto py-4"
-                    onClick={handleCreateFreeAccount}
+                    onClick={handleBookConsultation}
                   >
-                    {t.wizard.summary?.createFreeAccount || 'Create free account'}
+                    {t.wizard.summary?.bookConsultation || 'Book a free consultation'}
                   </Button>
                 </div>
 
