@@ -189,16 +189,6 @@ const HomologationWizard = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
-                {/* Free Guide Banner */}
-                <div className="bg-gradient-to-br from-primary/10 via-accent/10 to-primary/5 p-4 rounded-xl border border-primary/20">
-                  <h3 className="text-lg font-bold text-center text-primary">
-                    🎁 {t.wizard.welcome.freeGuideTitle}
-                  </h3>
-                  <p className="text-center text-sm text-foreground/80 mt-1">
-                    {t.wizard.welcome.freeGuideDescription}
-                  </p>
-                </div>
-
                 {/* Target Country Question */}
                 <div className="pt-2">
                   <h3 className="text-xl font-semibold text-center mb-4">
