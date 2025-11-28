@@ -66,6 +66,7 @@ const PaymentSuccess = lazy(() => import("@/pages/PaymentSuccess"));
 const PaymentCancelled = lazy(() => import("@/pages/PaymentCancelled"));
 const HomologationPayment = lazy(() => import("@/pages/HomologationPayment"));
 const HomologationWizard = lazy(() => import("@/pages/HomologationWizard"));
+const CountrySelection = lazy(() => import("@/pages/CountrySelection"));
 
 const AppRoutes = () => {
   const { isLoggedIn, userType } = useAuth();
@@ -239,6 +240,7 @@ const AppRoutes = () => {
         <Route path="/payment-cancelled" element={<PaymentCancelled />} />
         <Route path="/homologation-payment" element={<HomologationPayment />} />
         <Route path="/homologation-wizard" element={<HomologationWizard />} />
+        <Route path="/homologation" element={<CountrySelection />} />
         
         {/* Fallback route */}
         <Route path="*" element={<NotFound />} />
