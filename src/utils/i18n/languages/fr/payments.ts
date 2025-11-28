@@ -9,7 +9,10 @@ export const payments = {
   secure: 'Paiement Sécurisé',
   support: 'Support 24h',
   trusted: 'Approuvé par 500+',
-  loginPrompt: 'Veuillez vous inscrire ou vous connecter pour continuer le processus de paiement.',
+  packagesFor: 'Forfaits pour',
+  emailLabel: 'Adresse E-mail',
+  emailPlaceholder: 'votre.email@exemple.fr',
+  emailHint: 'Nous enverrons votre reçu et vos informations d\'accès à cet e-mail',
   packages: {
     homologation: {
       title: 'Forfait Homologation',
@@ -84,6 +87,7 @@ export const payments = {
     sessionNotFound: 'Session de paiement non trouvée',
     verificationFailed: 'Vérification du paiement échouée',
     networkError: 'Erreur réseau. Veuillez réessayer.',
-    selectPackage: 'Veuillez sélectionner un forfait'
+    selectPackage: 'Veuillez sélectionner un forfait',
+    invalidEmail: 'Veuillez entrer une adresse e-mail valide'
   }
 };

@@ -9,7 +9,10 @@ export const payments = {
   secure: 'Безопасная Оплата',
   support: 'Поддержка 24ч',
   trusted: 'Доверяют 500+',
-  loginPrompt: 'Пожалуйста, зарегистрируйтесь или войдите, чтобы продолжить процесс оплаты.',
+  packagesFor: 'Пакеты для',
+  emailLabel: 'Электронная почта',
+  emailPlaceholder: 'ваша.почта@пример.ru',
+  emailHint: 'Мы отправим квитанцию и данные доступа на этот адрес',
   packages: {
     homologation: {
       title: 'Пакет Омологация',
@@ -84,6 +87,7 @@ export const payments = {
     sessionNotFound: 'Сессия платежа не найдена',
     verificationFailed: 'Проверка платежа не удалась',
     networkError: 'Ошибка сети. Пожалуйста, попробуйте снова.',
-    selectPackage: 'Пожалуйста, выберите пакет'
+    selectPackage: 'Пожалуйста, выберите пакет',
+    invalidEmail: 'Пожалуйста, введите действительный адрес электронной почты'
   }
 };

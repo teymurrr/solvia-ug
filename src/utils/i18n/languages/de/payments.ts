@@ -9,7 +9,10 @@ export const payments = {
   secure: 'Sichere Zahlung',
   support: '24h Support',
   trusted: 'Vertraut von 500+',
-  loginPrompt: 'Bitte registrieren Sie sich oder melden Sie sich an, um mit dem Zahlungsvorgang fortzufahren.',
+  packagesFor: 'Pakete für',
+  emailLabel: 'E-Mail-Adresse',
+  emailPlaceholder: 'ihre.email@beispiel.de',
+  emailHint: 'Wir senden Ihre Quittung und Zugangsdaten an diese E-Mail',
   packages: {
     homologation: {
       title: 'Homologations-Paket',
@@ -84,6 +87,7 @@ export const payments = {
     sessionNotFound: 'Zahlungssitzung nicht gefunden',
     verificationFailed: 'Zahlungsverifizierung fehlgeschlagen',
     networkError: 'Netzwerkfehler. Bitte versuchen Sie es erneut.',
-    selectPackage: 'Bitte wählen Sie ein Paket'
+    selectPackage: 'Bitte wählen Sie ein Paket',
+    invalidEmail: 'Bitte geben Sie eine gültige E-Mail-Adresse ein'
   }
 };
