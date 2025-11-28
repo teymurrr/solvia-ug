@@ -13,6 +13,12 @@ export const payments = {
   emailLabel: 'Correo Electrónico',
   emailPlaceholder: 'tu.correo@ejemplo.com',
   emailHint: 'Enviaremos tu recibo y detalles de acceso a este correo',
+  languageNames: {
+    german: 'Alemán',
+    spanish: 'Español',
+    italian: 'Italiano',
+    french: 'Francés',
+  },
   packages: {
     homologation: {
       title: 'Paquete Homologación',
@@ -25,23 +31,25 @@ export const payments = {
       ]
     },
     languagePrep: {
-      title: 'Paquete Homologación & Alemán',
-      description: 'Homologación + Preparación de idioma alemán',
+      titleBase: 'Paquete Homologación &',
+      descriptionBase: 'Homologación + preparación de',
+      descriptionEnd: '',
       features: [
         'Todo lo del Paquete Homologación',
-        'Preparación FSP y Fachsprachenprüfung',
-        'Materiales de alemán médico',
+        'Preparación del examen de idioma',
+        'Materiales de idioma médico',
         'Seguimiento semanal de progreso'
       ]
     },
     premiumSupport: {
       title: 'Paquete Premium',
-      description: 'Asistencia personal y clases 1:1 de alemán',
+      descriptionBase: 'Asistencia personal y clases 1:1 de',
+      descriptionEnd: '',
       features: [
-        'Todo lo del Paquete Homologación & Alemán',
+        'Todo lo del Paquete Homologación & Idioma',
         'Mentor personal durante todo el proceso',
-        'Clases 1:1 de alemán con profesor nativo',
-        'Asistencia para encontrar trabajo en Alemania'
+        'Clases 1:1 de idioma con profesor nativo',
+        'Asistencia para encontrar trabajo'
       ]
     }
   },

@@ -13,6 +13,12 @@ export const payments = {
   emailLabel: 'Email Address',
   emailPlaceholder: 'your.email@example.com',
   emailHint: 'We will send your receipt and access details to this email',
+  languageNames: {
+    german: 'German',
+    spanish: 'Spanish',
+    italian: 'Italian',
+    french: 'French',
+  },
   packages: {
     homologation: {
       title: 'Homologation Package',
@@ -25,23 +31,25 @@ export const payments = {
       ]
     },
     languagePrep: {
-      title: 'Homologation & German Package',
-      description: 'Homologation + German language preparation',
+      titleBase: 'Homologation &',
+      descriptionBase: 'Homologation +',
+      descriptionEnd: 'language preparation',
       features: [
         'Everything in Homologation Package',
-        'FSP & Fachsprachenprüfung preparation',
-        'Medical German course materials',
+        'FSP & language exam preparation',
+        'Medical language course materials',
         'Weekly progress check-ins'
       ]
     },
     premiumSupport: {
       title: 'Premium Package',
-      description: 'Personal assistance & 1:1 German lessons',
+      descriptionBase: 'Personal assistance & 1:1',
+      descriptionEnd: 'lessons',
       features: [
-        'Everything in Homologation & German Package',
+        'Everything in Homologation & Language Package',
         'Personal mentor throughout the process',
-        '1:1 German lessons with native teacher',
-        'Job placement assistance in Germany'
+        '1:1 language lessons with native teacher',
+        'Job placement assistance'
       ]
     }
   },
