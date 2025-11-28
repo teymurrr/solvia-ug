@@ -1,4 +1,10 @@
 export const payments = {
+  blackFriday: {
+    label: 'Black Friday',
+    title: '¡20% DE DESCUENTO en todos los paquetes!',
+    subtitle: 'Usa el código',
+    validUntil: 'Válido hasta el 6 de dic',
+  },
   title: 'Pago',
   pageTitle: 'Inicia Tu Carrera Médica en Alemania',
   pageDescription: 'Únete a más de 500 profesionales médicos que obtuvieron exitosamente su licencia alemana con nuestra guía experta',
