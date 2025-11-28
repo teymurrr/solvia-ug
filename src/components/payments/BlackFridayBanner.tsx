@@ -5,8 +5,8 @@ import { Tag, Sparkles } from 'lucide-react';
 const BlackFridayBanner: React.FC = () => {
   const { t } = useLanguage();
   
-  // Check if banner should be shown (until Dec 6, 2024)
-  const endDate = new Date('2024-12-06T23:59:59Z');
+  // Check if banner should be shown (until Dec 6, 2025)
+  const endDate = new Date('2025-12-06T23:59:59Z');
   const now = new Date();
   
   if (now > endDate) {
