@@ -9,7 +9,10 @@ export const payments = {
   secure: 'Secure Payment',
   support: '24h Support',
   trusted: 'Trusted by 500+',
-  loginPrompt: 'Please sign up or log in to continue with the payment process.',
+  packagesFor: 'Packages for',
+  emailLabel: 'Email Address',
+  emailPlaceholder: 'your.email@example.com',
+  emailHint: 'We will send your receipt and access details to this email',
   packages: {
     homologation: {
       title: 'Homologation Package',
@@ -84,6 +87,7 @@ export const payments = {
     sessionNotFound: 'Payment session not found',
     verificationFailed: 'Payment verification failed',
     networkError: 'Network error. Please try again.',
-    selectPackage: 'Please select a package'
+    selectPackage: 'Please select a package',
+    invalidEmail: 'Please enter a valid email address'
   }
 };

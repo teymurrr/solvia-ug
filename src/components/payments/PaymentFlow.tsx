@@ -1,11 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { useLanguage } from '@/hooks/useLanguage';
-import { useAuth } from '@/contexts/AuthContext';
-import { useProtectedAction } from '@/hooks/useProtectedAction';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { Check, Shield, Clock, BookOpen, Users, GraduationCap, Star } from 'lucide-react';
@@ -34,21 +32,78 @@ interface PackageConfig {
   features: string[];
 }
 
+// Country-specific pricing configuration
+const getPricingByCountry = (country: string | null): Record<ProductType, number> => {
+  const isSpain = country === 'spain';
+  
+  return {
+    homologation: isSpain ? 25000 : 75000,      // €250 or €750
+    language_prep: isSpain ? 50000 : 99000,     // €500 or €990
+    premium_support: isSpain ? 129900 : 269900, // €1,299 or €2,699
+  };
+};
+
+const getCountryDisplayName = (country: string | null, t: any): string => {
+  if (!country) return '';
+  
+  const countryNames: Record<string, string> = {
+    germany: t?.wizard?.countries?.germany || 'Germany',
+    austria: t?.wizard?.countries?.austria || 'Austria',
+    spain: t?.wizard?.countries?.spain || 'Spain',
+    italy: t?.wizard?.countries?.italy || 'Italy',
+    france: t?.wizard?.countries?.france || 'France',
+  };
+  
+  return countryNames[country] || country;
+};
+
+const getCountryFlag = (country: string | null): string => {
+  const flags: Record<string, string> = {
+    germany: '🇩🇪',
+    austria: '🇦🇹',
+    spain: '🇪🇸',
+    italy: '🇮🇹',
+    france: '🇫🇷',
+  };
+  
+  return flags[country || ''] || '🌍';
+};
+
 const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
   const { t, currentLanguage } = useLanguage();
-  const { isLoggedIn } = useAuth();
-  const { handleProtectedAction } = useProtectedAction();
   const [selectedPackage, setSelectedPackage] = useState<ProductType | null>(null);
   const [discountCode, setDiscountCode] = useState('');
   const [appliedDiscount, setAppliedDiscount] = useState<DiscountInfo | null>(null);
   const [isValidatingDiscount, setIsValidatingDiscount] = useState(false);
   const [isProcessingPayment, setIsProcessingPayment] = useState(false);
+  const [targetCountry, setTargetCountry] = useState<string | null>(null);
+  const [guestEmail, setGuestEmail] = useState('');
+
+  // Read wizard data from localStorage on mount
+  useEffect(() => {
+    const wizardDataStr = localStorage.getItem('wizardData');
+    if (wizardDataStr) {
+      try {
+        const wizardData = JSON.parse(wizardDataStr);
+        setTargetCountry(wizardData.targetCountry || null);
+        // Pre-fill email if available from wizard
+        if (wizardData.email) {
+          setGuestEmail(wizardData.email);
+        }
+      } catch (e) {
+        console.error('Error parsing wizard data:', e);
+      }
+    }
+  }, []);
+
+  // Get pricing based on selected country
+  const pricing = getPricingByCountry(targetCountry);
 
   const packages: PackageConfig[] = [
     {
       id: 'homologation',
       icon: <Shield className="w-8 h-8" />,
-      price: 119900,
+      price: pricing.homologation,
       features: [
         t?.payments?.packages?.homologation?.features?.[0] || 'Complete document review & verification',
         t?.payments?.packages?.homologation?.features?.[1] || 'Step-by-step application guidance',
@@ -59,10 +114,10 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
     {
       id: 'language_prep',
       icon: <BookOpen className="w-8 h-8" />,
-      price: 139900,
+      price: pricing.language_prep,
       popular: true,
       features: [
-        t?.payments?.packages?.languagePrep?.features?.[0] || 'Everything in Basic Package',
+        t?.payments?.packages?.languagePrep?.features?.[0] || 'Everything in Homologation Package',
         t?.payments?.packages?.languagePrep?.features?.[1] || 'FSP & Fachsprachenprüfung preparation',
         t?.payments?.packages?.languagePrep?.features?.[2] || 'Medical German course materials',
         t?.payments?.packages?.languagePrep?.features?.[3] || 'Weekly progress check-ins',
@@ -71,9 +126,9 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
     {
       id: 'premium_support',
       icon: <GraduationCap className="w-8 h-8" />,
-      price: 259900,
+      price: pricing.premium_support,
       features: [
-        t?.payments?.packages?.premiumSupport?.features?.[0] || 'Everything in Standard Package',
+        t?.payments?.packages?.premiumSupport?.features?.[0] || 'Everything in Homologation & German Package',
         t?.payments?.packages?.premiumSupport?.features?.[1] || 'Personal mentor throughout the process',
         t?.payments?.packages?.premiumSupport?.features?.[2] || '1-on-1 German lessons with native teacher',
         t?.payments?.packages?.premiumSupport?.features?.[3] || 'Job placement assistance in Germany',
@@ -143,44 +198,60 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
     setAppliedDiscount(null);
   };
 
+  const isValidEmail = (email: string) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  };
+
   const handlePayment = async () => {
     if (!selectedPackage) {
       toast.error(t?.payments?.errors?.selectPackage || 'Please select a package');
       return;
     }
 
-    const processPayment = async () => {
-      setIsProcessingPayment(true);
-      try {
-        const { data, error } = await supabase.functions.invoke('create-payment', {
-          body: {
-            productType: selectedPackage,
-            discountCode: appliedDiscount?.code,
-            locale: currentLanguage as 'en' | 'es' | 'de' | 'fr' | 'ru'
-          }
-        });
+    if (!guestEmail || !isValidEmail(guestEmail)) {
+      toast.error(t?.payments?.errors?.invalidEmail || 'Please enter a valid email address');
+      return;
+    }
 
-        if (error) throw error;
-
-        if (data.url) {
-          window.open(data.url, '_blank');
-          onClose?.();
-        } else {
-          throw new Error('No payment URL received');
+    setIsProcessingPayment(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('create-payment', {
+        body: {
+          productType: selectedPackage,
+          targetCountry: targetCountry,
+          customerEmail: guestEmail,
+          discountCode: appliedDiscount?.code,
+          locale: currentLanguage as 'en' | 'es' | 'de' | 'fr' | 'ru'
         }
-      } catch (error: any) {
-        console.error('Payment error:', error);
-        toast.error(error.message || t?.payments?.errors?.general || 'Payment processing failed');
-      } finally {
-        setIsProcessingPayment(false);
-      }
-    };
+      });
 
-    handleProtectedAction(processPayment);
+      if (error) throw error;
+
+      if (data.url) {
+        window.open(data.url, '_blank');
+        onClose?.();
+      } else {
+        throw new Error('No payment URL received');
+      }
+    } catch (error: any) {
+      console.error('Payment error:', error);
+      toast.error(error.message || t?.payments?.errors?.general || 'Payment processing failed');
+    } finally {
+      setIsProcessingPayment(false);
+    }
   };
 
   return (
     <div className="max-w-5xl mx-auto space-y-8">
+      {/* Country Indicator */}
+      {targetCountry && (
+        <div className="text-center">
+          <Badge variant="secondary" className="text-base px-4 py-2">
+            {getCountryFlag(targetCountry)} {t?.payments?.packagesFor || 'Packages for'} {getCountryDisplayName(targetCountry, t)}
+          </Badge>
+        </div>
+      )}
+
       {/* Package Selection */}
       <div className="grid md:grid-cols-3 gap-6">
         {packages.map((pkg) => (
@@ -261,43 +332,64 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
         <Card className="animate-in fade-in-50 duration-300">
           <CardHeader>
             <CardTitle className="text-lg">
-              {t?.payments?.discountCode?.label || 'Discount Code'}
+              {t?.payments?.summary?.title || 'Payment Summary'}
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
+            {/* Email Input for Guest Checkout */}
+            <div className="space-y-2">
+              <label className="text-sm font-medium">
+                {t?.payments?.emailLabel || 'Email Address'} *
+              </label>
+              <Input
+                type="email"
+                placeholder={t?.payments?.emailPlaceholder || 'your.email@example.com'}
+                value={guestEmail}
+                onChange={(e) => setGuestEmail(e.target.value)}
+              />
+              <p className="text-xs text-muted-foreground">
+                {t?.payments?.emailHint || 'We will send your receipt and access details to this email'}
+              </p>
+            </div>
+
             {/* Discount Input */}
-            {!appliedDiscount ? (
-              <div className="flex gap-2">
-                <div className="flex-1">
-                  <Input
-                    placeholder={t?.payments?.discountCode?.placeholder || 'Enter discount code'}
-                    value={discountCode}
-                    onChange={(e) => setDiscountCode(e.target.value.toUpperCase())}
-                    onKeyPress={(e) => e.key === 'Enter' && validateDiscountCode()}
-                  />
+            <div className="space-y-2">
+              <label className="text-sm font-medium">
+                {t?.payments?.discountCode?.label || 'Discount Code'}
+              </label>
+              {!appliedDiscount ? (
+                <div className="flex gap-2">
+                  <div className="flex-1">
+                    <Input
+                      placeholder={t?.payments?.discountCode?.placeholder || 'Enter discount code'}
+                      value={discountCode}
+                      onChange={(e) => setDiscountCode(e.target.value.toUpperCase())}
+                      onKeyPress={(e) => e.key === 'Enter' && validateDiscountCode()}
+                    />
+                  </div>
+                  <Button
+                    onClick={validateDiscountCode}
+                    disabled={!discountCode.trim() || isValidatingDiscount}
+                    variant="outline"
+                  >
+                    {isValidatingDiscount ? '...' : (t?.payments?.discountCode?.apply || 'Apply')}
+                  </Button>
                 </div>
-                <Button
-                  onClick={validateDiscountCode}
-                  disabled={!discountCode.trim() || isValidatingDiscount}
-                  variant="outline"
-                >
-                  {isValidatingDiscount ? '...' : (t?.payments?.discountCode?.apply || 'Apply')}
-                </Button>
-              </div>
-            ) : (
-              <div className="flex items-center justify-between p-3 bg-green-50 border border-green-200 rounded-lg dark:bg-green-950/20 dark:border-green-900">
-                <div className="flex items-center gap-2">
-                  <Check className="w-4 h-4 text-green-600" />
-                  <span className="font-medium text-green-800 dark:text-green-400">{appliedDiscount.code}</span>
-                  <Badge variant="secondary" className="bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-400">
-                    {appliedDiscount.description}
-                  </Badge>
+              ) : (
+                <div className="flex items-center justify-between p-3 bg-green-50 border border-green-200 rounded-lg dark:bg-green-950/20 dark:border-green-900">
+                  <div className="flex items-center gap-2">
+                    <Check className="w-4 h-4 text-green-600" />
+                    <span className="font-medium text-green-800 dark:text-green-400">{appliedDiscount.code}</span>
+                    <Badge variant="secondary" className="bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-400">
+                      {appliedDiscount.description}
+                    </Badge>
+                  </div>
+                  <Button variant="ghost" size="sm" onClick={removeDiscount}>
+                    {t?.payments?.discountCode?.remove || 'Remove'}
+                  </Button>
                 </div>
-                <Button variant="ghost" size="sm" onClick={removeDiscount}>
-                  {t?.payments?.discountCode?.remove || 'Remove'}
-                </Button>
-              </div>
-            )}
+              )}
+            </div>
 
             {/* Payment Summary */}
             <div className="bg-muted/50 rounded-lg p-4 space-y-2">
@@ -324,7 +416,7 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
             {/* Payment Button */}
             <Button
               onClick={handlePayment}
-              disabled={isProcessingPayment || !selectedPackage}
+              disabled={isProcessingPayment || !selectedPackage || !guestEmail || !isValidEmail(guestEmail)}
               className="w-full py-6 text-lg"
               size="lg"
             >
@@ -349,16 +441,6 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
                 <span>{t?.payments?.trusted || 'Trusted by 1000+'}</span>
               </div>
             </div>
-          </CardContent>
-        </Card>
-      )}
-
-      {!isLoggedIn && (
-        <Card className="border-amber-200 bg-amber-50 dark:bg-amber-950/20 dark:border-amber-900">
-          <CardContent className="pt-6">
-            <p className="text-sm text-amber-800 dark:text-amber-400 text-center">
-              {t?.payments?.loginPrompt || 'Please sign up or log in to continue with the payment process.'}
-            </p>
           </CardContent>
         </Card>
       )}

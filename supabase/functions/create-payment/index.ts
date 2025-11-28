@@ -9,9 +9,36 @@ const corsHeaders = {
 
 interface PaymentRequest {
   productType: 'homologation' | 'language_prep' | 'premium_support';
+  targetCountry?: string;
+  customerEmail?: string;
   discountCode?: string;
   locale?: 'en' | 'es' | 'de' | 'fr' | 'ru';
 }
+
+// Country-specific pricing configuration (amounts in cents)
+const getProductConfig = (productType: string, targetCountry: string | undefined) => {
+  const isSpain = targetCountry === 'spain';
+  
+  const configs: Record<string, { name: string; description: string; amount: number }> = {
+    homologation: {
+      name: 'Homologation Package',
+      description: `Complete homologation support for ${isSpain ? 'Spain' : 'Germany/Austria'}`,
+      amount: isSpain ? 25000 : 75000, // €250 or €750
+    },
+    language_prep: {
+      name: 'Homologation & German Package',
+      description: `Homologation + German language preparation for ${isSpain ? 'Spain' : 'Germany/Austria'}`,
+      amount: isSpain ? 50000 : 99000, // €500 or €990
+    },
+    premium_support: {
+      name: 'Premium Package',
+      description: `Personal assistance & 1:1 German lessons for ${isSpain ? 'Spain' : 'Germany/Austria'}`,
+      amount: isSpain ? 129900 : 269900, // €1,299 or €2,699
+    }
+  };
+  
+  return configs[productType];
+};
 
 serve(async (req) => {
   if (req.method === "OPTIONS") {
@@ -26,43 +53,41 @@ serve(async (req) => {
   try {
     console.log("🔍 [CREATE-PAYMENT] Function started");
 
-    // Get authenticated user
-    const authHeader = req.headers.get("Authorization")!;
-    const token = authHeader.replace("Bearer ", "");
-    const { data } = await supabaseClient.auth.getUser(token);
-    const user = data.user;
-    if (!user?.email) throw new Error("User not authenticated or email not available");
+    const { productType, targetCountry, customerEmail, discountCode, locale = 'en' }: PaymentRequest = await req.json();
 
-    console.log("✅ [CREATE-PAYMENT] User authenticated:", user.email);
+    // Validate required fields
+    if (!customerEmail) {
+      throw new Error("Customer email is required");
+    }
 
-    const { productType, discountCode, locale = 'en' }: PaymentRequest = await req.json();
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(customerEmail)) {
+      throw new Error("Invalid email format");
+    }
+
+    console.log("✅ [CREATE-PAYMENT] Processing payment for:", customerEmail, "Country:", targetCountry);
+
+    // Try to get authenticated user (optional)
+    let userId: string | null = null;
+    const authHeader = req.headers.get("Authorization");
+    if (authHeader) {
+      const token = authHeader.replace("Bearer ", "");
+      const { data } = await supabaseClient.auth.getUser(token);
+      userId = data.user?.id || null;
+    }
 
     // Initialize Stripe
     const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY") || "", {
       apiVersion: "2025-08-27.basil",
     });
 
-    // Product configuration - prices need to be created in Stripe
-    const productConfig: Record<string, { priceId: string; amount: number }> = {
-      homologation: {
-        priceId: "price_1SAH082L7RuO91AufX32666C", // Basic Package €1199
-        amount: 119900,
-      },
-      language_prep: {
-        priceId: "price_language_prep", // Standard Package €1399 - needs Stripe price
-        amount: 139900,
-      },
-      premium_support: {
-        priceId: "price_premium_support", // Premium Package €2599 - needs Stripe price
-        amount: 259900,
-      }
-    };
-
-    if (!productConfig[productType]) {
+    // Get product configuration based on country
+    const config = getProductConfig(productType, targetCountry);
+    if (!config) {
       throw new Error(`Invalid product type: ${productType}`);
     }
 
-    const config = productConfig[productType];
     let finalAmount = config.amount;
     let discountAmount = 0;
     let validDiscountCode = null;
@@ -79,15 +104,12 @@ serve(async (req) => {
         .single();
 
       if (!discountError && discount) {
-        // Check if discount is still valid
         const now = new Date();
         const validFrom = discount.valid_from ? new Date(discount.valid_from) : null;
         const validUntil = discount.valid_until ? new Date(discount.valid_until) : null;
         
         if ((!validFrom || now >= validFrom) && (!validUntil || now <= validUntil)) {
-          // Check usage limits
           if (!discount.max_uses || discount.used_count < discount.max_uses) {
-            // Check if applicable to this product
             if (!discount.applicable_products || discount.applicable_products.includes(productType)) {
               validDiscountCode = discount;
               
@@ -105,23 +127,30 @@ serve(async (req) => {
       }
     }
 
-    // Check if customer exists
-    const customers = await stripe.customers.list({ email: user.email, limit: 1 });
+    // Check if customer exists in Stripe
+    const customers = await stripe.customers.list({ email: customerEmail, limit: 1 });
     let customerId;
     if (customers.data.length > 0) {
       customerId = customers.data[0].id;
       console.log("✅ [CREATE-PAYMENT] Existing customer found:", customerId);
     }
 
-    // Create checkout session
+    // Create checkout session with dynamic pricing
     const origin = req.headers.get("origin") || "http://localhost:3000";
     
-    const session = await stripe.checkout.sessions.create({
+    const sessionConfig: Stripe.Checkout.SessionCreateParams = {
       customer: customerId,
-      customer_email: customerId ? undefined : user.email,
+      customer_email: customerId ? undefined : customerEmail,
       line_items: [
         {
-          price: config.priceId,
+          price_data: {
+            currency: 'eur',
+            unit_amount: finalAmount,
+            product_data: {
+              name: config.name,
+              description: config.description,
+            },
+          },
           quantity: 1,
         },
       ],
@@ -129,29 +158,30 @@ serve(async (req) => {
       success_url: `${origin}/payment-success?session_id={CHECKOUT_SESSION_ID}&lang=${locale}`,
       cancel_url: `${origin}/payment-cancelled?lang=${locale}`,
       locale: locale,
-      discounts: validDiscountCode ? [{
-        coupon: await createStripeCoupon(stripe, validDiscountCode)
-      }] : undefined,
       metadata: {
         productType,
-        userId: user.id,
+        userId: userId || 'guest',
+        targetCountry: targetCountry || 'germany',
         discountCode: validDiscountCode?.code || '',
         discountAmount: discountAmount.toString(),
-      },
-      automatic_tax: {
-        enabled: true,
+        originalAmount: config.amount.toString(),
       },
       billing_address_collection: 'required',
-      payment_intent_data: {
-        receipt_email: user.email,
-      },
-    });
+    };
+
+    // Only add discounts if we have a valid discount code
+    if (validDiscountCode) {
+      const coupon = await createStripeCoupon(stripe, validDiscountCode);
+      sessionConfig.discounts = [{ coupon }];
+    }
+
+    const session = await stripe.checkout.sessions.create(sessionConfig);
 
     // Create payment record in database
-    const { data: payment, error: paymentError } = await supabaseClient
+    const { error: paymentError } = await supabaseClient
       .from('payments')
       .insert({
-        user_id: user.id,
+        user_id: userId,
         stripe_session_id: session.id,
         amount: config.amount,
         currency: 'eur',
@@ -162,6 +192,8 @@ serve(async (req) => {
         discount_amount: discountAmount,
         metadata: {
           locale,
+          targetCountry: targetCountry || 'germany',
+          customerEmail,
           originalAmount: config.amount,
           finalAmount,
         }
@@ -170,7 +202,7 @@ serve(async (req) => {
     if (paymentError) {
       console.error("❌ [CREATE-PAYMENT] Database error:", paymentError);
     } else {
-      console.log("✅ [CREATE-PAYMENT] Payment record created:", payment);
+      console.log("✅ [CREATE-PAYMENT] Payment record created");
     }
 
     console.log("✅ [CREATE-PAYMENT] Checkout session created:", session.id);

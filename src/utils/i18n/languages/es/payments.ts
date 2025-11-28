@@ -9,7 +9,10 @@ export const payments = {
   secure: 'Pago Seguro',
   support: 'Soporte 24h',
   trusted: 'Confiado por 500+',
-  loginPrompt: 'Por favor regístrate o inicia sesión para continuar con el proceso de pago.',
+  packagesFor: 'Paquetes para',
+  emailLabel: 'Correo Electrónico',
+  emailPlaceholder: 'tu.correo@ejemplo.com',
+  emailHint: 'Enviaremos tu recibo y detalles de acceso a este correo',
   packages: {
     homologation: {
       title: 'Paquete Homologación',
@@ -84,6 +87,7 @@ export const payments = {
     sessionNotFound: 'Sesión de pago no encontrada',
     verificationFailed: 'Falló la verificación del pago',
     networkError: 'Error de red. Por favor intente de nuevo.',
-    selectPackage: 'Por favor seleccione un paquete'
+    selectPackage: 'Por favor seleccione un paquete',
+    invalidEmail: 'Por favor ingrese un correo electrónico válido'
   }
 };
