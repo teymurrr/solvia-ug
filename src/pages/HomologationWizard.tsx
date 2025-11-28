@@ -56,7 +56,7 @@ const HomologationWizard = () => {
     'United Kingdom', 'United States', 'Venezuela', 'Vietnam'
   ];
 
-  const getLanguageLevels = () => ['Mother tongue', 'A1', 'A2', 'B1', 'B2', 'C1', t.wizard.language.dontKnow];
+  const getLanguageLevels = () => [t?.wizard?.language?.motherTongue || 'Mother tongue', 'A1', 'A2', 'B1', 'B2', 'C1', t.wizard.language.dontKnow];
 
   const calculateEstimatedPrice = (targetCountry?: string): number => {
     if (targetCountry === 'spain') {

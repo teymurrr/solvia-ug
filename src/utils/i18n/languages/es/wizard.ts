@@ -35,6 +35,7 @@ export const wizard = {
   language: {
     title: '¿Cuál es tu nivel de idioma actual?',
     subtitle: 'Para el país donde quieres trabajar',
+    motherTongue: 'Lengua materna',
     dontKnow: 'No lo sé'
   },
   email: {
