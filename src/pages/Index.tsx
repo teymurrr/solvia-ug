@@ -1,8 +1,8 @@
-
 import React, { Suspense } from 'react';
 import MainLayout from '@/components/MainLayout';
 import HeroSectionWithSearch from '@/components/landing/HeroSectionWithSearch';
 import PathToSuccessSection from '@/components/landing/PathToSuccessSection';
+import BlackFridayBanner from '@/components/payments/BlackFridayBanner';
 import { featuredVacancies } from '@/data/landingPageData';
 
 // Lazy load only the heavy components that are below the fold
@@ -22,6 +22,11 @@ const LoadingFallback = ({ height }: { height: string }) => (
 const Index = () => {
   return (
     <MainLayout>
+      {/* Black Friday Banner - promotional content */}
+      <div className="container mx-auto px-4 pt-6">
+        <BlackFridayBanner />
+      </div>
+      
       {/* Critical above-the-fold content - load immediately */}
       <HeroSectionWithSearch />
       
