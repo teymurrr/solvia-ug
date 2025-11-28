@@ -11,7 +11,7 @@ import { saveWizardDataToProfile } from '@/services/wizardProfileService';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 
-type WizardStep = 'country' | 'doctor-type' | 'documents' | 'language' | 'firstName' | 'lastName' | 'email' | 'password';
+type WizardStep = 'country' | 'study-country' | 'doctor-type' | 'documents' | 'language' | 'firstName' | 'lastName' | 'email' | 'password';
 
 interface WizardData {
   targetCountry?: string;
@@ -61,6 +61,7 @@ const HomologationWizard = () => {
   const handleCountrySelect = (countryId: string) => {
     setSelectedTargetCountry(countryId);
     setWizardData({ ...wizardData, targetCountry: countryId });
+    setCurrentStep('study-country');
   };
 
   const handleStudyCountrySelect = (country: string) => {
@@ -163,7 +164,7 @@ const HomologationWizard = () => {
   };
 
   const handleBack = () => {
-    const stepOrder: WizardStep[] = ['country', 'doctor-type', 'documents', 'language', 'firstName', 'lastName', 'email', 'password'];
+    const stepOrder: WizardStep[] = ['country', 'study-country', 'doctor-type', 'documents', 'language', 'firstName', 'lastName', 'email', 'password'];
     const currentIndex = stepOrder.indexOf(currentStep);
     if (currentIndex > 0) {
       setCurrentStep(stepOrder[currentIndex - 1]);
@@ -174,7 +175,7 @@ const HomologationWizard = () => {
     <MainLayout>
       <div className="min-h-screen bg-gradient-to-br from-primary/5 via-accent/5 to-background py-12 md:py-20">
         <div className="container mx-auto px-4 max-w-4xl">
-          {/* Country Selection - Combined with welcome message */}
+          {/* Country Selection - Target country only */}
           {currentStep === 'country' && (
             <Card className="border-2 shadow-xl animate-in fade-in-50 duration-500">
               <CardHeader className="text-center space-y-4 pb-4">
@@ -198,13 +199,9 @@ const HomologationWizard = () => {
                     {countries.map((country) => (
                       <Button
                         key={country.id}
-                        variant={selectedTargetCountry === country.id ? "default" : "outline"}
+                        variant="outline"
                         size="lg"
-                        className={`flex flex-col items-center justify-center h-auto py-4 px-3 transition-all ${
-                          selectedTargetCountry === country.id 
-                            ? 'ring-2 ring-primary ring-offset-2' 
-                            : 'hover:bg-primary/5 hover:border-primary'
-                        }`}
+                        className="flex flex-col items-center justify-center h-auto py-4 px-3 transition-all hover:bg-primary/5 hover:border-primary"
                         onClick={() => handleCountrySelect(country.id)}
                       >
                         <span className="text-3xl mb-2">{country.flag}</span>
@@ -213,32 +210,45 @@ const HomologationWizard = () => {
                     ))}
                   </div>
                 </div>
+              </CardContent>
+            </Card>
+          )}
 
-                {/* Study Country Selection - shown after target country is selected */}
-                {selectedTargetCountry && (
-                  <div className="pt-4 border-t border-border space-y-4 animate-in fade-in-50 duration-300">
-                    <div className="text-center">
-                      <h3 className="text-xl font-semibold text-foreground mb-1">
-                        {t.wizard.studyCountry.title}
-                      </h3>
-                      <p className="text-muted-foreground text-sm">
-                        {t.wizard.studyCountry.subtitle}
-                      </p>
-                    </div>
-                    <Select onValueChange={handleStudyCountrySelect}>
-                      <SelectTrigger className="w-full h-12 text-lg">
-                        <SelectValue placeholder={t.wizard.studyCountry.placeholder} />
-                      </SelectTrigger>
-                      <SelectContent className="max-h-[300px]">
-                        {studyCountries.map((country) => (
-                          <SelectItem key={country} value={country} className="text-lg">
-                            {country}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                )}
+          {/* Study Country Selection - Separate step */}
+          {currentStep === 'study-country' && (
+            <Card className="border-2 shadow-xl animate-in fade-in-50 duration-500">
+              <CardHeader className="text-center space-y-2">
+                <div className="mx-auto w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mb-2">
+                  <GraduationCap className="h-8 w-8 text-accent" />
+                </div>
+                <CardTitle className="text-2xl md:text-3xl font-bold">
+                  {t.wizard.studyCountry.title}
+                </CardTitle>
+                <CardDescription className="text-base md:text-lg">
+                  {t.wizard.studyCountry.subtitle}
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <Select onValueChange={handleStudyCountrySelect}>
+                  <SelectTrigger className="w-full h-12 text-lg">
+                    <SelectValue placeholder={t.wizard.studyCountry.placeholder} />
+                  </SelectTrigger>
+                  <SelectContent className="max-h-[300px]">
+                    {studyCountries.map((country) => (
+                      <SelectItem key={country} value={country} className="text-lg">
+                        {country}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <Button
+                  variant="ghost"
+                  onClick={handleBack}
+                  className="w-full"
+                >
+                  <ArrowLeft className="mr-2 h-4 w-4" />
+                  {t.wizard.back}
+                </Button>
               </CardContent>
             </Card>
           )}
