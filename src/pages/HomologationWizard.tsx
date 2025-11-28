@@ -11,7 +11,7 @@ import { saveWizardDataToProfile } from '@/services/wizardProfileService';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 
-type WizardStep = 'country' | 'study-country' | 'doctor-type' | 'documents' | 'language' | 'firstName' | 'lastName' | 'email' | 'password';
+type WizardStep = 'country' | 'study-country' | 'doctor-type' | 'language' | 'firstName' | 'lastName' | 'email' | 'password';
 
 interface WizardData {
   targetCountry?: string;
@@ -56,7 +56,7 @@ const HomologationWizard = () => {
     'United Kingdom', 'United States', 'Venezuela', 'Vietnam'
   ];
 
-  const getLanguageLevels = () => ['A1', 'A2', 'B1', 'B2', 'C1', t.wizard.language.dontKnow];
+  const getLanguageLevels = () => ['Mother tongue', 'A1', 'A2', 'B1', 'B2', 'C1', t.wizard.language.dontKnow];
 
   const handleCountrySelect = (countryId: string) => {
     setSelectedTargetCountry(countryId);
@@ -71,11 +71,6 @@ const HomologationWizard = () => {
 
   const handleDoctorTypeSelect = (type: 'general' | 'specialist' | 'nurse' | 'dentist' | 'other' | 'unsure') => {
     setWizardData({ ...wizardData, doctorType: type });
-    setCurrentStep('documents');
-  };
-
-  const handleDocumentsSelect = (status: 'yes' | 'no' | 'unsure') => {
-    setWizardData({ ...wizardData, documentsReady: status });
     setCurrentStep('language');
   };
 
@@ -164,7 +159,7 @@ const HomologationWizard = () => {
   };
 
   const handleBack = () => {
-    const stepOrder: WizardStep[] = ['country', 'study-country', 'doctor-type', 'documents', 'language', 'firstName', 'lastName', 'email', 'password'];
+    const stepOrder: WizardStep[] = ['country', 'study-country', 'doctor-type', 'language', 'firstName', 'lastName', 'email', 'password'];
     const currentIndex = stepOrder.indexOf(currentStep);
     if (currentIndex > 0) {
       setCurrentStep(stepOrder[currentIndex - 1]);
@@ -315,57 +310,6 @@ const HomologationWizard = () => {
                   onClick={() => handleDoctorTypeSelect('unsure')}
                 >
                   {t.wizard.doctorType.unsure}
-                </Button>
-                <Button
-                  variant="ghost"
-                  onClick={handleBack}
-                  className="w-full mt-4"
-                >
-                  <ArrowLeft className="mr-2 h-4 w-4" />
-                  {t.wizard.back}
-                </Button>
-              </CardContent>
-            </Card>
-          )}
-
-          {/* Documents Status */}
-          {currentStep === 'documents' && (
-            <Card className="border-2 shadow-xl animate-in fade-in-50 duration-500">
-              <CardHeader className="text-center space-y-2">
-                <div className="mx-auto w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mb-2">
-                  <FileCheck className="h-8 w-8 text-accent" />
-                </div>
-                <CardTitle className="text-2xl md:text-3xl font-bold">
-                  {t.wizard.documents.title}
-                </CardTitle>
-                <CardDescription className="text-base md:text-lg">
-                  {t.wizard.documents.subtitle}
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <Button
-                  variant="outline"
-                  size="lg"
-                  className="w-full justify-start text-lg h-auto py-4 hover:bg-primary/5 hover:border-primary transition-all"
-                  onClick={() => handleDocumentsSelect('yes')}
-                >
-                  {t.wizard.documents.yes}
-                </Button>
-                <Button
-                  variant="outline"
-                  size="lg"
-                  className="w-full justify-start text-lg h-auto py-4 hover:bg-primary/5 hover:border-primary transition-all"
-                  onClick={() => handleDocumentsSelect('no')}
-                >
-                  {t.wizard.documents.no}
-                </Button>
-                <Button
-                  variant="outline"
-                  size="lg"
-                  className="w-full justify-start text-lg h-auto py-4 hover:bg-accent/5 hover:border-accent transition-all"
-                  onClick={() => handleDocumentsSelect('unsure')}
-                >
-                  {t.wizard.documents.unsure}
                 </Button>
                 <Button
                   variant="ghost"
