@@ -318,9 +318,6 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
             <CardContent className="text-center pb-6">
               <div className="mb-6">
                 <span className="text-4xl font-bold text-foreground">{formatPrice(pkg.price)}</span>
-                <span className="text-muted-foreground ml-1">
-                  {t?.payments?.oneTime || 'one-time'}
-                </span>
               </div>
               
               <div className="space-y-3 text-left">
