@@ -72,6 +72,18 @@ export const wizard = {
     termsOfService: 'Условиями использования',
     privacyError: 'Вы должны согласиться с Политикой конфиденциальности и Условиями использования'
   },
+  summary: {
+    title: 'Сводка',
+    subtitle: 'Проверьте свою информацию и выберите, как продолжить',
+    targetCountry: 'Целевая страна',
+    studyCountry: 'Страна обучения',
+    name: 'Имя',
+    professionalType: 'Тип профессионала',
+    languageLevel: 'Уровень языка',
+    estimatedPrice: 'Ориентировочная цена',
+    choosePlanAndPay: 'Выбрать пакет и оплатить',
+    createFreeAccount: 'Создать бесплатный аккаунт'
+  },
   back: 'Назад',
   countries: {
     germany: 'Германия',

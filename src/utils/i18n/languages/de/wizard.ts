@@ -72,6 +72,18 @@ export const wizard = {
     termsOfService: 'Nutzungsbedingungen zu',
     privacyError: 'Sie müssen den Datenschutzbestimmungen und Nutzungsbedingungen zustimmen'
   },
+  summary: {
+    title: 'Zusammenfassung',
+    subtitle: 'Überprüfen Sie Ihre Informationen und wählen Sie, wie Sie fortfahren möchten',
+    targetCountry: 'Zielland',
+    studyCountry: 'Studienland',
+    name: 'Name',
+    professionalType: 'Berufstyp',
+    languageLevel: 'Sprachniveau',
+    estimatedPrice: 'Geschätzter Preis',
+    choosePlanAndPay: 'Paket wählen & bezahlen',
+    createFreeAccount: 'Kostenloses Konto erstellen'
+  },
   back: 'Zurück',
   countries: {
     germany: 'Deutschland',
