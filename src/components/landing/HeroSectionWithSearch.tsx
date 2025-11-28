@@ -41,7 +41,7 @@ const HeroSectionWithSearch = React.memo(() => {
               <Button 
                 size="lg" 
                 className="h-14 px-8 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
-                onClick={() => navigate('/homologation')}
+                onClick={() => navigate('/homologation-wizard')}
               >
                 Empezar mi homologación →
               </Button>

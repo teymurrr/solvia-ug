@@ -51,7 +51,7 @@ const CountrySelection = () => {
   const { t } = useLanguage();
 
   const handleCountryClick = (countryCode: string) => {
-    navigate(`/homologation?country=${countryCode}`);
+    navigate(`/homologation-wizard?country=${countryCode}`);
   };
 
   const handleScheduleCall = () => {
