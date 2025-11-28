@@ -1,173 +1,93 @@
-import React, { useMemo, useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Search, MapPin, Briefcase } from 'lucide-react';
-import { useLanguage } from '@/hooks/useLanguage';
+import { Check } from 'lucide-react';
 
 const HeroSectionWithSearch = React.memo(() => {
-  const { t } = useLanguage();
   const navigate = useNavigate();
-  const [searchQuery, setSearchQuery] = useState('');
-  const [location, setLocation] = useState('');
-  
-  // Memoize translations to prevent unnecessary recalculations
-  const heroData = useMemo(() => ({
-    title: t?.hero?.title || "Your new job in European Healthcare awaits you.",
-    subtitle: t?.hero?.subtitle || "Solvia helps you get your licence, learn the language and find a job - all in one platform.",
-    cta: t?.hero?.cta || "Sign up now for free",
-    learnMore: t?.hero?.learnMore || "Learn More",
-    searchPlaceholder: t?.hero?.searchPlaceholder || "Job title, specialty, or keyword...",
-    locationPlaceholder: t?.hero?.locationPlaceholder || "Location...",
-    searchButton: t?.hero?.searchButton || "Search Jobs",
-    popularSearches: t?.hero?.popularSearches || "Popular searches:",
-    searchTerms: t?.hero?.searchTerms || {
-      nurse: 'Nurse',
-      doctor: 'Doctor', 
-      physiotherapist: 'Physiotherapist',
-      dentist: 'Dentist',
-      pharmacist: 'Pharmacist'
-    },
-    socialProof: {
-      professionalsHelped: t?.hero?.socialProof?.professionalsHelped || "1000+ professionals helped",
-      successRate: t?.hero?.socialProof?.successRate || "95% success rate"
-    },
-    homologationBanner: {
-      text: t?.hero?.homologationBanner?.text || "Need license recognition? Our Homologation Service handles all the paperwork for you.",
-      cta: t?.hero?.homologationBanner?.cta || "Learn More"
-    }
-  }), [t]);
 
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Navigate to vacancies page with search parameters
-    const params = new URLSearchParams();
-    if (searchQuery) params.set('search', searchQuery);
-    if (location) params.set('location', location);
-    navigate(`/vacancies?${params.toString()}`);
-  };
+  const trustItems = [
+    "Proceso 100% digital",
+    "Varios países disponibles en Europa",
+    "Acompañamiento paso a paso"
+  ];
 
-  const scrollToHowItWorks = () => {
-    const element = document.getElementById('how-it-works');
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
+  const stats = [
+    { number: "+500", label: "Profesionales registrados" },
+    { number: "+200", label: "Homologaciones en proceso" },
+    { number: "5", label: "Países disponibles" },
+    { number: "92%", label: "Satisfacción de los usuarios" }
+  ];
   
   return (
-    <section className="relative overflow-hidden">
-      <div className="hero-gradient absolute inset-0 opacity-20" />
-      <div className="container mx-auto px-4 py-16 md:py-20 relative z-10">
-        <div className="max-w-4xl mx-auto text-center space-y-8">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight">
-            {heroData.title}
-          </h1>
-          <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-            {heroData.subtitle}
-          </p>
-          
-          <div className="max-w-4xl mx-auto mt-12">
-            <form onSubmit={handleSearch} className="bg-card/80 backdrop-blur-sm rounded-2xl shadow-2xl border border-border/50 p-6">
-              <div className="flex flex-col md:flex-row gap-4 items-center">
-                {/* Job Title/Specialty Input */}
-                <div className="relative flex-1">
-                  <Briefcase className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                  <Input
-                    type="text"
-                    placeholder={heroData.searchPlaceholder}
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="pl-12 h-14 text-lg border-0 bg-background/50 focus:bg-background transition-colors"
-                  />
-                </div>
-                
-                {/* Location Input */}
-                <div className="relative flex-1 md:flex-initial md:w-64">
-                  <MapPin className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                  <Input
-                    type="text"
-                    placeholder={heroData.locationPlaceholder}
-                    value={location}
-                    onChange={(e) => setLocation(e.target.value)}
-                    className="pl-12 h-14 text-lg border-0 bg-background/50 focus:bg-background transition-colors"
-                  />
-                </div>
-                
-                {/* Search Button */}
-                <Button 
-                  type="submit"
-                  size="lg" 
-                  className="h-14 px-8 text-lg group"
-                >
-                  <Search className="h-5 w-5 mr-2 group-hover:scale-110 transition-transform" />
-                  {heroData.searchButton}
-                </Button>
-              </div>
-              
-              {/* Popular searches */}
-              <div className="mt-6 text-center">
-                <p className="text-sm text-muted-foreground mb-3">{heroData.popularSearches}</p>
-                <div className="flex flex-wrap justify-center gap-2">
-                   {Object.entries(heroData.searchTerms).map(([key, term]) => (
-                     <button
-                       key={key}
-                       type="button"
-                       onClick={() => setSearchQuery(String(term))}
-                       className="px-4 py-2 text-sm bg-primary/10 text-primary rounded-full hover:bg-primary/20 transition-colors"
-                     >
-                       {String(term)}
-                     </button>
-                   ))}
-                </div>
-              </div>
-            </form>
-          </div>
-
-          {/* Homologation Service Banner */}
-          <div className="mt-6 max-w-4xl mx-auto">
-            <button
-              onClick={() => navigate('/homologation-payment')}
-              className="w-full bg-primary/5 hover:bg-primary/10 border border-primary/20 rounded-xl px-6 py-4 transition-colors group"
-            >
-              <div className="flex items-center justify-between gap-4">
-                <p className="text-sm text-foreground/80 text-left flex-1">
-                  {heroData.homologationBanner.text}
-                </p>
-                <span className="text-sm font-medium text-primary group-hover:translate-x-1 transition-transform whitespace-nowrap">
-                  {heroData.homologationBanner.cta} →
-                </span>
-              </div>
-            </button>
-          </div>
+    <>
+      {/* Hero Section */}
+      <section className="relative overflow-hidden bg-gradient-to-br from-background via-background to-primary/5">
+        <div className="hero-gradient absolute inset-0 opacity-10" />
+        <div className="container mx-auto px-4 py-16 md:py-24 lg:py-32 relative z-10">
+          <div className="max-w-4xl mx-auto text-center space-y-8">
+            {/* Main Headline */}
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-foreground leading-tight">
+              Tu título médico, listo para trabajar en Europa
+            </h1>
             
-            {/* Social proof */}
-            <div className="flex items-center gap-6 text-sm text-muted-foreground mt-12">
-              <div className="flex items-center gap-2">
-                <div className="flex -space-x-1">
-                  <img 
-                    src="/lovable-uploads/fb51f001-5b4c-4c12-9bff-ec7776fda396.png" 
-                    alt="Professional 1" 
-                    className="w-8 h-8 rounded-full border-2 border-background object-cover"
-                  />
-                  <img 
-                    src="/lovable-uploads/cc32bcf9-0674-4d4f-9316-3ce0790f675e.png" 
-                    alt="Professional 2" 
-                    className="w-8 h-8 rounded-full border-2 border-background object-cover"
-                  />
-                  <img 
-                    src="/lovable-uploads/5f708227-020b-4f86-ae6e-6ad00443ec94.png" 
-                    alt="Professional 3" 
-                    className="w-8 h-8 rounded-full border-2 border-background object-cover"
-                  />
-                </div>
-                <span>{heroData.socialProof.professionalsHelped}</span>
-              </div>
-              <div className="text-muted-foreground">•</div>
-              <span>{heroData.socialProof.successRate}</span>
+            {/* Subtitle */}
+            <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+              Homologa tu título, valida tus credenciales y accede a oportunidades laborales en Alemania, Austria, España, Italia y Francia. Todo en un solo lugar, 100% online.
+            </p>
+            
+            {/* CTA Buttons */}
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
+              <Button 
+                size="lg" 
+                className="h-14 px-8 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
+                onClick={() => navigate('/homologation')}
+              >
+                Empezar mi homologación →
+              </Button>
+              <Button 
+                variant="outline" 
+                size="lg" 
+                className="h-14 px-8 text-lg font-semibold border-2 hover:bg-primary/5 transition-all duration-300"
+                onClick={() => navigate('/contact')}
+              >
+                Hablar con un asesor
+              </Button>
             </div>
+            
+            {/* Trust Items */}
+            <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 pt-6">
+              {trustItems.map((item, index) => (
+                <div key={index} className="flex items-center gap-2 text-sm md:text-base text-muted-foreground">
+                  <div className="flex items-center justify-center w-5 h-5 rounded-full bg-primary/10">
+                    <Check className="w-3 h-3 text-primary" />
+                  </div>
+                  <span>{item}</span>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+
+      {/* Stats Strip */}
+      <section className="bg-muted/50 border-y border-border/50">
+        <div className="container mx-auto px-4 py-10 md:py-14">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-4">
+            {stats.map((stat, index) => (
+              <div key={index} className="text-center">
+                <div className="text-3xl md:text-4xl lg:text-5xl font-bold text-primary mb-2">
+                  {stat.number}
+                </div>
+                <div className="text-sm md:text-base text-muted-foreground">
+                  {stat.label}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    </>
   );
 });
 
