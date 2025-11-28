@@ -3,11 +3,13 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { useLanguage } from '@/hooks/useLanguage';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import { Check, Shield, Clock, BookOpen, Users, GraduationCap, Star } from 'lucide-react';
+import { Check, Shield, Clock, BookOpen, Users, GraduationCap, Star, ExternalLink } from 'lucide-react';
 import BlackFridayBanner from './BlackFridayBanner';
+import { isSafari, preOpenPaymentWindow, redirectPaymentWindow } from '@/utils/browserDetection';
 type ProductType = 'homologation' | 'language_prep' | 'premium_support';
 
 interface PaymentFlowProps {
@@ -91,6 +93,8 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
   const [isProcessingPayment, setIsProcessingPayment] = useState(false);
   const [targetCountry, setTargetCountry] = useState<string | null>(null);
   const [guestEmail, setGuestEmail] = useState('');
+  const [fallbackUrl, setFallbackUrl] = useState<string | null>(null);
+  const [showFallbackDialog, setShowFallbackDialog] = useState(false);
 
   // Read wizard data from localStorage on mount
   useEffect(() => {
@@ -235,6 +239,9 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
       return;
     }
 
+    // Pre-open window for Safari BEFORE the async call
+    const preOpenedWindow = preOpenPaymentWindow();
+
     setIsProcessingPayment(true);
     try {
       const { data, error } = await supabase.functions.invoke('create-payment', {
@@ -250,16 +257,43 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
       if (error) throw error;
 
       if (data.url) {
-        window.open(data.url, '_blank');
-        onClose?.();
+        // For Safari: redirect the pre-opened window
+        if (preOpenedWindow) {
+          const success = redirectPaymentWindow(preOpenedWindow, data.url);
+          if (success) {
+            onClose?.();
+            return;
+          }
+          // If redirect failed (window closed), show fallback
+          setFallbackUrl(data.url);
+          setShowFallbackDialog(true);
+        } else if (isSafari()) {
+          // Safari but window was blocked, show fallback dialog
+          setFallbackUrl(data.url);
+          setShowFallbackDialog(true);
+        } else {
+          // Non-Safari browsers: use regular window.open
+          window.open(data.url, '_blank');
+          onClose?.();
+        }
       } else {
         throw new Error('No payment URL received');
       }
     } catch (error: any) {
       console.error('Payment error:', error);
+      // Close the pre-opened window if there was an error
+      if (preOpenedWindow && !preOpenedWindow.closed) {
+        preOpenedWindow.close();
+      }
       toast.error(error.message || t?.payments?.errors?.general || 'Payment processing failed');
     } finally {
       setIsProcessingPayment(false);
+    }
+  };
+
+  const handleFallbackClick = () => {
+    if (fallbackUrl) {
+      window.location.href = fallbackUrl;
     }
   };
 
@@ -466,6 +500,29 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
           </CardContent>
         </Card>
       )}
+
+      {/* Fallback Dialog for Safari popup blocker */}
+      <Dialog open={showFallbackDialog} onOpenChange={setShowFallbackDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>
+              {t?.payments?.popupBlocked?.title || 'Open Payment Page'}
+            </DialogTitle>
+            <DialogDescription>
+              {t?.payments?.popupBlocked?.description || 'Click the button below to open the payment page.'}
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex flex-col gap-4 pt-4">
+            <Button onClick={handleFallbackClick} className="w-full">
+              <ExternalLink className="w-4 h-4 mr-2" />
+              {t?.payments?.popupBlocked?.openPayment || 'Open Payment Page'}
+            </Button>
+            <Button variant="outline" onClick={() => setShowFallbackDialog(false)}>
+              {t?.payments?.popupBlocked?.cancel || 'Cancel'}
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

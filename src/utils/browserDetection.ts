@@ -225,3 +225,100 @@ export const handleDirectApply = (
   
   return false;
 };
+
+/**
+ * Pre-opens a blank window before an async operation (for Safari popup blocker workaround)
+ * Must be called synchronously in response to a user action
+ * @returns The window reference or null if blocked
+ */
+export const preOpenPaymentWindow = (): Window | null => {
+  if (!isSafari()) {
+    console.log('[browserDetection] Not Safari, skipping pre-open window');
+    return null;
+  }
+  
+  try {
+    console.log('[browserDetection] Pre-opening blank window for Safari');
+    const newWindow = window.open('about:blank', '_blank');
+    
+    if (newWindow) {
+      // Show loading message in the new window
+      newWindow.document.write(`
+        <!DOCTYPE html>
+        <html>
+          <head>
+            <title>Loading...</title>
+            <style>
+              body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                margin: 0;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+              }
+              .loader {
+                text-align: center;
+              }
+              .spinner {
+                width: 50px;
+                height: 50px;
+                border: 4px solid rgba(255,255,255,0.3);
+                border-top-color: white;
+                border-radius: 50%;
+                animation: spin 1s linear infinite;
+                margin: 0 auto 20px;
+              }
+              @keyframes spin {
+                to { transform: rotate(360deg); }
+              }
+            </style>
+          </head>
+          <body>
+            <div class="loader">
+              <div class="spinner"></div>
+              <p>Loading payment page...</p>
+            </div>
+          </body>
+        </html>
+      `);
+      console.log('[browserDetection] Blank window opened successfully');
+      return newWindow;
+    }
+    
+    console.warn('[browserDetection] Window.open returned null - popup may be blocked');
+    return null;
+  } catch (error) {
+    console.error('[browserDetection] Error pre-opening window:', error);
+    return null;
+  }
+};
+
+/**
+ * Redirects a pre-opened window to the target URL
+ * @param windowRef The window reference from preOpenPaymentWindow
+ * @param url The URL to redirect to
+ * @returns Boolean indicating success
+ */
+export const redirectPaymentWindow = (windowRef: Window | null, url: string): boolean => {
+  if (!windowRef) {
+    console.log('[browserDetection] No window reference, cannot redirect');
+    return false;
+  }
+  
+  try {
+    if (windowRef.closed) {
+      console.warn('[browserDetection] Window was closed before redirect');
+      return false;
+    }
+    
+    console.log('[browserDetection] Redirecting pre-opened window to:', url);
+    windowRef.location.href = url;
+    return true;
+  } catch (error) {
+    console.error('[browserDetection] Error redirecting window:', error);
+    return false;
+  }
+};

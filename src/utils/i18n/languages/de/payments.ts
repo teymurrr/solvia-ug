@@ -103,5 +103,11 @@ export const payments = {
     networkError: 'Netzwerkfehler. Bitte versuchen Sie es erneut.',
     selectPackage: 'Bitte wählen Sie ein Paket',
     invalidEmail: 'Bitte geben Sie eine gültige E-Mail-Adresse ein'
+  },
+  popupBlocked: {
+    title: 'Zahlungsseite Öffnen',
+    description: 'Ihr Browser hat das automatische Öffnen der Zahlungsseite blockiert. Klicken Sie auf die Schaltfläche unten, um fortzufahren.',
+    openPayment: 'Zahlungsseite Öffnen',
+    cancel: 'Abbrechen'
   }
 };
