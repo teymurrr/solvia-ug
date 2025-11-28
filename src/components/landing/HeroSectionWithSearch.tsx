@@ -49,7 +49,7 @@ const HeroSectionWithSearch = React.memo(() => {
                 variant="outline" 
                 size="lg" 
                 className="h-14 px-8 text-lg font-semibold border-2 hover:bg-primary/5 transition-all duration-300"
-                onClick={() => navigate('/contact')}
+                onClick={() => window.open('https://calendly.com/david-rehrl-thesolvia/30min', '_blank')}
               >
                 Hablar con un asesor
               </Button>
