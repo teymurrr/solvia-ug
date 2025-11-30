@@ -1,7 +1,7 @@
 export const payments = {
   blackFriday: {
     label: 'Black Friday',
-    title: '20% DE RÉDUCTION sur tous les forfaits!',
+    title: '50% DE RÉDUCTION sur tous les forfaits!',
     subtitle: 'Utilisez le code',
     validUntil: 'Valable jusqu\'au 6 déc',
   },
