@@ -1,0 +1,1 @@
+UPDATE discount_codes SET discount_value = 50, updated_at = now() WHERE code = 'BLACKFRIDAY';
