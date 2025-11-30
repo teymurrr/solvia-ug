@@ -65,6 +65,7 @@ export const payments = {
     apply: 'Apply',
     applied: 'Applied',
     remove: 'Remove',
+    off: 'off',
     invalid: 'Invalid discount code',
     expired: 'Discount code has expired',
     used: 'Discount code has been fully used',
