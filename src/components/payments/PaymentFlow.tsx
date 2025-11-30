@@ -437,7 +437,10 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
                     <Check className="w-4 h-4 text-green-600" />
                     <span className="font-medium text-green-800 dark:text-green-400">{appliedDiscount.code}</span>
                     <Badge variant="secondary" className="bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-400">
-                      {appliedDiscount.description}
+                      {appliedDiscount.type === 'percentage' 
+                        ? `${appliedDiscount.value}% ${t?.payments?.discountCode?.off || 'off'}`
+                        : `€${(appliedDiscount.value / 100).toFixed(0)} ${t?.payments?.discountCode?.off || 'off'}`
+                      }
                     </Badge>
                   </div>
                   <Button variant="ghost" size="sm" onClick={removeDiscount}>
