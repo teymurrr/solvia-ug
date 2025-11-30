@@ -1,7 +1,7 @@
 export const payments = {
   blackFriday: {
     label: 'Чёрная пятница',
-    title: 'СКИДКА 20% на все пакеты!',
+    title: 'СКИДКА 50% на все пакеты!',
     subtitle: 'Используйте код',
     validUntil: 'Действует до 6 дек',
   },
