@@ -23,6 +23,7 @@ import { payments } from './payments';
 import { visa } from './visa';
 import { wizard } from './wizard';
 import { countrySelection } from './countrySelection';
+import { onboarding } from './onboarding';
 
 export const ru = {
   hero,
@@ -48,5 +49,6 @@ export const ru = {
   payments,
   visa,
   wizard,
-  countrySelection
+  countrySelection,
+  onboarding
 };

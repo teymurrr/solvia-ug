@@ -223,6 +223,45 @@ export type Database = {
         }
         Relationships: []
       }
+      clients: {
+        Row: {
+          created_at: string | null
+          current_location: string | null
+          diploma_apostilled: string | null
+          email: string | null
+          federal_state: string | null
+          id: string
+          name_matches_documents: string | null
+          target_country: string | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          current_location?: string | null
+          diploma_apostilled?: string | null
+          email?: string | null
+          federal_state?: string | null
+          id?: string
+          name_matches_documents?: string | null
+          target_country?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          current_location?: string | null
+          diploma_apostilled?: string | null
+          email?: string | null
+          federal_state?: string | null
+          id?: string
+          name_matches_documents?: string | null
+          target_country?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       discount_codes: {
         Row: {
           applicable_products: string[] | null
