@@ -198,7 +198,7 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
     setIsValidatingDiscount(true);
     try {
       const { data, error } = await supabase.functions.invoke('validate-discount', {
-        body: { code: discountCode.trim(), productType: selectedPackage }
+        body: { code: discountCode.trim(), productType: selectedPackage, targetCountry }
       });
 
       if (error) throw error;

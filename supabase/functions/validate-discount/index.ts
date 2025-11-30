@@ -6,6 +6,17 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
+// Country-specific pricing configuration (amounts in cents) - must match frontend and create-payment
+const getPricingByCountry = (country: string | null): Record<string, number> => {
+  const isSpain = country === 'spain';
+  
+  return {
+    homologation: isSpain ? 25000 : 75000,      // €250 or €750
+    language_prep: isSpain ? 50000 : 99000,     // €500 or €990
+    premium_support: isSpain ? 129900 : 269900, // €1,299 or €2,699
+  };
+};
+
 serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
@@ -19,13 +30,13 @@ serve(async (req) => {
   try {
     console.log("🔍 [VALIDATE-DISCOUNT] Function started");
 
-    const { code, productType } = await req.json();
+    const { code, productType, targetCountry } = await req.json();
     
     if (!code) {
       throw new Error("Discount code is required");
     }
 
-    console.log("🎫 [VALIDATE-DISCOUNT] Validating code:", code, "for product:", productType);
+    console.log("🎫 [VALIDATE-DISCOUNT] Validating code:", code, "for product:", productType, "country:", targetCountry);
 
     // Query discount code
     const { data: discount, error: discountError } = await supabaseClient
@@ -97,8 +108,11 @@ serve(async (req) => {
       });
     }
 
-    // Calculate discount amount for preview
-    const baseAmount = 75900; // €759 for homologation
+    // Get the correct base amount based on country and product type
+    const pricing = getPricingByCountry(targetCountry);
+    const baseAmount = pricing[productType] || 75000; // Default to €750 if product type unknown
+    
+    // Calculate discount amount
     let discountAmount = 0;
     
     if (discount.discount_type === 'percentage') {
@@ -111,8 +125,11 @@ serve(async (req) => {
 
     console.log("✅ [VALIDATE-DISCOUNT] Code validated successfully:", {
       code: discount.code,
+      baseAmount,
       discountAmount,
-      finalAmount
+      finalAmount,
+      targetCountry,
+      productType
     });
 
     return new Response(JSON.stringify({
