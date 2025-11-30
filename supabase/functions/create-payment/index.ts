@@ -145,7 +145,7 @@ serve(async (req) => {
         {
           price_data: {
             currency: 'eur',
-            unit_amount: finalAmount,
+            unit_amount: config.amount, // Always send original price, let Stripe coupon handle discount
             product_data: {
               name: config.name,
               description: config.description,
