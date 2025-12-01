@@ -51,6 +51,8 @@ export const documents = {
     invalid: 'Invalide',
     not_submitted: 'Non Soumis',
     pending_review: 'En Révision',
+    retryValidation: 'Réessayer la validation',
+    validating: 'Validation en cours...',
   },
   errors: {
     uploadFailed: 'Échec du téléchargement. Veuillez réessayer.',

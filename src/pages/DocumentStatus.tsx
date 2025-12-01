@@ -26,6 +26,7 @@ const DocumentStatus: React.FC = () => {
   const {
     loading: docsLoading,
     uploadDocument,
+    retryValidation,
     getDocumentsWithRequirements,
     getProgressStats,
   } = useDocuments(countryKey);
@@ -174,6 +175,7 @@ const DocumentStatus: React.FC = () => {
                     key={doc.requirement.id}
                     document={doc}
                     onReupload={() => handleReupload(doc.requirement.id)}
+                    onRetryValidation={doc.id ? () => retryValidation(doc.id, currentLanguage) : undefined}
                     language={currentLanguage}
                   />
                 ))}
@@ -199,6 +201,7 @@ const DocumentStatus: React.FC = () => {
                     key={doc.requirement.id}
                     document={doc}
                     onReupload={() => handleReupload(doc.requirement.id)}
+                    onRetryValidation={doc.id ? () => retryValidation(doc.id, currentLanguage) : undefined}
                     language={currentLanguage}
                   />
                 ))}
@@ -224,6 +227,7 @@ const DocumentStatus: React.FC = () => {
                     key={doc.requirement.id}
                     document={doc}
                     onReupload={() => handleReupload(doc.requirement.id)}
+                    onRetryValidation={doc.id ? () => retryValidation(doc.id, currentLanguage) : undefined}
                     language={currentLanguage}
                   />
                 ))}
@@ -249,6 +253,7 @@ const DocumentStatus: React.FC = () => {
                     key={doc.requirement.id}
                     document={doc}
                     onReupload={() => handleReupload(doc.requirement.id)}
+                    onRetryValidation={doc.id ? () => retryValidation(doc.id, currentLanguage) : undefined}
                     language={currentLanguage}
                   />
                 ))}
