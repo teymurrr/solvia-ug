@@ -51,6 +51,8 @@ export const documents = {
     invalid: 'Ungültig',
     not_submitted: 'Nicht eingereicht',
     pending_review: 'In Prüfung',
+    retryValidation: 'Validierung wiederholen',
+    validating: 'Validiere...',
   },
   errors: {
     uploadFailed: 'Hochladen fehlgeschlagen. Bitte versuchen Sie es erneut.',

@@ -51,6 +51,8 @@ export const documents = {
     invalid: 'Inválido',
     not_submitted: 'No Enviado',
     pending_review: 'En Revisión',
+    retryValidation: 'Reintentar Validación',
+    validating: 'Validando...',
   },
   errors: {
     uploadFailed: 'Error al subir. Por favor intenta de nuevo.',

@@ -6,6 +6,18 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
+// Fixed: Use chunked approach to avoid stack overflow with large files
+function arrayBufferToBase64(buffer: ArrayBuffer): string {
+  const bytes = new Uint8Array(buffer);
+  let binary = '';
+  const chunkSize = 0x8000; // 32KB chunks to avoid stack overflow
+  for (let i = 0; i < bytes.length; i += chunkSize) {
+    const chunk = bytes.subarray(i, Math.min(i + chunkSize, bytes.length));
+    binary += String.fromCharCode(...chunk);
+  }
+  return btoa(binary);
+}
+
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
@@ -33,10 +45,12 @@ serve(async (req) => {
       .single();
 
     if (reqError || !requirement) {
+      console.error('Requirement fetch error:', reqError);
       throw new Error('Document requirement not found');
     }
 
     // Download the file from storage
+    console.log('Downloading file from storage:', filePath);
     const { data: fileData, error: downloadError } = await supabase
       .storage
       .from('homologation-documents')
@@ -47,9 +61,13 @@ serve(async (req) => {
       throw new Error('Failed to download document');
     }
 
-    // Convert file to base64 for AI analysis
+    console.log('File downloaded, size:', fileData.size, 'bytes');
+
+    // Convert file to base64 for AI analysis using chunked approach
     const arrayBuffer = await fileData.arrayBuffer();
-    const base64 = btoa(String.fromCharCode(...new Uint8Array(arrayBuffer)));
+    console.log('Converting to base64...');
+    const base64 = arrayBufferToBase64(arrayBuffer);
+    console.log('Base64 conversion complete, length:', base64.length);
     
     // Determine file type for the AI
     const fileExtension = filePath.split('.').pop()?.toLowerCase();
@@ -101,6 +119,7 @@ Analyze if this document:
 Provide your analysis in the specified JSON format.`;
 
     // Call Lovable AI Gateway with vision
+    console.log('Calling AI Gateway for analysis...');
     const aiResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
       method: 'POST',
       headers: {
@@ -152,13 +171,13 @@ Provide your analysis in the specified JSON format.`;
         });
       }
       
-      throw new Error('AI analysis failed');
+      throw new Error(`AI analysis failed: ${aiResponse.status} - ${errorText}`);
     }
 
     const aiData = await aiResponse.json();
     const aiContent = aiData.choices?.[0]?.message?.content;
     
-    console.log('AI response:', aiContent);
+    console.log('AI response received:', aiContent?.substring(0, 200));
 
     // Parse the AI response
     let analysis;
@@ -167,6 +186,7 @@ Provide your analysis in the specified JSON format.`;
       const jsonMatch = aiContent.match(/\{[\s\S]*\}/);
       if (jsonMatch) {
         analysis = JSON.parse(jsonMatch[0]);
+        console.log('Parsed analysis status:', analysis.status);
       } else {
         throw new Error('No JSON found in response');
       }
@@ -189,6 +209,7 @@ Provide your analysis in the specified JSON format.`;
     }
 
     // Update the client_documents record with the analysis
+    console.log('Updating document record with analysis...');
     const { error: updateError } = await supabase
       .from('client_documents')
       .update({
@@ -207,6 +228,8 @@ Provide your analysis in the specified JSON format.`;
       console.error('Update error:', updateError);
       throw new Error('Failed to update document status');
     }
+
+    console.log('Document validation complete:', documentId, 'Status:', analysis.status);
 
     return new Response(JSON.stringify({ 
       success: true,

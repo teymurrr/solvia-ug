@@ -60,6 +60,8 @@ export const documents = {
     invalid: 'Invalid',
     not_submitted: 'Not Submitted',
     pending_review: 'Under Review',
+    retryValidation: 'Retry Validation',
+    validating: 'Validating...',
   },
   errors: {
     uploadFailed: 'Upload failed. Please try again.',

@@ -51,6 +51,8 @@ export const documents = {
     invalid: 'Недействительно',
     not_submitted: 'Не отправлено',
     pending_review: 'На проверке',
+    retryValidation: 'Повторить проверку',
+    validating: 'Проверка...',
   },
   errors: {
     uploadFailed: 'Ошибка загрузки. Пожалуйста, попробуйте снова.',

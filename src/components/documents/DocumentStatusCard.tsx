@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { 
   Check, 
@@ -11,7 +11,9 @@ import {
   BookOpen,
   Stamp,
   Languages,
-  IdCard
+  IdCard,
+  RefreshCw,
+  Loader2
 } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -23,6 +25,7 @@ import { cn } from '@/lib/utils';
 interface DocumentStatusCardProps {
   document: DocumentWithRequirement;
   onReupload: () => void;
+  onRetryValidation?: () => Promise<boolean>;
   language: string;
 }
 
@@ -38,10 +41,22 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
 export const DocumentStatusCard: React.FC<DocumentStatusCardProps> = ({
   document,
   onReupload,
+  onRetryValidation,
   language,
 }) => {
   const { t } = useLanguage();
+  const [isRetrying, setIsRetrying] = useState(false);
   const docs = t.documents as any;
+
+  const handleRetryValidation = async () => {
+    if (!onRetryValidation) return;
+    setIsRetrying(true);
+    try {
+      await onRetryValidation();
+    } finally {
+      setIsRetrying(false);
+    }
+  };
 
   const getName = () => {
     const key = `document_name_${language}` as keyof typeof document.requirement;
@@ -161,16 +176,35 @@ export const DocumentStatusCard: React.FC<DocumentStatusCardProps> = ({
               )}
 
               {/* Actions */}
-              {(status === 'partial' || status === 'invalid' || status === 'not_submitted') && (
-                <Button
-                  variant={status === 'not_submitted' ? 'default' : 'outline'}
-                  size="sm"
-                  onClick={onReupload}
-                >
-                  <Upload className="h-4 w-4 mr-2" />
-                  {status === 'not_submitted' ? 'Upload' : docs?.status?.reupload}
-                </Button>
-              )}
+              <div className="flex gap-2 flex-wrap">
+                {(status === 'partial' || status === 'invalid' || status === 'not_submitted') && (
+                  <Button
+                    variant={status === 'not_submitted' ? 'default' : 'outline'}
+                    size="sm"
+                    onClick={onReupload}
+                  >
+                    <Upload className="h-4 w-4 mr-2" />
+                    {status === 'not_submitted' ? 'Upload' : docs?.status?.reupload}
+                  </Button>
+                )}
+                
+                {/* Retry validation button for pending_review or failed validations */}
+                {(status === 'pending_review' || status === 'partial' || status === 'invalid') && hasFile && onRetryValidation && (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={handleRetryValidation}
+                    disabled={isRetrying}
+                  >
+                    {isRetrying ? (
+                      <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                    ) : (
+                      <RefreshCw className="h-4 w-4 mr-2" />
+                    )}
+                    {isRetrying ? (docs?.status?.validating || 'Validating...') : (docs?.status?.retryValidation || 'Retry Validation')}
+                  </Button>
+                )}
+              </div>
             </div>
           </div>
         </CardContent>

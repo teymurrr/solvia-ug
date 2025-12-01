@@ -264,6 +264,83 @@ export const useDocuments = (country: string) => {
     }
   };
 
+  // Retry validation for a document
+  const retryValidation = async (documentId: string, language: string = 'en') => {
+    const doc = clientDocuments.find(d => d.id === documentId);
+    if (!doc || !doc.file_path) {
+      toast({
+        title: 'Error',
+        description: 'Document not found or no file uploaded.',
+        variant: 'destructive',
+      });
+      return false;
+    }
+
+    const requirement = requirements.find(r => r.id === doc.requirement_id);
+    if (!requirement) {
+      toast({
+        title: 'Error',
+        description: 'Document requirement not found.',
+        variant: 'destructive',
+      });
+      return false;
+    }
+
+    try {
+      toast({
+        title: 'Validating...',
+        description: 'AI is analyzing your document. This may take a moment.',
+      });
+
+      const { data, error: validateError } = await supabase.functions.invoke('validate-document', {
+        body: {
+          documentId,
+          requirementId: doc.requirement_id,
+          filePath: doc.file_path,
+          documentType: requirement.document_type,
+          language,
+        },
+      });
+
+      if (validateError) {
+        console.error('Validation error:', validateError);
+        toast({
+          title: 'Validation Failed',
+          description: 'Could not validate document. Please try again later.',
+          variant: 'destructive',
+        });
+        return false;
+      }
+
+      // Check for rate limit or payment errors in response
+      if (data?.error) {
+        toast({
+          title: 'Validation Error',
+          description: data.error,
+          variant: 'destructive',
+        });
+        return false;
+      }
+
+      await fetchClientDocuments();
+
+      toast({
+        title: 'Validation Complete',
+        description: `Document status: ${data?.analysis?.status || 'reviewed'}`,
+      });
+
+      return true;
+    } catch (error) {
+      console.error('Retry validation error:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to validate document. Please try again.',
+        variant: 'destructive',
+      });
+      return false;
+    }
+  };
+
   // Delete a document
   const deleteDocument = async (documentId: string) => {
     const doc = clientDocuments.find(d => d.id === documentId);
@@ -373,6 +450,7 @@ export const useDocuments = (country: string) => {
     uploading,
     uploadDocument,
     deleteDocument,
+    retryValidation,
     getDocumentForRequirement,
     getDocumentsWithRequirements,
     getProgressStats,
