@@ -88,6 +88,7 @@ export const payments = {
       'Unser Team wird Sie innerhalb von 24 Stunden kontaktieren',
       'Beginnen Sie Ihren Approbationsprozess'
     ],
+    accessCodesNotice: 'Sie erhalten Ihre Zugangscodes zur Homologationsplattform innerhalb von 24 Stunden.',
     returnHome: 'Zurück zur Startseite',
     viewDashboard: 'Dashboard Ansehen'
   },

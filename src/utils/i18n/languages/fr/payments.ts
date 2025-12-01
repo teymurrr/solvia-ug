@@ -88,6 +88,7 @@ export const payments = {
       'Notre équipe vous contactera dans les 24 heures',
       'Commencez votre processus d\'homologation'
     ],
+    accessCodesNotice: 'Vous recevrez vos codes d\'accès à la plateforme d\'homologation dans les 24 heures.',
     returnHome: 'Retour à l\'Accueil',
     viewDashboard: 'Voir le Tableau de Bord'
   },
