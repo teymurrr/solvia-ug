@@ -24,6 +24,9 @@ export const documents = {
     dontHaveIt: "I don't have this document yet",
     hideHelp: 'Hide help',
     showHelp: 'Show help',
+    preview: 'Preview',
+    uploading: 'Uploading...',
+    analyzing: 'AI is analyzing your document...',
   },
   status: {
     title: 'Document Status',
@@ -45,6 +48,8 @@ export const documents = {
     nextSteps: 'Next Steps',
     contactSupport: 'Need help? Contact our support team',
     needsAttention: 'Needs Attention',
+    retryValidation: 'Retry Validation',
+    validating: 'Validating...',
   },
   progress: {
     complete: 'Complete',
@@ -60,8 +65,6 @@ export const documents = {
     invalid: 'Invalid',
     not_submitted: 'Not Submitted',
     pending_review: 'Under Review',
-    retryValidation: 'Retry Validation',
-    validating: 'Validating...',
   },
   errors: {
     uploadFailed: 'Upload failed. Please try again.',

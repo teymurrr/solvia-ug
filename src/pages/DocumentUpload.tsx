@@ -29,6 +29,7 @@ const DocumentUpload: React.FC = () => {
     deleteDocument,
     getDocumentForRequirement,
     getProgressStats,
+    getDocumentPreviewUrl,
   } = useDocuments(countryKey);
 
   // Fetch client data to get target country
@@ -88,6 +89,14 @@ const DocumentUpload: React.FC = () => {
   const handleDelete = (documentId: string) => {
     if (documentId) {
       deleteDocument(documentId);
+    }
+  };
+
+  const handlePreview = async (filePath: string | null) => {
+    if (!filePath) return;
+    const url = await getDocumentPreviewUrl(filePath);
+    if (url) {
+      window.open(url, '_blank');
     }
   };
 
@@ -159,6 +168,7 @@ const DocumentUpload: React.FC = () => {
                     document={doc}
                     onUpload={(file) => handleUpload(req.id, file)}
                     onDelete={() => handleDelete(doc?.id || '')}
+                    onPreview={doc?.file_path ? () => handlePreview(doc.file_path) : undefined}
                     isUploading={uploading === req.id}
                     language={currentLanguage}
                   />

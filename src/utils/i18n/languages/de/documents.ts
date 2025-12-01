@@ -24,6 +24,9 @@ export const documents = {
     dontHaveIt: 'Ich habe dieses Dokument noch nicht',
     hideHelp: 'Hilfe ausblenden',
     showHelp: 'Hilfe anzeigen',
+    preview: 'Vorschau',
+    uploading: 'Wird hochgeladen...',
+    analyzing: 'KI analysiert Ihr Dokument...',
   },
   status: {
     title: 'Dokumentenstatus',
@@ -44,6 +47,8 @@ export const documents = {
     feedback: 'Feedback',
     nextSteps: 'Nächste Schritte',
     contactSupport: 'Brauchen Sie Hilfe? Kontaktieren Sie unser Support-Team',
+    retryValidation: 'Validierung wiederholen',
+    validating: 'Validiere...',
   },
   statusLabels: {
     complete: 'Verifiziert',
@@ -51,8 +56,6 @@ export const documents = {
     invalid: 'Ungültig',
     not_submitted: 'Nicht eingereicht',
     pending_review: 'In Prüfung',
-    retryValidation: 'Validierung wiederholen',
-    validating: 'Validiere...',
   },
   errors: {
     uploadFailed: 'Hochladen fehlgeschlagen. Bitte versuchen Sie es erneut.',

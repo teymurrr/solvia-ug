@@ -442,6 +442,32 @@ export const useDocuments = (country: string) => {
     };
   };
 
+  // Get a signed URL for document preview
+  const getDocumentPreviewUrl = async (filePath: string): Promise<string | null> => {
+    if (!filePath) return null;
+    
+    try {
+      const { data, error } = await supabase.storage
+        .from('homologation-documents')
+        .createSignedUrl(filePath, 3600); // 1 hour expiry
+      
+      if (error) {
+        console.error('Error creating signed URL:', error);
+        toast({
+          title: 'Error',
+          description: 'Could not generate preview link.',
+          variant: 'destructive',
+        });
+        return null;
+      }
+      
+      return data.signedUrl;
+    } catch (error) {
+      console.error('Preview URL error:', error);
+      return null;
+    }
+  };
+
   return {
     requirements,
     clientDocuments,
@@ -454,6 +480,7 @@ export const useDocuments = (country: string) => {
     getDocumentForRequirement,
     getDocumentsWithRequirements,
     getProgressStats,
+    getDocumentPreviewUrl,
     refetch: fetchClientDocuments,
   };
 };

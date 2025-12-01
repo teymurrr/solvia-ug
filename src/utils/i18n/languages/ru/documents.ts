@@ -24,6 +24,9 @@ export const documents = {
     dontHaveIt: 'У меня еще нет этого документа',
     hideHelp: 'Скрыть помощь',
     showHelp: 'Показать помощь',
+    preview: 'Предпросмотр',
+    uploading: 'Загрузка...',
+    analyzing: 'ИИ анализирует ваш документ...',
   },
   status: {
     title: 'Статус документов',
@@ -44,6 +47,8 @@ export const documents = {
     feedback: 'Отзыв',
     nextSteps: 'Следующие шаги',
     contactSupport: 'Нужна помощь? Свяжитесь с нашей службой поддержки',
+    retryValidation: 'Повторить проверку',
+    validating: 'Проверка...',
   },
   statusLabels: {
     complete: 'Проверено',
@@ -51,8 +56,6 @@ export const documents = {
     invalid: 'Недействительно',
     not_submitted: 'Не отправлено',
     pending_review: 'На проверке',
-    retryValidation: 'Повторить проверку',
-    validating: 'Проверка...',
   },
   errors: {
     uploadFailed: 'Ошибка загрузки. Пожалуйста, попробуйте снова.',

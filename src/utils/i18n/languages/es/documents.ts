@@ -24,6 +24,9 @@ export const documents = {
     dontHaveIt: 'No tengo este documento todavía',
     hideHelp: 'Ocultar ayuda',
     showHelp: 'Mostrar ayuda',
+    preview: 'Vista previa',
+    uploading: 'Subiendo...',
+    analyzing: 'La IA está analizando tu documento...',
   },
   status: {
     title: 'Estado de Documentos',
@@ -44,6 +47,8 @@ export const documents = {
     feedback: 'Comentarios',
     nextSteps: 'Próximos Pasos',
     contactSupport: '¿Necesitas ayuda? Contacta a nuestro equipo de soporte',
+    retryValidation: 'Reintentar Validación',
+    validating: 'Validando...',
   },
   statusLabels: {
     complete: 'Verificado',
@@ -51,8 +56,6 @@ export const documents = {
     invalid: 'Inválido',
     not_submitted: 'No Enviado',
     pending_review: 'En Revisión',
-    retryValidation: 'Reintentar Validación',
-    validating: 'Validando...',
   },
   errors: {
     uploadFailed: 'Error al subir. Por favor intenta de nuevo.',
