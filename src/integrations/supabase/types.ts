@@ -720,13 +720,16 @@ export type Database = {
       }
       payments: {
         Row: {
+          admin_notes: string | null
           amount: number
           created_at: string
           currency: string
           discount_amount: number | null
           discount_code: string | null
+          granted_by: string | null
           id: string
           metadata: Json | null
+          payment_method: string | null
           payment_type: string
           product_type: string
           status: string
@@ -738,13 +741,16 @@ export type Database = {
           user_id: string | null
         }
         Insert: {
+          admin_notes?: string | null
           amount: number
           created_at?: string
           currency?: string
           discount_amount?: number | null
           discount_code?: string | null
+          granted_by?: string | null
           id?: string
           metadata?: Json | null
+          payment_method?: string | null
           payment_type: string
           product_type: string
           status?: string
@@ -756,13 +762,16 @@ export type Database = {
           user_id?: string | null
         }
         Update: {
+          admin_notes?: string | null
           amount?: number
           created_at?: string
           currency?: string
           discount_amount?: number | null
           discount_code?: string | null
+          granted_by?: string | null
           id?: string
           metadata?: Json | null
+          payment_method?: string | null
           payment_type?: string
           product_type?: string
           status?: string

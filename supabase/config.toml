@@ -1,5 +1,11 @@
 project_id = "ehrxpaxvyuwiwqclqkyh"
 
+[functions.grant-manual-access]
+verify_jwt = false
+
+[functions.get-users-for-admin]
+verify_jwt = false
+
 [functions.create-payment]
 verify_jwt = false
 
