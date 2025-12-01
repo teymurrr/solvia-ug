@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useMemo } from 'react';
 import MainLayout from '@/components/MainLayout';
 import ProfessionalCard from '@/components/ProfessionalCard';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Skeleton } from '@/components/ui/skeleton';
 import { Search, SlidersHorizontal, X } from 'lucide-react';
 import { 
   Select, 
@@ -14,65 +14,13 @@ import {
 } from '@/components/ui/select';
 import { Slider } from '@/components/ui/slider';
 import { Checkbox } from '@/components/ui/checkbox';
+import { useProfessionals } from '@/hooks/useProfessionals';
+import { useLanguage } from '@/hooks/useLanguage';
 
 const Professionals = () => {
-  const professionals = [
-    {
-      id: '1',
-      name: 'Dr. Sarah Johnson',
-      title: 'Cardiologist',
-      location: 'Berlin, Germany',
-      specialty: 'Cardiology',
-      languages: ['English', 'German'],
-      experience: 8,
-    },
-    {
-      id: '2',
-      name: 'Dr. Michael Chen',
-      title: 'Neurologist',
-      location: 'Barcelona, Spain',
-      specialty: 'Neurology',
-      languages: ['English', 'Spanish', 'Mandarin'],
-      experience: 5,
-    },
-    {
-      id: '3',
-      name: 'Emma Williams',
-      title: 'Registered Nurse',
-      location: 'Stockholm, Sweden',
-      specialty: 'Emergency Care',
-      languages: ['English', 'Swedish'],
-      experience: 7,
-    },
-    {
-      id: '4',
-      name: 'Dr. Alejandro Gonzalez',
-      title: 'General Practitioner',
-      location: 'Lisbon, Portugal',
-      specialty: 'Family Medicine',
-      languages: ['English', 'Portuguese', 'Spanish'],
-      experience: 10,
-    },
-    {
-      id: '5',
-      name: 'Sophia Schmidt',
-      title: 'Specialized Nurse',
-      location: 'Vienna, Austria',
-      specialty: 'Pediatrics',
-      languages: ['English', 'German'],
-      experience: 6,
-    },
-    {
-      id: '6',
-      name: 'Dr. James Wilson',
-      title: 'Surgeon',
-      location: 'Amsterdam, Netherlands',
-      specialty: 'Orthopedics',
-      languages: ['English', 'Dutch'],
-      experience: 12,
-    },
-  ];
-
+  const { professionals, loading, error } = useProfessionals();
+  const { t } = useLanguage();
+  
   const [filtersVisible, setFiltersVisible] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedSpecialty, setSelectedSpecialty] = useState('all');
@@ -92,39 +40,99 @@ const Professionals = () => {
     }
   };
 
-  const filteredProfessionals = professionals.filter(professional => {
-    if (searchQuery && !professional.name.toLowerCase().includes(searchQuery.toLowerCase()) && 
-        !professional.specialty.toLowerCase().includes(searchQuery.toLowerCase())) {
-      return false;
-    }
+  // Get unique specialties and locations from the data
+  const { specialties, locations, availableLanguages } = useMemo(() => {
+    const specialtiesSet = new Set<string>();
+    const locationsSet = new Set<string>();
+    const languagesSet = new Set<string>();
     
-    if (selectedSpecialty !== 'all' && professional.specialty !== selectedSpecialty) {
-      return false;
-    }
+    professionals.forEach(p => {
+      if (p.specialty) specialtiesSet.add(p.specialty);
+      if (p.country) locationsSet.add(p.country);
+      p.languages?.forEach(lang => {
+        if (lang.language) languagesSet.add(lang.language);
+      });
+    });
     
-    if (selectedLocation !== 'all' && !professional.location.includes(selectedLocation)) {
-      return false;
-    }
+    return {
+      specialties: Array.from(specialtiesSet).sort(),
+      locations: Array.from(locationsSet).sort(),
+      availableLanguages: Array.from(languagesSet).sort()
+    };
+  }, [professionals]);
+
+  // Calculate experience from experiences array
+  const calculateExperience = (experiences: any[]) => {
+    if (!experiences || experiences.length === 0) return 0;
+    return experiences.reduce((total, exp) => {
+      const start = exp.startDate ? new Date(exp.startDate) : null;
+      const end = exp.current ? new Date() : (exp.endDate ? new Date(exp.endDate) : null);
+      if (start && end) {
+        return total + Math.max(0, end.getFullYear() - start.getFullYear());
+      }
+      return total;
+    }, 0);
+  };
+
+  const filteredProfessionals = useMemo(() => {
+    return professionals.filter(professional => {
+      const fullName = `${professional.firstName} ${professional.lastName}`.toLowerCase();
+      const specialty = (professional.specialty || '').toLowerCase();
+      
+      if (searchQuery && !fullName.includes(searchQuery.toLowerCase()) && 
+          !specialty.includes(searchQuery.toLowerCase())) {
+        return false;
+      }
+      
+      if (selectedSpecialty !== 'all' && professional.specialty !== selectedSpecialty) {
+        return false;
+      }
+      
+      if (selectedLocation !== 'all' && professional.country !== selectedLocation) {
+        return false;
+      }
+      
+      const experience = calculateExperience(professional.experiences || []);
+      if (experience < minExperience) {
+        return false;
+      }
+      
+      if (selectedLanguages.length > 0) {
+        const profLanguages = professional.languages?.map(l => l.language) || [];
+        if (!selectedLanguages.every(lang => profLanguages.includes(lang))) {
+          return false;
+        }
+      }
+      
+      return true;
+    });
+  }, [professionals, searchQuery, selectedSpecialty, selectedLocation, minExperience, selectedLanguages]);
+
+  // Map professional data to card props
+  const mapToCardProps = (professional: typeof professionals[0]) => {
+    const languageNames = professional.languages?.map(l => l.language).filter(Boolean) || [];
+    const experience = calculateExperience(professional.experiences || []);
     
-    if (professional.experience < minExperience) {
-      return false;
-    }
-    
-    if (selectedLanguages.length > 0 && !selectedLanguages.every(lang => professional.languages.includes(lang))) {
-      return false;
-    }
-    
-    return true;
-  });
+    return {
+      id: professional.id,
+      name: `${professional.firstName} ${professional.lastName}`.trim(),
+      title: professional.profession || professional.specialty || 'Healthcare Professional',
+      location: professional.country || 'Location not specified',
+      specialty: professional.specialty || 'General',
+      languages: languageNames.length > 0 ? languageNames : ['Not specified'],
+      experience,
+      imageSrc: professional.profileImage
+    };
+  };
 
   return (
     <MainLayout>
-      <section className="bg-gray-50 py-12">
+      <section className="bg-muted/50 py-12">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center space-y-4">
-            <h1 className="text-3xl font-bold">Healthcare Professionals</h1>
+            <h1 className="text-3xl font-bold">{t('professionals.title')}</h1>
             <p className="text-muted-foreground">
-              Discover skilled medical professionals from around the world ready for their next opportunity.
+              {t('professionals.subtitle')}
             </p>
           </div>
         </div>
@@ -148,7 +156,7 @@ const Professionals = () => {
               onClick={toggleFilters}
             >
               <SlidersHorizontal className="h-4 w-4" />
-              Filters
+              {t('professionals.filters')}
             </Button>
           </div>
         </div>
@@ -158,7 +166,7 @@ const Professionals = () => {
         <div className="flex flex-col md:flex-row gap-8">
           <aside className={`md:w-64 lg:w-72 space-y-6 ${filtersVisible ? 'block' : 'hidden'} md:block`}>
             <div className="flex items-center justify-between md:justify-start">
-              <h2 className="font-semibold text-lg">Filters</h2>
+              <h2 className="font-semibold text-lg">{t('professionals.filters')}</h2>
               <Button 
                 variant="ghost" 
                 size="sm" 
@@ -171,44 +179,38 @@ const Professionals = () => {
             
             <div className="space-y-4">
               <div className="space-y-2">
-                <label className="text-sm font-medium">Specialty</label>
+                <label className="text-sm font-medium">{t('professionals.specialty')}</label>
                 <Select value={selectedSpecialty} onValueChange={setSelectedSpecialty}>
                   <SelectTrigger>
                     <SelectValue placeholder="All Specialties" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="all">All Specialties</SelectItem>
-                    <SelectItem value="Cardiology">Cardiology</SelectItem>
-                    <SelectItem value="Neurology">Neurology</SelectItem>
-                    <SelectItem value="Emergency Care">Emergency Care</SelectItem>
-                    <SelectItem value="Family Medicine">Family Medicine</SelectItem>
-                    <SelectItem value="Pediatrics">Pediatrics</SelectItem>
-                    <SelectItem value="Orthopedics">Orthopedics</SelectItem>
+                    {specialties.map(specialty => (
+                      <SelectItem key={specialty} value={specialty}>{specialty}</SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </div>
               
               <div className="space-y-2">
-                <label className="text-sm font-medium">Location</label>
+                <label className="text-sm font-medium">{t('professionals.location')}</label>
                 <Select value={selectedLocation} onValueChange={setSelectedLocation}>
                   <SelectTrigger>
                     <SelectValue placeholder="All Locations" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="all">All Locations</SelectItem>
-                    <SelectItem value="Germany">Germany</SelectItem>
-                    <SelectItem value="Spain">Spain</SelectItem>
-                    <SelectItem value="Sweden">Sweden</SelectItem>
-                    <SelectItem value="Portugal">Portugal</SelectItem>
-                    <SelectItem value="Austria">Austria</SelectItem>
-                    <SelectItem value="Netherlands">Netherlands</SelectItem>
+                    {locations.map(location => (
+                      <SelectItem key={location} value={location}>{location}</SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </div>
               
               <div className="space-y-2">
                 <div className="flex justify-between">
-                  <label className="text-sm font-medium">Minimum Experience</label>
+                  <label className="text-sm font-medium">{t('professionals.experience')}</label>
                   <span className="text-sm text-muted-foreground">{minExperience} years</span>
                 </div>
                 <Slider
@@ -223,7 +225,7 @@ const Professionals = () => {
               <div className="space-y-2">
                 <label className="text-sm font-medium">Languages</label>
                 <div className="space-y-2">
-                  {['English', 'German', 'Spanish', 'French', 'Portuguese', 'Swedish', 'Dutch'].map((language) => (
+                  {availableLanguages.map((language) => (
                     <div key={language} className="flex items-center space-x-2">
                       <Checkbox 
                         id={`lang-${language}`} 
@@ -258,7 +260,7 @@ const Professionals = () => {
           <div className="flex-1">
             <div className="flex justify-between items-center mb-6">
               <h3 className="font-medium">
-                {filteredProfessionals.length} {filteredProfessionals.length === 1 ? 'Professional' : 'Professionals'}
+                {loading ? '...' : filteredProfessionals.length} {filteredProfessionals.length === 1 ? 'Professional' : 'Professionals'}
               </h3>
               <Select defaultValue="relevance">
                 <SelectTrigger className="w-[180px]">
@@ -274,19 +276,41 @@ const Professionals = () => {
               </Select>
             </div>
             
-            {filteredProfessionals.length > 0 ? (
+            {loading ? (
+              <div className="grid grid-cols-1 gap-6">
+                {[1, 2, 3].map((i) => (
+                  <div key={i} className="border rounded-lg p-6 space-y-4">
+                    <div className="flex gap-4">
+                      <Skeleton className="h-16 w-16 rounded-full" />
+                      <div className="flex-1 space-y-2">
+                        <Skeleton className="h-5 w-48" />
+                        <Skeleton className="h-4 w-32" />
+                        <Skeleton className="h-4 w-24" />
+                      </div>
+                    </div>
+                    <Skeleton className="h-6 w-24" />
+                    <div className="space-y-2">
+                      <Skeleton className="h-4 w-full" />
+                      <Skeleton className="h-4 w-3/4" />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : filteredProfessionals.length > 0 ? (
               <div className="grid grid-cols-1 gap-6">
                 {filteredProfessionals.map((professional) => (
                   <ProfessionalCard
                     key={professional.id}
-                    {...professional}
+                    {...mapToCardProps(professional)}
                   />
                 ))}
               </div>
             ) : (
-              <div className="text-center py-12 border rounded-lg bg-gray-50">
+              <div className="text-center py-12 border rounded-lg bg-muted/50">
                 <h3 className="text-lg font-medium mb-2">No professionals found</h3>
-                <p className="text-muted-foreground mb-6">Try adjusting your search filters</p>
+                <p className="text-muted-foreground mb-6">
+                  {error || 'Try adjusting your search filters'}
+                </p>
                 <Button onClick={() => {
                   setSearchQuery('');
                   setSelectedSpecialty('all');
