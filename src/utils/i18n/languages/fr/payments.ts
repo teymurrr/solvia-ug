@@ -82,14 +82,32 @@ export const payments = {
   success: {
     title: 'Paiement Réussi!',
     message: 'Votre paiement a été traité avec succès. Vous recevrez un email de confirmation sous peu.',
+    congratulations: 'Félicitations! Vous avez pris une excellente décision.',
+    reassurance: "Vous êtes maintenant un pas plus près de réaliser votre rêve d'exercer la médecine en Allemagne. Notre équipe d'experts est là pour vous guider à chaque étape.",
+    trustBadge1: '500+ Histoires de Réussite',
+    trustBadge2: 'Accompagnement Expert',
+    trustBadge3: 'Support Personnel',
+    createAccountTitle: 'Créez Votre Compte',
+    createAccountDesc: "Inscrivez-vous maintenant pour suivre votre progression et bénéficier d'un accompagnement personnalisé tout au long de votre parcours d'homologation.",
+    signUpNow: "S'inscrire Maintenant",
+    phoneTitle: 'Restez Connecté',
+    phoneDesc: 'Laissez votre numéro de téléphone pour que notre équipe puisse vous contacter plus rapidement et vous fournir une assistance personnalisée via WhatsApp ou appel.',
+    phoneLabel: 'Numéro de Téléphone (avec indicatif pays)',
+    phonePlaceholder: '+33 6 12 34 56 78',
+    submitPhone: 'Enregistrer le Numéro',
+    submitting: 'Envoi en cours...',
+    phoneSubmitted: 'Numéro de téléphone enregistré avec succès!',
+    phoneThankYou: 'Merci! Nous vous contacterons bientôt.',
+    verifying: 'Vérification du Paiement...',
+    pleaseWait: 'Veuillez patienter pendant que nous confirmons votre paiement.',
     nextSteps: 'Prochaines Étapes',
     stepsList: [
       'Vérifiez votre email pour la confirmation de paiement',
       'Notre équipe vous contactera dans les 24 heures',
-      'Commencez votre processus d\'homologation'
+      "Commencez votre processus d'homologation"
     ],
-    accessCodesNotice: 'Vous recevrez vos codes d\'accès à la plateforme d\'homologation dans les 24 heures.',
-    returnHome: 'Retour à l\'Accueil',
+    accessCodesNotice: "Vous recevrez vos codes d'accès à la plateforme d'homologation dans les 24 heures.",
+    returnHome: "Retour à l'Accueil",
     viewDashboard: 'Voir le Tableau de Bord'
   },
   cancelled: {
