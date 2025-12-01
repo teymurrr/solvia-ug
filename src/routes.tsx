@@ -3,6 +3,7 @@ import { lazy, Suspense, useState, useEffect } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import PaidAccessRoute from "@/components/PaidAccessRoute";
+import AdminRoute from "@/components/AdminRoute";
 import { useAuth } from "@/contexts/AuthContext";
 
 // Simple loading component
@@ -61,6 +62,9 @@ const OnboardingWizard = lazy(() => import("@/pages/OnboardingWizard"));
 // Document pages
 const DocumentUpload = lazy(() => import("@/pages/DocumentUpload"));
 const DocumentStatus = lazy(() => import("@/pages/DocumentStatus"));
+
+// Admin pages
+const AdminUserManagement = lazy(() => import("@/pages/admin/UserManagement"));
 
 const AppRoutes = () => {
   const { isLoggedIn, userType } = useAuth();
@@ -188,6 +192,13 @@ const AppRoutes = () => {
           <PaidAccessRoute>
             <DocumentStatus />
           </PaidAccessRoute>
+        } />
+        
+        {/* Admin routes */}
+        <Route path="/admin/users" element={
+          <AdminRoute>
+            <AdminUserManagement />
+          </AdminRoute>
         } />
         
         {/* Fallback route */}
