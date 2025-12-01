@@ -11,7 +11,7 @@ import { useLanguage } from '@/hooks/useLanguage';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
-import { ArrowLeft, ArrowRight, CheckCircle2, MapPin, FileCheck, User, Globe, FileText, BookOpen, GraduationCap, CreditCard, Stamp, Languages } from 'lucide-react';
+import { ArrowLeft, ArrowRight, CheckCircle2, MapPin, FileCheck, User, Globe, FileText as FileTextIcon, BookOpen, GraduationCap, CreditCard, Stamp, Languages, FileText } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 type WizardStep = 'welcome' | 'targetCountry' | 'federalState' | 'currentLocation' | 'nameMatch' | 'diplomaApostilled' | 'documentsNeeded' | 'complete';
@@ -59,8 +59,12 @@ const OnboardingWizard = () => {
   
   const [currentStep, setCurrentStep] = useState<WizardStep>('welcome');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  
+  // Pre-fill target country from payment if available
+  const paidCountry = localStorage.getItem('paidCountry');
+  
   const [data, setData] = useState<OnboardingData>({
-    targetCountry: '',
+    targetCountry: paidCountry || '',
     federalState: '',
     currentLocation: '',
     nameMatchesDocuments: '',
@@ -110,19 +114,50 @@ const OnboardingWizard = () => {
   const handleSubmit = async () => {
     setIsSubmitting(true);
     try {
-      const { error } = await supabase
-        .from('clients')
-        .insert({
-          user_id: user?.id || null,
-          email: user?.email || null,
-          target_country: data.targetCountry,
-          federal_state: data.federalState || null,
-          current_location: data.currentLocation,
-          name_matches_documents: data.nameMatchesDocuments,
-          diploma_apostilled: data.diplomaApostilled
-        });
+      // Check if client record already exists for this user
+      let existingClient = null;
+      if (user?.id) {
+        const { data: existing } = await supabase
+          .from('clients')
+          .select('id')
+          .eq('user_id', user.id)
+          .single();
+        existingClient = existing;
+      }
 
-      if (error) throw error;
+      if (existingClient) {
+        // Update existing client record
+        const { error } = await supabase
+          .from('clients')
+          .update({
+            target_country: data.targetCountry,
+            federal_state: data.federalState || null,
+            current_location: data.currentLocation,
+            name_matches_documents: data.nameMatchesDocuments,
+            diploma_apostilled: data.diplomaApostilled
+          })
+          .eq('id', existingClient.id);
+        
+        if (error) throw error;
+      } else {
+        // Insert new client record
+        const { error } = await supabase
+          .from('clients')
+          .insert({
+            user_id: user?.id || null,
+            email: user?.email || null,
+            target_country: data.targetCountry,
+            federal_state: data.federalState || null,
+            current_location: data.currentLocation,
+            name_matches_documents: data.nameMatchesDocuments,
+            diploma_apostilled: data.diplomaApostilled
+          });
+
+        if (error) throw error;
+      }
+
+      // Clear the paidCountry from localStorage as it's now saved
+      localStorage.removeItem('paidCountry');
 
       setCurrentStep('complete');
     } catch (error) {
@@ -372,12 +407,19 @@ const OnboardingWizard = () => {
                 {translations.complete?.title || 'Thank you!'}
               </h2>
               <p className="text-muted-foreground max-w-md mx-auto">
-                {translations.complete?.subtitle || 'We have received your information. Our team will contact you soon to start your homologation process.'}
+                {translations.complete?.readyToUpload || "Great! Now let's upload your documents to start the homologation process."}
               </p>
             </div>
-            <Button onClick={() => navigate('/')} className="mt-4">
-              {translations.complete?.backHome || 'Back to Home'}
-            </Button>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button onClick={() => navigate('/documents-upload')} size="lg" className="gap-2">
+                <FileText className="w-4 h-4" />
+                {translations.complete?.uploadDocuments || 'Upload Documents'}
+                <ArrowRight className="w-4 h-4" />
+              </Button>
+              <Button variant="outline" onClick={() => navigate('/dashboard/professional')}>
+                {translations.complete?.viewDashboard || 'View Dashboard'}
+              </Button>
+            </div>
           </div>
         );
 

@@ -44,7 +44,10 @@ export const onboarding = {
   complete: {
     title: 'Thank you!',
     subtitle: 'We have received your information. Our team will contact you soon to start your homologation process.',
-    backHome: 'Back to Home'
+    backHome: 'Back to Home',
+    readyToUpload: "Great! Now let's upload your documents to start the homologation process.",
+    uploadDocuments: 'Upload Documents',
+    viewDashboard: 'View Dashboard'
   },
   countries: {
     germany: 'Germany',

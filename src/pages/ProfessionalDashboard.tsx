@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 import MainLayout from '@/components/MainLayout';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Briefcase, GraduationCap, Heart } from 'lucide-react';
+import { Briefcase, GraduationCap, Heart, FileText } from 'lucide-react';
 import { ProfessionalProfileEditForm } from '@/components/professional-profile';
 import VacancyCard from '@/components/VacancyCard';
 import {
@@ -14,6 +14,7 @@ import {
   useDashboard,
 } from '@/components/professional-dashboard';
 import SavedAndApplied from '@/components/professional-dashboard/SavedAndApplied';
+import HomologationTab from '@/components/professional-dashboard/HomologationTab';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/hooks/useLanguage';
@@ -250,9 +251,13 @@ const ProfessionalDashboard: React.FC = () => {
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-1 sm:grid-cols-3 gap-1 h-auto p-1">
+          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 gap-1 h-auto p-1">
             <TabsTrigger value="profile" className="text-xs sm:text-sm px-2 py-2">
               {t?.common?.profile || "Profile"}
+            </TabsTrigger>
+            <TabsTrigger value="homologation" className="text-xs sm:text-sm px-2 py-2">
+              <FileText className="w-4 h-4 mr-1 hidden sm:inline" />
+              {t?.dashboard?.homologation?.tabTitle || "Homologation"}
             </TabsTrigger>
             <TabsTrigger value="vacancies" className="text-xs sm:text-sm px-2 py-2">
               {t?.common?.vacancies || "Vacancies"}
@@ -290,6 +295,10 @@ const ProfessionalDashboard: React.FC = () => {
                 )}
               </CardContent>
             </Card>
+          </TabsContent>
+
+          <TabsContent value="homologation" className="space-y-6">
+            <HomologationTab />
           </TabsContent>
 
           <TabsContent value="vacancies" className="space-y-6">

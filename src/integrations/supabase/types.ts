@@ -733,6 +733,7 @@ export type Database = {
           stripe_customer_id: string | null
           stripe_payment_intent_id: string | null
           stripe_session_id: string | null
+          target_country: string | null
           updated_at: string
           user_id: string | null
         }
@@ -750,6 +751,7 @@ export type Database = {
           stripe_customer_id?: string | null
           stripe_payment_intent_id?: string | null
           stripe_session_id?: string | null
+          target_country?: string | null
           updated_at?: string
           user_id?: string | null
         }
@@ -767,6 +769,7 @@ export type Database = {
           stripe_customer_id?: string | null
           stripe_payment_intent_id?: string | null
           stripe_session_id?: string | null
+          target_country?: string | null
           updated_at?: string
           user_id?: string | null
         }
@@ -959,9 +962,21 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      check_paid_access: {
+        Args: { country_param: string; user_id_param: string }
+        Returns: boolean
+      }
       get_blog_statistics: {
         Args: { end_date?: string; start_date?: string }
         Returns: Json
+      }
+      get_paid_countries: {
+        Args: { user_id_param: string }
+        Returns: {
+          created_at: string
+          product_type: string
+          target_country: string
+        }[]
       }
       get_user_type: { Args: { user_id: string }; Returns: string }
       increment_blog_view_count: {

@@ -91,8 +91,14 @@ export const dashboard = {
   },
   homologation: {
     title: "Get Your Diploma Recognized",
+    tabTitle: "Homologation",
     description: "Start your homologation process to practice medicine in Germany",
     ctaButton: "Start Homologation Process",
-    benefits: "Official recognition of your medical diploma for practice in Germany"
+    benefits: "Official recognition of your medical diploma for practice in Germany",
+    yourProcesses: "Your Homologation Processes",
+    trackProgress: "Track your document uploads and verification status",
+    addCountry: "Add Another Country",
+    languagePackage: "Homologation & Language",
+    premiumPackage: "Premium"
   }
 };

@@ -44,6 +44,15 @@ export const documents = {
     feedback: 'Feedback',
     nextSteps: 'Next Steps',
     contactSupport: 'Need help? Contact our support team',
+    needsAttention: 'Needs Attention',
+  },
+  progress: {
+    complete: 'Complete',
+  },
+  actions: {
+    continueUpload: 'Continue Upload',
+    viewDocuments: 'View Documents',
+    viewStatus: 'Status',
   },
   statusLabels: {
     complete: 'Verified',
@@ -68,5 +77,14 @@ export const documents = {
     spain: 'Spain',
     italy: 'Italy',
     france: 'France',
+  },
+  accessRequired: {
+    title: 'Payment Required',
+    description: 'To access the document upload and homologation process, you need to purchase a homologation package first.',
+    startProcess: 'Start Homologation Process',
+    wrongCountry: 'Access Not Available',
+    wrongCountryDesc: "You don't have access to documents for this country. Please purchase the appropriate package or select a country you have access to.",
+    goToDashboard: 'Go to Dashboard',
+    purchaseForCountry: 'Purchase for This Country',
   },
 };

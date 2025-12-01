@@ -91,7 +91,8 @@ serve(async (req) => {
     console.log("✅ [VERIFY-PAYMENT] Payment verification completed:", {
       paymentId: payment.id,
       status: payment.status,
-      productType: payment.product_type
+      productType: payment.product_type,
+      targetCountry: payment.target_country
     });
 
     return new Response(JSON.stringify({
@@ -102,8 +103,10 @@ serve(async (req) => {
         amount: payment.amount,
         currency: payment.currency,
         productType: payment.product_type,
+        targetCountry: payment.target_country,
         discountCode: payment.discount_code,
         discountAmount: payment.discount_amount,
+        metadata: payment.metadata,
       },
       session: {
         id: session.id,
