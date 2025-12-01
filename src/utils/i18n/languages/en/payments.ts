@@ -88,6 +88,7 @@ export const payments = {
       'Our team will contact you within 24 hours',
       'Begin your homologation process'
     ],
+    accessCodesNotice: 'You will receive your access codes to the homologation platform within 24 hours.',
     returnHome: 'Return to Home',
     viewDashboard: 'View Dashboard'
   },
