@@ -31,7 +31,9 @@ interface DocumentUploadCardProps {
   document?: ClientDocument;
   onUpload: (file: File) => Promise<void>;
   onDelete: () => void;
+  onPreview?: () => void;
   isUploading: boolean;
+  isValidating?: boolean;
   language: string;
 }
 
@@ -49,7 +51,9 @@ export const DocumentUploadCard: React.FC<DocumentUploadCardProps> = ({
   document,
   onUpload,
   onDelete,
+  onPreview,
   isUploading,
+  isValidating,
   language,
 }) => {
   const { t } = useLanguage();
@@ -77,6 +81,12 @@ export const DocumentUploadCard: React.FC<DocumentUploadCardProps> = ({
   const getHowToObtain = () => {
     const key = `how_to_obtain_${language}` as keyof DocumentRequirement;
     return (requirement[key] as string) || requirement.how_to_obtain_en;
+  };
+
+  const getFeedback = () => {
+    if (!document) return null;
+    const key = `ai_feedback_${language}` as keyof typeof document;
+    return (document[key] as string) || document.ai_feedback_en;
   };
 
   const status = document?.status || 'not_submitted';
@@ -248,7 +258,7 @@ export const DocumentUploadCard: React.FC<DocumentUploadCardProps> = ({
               {isUploading ? (
                 <div className="flex flex-col items-center gap-2">
                   <Loader2 className="h-8 w-8 text-primary animate-spin" />
-                  <p className="text-sm text-muted-foreground">Uploading...</p>
+                  <p className="text-sm text-muted-foreground">{docs?.card?.uploading || 'Uploading...'}</p>
                 </div>
               ) : (
                 <div className="flex flex-col items-center gap-2">
@@ -270,7 +280,13 @@ export const DocumentUploadCard: React.FC<DocumentUploadCardProps> = ({
                   </p>
                 </div>
                 <div className="flex gap-2">
-                  <Button variant="ghost" size="icon" className="h-8 w-8">
+                  <Button 
+                    variant="ghost" 
+                    size="icon" 
+                    className="h-8 w-8"
+                    onClick={onPreview}
+                    title={docs?.card?.preview || 'Preview'}
+                  >
                     <Eye className="h-4 w-4" />
                   </Button>
                   <Button variant="ghost" size="icon" className="h-8 w-8 text-destructive" onClick={onDelete}>
@@ -279,17 +295,40 @@ export const DocumentUploadCard: React.FC<DocumentUploadCardProps> = ({
                 </div>
               </div>
 
-              {/* Status badge */}
-              {status !== 'not_submitted' && (
-                <Badge variant="outline" className={cn(
-                  "w-full justify-center py-1",
-                  status === 'complete' && "border-green-500 text-green-600",
-                  status === 'partial' && "border-orange-500 text-orange-600",
-                  status === 'invalid' && "border-red-500 text-red-600",
-                  status === 'pending_review' && "border-blue-500 text-blue-600"
-                )}>
-                  {docs?.statusLabels?.[status]}
-                </Badge>
+              {/* Validation in progress indicator */}
+              {isValidating && (
+                <div className="flex items-center gap-2 p-3 bg-blue-50 dark:bg-blue-950/30 rounded-lg border border-blue-200 dark:border-blue-800">
+                  <Loader2 className="h-4 w-4 text-blue-500 animate-spin" />
+                  <span className="text-sm text-blue-600 dark:text-blue-400">
+                    {docs?.card?.analyzing || 'AI is analyzing your document...'}
+                  </span>
+                </div>
+              )}
+
+              {/* Status badge with feedback */}
+              {status !== 'not_submitted' && !isValidating && (
+                <div className="space-y-2">
+                  <Badge variant="outline" className={cn(
+                    "w-full justify-center py-1",
+                    status === 'complete' && "border-green-500 text-green-600 bg-green-50 dark:bg-green-950/30",
+                    status === 'partial' && "border-orange-500 text-orange-600 bg-orange-50 dark:bg-orange-950/30",
+                    status === 'invalid' && "border-red-500 text-red-600 bg-red-50 dark:bg-red-950/30",
+                    status === 'pending_review' && "border-blue-500 text-blue-600 bg-blue-50 dark:bg-blue-950/30"
+                  )}>
+                    {status === 'complete' && <Check className="h-3 w-3 mr-1" />}
+                    {status === 'partial' && <AlertCircle className="h-3 w-3 mr-1" />}
+                    {status === 'invalid' && <X className="h-3 w-3 mr-1" />}
+                    {status === 'pending_review' && <Clock className="h-3 w-3 mr-1" />}
+                    {docs?.statusLabels?.[status]}
+                  </Badge>
+                  
+                  {/* Show AI feedback if available */}
+                  {document && getFeedback() && (
+                    <p className="text-xs text-muted-foreground p-2 bg-muted/50 rounded">
+                      {getFeedback()}
+                    </p>
+                  )}
+                </div>
               )}
 
               {/* Re-upload option */}

@@ -29,6 +29,7 @@ const DocumentStatus: React.FC = () => {
     retryValidation,
     getDocumentsWithRequirements,
     getProgressStats,
+    getDocumentPreviewUrl,
   } = useDocuments(countryKey);
 
   // Fetch client data
@@ -86,6 +87,14 @@ const DocumentStatus: React.FC = () => {
     }
     e.target.value = '';
     setUploadingForReq(null);
+  };
+
+  const handlePreview = async (filePath: string | null) => {
+    if (!filePath) return;
+    const url = await getDocumentPreviewUrl(filePath);
+    if (url) {
+      window.open(url, '_blank');
+    }
   };
 
   if (authLoading || loadingClient || docsLoading) {
@@ -176,6 +185,7 @@ const DocumentStatus: React.FC = () => {
                     document={doc}
                     onReupload={() => handleReupload(doc.requirement.id)}
                     onRetryValidation={doc.id ? () => retryValidation(doc.id, currentLanguage) : undefined}
+                    onPreview={doc.file_path ? () => handlePreview(doc.file_path) : undefined}
                     language={currentLanguage}
                   />
                 ))}
@@ -202,6 +212,7 @@ const DocumentStatus: React.FC = () => {
                     document={doc}
                     onReupload={() => handleReupload(doc.requirement.id)}
                     onRetryValidation={doc.id ? () => retryValidation(doc.id, currentLanguage) : undefined}
+                    onPreview={doc.file_path ? () => handlePreview(doc.file_path) : undefined}
                     language={currentLanguage}
                   />
                 ))}
@@ -228,6 +239,7 @@ const DocumentStatus: React.FC = () => {
                     document={doc}
                     onReupload={() => handleReupload(doc.requirement.id)}
                     onRetryValidation={doc.id ? () => retryValidation(doc.id, currentLanguage) : undefined}
+                    onPreview={doc.file_path ? () => handlePreview(doc.file_path) : undefined}
                     language={currentLanguage}
                   />
                 ))}
@@ -254,6 +266,7 @@ const DocumentStatus: React.FC = () => {
                     document={doc}
                     onReupload={() => handleReupload(doc.requirement.id)}
                     onRetryValidation={doc.id ? () => retryValidation(doc.id, currentLanguage) : undefined}
+                    onPreview={doc.file_path ? () => handlePreview(doc.file_path) : undefined}
                     language={currentLanguage}
                   />
                 ))}

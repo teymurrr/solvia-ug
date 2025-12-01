@@ -13,7 +13,8 @@ import {
   Languages,
   IdCard,
   RefreshCw,
-  Loader2
+  Loader2,
+  Eye
 } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -26,6 +27,7 @@ interface DocumentStatusCardProps {
   document: DocumentWithRequirement;
   onReupload: () => void;
   onRetryValidation?: () => Promise<boolean>;
+  onPreview?: () => void;
   language: string;
 }
 
@@ -42,6 +44,7 @@ export const DocumentStatusCard: React.FC<DocumentStatusCardProps> = ({
   document,
   onReupload,
   onRetryValidation,
+  onPreview,
   language,
 }) => {
   const { t } = useLanguage();
@@ -170,9 +173,20 @@ export const DocumentStatusCard: React.FC<DocumentStatusCardProps> = ({
 
               {/* File info */}
               {hasFile && document.file_name && (
-                <p className="text-xs text-muted-foreground mb-3">
-                  {document.file_name}
-                </p>
+                <div className="flex items-center gap-2 text-xs text-muted-foreground mb-3">
+                  <span className="truncate">{document.file_name}</span>
+                  {onPreview && (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="h-6 px-2"
+                      onClick={onPreview}
+                    >
+                      <Eye className="h-3 w-3 mr-1" />
+                      {docs?.card?.preview || 'View'}
+                    </Button>
+                  )}
+                </div>
               )}
 
               {/* Actions */}

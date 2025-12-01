@@ -24,6 +24,9 @@ export const documents = {
     dontHaveIt: "Je n'ai pas encore ce document",
     hideHelp: "Masquer l'aide",
     showHelp: "Afficher l'aide",
+    preview: 'Aperçu',
+    uploading: 'Téléchargement...',
+    analyzing: "L'IA analyse votre document...",
   },
   status: {
     title: 'Statut des Documents',
@@ -44,6 +47,8 @@ export const documents = {
     feedback: 'Commentaires',
     nextSteps: 'Prochaines Étapes',
     contactSupport: "Besoin d'aide ? Contactez notre équipe de support",
+    retryValidation: 'Réessayer la validation',
+    validating: 'Validation en cours...',
   },
   statusLabels: {
     complete: 'Vérifié',
@@ -51,8 +56,6 @@ export const documents = {
     invalid: 'Invalide',
     not_submitted: 'Non Soumis',
     pending_review: 'En Révision',
-    retryValidation: 'Réessayer la validation',
-    validating: 'Validation en cours...',
   },
   errors: {
     uploadFailed: 'Échec du téléchargement. Veuillez réessayer.',
