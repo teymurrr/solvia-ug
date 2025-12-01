@@ -2,6 +2,7 @@
 import { lazy, Suspense, useState, useEffect } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import ProtectedRoute from "@/components/ProtectedRoute";
+import PaidAccessRoute from "@/components/PaidAccessRoute";
 import { useAuth } from "@/contexts/AuthContext";
 
 // Simple loading component
@@ -173,9 +174,21 @@ const AppRoutes = () => {
         <Route path="/homologation-payment" element={<HomologationPayment />} />
         <Route path="/homologation-wizard" element={<HomologationWizard />} />
         <Route path="/homologation" element={<CountrySelection />} />
-        <Route path="/onboarding" element={<OnboardingWizard />} />
-        <Route path="/documents-upload" element={<DocumentUpload />} />
-        <Route path="/documents-status" element={<DocumentStatus />} />
+        <Route path="/onboarding" element={
+          <ProtectedRoute>
+            <OnboardingWizard />
+          </ProtectedRoute>
+        } />
+        <Route path="/documents-upload" element={
+          <PaidAccessRoute>
+            <DocumentUpload />
+          </PaidAccessRoute>
+        } />
+        <Route path="/documents-status" element={
+          <PaidAccessRoute>
+            <DocumentStatus />
+          </PaidAccessRoute>
+        } />
         
         {/* Fallback route */}
         <Route path="*" element={<NotFound />} />

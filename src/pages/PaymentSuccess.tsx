@@ -8,7 +8,7 @@ import { Label } from '@/components/ui/label';
 import { useLanguage } from '@/hooks/useLanguage';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
-import { CheckCircle, Home, User, Mail, Clock, ArrowRight, Phone, Star, Shield, Heart } from 'lucide-react';
+import { CheckCircle, Home, User, Mail, Clock, ArrowRight, Phone, Star, Shield, Heart, FileText } from 'lucide-react';
 import { toast } from 'sonner';
 
 const PaymentSuccess = () => {
@@ -21,6 +21,7 @@ const PaymentSuccess = () => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [isSubmittingPhone, setIsSubmittingPhone] = useState(false);
   const [phoneSubmitted, setPhoneSubmitted] = useState(false);
+  const [paymentData, setPaymentData] = useState<{ targetCountry?: string; productType?: string } | null>(null);
 
   const sessionId = searchParams.get('session_id');
   const lang = searchParams.get('lang') || currentLanguage;
@@ -35,7 +36,11 @@ const PaymentSuccess = () => {
     const verifyPayment = async () => {
       try {
         if (!isLoggedIn || !user) {
-          throw new Error('User not authenticated');
+          // For non-logged in users, store session info and prompt signup
+          localStorage.setItem('pendingPaymentSession', sessionId);
+          setVerificationStatus('success');
+          setIsVerifying(false);
+          return;
         }
 
         const { data, error } = await supabase.functions.invoke('verify-payment', {
@@ -44,6 +49,16 @@ const PaymentSuccess = () => {
 
         if (error || !data?.success) {
           throw new Error(data?.error || 'Payment verification failed');
+        }
+
+        // Store payment data for redirection
+        if (data.payment) {
+          setPaymentData({
+            targetCountry: data.payment.metadata?.targetCountry || 'germany',
+            productType: data.payment.productType,
+          });
+          // Store in localStorage for onboarding flow
+          localStorage.setItem('paidCountry', data.payment.metadata?.targetCountry || 'germany');
         }
 
         setVerificationStatus('success');
@@ -204,9 +219,9 @@ const PaymentSuccess = () => {
               </div>
             </div>
 
-            {/* Sign Up / Phone Number Section */}
+            {/* Sign Up / Phone Number / Continue to Onboarding Section */}
             {!isLoggedIn ? (
-              <Card className="shadow-lg border-primary/20 bg-gradient-to-r from-primary/5 to-blue-50">
+              <Card className="shadow-lg border-primary/20 bg-gradient-to-r from-primary/5 to-blue-50 dark:from-primary/10 dark:to-background">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2 text-primary">
                     <User className="w-5 h-5" />
@@ -217,52 +232,80 @@ const PaymentSuccess = () => {
                   <p className="text-muted-foreground">
                     {t?.payments?.success?.createAccountDesc || 'Sign up now to track your progress and get personalized support throughout your homologation journey.'}
                   </p>
-                  <Button onClick={() => navigate('/signup')} size="lg" className="w-full">
+                  <Button onClick={() => navigate('/signup/professional')} size="lg" className="w-full">
                     {t?.payments?.success?.signUpNow || 'Sign Up Now'}
                   </Button>
                 </CardContent>
               </Card>
-            ) : !phoneSubmitted ? (
-              <Card className="shadow-lg border-primary/20 bg-gradient-to-r from-primary/5 to-blue-50">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2 text-primary">
-                    <Phone className="w-5 h-5" />
-                    {t?.payments?.success?.phoneTitle || 'Stay Connected'}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground mb-4">
-                    {t?.payments?.success?.phoneDesc || 'Leave your phone number so our team can reach you faster and provide personalized assistance via WhatsApp or call.'}
-                  </p>
-                  <form onSubmit={handlePhoneSubmit} className="space-y-4">
-                    <div>
-                      <Label htmlFor="phone">{t?.payments?.success?.phoneLabel || 'Phone Number (with country code)'}</Label>
-                      <Input
-                        id="phone"
-                        type="tel"
-                        placeholder={t?.payments?.success?.phonePlaceholder || '+49 123 456 7890'}
-                        value={phoneNumber}
-                        onChange={(e) => setPhoneNumber(e.target.value)}
-                        className="mt-1"
-                      />
-                    </div>
-                    <Button type="submit" size="lg" className="w-full" disabled={isSubmittingPhone || !phoneNumber.trim()}>
-                      {isSubmittingPhone 
-                        ? (t?.payments?.success?.submitting || 'Submitting...') 
-                        : (t?.payments?.success?.submitPhone || 'Save Phone Number')}
-                    </Button>
-                  </form>
-                </CardContent>
-              </Card>
             ) : (
-              <Card className="shadow-lg border-green-200 bg-green-50">
-                <CardContent className="py-6 text-center">
-                  <CheckCircle className="w-8 h-8 text-green-600 mx-auto mb-2" />
-                  <p className="text-green-800 font-medium">
-                    {t?.payments?.success?.phoneThankYou || 'Thank you! We will contact you shortly.'}
-                  </p>
-                </CardContent>
-              </Card>
+              <>
+                {/* Continue to Document Upload CTA */}
+                <Card className="shadow-lg border-primary/20 bg-gradient-to-r from-primary/5 to-blue-50 dark:from-primary/10 dark:to-background">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2 text-primary">
+                      <FileText className="w-5 h-5" />
+                      {t?.payments?.success?.continueTitle || 'Continue Your Journey'}
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <p className="text-muted-foreground">
+                      {t?.payments?.success?.continueDesc || 'Your payment is complete! Now let\'s collect some information and start uploading your documents.'}
+                    </p>
+                    <Button 
+                      onClick={() => navigate('/onboarding')} 
+                      size="lg" 
+                      className="w-full gap-2"
+                    >
+                      {t?.payments?.success?.startOnboarding || 'Start Document Process'}
+                      <ArrowRight className="w-4 h-4" />
+                    </Button>
+                  </CardContent>
+                </Card>
+
+                {/* Phone Number Section */}
+                {!phoneSubmitted ? (
+                  <Card className="shadow-lg border-border/50">
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2 text-foreground">
+                        <Phone className="w-5 h-5" />
+                        {t?.payments?.success?.phoneTitle || 'Stay Connected'}
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-muted-foreground mb-4">
+                        {t?.payments?.success?.phoneDesc || 'Leave your phone number so our team can reach you faster and provide personalized assistance via WhatsApp or call.'}
+                      </p>
+                      <form onSubmit={handlePhoneSubmit} className="space-y-4">
+                        <div>
+                          <Label htmlFor="phone">{t?.payments?.success?.phoneLabel || 'Phone Number (with country code)'}</Label>
+                          <Input
+                            id="phone"
+                            type="tel"
+                            placeholder={t?.payments?.success?.phonePlaceholder || '+49 123 456 7890'}
+                            value={phoneNumber}
+                            onChange={(e) => setPhoneNumber(e.target.value)}
+                            className="mt-1"
+                          />
+                        </div>
+                        <Button type="submit" size="lg" className="w-full" disabled={isSubmittingPhone || !phoneNumber.trim()}>
+                          {isSubmittingPhone 
+                            ? (t?.payments?.success?.submitting || 'Submitting...') 
+                            : (t?.payments?.success?.submitPhone || 'Save Phone Number')}
+                        </Button>
+                      </form>
+                    </CardContent>
+                  </Card>
+                ) : (
+                  <Card className="shadow-lg border-green-200 bg-green-50 dark:border-green-800 dark:bg-green-950/20">
+                    <CardContent className="py-6 text-center">
+                      <CheckCircle className="w-8 h-8 text-green-600 dark:text-green-400 mx-auto mb-2" />
+                      <p className="text-green-800 dark:text-green-300 font-medium">
+                        {t?.payments?.success?.phoneThankYou || 'Thank you! We will contact you shortly.'}
+                      </p>
+                    </CardContent>
+                  </Card>
+                )}
+              </>
             )}
 
             {/* Next Steps */}

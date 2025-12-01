@@ -177,7 +177,7 @@ serve(async (req) => {
 
     const session = await stripe.checkout.sessions.create(sessionConfig);
 
-    // Create payment record in database
+    // Create payment record in database with target_country column
     const { error: paymentError } = await supabaseClient
       .from('payments')
       .insert({
@@ -188,6 +188,7 @@ serve(async (req) => {
         status: 'pending',
         payment_type: 'one-time',
         product_type: productType,
+        target_country: targetCountry || 'germany',
         discount_code: validDiscountCode?.code || null,
         discount_amount: discountAmount,
         metadata: {
