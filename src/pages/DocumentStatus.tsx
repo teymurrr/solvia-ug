@@ -90,10 +90,22 @@ const DocumentStatus: React.FC = () => {
   };
 
   const handlePreview = async (filePath: string | null) => {
-    if (!filePath) return;
-    const url = await getDocumentPreviewUrl(filePath);
-    if (url) {
-      window.open(url, '_blank');
+    console.log('handlePreview called with filePath:', filePath);
+    if (!filePath) {
+      console.log('No file path provided');
+      return;
+    }
+    try {
+      console.log('Getting preview URL for:', filePath);
+      const url = await getDocumentPreviewUrl(filePath);
+      console.log('Generated URL:', url);
+      if (url) {
+        window.open(url, '_blank');
+      } else {
+        console.log('No URL returned');
+      }
+    } catch (error) {
+      console.error('Preview error:', error);
     }
   };
 
