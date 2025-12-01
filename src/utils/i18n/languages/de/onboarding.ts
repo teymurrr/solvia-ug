@@ -31,6 +31,16 @@ export const onboarding = {
     no: 'Nein',
     dont_know: 'Ich weiß nicht'
   },
+  documentsNeeded: {
+    title: 'Was wir von Ihnen benötigen',
+    diploma: 'Diplom',
+    academicRecords: 'Akademische Unterlagen',
+    curriculum: 'Studienplan',
+    passport: 'Reisepass',
+    apostille: 'Apostille (falls zutreffend)',
+    languageCertificates: 'Sprachzertifikate (falls vorhanden)',
+    understood: 'Verstanden → Weiter'
+  },
   complete: {
     title: 'Vielen Dank!',
     subtitle: 'Wir haben Ihre Informationen erhalten. Unser Team wird sich bald mit Ihnen in Verbindung setzen, um Ihren Anerkennungsprozess zu starten.',

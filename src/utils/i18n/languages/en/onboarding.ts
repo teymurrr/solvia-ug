@@ -31,6 +31,16 @@ export const onboarding = {
     no: 'No',
     dont_know: "I don't know"
   },
+  documentsNeeded: {
+    title: 'What we will need from you',
+    diploma: 'Diploma',
+    academicRecords: 'Academic records',
+    curriculum: 'Degree curriculum',
+    passport: 'Passport',
+    apostille: 'Apostille (if applicable)',
+    languageCertificates: 'Language certificates (if you have them)',
+    understood: 'Understood → Continue'
+  },
   complete: {
     title: 'Thank you!',
     subtitle: 'We have received your information. Our team will contact you soon to start your homologation process.',

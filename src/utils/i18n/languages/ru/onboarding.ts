@@ -31,6 +31,16 @@ export const onboarding = {
     no: 'Нет',
     dont_know: 'Я не знаю'
   },
+  documentsNeeded: {
+    title: 'Что нам понадобится от вас',
+    diploma: 'Диплом',
+    academicRecords: 'Академическая справка',
+    curriculum: 'Учебный план',
+    passport: 'Паспорт',
+    apostille: 'Апостиль (если применимо)',
+    languageCertificates: 'Сертификаты о знании языка (если есть)',
+    understood: 'Понятно → Продолжить'
+  },
   complete: {
     title: 'Спасибо!',
     subtitle: 'Мы получили вашу информацию. Наша команда свяжется с вами в ближайшее время, чтобы начать процесс нострификации.',
