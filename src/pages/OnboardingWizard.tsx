@@ -11,10 +11,10 @@ import { useLanguage } from '@/hooks/useLanguage';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
-import { ArrowLeft, ArrowRight, CheckCircle2, MapPin, FileCheck, User, Globe } from 'lucide-react';
+import { ArrowLeft, ArrowRight, CheckCircle2, MapPin, FileCheck, User, Globe, FileText, BookOpen, GraduationCap, CreditCard, Stamp, Languages } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-type WizardStep = 'welcome' | 'targetCountry' | 'federalState' | 'currentLocation' | 'nameMatch' | 'diplomaApostilled' | 'complete';
+type WizardStep = 'welcome' | 'targetCountry' | 'federalState' | 'currentLocation' | 'nameMatch' | 'diplomaApostilled' | 'documentsNeeded' | 'complete';
 
 interface OnboardingData {
   targetCountry: string;
@@ -69,7 +69,7 @@ const OnboardingWizard = () => {
 
   const translations = t?.onboarding || {};
 
-  const steps: WizardStep[] = ['welcome', 'targetCountry', 'federalState', 'currentLocation', 'nameMatch', 'diplomaApostilled', 'complete'];
+  const steps: WizardStep[] = ['welcome', 'targetCountry', 'federalState', 'currentLocation', 'nameMatch', 'diplomaApostilled', 'documentsNeeded', 'complete'];
   const currentIndex = steps.indexOf(currentStep);
 
   const goNext = () => {
@@ -100,6 +100,8 @@ const OnboardingWizard = () => {
         return data.nameMatchesDocuments !== '';
       case 'diplomaApostilled':
         return data.diplomaApostilled !== '';
+      case 'documentsNeeded':
+        return true;
       default:
         return false;
     }
@@ -136,7 +138,7 @@ const OnboardingWizard = () => {
   };
 
   const handleNextOrSubmit = () => {
-    if (currentStep === 'diplomaApostilled') {
+    if (currentStep === 'documentsNeeded') {
       handleSubmit();
     } else {
       goNext();
@@ -320,6 +322,45 @@ const OnboardingWizard = () => {
           </div>
         );
 
+      case 'documentsNeeded':
+        const documents = [
+          { icon: FileText, key: 'diploma' },
+          { icon: BookOpen, key: 'academicRecords' },
+          { icon: GraduationCap, key: 'curriculum' },
+          { icon: CreditCard, key: 'passport' },
+          { icon: Stamp, key: 'apostille' },
+          { icon: Languages, key: 'languageCertificates' }
+        ];
+        
+        return (
+          <div className="space-y-6">
+            <div className="text-center space-y-2">
+              <FileText className="w-10 h-10 mx-auto text-primary" />
+              <h2 className="text-xl font-semibold text-foreground">
+                {translations.documentsNeeded?.title || 'What we will need from you'}
+              </h2>
+            </div>
+            <div className="grid grid-cols-1 gap-3">
+              {documents.map((doc) => {
+                const Icon = doc.icon;
+                return (
+                  <div
+                    key={doc.key}
+                    className="flex items-center space-x-4 p-4 rounded-lg border border-border bg-muted/30"
+                  >
+                    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                      <Icon className="w-5 h-5 text-primary" />
+                    </div>
+                    <span className="text-foreground font-medium">
+                      {translations.documentsNeeded?.[doc.key] || doc.key}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        );
+
       case 'complete':
         return (
           <div className="text-center space-y-6">
@@ -400,8 +441,8 @@ const OnboardingWizard = () => {
                   >
                     {isSubmitting ? (
                       translations.submitting || 'Submitting...'
-                    ) : currentStep === 'diplomaApostilled' ? (
-                      translations.submit || 'Submit'
+                    ) : currentStep === 'documentsNeeded' ? (
+                      translations.documentsNeeded?.understood || 'Understood → Continue'
                     ) : currentStep === 'welcome' ? (
                       translations.start || 'Start'
                     ) : (
