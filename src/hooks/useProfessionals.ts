@@ -7,6 +7,7 @@ interface Professional {
   id: string;
   firstName: string;
   lastName: string;
+  email?: string;
   specialty?: string;
   profession?: string;
   country?: string;
@@ -103,6 +104,7 @@ export const useProfessionals = () => {
             id: profile.id,
             firstName: profile.first_name || '',
             lastName: profile.last_name || '',
+            email: profile.email || '',
             specialty: profile.specialty || '',
             profession: profile.profession || '',
             country: profile.location || '',

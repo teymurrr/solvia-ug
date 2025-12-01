@@ -308,6 +308,7 @@ export type Database = {
           id: string
           name_matches_documents: string | null
           phone: string | null
+          profile_id: string | null
           target_country: string | null
           updated_at: string | null
           user_id: string | null
@@ -321,6 +322,7 @@ export type Database = {
           id?: string
           name_matches_documents?: string | null
           phone?: string | null
+          profile_id?: string | null
           target_country?: string | null
           updated_at?: string | null
           user_id?: string | null
@@ -334,11 +336,20 @@ export type Database = {
           id?: string
           name_matches_documents?: string | null
           phone?: string | null
+          profile_id?: string | null
           target_country?: string | null
           updated_at?: string | null
           user_id?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "clients_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "professional_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       discount_codes: {
         Row: {
@@ -791,6 +802,7 @@ export type Database = {
           created_at: string | null
           doctor_type: string | null
           documents_ready: string | null
+          email: string | null
           first_name: string
           fsp_certificate: boolean | null
           fsp_certificate_file: string | null
@@ -812,6 +824,7 @@ export type Database = {
           created_at?: string | null
           doctor_type?: string | null
           documents_ready?: string | null
+          email?: string | null
           first_name: string
           fsp_certificate?: boolean | null
           fsp_certificate_file?: string | null
@@ -833,6 +846,7 @@ export type Database = {
           created_at?: string | null
           doctor_type?: string | null
           documents_ready?: string | null
+          email?: string | null
           first_name?: string
           fsp_certificate?: boolean | null
           fsp_certificate_file?: string | null
