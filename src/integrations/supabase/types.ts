@@ -232,6 +232,7 @@ export type Database = {
           federal_state: string | null
           id: string
           name_matches_documents: string | null
+          phone: string | null
           target_country: string | null
           updated_at: string | null
           user_id: string | null
@@ -244,6 +245,7 @@ export type Database = {
           federal_state?: string | null
           id?: string
           name_matches_documents?: string | null
+          phone?: string | null
           target_country?: string | null
           updated_at?: string | null
           user_id?: string | null
@@ -256,6 +258,7 @@ export type Database = {
           federal_state?: string | null
           id?: string
           name_matches_documents?: string | null
+          phone?: string | null
           target_country?: string | null
           updated_at?: string | null
           user_id?: string | null

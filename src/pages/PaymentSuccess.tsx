@@ -72,7 +72,7 @@ const PaymentSuccess = () => {
       if (user) {
         const { error } = await supabase
           .from('clients')
-          .update({ phone: phoneNumber })
+          .update({ phone: phoneNumber } as any)
           .eq('user_id', user.id);
         
         if (error) {
