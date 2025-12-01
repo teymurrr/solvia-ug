@@ -3,10 +3,12 @@ import { useSearchParams, useNavigate, Link } from 'react-router-dom';
 import MainLayout from '@/components/MainLayout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { useLanguage } from '@/hooks/useLanguage';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
-import { CheckCircle, Home, User, Mail, Clock, ArrowRight } from 'lucide-react';
+import { CheckCircle, Home, User, Mail, Clock, ArrowRight, Phone, Star, Shield, Heart } from 'lucide-react';
 import { toast } from 'sonner';
 
 const PaymentSuccess = () => {
@@ -16,6 +18,9 @@ const PaymentSuccess = () => {
   const { user, isLoggedIn } = useAuth();
   const [verificationStatus, setVerificationStatus] = useState<'loading' | 'success' | 'error'>('loading');
   const [isVerifying, setIsVerifying] = useState(true);
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [isSubmittingPhone, setIsSubmittingPhone] = useState(false);
+  const [phoneSubmitted, setPhoneSubmitted] = useState(false);
 
   const sessionId = searchParams.get('session_id');
   const lang = searchParams.get('lang') || currentLanguage;
@@ -57,6 +62,34 @@ const PaymentSuccess = () => {
     return () => clearTimeout(timer);
   }, [sessionId, isLoggedIn, user, t]);
 
+  const handlePhoneSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!phoneNumber.trim()) return;
+    
+    setIsSubmittingPhone(true);
+    try {
+      // Update the client record with phone number if user exists
+      if (user) {
+        const { error } = await supabase
+          .from('clients')
+          .update({ phone: phoneNumber })
+          .eq('user_id', user.id);
+        
+        if (error) {
+          console.error('Error saving phone:', error);
+        }
+      }
+      
+      setPhoneSubmitted(true);
+      toast.success(t?.payments?.success?.phoneSubmitted || 'Phone number saved successfully!');
+    } catch (error) {
+      console.error('Error submitting phone:', error);
+      toast.error(t?.payments?.errors?.general || 'An error occurred');
+    } finally {
+      setIsSubmittingPhone(false);
+    }
+  };
+
   const nextSteps = t?.payments?.success?.stepsList || [
     'Check your email for payment confirmation',
     'Our team will contact you within 24 hours',
@@ -73,10 +106,10 @@ const PaymentSuccess = () => {
                 <CardContent className="py-16 text-center">
                   <div className="animate-spin w-8 h-8 border-2 border-primary border-t-transparent rounded-full mx-auto mb-4"></div>
                   <h2 className="text-xl font-semibold text-gray-900 mb-2">
-                    Verifying Payment...
+                    {t?.payments?.success?.verifying || 'Verifying Payment...'}
                   </h2>
                   <p className="text-muted-foreground">
-                    Please wait while we confirm your payment.
+                    {t?.payments?.success?.pleaseWait || 'Please wait while we confirm your payment.'}
                   </p>
                 </CardContent>
               </Card>
@@ -99,10 +132,10 @@ const PaymentSuccess = () => {
                     <CheckCircle className="w-8 h-8 text-red-600" />
                   </div>
                   <h1 className="text-3xl font-bold text-gray-900 mb-4">
-                    Payment Verification Failed
+                    {t?.payments?.errors?.verificationFailed || 'Payment Verification Failed'}
                   </h1>
                   <p className="text-lg text-muted-foreground mb-8">
-                    We couldn't verify your payment. Please contact support for assistance.
+                    {t?.payments?.errors?.contactSupport || "We couldn't verify your payment. Please contact support for assistance."}
                   </p>
                   <div className="flex flex-col sm:flex-row gap-4 justify-center">
                     <Button onClick={() => navigate('/')} variant="outline" className="flex items-center gap-2">
@@ -112,7 +145,7 @@ const PaymentSuccess = () => {
                     <Button asChild className="flex items-center gap-2">
                       <Link to="/contact">
                         <Mail className="w-4 h-4" />
-                        Contact Support
+                        {t?.payments?.errors?.contactSupportBtn || 'Contact Support'}
                       </Link>
                     </Button>
                   </div>
@@ -139,11 +172,98 @@ const PaymentSuccess = () => {
                 <h1 className="text-4xl font-bold text-gray-900 mb-4">
                   {t?.payments?.success?.title || 'Payment Successful!'}
                 </h1>
-                <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-6">
                   {t?.payments?.success?.message || 'Your payment has been processed successfully. You will receive a confirmation email shortly.'}
                 </p>
+                
+                {/* Reassurance Message */}
+                <div className="bg-white/80 rounded-xl p-6 max-w-xl mx-auto border border-green-200">
+                  <p className="text-green-800 font-medium text-lg">
+                    {t?.payments?.success?.congratulations || "Congratulations! You've made an excellent decision."}
+                  </p>
+                  <p className="text-muted-foreground mt-2">
+                    {t?.payments?.success?.reassurance || "You're now one step closer to achieving your dream of practicing medicine in Germany. Our expert team is here to guide you every step of the way."}
+                  </p>
+                </div>
               </CardContent>
             </Card>
+
+            {/* Trust Badges */}
+            <div className="grid grid-cols-3 gap-4">
+              <div className="bg-white rounded-lg p-4 shadow-sm border text-center">
+                <Shield className="w-6 h-6 text-primary mx-auto mb-2" />
+                <p className="text-sm font-medium text-gray-700">{t?.payments?.success?.trustBadge1 || '500+ Success Stories'}</p>
+              </div>
+              <div className="bg-white rounded-lg p-4 shadow-sm border text-center">
+                <Star className="w-6 h-6 text-yellow-500 mx-auto mb-2" />
+                <p className="text-sm font-medium text-gray-700">{t?.payments?.success?.trustBadge2 || 'Expert Guidance'}</p>
+              </div>
+              <div className="bg-white rounded-lg p-4 shadow-sm border text-center">
+                <Heart className="w-6 h-6 text-red-500 mx-auto mb-2" />
+                <p className="text-sm font-medium text-gray-700">{t?.payments?.success?.trustBadge3 || 'Personal Support'}</p>
+              </div>
+            </div>
+
+            {/* Sign Up / Phone Number Section */}
+            {!isLoggedIn ? (
+              <Card className="shadow-lg border-primary/20 bg-gradient-to-r from-primary/5 to-blue-50">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2 text-primary">
+                    <User className="w-5 h-5" />
+                    {t?.payments?.success?.createAccountTitle || 'Create Your Account'}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <p className="text-muted-foreground">
+                    {t?.payments?.success?.createAccountDesc || 'Sign up now to track your progress and get personalized support throughout your homologation journey.'}
+                  </p>
+                  <Button onClick={() => navigate('/signup')} size="lg" className="w-full">
+                    {t?.payments?.success?.signUpNow || 'Sign Up Now'}
+                  </Button>
+                </CardContent>
+              </Card>
+            ) : !phoneSubmitted ? (
+              <Card className="shadow-lg border-primary/20 bg-gradient-to-r from-primary/5 to-blue-50">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2 text-primary">
+                    <Phone className="w-5 h-5" />
+                    {t?.payments?.success?.phoneTitle || 'Stay Connected'}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground mb-4">
+                    {t?.payments?.success?.phoneDesc || 'Leave your phone number so our team can reach you faster and provide personalized assistance via WhatsApp or call.'}
+                  </p>
+                  <form onSubmit={handlePhoneSubmit} className="space-y-4">
+                    <div>
+                      <Label htmlFor="phone">{t?.payments?.success?.phoneLabel || 'Phone Number (with country code)'}</Label>
+                      <Input
+                        id="phone"
+                        type="tel"
+                        placeholder={t?.payments?.success?.phonePlaceholder || '+49 123 456 7890'}
+                        value={phoneNumber}
+                        onChange={(e) => setPhoneNumber(e.target.value)}
+                        className="mt-1"
+                      />
+                    </div>
+                    <Button type="submit" size="lg" className="w-full" disabled={isSubmittingPhone || !phoneNumber.trim()}>
+                      {isSubmittingPhone 
+                        ? (t?.payments?.success?.submitting || 'Submitting...') 
+                        : (t?.payments?.success?.submitPhone || 'Save Phone Number')}
+                    </Button>
+                  </form>
+                </CardContent>
+              </Card>
+            ) : (
+              <Card className="shadow-lg border-green-200 bg-green-50">
+                <CardContent className="py-6 text-center">
+                  <CheckCircle className="w-8 h-8 text-green-600 mx-auto mb-2" />
+                  <p className="text-green-800 font-medium">
+                    {t?.payments?.success?.phoneThankYou || 'Thank you! We will contact you shortly.'}
+                  </p>
+                </CardContent>
+              </Card>
+            )}
 
             {/* Next Steps */}
             <Card className="shadow-lg">
