@@ -223,6 +223,81 @@ export type Database = {
         }
         Relationships: []
       }
+      client_documents: {
+        Row: {
+          ai_analysis: Json | null
+          ai_feedback_de: string | null
+          ai_feedback_en: string | null
+          ai_feedback_es: string | null
+          ai_feedback_fr: string | null
+          ai_feedback_ru: string | null
+          client_id: string
+          created_at: string
+          file_name: string | null
+          file_path: string | null
+          file_size: number | null
+          file_type: string | null
+          id: string
+          requirement_id: string
+          reviewed_at: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          ai_analysis?: Json | null
+          ai_feedback_de?: string | null
+          ai_feedback_en?: string | null
+          ai_feedback_es?: string | null
+          ai_feedback_fr?: string | null
+          ai_feedback_ru?: string | null
+          client_id: string
+          created_at?: string
+          file_name?: string | null
+          file_path?: string | null
+          file_size?: number | null
+          file_type?: string | null
+          id?: string
+          requirement_id: string
+          reviewed_at?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          ai_analysis?: Json | null
+          ai_feedback_de?: string | null
+          ai_feedback_en?: string | null
+          ai_feedback_es?: string | null
+          ai_feedback_fr?: string | null
+          ai_feedback_ru?: string | null
+          client_id?: string
+          created_at?: string
+          file_name?: string | null
+          file_path?: string | null
+          file_size?: number | null
+          file_type?: string | null
+          id?: string
+          requirement_id?: string
+          reviewed_at?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "client_documents_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "client_documents_requirement_id_fkey"
+            columns: ["requirement_id"]
+            isOneToOne: false
+            referencedRelation: "document_requirements"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       clients: {
         Row: {
           created_at: string | null
@@ -307,6 +382,105 @@ export type Database = {
           used_count?: number | null
           valid_from?: string | null
           valid_until?: string | null
+        }
+        Relationships: []
+      }
+      document_requirements: {
+        Row: {
+          country: string
+          created_at: string
+          description_de: string | null
+          description_en: string | null
+          description_es: string | null
+          description_fr: string | null
+          description_ru: string | null
+          document_name_de: string | null
+          document_name_en: string
+          document_name_es: string | null
+          document_name_fr: string | null
+          document_name_ru: string | null
+          document_type: string
+          estimated_cost: string | null
+          estimated_time: string | null
+          how_to_obtain_de: string | null
+          how_to_obtain_en: string | null
+          how_to_obtain_es: string | null
+          how_to_obtain_fr: string | null
+          how_to_obtain_ru: string | null
+          icon: string | null
+          id: string
+          instructions_de: string | null
+          instructions_en: string | null
+          instructions_es: string | null
+          instructions_fr: string | null
+          instructions_ru: string | null
+          is_required: boolean
+          priority_order: number
+          updated_at: string
+        }
+        Insert: {
+          country: string
+          created_at?: string
+          description_de?: string | null
+          description_en?: string | null
+          description_es?: string | null
+          description_fr?: string | null
+          description_ru?: string | null
+          document_name_de?: string | null
+          document_name_en: string
+          document_name_es?: string | null
+          document_name_fr?: string | null
+          document_name_ru?: string | null
+          document_type: string
+          estimated_cost?: string | null
+          estimated_time?: string | null
+          how_to_obtain_de?: string | null
+          how_to_obtain_en?: string | null
+          how_to_obtain_es?: string | null
+          how_to_obtain_fr?: string | null
+          how_to_obtain_ru?: string | null
+          icon?: string | null
+          id?: string
+          instructions_de?: string | null
+          instructions_en?: string | null
+          instructions_es?: string | null
+          instructions_fr?: string | null
+          instructions_ru?: string | null
+          is_required?: boolean
+          priority_order?: number
+          updated_at?: string
+        }
+        Update: {
+          country?: string
+          created_at?: string
+          description_de?: string | null
+          description_en?: string | null
+          description_es?: string | null
+          description_fr?: string | null
+          description_ru?: string | null
+          document_name_de?: string | null
+          document_name_en?: string
+          document_name_es?: string | null
+          document_name_fr?: string | null
+          document_name_ru?: string | null
+          document_type?: string
+          estimated_cost?: string | null
+          estimated_time?: string | null
+          how_to_obtain_de?: string | null
+          how_to_obtain_en?: string | null
+          how_to_obtain_es?: string | null
+          how_to_obtain_fr?: string | null
+          how_to_obtain_ru?: string | null
+          icon?: string | null
+          id?: string
+          instructions_de?: string | null
+          instructions_en?: string | null
+          instructions_es?: string | null
+          instructions_fr?: string | null
+          instructions_ru?: string | null
+          is_required?: boolean
+          priority_order?: number
+          updated_at?: string
         }
         Relationships: []
       }

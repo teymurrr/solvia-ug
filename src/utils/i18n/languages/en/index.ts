@@ -25,6 +25,7 @@ import { visa } from './visa';
 import { wizard } from './wizard';
 import { countrySelection } from './countrySelection';
 import { onboarding } from './onboarding';
+import { documents } from './documents';
 
 export const en = {
   hero,
@@ -52,5 +53,6 @@ export const en = {
   visa,
   wizard,
   countrySelection,
-  onboarding
+  onboarding,
+  documents
 };

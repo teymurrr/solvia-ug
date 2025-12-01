@@ -57,6 +57,10 @@ const HomologationWizard = lazy(() => import("@/pages/HomologationWizard"));
 const CountrySelection = lazy(() => import("@/pages/CountrySelection"));
 const OnboardingWizard = lazy(() => import("@/pages/OnboardingWizard"));
 
+// Document pages
+const DocumentUpload = lazy(() => import("@/pages/DocumentUpload"));
+const DocumentStatus = lazy(() => import("@/pages/DocumentStatus"));
+
 const AppRoutes = () => {
   const { isLoggedIn, userType } = useAuth();
   const [isInitialized, setIsInitialized] = useState(false);
@@ -170,6 +174,8 @@ const AppRoutes = () => {
         <Route path="/homologation-wizard" element={<HomologationWizard />} />
         <Route path="/homologation" element={<CountrySelection />} />
         <Route path="/onboarding" element={<OnboardingWizard />} />
+        <Route path="/documents-upload" element={<DocumentUpload />} />
+        <Route path="/documents-status" element={<DocumentStatus />} />
         
         {/* Fallback route */}
         <Route path="*" element={<NotFound />} />
