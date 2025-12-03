@@ -1,19 +1,17 @@
 export const pathToSuccess = {
-  title: 'Wie es funktioniert',
-  subtitle: 'Wir unterstützen Sie in jeder Phase — von der Anerkennung bis zur Übersiedlung.',
+  title: 'So funktioniert es',
+  subtitle: 'Ihr Weg zur medizinischen Karriere in Europa, vereinfacht.',
   stepLabel: 'Schritt',
-  cta: 'Meine Reise Beginnen',
-  ctaLabel: 'Meine Reise mit Solvia Beginnen',
+  cta: 'Meine Reise starten',
+  ctaLabel: 'Meine Reise mit Solvia starten',
   steps: {
-    'step1.title': 'Anmeldung',
-    'step1.description': 'Vernetzung mit einer Gemeinschaft von Ärzten mit dem gleichen Ziel: Arbeiten in Europa.',
-    'step2.title': 'Beratung zur Arbeitserlaubnis',
-    'step2.description': 'Maßgeschneiderte Hilfe, um Ihr Diplom schneller zu bearbeiten.',
-    'step3.title': 'Solvia Schnell-Sprachmethode',
-    'step3.description': 'Nehmen Sie an unseren Sprachkursen teil. Wissenschaftsbasierte Sprachklassen für schnelleres Lernen.',
-    'step4.title': 'KI-Jobmatching',
-    'step4.description': 'Finden Sie Ihren neuen Job mit höherem Gehalt und Arbeitszufriedenheit.',
-    'step5.title': 'Übersiedlung & Integration',
-    'step5.description': 'Erhalten Sie Tipps & Tricks zum Leben in Europa und starten Sie Ihre Karriere durch.'
+    'step1.title': 'Angebote nach Land erkunden',
+    'step1.description': 'Wählen Sie Ihr Ziel und sehen Sie echte Möglichkeiten für Ihre Fachrichtung.',
+    'step2.title': 'Ihren Titel anerkennen lassen',
+    'step2.description': 'Wir begleiten Sie Schritt für Schritt durch den Prozess.',
+    'step3.title': 'Auf die besten Angebote bewerben',
+    'step3.description': 'Wir verbinden Sie mit Krankenhäusern und Unternehmen, die Ihr Profil suchen.',
+    'step4.title': 'In Europa arbeiten',
+    'step4.description': 'Wir unterstützen Sie bei Vorstellungsgesprächen, Vertrag und Umzug.'
   }
 };
