@@ -33,23 +33,23 @@ const HeroSectionWithSearch = React.memo(() => {
         />
         {/* Overlay for text readability - reduced opacity */}
         <div className="absolute inset-0 bg-gradient-to-r from-background/95 via-background/85 to-background/60" />
-        <div className="container mx-auto px-4 py-20 md:py-28 lg:py-36 relative z-10">
-          <div className="max-w-4xl mx-auto text-center space-y-8">
+        <div className="container mx-auto px-4 py-24 md:py-32 lg:py-40 relative z-10">
+          <div className="max-w-3xl mx-auto text-center space-y-6">
             {/* Main Headline */}
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-foreground leading-tight drop-shadow-sm">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-foreground leading-tight">
               {t.hero.title}
             </h1>
             
             {/* Subtitle */}
-            <p className="text-lg md:text-xl text-foreground/80 max-w-3xl mx-auto leading-relaxed">
+            <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
               {t.hero.subtitle}
             </p>
             
             {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-6">
               <Button 
                 size="lg" 
-                className="h-14 px-8 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
+                className="h-14 px-10 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
                 onClick={() => navigate('/vacancies')}
               >
                 {t.hero.cta} →
@@ -57,24 +57,17 @@ const HeroSectionWithSearch = React.memo(() => {
               <Button 
                 variant="outline" 
                 size="lg" 
-                className="h-14 px-8 text-lg font-semibold border-2 bg-background/80 backdrop-blur-sm shadow-md hover:bg-background hover:shadow-lg transition-all duration-300 hover:scale-105"
+                className="h-14 px-10 text-lg font-semibold border-2 bg-background shadow-sm hover:bg-muted transition-all duration-300"
                 onClick={() => navigate('/country-selection')}
               >
                 {t.hero.secondaryCta}
               </Button>
             </div>
             
-            {/* Trust Items */}
-            <div className="flex flex-wrap items-center justify-center gap-3 pt-6">
-              {trustItems.map((item, index) => (
-                <div key={index} className="flex items-center gap-2 px-4 py-2 rounded-full bg-background/70 backdrop-blur-sm border border-border/50 shadow-sm">
-                  <div className="flex items-center justify-center w-5 h-5 rounded-full bg-primary/20">
-                    <Check className="w-3 h-3 text-primary" />
-                  </div>
-                  <span className="text-sm md:text-base text-foreground/90 font-medium">{item}</span>
-                </div>
-              ))}
-            </div>
+            {/* Subtle trust line */}
+            <p className="text-sm text-muted-foreground pt-4">
+              {trustItems.join(' • ')}
+            </p>
           </div>
         </div>
       </section>
