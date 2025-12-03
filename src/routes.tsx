@@ -57,6 +57,7 @@ const PaymentSuccess = lazy(() => import("@/pages/PaymentSuccess"));
 const PaymentCancelled = lazy(() => import("@/pages/PaymentCancelled"));
 const HomologationPayment = lazy(() => import("@/pages/HomologationPayment"));
 const HomologationWizard = lazy(() => import("@/pages/HomologationWizard"));
+const HomologationResult = lazy(() => import("@/pages/HomologationResult"));
 const CountrySelection = lazy(() => import("@/pages/CountrySelection"));
 const OnboardingWizard = lazy(() => import("@/pages/OnboardingWizard"));
 
@@ -186,6 +187,7 @@ const AppRoutes = () => {
         <Route path="/payment-cancelled" element={<PaymentCancelled />} />
         <Route path="/homologation-payment" element={<HomologationPayment />} />
         <Route path="/homologation-wizard" element={<HomologationWizard />} />
+        <Route path="/homologation-result" element={<HomologationResult />} />
         <Route path="/homologation" element={<CountrySelection />} />
         <Route path="/onboarding" element={
           <ProtectedRoute>

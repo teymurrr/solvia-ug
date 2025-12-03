@@ -116,28 +116,46 @@ const HomologationWizard = () => {
   };
 
   const handleEmailSubmit = async (email: string) => {
-    // Capture lead data to database (fire and forget - don't block UI)
+    const updatedData = { ...wizardData, email };
+    setWizardData(updatedData);
+    
+    // Capture lead data to database
     try {
       await supabase.functions.invoke('capture-lead', {
         body: {
           email,
-          firstName: wizardData.firstName,
-          lastName: wizardData.lastName,
-          targetCountry: wizardData.targetCountry,
-          studyCountry: wizardData.studyCountry,
-          doctorType: wizardData.doctorType,
-          languageLevel: wizardData.languageLevel,
+          targetCountry: updatedData.targetCountry,
+          studyCountry: updatedData.studyCountry,
+          doctorType: updatedData.doctorType,
+          languageLevel: updatedData.languageLevel,
           source: 'wizard'
         }
       });
       console.log('Lead captured successfully');
     } catch (error) {
-      // Log error but don't block the user flow
       console.error('Lead capture error:', error);
     }
     
-    setWizardData({ ...wizardData, email });
-    setCurrentStep('summary');
+    // Send personalized email with the plan
+    try {
+      await supabase.functions.invoke('send-homologation-plan', {
+        body: {
+          email,
+          targetCountry: updatedData.targetCountry,
+          doctorType: updatedData.doctorType,
+          studyCountry: updatedData.studyCountry,
+          languageLevel: updatedData.languageLevel,
+          language: localStorage.getItem('language') || 'en'
+        }
+      });
+      console.log('Homologation plan email sent successfully');
+    } catch (error) {
+      console.error('Email send error:', error);
+    }
+    
+    // Store data and redirect to result page
+    localStorage.setItem('wizardData', JSON.stringify(updatedData));
+    navigate(`/homologation-result?country=${updatedData.targetCountry}&doctorType=${updatedData.doctorType}&studyCountry=${encodeURIComponent(updatedData.studyCountry || '')}&languageLevel=${encodeURIComponent(updatedData.languageLevel || '')}&email=${encodeURIComponent(email)}`);
   };
 
   const handleChoosePlan = () => {
