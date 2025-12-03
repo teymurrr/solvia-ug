@@ -44,7 +44,8 @@ export const wizard = {
     placeholder: 'tu.correo@ejemplo.com',
     continue: 'Continuar',
     complete: 'Completar',
-    processing: 'Procesando...'
+    processing: 'Procesando...',
+    generatePlan: 'Generar mi plan'
   },
   firstName: {
     title: '¿Cuál es tu nombre?',

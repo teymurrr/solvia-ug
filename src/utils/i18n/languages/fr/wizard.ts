@@ -44,7 +44,8 @@ export const wizard = {
     placeholder: 'votre.email@exemple.fr',
     continue: 'Continuer',
     complete: 'Terminer',
-    processing: 'Traitement...'
+    processing: 'Traitement...',
+    generatePlan: 'Générer mon plan'
   },
   firstName: {
     title: 'Quel est votre prénom?',
