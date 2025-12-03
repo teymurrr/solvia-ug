@@ -1,8 +1,9 @@
 
 export const hero = {
-  title: 'Votre nouvel emploi dans le système de santé européen vous attend.',
-  subtitle: 'Solvia vous aide à obtenir votre licence, apprendre la langue et trouver un emploi.',
-  cta: 'Inscrivez-vous gratuitement maintenant',
+  title: 'Trouvez du travail en Europe en tant que médecin ou infirmier. Nous vous guidons dans l\'homologation.',
+  subtitle: 'Consultez les offres d\'emploi par pays et obtenez un plan clair pour travailler en Allemagne, Autriche, Espagne, Italie ou France.',
+  cta: 'Voir les offres pour mon profil',
+  secondaryCta: 'Recevoir mon plan d\'homologation gratuit',
   learnMore: 'En savoir plus',
   searchPlaceholder: 'Titre du poste, spécialité ou mot-clé...',
   locationPlaceholder: 'Lieu...',

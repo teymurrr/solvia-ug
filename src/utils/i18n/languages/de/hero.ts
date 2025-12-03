@@ -1,8 +1,9 @@
 
 export const hero = {
-  title: 'Ihr neuer Job im europäischen Gesundheitswesen erwartet Sie.',
-  subtitle: 'Solvia hilft Ihnen dabei, Ihre Lizenz zu erhalten, die Sprache zu lernen und einen Job zu finden.',
-  cta: 'Jetzt kostenlos anmelden',
+  title: 'Finden Sie Arbeit in Europa als Arzt oder Krankenpfleger. Wir begleiten Sie durch die Anerkennung.',
+  subtitle: 'Sehen Sie Stellenangebote nach Land und erhalten Sie einen klaren Plan für die Arbeit in Deutschland, Österreich, Spanien, Italien oder Frankreich.',
+  cta: 'Angebote für mein Profil ansehen',
+  secondaryCta: 'Meinen kostenlosen Anerkennungsplan erhalten',
   learnMore: 'Mehr erfahren',
   searchPlaceholder: 'Stellentitel, Fachrichtung oder Stichwort...',
   locationPlaceholder: 'Standort...',
