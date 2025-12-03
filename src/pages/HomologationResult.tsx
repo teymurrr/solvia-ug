@@ -119,10 +119,6 @@ const HomologationResult = () => {
     return dataTranslations.languageDescriptions[countryId as keyof typeof dataTranslations.languageDescriptions] || countryData.languageRequirement.description;
   };
 
-  const getProfessionalExam = (countryId: string) => {
-    const exam = dataTranslations.professionalExams[countryId as keyof typeof dataTranslations.professionalExams];
-    return exam || countryData.professionalExam;
-  };
 
   const getDoctorTypeLabel = (type?: string) => {
     if (!type) return '';
@@ -176,7 +172,6 @@ const HomologationResult = () => {
 
   const translatedDocs = getTranslatedDocuments();
   const translatedCountryName = getCountryName(wizardData.targetCountry);
-  const translatedExam = getProfessionalExam(wizardData.targetCountry);
 
   return (
     <MainLayout>
@@ -313,39 +308,6 @@ const HomologationResult = () => {
               </Card>
             </motion.div>
 
-            {/* Professional Exam Card */}
-            {translatedExam && (
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 }}
-              >
-                <Card className="h-full">
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <GraduationCap className="h-5 w-5 text-primary" />
-                      {t.homologationResult.exam.title}
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-3">
-                      <Badge variant="outline" className="text-base">
-                        {translatedExam.name}
-                      </Badge>
-                      <p className="text-sm text-muted-foreground">
-                        {translatedExam.description}
-                      </p>
-                      <div className="bg-muted/50 rounded-lg p-3 mt-4">
-                        <p className="text-sm font-medium mb-1">{t.homologationResult.exam?.prepareNow || "Prepare Now"}</p>
-                        <p className="text-xs text-muted-foreground">
-                          {t.homologationResult.exam?.weHelp || "We help you with exam preparation with specialized materials and expert guidance."}
-                        </p>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            )}
           </div>
 
           {/* Document Checklist */}
