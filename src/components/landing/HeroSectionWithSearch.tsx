@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Check } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
-import heroBackground from '@/assets/hero-background.png';
 
 const HeroSectionWithSearch = React.memo(() => {
   const navigate = useNavigate();
@@ -25,14 +24,8 @@ const HeroSectionWithSearch = React.memo(() => {
   return (
     <>
       {/* Hero Section */}
-      <section className="relative overflow-hidden min-h-[70vh] flex items-center">
-        {/* Background Image */}
-        <div 
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{ backgroundImage: `url(${heroBackground})` }}
-        />
-        {/* Overlay for text readability */}
-        <div className="absolute inset-0 bg-gradient-to-r from-background/90 via-background/70 to-background/50" />
+      <section className="relative overflow-hidden bg-gradient-to-br from-background via-background to-primary/5">
+        <div className="hero-gradient absolute inset-0 opacity-10" />
         <div className="container mx-auto px-4 py-16 md:py-24 lg:py-32 relative z-10">
           <div className="max-w-4xl mx-auto text-center space-y-8">
             {/* Main Headline */}
