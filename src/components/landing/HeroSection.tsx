@@ -31,7 +31,7 @@ const HeroSection = React.memo(() => {
               <Link to="/vacancies" rel="prefetch">{heroData.cta}</Link>
             </Button>
             <Button size="lg" variant="outline" asChild>
-              <Link to="/country-selection" rel="prefetch">{heroData.secondaryCta}</Link>
+              <Link to="/homologation-wizard" rel="prefetch">{heroData.secondaryCta}</Link>
             </Button>
           </div>
         </div>
