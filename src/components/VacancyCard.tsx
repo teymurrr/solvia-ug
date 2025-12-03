@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -11,6 +10,7 @@ import VacancyFooter from './vacancy/VacancyFooter';
 import VacancyDetails from './vacancy/VacancyDetails';
 import { useLanguage } from '@/hooks/useLanguage';
 import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/contexts/AuthContext';
 
 const getRandomDaysAgo = () => {
   const days = [2, 3, 4, 5, 6, 7, 10];
@@ -86,6 +86,7 @@ const VacancyCard: React.FC<VacancyCardProps> = ({
 }) => {
   const { t } = useLanguage();
   const { toast } = useToast();
+  const { isLoggedIn } = useAuth();
   const daysAgo = getRandomDaysAgo();
   
   const handleSaveClick = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -199,7 +200,7 @@ const VacancyCard: React.FC<VacancyCardProps> = ({
             id={id}
             isLandingPageCard={isLandingPageCard}
             fromLandingPage={fromLandingPage}
-            isLoggedIn={true}
+            isLoggedIn={isLoggedIn}
             isApplied={isApplied}
             searchQuery={searchQuery}
             currentPage={currentPage}
