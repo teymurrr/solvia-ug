@@ -1,7 +1,7 @@
 
 export const hero = {
-  title: 'Encuentra trabajo en Europa como médico o enfermero. Nosotros te guiamos con la homologación.',
-  subtitle: 'Ve las ofertas por país y consigue un plan claro para trabajar en Alemania, Austria, España, Italia o Francia.',
+  title: 'Trabaja en Europa como médico o enfermero. Te guiamos paso a paso con la homologación.',
+  subtitle: 'Ve tus ofertas por país y consigue un plan claro para empezar tu carrera en Europa.',
   cta: 'Ver ofertas para mi perfil',
   secondaryCta: 'Recibir mi plan de homologación gratis',
   learnMore: 'Más información',

@@ -1,7 +1,7 @@
 
 export const hero = {
-  title: 'Trouvez du travail en Europe en tant que médecin ou infirmier. Nous vous guidons dans l\'homologation.',
-  subtitle: 'Consultez les offres d\'emploi par pays et obtenez un plan clair pour travailler en Allemagne, Autriche, Espagne, Italie ou France.',
+  title: 'Travaillez en Europe en tant que médecin ou infirmier. Nous vous guidons étape par étape dans l\'homologation.',
+  subtitle: 'Consultez vos offres par pays et obtenez un plan clair pour démarrer votre carrière en Europe.',
   cta: 'Voir les offres pour mon profil',
   secondaryCta: 'Recevoir mon plan d\'homologation gratuit',
   learnMore: 'En savoir plus',

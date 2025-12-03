@@ -1,7 +1,7 @@
 
 export const hero = {
-  title: 'Finden Sie Arbeit in Europa als Arzt oder Krankenpfleger. Wir begleiten Sie durch die Anerkennung.',
-  subtitle: 'Sehen Sie Stellenangebote nach Land und erhalten Sie einen klaren Plan für die Arbeit in Deutschland, Österreich, Spanien, Italien oder Frankreich.',
+  title: 'Arbeiten Sie in Europa als Arzt oder Krankenpfleger. Wir begleiten Sie Schritt für Schritt durch die Anerkennung.',
+  subtitle: 'Sehen Sie Ihre Angebote nach Land und erhalten Sie einen klaren Plan, um Ihre Karriere in Europa zu starten.',
   cta: 'Angebote für mein Profil ansehen',
   secondaryCta: 'Meinen kostenlosen Anerkennungsplan erhalten',
   learnMore: 'Mehr erfahren',
