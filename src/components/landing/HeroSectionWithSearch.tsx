@@ -31,17 +31,17 @@ const HeroSectionWithSearch = React.memo(() => {
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{ backgroundImage: `url(${heroBackground})` }}
         />
-        {/* Overlay for text readability */}
-        <div className="absolute inset-0 bg-gradient-to-r from-background/90 via-background/70 to-background/50" />
+        {/* Overlay for text readability - reduced opacity */}
+        <div className="absolute inset-0 bg-gradient-to-r from-background/80 via-background/60 to-transparent" />
         <div className="container mx-auto px-4 py-20 md:py-28 lg:py-36 relative z-10">
           <div className="max-w-4xl mx-auto text-center space-y-8">
             {/* Main Headline */}
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-foreground leading-tight">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-foreground leading-tight drop-shadow-sm">
               {t.hero.title}
             </h1>
             
             {/* Subtitle */}
-            <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+            <p className="text-lg md:text-xl text-foreground/80 max-w-3xl mx-auto leading-relaxed">
               {t.hero.subtitle}
             </p>
             
@@ -57,7 +57,7 @@ const HeroSectionWithSearch = React.memo(() => {
               <Button 
                 variant="outline" 
                 size="lg" 
-                className="h-14 px-8 text-lg font-semibold border-2 hover:bg-primary/5 transition-all duration-300"
+                className="h-14 px-8 text-lg font-semibold border-2 bg-background/80 backdrop-blur-sm shadow-md hover:bg-background hover:shadow-lg transition-all duration-300 hover:scale-105"
                 onClick={() => navigate('/country-selection')}
               >
                 {t.hero.secondaryCta}
@@ -65,13 +65,13 @@ const HeroSectionWithSearch = React.memo(() => {
             </div>
             
             {/* Trust Items */}
-            <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 pt-6">
+            <div className="flex flex-wrap items-center justify-center gap-3 pt-6">
               {trustItems.map((item, index) => (
-                <div key={index} className="flex items-center gap-2 text-sm md:text-base text-muted-foreground">
-                  <div className="flex items-center justify-center w-5 h-5 rounded-full bg-primary/10">
+                <div key={index} className="flex items-center gap-2 px-4 py-2 rounded-full bg-background/70 backdrop-blur-sm border border-border/50 shadow-sm">
+                  <div className="flex items-center justify-center w-5 h-5 rounded-full bg-primary/20">
                     <Check className="w-3 h-3 text-primary" />
                   </div>
-                  <span>{item}</span>
+                  <span className="text-sm md:text-base text-foreground/90 font-medium">{item}</span>
                 </div>
               ))}
             </div>
