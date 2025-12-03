@@ -14,10 +14,16 @@ import {
   ArrowRight,
   Calendar,
   BookOpen,
-  Sparkles
+  Sparkles,
+  Shield,
+  Users,
+  HeartHandshake,
+  AlertTriangle,
+  Zap
 } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
 import { homologationDataByCountry, getProfessionSpecificInfo } from '@/data/homologationData';
+import { homologationTranslations, HomologationLanguage } from '@/data/homologationDataTranslations';
 import { motion } from 'framer-motion';
 
 interface WizardData {
@@ -34,8 +40,11 @@ const HomologationResult = () => {
   const [searchParams] = useSearchParams();
   const [wizardData, setWizardData] = useState<WizardData | null>(null);
 
+  // Get translations for the current language
+  const lang = (currentLanguage as HomologationLanguage) || 'en';
+  const dataTranslations = homologationTranslations[lang] || homologationTranslations.en;
+
   useEffect(() => {
-    // Try to get data from URL params first, then localStorage
     const country = searchParams.get('country');
     const doctorType = searchParams.get('doctorType');
     const studyCountry = searchParams.get('studyCountry');
@@ -51,7 +60,6 @@ const HomologationResult = () => {
         email: email || undefined,
       });
     } else {
-      // Fallback to localStorage
       const stored = localStorage.getItem('wizardData');
       if (stored) {
         setWizardData(JSON.parse(stored));
@@ -75,7 +83,7 @@ const HomologationResult = () => {
   }
 
   const countryData = homologationDataByCountry[wizardData.targetCountry];
-  const professionInfo = getProfessionSpecificInfo(wizardData.targetCountry, wizardData.doctorType || 'general');
+  const professionInfo = dataTranslations.professionNotes[wizardData.targetCountry as keyof typeof dataTranslations.professionNotes]?.[wizardData.doctorType as keyof typeof dataTranslations.professionNotes.germany] || '';
 
   if (!countryData) {
     return (
@@ -101,6 +109,19 @@ const HomologationResult = () => {
       france: '🇫🇷',
     };
     return flags[countryId] || '🌍';
+  };
+
+  const getCountryName = (countryId: string) => {
+    return dataTranslations.countries[countryId as keyof typeof dataTranslations.countries] || countryData.country;
+  };
+
+  const getLanguageDescription = (countryId: string) => {
+    return dataTranslations.languageDescriptions[countryId as keyof typeof dataTranslations.languageDescriptions] || countryData.languageRequirement.description;
+  };
+
+  const getProfessionalExam = (countryId: string) => {
+    const exam = dataTranslations.professionalExams[countryId as keyof typeof dataTranslations.professionalExams];
+    return exam || countryData.professionalExam;
   };
 
   const getDoctorTypeLabel = (type?: string) => {
@@ -136,6 +157,27 @@ const HomologationResult = () => {
     navigate('/solvia-learning');
   };
 
+  // Get translated documents
+  const getTranslatedDocuments = () => {
+    const docKeys: Record<string, string[]> = {
+      germany: ['medicalDiploma', 'diplomaSupplement', 'goodStanding', 'passport', 'cv', 'languageCert', 'birthCert', 'policeClearance'],
+      austria: ['medicalDiploma', 'studyCurriculum', 'goodStanding', 'passport', 'languageCert', 'birthCert'],
+      spain: ['medicalDiploma', 'academicTranscript', 'goodStanding', 'nie', 'birthCert', 'criminalRecord'],
+      italy: ['medicalDiploma', 'studyPlan', 'goodStanding', 'passport', 'languageCert', 'birthCert'],
+      france: ['medicalDiploma', 'attestation', 'goodStanding', 'passport', 'languageCert', 'cvFrench'],
+    };
+    
+    const keys = docKeys[wizardData.targetCountry!] || docKeys.germany;
+    return keys.map(key => {
+      const doc = dataTranslations.documents[key as keyof typeof dataTranslations.documents];
+      return doc || { name: key, description: '' };
+    });
+  };
+
+  const translatedDocs = getTranslatedDocuments();
+  const translatedCountryName = getCountryName(wizardData.targetCountry);
+  const translatedExam = getProfessionalExam(wizardData.targetCountry);
+
   return (
     <MainLayout>
       <div className="min-h-screen bg-gradient-to-br from-primary/5 via-accent/5 to-background py-8 md:py-16">
@@ -151,11 +193,31 @@ const HomologationResult = () => {
               <span className="text-sm font-medium">{t.homologationResult.yourPlan}</span>
             </div>
             <h1 className="text-3xl md:text-4xl font-bold mb-2">
-              {getCountryFlag(wizardData.targetCountry)} {t.homologationResult.pathTo} {countryData.country}
+              {getCountryFlag(wizardData.targetCountry)} {t.homologationResult.pathTo} {translatedCountryName}
             </h1>
             <p className="text-muted-foreground text-lg">
               {getDoctorTypeLabel(wizardData.doctorType)} • {t.homologationResult.from} {wizardData.studyCountry}
             </p>
+          </motion.div>
+
+          {/* Urgency Banner */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.05 }}
+            className="mb-6"
+          >
+            <div className="bg-gradient-to-r from-amber-500/20 via-orange-500/20 to-red-500/20 border border-amber-500/30 rounded-xl p-4 flex items-center gap-4">
+              <div className="p-2 bg-amber-500/30 rounded-full">
+                <AlertTriangle className="h-5 w-5 text-amber-600 dark:text-amber-400" />
+              </div>
+              <div>
+                <p className="font-semibold text-amber-700 dark:text-amber-400">{t.homologationResult.urgency?.title || "Don't Wait Any Longer"}</p>
+                <p className="text-sm text-muted-foreground">
+                  {(t.homologationResult.urgency?.description || "Every month you wait is a month of salary lost in {country}.").replace('{country}', translatedCountryName)}
+                </p>
+              </div>
+            </div>
           </motion.div>
 
           {/* Main Content Grid */}
@@ -197,50 +259,62 @@ const HomologationResult = () => {
               </Card>
             </motion.div>
 
-            {/* Language Requirement Card */}
+            {/* Language Requirement Card with CTA */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
             >
-              <Card className="h-full">
-                <CardHeader>
+              <Card className="h-full border-2 border-primary/20">
+                <CardHeader className="pb-3">
                   <CardTitle className="flex items-center gap-2">
                     <Languages className="h-5 w-5 text-primary" />
                     {t.homologationResult.language.title}
                   </CardTitle>
                 </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <span className="text-muted-foreground">{t.homologationResult.language.requiredLevel}</span>
-                      <Badge className="text-lg px-4 py-1">{countryData.languageRequirement.level}</Badge>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-muted-foreground">{t.homologationResult.language.yourLevel}</span>
-                      <Badge variant={needsLanguageCourses() ? "secondary" : "default"} className="text-lg px-4 py-1">
-                        {wizardData.languageLevel || t.homologationResult.language.notSpecified}
-                      </Badge>
-                    </div>
-                    <Separator />
-                    <div>
-                      <p className="font-medium mb-1">{countryData.languageRequirement.exam}</p>
-                      <p className="text-sm text-muted-foreground">{countryData.languageRequirement.description}</p>
-                    </div>
-                    {needsLanguageCourses() && (
-                      <div className="bg-amber-500/10 border border-amber-500/20 rounded-lg p-3">
-                        <p className="text-sm text-amber-700 dark:text-amber-400">
-                          {t.homologationResult.language.recommendation}
-                        </p>
-                      </div>
-                    )}
+                <CardContent className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <span className="text-muted-foreground">{t.homologationResult.language.requiredLevel}</span>
+                    <Badge className="text-lg px-4 py-1">{countryData.languageRequirement.level}</Badge>
                   </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-muted-foreground">{t.homologationResult.language.yourLevel}</span>
+                    <Badge variant={needsLanguageCourses() ? "secondary" : "default"} className="text-lg px-4 py-1">
+                      {wizardData.languageLevel || t.homologationResult.language.notSpecified}
+                    </Badge>
+                  </div>
+                  <Separator />
+                  <div>
+                    <p className="font-medium mb-1">{countryData.languageRequirement.exam}</p>
+                    <p className="text-sm text-muted-foreground">{getLanguageDescription(wizardData.targetCountry)}</p>
+                  </div>
+                  
+                  {/* Language CTA inside card */}
+                  {needsLanguageCourses() && (
+                    <div className="bg-gradient-to-r from-primary/10 to-accent/10 rounded-lg p-4 border border-primary/20">
+                      <div className="flex items-center gap-2 mb-2">
+                        <Zap className="h-4 w-4 text-primary" />
+                        <span className="font-semibold text-sm">{t.homologationResult.language.needHelp || "Need to reach this level?"}</span>
+                      </div>
+                      <p className="text-xs text-muted-foreground mb-3">
+                        {t.homologationResult.language.joinCourses || "Join our specialized language courses designed for medical professionals."}
+                      </p>
+                      <Button 
+                        size="sm" 
+                        onClick={handleGermanClasses}
+                        className="w-full gap-2"
+                      >
+                        <GraduationCap className="h-4 w-4" />
+                        {t.homologationResult.language.startLearning || "Start Learning"}
+                      </Button>
+                    </div>
+                  )}
                 </CardContent>
               </Card>
             </motion.div>
 
             {/* Professional Exam Card */}
-            {countryData.professionalExam && (
+            {translatedExam && (
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -256,11 +330,17 @@ const HomologationResult = () => {
                   <CardContent>
                     <div className="space-y-3">
                       <Badge variant="outline" className="text-base">
-                        {countryData.professionalExam.name}
+                        {translatedExam.name}
                       </Badge>
                       <p className="text-sm text-muted-foreground">
-                        {countryData.professionalExam.description}
+                        {translatedExam.description}
                       </p>
+                      <div className="bg-muted/50 rounded-lg p-3 mt-4">
+                        <p className="text-sm font-medium mb-1">{t.homologationResult.exam?.prepareNow || "Prepare Now"}</p>
+                        <p className="text-xs text-muted-foreground">
+                          {t.homologationResult.exam?.weHelp || "We help you with exam preparation with specialized materials and expert guidance."}
+                        </p>
+                      </div>
                     </div>
                   </CardContent>
                 </Card>
@@ -277,17 +357,21 @@ const HomologationResult = () => {
           >
             <Card>
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <FileText className="h-5 w-5 text-primary" />
-                  {t.homologationResult.documents.title}
-                </CardTitle>
-                <CardDescription>
-                  {t.homologationResult.documents.description}
-                </CardDescription>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <CardTitle className="flex items-center gap-2">
+                      <FileText className="h-5 w-5 text-primary" />
+                      {t.homologationResult.documents.title}
+                    </CardTitle>
+                    <CardDescription>
+                      {t.homologationResult.documents.description}
+                    </CardDescription>
+                  </div>
+                </div>
               </CardHeader>
               <CardContent>
-                <div className="grid md:grid-cols-2 gap-3">
-                  {countryData.documents.map((doc, index) => (
+                <div className="grid md:grid-cols-2 gap-3 mb-4">
+                  {translatedDocs.map((doc, index) => (
                     <div 
                       key={index} 
                       className="flex items-start gap-3 p-3 rounded-lg bg-muted/30 hover:bg-muted/50 transition-colors"
@@ -300,8 +384,46 @@ const HomologationResult = () => {
                     </div>
                   ))}
                 </div>
+                
+                {/* Document help CTA */}
+                <div className="bg-gradient-to-r from-blue-500/10 to-cyan-500/10 border border-blue-500/20 rounded-lg p-4">
+                  <div className="flex items-center gap-2 mb-1">
+                    <HeartHandshake className="h-4 w-4 text-blue-600" />
+                    <span className="font-semibold text-sm">{t.homologationResult.documents?.overwhelmed || "Feeling overwhelmed by paperwork?"}</span>
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    {t.homologationResult.documents?.weHandle || "We handle the entire documentation process for you."}
+                  </p>
+                </div>
               </CardContent>
             </Card>
+          </motion.div>
+
+          {/* Why Choose Us - Benefits */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.45 }}
+            className="mt-6"
+          >
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div className="bg-card border rounded-lg p-4 text-center">
+                <Shield className="h-8 w-8 text-primary mx-auto mb-2" />
+                <p className="text-sm font-medium">{t.homologationResult.cta?.benefit1 || "Medical homologation experts"}</p>
+              </div>
+              <div className="bg-card border rounded-lg p-4 text-center">
+                <CheckCircle2 className="h-8 w-8 text-green-500 mx-auto mb-2" />
+                <p className="text-sm font-medium">{t.homologationResult.cta?.benefit2 || "98% success rate"}</p>
+              </div>
+              <div className="bg-card border rounded-lg p-4 text-center">
+                <Users className="h-8 w-8 text-blue-500 mx-auto mb-2" />
+                <p className="text-sm font-medium">{t.homologationResult.cta?.benefit3 || "24/7 support"}</p>
+              </div>
+              <div className="bg-card border rounded-lg p-4 text-center">
+                <HeartHandshake className="h-8 w-8 text-amber-500 mx-auto mb-2" />
+                <p className="text-sm font-medium">{t.homologationResult.cta?.benefit4 || "No hidden costs"}</p>
+              </div>
+            </div>
           </motion.div>
 
           {/* CTAs */}
@@ -312,54 +434,30 @@ const HomologationResult = () => {
             className="mt-8 space-y-4"
           >
             {/* Primary CTA */}
-            <Card className="bg-gradient-to-r from-primary/10 via-primary/5 to-accent/10 border-primary/20">
+            <Card className="bg-gradient-to-r from-primary/10 via-primary/5 to-accent/10 border-2 border-primary/30">
               <CardContent className="pt-6">
-                <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+                <div className="flex flex-col items-center text-center gap-4">
+                  <div className="inline-flex items-center gap-2 bg-red-500/20 text-red-600 dark:text-red-400 px-3 py-1 rounded-full text-sm font-medium">
+                    <Sparkles className="h-3 w-3" />
+                    {t.homologationResult.cta?.limitedSpots || "Limited spots available!"}
+                  </div>
                   <div>
-                    <h3 className="text-xl font-bold mb-1">{t.homologationResult.cta.readyTitle}</h3>
-                    <p className="text-muted-foreground">
+                    <h3 className="text-2xl font-bold mb-2">{t.homologationResult.cta.readyTitle}</h3>
+                    <p className="text-muted-foreground max-w-2xl">
                       {t.homologationResult.cta.readyDescription}
                     </p>
                   </div>
-                  <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
-                    <Button size="lg" onClick={handleStartProcess} className="gap-2">
+                  <div className="flex flex-col sm:flex-row gap-3 w-full max-w-md">
+                    <Button size="lg" onClick={handleStartProcess} className="gap-2 flex-1">
                       {t.homologationResult.cta.startProcess} <ArrowRight className="h-4 w-4" />
                     </Button>
-                    <Button size="lg" variant="outline" onClick={handleBookConsultation} className="gap-2">
+                    <Button size="lg" variant="outline" onClick={handleBookConsultation} className="gap-2 flex-1">
                       <Calendar className="h-4 w-4" /> {t.homologationResult.cta.bookConsultation}
                     </Button>
                   </div>
                 </div>
               </CardContent>
             </Card>
-
-            {/* German Classes CTA (only for Germany/Austria) */}
-            {countryData.showGermanClasses && needsLanguageCourses() && (
-              <Card className="bg-gradient-to-r from-amber-500/10 via-orange-500/5 to-yellow-500/10 border-amber-500/20">
-                <CardContent className="pt-6">
-                  <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-                    <div className="flex items-center gap-4">
-                      <div className="p-3 bg-amber-500/20 rounded-full">
-                        <BookOpen className="h-6 w-6 text-amber-600" />
-                      </div>
-                      <div>
-                        <h3 className="text-lg font-bold mb-1">{t.homologationResult.cta.germanClassesTitle}</h3>
-                        <p className="text-sm text-muted-foreground">
-                          {t.homologationResult.cta.germanClassesDescription}
-                        </p>
-                      </div>
-                    </div>
-                    <Button 
-                      variant="secondary" 
-                      onClick={handleGermanClasses}
-                      className="bg-amber-500/20 hover:bg-amber-500/30 text-amber-700 dark:text-amber-400 gap-2"
-                    >
-                      <GraduationCap className="h-4 w-4" /> {t.homologationResult.cta.exploreClasses}
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            )}
           </motion.div>
 
           {/* Email reminder notice */}
