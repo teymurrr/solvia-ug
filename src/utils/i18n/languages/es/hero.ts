@@ -1,8 +1,9 @@
 
 export const hero = {
-  title: 'El sistema sanitario europeo te espera.',
-  subtitle: 'Solvia te ayuda a obtener tu licencia, aprender el idioma y encontrar un trabajo.',
-  cta: 'Regístrate ahora gratis',
+  title: 'Encuentra trabajo en Europa como médico o enfermero. Nosotros te guiamos con la homologación.',
+  subtitle: 'Ve las ofertas por país y consigue un plan claro para trabajar en Alemania, Austria, España, Italia o Francia.',
+  cta: 'Ver ofertas para mi perfil',
+  secondaryCta: 'Recibir mi plan de homologación gratis',
   learnMore: 'Más información',
   searchPlaceholder: 'Puesto de trabajo',
   locationPlaceholder: 'Ubicación...',
