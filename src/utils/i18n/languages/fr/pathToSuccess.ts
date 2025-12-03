@@ -9,7 +9,7 @@ export const pathToSuccess = {
     'step1.description': 'Décidez où vous voulez travailler en Europe.',
     'step2.title': 'Faites reconnaître votre diplôme',
     'step2.description': 'Nous vous guidons étape par étape pour compléter le processus.',
-    'step3.title': 'Recevez des offres qui vous correspondent',
+    'step3.title': 'Recevez des offres',
     'step3.description': 'Nous vous envoyons des opportunités réelles selon votre profil et pays choisi.',
     'step4.title': 'Commencez à travailler en Europe',
     'step4.description': 'Nous vous accompagnons pour les entretiens, le contrat et la relocalisation.'
