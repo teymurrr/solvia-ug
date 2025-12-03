@@ -1,17 +1,22 @@
 export const howItWorks = {
-  title: 'Wie es funktioniert',
+  title: 'So funktioniert es',
+  subtitle: 'Ihr Weg zur medizinischen Karriere in Europa, vereinfacht.',
   steps: {
     step1: {
-      title: 'Erstellen Sie Ihr Profil',
-      description: 'Geben Sie Ihre beruflichen Details, Zertifikate und Präferenzen ein, um Ihre Expertise zu präsentieren.'
+      title: 'Angebote nach Land erkunden',
+      description: 'Wählen Sie Ihr Ziel und sehen Sie echte Möglichkeiten für Ihre Fachrichtung.'
     },
     step2: {
-      title: 'Verbinden Sie sich mit Arbeitgebern',
-      description: 'Verbinden Sie sich mit Gesundheitseinrichtungen, die Ihren Fähigkeiten und Karrierepräferenzen entsprechen.'
+      title: 'Titel anerkennen lassen',
+      description: 'Wir begleiten Sie Schritt für Schritt durch den Prozess.'
     },
     step3: {
-      title: 'Beginnen Sie Ihre Reise',
-      description: 'Beginnen Sie Ihre neue Position mit umfassender Unterstützung für Umzug und Einarbeitung.'
+      title: 'Auf die besten Angebote bewerben',
+      description: 'Wir verbinden Sie mit Krankenhäusern und Unternehmen, die Ihr Profil suchen.'
+    },
+    step4: {
+      title: 'In Europa arbeiten',
+      description: 'Wir unterstützen Sie bei Vorstellungsgesprächen, Vertrag und Umzug.'
     }
   }
 };
