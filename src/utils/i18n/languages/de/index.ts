@@ -25,6 +25,7 @@ import { wizard } from './wizard';
 import { countrySelection } from './countrySelection';
 import { onboarding } from './onboarding';
 import { documents } from './documents';
+import { homologationResult } from './homologationResult';
 
 export const de = {
   hero,
@@ -52,5 +53,6 @@ export const de = {
   wizard,
   countrySelection,
   onboarding,
-  documents
+  documents,
+  homologationResult
 };
