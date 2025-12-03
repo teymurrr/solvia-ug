@@ -100,8 +100,8 @@ const VacancyFooter: React.FC<VacancyFooterProps> = ({
       return;
     }
     
-    // Redirect to signup if user is not logged in
-    if (!isLoggedIn && (isLandingPageCard || fromLandingPage)) {
+    // Redirect to signup if user is not logged in (from any page)
+    if (!isLoggedIn) {
       e.preventDefault();
       handleSignupRedirect();
       return;
@@ -157,7 +157,7 @@ const VacancyFooter: React.FC<VacancyFooterProps> = ({
               href={applicationLink}
               target="_blank"
               rel="noopener noreferrer"
-              //onClick={handleApplyClick}
+              onClick={handleApplyClick}
               className={`inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 w-full bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2`}
             >
               {applyNowText}
@@ -165,7 +165,7 @@ const VacancyFooter: React.FC<VacancyFooterProps> = ({
           ) : (
             <a
               href={`/vacancies/${id}/apply`}
-              //onClick={handleApplyClick}
+              onClick={handleApplyClick}
               className={`inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 w-full bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2`}
             >
               {applyNowText}
