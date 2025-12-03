@@ -8,7 +8,6 @@ import { Separator } from '@/components/ui/separator';
 import { 
   Clock, 
   FileText, 
-  Euro, 
   Languages, 
   CheckCircle2, 
   GraduationCap, 
@@ -66,8 +65,8 @@ const HomologationResult = () => {
         <div className="min-h-screen flex items-center justify-center">
           <Card className="max-w-md">
             <CardContent className="pt-6 text-center">
-              <p className="text-muted-foreground mb-4">No data found. Please complete the wizard first.</p>
-              <Button onClick={() => navigate('/homologation-wizard')}>Start Wizard</Button>
+              <p className="text-muted-foreground mb-4">{t.homologationResult.noData}</p>
+              <Button onClick={() => navigate('/homologation-wizard')}>{t.homologationResult.startWizard}</Button>
             </CardContent>
           </Card>
         </div>
@@ -84,8 +83,8 @@ const HomologationResult = () => {
         <div className="min-h-screen flex items-center justify-center">
           <Card className="max-w-md">
             <CardContent className="pt-6 text-center">
-              <p className="text-muted-foreground mb-4">Country data not available.</p>
-              <Button onClick={() => navigate('/homologation-wizard')}>Try Again</Button>
+              <p className="text-muted-foreground mb-4">{t.homologationResult.countryNotAvailable}</p>
+              <Button onClick={() => navigate('/homologation-wizard')}>{t.homologationResult.tryAgain}</Button>
             </CardContent>
           </Card>
         </div>
@@ -149,13 +148,13 @@ const HomologationResult = () => {
           >
             <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full mb-4">
               <Sparkles className="h-4 w-4" />
-              <span className="text-sm font-medium">Your Personalized Plan</span>
+              <span className="text-sm font-medium">{t.homologationResult.yourPlan}</span>
             </div>
             <h1 className="text-3xl md:text-4xl font-bold mb-2">
-              {getCountryFlag(wizardData.targetCountry)} Your Path to {countryData.country}
+              {getCountryFlag(wizardData.targetCountry)} {t.homologationResult.pathTo} {countryData.country}
             </h1>
             <p className="text-muted-foreground text-lg">
-              {getDoctorTypeLabel(wizardData.doctorType)} • From {wizardData.studyCountry}
+              {getDoctorTypeLabel(wizardData.doctorType)} • {t.homologationResult.from} {wizardData.studyCountry}
             </p>
           </motion.div>
 
@@ -171,58 +170,29 @@ const HomologationResult = () => {
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <Clock className="h-5 w-5 text-primary" />
-                    Estimated Process Time
+                    {t.homologationResult.timeline.title}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="grid grid-cols-3 gap-4 text-center">
                     <div className="p-4 bg-green-500/10 rounded-lg">
                       <p className="text-2xl font-bold text-green-600">{countryData.processTime.min}</p>
-                      <p className="text-sm text-muted-foreground">Best Case</p>
+                      <p className="text-sm text-muted-foreground">{t.homologationResult.timeline.bestCase}</p>
                     </div>
                     <div className="p-4 bg-primary/10 rounded-lg">
                       <p className="text-2xl font-bold text-primary">{countryData.processTime.med}</p>
-                      <p className="text-sm text-muted-foreground">Average</p>
+                      <p className="text-sm text-muted-foreground">{t.homologationResult.timeline.average}</p>
                     </div>
                     <div className="p-4 bg-orange-500/10 rounded-lg">
                       <p className="text-2xl font-bold text-orange-600">{countryData.processTime.max}</p>
-                      <p className="text-sm text-muted-foreground">Complex Cases</p>
+                      <p className="text-sm text-muted-foreground">{t.homologationResult.timeline.complexCases}</p>
                     </div>
                   </div>
                   {professionInfo && (
                     <p className="mt-4 text-sm text-muted-foreground bg-muted/50 p-3 rounded-lg">
-                      <strong>Note:</strong> {professionInfo}
+                      <strong>{t.homologationResult.timeline.note}:</strong> {professionInfo}
                     </p>
                   )}
-                </CardContent>
-              </Card>
-            </motion.div>
-
-            {/* Cost Estimate Card */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-            >
-              <Card className="h-full">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Euro className="h-5 w-5 text-primary" />
-                    Cost Expectations
-                  </CardTitle>
-                  <CardDescription>
-                    Estimated total: {countryData.costEstimate.min.toLocaleString()}€ - {countryData.costEstimate.max.toLocaleString()}€
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-2">
-                    {countryData.costEstimate.breakdown.map((item, index) => (
-                      <div key={index} className="flex justify-between items-center py-2 border-b border-border/50 last:border-0">
-                        <span className="text-sm">{item.item}</span>
-                        <Badge variant="secondary">{item.cost}</Badge>
-                      </div>
-                    ))}
-                  </div>
                 </CardContent>
               </Card>
             </motion.div>
@@ -231,25 +201,25 @@ const HomologationResult = () => {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
+              transition={{ delay: 0.2 }}
             >
               <Card className="h-full">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <Languages className="h-5 w-5 text-primary" />
-                    Language Requirement
+                    {t.homologationResult.language.title}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
                     <div className="flex items-center justify-between">
-                      <span className="text-muted-foreground">Required Level</span>
+                      <span className="text-muted-foreground">{t.homologationResult.language.requiredLevel}</span>
                       <Badge className="text-lg px-4 py-1">{countryData.languageRequirement.level}</Badge>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className="text-muted-foreground">Your Level</span>
+                      <span className="text-muted-foreground">{t.homologationResult.language.yourLevel}</span>
                       <Badge variant={needsLanguageCourses() ? "secondary" : "default"} className="text-lg px-4 py-1">
-                        {wizardData.languageLevel || 'Not specified'}
+                        {wizardData.languageLevel || t.homologationResult.language.notSpecified}
                       </Badge>
                     </div>
                     <Separator />
@@ -260,7 +230,7 @@ const HomologationResult = () => {
                     {needsLanguageCourses() && (
                       <div className="bg-amber-500/10 border border-amber-500/20 rounded-lg p-3">
                         <p className="text-sm text-amber-700 dark:text-amber-400">
-                          Based on your current level, we recommend language preparation before starting the process.
+                          {t.homologationResult.language.recommendation}
                         </p>
                       </div>
                     )}
@@ -274,13 +244,13 @@ const HomologationResult = () => {
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4 }}
+                transition={{ delay: 0.3 }}
               >
                 <Card className="h-full">
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                       <GraduationCap className="h-5 w-5 text-primary" />
-                      Professional Exam
+                      {t.homologationResult.exam.title}
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
@@ -302,17 +272,17 @@ const HomologationResult = () => {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 }}
+            transition={{ delay: 0.4 }}
             className="mt-6"
           >
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <FileText className="h-5 w-5 text-primary" />
-                  Document Checklist
+                  {t.homologationResult.documents.title}
                 </CardTitle>
                 <CardDescription>
-                  Documents you'll need to prepare for your {countryData.country} application
+                  {t.homologationResult.documents.description}
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -338,7 +308,7 @@ const HomologationResult = () => {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6 }}
+            transition={{ delay: 0.5 }}
             className="mt-8 space-y-4"
           >
             {/* Primary CTA */}
@@ -346,17 +316,17 @@ const HomologationResult = () => {
               <CardContent className="pt-6">
                 <div className="flex flex-col md:flex-row items-center justify-between gap-4">
                   <div>
-                    <h3 className="text-xl font-bold mb-1">Ready to Start Your Journey?</h3>
+                    <h3 className="text-xl font-bold mb-1">{t.homologationResult.cta.readyTitle}</h3>
                     <p className="text-muted-foreground">
-                      Get expert guidance through every step of your homologation process.
+                      {t.homologationResult.cta.readyDescription}
                     </p>
                   </div>
                   <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
                     <Button size="lg" onClick={handleStartProcess} className="gap-2">
-                      Start My Process <ArrowRight className="h-4 w-4" />
+                      {t.homologationResult.cta.startProcess} <ArrowRight className="h-4 w-4" />
                     </Button>
                     <Button size="lg" variant="outline" onClick={handleBookConsultation} className="gap-2">
-                      <Calendar className="h-4 w-4" /> Book Free Consultation
+                      <Calendar className="h-4 w-4" /> {t.homologationResult.cta.bookConsultation}
                     </Button>
                   </div>
                 </div>
@@ -373,9 +343,9 @@ const HomologationResult = () => {
                         <BookOpen className="h-6 w-6 text-amber-600" />
                       </div>
                       <div>
-                        <h3 className="text-lg font-bold mb-1">Need German Language Preparation?</h3>
+                        <h3 className="text-lg font-bold mb-1">{t.homologationResult.cta.germanClassesTitle}</h3>
                         <p className="text-sm text-muted-foreground">
-                          Join our specialized German courses designed for medical professionals.
+                          {t.homologationResult.cta.germanClassesDescription}
                         </p>
                       </div>
                     </div>
@@ -384,7 +354,7 @@ const HomologationResult = () => {
                       onClick={handleGermanClasses}
                       className="bg-amber-500/20 hover:bg-amber-500/30 text-amber-700 dark:text-amber-400 gap-2"
                     >
-                      <GraduationCap className="h-4 w-4" /> Explore German Classes
+                      <GraduationCap className="h-4 w-4" /> {t.homologationResult.cta.exploreClasses}
                     </Button>
                   </div>
                 </CardContent>
@@ -397,10 +367,10 @@ const HomologationResult = () => {
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 0.8 }}
+              transition={{ delay: 0.6 }}
               className="mt-6 text-center text-sm text-muted-foreground"
             >
-              <p>A copy of this plan has been sent to <strong>{wizardData.email}</strong></p>
+              <p>{t.homologationResult.emailSent} <strong>{wizardData.email}</strong></p>
             </motion.div>
           )}
         </div>
