@@ -1,7 +1,7 @@
 
 export const hero = {
   title: 'Arbeiten Sie in Europa als Arzt oder Krankenpfleger.',
-  subtitle: 'Sehen Sie Ihre Angebote nach Land und erhalten Sie einen klaren Plan, um Ihre Karriere in Europa zu starten.',
+  subtitle: 'Sehen Sie Ihre Angebote nach Land und erhalten Sie Beratung, um Ihre Karriere in Ihrem Traumland zu starten.',
   cta: 'Angebote für mein Profil ansehen',
   secondaryCta: 'Meinen kostenlosen Anerkennungsplan erhalten',
   learnMore: 'Mehr erfahren',
