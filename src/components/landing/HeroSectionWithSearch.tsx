@@ -32,7 +32,7 @@ const HeroSectionWithSearch = React.memo(() => {
           style={{ backgroundImage: `url(${heroBackground})` }}
         />
         {/* Overlay for text readability - subtle background */}
-        <div className="absolute inset-0 bg-background/75" />
+        <div className="absolute inset-0 bg-background/90" />
         <div className="container mx-auto px-4 py-24 md:py-32 lg:py-40 relative z-10">
           <div className="max-w-3xl mx-auto text-center space-y-6">
             {/* Main Headline */}
