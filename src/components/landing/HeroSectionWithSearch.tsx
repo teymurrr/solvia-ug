@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Check } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
-import heroBackground from '@/assets/hero-background.jpg';
+import heroBackground from '@/assets/hero-medical-team.jpg';
 
 const HeroSectionWithSearch = React.memo(() => {
   const navigate = useNavigate();
@@ -31,8 +31,8 @@ const HeroSectionWithSearch = React.memo(() => {
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{ backgroundImage: `url(${heroBackground})` }}
         />
-        {/* Overlay for text readability - reduced opacity */}
-        <div className="absolute inset-0 bg-gradient-to-r from-background/95 via-background/85 to-background/60" />
+        {/* Overlay for text readability - stronger center fade */}
+        <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/70 to-background/85" />
         <div className="container mx-auto px-4 py-24 md:py-32 lg:py-40 relative z-10">
           <div className="max-w-3xl mx-auto text-center space-y-6">
             {/* Main Headline */}
