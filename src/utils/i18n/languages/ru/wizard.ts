@@ -44,7 +44,8 @@ export const wizard = {
     placeholder: 'ваша.почта@пример.ru',
     continue: 'Продолжить',
     complete: 'Завершить',
-    processing: 'Обработка...'
+    processing: 'Обработка...',
+    generatePlan: 'Создать мой план'
   },
   firstName: {
     title: 'Как ваше имя?',

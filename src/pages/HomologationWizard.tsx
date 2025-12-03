@@ -102,7 +102,7 @@ const HomologationWizard = () => {
 
   const handleLanguageSelect = (level: string) => {
     setWizardData({ ...wizardData, languageLevel: level });
-    setCurrentStep('firstName');
+    setCurrentStep('email');
   };
 
   const handleFirstNameSubmit = (firstName: string) => {
@@ -214,7 +214,7 @@ const HomologationWizard = () => {
   };
 
   const handleBack = () => {
-    const stepOrder: WizardStep[] = ['country', 'study-country', 'doctor-type', 'language', 'firstName', 'lastName', 'email', 'summary', 'password'];
+    const stepOrder: WizardStep[] = ['country', 'study-country', 'doctor-type', 'language', 'email', 'summary', 'password'];
     const currentIndex = stepOrder.indexOf(currentStep);
     if (currentIndex > 0) {
       setCurrentStep(stepOrder[currentIndex - 1]);
@@ -553,7 +553,7 @@ const HomologationWizard = () => {
                     size="lg"
                     className="w-full mt-4 text-lg h-auto py-4"
                   >
-                    {t.wizard.email.continue}
+                    {t.wizard.email.generatePlan}
                   </Button>
                 </form>
                 <Button
