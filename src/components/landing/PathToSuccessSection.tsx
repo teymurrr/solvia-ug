@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { UserCheck, FileText, BookOpen, Stethoscope, Building2, Plane } from 'lucide-react';
+import { Globe, GraduationCap, Briefcase, Plane } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { useLanguage } from '@/hooks/useLanguage';
@@ -20,26 +20,21 @@ const PathToSuccessSection = () => {
     {
       titleKey: 'step1.title',
       descriptionKey: 'step1.description',
-      Icon: UserCheck,
+      Icon: Globe,
     },
     {
       titleKey: 'step2.title',
       descriptionKey: 'step2.description',
-      Icon: FileText,
+      Icon: GraduationCap,
     },
     {
       titleKey: 'step3.title',
       descriptionKey: 'step3.description',
-      Icon: BookOpen,
+      Icon: Briefcase,
     },
     {
       titleKey: 'step4.title',
       descriptionKey: 'step4.description',
-      Icon: Stethoscope,
-    },
-    {
-      titleKey: 'step5.title',
-      descriptionKey: 'step5.description',
       Icon: Plane,
     },
   ] as const;

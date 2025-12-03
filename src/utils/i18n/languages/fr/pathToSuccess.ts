@@ -1,19 +1,17 @@
 export const pathToSuccess = {
   title: 'Comment ça marche',
-  subtitle: 'Nous vous soutenons à chaque étape — de la reconnaissance à la relocalisation.',
+  subtitle: 'Votre chemin vers une carrière médicale en Europe, simplifié.',
   stepLabel: 'Étape',
   cta: 'Commencer Mon Parcours',
   ctaLabel: 'Commencer Mon Parcours avec Solvia',
   steps: {
-    'step1.title': 'Inscription',
-    'step1.description': 'Accédez à toutes les informations pour déménager et connectez-vous à une communauté de médecins ayant le même objectif : Travailler en Europe.',
-    'step2.title': 'Conseils pour la Licence de Travail',
-    'step2.description': 'Aide personnalisée pour accélérer le traitement de votre diplôme.',
-    'step3.title': 'Méthode Linguistique Rapide Solvia',
-    'step3.description': 'Rejoignez nos cours de langue. Cours de langue basés sur la science pour un apprentissage plus rapide.',
-    'step4.title': 'Correspondance d\'Emploi IA',
-    'step4.description': 'Trouvez votre nouvel emploi avec un meilleur salaire et une meilleure satisfaction au travail.',
-    'step5.title': 'Relocalisation & Intégration',
-    'step5.description': 'Obtenez des conseils et astuces sur la vie en Europe et boostez votre carrière.'
+    'step1.title': 'Explorez les offres par pays',
+    'step1.description': 'Choisissez votre destination et découvrez des opportunités réelles pour votre spécialité.',
+    'step2.title': 'Homologuez votre diplôme',
+    'step2.description': 'Nous vous guidons étape par étape pour compléter le processus.',
+    'step3.title': 'Postulez aux meilleures offres',
+    'step3.description': 'Nous vous connectons avec des hôpitaux et entreprises qui recherchent votre profil.',
+    'step4.title': 'Commencez à travailler en Europe',
+    'step4.description': 'Nous vous accompagnons pour les entretiens, le contrat et la relocalisation.'
   }
 };
