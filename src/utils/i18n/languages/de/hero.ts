@@ -23,5 +23,16 @@ export const hero = {
   homologationBanner: {
     text: 'Benötigen Sie Anerkennung? Unser Homologationsservice übernimmt alle Formalitäten für Sie.',
     cta: 'Mehr erfahren'
+  },
+  trustItems: {
+    digital: '100% digitaler Prozess',
+    countries: 'Mehrere europäische Länder verfügbar',
+    support: 'Schritt-für-Schritt-Begleitung'
+  },
+  stats: {
+    professionals: 'Registrierte Fachkräfte',
+    homologations: 'Anerkennungen in Bearbeitung',
+    countries: 'Verfügbare Länder',
+    satisfaction: 'Nutzerzufriedenheit'
   }
 };

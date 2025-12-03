@@ -2,21 +2,23 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Check } from 'lucide-react';
+import { useLanguage } from '@/hooks/useLanguage';
 
 const HeroSectionWithSearch = React.memo(() => {
   const navigate = useNavigate();
+  const { t } = useLanguage();
 
   const trustItems = [
-    "Proceso 100% digital",
-    "Varios países disponibles en Europa",
-    "Acompañamiento paso a paso"
+    t.hero.trustItems?.digital || "100% digital process",
+    t.hero.trustItems?.countries || "Multiple European countries available",
+    t.hero.trustItems?.support || "Step-by-step guidance"
   ];
 
   const stats = [
-    { number: "+500", label: "Profesionales registrados" },
-    { number: "+200", label: "Homologaciones en proceso" },
-    { number: "5", label: "Países disponibles" },
-    { number: "92%", label: "Satisfacción de los usuarios" }
+    { number: "+500", label: t.hero.stats?.professionals || "Registered professionals" },
+    { number: "+200", label: t.hero.stats?.homologations || "Homologations in progress" },
+    { number: "5", label: t.hero.stats?.countries || "Countries available" },
+    { number: "92%", label: t.hero.stats?.satisfaction || "User satisfaction" }
   ];
   
   return (
@@ -28,12 +30,12 @@ const HeroSectionWithSearch = React.memo(() => {
           <div className="max-w-4xl mx-auto text-center space-y-8">
             {/* Main Headline */}
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-foreground leading-tight">
-              Tu título médico, listo para trabajar en Europa
+              {t.hero.title}
             </h1>
             
             {/* Subtitle */}
             <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-              Homologa tu título, valida tus credenciales y accede a oportunidades laborales en Alemania, Austria, España, Italia y Francia. Todo en un solo lugar, 100% online.
+              {t.hero.subtitle}
             </p>
             
             {/* CTA Buttons */}
@@ -41,17 +43,17 @@ const HeroSectionWithSearch = React.memo(() => {
               <Button 
                 size="lg" 
                 className="h-14 px-8 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
-                onClick={() => navigate('/homologation-wizard')}
+                onClick={() => navigate('/vacancies')}
               >
-                Empezar mi homologación →
+                {t.hero.cta} →
               </Button>
               <Button 
                 variant="outline" 
                 size="lg" 
                 className="h-14 px-8 text-lg font-semibold border-2 hover:bg-primary/5 transition-all duration-300"
-                onClick={() => window.open('https://calendly.com/david-rehrl-thesolvia/30min', '_blank')}
+                onClick={() => navigate('/country-selection')}
               >
-                Hablar con un asesor
+                {t.hero.secondaryCta}
               </Button>
             </div>
             

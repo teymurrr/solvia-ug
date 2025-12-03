@@ -23,5 +23,16 @@ export const hero = {
   homologationBanner: {
     text: '¿Necesita reconocimiento de título? Nuestro servicio de homologación maneja todo el papeleo.',
     cta: 'Más información'
+  },
+  trustItems: {
+    digital: 'Proceso 100% digital',
+    countries: 'Varios países disponibles en Europa',
+    support: 'Acompañamiento paso a paso'
+  },
+  stats: {
+    professionals: 'Profesionales registrados',
+    homologations: 'Homologaciones en proceso',
+    countries: 'Países disponibles',
+    satisfaction: 'Satisfacción de los usuarios'
   }
 };
