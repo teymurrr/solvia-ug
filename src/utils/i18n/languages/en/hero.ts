@@ -1,7 +1,7 @@
 
 export const hero = {
-  title: 'Find work in Europe as a doctor or nurse. We guide you through the homologation.',
-  subtitle: 'See job offers by country and get a clear plan to work in Germany, Austria, Spain, Italy or France.',
+  title: 'Work in Europe as a doctor or nurse. We guide you step by step through the homologation.',
+  subtitle: 'See your offers by country and get a clear plan to start your career in Europe.',
   cta: 'See offers for my profile',
   secondaryCta: 'Get my free homologation plan',
   learnMore: 'Learn More',
