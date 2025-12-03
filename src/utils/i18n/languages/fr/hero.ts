@@ -23,5 +23,16 @@ export const hero = {
   homologationBanner: {
     text: 'Besoin de reconnaissance de diplôme? Notre service d\'homologation s\'occupe de toute la paperasse.',
     cta: 'En savoir plus'
+  },
+  trustItems: {
+    digital: 'Processus 100% numérique',
+    countries: 'Plusieurs pays européens disponibles',
+    support: 'Accompagnement étape par étape'
+  },
+  stats: {
+    professionals: 'Professionnels inscrits',
+    homologations: 'Homologations en cours',
+    countries: 'Pays disponibles',
+    satisfaction: 'Satisfaction des utilisateurs'
   }
 };

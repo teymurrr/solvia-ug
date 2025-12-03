@@ -23,5 +23,16 @@ export const hero = {
   homologationBanner: {
     text: 'Need license recognition? Our Homologation Service handles all the paperwork for you.',
     cta: 'Learn More'
+  },
+  trustItems: {
+    digital: '100% digital process',
+    countries: 'Multiple European countries available',
+    support: 'Step-by-step guidance'
+  },
+  stats: {
+    professionals: 'Registered professionals',
+    homologations: 'Homologations in progress',
+    countries: 'Countries available',
+    satisfaction: 'User satisfaction'
   }
 };
