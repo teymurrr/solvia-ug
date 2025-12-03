@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Globe, GraduationCap, Briefcase, Plane } from 'lucide-react';
+import { MapPin, GraduationCap, Mail, Plane } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { useLanguage } from '@/hooks/useLanguage';
@@ -20,7 +20,7 @@ const PathToSuccessSection = () => {
     {
       titleKey: 'step1.title',
       descriptionKey: 'step1.description',
-      Icon: Globe,
+      Icon: MapPin,
     },
     {
       titleKey: 'step2.title',
@@ -30,7 +30,7 @@ const PathToSuccessSection = () => {
     {
       titleKey: 'step3.title',
       descriptionKey: 'step3.description',
-      Icon: Briefcase,
+      Icon: Mail,
     },
     {
       titleKey: 'step4.title',
