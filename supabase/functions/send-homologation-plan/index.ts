@@ -38,7 +38,7 @@ const getEmailContent = (data: HomologationPlanRequest) => {
   const countryName = countryNames[data.targetCountry]?.[lang] || data.targetCountry;
   const professionName = doctorTypeNames[data.doctorType || 'general']?.[lang] || data.doctorType;
   
-  const baseUrl = Deno.env.get("SITE_URL") || "https://ehrxpaxvyuwiwqclqkyh.lovable.app";
+  const baseUrl = Deno.env.get("SITE_URL") || "https://thesolvia.com";
   const planUrl = `${baseUrl}/homologation-result?country=${data.targetCountry}&doctorType=${data.doctorType}&studyCountry=${encodeURIComponent(data.studyCountry || '')}&languageLevel=${encodeURIComponent(data.languageLevel || '')}`;
   const consultationUrl = "https://calendly.com/david-rehrl-thesolvia/30min";
 
@@ -60,7 +60,7 @@ const getEmailContent = (data: HomologationPlanRequest) => {
 </head>
 <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
   <div style="text-align: center; margin-bottom: 30px;">
-    <img src="https://ehrxpaxvyuwiwqclqkyh.lovable.app/lovable-uploads/Solvia_Logo-6.png" alt="Solvia" style="height: 50px;">
+    <img src="https://thesolvia.com/lovable-uploads/Solvia_Logo-6.png" alt="Solvia" style="height: 50px;">
   </div>
   
   <div style="background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%); color: white; padding: 30px; border-radius: 12px; text-align: center; margin-bottom: 30px;">
