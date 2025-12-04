@@ -66,8 +66,8 @@ const handler = async (req: Request): Promise<Response> => {
 
     // Send notification email to admin
     const adminEmailResponse = await resend.emails.send({
-      from: "Solvia Learning <onboarding@resend.dev>",
-      to: ["admin@solvia.com"], // Replace with your admin email
+      from: "Solvia Learning <team@thesolvia.com>",
+      to: ["david.rehrl@thesolvia.com"],
       subject: "New Learning Form Submission",
       html: `
         <h2>New Learning Form Submission</h2>
@@ -83,7 +83,7 @@ const handler = async (req: Request): Promise<Response> => {
 
     // Send confirmation email to user
     const userEmailResponse = await resend.emails.send({
-      from: "Solvia Learning <onboarding@resend.dev>",
+      from: "Solvia Learning <team@thesolvia.com>",
       to: [formData.email],
       subject: "Thank you for your interest in Solvia Learning",
       html: `

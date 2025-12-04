@@ -146,7 +146,7 @@ const handler = async (req: Request): Promise<Response> => {
     const { subject, html } = getEmailContent(data);
 
     const emailResponse = await resend.emails.send({
-      from: "Solvia <onboarding@resend.dev>",
+      from: "Solvia <team@thesolvia.com>",
       to: [data.email],
       subject,
       html,
