@@ -33,6 +33,7 @@ const HomologationWizard = () => {
   const [currentStep, setCurrentStep] = useState<WizardStep>('country');
   const [wizardData, setWizardData] = useState<WizardData>({});
   const [isSaving, setIsSaving] = useState(false);
+  const [isSubmittingEmail, setIsSubmittingEmail] = useState(false);
   const [privacyConsent, setPrivacyConsent] = useState(false);
 
   const [selectedTargetCountry, setSelectedTargetCountry] = useState<string | null>(null);
@@ -116,6 +117,10 @@ const HomologationWizard = () => {
   };
 
   const handleEmailSubmit = async (email: string) => {
+    // Prevent double submissions
+    if (isSubmittingEmail) return;
+    setIsSubmittingEmail(true);
+    
     const updatedData = { ...wizardData, email };
     setWizardData(updatedData);
     
@@ -570,8 +575,9 @@ const HomologationWizard = () => {
                     type="submit"
                     size="lg"
                     className="w-full mt-4 text-lg h-auto py-4"
+                    disabled={isSubmittingEmail}
                   >
-                    {t.wizard.email.generatePlan}
+                    {isSubmittingEmail ? (t.common?.loading || 'Loading...') : t.wizard.email.generatePlan}
                   </Button>
                 </form>
                 <Button
