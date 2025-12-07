@@ -3,6 +3,9 @@ export const learning = {
   subtitle: "Mejora tu carrera médica con nuestros cursos especializados de alemán médico y preparación FSP",
   advanceCareer: "Avanza en Tu Carrera",
   startJourney: "Comienza Tu Viaje de Aprendizaje Hoy",
+  additionalSupport: "Apoyo Adicional",
+  prepareForSuccess: "Prepárate para el Éxito en Alemania",
+  compactDescription: "Domina el alemán médico y aprueba tu examen FSP con nuestros cursos especializados.",
   hero: {
     title: "Impulsa tu Carrera Médica con Solvia Learning",
     subtitle: "Cursos Especializados de Alemán Médico y Preparación FSP para Médicos Internacionales",

@@ -1,11 +1,14 @@
-
 export const learning = {
   title: "Formation Solvia",
   subtitle: "Améliorez votre carrière médicale avec nos cours spécialisés d'allemand médical et de préparation FSP",
   advanceCareer: "Faites Progresser Votre Carrière",
   startJourney: "Commencez Votre Parcours d'Apprentissage Aujourd'hui",
+  additionalSupport: "Soutien Supplémentaire",
+  prepareForSuccess: "Préparez-vous au Succès en Allemagne",
+  compactDescription: "Maîtrisez l'allemand médical et réussissez votre examen FSP avec nos cours spécialisés.",
   germanCourses: {
     title: 'Allemand Médical A1-C1',
+    shortTitle: 'Allemand A1-C1',
     subtitle: 'Maîtrisez l\'allemand médical avec nos cours spécialisés',
     features: [
       'Allemand général et médical de A1 à C1 - Programme structuré du niveau débutant à avancé avec vocabulaire médical inclus dès les premières étapes',

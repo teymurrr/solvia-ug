@@ -1,4 +1,3 @@
-
 export const why = {
   title: "Why Solvia?",
   subtitle: "Discover what makes our platform the top choice for healthcare professionals worldwide",
@@ -32,4 +31,13 @@ export const why = {
     title: "Full Transparency, Shared Control",
     description: "Both professionals and institutions can track progress, respond quickly, and stay in control — no gatekeepers, no guessing."
   }
+};
+
+export const partners = {
+  title: "Backed by leading accelerators"
+};
+
+export const employer = {
+  bannerText: "Looking to hire healthcare professionals?",
+  bannerCta: "Discover our Employer Solutions"
 };
