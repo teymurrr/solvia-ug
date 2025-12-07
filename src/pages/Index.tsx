@@ -5,14 +5,16 @@ import PathToSuccessSection from '@/components/landing/PathToSuccessSection';
 import PartnersSection from '@/components/landing/PartnersSection';
 import EmployerBanner from '@/components/landing/EmployerBanner';
 import BlackFridayBanner from '@/components/payments/BlackFridayBanner';
-import { featuredVacancies } from '@/data/landingPageData';
 
-// Lazy load only the heavy components that are below the fold
-const VacanciesSectionRedesigned = React.lazy(() => import('@/components/landing/VacanciesSectionRedesigned'));
-const TestimonialsSection = React.lazy(() => import('@/components/landing/TestimonialsSection'));
+// Lazy load sections below the fold
+const JobExplorerSection = React.lazy(() => import('@/components/landing/JobExplorerSection'));
+const HomologationIncludedSection = React.lazy(() => import('@/components/landing/HomologationIncludedSection'));
+const SuccessStoriesSection = React.lazy(() => import('@/components/landing/SuccessStoriesSection'));
+const CountryComparisonSection = React.lazy(() => import('@/components/landing/CountryComparisonSection'));
+const ConversionFAQSection = React.lazy(() => import('@/components/landing/ConversionFAQSection'));
+const LearningMiniBanner = React.lazy(() => import('@/components/landing/LearningMiniBanner'));
 const BlogSection = React.lazy(() => import('@/components/landing/BlogSection'));
-const LearningSectionCompact = React.lazy(() => import('@/components/landing/LearningSectionCompact'));
-const CTASection = React.lazy(() => import('@/components/landing/CTASection'));
+const SuperCTASection = React.lazy(() => import('@/components/landing/SuperCTASection'));
 
 // Simple loading fallback
 const LoadingFallback = ({ height }: { height: string }) => (
@@ -40,30 +42,47 @@ const Index = () => {
         <PathToSuccessSection />
       </div>
       
-      {/* Open Positions section - redesigned */}
+      {/* Job Explorer - replaces fake vacancies */}
       <Suspense fallback={<LoadingFallback height="h-96" />}>
-        <VacanciesSectionRedesigned vacancies={featuredVacancies} />
+        <JobExplorerSection />
       </Suspense>
       
       {/* Employer Banner */}
       <EmployerBanner />
       
-      {/* Testimonials section - replaces professionals */}
+      {/* Homologation Included - CRITICAL value proposition */}
       <Suspense fallback={<LoadingFallback height="h-96" />}>
-        <TestimonialsSection />
+        <HomologationIncludedSection />
       </Suspense>
       
-      {/* Learning section - compact version moved lower */}
-      <Suspense fallback={<LoadingFallback height="h-48" />}>
-        <LearningSectionCompact />
+      {/* Success Stories - 3 static cards focused on homologation */}
+      <Suspense fallback={<LoadingFallback height="h-96" />}>
+        <SuccessStoriesSection />
       </Suspense>
       
+      {/* Country Comparison */}
+      <Suspense fallback={<LoadingFallback height="h-96" />}>
+        <CountryComparisonSection />
+      </Suspense>
+      
+      {/* Conversion FAQ with micro-CTAs */}
+      <Suspense fallback={<LoadingFallback height="h-96" />}>
+        <ConversionFAQSection />
+      </Suspense>
+      
+      {/* Learning Mini Banner - minimal, non-intrusive */}
+      <Suspense fallback={<LoadingFallback height="h-16" />}>
+        <LearningMiniBanner />
+      </Suspense>
+      
+      {/* Blog Section */}
       <Suspense fallback={<LoadingFallback height="h-80" />}>
         <BlogSection />
       </Suspense>
       
+      {/* Super CTA - Final conversion section */}
       <Suspense fallback={<LoadingFallback height="h-64" />}>
-        <CTASection />
+        <SuperCTASection />
       </Suspense>
     </MainLayout>
   );

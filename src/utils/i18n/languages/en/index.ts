@@ -26,6 +26,7 @@ import { countrySelection } from './countrySelection';
 import { onboarding } from './onboarding';
 import { documents } from './documents';
 import { homologationResult } from './homologationResult';
+import { landing } from './landing';
 
 export const en = {
   hero,
@@ -57,5 +58,6 @@ export const en = {
   countrySelection,
   onboarding,
   documents,
-  homologationResult
+  homologationResult,
+  landing
 };
