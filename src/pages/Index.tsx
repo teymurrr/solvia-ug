@@ -2,7 +2,6 @@ import React, { Suspense } from 'react';
 import MainLayout from '@/components/MainLayout';
 import HeroSectionWithSearch from '@/components/landing/HeroSectionWithSearch';
 import PathToSuccessSection from '@/components/landing/PathToSuccessSection';
-import WhySolviaSectionOptimized from '@/components/landing/WhySolviaSectionOptimized';
 import PartnersSection from '@/components/landing/PartnersSection';
 import EmployerBanner from '@/components/landing/EmployerBanner';
 import BlackFridayBanner from '@/components/payments/BlackFridayBanner';
@@ -32,9 +31,6 @@ const Index = () => {
       
       {/* Critical above-the-fold content - load immediately */}
       <HeroSectionWithSearch />
-      
-      {/* Why Solvia Section - value proposition */}
-      <WhySolviaSectionOptimized />
       
       {/* Partners/Accelerators Section */}
       <PartnersSection />
