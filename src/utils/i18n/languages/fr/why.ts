@@ -1,4 +1,3 @@
-
 export const why = {
   title: "Pourquoi Solvia?",
   subtitle: "Découvrez ce qui fait de notre plateforme le premier choix des professionnels de la santé",
@@ -32,4 +31,13 @@ export const why = {
     title: "Transparence totale, contrôle partagé",
     description: "Les professionnels comme les institutions peuvent suivre les progrès, répondre rapidement et garder le contrôle — pas d'intermédiaires, pas de suppositions."
   }
+};
+
+export const partners = {
+  title: "Soutenus par les principaux accélérateurs"
+};
+
+export const employer = {
+  bannerText: "Vous cherchez à recruter des professionnels de santé?",
+  bannerCta: "Découvrez nos solutions employeurs"
 };

@@ -2,6 +2,9 @@ import React, { Suspense } from 'react';
 import MainLayout from '@/components/MainLayout';
 import HeroSectionWithSearch from '@/components/landing/HeroSectionWithSearch';
 import PathToSuccessSection from '@/components/landing/PathToSuccessSection';
+import WhySolviaSectionOptimized from '@/components/landing/WhySolviaSectionOptimized';
+import PartnersSection from '@/components/landing/PartnersSection';
+import EmployerBanner from '@/components/landing/EmployerBanner';
 import BlackFridayBanner from '@/components/payments/BlackFridayBanner';
 import { featuredVacancies } from '@/data/landingPageData';
 
@@ -9,13 +12,13 @@ import { featuredVacancies } from '@/data/landingPageData';
 const VacanciesSectionRedesigned = React.lazy(() => import('@/components/landing/VacanciesSectionRedesigned'));
 const TestimonialsSection = React.lazy(() => import('@/components/landing/TestimonialsSection'));
 const BlogSection = React.lazy(() => import('@/components/landing/BlogSection'));
-const LearningSectionRedesigned = React.lazy(() => import('@/components/landing/LearningSectionRedesigned'));
+const LearningSectionCompact = React.lazy(() => import('@/components/landing/LearningSectionCompact'));
 const CTASection = React.lazy(() => import('@/components/landing/CTASection'));
 
 // Simple loading fallback
 const LoadingFallback = ({ height }: { height: string }) => (
-  <div className={`${height} bg-gray-100 animate-pulse flex items-center justify-center`}>
-    <div className="text-gray-500">Loading...</div>
+  <div className={`${height} bg-muted/30 animate-pulse flex items-center justify-center`}>
+    <div className="text-muted-foreground">Loading...</div>
   </div>
 );
 
@@ -30,6 +33,12 @@ const Index = () => {
       {/* Critical above-the-fold content - load immediately */}
       <HeroSectionWithSearch />
       
+      {/* Why Solvia Section - value proposition */}
+      <WhySolviaSectionOptimized />
+      
+      {/* Partners/Accelerators Section */}
+      <PartnersSection />
+      
       {/* Path to Success section - 5 steps timeline */}
       <div id="path-to-success">
         <PathToSuccessSection />
@@ -40,14 +49,17 @@ const Index = () => {
         <VacanciesSectionRedesigned vacancies={featuredVacancies} />
       </Suspense>
       
+      {/* Employer Banner */}
+      <EmployerBanner />
+      
       {/* Testimonials section - replaces professionals */}
       <Suspense fallback={<LoadingFallback height="h-96" />}>
         <TestimonialsSection />
       </Suspense>
       
-      {/* Learning section - redesigned and moved before blog */}
-      <Suspense fallback={<LoadingFallback height="h-96" />}>
-        <LearningSectionRedesigned />
+      {/* Learning section - compact version moved lower */}
+      <Suspense fallback={<LoadingFallback height="h-48" />}>
+        <LearningSectionCompact />
       </Suspense>
       
       <Suspense fallback={<LoadingFallback height="h-80" />}>

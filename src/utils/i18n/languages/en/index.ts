@@ -1,11 +1,10 @@
-
 import { hero } from './hero';
 import { vacancies } from './vacancies';
 import { learning } from './learning';
 import { professionals } from './professionals';
 import { cta } from './cta';
 import { blog } from './blog';
-import { why } from './why';
+import { why, partners, employer } from './why';
 import { journey } from './journey';
 import { insights } from './insights';
 import { common } from './common';
@@ -36,6 +35,8 @@ export const en = {
   cta,
   blog,
   why,
+  partners,
+  employer,
   journey,
   insights,
   common,

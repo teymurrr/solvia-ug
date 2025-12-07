@@ -1,4 +1,3 @@
-
 export const why = {
   title: "Warum Solvia?",
   subtitle: "Entdecken Sie, was unsere Plattform zur ersten Wahl für Gesundheitsexperten weltweit macht",
@@ -32,4 +31,13 @@ export const why = {
     title: "Volle Transparenz, geteilte Kontrolle",
     description: "Sowohl Fachleute als auch Institutionen können den Fortschritt verfolgen, schnell reagieren und die Kontrolle behalten — keine Türsteher, kein Rätselraten."
   }
+};
+
+export const partners = {
+  title: "Unterstützt von führenden Acceleratoren"
+};
+
+export const employer = {
+  bannerText: "Suchen Sie Fachkräfte im Gesundheitswesen?",
+  bannerCta: "Entdecken Sie unsere Arbeitgeberlösungen"
 };
