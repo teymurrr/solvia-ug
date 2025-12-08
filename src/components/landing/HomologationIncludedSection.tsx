@@ -24,12 +24,14 @@ const HomologationIncludedSection = () => {
   const landing = t?.landing;
   const homologation = landing?.homologationIncluded;
   
-  // Reduced to 4 high-impact features focused on conversion
+  // 6 high-impact features focused on conversion
   const defaultFeatures = [
     { text: "Document review", subtext: "avoiding months of delays" },
-    { text: "Official file ready to submit", subtext: "" },
+    { text: "We prepare your official file", subtext: "ready to submit without risk of rejection" },
     { text: "Translations & apostilles", subtext: "" },
-    { text: "Job offers included", subtext: "" }
+    { text: "Job offers included", subtext: "" },
+    { text: "Personal advisor", subtext: "" },
+    { text: "Continuous follow-up", subtext: "" }
   ];
 
   const features = homologation?.features || defaultFeatures.map(f => f.text);
@@ -39,7 +41,9 @@ const HomologationIncludedSection = () => {
     FileCheck,
     FolderOpen,
     Languages,
-    Briefcase
+    Briefcase,
+    MessageCircle,
+    Activity
   ];
 
   return (
@@ -69,7 +73,7 @@ const HomologationIncludedSection = () => {
 
           {/* Features Grid */}
           <Card className="p-8 md:p-10 border-border/50 shadow-lg">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {features.map((feature: string, index: number) => {
                 const Icon = icons[index] || CheckCircle2;
                 const subtext = featureSubtexts?.[index] || '';
