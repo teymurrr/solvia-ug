@@ -111,7 +111,7 @@ const HomologationIncludedSection = () => {
             {/* CTA inside card */}
             <div className="mt-8 text-center">
               <Button asChild size="lg" className="group">
-                <Link to="/homologation" className="flex items-center gap-2">
+                <Link to="/homologation" onClick={() => window.scrollTo(0, 0)} className="flex items-center gap-2">
                   {homologation?.cta || "Get my free homologation plan"}
                   <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
                 </Link>
