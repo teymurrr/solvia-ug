@@ -80,7 +80,7 @@ export const landing = {
         profession: "Педиатр",
         destination: "Берлин, Германия",
         quote: "Я была полностью потеряна с нострификацией, пока не поговорила с Solvia. Они объяснили всё пошагово, и я наконец почувствовала, что двигаюсь вперёд.",
-        image: "/lovable-uploads/fb51f001-5b4c-4c12-9bff-ec7776fda396.png",
+        image: "/lovable-uploads/maria-fernanda-photo.png",
         details: {
           startDate: "Январь 2024",
           timeToHomologation: "9 месяцев",
