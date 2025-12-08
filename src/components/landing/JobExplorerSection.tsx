@@ -73,12 +73,6 @@ const JobExplorerSection = () => {
       flag: '🇫🇷', 
       name: jobExplorer?.countries?.france || 'France',
       positions: 25 
-    },
-    { 
-      key: 'italy', 
-      flag: '🇮🇹', 
-      name: jobExplorer?.countries?.italy || 'Italy',
-      positions: 18 
     }
   ];
 

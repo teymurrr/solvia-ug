@@ -1,7 +1,7 @@
 export const landing = {
   jobExplorer: {
     title: "Explorez de vraies opportunités en Europe",
-    subtitle: "Plus de 200+ postes actifs en Allemagne, Autriche, Espagne, Italie et France",
+    subtitle: "Plus de 200+ postes actifs en Allemagne, Autriche, Espagne et France",
     realJob: "Poste Réel",
     sampleJob: "Poste Exemple",
     sampleDisclaimer: "Exemple illustratif",
@@ -42,32 +42,24 @@ export const landing = {
     }
   },
   homologationIncluded: {
-    title: "Tout ce dont vous avez besoin pour homologuer votre diplôme sans erreurs, sans retards et sans stress",
-    subtitle: "Accompagnement complet pour travailler comme médecin en Europe",
-    digitalAdvantage: "Plateforme 100% digitale avec guidance intelligente, automatisation du dossier et support humain expert.",
+    title: "Homologation sans erreurs, retards ou stress",
+    subtitle: "Tout inclus pour travailler en Europe",
+    digitalAdvantage: "Plateforme digitale + experts humains",
     features: [
-      "Révision complète des documents",
-      "Nous préparons votre dossier officiel",
-      "Traductions et apostilles orientées",
-      "Support prioritaire WhatsApp",
-      "Accompagnement étape par étape",
-      "Soumission correcte aux autorités",
-      "Suivi du statut",
-      "Accès aux offres d'emploi vérifiées"
+      "Révision des documents",
+      "Dossier prêt à soumettre",
+      "Traductions & apostilles",
+      "Offres d'emploi incluses"
     ],
     featureSubtexts: [
-      "évitant les erreurs qui retardent votre homologation de plusieurs mois",
-      "prêt à soumettre sans risque de rejet",
-      "",
-      "",
-      "",
+      "évitant des mois de retards",
       "",
       "",
       ""
     ],
-    microBadge: "Solvia combine technologie + experts pour que votre processus avance plus vite et sans complications.",
-    cta: "Recevoir mon plan d'homologation gratuit",
-    socialProof: "Nous avons déjà aidé des médecins de 12+ pays à démarrer leur homologation."
+    microBadge: "Technologie + experts = processus plus rapide",
+    cta: "Recevoir mon plan gratuit",
+    socialProof: "12+ pays font déjà confiance à Solvia"
   },
   successStories: {
     title: "Des milliers de médecins et infirmiers ont déjà fait reconnaître leurs diplômes avec Solvia",

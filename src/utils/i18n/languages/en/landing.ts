@@ -1,7 +1,7 @@
 export const landing = {
   jobExplorer: {
     title: "Explore Real Opportunities in Europe",
-    subtitle: "Over 200+ active positions in Germany, Austria, Spain, Italy and France",
+    subtitle: "Over 200+ active positions in Germany, Austria, Spain and France",
     realJob: "Real Position",
     sampleJob: "Example Position",
     sampleDisclaimer: "Sample job for illustration",
@@ -42,32 +42,24 @@ export const landing = {
     }
   },
   homologationIncluded: {
-    title: "Everything you need to homologate your degree without errors, delays, or stress",
-    subtitle: "Complete support to work as a doctor in Europe",
-    digitalAdvantage: "100% digital platform with intelligent guidance, file automation, and expert human support.",
+    title: "Homologate without errors, delays, or stress",
+    subtitle: "All-inclusive to work in Europe",
+    digitalAdvantage: "Digital platform + human experts",
     features: [
-      "Complete document review",
-      "We prepare your official file",
-      "Oriented translations and apostilles",
-      "Priority WhatsApp support",
-      "Step-by-step guidance",
-      "Proper submission to authorities",
-      "Status tracking",
-      "Access to verified job offers"
+      "Document review",
+      "File ready to submit",
+      "Translations & apostilles",
+      "Job offers included"
     ],
     featureSubtexts: [
-      "avoiding errors that delay your homologation by months",
-      "ready to submit with no risk of rejection",
-      "",
-      "",
-      "",
+      "avoiding months of delays",
       "",
       "",
       ""
     ],
-    microBadge: "Solvia combines technology + experts so your process moves faster and without complications.",
-    cta: "Get my free homologation plan",
-    socialProof: "We've already helped doctors from 12+ countries start their homologation."
+    microBadge: "Technology + experts = faster process",
+    cta: "Get my free plan",
+    socialProof: "12+ countries already trust Solvia"
   },
   successStories: {
     title: "Thousands of doctors and nurses already recognized their credentials with Solvia",

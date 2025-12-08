@@ -24,15 +24,12 @@ const HomologationIncludedSection = () => {
   const landing = t?.landing;
   const homologation = landing?.homologationIncluded;
   
+  // Reduced to 4 high-impact features focused on conversion
   const defaultFeatures = [
-    { text: "Complete document review", subtext: "avoiding errors that delay your homologation by months" },
-    { text: "Official file generation", subtext: "ready to submit with no risk of rejection" },
-    { text: "Oriented translations and apostilles", subtext: "" },
-    { text: "Priority WhatsApp support", subtext: "" },
-    { text: "Step-by-step guidance", subtext: "" },
-    { text: "Proper submission to authorities", subtext: "" },
-    { text: "Status tracking", subtext: "" },
-    { text: "Access to verified job offers", subtext: "" }
+    { text: "Document review", subtext: "avoiding months of delays" },
+    { text: "Official file ready to submit", subtext: "" },
+    { text: "Translations & apostilles", subtext: "" },
+    { text: "Job offers included", subtext: "" }
   ];
 
   const features = homologation?.features || defaultFeatures.map(f => f.text);
@@ -42,10 +39,6 @@ const HomologationIncludedSection = () => {
     FileCheck,
     FolderOpen,
     Languages,
-    MessageCircle,
-    Footprints,
-    Send,
-    Activity,
     Briefcase
   ];
 
