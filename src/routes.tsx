@@ -45,6 +45,7 @@ const NotFound = lazy(() => import("@/pages/NotFound"));
 
 // Vacancy related pages
 const Vacancies = lazy(() => import("@/pages/Vacancies"));
+const VacanciesConversion = lazy(() => import("@/pages/VacanciesConversion"));
 
 // Messaging page
 const Messages = lazy(() => import("@/pages/Messages"));
@@ -128,7 +129,8 @@ const AppRoutes = () => {
         } />
 
         {/* Vacancy routes */}
-        <Route path="/vacancies" element={<Vacancies />} />
+        <Route path="/vacancies" element={<VacanciesConversion />} />
+        <Route path="/vacancies-old" element={<Vacancies />} />
 
         {/* Protected routes */}
         <Route
