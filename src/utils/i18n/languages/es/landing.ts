@@ -80,7 +80,7 @@ export const landing = {
         profession: "Pediatra",
         destination: "Berlín, Alemania",
         quote: "Estaba completamente perdida con la homologación hasta que hablé con Solvia. Me explicaron todo paso a paso y por fin sentí que avanzaba.",
-        image: "/lovable-uploads/fb51f001-5b4c-4c12-9bff-ec7776fda396.png",
+        image: "/lovable-uploads/maria-fernanda-photo.png",
         details: {
           startDate: "Enero 2024",
           timeToHomologation: "9 meses",
