@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { DollarSign, Clock, Languages, ArrowRight, Globe } from 'lucide-react';
+import { Clock, Euro, ArrowRight, Globe, CheckCircle2 } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
 
 const CountryComparisonSection = () => {
@@ -16,39 +16,39 @@ const CountryComparisonSection = () => {
     germany: {
       name: "Germany",
       flag: "🇩🇪",
-      salary: "€4,200–€6,000",
-      time: "3–12 months",
-      language: "B2 German",
-      highlight: "Highest salaries"
+      processDuration: "6–12 months",
+      price: "€1,490",
+      highlight: "Most popular",
+      includes: ["Document preparation", "FSP guidance", "Job placement"]
     },
     austria: {
       name: "Austria",
       flag: "🇦🇹",
-      salary: "€3,800–€5,500",
-      time: "2–8 months",
-      language: "B2 German",
-      highlight: "Simpler process"
-    },
-    france: {
-      name: "France",
-      flag: "🇫🇷",
-      salary: "€3,000–€5,000",
-      time: "3–9 months",
-      language: "B2 French",
-      highlight: "Great quality of life"
+      processDuration: "4–8 months",
+      price: "€1,290",
+      highlight: "Fastest process",
+      includes: ["Document preparation", "Nostrifizierung", "Job placement"]
     },
     spain: {
       name: "Spain",
       flag: "🇪🇸",
-      salary: "€2,500–€4,000",
-      time: "1–6 months",
-      language: "Not mandatory",
-      highlight: "Fast homologation"
+      processDuration: "2–6 months",
+      price: "€990",
+      highlight: "Easiest language",
+      includes: ["Document preparation", "MIR support", "Job placement"]
+    },
+    france: {
+      name: "France",
+      flag: "🇫🇷",
+      processDuration: "4–10 months",
+      price: "€1,190",
+      highlight: "Great lifestyle",
+      includes: ["Document preparation", "PAE support", "Job placement"]
     }
   };
 
   const countries = comparison?.countries || defaultCountries;
-  const countryKeys = ['germany', 'austria', 'france', 'spain'] as const;
+  const countryKeys = ['germany', 'austria', 'spain', 'france'] as const;
 
   return (
     <section className="py-16 bg-muted/30">
@@ -58,13 +58,15 @@ const CountryComparisonSection = () => {
           <div className="text-center mb-12">
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 rounded-full mb-6">
               <Globe className="h-5 w-5 text-primary" />
-              <span className="text-sm font-medium text-primary">Compare</span>
+              <span className="text-sm font-medium text-primary">
+                {comparison?.badge || "Homologation Services"}
+              </span>
             </div>
             <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-              {comparison?.title || "Compare Your Options"}
+              {comparison?.title || "Choose Your Destination"}
             </h2>
             <p className="text-lg text-muted-foreground">
-              {comparison?.subtitle || "Find the best country for your medical career"}
+              {comparison?.subtitle || "Complete homologation packages with transparent pricing"}
             </p>
           </div>
 
@@ -72,13 +74,14 @@ const CountryComparisonSection = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
             {countryKeys.map((key) => {
               const country = countries[key] || defaultCountries[key];
+              const isGermany = key === 'germany';
               return (
                 <Card 
                   key={key} 
-                  className="p-6 border-border/50 hover:shadow-lg transition-all hover:border-primary/30 relative overflow-hidden"
+                  className={`p-6 border-border/50 hover:shadow-lg transition-all hover:border-primary/30 relative overflow-hidden ${isGermany ? 'ring-2 ring-primary/50' : ''}`}
                 >
                   {/* Highlight Badge */}
-                  <Badge className="absolute top-4 right-4 bg-primary/10 text-primary hover:bg-primary/10">
+                  <Badge className={`absolute top-4 right-4 ${isGermany ? 'bg-primary text-primary-foreground' : 'bg-primary/10 text-primary'} hover:bg-primary/20`}>
                     {country.highlight}
                   </Badge>
                   
@@ -88,37 +91,32 @@ const CountryComparisonSection = () => {
                     <h3 className="text-xl font-bold text-foreground">{country.name}</h3>
                   </div>
                   
-                  {/* Stats */}
-                  <div className="space-y-4">
-                    <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg">
-                      <DollarSign className="h-5 w-5 text-green-600" />
-                      <div>
-                        <p className="text-xs text-muted-foreground">
-                          {comparison?.startingSalary || "Starting salary"}
-                        </p>
-                        <p className="font-semibold text-foreground">{country.salary}</p>
-                      </div>
+                  {/* Price */}
+                  <div className="text-center mb-4">
+                    <div className="flex items-center justify-center gap-1">
+                      <span className="text-3xl font-bold text-primary">{country.price}</span>
                     </div>
-                    
-                    <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg">
-                      <Clock className="h-5 w-5 text-blue-600" />
-                      <div>
-                        <p className="text-xs text-muted-foreground">
-                          {comparison?.homologationTime || "Homologation time"}
-                        </p>
-                        <p className="font-semibold text-foreground">{country.time}</p>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      {comparison?.oneTimePayment || "One-time payment"}
+                    </p>
+                  </div>
+                  
+                  {/* Duration */}
+                  <div className="flex items-center justify-center gap-2 p-3 bg-muted/50 rounded-lg mb-4">
+                    <Clock className="h-4 w-4 text-muted-foreground" />
+                    <span className="text-sm text-foreground">
+                      {country.processDuration}
+                    </span>
+                  </div>
+                  
+                  {/* Includes */}
+                  <div className="space-y-2">
+                    {(country.includes || defaultCountries[key].includes).map((item: string, idx: number) => (
+                      <div key={idx} className="flex items-center gap-2 text-sm">
+                        <CheckCircle2 className="h-4 w-4 text-green-600 flex-shrink-0" />
+                        <span className="text-muted-foreground">{item}</span>
                       </div>
-                    </div>
-                    
-                    <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg">
-                      <Languages className="h-5 w-5 text-purple-600" />
-                      <div>
-                        <p className="text-xs text-muted-foreground">
-                          {comparison?.languageLevel || "Language level"}
-                        </p>
-                        <p className="font-semibold text-foreground">{country.language}</p>
-                      </div>
-                    </div>
+                    ))}
                   </div>
                 </Card>
               );
@@ -126,13 +124,16 @@ const CountryComparisonSection = () => {
           </div>
 
           {/* CTA */}
-          <div className="flex justify-center">
+          <div className="flex flex-col items-center gap-4">
             <Button asChild size="lg" className="group">
               <Link to="/homologation-wizard" onClick={() => window.scrollTo(0, 0)} className="flex items-center gap-2">
-                {comparison?.chooseCountry || "Choose my country"}
+                {comparison?.cta || "Get my personalized plan"}
                 <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </Link>
             </Button>
+            <p className="text-sm text-muted-foreground">
+              {comparison?.ctaSubtext || "Free assessment • No commitment required"}
+            </p>
           </div>
         </div>
       </div>

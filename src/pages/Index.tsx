@@ -8,7 +8,7 @@ import BlackFridayBanner from '@/components/payments/BlackFridayBanner';
 
 // Lazy load sections below the fold
 const JobExplorerSection = React.lazy(() => import('@/components/landing/JobExplorerSection'));
-const HomologationIncludedSection = React.lazy(() => import('@/components/landing/HomologationIncludedSection'));
+
 const SuccessStoriesSection = React.lazy(() => import('@/components/landing/SuccessStoriesSection'));
 const CountryComparisonSection = React.lazy(() => import('@/components/landing/CountryComparisonSection'));
 const ConversionFAQSection = React.lazy(() => import('@/components/landing/ConversionFAQSection'));
@@ -49,10 +49,6 @@ const Index = () => {
       {/* Employer Banner */}
       <EmployerBanner />
       
-      {/* Homologation Included - CRITICAL value proposition */}
-      <Suspense fallback={<LoadingFallback height="h-96" />}>
-        <HomologationIncludedSection />
-      </Suspense>
       
       {/* Success Stories - 3 static cards focused on homologation */}
       <Suspense fallback={<LoadingFallback height="h-96" />}>
