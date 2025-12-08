@@ -142,7 +142,7 @@ export const landing = {
         flag: "🇪🇸",
         salary: "€2.500–€4.000",
         time: "1–6 Monate",
-        language: "Spanisch empfohlen",
+        language: "Nicht erforderlich",
         highlight: "Schnelle Anerkennung"
       }
     }
