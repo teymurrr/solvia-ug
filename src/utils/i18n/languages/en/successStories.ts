@@ -35,7 +35,7 @@ export const successStories = {
       profession: "Nurse",
       destination: "Hamburg, Germany",
       quote: "As a nurse, I thought the process would be harder. Solvia reviewed every document and explained exactly what was wrong or missing.",
-      image: "/lovable-uploads/5f708227-020b-4f86-ae6e-6ad00443ec94.png"
+      image: "/lovable-uploads/10e21b82-cfb8-44fa-ab45-7988189d9857.png"
     }
   ]
 };
