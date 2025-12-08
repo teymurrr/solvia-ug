@@ -35,7 +35,7 @@ export const successStories = {
       profession: "Медсестра",
       destination: "Гамбург, Германия",
       quote: "Как медсестра, я думала, что процесс будет сложнее. Solvia проверила каждый документ и объяснила, что было не так или чего не хватало.",
-      image: "/lovable-uploads/5f708227-020b-4f86-ae6e-6ad00443ec94.png"
+      image: "/lovable-uploads/10e21b82-cfb8-44fa-ab45-7988189d9857.png"
     }
   ]
 };

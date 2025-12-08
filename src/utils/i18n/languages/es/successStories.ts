@@ -35,7 +35,7 @@ export const successStories = {
       profession: "Enfermera",
       destination: "Hamburgo, Alemania",
       quote: "Como enfermera, pensé que el proceso sería más difícil. Solvia revisó cada documento y me explicó exactamente qué estaba mal o qué faltaba.",
-      image: "/lovable-uploads/5f708227-020b-4f86-ae6e-6ad00443ec94.png"
+      image: "/lovable-uploads/10e21b82-cfb8-44fa-ab45-7988189d9857.png"
     }
   ]
 };

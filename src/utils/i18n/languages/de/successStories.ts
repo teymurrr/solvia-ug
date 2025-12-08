@@ -35,7 +35,7 @@ export const successStories = {
       profession: "Krankenschwester",
       destination: "Hamburg, Deutschland",
       quote: "Als Krankenschwester dachte ich, der Prozess wäre schwieriger. Solvia prüfte jedes Dokument und erklärte genau, was fehlte oder falsch war.",
-      image: "/lovable-uploads/5f708227-020b-4f86-ae6e-6ad00443ec94.png"
+      image: "/lovable-uploads/10e21b82-cfb8-44fa-ab45-7988189d9857.png"
     }
   ]
 };
