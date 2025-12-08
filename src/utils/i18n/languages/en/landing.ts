@@ -13,7 +13,33 @@ export const landing = {
       italy: "Italy",
       france: "France"
     },
-    positionsAvailable: "positions available"
+    positionsAvailable: "positions available",
+    jobs: {
+      job1: {
+        title: "Internal Medicine Specialist",
+        institution: "University Hospital Berlin",
+        location: "Berlin, Germany",
+        type: "Full-time"
+      },
+      job2: {
+        title: "Pediatric Nurse",
+        institution: "Regional Medical Center",
+        location: "Madrid, Spain",
+        type: "Full-time"
+      },
+      job3: {
+        title: "General Surgeon",
+        institution: "Vienna General Hospital",
+        location: "Vienna, Austria",
+        type: "Full-time"
+      },
+      job4: {
+        title: "Emergency Room Physician",
+        institution: "Lyon University Hospital",
+        location: "Lyon, France",
+        type: "Full-time"
+      }
+    }
   },
   homologationIncluded: {
     title: "What's Included in Your Homologation with Solvia",

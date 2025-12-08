@@ -13,7 +13,33 @@ export const landing = {
       italy: "Italien",
       france: "Frankreich"
     },
-    positionsAvailable: "Stellen verfügbar"
+    positionsAvailable: "Stellen verfügbar",
+    jobs: {
+      job1: {
+        title: "Facharzt für Innere Medizin",
+        institution: "Universitätsklinikum Berlin",
+        location: "Berlin, Deutschland",
+        type: "Vollzeit"
+      },
+      job2: {
+        title: "Kinderkrankenschwester",
+        institution: "Regionales Medizinzentrum",
+        location: "Madrid, Spanien",
+        type: "Vollzeit"
+      },
+      job3: {
+        title: "Allgemeinchirurg",
+        institution: "Allgemeines Krankenhaus Wien",
+        location: "Wien, Österreich",
+        type: "Vollzeit"
+      },
+      job4: {
+        title: "Notarzt",
+        institution: "Universitätsklinikum Lyon",
+        location: "Lyon, Frankreich",
+        type: "Vollzeit"
+      }
+    }
   },
   homologationIncluded: {
     title: "Was Ihre Anerkennung mit Solvia beinhaltet",
