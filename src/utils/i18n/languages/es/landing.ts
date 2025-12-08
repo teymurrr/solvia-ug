@@ -116,44 +116,44 @@ export const landing = {
     ]
   },
   countryComparison: {
+    badge: "Servicios de Homologación",
     title: "Compara tus opciones",
     subtitle: "Encuentra el mejor país para tu carrera médica",
-    startingSalary: "Salario inicial",
-    homologationTime: "Tiempo de homologación",
-    languageLevel: "Nivel de idioma",
-    chooseCountry: "Elegir mi país",
+    oneTimePayment: "Pago único",
+    cta: "Obtener mi plan personalizado",
+    ctaSubtext: "Evaluación gratuita • Sin compromiso",
     countries: {
       germany: {
         name: "Alemania",
         flag: "🇩🇪",
-        salary: "€4.200–€6.000",
-        time: "3–12 meses",
-        language: "B2 Alemán",
-        highlight: "Mejores salarios"
+        processDuration: "6–12 meses",
+        price: "€750",
+        highlight: "Mejores salarios",
+        includes: ["Preparación de documentos", "Guía FSP", "Colocación laboral"]
       },
       austria: {
         name: "Austria",
         flag: "🇦🇹",
-        salary: "€3.800–€5.500",
-        time: "2–8 meses",
-        language: "B2 Alemán",
-        highlight: "Proceso más simple"
-      },
-      france: {
-        name: "Francia",
-        flag: "🇫🇷",
-        salary: "€3.000–€5.000",
-        time: "3–9 meses",
-        language: "B2 Francés",
-        highlight: "Gran calidad de vida"
+        processDuration: "4–8 meses",
+        price: "€750",
+        highlight: "Proceso más simple",
+        includes: ["Preparación de documentos", "Nostrifizierung", "Colocación laboral"]
       },
       spain: {
         name: "España",
         flag: "🇪🇸",
-        salary: "€2.500–€4.000",
-        time: "1–6 meses",
-        language: "No requerido",
-        highlight: "Homologación rápida"
+        processDuration: "2–6 meses",
+        price: "€290",
+        highlight: "Homologación rápida",
+        includes: ["Preparación de documentos", "Soporte MIR", "Colocación laboral"]
+      },
+      france: {
+        name: "Francia",
+        flag: "🇫🇷",
+        processDuration: "4–10 meses",
+        price: "€750",
+        highlight: "Gran calidad de vida",
+        includes: ["Preparación de documentos", "Soporte PAE", "Colocación laboral"]
       }
     }
   },
