@@ -80,7 +80,12 @@ export const landing = {
         profession: "Педиатр",
         destination: "Берлин, Германия",
         quote: "Я была полностью потеряна с нострификацией, пока не поговорила с Solvia. Они объяснили всё пошагово, и я наконец почувствовала, что двигаюсь вперёд.",
-        image: "/lovable-uploads/fb51f001-5b4c-4c12-9bff-ec7776fda396.png"
+        image: "/lovable-uploads/fb51f001-5b4c-4c12-9bff-ec7776fda396.png",
+        details: {
+          startDate: "Январь 2024",
+          timeToHomologation: "9 месяцев",
+          hiredAt: "Клиника Шарите Берлин"
+        }
       },
       {
         name: "Луис Фелипе",
@@ -101,7 +106,12 @@ export const landing = {
         profession: "Медсестра",
         destination: "Гамбург, Германия",
         quote: "Как медсестра, я думала, что процесс будет сложнее. Solvia проверила каждый документ и объяснила, что было не так или чего не хватало.",
-        image: "/lovable-uploads/5f708227-020b-4f86-ae6e-6ad00443ec94.png"
+        image: "/lovable-uploads/ana-lucia-photo.png",
+        details: {
+          startDate: "Февраль 2024",
+          timeToHomologation: "5 месяцев",
+          hiredAt: "Университетская клиника Гамбурга"
+        }
       }
     ]
   },

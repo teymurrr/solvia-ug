@@ -80,7 +80,12 @@ export const landing = {
         profession: "Pédiatre",
         destination: "Berlin, Allemagne",
         quote: "J'étais complètement perdue avec l'homologation jusqu'à ce que je parle avec Solvia. Ils m'ont tout expliqué étape par étape et j'ai enfin senti que j'avançais.",
-        image: "/lovable-uploads/fb51f001-5b4c-4c12-9bff-ec7776fda396.png"
+        image: "/lovable-uploads/fb51f001-5b4c-4c12-9bff-ec7776fda396.png",
+        details: {
+          startDate: "Janvier 2024",
+          timeToHomologation: "9 mois",
+          hiredAt: "Hôpital Charité de Berlin"
+        }
       },
       {
         name: "Luis Felipe",
@@ -101,7 +106,12 @@ export const landing = {
         profession: "Infirmière",
         destination: "Hambourg, Allemagne",
         quote: "En tant qu'infirmière, je pensais que le processus serait plus difficile. Solvia a examiné chaque document et m'a expliqué exactement ce qui manquait ou était incorrect.",
-        image: "/lovable-uploads/5f708227-020b-4f86-ae6e-6ad00443ec94.png"
+        image: "/lovable-uploads/ana-lucia-photo.png",
+        details: {
+          startDate: "Février 2024",
+          timeToHomologation: "5 mois",
+          hiredAt: "Clinique Universitaire de Hambourg"
+        }
       }
     ]
   },
