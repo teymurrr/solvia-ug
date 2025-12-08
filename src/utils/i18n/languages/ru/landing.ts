@@ -93,7 +93,7 @@ export const landing = {
         profession: "Невролог",
         destination: "Бавария, Германия",
         quote: "Они занялись моими апостилями и переводами. Мне оставалось только сосредоточиться на изучении немецкого и подготовке к FSP.",
-        image: "/lovable-uploads/cc32bcf9-0674-4d4f-9316-3ce0790f675e.png",
+        image: "/lovable-uploads/luis-felipe-photo.png",
         details: {
           startDate: "Март 2024",
           timeToHomologation: "7 месяцев",
