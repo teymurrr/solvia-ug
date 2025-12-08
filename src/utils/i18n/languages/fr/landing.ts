@@ -62,16 +62,20 @@ export const landing = {
     socialProof: "12+ pays font déjà confiance à Solvia"
   },
   successStories: {
-    title: "Des milliers de médecins et infirmiers ont déjà fait reconnaître leurs diplômes avec Solvia",
-    subtitle: "Découvrez comment nous les avons aidés à réaliser leurs rêves",
-    viewMyPlan: "Voir mon plan d'homologation",
+    badge: "Histoires de Réussite",
+    title: "Professionnels qui ont fait confiance à Solvia",
+    subtitle: "Voici quelques-uns des professionnels qui ont transformé leur carrière avec nous",
+    microCta: "Voulez-vous être le prochain?",
+    microCtaLink: "Obtenez votre plan d'homologation gratuit",
+    ctaText: "Voir mon plan d'homologation",
+    socialProof: "Nous avons déjà aidé des médecins et infirmiers de 12 pays à commencer leur homologation",
     stories: [
       {
         name: "María Fernanda",
         country: "Colombie",
         profession: "Pédiatre",
         destination: "Berlin, Allemagne",
-        quote: "Solvia a examiné tous mes documents et m'a dit exactement ce qui manquait. Sans eux, j'aurais perdu des mois.",
+        quote: "J'étais complètement perdue avec l'homologation jusqu'à ce que je parle avec Solvia. Ils m'ont tout expliqué étape par étape et j'ai enfin senti que j'avançais.",
         image: "/lovable-uploads/fb51f001-5b4c-4c12-9bff-ec7776fda396.png"
       },
       {
@@ -79,15 +83,20 @@ export const landing = {
         country: "Mexique",
         profession: "Neurologue",
         destination: "Bavière, Allemagne",
-        quote: "Ils ont géré mes apostilles et traductions. Je n'ai eu qu'à me concentrer sur l'apprentissage de l'allemand et la préparation du FSP.",
-        image: "/lovable-uploads/cc32bcf9-0674-4d4f-9316-3ce0790f675e.png"
+        quote: "Ils se sont occupés de mes apostilles et traductions. Je n'ai eu qu'à me concentrer sur l'apprentissage de l'allemand et la préparation au FSP.",
+        image: "/lovable-uploads/cc32bcf9-0674-4d4f-9316-3ce0790f675e.png",
+        details: {
+          startDate: "Mars 2024",
+          timeToHomologation: "7 mois",
+          hiredAt: "Hôpital Universitaire de Munich"
+        }
       },
       {
-        name: "Diego",
-        country: "Chili",
-        profession: "Chirurgien Cardiovasculaire",
+        name: "Ana Lucía",
+        country: "Pérou",
+        profession: "Infirmière",
         destination: "Hambourg, Allemagne",
-        quote: "De la soumission des documents à l'offre d'emploi, Solvia était là à chaque étape. Maintenant je travaille dans un hôpital de pointe à Hambourg.",
+        quote: "En tant qu'infirmière, je pensais que le processus serait plus difficile. Solvia a examiné chaque document et m'a expliqué exactement ce qui manquait ou était incorrect.",
         image: "/lovable-uploads/5f708227-020b-4f86-ae6e-6ad00443ec94.png"
       }
     ]

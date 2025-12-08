@@ -62,16 +62,20 @@ export const landing = {
     socialProof: "12+ countries already trust Solvia"
   },
   successStories: {
-    title: "Thousands of doctors and nurses already recognized their credentials with Solvia",
-    subtitle: "See how we helped them achieve their dreams",
-    viewMyPlan: "View my homologation plan",
+    badge: "Success Stories",
+    title: "Professionals who trusted Solvia",
+    subtitle: "Here are some of the professionals who transformed their careers with us",
+    microCta: "Want to be next?",
+    microCtaLink: "Get your free homologation plan",
+    ctaText: "View my homologation plan",
+    socialProof: "We have already helped doctors and nurses from 12 countries start their homologation",
     stories: [
       {
         name: "María Fernanda",
         country: "Colombia",
         profession: "Pediatrician",
         destination: "Berlin, Germany",
-        quote: "Solvia reviewed all my documents and told me exactly what was missing. Without them, I would have wasted months.",
+        quote: "I was completely lost with the homologation until I spoke with Solvia. They explained everything step by step and I finally felt like I was making progress.",
         image: "/lovable-uploads/fb51f001-5b4c-4c12-9bff-ec7776fda396.png"
       },
       {
@@ -79,15 +83,20 @@ export const landing = {
         country: "Mexico",
         profession: "Neurologist",
         destination: "Bavaria, Germany",
-        quote: "They handled my apostilles and translations. I just had to focus on learning German and preparing for the FSP.",
-        image: "/lovable-uploads/cc32bcf9-0674-4d4f-9316-3ce0790f675e.png"
+        quote: "They handled my apostilles and translations. I only had to focus on learning German and preparing for the FSP.",
+        image: "/lovable-uploads/cc32bcf9-0674-4d4f-9316-3ce0790f675e.png",
+        details: {
+          startDate: "March 2024",
+          timeToHomologation: "7 months",
+          hiredAt: "Munich University Hospital"
+        }
       },
       {
-        name: "Diego",
-        country: "Chile",
-        profession: "Cardiovascular Surgeon",
+        name: "Ana Lucía",
+        country: "Peru",
+        profession: "Nurse",
         destination: "Hamburg, Germany",
-        quote: "From document submission to job offer, Solvia was with me every step. Now I work at a top hospital in Hamburg.",
+        quote: "As a nurse, I thought the process would be harder. Solvia reviewed every document and explained exactly what was wrong or missing.",
         image: "/lovable-uploads/5f708227-020b-4f86-ae6e-6ad00443ec94.png"
       }
     ]

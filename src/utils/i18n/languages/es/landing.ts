@@ -62,16 +62,20 @@ export const landing = {
     socialProof: "12+ países ya confían en Solvia"
   },
   successStories: {
-    title: "Miles de médicos y enfermeros ya homologaron su título con Solvia",
-    subtitle: "Descubre cómo les ayudamos a alcanzar sus sueños",
-    viewMyPlan: "Ver mi plan de homologación",
+    badge: "Historias de Éxito",
+    title: "Profesionales que confiaron en Solvia",
+    subtitle: "Aquí algunos de los profesionales que transformaron su carrera con nosotros",
+    microCta: "¿Quieres ser el próximo?",
+    microCtaLink: "Recibe tu plan de homologación gratis",
+    ctaText: "Ver mi plan de homologación",
+    socialProof: "Ya ayudamos a médicos y enfermeros de 12 países a iniciar su homologación",
     stories: [
       {
         name: "María Fernanda",
         country: "Colombia",
         profession: "Pediatra",
         destination: "Berlín, Alemania",
-        quote: "Solvia revisó todos mis documentos y me dijo exactamente qué faltaba. Sin ellos, habría perdido meses.",
+        quote: "Estaba completamente perdida con la homologación hasta que hablé con Solvia. Me explicaron todo paso a paso y por fin sentí que avanzaba.",
         image: "/lovable-uploads/fb51f001-5b4c-4c12-9bff-ec7776fda396.png"
       },
       {
@@ -80,14 +84,19 @@ export const landing = {
         profession: "Neurólogo",
         destination: "Baviera, Alemania",
         quote: "Se encargaron de mis apostillas y traducciones. Solo tuve que concentrarme en aprender alemán y prepararme para el FSP.",
-        image: "/lovable-uploads/cc32bcf9-0674-4d4f-9316-3ce0790f675e.png"
+        image: "/lovable-uploads/cc32bcf9-0674-4d4f-9316-3ce0790f675e.png",
+        details: {
+          startDate: "Marzo 2024",
+          timeToHomologation: "7 meses",
+          hiredAt: "Hospital Universitario de Múnich"
+        }
       },
       {
-        name: "Diego",
-        country: "Chile",
-        profession: "Cirujano Cardiovascular",
+        name: "Ana Lucía",
+        country: "Perú",
+        profession: "Enfermera",
         destination: "Hamburgo, Alemania",
-        quote: "Desde la presentación de documentos hasta la oferta de trabajo, Solvia estuvo conmigo en cada paso. Ahora trabajo en un hospital top de Hamburgo.",
+        quote: "Como enfermera, pensé que el proceso sería más difícil. Solvia revisó cada documento y me explicó exactamente qué estaba mal o qué faltaba.",
         image: "/lovable-uploads/5f708227-020b-4f86-ae6e-6ad00443ec94.png"
       }
     ]
