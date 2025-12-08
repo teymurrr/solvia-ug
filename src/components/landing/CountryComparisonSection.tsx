@@ -128,7 +128,7 @@ const CountryComparisonSection = () => {
           {/* CTA */}
           <div className="flex justify-center">
             <Button asChild size="lg" className="group">
-              <Link to="/country-selection" className="flex items-center gap-2">
+              <Link to="/homologation-wizard" onClick={() => window.scrollTo(0, 0)} className="flex items-center gap-2">
                 {comparison?.chooseCountry || "Choose my country"}
                 <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </Link>
