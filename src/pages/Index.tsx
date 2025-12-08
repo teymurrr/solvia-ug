@@ -8,9 +8,7 @@ import BlackFridayBanner from '@/components/payments/BlackFridayBanner';
 
 // Lazy load sections below the fold
 const JobExplorerSection = React.lazy(() => import('@/components/landing/JobExplorerSection'));
-
 const SuccessStoriesSection = React.lazy(() => import('@/components/landing/SuccessStoriesSection'));
-const CountryComparisonSection = React.lazy(() => import('@/components/landing/CountryComparisonSection'));
 const ConversionFAQSection = React.lazy(() => import('@/components/landing/ConversionFAQSection'));
 const LearningMiniBanner = React.lazy(() => import('@/components/landing/LearningMiniBanner'));
 const SuperCTASection = React.lazy(() => import('@/components/landing/SuperCTASection'));
@@ -41,19 +39,13 @@ const Index = () => {
         <PathToSuccessSection />
       </div>
       
-      {/* Job Explorer - replaces fake vacancies */}
+      {/* Job Explorer - includes country comparison with pricing */}
       <Suspense fallback={<LoadingFallback height="h-96" />}>
         <JobExplorerSection />
       </Suspense>
       
-      {/* Country Comparison - moved up to combine with job explorer */}
-      <Suspense fallback={<LoadingFallback height="h-96" />}>
-        <CountryComparisonSection />
-      </Suspense>
-      
       {/* Employer Banner */}
       <EmployerBanner />
-      
       
       {/* Success Stories - 3 static cards focused on homologation */}
       <Suspense fallback={<LoadingFallback height="h-96" />}>

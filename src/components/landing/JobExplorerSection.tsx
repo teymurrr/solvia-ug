@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { MapPin, Briefcase, ArrowRight } from 'lucide-react';
+import { MapPin, Briefcase, ArrowRight, Clock } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
 
 const JobExplorerSection = () => {
@@ -12,6 +12,7 @@ const JobExplorerSection = () => {
   const landing = t?.landing;
   const jobExplorer = landing?.jobExplorer;
   const jobs = jobExplorer?.jobs;
+  const comparison = landing?.countryComparison;
   
   // Sample jobs for display - using translations
   const sampleJobs = [
@@ -49,32 +50,42 @@ const JobExplorerSection = () => {
     }
   ];
 
-  const countryCards = [
-    { 
-      key: 'germany', 
+  const defaultCountryData = {
+    germany: { 
       flag: '🇩🇪', 
-      name: jobExplorer?.countries?.germany || 'Germany',
-      positions: 85 
+      name: 'Germany',
+      positions: 85,
+      price: '€750',
+      processDuration: '6–12 months',
+      highlight: 'Best salaries'
     },
-    { 
-      key: 'austria', 
+    austria: { 
       flag: '🇦🇹', 
-      name: jobExplorer?.countries?.austria || 'Austria',
-      positions: 42 
+      name: 'Austria',
+      positions: 42,
+      price: '€750',
+      processDuration: '4–8 months',
+      highlight: 'Simplest process'
     },
-    { 
-      key: 'spain', 
+    spain: { 
       flag: '🇪🇸', 
-      name: jobExplorer?.countries?.spain || 'Spain',
-      positions: 38 
+      name: 'Spain',
+      positions: 38,
+      price: '€290',
+      processDuration: '2–6 months',
+      highlight: 'Fast homologation'
     },
-    { 
-      key: 'france', 
+    france: { 
       flag: '🇫🇷', 
-      name: jobExplorer?.countries?.france || 'France',
-      positions: 25 
+      name: 'France',
+      positions: 25,
+      price: '€750',
+      processDuration: '4–10 months',
+      highlight: 'Great quality of life'
     }
-  ];
+  };
+
+  const countryKeys = ['germany', 'austria', 'spain', 'france'] as const;
 
   return (
     <section className="py-16 bg-muted/30">
@@ -125,30 +136,62 @@ const JobExplorerSection = () => {
             ))}
           </div>
 
-          {/* Country Cards */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
-            {countryCards.map((country) => (
-              <Card 
-                key={country.key} 
-                className="p-4 text-center hover:shadow-md transition-shadow cursor-pointer border-border/50 hover:border-primary/30"
-              >
-                <div className="text-3xl mb-2">{country.flag}</div>
-                <h4 className="font-semibold text-foreground">{country.name}</h4>
-                <p className="text-sm text-muted-foreground">
-                  {country.positions} {jobExplorer?.positionsAvailable || "positions available"}
-                </p>
-              </Card>
-            ))}
+          {/* Country Cards with Pricing */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
+            {countryKeys.map((key) => {
+              const countryTranslations = comparison?.countries?.[key];
+              const country = {
+                ...defaultCountryData[key],
+                name: countryTranslations?.name || jobExplorer?.countries?.[key] || defaultCountryData[key].name,
+                price: countryTranslations?.price || defaultCountryData[key].price,
+                processDuration: countryTranslations?.processDuration || defaultCountryData[key].processDuration,
+                highlight: countryTranslations?.highlight || defaultCountryData[key].highlight
+              };
+              const isGermany = key === 'germany';
+              
+              return (
+                <Card 
+                  key={key} 
+                  className={`p-5 text-center hover:shadow-lg transition-all cursor-pointer border-border/50 hover:border-primary/30 relative ${isGermany ? 'ring-2 ring-primary/50' : ''}`}
+                >
+                  {/* Highlight Badge */}
+                  <Badge className={`absolute top-3 right-3 text-xs ${isGermany ? 'bg-primary text-primary-foreground' : 'bg-primary/10 text-primary'}`}>
+                    {country.highlight}
+                  </Badge>
+                  
+                  <div className="text-4xl mb-2 mt-4">{country.flag}</div>
+                  <h4 className="font-bold text-lg text-foreground mb-1">{country.name}</h4>
+                  <p className="text-xs text-muted-foreground mb-3">
+                    {country.positions} {jobExplorer?.positionsAvailable || "positions available"}
+                  </p>
+                  
+                  {/* Price */}
+                  <div className="text-2xl font-bold text-primary mb-1">{country.price}</div>
+                  <p className="text-xs text-muted-foreground mb-3">
+                    {comparison?.oneTimePayment || "One-time payment"}
+                  </p>
+                  
+                  {/* Duration */}
+                  <div className="flex items-center justify-center gap-2 p-2 bg-muted/50 rounded-lg">
+                    <Clock className="h-3.5 w-3.5 text-muted-foreground" />
+                    <span className="text-xs text-foreground">{country.processDuration}</span>
+                  </div>
+                </Card>
+              );
+            })}
           </div>
 
           {/* CTA */}
-          <div className="flex justify-center">
+          <div className="flex flex-col items-center gap-4">
             <Button asChild size="lg" className="group">
-              <Link to="/signup/professional" className="flex items-center gap-2">
-                {jobExplorer?.viewOffersForProfile || "View offers for my profile"}
+              <Link to="/homologation-wizard" onClick={() => window.scrollTo(0, 0)} className="flex items-center gap-2">
+                {comparison?.cta || "Get my personalized plan"}
                 <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </Link>
             </Button>
+            <p className="text-sm text-muted-foreground">
+              {comparison?.ctaSubtext || "Free assessment • No commitment required"}
+            </p>
           </div>
         </div>
       </div>
