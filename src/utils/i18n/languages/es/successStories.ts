@@ -40,7 +40,7 @@ export const successStories = {
       profession: "Enfermera",
       destination: "Hamburgo, Alemania",
       quote: "Como enfermera, pensé que el proceso sería más difícil. Solvia revisó cada documento y me explicó exactamente qué estaba mal o qué faltaba.",
-      image: "/lovable-uploads/18ea0363-17e7-4f2f-a135-49b3408a105d.png",
+      image: "/lovable-uploads/ana-lucia-photo.png",
       details: {
         startDate: "Febrero 2024",
         timeToHomologation: "5 meses",

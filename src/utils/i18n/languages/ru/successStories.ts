@@ -40,7 +40,7 @@ export const successStories = {
       profession: "Медсестра",
       destination: "Гамбург, Германия",
       quote: "Как медсестра, я думала, что процесс будет сложнее. Solvia проверила каждый документ и объяснила, что было не так или чего не хватало.",
-      image: "/lovable-uploads/18ea0363-17e7-4f2f-a135-49b3408a105d.png",
+      image: "/lovable-uploads/ana-lucia-photo.png",
       details: {
         startDate: "Февраль 2024",
         timeToHomologation: "5 месяцев",

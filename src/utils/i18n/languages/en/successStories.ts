@@ -40,7 +40,7 @@ export const successStories = {
       profession: "Nurse",
       destination: "Hamburg, Germany",
       quote: "As a nurse, I thought the process would be harder. Solvia reviewed every document and explained exactly what was wrong or missing.",
-      image: "/lovable-uploads/18ea0363-17e7-4f2f-a135-49b3408a105d.png",
+      image: "/lovable-uploads/ana-lucia-photo.png",
       details: {
         startDate: "February 2024",
         timeToHomologation: "5 months",

@@ -40,7 +40,7 @@ export const successStories = {
       profession: "Krankenschwester",
       destination: "Hamburg, Deutschland",
       quote: "Als Krankenschwester dachte ich, der Prozess wäre schwieriger. Solvia prüfte jedes Dokument und erklärte genau, was fehlte oder falsch war.",
-      image: "/lovable-uploads/18ea0363-17e7-4f2f-a135-49b3408a105d.png",
+      image: "/lovable-uploads/ana-lucia-photo.png",
       details: {
         startDate: "Februar 2024",
         timeToHomologation: "5 Monate",
