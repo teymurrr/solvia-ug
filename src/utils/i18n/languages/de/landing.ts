@@ -47,12 +47,16 @@ export const landing = {
     digitalAdvantage: "Digitale Plattform + menschliche Experten",
     features: [
       "Dokumentenprüfung",
-      "Akte bereit zur Einreichung",
+      "Wir bereiten Ihre offizielle Akte vor",
       "Übersetzungen & Apostillen",
-      "Jobangebote inklusive"
+      "Jobangebote inklusive",
+      "Persönlicher Berater zugewiesen",
+      "Kontinuierliche Begleitung Ihres Prozesses"
     ],
     featureSubtexts: [
       "Verzögerungen von Monaten vermeiden",
+      "bereit zur Einreichung ohne Ablehnungsrisiko",
+      "",
       "",
       "",
       ""

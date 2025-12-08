@@ -47,12 +47,16 @@ export const landing = {
     digitalAdvantage: "Plateforme digitale + experts humains",
     features: [
       "Révision des documents",
-      "Dossier prêt à soumettre",
+      "Nous préparons votre dossier officiel",
       "Traductions & apostilles",
-      "Offres d'emploi incluses"
+      "Offres d'emploi incluses",
+      "Conseiller personnel assigné",
+      "Suivi continu de votre processus"
     ],
     featureSubtexts: [
       "évitant des mois de retards",
+      "prêt à soumettre sans risque de rejet",
+      "",
       "",
       "",
       ""

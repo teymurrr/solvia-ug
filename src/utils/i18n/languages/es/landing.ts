@@ -47,12 +47,16 @@ export const landing = {
     digitalAdvantage: "Plataforma digital + expertos humanos",
     features: [
       "Revisión de documentos",
-      "Expediente listo para presentar",
+      "Preparamos tu expediente oficial",
       "Traducciones y apostillas",
-      "Ofertas laborales incluidas"
+      "Ofertas laborales incluidas",
+      "Asesor personal asignado",
+      "Seguimiento continuo de tu proceso"
     ],
     featureSubtexts: [
       "evitamos meses de retrasos",
+      "listo para presentar sin riesgos de devolución",
+      "",
       "",
       "",
       ""
