@@ -116,44 +116,44 @@ export const landing = {
     ]
   },
   countryComparison: {
-    title: "Compare Your Options",
+    badge: "Homologation Services",
+    title: "Compare your options",
     subtitle: "Find the best country for your medical career",
-    startingSalary: "Starting salary",
-    homologationTime: "Homologation time",
-    languageLevel: "Language level",
-    chooseCountry: "Choose my country",
+    oneTimePayment: "One-time payment",
+    cta: "Get my personalized plan",
+    ctaSubtext: "Free assessment • No commitment required",
     countries: {
       germany: {
         name: "Germany",
         flag: "🇩🇪",
-        salary: "€4,200–€6,000",
-        time: "3–12 months",
-        language: "B2 German",
-        highlight: "Highest salaries"
+        processDuration: "6–12 months",
+        price: "€750",
+        highlight: "Best salaries",
+        includes: ["Document preparation", "FSP guidance", "Job placement"]
       },
       austria: {
         name: "Austria",
         flag: "🇦🇹",
-        salary: "€3,800–€5,500",
-        time: "2–8 months",
-        language: "B2 German",
-        highlight: "Simpler process"
-      },
-      france: {
-        name: "France",
-        flag: "🇫🇷",
-        salary: "€3,000–€5,000",
-        time: "3–9 months",
-        language: "B2 French",
-        highlight: "Great quality of life"
+        processDuration: "4–8 months",
+        price: "€750",
+        highlight: "Simplest process",
+        includes: ["Document preparation", "Nostrifizierung", "Job placement"]
       },
       spain: {
         name: "Spain",
         flag: "🇪🇸",
-        salary: "€2,500–€4,000",
-        time: "1–6 months",
-        language: "Not required",
-        highlight: "Fast homologation"
+        processDuration: "2–6 months",
+        price: "€290",
+        highlight: "Fast homologation",
+        includes: ["Document preparation", "MIR support", "Job placement"]
+      },
+      france: {
+        name: "France",
+        flag: "🇫🇷",
+        processDuration: "4–10 months",
+        price: "€750",
+        highlight: "Great quality of life",
+        includes: ["Document preparation", "PAE support", "Job placement"]
       }
     }
   },

@@ -17,32 +17,32 @@ const CountryComparisonSection = () => {
       name: "Germany",
       flag: "🇩🇪",
       processDuration: "6–12 months",
-      price: "€1,490",
-      highlight: "Most popular",
+      price: "€750",
+      highlight: "Best salaries",
       includes: ["Document preparation", "FSP guidance", "Job placement"]
     },
     austria: {
       name: "Austria",
       flag: "🇦🇹",
       processDuration: "4–8 months",
-      price: "€1,290",
-      highlight: "Fastest process",
+      price: "€750",
+      highlight: "Simplest process",
       includes: ["Document preparation", "Nostrifizierung", "Job placement"]
     },
     spain: {
       name: "Spain",
       flag: "🇪🇸",
       processDuration: "2–6 months",
-      price: "€990",
-      highlight: "Easiest language",
+      price: "€290",
+      highlight: "Fast homologation",
       includes: ["Document preparation", "MIR support", "Job placement"]
     },
     france: {
       name: "France",
       flag: "🇫🇷",
       processDuration: "4–10 months",
-      price: "€1,190",
-      highlight: "Great lifestyle",
+      price: "€750",
+      highlight: "Great quality of life",
       includes: ["Document preparation", "PAE support", "Job placement"]
     }
   };

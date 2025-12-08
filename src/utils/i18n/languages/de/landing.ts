@@ -116,44 +116,44 @@ export const landing = {
     ]
   },
   countryComparison: {
+    badge: "Anerkennungsdienste",
     title: "Vergleichen Sie Ihre Optionen",
     subtitle: "Finden Sie das beste Land für Ihre medizinische Karriere",
-    startingSalary: "Einstiegsgehalt",
-    homologationTime: "Anerkennungszeit",
-    languageLevel: "Sprachniveau",
-    chooseCountry: "Mein Land wählen",
+    oneTimePayment: "Einmalzahlung",
+    cta: "Meinen personalisierten Plan erhalten",
+    ctaSubtext: "Kostenlose Bewertung • Keine Verpflichtung",
     countries: {
       germany: {
         name: "Deutschland",
         flag: "🇩🇪",
-        salary: "€4.200–€6.000",
-        time: "3–12 Monate",
-        language: "B2 Deutsch",
-        highlight: "Höchste Gehälter"
+        processDuration: "6–12 Monate",
+        price: "€750",
+        highlight: "Höchste Gehälter",
+        includes: ["Dokumentenvorbereitung", "FSP-Begleitung", "Jobvermittlung"]
       },
       austria: {
         name: "Österreich",
         flag: "🇦🇹",
-        salary: "€3.800–€5.500",
-        time: "2–8 Monate",
-        language: "B2 Deutsch",
-        highlight: "Einfacherer Prozess"
-      },
-      france: {
-        name: "Frankreich",
-        flag: "🇫🇷",
-        salary: "€3.000–€5.000",
-        time: "3–9 Monate",
-        language: "B2 Französisch",
-        highlight: "Hohe Lebensqualität"
+        processDuration: "4–8 Monate",
+        price: "€750",
+        highlight: "Einfacherer Prozess",
+        includes: ["Dokumentenvorbereitung", "Nostrifizierung", "Jobvermittlung"]
       },
       spain: {
         name: "Spanien",
         flag: "🇪🇸",
-        salary: "€2.500–€4.000",
-        time: "1–6 Monate",
-        language: "Nicht erforderlich",
-        highlight: "Schnelle Anerkennung"
+        processDuration: "2–6 Monate",
+        price: "€290",
+        highlight: "Schnelle Anerkennung",
+        includes: ["Dokumentenvorbereitung", "MIR-Unterstützung", "Jobvermittlung"]
+      },
+      france: {
+        name: "Frankreich",
+        flag: "🇫🇷",
+        processDuration: "4–10 Monate",
+        price: "€750",
+        highlight: "Hohe Lebensqualität",
+        includes: ["Dokumentenvorbereitung", "PAE-Unterstützung", "Jobvermittlung"]
       }
     }
   },

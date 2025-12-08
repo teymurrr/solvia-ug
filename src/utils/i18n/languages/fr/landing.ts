@@ -116,44 +116,44 @@ export const landing = {
     ]
   },
   countryComparison: {
+    badge: "Services d'Homologation",
     title: "Comparez vos options",
     subtitle: "Trouvez le meilleur pays pour votre carrière médicale",
-    startingSalary: "Salaire de départ",
-    homologationTime: "Temps d'homologation",
-    languageLevel: "Niveau de langue",
-    chooseCountry: "Choisir mon pays",
+    oneTimePayment: "Paiement unique",
+    cta: "Obtenir mon plan personnalisé",
+    ctaSubtext: "Évaluation gratuite • Sans engagement",
     countries: {
       germany: {
         name: "Allemagne",
         flag: "🇩🇪",
-        salary: "€4 200–€6 000",
-        time: "3–12 mois",
-        language: "B2 Allemand",
-        highlight: "Meilleurs salaires"
+        processDuration: "6–12 mois",
+        price: "€750",
+        highlight: "Meilleurs salaires",
+        includes: ["Préparation des documents", "Accompagnement FSP", "Placement professionnel"]
       },
       austria: {
         name: "Autriche",
         flag: "🇦🇹",
-        salary: "€3 800–€5 500",
-        time: "2–8 mois",
-        language: "B2 Allemand",
-        highlight: "Processus plus simple"
-      },
-      france: {
-        name: "France",
-        flag: "🇫🇷",
-        salary: "€3 000–€5 000",
-        time: "3–9 mois",
-        language: "B2 Français",
-        highlight: "Excellente qualité de vie"
+        processDuration: "4–8 mois",
+        price: "€750",
+        highlight: "Processus plus simple",
+        includes: ["Préparation des documents", "Nostrifizierung", "Placement professionnel"]
       },
       spain: {
         name: "Espagne",
         flag: "🇪🇸",
-        salary: "€2 500–€4 000",
-        time: "1–6 mois",
-        language: "Non requis",
-        highlight: "Homologation rapide"
+        processDuration: "2–6 mois",
+        price: "€290",
+        highlight: "Homologation rapide",
+        includes: ["Préparation des documents", "Support MIR", "Placement professionnel"]
+      },
+      france: {
+        name: "France",
+        flag: "🇫🇷",
+        processDuration: "4–10 mois",
+        price: "€750",
+        highlight: "Excellente qualité de vie",
+        includes: ["Préparation des documents", "Support PAE", "Placement professionnel"]
       }
     }
   },
