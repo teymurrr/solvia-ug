@@ -14,6 +14,14 @@ interface Message {
 
 const SUPABASE_URL = "https://ehrxpaxvyuwiwqclqkyh.supabase.co";
 
+const welcomeMessages: Record<string, string> = {
+  es: "¡Hola! Soy el Asistente de Soporte de Solvia. Puedo ayudarte con preguntas generales sobre la reubicación a Alemania, Austria, Italia o España como profesional médico. ¿En qué puedo ayudarte?",
+  en: "Hello! I'm Solvia's Support Assistant. I can help answer general questions about relocating to Germany, Austria, Italy, or Spain as a medical professional. How can I help you today?",
+  de: "Hallo! Ich bin der Support-Assistent von Solvia. Ich kann allgemeine Fragen zur Umsiedlung nach Deutschland, Österreich, Italien oder Spanien als medizinische Fachkraft beantworten. Wie kann ich Ihnen helfen?",
+  fr: "Bonjour! Je suis l'Assistant Support de Solvia. Je peux répondre aux questions générales sur la relocalisation en Allemagne, Autriche, Italie ou Espagne en tant que professionnel médical. Comment puis-je vous aider?",
+  ru: "Здравствуйте! Я Ассистент поддержки Solvia. Я могу ответить на общие вопросы о переезде в Германию, Австрию, Италию или Испанию в качестве медицинского специалиста. Чем я могу вам помочь?"
+};
+
 const SupportChat = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputText, setInputText] = useState('');
@@ -21,7 +29,7 @@ const SupportChat = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [sessionId] = useState(() => crypto.randomUUID());
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
-  const { t } = useLanguage();
+  const { t, currentLanguage } = useLanguage();
 
   // Scroll to bottom when messages change
   useEffect(() => {
@@ -33,12 +41,13 @@ const SupportChat = () => {
   // Welcome message when chat opens
   useEffect(() => {
     if (isOpen && messages.length === 0) {
+      const welcomeMessage = welcomeMessages[currentLanguage] || welcomeMessages.en;
       setMessages([{
         role: 'assistant',
-        content: "Hello! I'm Solvia's Support Assistant. I can help answer general questions about relocating to Germany, Austria, Italy, or Spain as a medical professional. How can I help you today?"
+        content: welcomeMessage
       }]);
     }
-  }, [isOpen, messages.length]);
+  }, [isOpen, messages.length, currentLanguage]);
 
   const handleSendMessage = async () => {
     if (!inputText.trim() || isLoading) return;
@@ -62,6 +71,7 @@ const SupportChat = () => {
         body: JSON.stringify({
           messages: updatedMessages.map(m => ({ role: m.role, content: m.content })),
           sessionId,
+          language: currentLanguage,
         }),
       });
 

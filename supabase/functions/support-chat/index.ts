@@ -6,7 +6,21 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
-const SYSTEM_PROMPT = `You are Solvia's Support Assistant. Your job is to give concise, friendly high-level information.
+const getSystemPrompt = (language: string) => {
+  const languageInstructions: Record<string, string> = {
+    es: "ALWAYS respond in Spanish (Español). Use friendly, natural Spanish.",
+    en: "ALWAYS respond in English. Use friendly, natural English.",
+    de: "ALWAYS respond in German (Deutsch). Use friendly, natural German.",
+    fr: "ALWAYS respond in French (Français). Use friendly, natural French.",
+    ru: "ALWAYS respond in Russian (Русский). Use friendly, natural Russian.",
+  };
+
+  const langInstruction = languageInstructions[language] || languageInstructions.en;
+
+  return `You are Solvia's Support Assistant. Your job is to give concise, friendly high-level information.
+
+LANGUAGE INSTRUCTION:
+${langInstruction}
 
 CRITICAL RULES:
 - NEVER provide detailed procedural instructions, legal steps, document templates, calculations, or anything that would replace Solvia's paid service.
@@ -24,6 +38,7 @@ ABOUT SOLVIA:
 Solvia helps medical professionals (doctors, nurses, dentists) relocate to Germany, Austria, Italy, or Spain. We provide homologation guidance, document preparation, language support, and job matching services.
 
 Always be helpful but remember: your goal is to provide general info and encourage users to use Solvia's full services for personalized help.`;
+};
 
 serve(async (req) => {
   if (req.method === "OPTIONS") {
@@ -31,7 +46,7 @@ serve(async (req) => {
   }
 
   try {
-    const { messages, sessionId } = await req.json();
+    const { messages, sessionId, language = "en" } = await req.json();
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     
     if (!LOVABLE_API_KEY) {
@@ -69,7 +84,7 @@ serve(async (req) => {
       body: JSON.stringify({
         model: "google/gemini-2.5-flash",
         messages: [
-          { role: "system", content: SYSTEM_PROMPT },
+          { role: "system", content: getSystemPrompt(language) },
           ...messages,
         ],
         stream: true,
