@@ -14,7 +14,12 @@ export const successStories = {
       profession: "Kinderärztin",
       destination: "Berlin, Deutschland",
       quote: "Ich war völlig verloren bei der Anerkennung, bis ich mit Solvia sprach. Sie erklärten mir alles Schritt für Schritt und ich hatte endlich das Gefühl, voranzukommen.",
-      image: "/lovable-uploads/fb51f001-5b4c-4c12-9bff-ec7776fda396.png"
+      image: "/lovable-uploads/fb51f001-5b4c-4c12-9bff-ec7776fda396.png",
+      details: {
+        startDate: "Januar 2024",
+        timeToHomologation: "9 Monate",
+        hiredAt: "Charité-Krankenhaus Berlin"
+      }
     },
     {
       name: "Luis Felipe",
@@ -35,7 +40,12 @@ export const successStories = {
       profession: "Krankenschwester",
       destination: "Hamburg, Deutschland",
       quote: "Als Krankenschwester dachte ich, der Prozess wäre schwieriger. Solvia prüfte jedes Dokument und erklärte genau, was fehlte oder falsch war.",
-      image: "/lovable-uploads/10e21b82-cfb8-44fa-ab45-7988189d9857.png"
+      image: "/lovable-uploads/18ea0363-17e7-4f2f-a135-49b3408a105d.png",
+      details: {
+        startDate: "Februar 2024",
+        timeToHomologation: "5 Monate",
+        hiredAt: "Universitätsklinikum Hamburg"
+      }
     }
   ]
 };
