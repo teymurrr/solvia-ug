@@ -13,7 +13,6 @@ const SuccessStoriesSection = React.lazy(() => import('@/components/landing/Succ
 const CountryComparisonSection = React.lazy(() => import('@/components/landing/CountryComparisonSection'));
 const ConversionFAQSection = React.lazy(() => import('@/components/landing/ConversionFAQSection'));
 const LearningMiniBanner = React.lazy(() => import('@/components/landing/LearningMiniBanner'));
-const BlogSection = React.lazy(() => import('@/components/landing/BlogSection'));
 const SuperCTASection = React.lazy(() => import('@/components/landing/SuperCTASection'));
 
 // Simple loading fallback
@@ -73,11 +72,6 @@ const Index = () => {
       {/* Learning Mini Banner - minimal, non-intrusive */}
       <Suspense fallback={<LoadingFallback height="h-16" />}>
         <LearningMiniBanner />
-      </Suspense>
-      
-      {/* Blog Section */}
-      <Suspense fallback={<LoadingFallback height="h-80" />}>
-        <BlogSection />
       </Suspense>
       
       {/* Super CTA - Final conversion section */}
