@@ -14,7 +14,12 @@ export const successStories = {
       profession: "Педиатр",
       destination: "Берлин, Германия",
       quote: "Я была полностью потеряна с гомологацией, пока не поговорила с Solvia. Они объяснили всё пошагово, и я наконец почувствовала, что двигаюсь вперёд.",
-      image: "/lovable-uploads/fb51f001-5b4c-4c12-9bff-ec7776fda396.png"
+      image: "/lovable-uploads/fb51f001-5b4c-4c12-9bff-ec7776fda396.png",
+      details: {
+        startDate: "Январь 2024",
+        timeToHomologation: "9 месяцев",
+        hiredAt: "Клиника Шарите Берлин"
+      }
     },
     {
       name: "Луис Фелипе",
@@ -35,7 +40,12 @@ export const successStories = {
       profession: "Медсестра",
       destination: "Гамбург, Германия",
       quote: "Как медсестра, я думала, что процесс будет сложнее. Solvia проверила каждый документ и объяснила, что было не так или чего не хватало.",
-      image: "/lovable-uploads/10e21b82-cfb8-44fa-ab45-7988189d9857.png"
+      image: "/lovable-uploads/18ea0363-17e7-4f2f-a135-49b3408a105d.png",
+      details: {
+        startDate: "Февраль 2024",
+        timeToHomologation: "5 месяцев",
+        hiredAt: "Университетская клиника Гамбурга"
+      }
     }
   ]
 };
