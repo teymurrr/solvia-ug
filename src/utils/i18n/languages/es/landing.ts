@@ -142,7 +142,7 @@ export const landing = {
         flag: "🇪🇸",
         salary: "€2.500–€4.000",
         time: "1–6 meses",
-        language: "Español recomendado",
+        language: "No requerido",
         highlight: "Homologación rápida"
       }
     }
