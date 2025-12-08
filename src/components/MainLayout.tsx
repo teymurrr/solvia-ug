@@ -3,6 +3,7 @@ import React from 'react';
 import Navbar from './Navbar';
 import Footer from './Footer';
 import CookieConsent from './CookieConsent';
+import SupportChat from './SupportChat';
 import { Toaster } from './ui/toaster';
 
 interface MainLayoutProps {
@@ -19,6 +20,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children, hideEditProfile }) =>
       </main>
       <Footer />
       <CookieConsent />
+      <SupportChat />
       <Toaster />
     </div>
   );
