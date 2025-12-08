@@ -13,7 +13,33 @@ export const landing = {
       italy: "Italie",
       france: "France"
     },
-    positionsAvailable: "postes disponibles"
+    positionsAvailable: "postes disponibles",
+    jobs: {
+      job1: {
+        title: "Spécialiste en Médecine Interne",
+        institution: "Hôpital Universitaire de Berlin",
+        location: "Berlin, Allemagne",
+        type: "Temps plein"
+      },
+      job2: {
+        title: "Infirmière Pédiatrique",
+        institution: "Centre Médical Régional",
+        location: "Madrid, Espagne",
+        type: "Temps plein"
+      },
+      job3: {
+        title: "Chirurgien Général",
+        institution: "Hôpital Général de Vienne",
+        location: "Vienne, Autriche",
+        type: "Temps plein"
+      },
+      job4: {
+        title: "Médecin Urgentiste",
+        institution: "Hôpital Universitaire de Lyon",
+        location: "Lyon, France",
+        type: "Temps plein"
+      }
+    }
   },
   homologationIncluded: {
     title: "Ce que comprend votre homologation avec Solvia",

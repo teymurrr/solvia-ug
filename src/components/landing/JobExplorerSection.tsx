@@ -11,21 +11,40 @@ const JobExplorerSection = () => {
   
   const landing = t?.landing;
   const jobExplorer = landing?.jobExplorer;
+  const jobs = jobExplorer?.jobs;
   
-  // Sample jobs for display
+  // Sample jobs for display - using translations
   const sampleJobs = [
     {
-      title: "Facharzt Innere Medizin",
-      institution: "University Hospital",
-      location: "Munich, Germany",
-      type: "Full-time",
+      title: jobs?.job1?.title || "Internal Medicine Specialist",
+      institution: jobs?.job1?.institution || "University Hospital Berlin",
+      location: jobs?.job1?.location || "Berlin, Germany",
+      type: jobs?.job1?.type || "Full-time",
+      country: 'germany',
       isReal: true
     },
     {
-      title: "Assistenzarzt Chirurgie",
-      institution: "Regional Medical Center",
-      location: "Vienna, Austria",
-      type: "Full-time",
+      title: jobs?.job2?.title || "Pediatric Nurse",
+      institution: jobs?.job2?.institution || "Regional Medical Center",
+      location: jobs?.job2?.location || "Madrid, Spain",
+      type: jobs?.job2?.type || "Full-time",
+      country: 'spain',
+      isReal: true
+    },
+    {
+      title: jobs?.job3?.title || "General Surgeon",
+      institution: jobs?.job3?.institution || "Vienna General Hospital",
+      location: jobs?.job3?.location || "Vienna, Austria",
+      type: jobs?.job3?.type || "Full-time",
+      country: 'austria',
+      isReal: false
+    },
+    {
+      title: jobs?.job4?.title || "Emergency Room Physician",
+      institution: jobs?.job4?.institution || "Lyon University Hospital",
+      location: jobs?.job4?.location || "Lyon, France",
+      type: jobs?.job4?.type || "Full-time",
+      country: 'france',
       isReal: false
     }
   ];
@@ -54,6 +73,12 @@ const JobExplorerSection = () => {
       flag: '🇫🇷', 
       name: jobExplorer?.countries?.france || 'France',
       positions: 25 
+    },
+    { 
+      key: 'italy', 
+      flag: '🇮🇹', 
+      name: jobExplorer?.countries?.italy || 'Italy',
+      positions: 18 
     }
   ];
 
@@ -72,8 +97,8 @@ const JobExplorerSection = () => {
           </div>
 
           {/* Job Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-            {sampleJobs.map((job, index) => (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 mb-8">
+            {sampleJobs.slice(0, 4).map((job, index) => (
               <Card key={index} className="p-6 hover:shadow-lg transition-shadow border-border/50">
                 <div className="flex justify-between items-start mb-4">
                   <div>
