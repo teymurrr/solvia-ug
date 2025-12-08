@@ -17,3 +17,6 @@ verify_jwt = false
 
 [functions.validate-document]
 verify_jwt = true
+
+[functions.support-chat]
+verify_jwt = false
