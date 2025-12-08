@@ -42,11 +42,12 @@ export const landing = {
     }
   },
   homologationIncluded: {
-    title: "Was Ihre Anerkennung mit Solvia beinhaltet",
-    subtitle: "Alles, was Sie brauchen, um Ihre medizinischen Qualifikationen in Europa anerkennen zu lassen",
+    title: "Alles, was Sie brauchen, um Ihren Abschluss ohne Fehler, Verzögerungen oder Stress anerkennen zu lassen",
+    subtitle: "Vollständige Begleitung für Ihre Arbeit als Arzt in Europa",
+    digitalAdvantage: "100% digitale Plattform mit intelligenter Führung, Aktenautomatisierung und fachkundiger menschlicher Unterstützung.",
     features: [
       "Vollständige Dokumentenprüfung",
-      "Erstellung der offiziellen Akte",
+      "Wir erstellen Ihre offizielle Akte",
       "Orientierte Übersetzungen und Apostillen",
       "Prioritärer WhatsApp-Support",
       "Schritt-für-Schritt-Begleitung",
@@ -54,7 +55,19 @@ export const landing = {
       "Statusverfolgung",
       "Zugang zu verifizierten Stellenangeboten"
     ],
-    cta: "Meinen kostenlosen Anerkennungsplan erhalten"
+    featureSubtexts: [
+      "vermeiden Fehler, die Ihre Anerkennung um Monate verzögern",
+      "bereit zur Einreichung ohne Ablehnungsrisiko",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    microBadge: "Solvia kombiniert Technologie + Experten, damit Ihr Prozess schneller und ohne Komplikationen voranschreitet.",
+    cta: "Meinen kostenlosen Anerkennungsplan erhalten",
+    socialProof: "Wir haben bereits Ärzten aus 12+ Ländern geholfen, ihre Anerkennung zu starten."
   },
   successStories: {
     title: "Tausende Ärzte und Pflegekräfte haben ihre Qualifikationen bereits mit Solvia anerkennen lassen",

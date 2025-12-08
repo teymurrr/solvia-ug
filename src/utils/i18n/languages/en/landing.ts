@@ -42,11 +42,12 @@ export const landing = {
     }
   },
   homologationIncluded: {
-    title: "What's Included in Your Homologation with Solvia",
-    subtitle: "Everything you need to get your medical credentials recognized in Europe",
+    title: "Everything you need to homologate your degree without errors, delays, or stress",
+    subtitle: "Complete support to work as a doctor in Europe",
+    digitalAdvantage: "100% digital platform with intelligent guidance, file automation, and expert human support.",
     features: [
       "Complete document review",
-      "Official file generation",
+      "We prepare your official file",
       "Oriented translations and apostilles",
       "Priority WhatsApp support",
       "Step-by-step guidance",
@@ -54,7 +55,19 @@ export const landing = {
       "Status tracking",
       "Access to verified job offers"
     ],
-    cta: "Get my free homologation plan"
+    featureSubtexts: [
+      "avoiding errors that delay your homologation by months",
+      "ready to submit with no risk of rejection",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    microBadge: "Solvia combines technology + experts so your process moves faster and without complications.",
+    cta: "Get my free homologation plan",
+    socialProof: "We've already helped doctors from 12+ countries start their homologation."
   },
   successStories: {
     title: "Thousands of doctors and nurses already recognized their credentials with Solvia",
