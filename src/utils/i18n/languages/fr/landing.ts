@@ -42,11 +42,12 @@ export const landing = {
     }
   },
   homologationIncluded: {
-    title: "Ce que comprend votre homologation avec Solvia",
-    subtitle: "Tout ce dont vous avez besoin pour faire reconnaître vos qualifications médicales en Europe",
+    title: "Tout ce dont vous avez besoin pour homologuer votre diplôme sans erreurs, sans retards et sans stress",
+    subtitle: "Accompagnement complet pour travailler comme médecin en Europe",
+    digitalAdvantage: "Plateforme 100% digitale avec guidance intelligente, automatisation du dossier et support humain expert.",
     features: [
       "Révision complète des documents",
-      "Génération du dossier officiel",
+      "Nous préparons votre dossier officiel",
       "Traductions et apostilles orientées",
       "Support prioritaire WhatsApp",
       "Accompagnement étape par étape",
@@ -54,7 +55,19 @@ export const landing = {
       "Suivi du statut",
       "Accès aux offres d'emploi vérifiées"
     ],
-    cta: "Recevoir mon plan d'homologation gratuit"
+    featureSubtexts: [
+      "évitant les erreurs qui retardent votre homologation de plusieurs mois",
+      "prêt à soumettre sans risque de rejet",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+    microBadge: "Solvia combine technologie + experts pour que votre processus avance plus vite et sans complications.",
+    cta: "Recevoir mon plan d'homologation gratuit",
+    socialProof: "Nous avons déjà aidé des médecins de 12+ pays à démarrer leur homologation."
   },
   successStories: {
     title: "Des milliers de médecins et infirmiers ont déjà fait reconnaître leurs diplômes avec Solvia",

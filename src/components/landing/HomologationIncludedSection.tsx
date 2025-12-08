@@ -12,7 +12,9 @@ import {
   Activity, 
   Briefcase,
   ArrowRight,
-  CheckCircle2
+  CheckCircle2,
+  Lightbulb,
+  Sparkles
 } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
 
@@ -23,17 +25,18 @@ const HomologationIncludedSection = () => {
   const homologation = landing?.homologationIncluded;
   
   const defaultFeatures = [
-    "Complete document review",
-    "Official file generation",
-    "Oriented translations and apostilles",
-    "Priority WhatsApp support",
-    "Step-by-step guidance",
-    "Proper submission to authorities",
-    "Status tracking",
-    "Access to verified job offers"
+    { text: "Complete document review", subtext: "avoiding errors that delay your homologation by months" },
+    { text: "Official file generation", subtext: "ready to submit with no risk of rejection" },
+    { text: "Oriented translations and apostilles", subtext: "" },
+    { text: "Priority WhatsApp support", subtext: "" },
+    { text: "Step-by-step guidance", subtext: "" },
+    { text: "Proper submission to authorities", subtext: "" },
+    { text: "Status tracking", subtext: "" },
+    { text: "Access to verified job offers", subtext: "" }
   ];
 
-  const features = homologation?.features || defaultFeatures;
+  const features = homologation?.features || defaultFeatures.map(f => f.text);
+  const featureSubtexts = homologation?.featureSubtexts || defaultFeatures.map(f => f.subtext);
   
   const icons = [
     FileCheck,
@@ -57,11 +60,18 @@ const HomologationIncludedSection = () => {
               <span className="text-sm font-medium text-primary">All-Inclusive</span>
             </div>
             <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-              {homologation?.title || "What's Included in Your Homologation with Solvia"}
+              {homologation?.title || "Everything you need to homologate your degree without errors, delays, or stress"}
             </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              {homologation?.subtitle || "Everything you need to get your medical credentials recognized in Europe"}
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-4">
+              {homologation?.subtitle || "Complete support to work as a doctor in Europe"}
             </p>
+            {/* Digital + AI advantage */}
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-secondary/50 rounded-lg">
+              <Sparkles className="h-4 w-4 text-primary" />
+              <span className="text-sm text-muted-foreground">
+                {homologation?.digitalAdvantage || "100% digital platform with intelligent guidance, file automation, and expert human support."}
+              </span>
+            </div>
           </div>
 
           {/* Features Grid */}
@@ -69,6 +79,7 @@ const HomologationIncludedSection = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {features.map((feature: string, index: number) => {
                 const Icon = icons[index] || CheckCircle2;
+                const subtext = featureSubtexts?.[index] || '';
                 return (
                   <div 
                     key={index} 
@@ -78,21 +89,40 @@ const HomologationIncludedSection = () => {
                       <Icon className="h-5 w-5 text-primary" />
                     </div>
                     <div className="flex-1">
-                      <p className="font-medium text-foreground">{feature}</p>
+                      <p className="font-medium text-foreground">
+                        {feature}
+                        {subtext && (
+                          <span className="font-normal text-muted-foreground"> — {subtext}</span>
+                        )}
+                      </p>
                     </div>
                   </div>
                 );
               })}
             </div>
+
+            {/* Micro-badge differentiator */}
+            <div className="mt-8 pt-6 border-t border-border/50">
+              <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
+                <Lightbulb className="h-4 w-4 text-primary" />
+                <span>
+                  {homologation?.microBadge || "Solvia combines technology + experts so your process moves faster and without complications."}
+                </span>
+              </div>
+            </div>
             
             {/* CTA inside card */}
-            <div className="mt-10 pt-8 border-t border-border/50 text-center">
+            <div className="mt-8 text-center">
               <Button asChild size="lg" className="group">
                 <Link to="/homologation" className="flex items-center gap-2">
                   {homologation?.cta || "Get my free homologation plan"}
                   <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
                 </Link>
               </Button>
+              {/* Social proof */}
+              <p className="mt-4 text-sm text-muted-foreground">
+                {homologation?.socialProof || "We've already helped doctors from 12+ countries start their homologation."}
+              </p>
             </div>
           </Card>
         </div>
