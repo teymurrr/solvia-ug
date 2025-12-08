@@ -93,7 +93,7 @@ export const landing = {
         profession: "Neurologe",
         destination: "Bayern, Deutschland",
         quote: "Sie kümmerten sich um meine Apostillen und Übersetzungen. Ich musste mich nur auf das Deutschlernen und die FSP-Vorbereitung konzentrieren.",
-        image: "/lovable-uploads/cc32bcf9-0674-4d4f-9316-3ce0790f675e.png",
+        image: "/lovable-uploads/luis-felipe-photo.png",
         details: {
           startDate: "März 2024",
           timeToHomologation: "7 Monate",
