@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Clock, Euro, ArrowRight, Globe, CheckCircle2 } from 'lucide-react';
+import { Clock, ArrowRight, Globe } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
 
 const CountryComparisonSection = () => {
@@ -102,21 +102,11 @@ const CountryComparisonSection = () => {
                   </div>
                   
                   {/* Duration */}
-                  <div className="flex items-center justify-center gap-2 p-3 bg-muted/50 rounded-lg mb-4">
+                  <div className="flex items-center justify-center gap-2 p-3 bg-muted/50 rounded-lg">
                     <Clock className="h-4 w-4 text-muted-foreground" />
                     <span className="text-sm text-foreground">
                       {country.processDuration}
                     </span>
-                  </div>
-                  
-                  {/* Includes */}
-                  <div className="space-y-2">
-                    {(country.includes || defaultCountries[key].includes).map((item: string, idx: number) => (
-                      <div key={idx} className="flex items-center gap-2 text-sm">
-                        <CheckCircle2 className="h-4 w-4 text-green-600 flex-shrink-0" />
-                        <span className="text-muted-foreground">{item}</span>
-                      </div>
-                    ))}
                   </div>
                 </Card>
               );

@@ -46,6 +46,11 @@ const Index = () => {
         <JobExplorerSection />
       </Suspense>
       
+      {/* Country Comparison - moved up to combine with job explorer */}
+      <Suspense fallback={<LoadingFallback height="h-96" />}>
+        <CountryComparisonSection />
+      </Suspense>
+      
       {/* Employer Banner */}
       <EmployerBanner />
       
@@ -53,11 +58,6 @@ const Index = () => {
       {/* Success Stories - 3 static cards focused on homologation */}
       <Suspense fallback={<LoadingFallback height="h-96" />}>
         <SuccessStoriesSection />
-      </Suspense>
-      
-      {/* Country Comparison */}
-      <Suspense fallback={<LoadingFallback height="h-96" />}>
-        <CountryComparisonSection />
       </Suspense>
       
       {/* Conversion FAQ with micro-CTAs */}
