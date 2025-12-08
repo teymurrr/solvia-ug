@@ -125,6 +125,14 @@ export const landing = {
         language: "B2 Allemand",
         highlight: "Processus plus simple"
       },
+      france: {
+        name: "France",
+        flag: "🇫🇷",
+        salary: "€3 000–€5 000",
+        time: "3–9 mois",
+        language: "B2 Français",
+        highlight: "Excellente qualité de vie"
+      },
       spain: {
         name: "Espagne",
         flag: "🇪🇸",

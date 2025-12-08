@@ -29,6 +29,14 @@ const CountryComparisonSection = () => {
       language: "B2 German",
       highlight: "Simpler process"
     },
+    france: {
+      name: "France",
+      flag: "🇫🇷",
+      salary: "€3,000–€5,000",
+      time: "3–9 months",
+      language: "B2 French",
+      highlight: "Great quality of life"
+    },
     spain: {
       name: "Spain",
       flag: "🇪🇸",
@@ -40,7 +48,7 @@ const CountryComparisonSection = () => {
   };
 
   const countries = comparison?.countries || defaultCountries;
-  const countryKeys = ['germany', 'austria', 'spain'] as const;
+  const countryKeys = ['germany', 'austria', 'france', 'spain'] as const;
 
   return (
     <section className="py-16 bg-muted/30">
@@ -61,7 +69,7 @@ const CountryComparisonSection = () => {
           </div>
 
           {/* Country Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
             {countryKeys.map((key) => {
               const country = countries[key] || defaultCountries[key];
               return (
