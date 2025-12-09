@@ -28,6 +28,14 @@ export interface CountryHomologationData {
     description: string;
   };
   showGermanClasses: boolean;
+  averageSalaries: {
+    general: number;
+    specialist: number;
+    nurse: number;
+    dentist: number;
+    other: number;
+    currency: string;
+  };
 }
 
 export const homologationDataByCountry: Record<string, CountryHomologationData> = {
@@ -70,6 +78,14 @@ export const homologationDataByCountry: Record<string, CountryHomologationData> 
       description: 'Depending on your country of study, you may need to pass the Kenntnisprüfung (knowledge exam) or complete a deficiency assessment period.',
     },
     showGermanClasses: true,
+    averageSalaries: {
+      general: 6500,
+      specialist: 8500,
+      nurse: 3800,
+      dentist: 7000,
+      other: 5000,
+      currency: 'EUR',
+    },
   },
   austria: {
     country: 'Austria',
@@ -107,6 +123,14 @@ export const homologationDataByCountry: Record<string, CountryHomologationData> 
       description: 'Recognition through a university process that may require additional exams.',
     },
     showGermanClasses: true,
+    averageSalaries: {
+      general: 6000,
+      specialist: 8000,
+      nurse: 3500,
+      dentist: 6500,
+      other: 4500,
+      currency: 'EUR',
+    },
   },
   spain: {
     country: 'Spain',
@@ -140,6 +164,14 @@ export const homologationDataByCountry: Record<string, CountryHomologationData> 
       { name: 'Criminal Record', description: 'From country of origin', required: true },
     ],
     showGermanClasses: false,
+    averageSalaries: {
+      general: 4500,
+      specialist: 6000,
+      nurse: 2800,
+      dentist: 5000,
+      other: 3500,
+      currency: 'EUR',
+    },
   },
   italy: {
     country: 'Italy',
@@ -173,6 +205,14 @@ export const homologationDataByCountry: Record<string, CountryHomologationData> 
       { name: 'Birth Certificate', description: 'Apostilled and translated', required: true },
     ],
     showGermanClasses: false,
+    averageSalaries: {
+      general: 4000,
+      specialist: 5500,
+      nurse: 2500,
+      dentist: 4500,
+      other: 3200,
+      currency: 'EUR',
+    },
   },
   france: {
     country: 'France',
@@ -211,6 +251,14 @@ export const homologationDataByCountry: Record<string, CountryHomologationData> 
       description: 'Knowledge verification exams required for non-EU doctors. Includes written and oral components.',
     },
     showGermanClasses: false,
+    averageSalaries: {
+      general: 5500,
+      specialist: 7500,
+      nurse: 3000,
+      dentist: 6000,
+      other: 4000,
+      currency: 'EUR',
+    },
   },
 };
 

@@ -8,6 +8,7 @@ export const homologationResult = {
     average: 'Средний',
     complexCases: 'Сложные Случаи',
     note: 'Примечание',
+    startNow: 'Начать Гомологацию Сейчас',
   },
   language: {
     title: 'Языковые Требования',
@@ -54,5 +55,6 @@ export const homologationResult = {
   urgency: {
     title: 'Не Ждите Больше',
     description: 'Каждый месяц ожидания — это потерянная зарплата в {country}.',
+    salaryLoss: 'Вы теряете примерно {salary} {currency}/месяц, не работая в {country}.',
   },
 };

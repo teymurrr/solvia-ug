@@ -140,6 +140,13 @@ const HomologationResult = () => {
     return true;
   };
 
+  // Get monthly salary loss based on profession
+  const getMonthlySalaryLoss = () => {
+    const salaries = countryData.averageSalaries;
+    const doctorType = wizardData.doctorType as keyof typeof salaries || 'general';
+    return salaries[doctorType] || salaries.general;
+  };
+
   const handleStartProcess = () => {
     localStorage.setItem('wizardData', JSON.stringify(wizardData));
     navigate('/homologation-payment');
@@ -153,24 +160,9 @@ const HomologationResult = () => {
     navigate('/solvia-learning');
   };
 
-  // Get translated documents
-  const getTranslatedDocuments = () => {
-    const docKeys: Record<string, string[]> = {
-      germany: ['medicalDiploma', 'diplomaSupplement', 'goodStanding', 'passport', 'cv', 'languageCert', 'birthCert', 'policeClearance'],
-      austria: ['medicalDiploma', 'studyCurriculum', 'goodStanding', 'passport', 'languageCert', 'birthCert'],
-      spain: ['medicalDiploma', 'academicTranscript', 'goodStanding', 'nie', 'birthCert', 'criminalRecord'],
-      italy: ['medicalDiploma', 'studyPlan', 'goodStanding', 'passport', 'languageCert', 'birthCert'],
-      france: ['medicalDiploma', 'attestation', 'goodStanding', 'passport', 'languageCert', 'cvFrench'],
-    };
-    
-    const keys = docKeys[wizardData.targetCountry!] || docKeys.germany;
-    return keys.map(key => {
-      const doc = dataTranslations.documents[key as keyof typeof dataTranslations.documents];
-      return doc || { name: key, description: '' };
-    });
+  const handleStartHomologation = () => {
+    navigate(`/homologation-payment?country=${wizardData.targetCountry}`);
   };
-
-  const translatedDocs = getTranslatedDocuments();
   const translatedCountryName = getCountryName(wizardData.targetCountry);
 
   return (
@@ -195,7 +187,7 @@ const HomologationResult = () => {
             </p>
           </motion.div>
 
-          {/* Urgency Banner */}
+          {/* Urgency Banner with Salary Loss */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -209,7 +201,10 @@ const HomologationResult = () => {
               <div>
                 <p className="font-semibold text-amber-700 dark:text-amber-400">{t.homologationResult.urgency?.title || "Don't Wait Any Longer"}</p>
                 <p className="text-sm text-muted-foreground">
-                  {(t.homologationResult.urgency?.description || "Every month you wait is a month of salary lost in {country}.").replace('{country}', translatedCountryName)}
+                  {(t.homologationResult.urgency?.salaryLoss || "You are losing approximately {salary} {currency}/month by not working in {country}.")
+                    .replace('{salary}', getMonthlySalaryLoss().toLocaleString())
+                    .replace('{currency}', countryData.averageSalaries.currency)
+                    .replace('{country}', translatedCountryName)}
                 </p>
               </div>
             </div>
@@ -217,7 +212,7 @@ const HomologationResult = () => {
 
           {/* Main Content Grid */}
           <div className="grid md:grid-cols-2 gap-6">
-            {/* Timeline Card */}
+            {/* Timeline Card with CTA */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -230,7 +225,7 @@ const HomologationResult = () => {
                     {t.homologationResult.timeline.title}
                   </CardTitle>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="space-y-4">
                   <div className="grid grid-cols-3 gap-4 text-center">
                     <div className="p-4 bg-green-500/10 rounded-lg">
                       <p className="text-2xl font-bold text-green-600">{countryData.processTime.min}</p>
@@ -246,10 +241,19 @@ const HomologationResult = () => {
                     </div>
                   </div>
                   {professionInfo && (
-                    <p className="mt-4 text-sm text-muted-foreground bg-muted/50 p-3 rounded-lg">
+                    <p className="text-sm text-muted-foreground bg-muted/50 p-3 rounded-lg">
                       <strong>{t.homologationResult.timeline.note}:</strong> {professionInfo}
                     </p>
                   )}
+                  
+                  {/* CTA after timeline */}
+                  <Button 
+                    onClick={handleStartHomologation}
+                    className="w-full gap-2"
+                  >
+                    {t.homologationResult.timeline.startNow || "Start Homologation Now"}
+                    <ArrowRight className="h-4 w-4" />
+                  </Button>
                 </CardContent>
               </Card>
             </motion.div>
@@ -310,56 +314,6 @@ const HomologationResult = () => {
 
           </div>
 
-          {/* Document Checklist */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
-            className="mt-6"
-          >
-            <Card>
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <CardTitle className="flex items-center gap-2">
-                      <FileText className="h-5 w-5 text-primary" />
-                      {t.homologationResult.documents.title}
-                    </CardTitle>
-                    <CardDescription>
-                      {t.homologationResult.documents.description}
-                    </CardDescription>
-                  </div>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className="grid md:grid-cols-2 gap-3 mb-4">
-                  {translatedDocs.map((doc, index) => (
-                    <div 
-                      key={index} 
-                      className="flex items-start gap-3 p-3 rounded-lg bg-muted/30 hover:bg-muted/50 transition-colors"
-                    >
-                      <CheckCircle2 className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
-                      <div>
-                        <p className="font-medium text-sm">{doc.name}</p>
-                        <p className="text-xs text-muted-foreground">{doc.description}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                
-                {/* Document help CTA */}
-                <div className="bg-gradient-to-r from-blue-500/10 to-cyan-500/10 border border-blue-500/20 rounded-lg p-4">
-                  <div className="flex items-center gap-2 mb-1">
-                    <HeartHandshake className="h-4 w-4 text-blue-600" />
-                    <span className="font-semibold text-sm">{t.homologationResult.documents?.overwhelmed || "Feeling overwhelmed by paperwork?"}</span>
-                  </div>
-                  <p className="text-xs text-muted-foreground">
-                    {t.homologationResult.documents?.weHandle || "We handle the entire documentation process for you."}
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
-          </motion.div>
 
           {/* Why Choose Us - Benefits */}
           <motion.div
