@@ -16,7 +16,7 @@ const HeroSection = React.memo(() => {
   }), [t]);
   
   return (
-    <section className="relative overflow-hidden">
+    <section className="relative overflow-hidden -mt-16 pt-16">
       <div className="hero-gradient absolute inset-0 opacity-20" />
       <div className="container mx-auto px-4 py-12 md:py-16 relative z-10">
         <div className="max-w-3xl mx-auto text-center space-y-4">
