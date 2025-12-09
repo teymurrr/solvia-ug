@@ -23,13 +23,13 @@ const LoadingFallback = ({ height }: { height: string }) => (
 const Index = () => {
   return (
     <MainLayout>
-      {/* Black Friday Banner - promotional content */}
-      <div className="container mx-auto px-4 pt-6">
-        <BlackFridayBanner />
-      </div>
-      
       {/* Critical above-the-fold content - load immediately */}
       <HeroSectionWithSearch />
+      
+      {/* Black Friday Banner - promotional content */}
+      <div className="container mx-auto px-4 py-6">
+        <BlackFridayBanner />
+      </div>
       
       {/* Partners/Accelerators Section */}
       <PartnersSection />

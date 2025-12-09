@@ -25,7 +25,7 @@ const HeroSectionWithSearch = React.memo(() => {
   return (
     <>
       {/* Hero Section */}
-      <section className="relative overflow-hidden min-h-[70vh] flex items-center">
+      <section className="relative overflow-hidden min-h-[70vh] flex items-center -mt-16 pt-16">
         {/* Background Image */}
         <div 
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
