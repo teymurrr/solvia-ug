@@ -7,12 +7,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Search, Loader2 } from 'lucide-react';
+import { Search, X } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
-import { useNavigate } from 'react-router-dom';
 
 interface MiniOnboardingFormProps {
-  onComplete: (data: OnboardingData) => void;
+  onFilter?: (filters: FilterData) => void;
+  onComplete?: (data: OnboardingData) => void;
 }
 
 export interface OnboardingData {
@@ -21,6 +21,11 @@ export interface OnboardingData {
   targetCountry: string;
   languageLevel: string;
   email: string;
+}
+
+export interface FilterData {
+  profession: string;
+  targetCountry: string;
 }
 
 const professions = [
@@ -38,31 +43,27 @@ const countries = [
   { value: 'france', label: '🇫🇷 Francia' },
 ];
 
-const MiniOnboardingForm = ({ onComplete }: MiniOnboardingFormProps) => {
+const MiniOnboardingForm = ({ onFilter, onComplete }: MiniOnboardingFormProps) => {
   const { t } = useLanguage();
-  const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FilterData>({
     profession: '',
     targetCountry: '',
   });
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (!formData.profession) {
-      return;
+  const handleFilter = () => {
+    if (onFilter) {
+      onFilter(formData);
     }
-
-    setLoading(true);
-
-    // Navigate to signup with pre-filled data
-    const params = new URLSearchParams();
-    if (formData.profession) params.set('profession', formData.profession);
-    if (formData.targetCountry) params.set('country', formData.targetCountry);
-    
-    navigate(`/signup/professional?${params.toString()}`);
   };
+
+  const handleClear = () => {
+    setFormData({ profession: '', targetCountry: '' });
+    if (onFilter) {
+      onFilter({ profession: '', targetCountry: '' });
+    }
+  };
+
+  const hasFilters = formData.profession || formData.targetCountry;
 
   return (
     <div className="flex flex-col sm:flex-row items-center gap-3 p-4 bg-muted/30 rounded-xl border border-border/50">
@@ -98,20 +99,25 @@ const MiniOnboardingForm = ({ onComplete }: MiniOnboardingFormProps) => {
         </SelectContent>
       </Select>
 
-      <Button 
-        onClick={handleSubmit}
-        disabled={loading || !formData.profession}
-        className="w-full sm:w-auto"
-      >
-        {loading ? (
-          <Loader2 className="h-4 w-4 animate-spin" />
-        ) : (
-          <>
-            <Search className="h-4 w-4 mr-2" />
-            Buscar ofertas
-          </>
+      <div className="flex gap-2 w-full sm:w-auto">
+        <Button 
+          onClick={handleFilter}
+          className="flex-1 sm:flex-none"
+        >
+          <Search className="h-4 w-4 mr-2" />
+          Filtrar
+        </Button>
+        
+        {hasFilters && (
+          <Button 
+            variant="outline"
+            onClick={handleClear}
+            className="flex-shrink-0"
+          >
+            <X className="h-4 w-4" />
+          </Button>
         )}
-      </Button>
+      </div>
     </div>
   );
 };
