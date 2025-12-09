@@ -8,6 +8,7 @@ export const homologationResult = {
     average: 'Average',
     complexCases: 'Complex Cases',
     note: 'Note',
+    startNow: 'Start Homologation Now',
   },
   language: {
     title: 'Language Requirement',
@@ -54,5 +55,6 @@ export const homologationResult = {
   urgency: {
     title: 'Don\'t Wait Any Longer',
     description: 'Every month you wait is a month of salary lost in {country}.',
+    salaryLoss: 'You are losing approximately {salary} {currency}/month by not working in {country}.',
   },
 };
