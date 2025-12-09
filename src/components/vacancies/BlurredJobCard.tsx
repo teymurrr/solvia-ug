@@ -1,6 +1,7 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Card } from '@/components/ui/card';
-import { MapPin, Euro, Lock, Building } from 'lucide-react';
+import { MapPin, Euro, Lock, Building, UserPlus, FileCheck, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 interface BlurredJobCardProps {
@@ -56,17 +57,32 @@ const BlurredJobCard = ({
               <span className="font-medium">Requisitos:</span> B2 alemán, título homologado, experiencia 2+ años
             </p>
             <p className="text-sm text-muted-foreground">
-              <span className="font-medium">Beneficios:</span> Contrato indefinido, ayuda con mudanza, seguro médico
+              <span className="font-medium">Beneficios:</span> Contrato indefinido, ayuda con mudanza
             </p>
           </div>
           
-          {/* Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/50 to-background flex items-end justify-center pb-2">
-            <Button variant="outline" size="sm" className="text-xs gap-1" disabled>
-              <Lock className="h-3 w-3" />
-              Completar perfil para ver detalles
-            </Button>
-          </div>
+          {/* Gradient overlay */}
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/60 to-background" />
+        </div>
+
+        {/* CTAs - Two action buttons */}
+        <div className="flex flex-col gap-2 pt-2">
+          {/* Primary CTA - Unlock all offers */}
+          <Button asChild size="sm" className="w-full group/btn">
+            <Link to="/signup/professional" className="flex items-center justify-center gap-2">
+              <UserPlus className="h-4 w-4" />
+              <span>Acceder a todas las ofertas</span>
+              <ArrowRight className="h-3 w-3 opacity-0 -ml-2 group-hover/btn:opacity-100 group-hover/btn:ml-0 transition-all" />
+            </Link>
+          </Button>
+          
+          {/* Secondary CTA - Start homologation */}
+          <Button asChild variant="outline" size="sm" className="w-full group/btn">
+            <Link to="/homologation-wizard" className="flex items-center justify-center gap-2">
+              <FileCheck className="h-4 w-4" />
+              <span>Homologa tu título gratis</span>
+            </Link>
+          </Button>
         </div>
       </div>
     </Card>
