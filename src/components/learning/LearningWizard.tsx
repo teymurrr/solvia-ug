@@ -17,7 +17,7 @@ export interface WizardData {
 }
 
 const LearningWizard: React.FC<LearningWizardProps> = ({ onComplete }) => {
-  const { t, language } = useLanguage();
+  const { t, currentLanguage: language } = useLanguage();
   const [step, setStep] = useState(1);
   const [wizardData, setWizardData] = useState<WizardData>({
     country: '',

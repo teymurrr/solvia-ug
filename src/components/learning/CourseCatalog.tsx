@@ -10,7 +10,7 @@ interface CourseCatalogProps {
 }
 
 const CourseCatalog: React.FC<CourseCatalogProps> = ({ onSelectCourse }) => {
-  const { t, language } = useLanguage();
+  const { t, currentLanguage: language } = useLanguage();
 
   const getCourseIncludes = (countryId: string): string[] => {
     const includes: Record<string, Record<string, string[]>> = {

@@ -18,7 +18,7 @@ const LearningPlanResult: React.FC<LearningPlanResultProps> = ({
   onReset,
   onConsultation
 }) => {
-  const { t, language } = useLanguage();
+  const { t, currentLanguage: language } = useLanguage();
   const navigate = useNavigate();
   
   const selectedCountry = countries.find(c => c.id === wizardData.country);

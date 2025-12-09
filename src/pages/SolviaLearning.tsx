@@ -1,18 +1,32 @@
-
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import MainLayout from '@/components/MainLayout';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Card, CardContent } from '@/components/ui/card';
-import { Check, Clock, BookOpen, MessageCircle, Users, Target, Award, Play, Video, Quote } from 'lucide-react';
+import { ArrowRight, MessageCircle } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
+import {
+  LearningWizard,
+  LearningPlanResult,
+  CourseCatalog,
+  CountryTestimonials,
+  LearningFAQ,
+  ValueProposition,
+  ExamPrepSection,
+  type WizardData
+} from '@/components/learning';
 
 const SolviaLearning = () => {
-  const { t } = useLanguage();
+  const { t, currentLanguage: language } = useLanguage();
+  const [showPlan, setShowPlan] = useState(false);
+  const [wizardData, setWizardData] = useState<WizardData | null>(null);
+  const formRef = useRef<HTMLDivElement>(null);
+  const wizardRef = useRef<HTMLDivElement>(null);
+
   const [formData, setFormData] = useState({
     fullName: '',
     country: '',
@@ -31,38 +45,28 @@ const SolviaLearning = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Validate form
     if (!formData.fullName || !formData.country || !formData.email || !formData.profession) {
-      toast.error('Please fill in all required fields');
+      toast.error(t?.learning?.form?.fillRequired || 'Please fill in all required fields');
       return;
     }
 
     if (!formData.germanLanguage && !formData.fspPreparation) {
-      toast.error('Please select at least one area of interest');
+      toast.error(t?.learning?.form?.selectInterest || 'Please select at least one area of interest');
       return;
     }
 
     setIsSubmitting(true);
 
     try {
-      console.log('Submitting form:', formData);
-      
       const { data, error } = await supabase.functions.invoke('submit-learning-form', {
         body: formData
       });
 
-      if (error) {
-        console.error('Supabase function error:', error);
-        throw new Error(error.message || 'Failed to submit form');
-      }
-
-      console.log('Form submitted successfully:', data);
+      if (error) throw new Error(error.message || 'Failed to submit form');
       
       setIsSubmitted(true);
-      toast.success('Thank you! Your form has been submitted successfully. Check your email for confirmation.');
-      
+      toast.success(t?.learning?.form?.success || 'Thank you! Your form has been submitted successfully.');
     } catch (error: any) {
-      console.error('Form submission error:', error);
       toast.error(error.message || 'Failed to submit form. Please try again.');
     } finally {
       setIsSubmitting(false);
@@ -70,282 +74,159 @@ const SolviaLearning = () => {
   };
 
   const scrollToForm = () => {
-    console.log('Button clicked - scrolling to form');
-    const formSection = document.getElementById('signup-form');
-    if (formSection) {
-      formSection.scrollIntoView({ behavior: 'smooth' });
-    } else {
-      console.error('Form section not found');
-    }
+    formRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  // Fixed testimonials data with proper structure
-  const testimonials = [
-    {
-      name: "Dr. Sofia Ramirez",
-      profession: "General Practitioner",
-      country: "Colombia",
-      quote: "I was worried about learning German while working full time, but Solvia made it so manageable. The medical focus helped me feel confident speaking with patients. The TELC preparation was exactly what I needed.",
-      image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=400&h=400&fit=crop&crop=face"
-    },
-    {
-      name: "Dr. Luis Herrera",
-      profession: "Internal Medicine Resident",
-      country: "Mexico",
-      quote: "The FSP mentoring was a game changer. I passed my exam on the first try! They gave me real cases to practice with and very honest feedback. I felt like I was learning with friends.",
-      image: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=400&h=400&fit=crop&crop=face"
-    },
-    {
-      name: "Dr. Camila Torres",
-      profession: "Pediatrician",
-      country: "Argentina",
-      quote: "What I liked most was the flexibility. I could join live classes or watch them later. Plus, the one-on-one coaching gave me the confidence to present findings in German like a native doctor.",
-      image: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=400&h=400&fit=crop&crop=face"
-    }
-  ];
+  const scrollToWizard = () => {
+    wizardRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const handleWizardComplete = (data: WizardData) => {
+    setWizardData(data);
+    setShowPlan(true);
+  };
+
+  const handleResetPlan = () => {
+    setShowPlan(false);
+    setWizardData(null);
+  };
+
+  const getHeroTitle = () => {
+    const titles: Record<string, string> = {
+      es: 'Aprende el idioma médico que necesitas para trabajar en Europa',
+      en: 'Learn the medical language you need to work in Europe',
+      de: 'Lernen Sie die medizinische Sprache, die Sie für die Arbeit in Europa benötigen',
+      fr: 'Apprenez la langue médicale dont vous avez besoin pour travailler en Europe',
+      ru: 'Изучите медицинский язык, необходимый для работы в Европе'
+    };
+    return titles[language] || titles.en;
+  };
+
+  const getHeroSubtitle = () => {
+    const subtitles: Record<string, string> = {
+      es: 'Cursos especializados de alemán, francés, italiano y español médico, diseñados para profesionales de la salud internacionales.',
+      en: 'Specialized German, French, Italian and Spanish medical courses designed for international healthcare professionals.',
+      de: 'Spezialisierte medizinische Deutsch-, Französisch-, Italienisch- und Spanischkurse für internationale Gesundheitsfachkräfte.',
+      fr: "Cours d'allemand, français, italien et espagnol médical spécialisés, conçus pour les professionnels de santé internationaux.",
+      ru: 'Специализированные курсы медицинского немецкого, французского, итальянского и испанского языков для международных медицинских специалистов.'
+    };
+    return subtitles[language] || subtitles.en;
+  };
+
+  const getPrimaryCTA = () => {
+    const ctas: Record<string, string> = {
+      es: 'Crear mi Plan de Aprendizaje',
+      en: 'Create My Learning Plan',
+      de: 'Meinen Lernplan erstellen',
+      fr: "Créer mon plan d'apprentissage",
+      ru: 'Создать мой план обучения'
+    };
+    return ctas[language] || ctas.en;
+  };
+
+  const getSecondaryCTA = () => {
+    const ctas: Record<string, string> = {
+      es: 'Hablar con un asesor',
+      en: 'Talk to an Advisor',
+      de: 'Mit einem Berater sprechen',
+      fr: 'Parler à un conseiller',
+      ru: 'Поговорить с консультантом'
+    };
+    return ctas[language] || ctas.en;
+  };
+
+  const getFinalCTATitle = () => {
+    const titles: Record<string, string> = {
+      es: 'Empieza tu plan de idioma médico hoy',
+      en: 'Start your medical language plan today',
+      de: 'Beginnen Sie heute Ihren medizinischen Sprachplan',
+      fr: "Commencez votre plan de langue médicale aujourd'hui",
+      ru: 'Начните свой план медицинского языка сегодня'
+    };
+    return titles[language] || titles.en;
+  };
+
+  const getFinalCTASubtitle = () => {
+    const subtitles: Record<string, string> = {
+      es: 'Aprende el idioma que necesitas para trabajar en el país de tus sueños.',
+      en: 'Learn the language you need to work in your dream country.',
+      de: 'Lernen Sie die Sprache, die Sie brauchen, um in Ihrem Traumland zu arbeiten.',
+      fr: 'Apprenez la langue dont vous avez besoin pour travailler dans le pays de vos rêves.',
+      ru: 'Изучите язык, который вам нужен для работы в стране вашей мечты.'
+    };
+    return subtitles[language] || subtitles.en;
+  };
 
   return (
     <MainLayout>
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-primary/5 via-blue-50 to-white py-20">
+      <section className="relative bg-gradient-to-br from-primary/10 via-blue-50 to-background py-20 md:py-28">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight">
-              {t?.learning?.hero?.title ? (
-                <>
-                  Impulsa tu Carrera Médica con <span className="text-primary">Solvia Learning</span>
-                </>
-              ) : (
-                <>
-                  Advance Your Medical Career with <span className="text-primary">Solvia Learning</span>
-                </>
-              )}
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6 leading-tight">
+              {getHeroTitle()}
             </h1>
-            <p className="text-xl md:text-2xl text-gray-600 mb-8 leading-relaxed">
-              {t?.learning?.hero?.subtitle || 'Specialized German Language and FSP Preparation Courses for International Doctors'}
+            <p className="text-lg md:text-xl text-muted-foreground mb-10 leading-relaxed max-w-3xl mx-auto">
+              {getHeroSubtitle()}
             </p>
-                <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <Button 
-                    size="lg" 
-                    onClick={scrollToForm}
-                    className="bg-primary hover:bg-primary/90 text-white px-8 py-4 text-lg relative z-10 cursor-pointer"
-                  >
-                    {t?.learning?.hero?.cta || 'Sign Up for Free Consultation'}
-                  </Button>
-                  <Button 
-                    size="lg" 
-                    onClick={() => window.location.href = '/homologation-payment'}
-                    className="bg-green-600 hover:bg-green-700 text-white px-8 py-4 text-lg relative z-10 cursor-pointer"
-                  >
-                    Start Homologation Process - €759
-                  </Button>
-                </div>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button 
+                size="lg" 
+                onClick={scrollToWizard}
+                className="text-lg px-8 py-6"
+              >
+                {getPrimaryCTA()}
+                <ArrowRight className="ml-2 w-5 h-5" />
+              </Button>
+              <Button 
+                size="lg" 
+                variant="outline"
+                onClick={scrollToForm}
+                className="text-lg px-8 py-6"
+              >
+                <MessageCircle className="mr-2 w-5 h-5" />
+                {getSecondaryCTA()}
+              </Button>
+            </div>
           </div>
         </div>
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmMGY5ZmYiIGZpbGwtb3BhY2l0eT0iMC4xIj48Y2lyY2xlIGN4PSIzMCIgY3k9IjMwIiByPSIyIi8+PC9nPjwvZz48L3N2Zz4=')] opacity-30 pointer-events-none"></div>
       </section>
 
-      {/* German Language Courses Section */}
-      <section className="py-20 bg-white">
+      {/* Value Proposition */}
+      <ValueProposition />
+
+      {/* Learning Wizard Section */}
+      <section ref={wizardRef} className="py-20 bg-background" id="wizard">
         <div className="container mx-auto px-4">
-          <div className="max-w-6xl mx-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-              <div>
-                <h2 className="text-4xl font-bold text-gray-900 mb-4">
-                  {t?.learning?.germanCourses?.title || 'German Language Courses'}
-                </h2>
-                <h3 className="text-xl text-primary font-semibold mb-6">
-                  {t?.learning?.germanCourses?.subtitle || 'Learn German the Smart Way—From Basic to Medical Proficiency'}
-                </h3>
-                <p className="text-lg text-gray-600 mb-8 leading-relaxed">
-                  {t?.learning?.germanCourses?.description || 'Our German courses are built for busy healthcare professionals. With real medical context, expert instruction, and flexible formats, we\'ll help you speak confidently in hospitals, exams, and beyond.'}
-                </p>
-                <Button 
-                  size="lg" 
-                  onClick={scrollToForm}
-                  className="bg-primary hover:bg-primary/90 text-white px-6 py-3"
-                >
-                  {t?.learning?.germanCourses?.cta || 'Explore More'}
-                </Button>
-              </div>
-              <div>
-                <div className="space-y-4">
-                  {(t?.learning?.germanCourses?.features || [
-                    "From A1 to C1 – General & Medical German",
-                    "Live Online Classes + Self-Paced Options",
-                    "TELC B2-C1 Medizin Exam Preparation",
-                    "Realistic Medical Dialogues & Patient Scenarios",
-                    "Progress Tracking & AI-Powered Feedback"
-                  ]).map((feature, index) => (
-                    <div key={index} className="flex items-start space-x-3">
-                      <div className="flex items-center space-x-3">
-                        {[BookOpen, Clock, Award, MessageCircle, Target][index] && (
-                          React.createElement([BookOpen, Clock, Award, MessageCircle, Target][index], {
-                            className: "w-5 h-5 text-primary flex-shrink-0"
-                          })
-                        )}
-                        <span className="text-gray-700 font-medium">{feature}</span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
+          {!showPlan ? (
+            <LearningWizard onComplete={handleWizardComplete} />
+          ) : (
+            wizardData && (
+              <LearningPlanResult 
+                wizardData={wizardData}
+                onReset={handleResetPlan}
+                onConsultation={scrollToForm}
+              />
+            )
+          )}
         </div>
       </section>
 
-      {/* FSP Preparation Courses Section */}
-      <section className="py-20 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <div className="max-w-6xl mx-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-              <div>
-                <div className="grid grid-cols-1 gap-4">
-                  {(t?.learning?.fspCourses?.steps || [
-                    { title: "Anamnesis Training", description: "Master patient history taking" },
-                    { title: "Findings Discussion", description: "Present and discuss medical findings" },
-                    { title: "Doctor Dialogue", description: "Professional medical communication" }
-                  ]).map((step, index) => (
-                    <Card key={index} className="bg-gradient-to-r from-primary/10 to-blue-50 border-none shadow-md">
-                      <CardContent className="p-4">
-                        <div className="flex items-center space-x-4">
-                          <div className="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center font-bold text-lg flex-shrink-0">
-                            {index + 1}
-                          </div>
-                          <div>
-                            <h4 className="font-semibold text-gray-900">{step.title}</h4>
-                            <p className="text-sm text-gray-600">{step.description}</p>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              </div>
-              <div>
-                <h2 className="text-4xl font-bold text-gray-900 mb-4">
-                  {t?.learning?.fspCourses?.title || 'FSP Preparation Courses'}
-                </h2>
-                <h3 className="text-xl text-primary font-semibold mb-6">
-                  {t?.learning?.fspCourses?.subtitle || 'Master the Fachsprachprüfung with Confidence'}
-                </h3>
-                <p className="text-lg text-gray-600 mb-8 leading-relaxed">
-                  {t?.learning?.fspCourses?.description || 'The FSP is a critical step toward practicing in Germany. Our course gives you structure, practice, and expert guidance to succeed on your first attempt.'}
-                </p>
-                <div className="space-y-4 mb-8">
-                  {(t?.learning?.fspCourses?.features || [
-                    "Full FSP Curriculum (Anamnesis, Findings, Doctor Dialogue)",
-                    "One-on-One Mentoring with FSP Coaches",
-                    "Real Case-Based Simulations",
-                    "Exam Simulators & Mock Tests",
-                    "Feedback from Medical Professionals"
-                  ]).map((feature, index) => (
-                    <div key={index} className="flex items-start space-x-3">
-                      <div className="flex items-center space-x-3">
-                        {[Target, Users, MessageCircle, Award, Check][index] && (
-                          React.createElement([Target, Users, MessageCircle, Award, Check][index], {
-                            className: "w-5 h-5 text-primary flex-shrink-0"
-                          })
-                        )}
-                        <span className="text-gray-700 font-medium">{feature}</span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                <Button 
-                  size="lg" 
-                  onClick={scrollToForm}
-                  className="bg-primary hover:bg-primary/90 text-white px-6 py-3"
-                >
-                  {t?.learning?.fspCourses?.cta || 'Explore More'}
-                </Button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Course Catalog */}
+      <CourseCatalog onSelectCourse={scrollToWizard} />
 
-      {/* Testimonials Section */}
-      <section className="py-20 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-12">
-              <h2 className="text-4xl font-bold text-gray-900 mb-4">
-                {t?.learning?.testimonials?.title || 'What Our Learners Say'}
-              </h2>
-              <p className="text-xl text-gray-600">
-                Real success stories from doctors who transformed their careers with Solvia Learning
-              </p>
-            </div>
-            
-            {/* Desktop Grid Layout */}
-            <div className="hidden md:grid md:grid-cols-1 lg:grid-cols-3 gap-8">
-              {testimonials.map((testimonial, index) => (
-                <Card key={index} className="bg-white shadow-lg border border-gray-200 hover:shadow-xl transition-shadow duration-300">
-                  <CardContent className="p-6">
-                    <div className="flex items-start space-x-4 mb-4">
-                      <div className="flex-shrink-0">
-                        <img
-                          src={testimonial.image}
-                          alt={testimonial.name}
-                          className="w-12 h-12 rounded-full object-cover ring-2 ring-primary/20"
-                        />
-                      </div>
-                      <div className="flex-1">
-                        <h4 className="font-semibold text-gray-900 text-sm">{testimonial.name}</h4>
-                        <p className="text-sm text-gray-600">{testimonial.profession}</p>
-                        <p className="text-sm text-primary font-medium">{testimonial.country}</p>
-                      </div>
-                    </div>
-                    <div className="relative">
-                      <Quote className="absolute -top-2 -left-1 w-6 h-6 text-primary/20" />
-                      <p className="text-gray-700 leading-relaxed pl-6 italic">
-                        "{testimonial.quote}"
-                      </p>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-            
-            {/* Mobile Horizontal Scroll */}
-            <div className="md:hidden">
-              <div className="flex space-x-6 overflow-x-auto pb-4 snap-x snap-mandatory">
-                {testimonials.map((testimonial, index) => (
-                  <Card key={index} className="flex-shrink-0 w-80 bg-white shadow-lg border border-gray-200 snap-start">
-                    <CardContent className="p-6">
-                      <div className="flex items-start space-x-4 mb-4">
-                        <div className="flex-shrink-0">
-                          <img
-                            src={testimonial.image}
-                            alt={testimonial.name}
-                            className="w-12 h-12 rounded-full object-cover ring-2 ring-primary/20"
-                          />
-                        </div>
-                        <div className="flex-1">
-                          <h4 className="font-semibold text-gray-900 text-sm">{testimonial.name}</h4>
-                          <p className="text-sm text-gray-600">{testimonial.profession}</p>
-                          <p className="text-sm text-primary font-medium">{testimonial.country}</p>
-                        </div>
-                      </div>
-                      <div className="relative">
-                        <Quote className="absolute -top-2 -left-1 w-6 h-6 text-primary/20" />
-                        <p className="text-gray-700 leading-relaxed pl-6 italic">
-                          "{testimonial.quote}"
-                        </p>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Exam Prep Section */}
+      <ExamPrepSection onSelectCountry={scrollToWizard} />
+
+      {/* Testimonials by Country */}
+      <CountryTestimonials />
+
+      {/* FAQ */}
+      <LearningFAQ onTakeTest={scrollToWizard} />
 
       {/* Sign-Up Form Section */}
-      <section id="signup-form" className="py-20 bg-white">
+      <section ref={formRef} id="signup-form" className="py-20 bg-muted/30">
         <div className="container mx-auto px-4">
           <div className="max-w-2xl mx-auto">
             <Card className="shadow-xl border-none">
@@ -353,132 +234,145 @@ const SolviaLearning = () => {
                 {!isSubmitted ? (
                   <>
                     <div className="text-center mb-8">
-                      <h2 className="text-3xl font-bold text-gray-900 mb-4">
-                        {t?.learning?.signupForm?.title ? (
-                          <>
-                            Completa el formulario para una <span className="text-primary">Consultoría Gratuita</span>
-                          </>
-                        ) : (
-                          <>
-                            Fill the form for a <span className="text-primary">Free Consultancy</span>
-                          </>
-                        )}
+                      <h2 className="text-3xl font-bold text-foreground mb-4">
+                        {t?.learning?.signupForm?.title || 'Get a Free Consultation'}
                       </h2>
-                      <p className="text-gray-600">
-                        {t?.learning?.signupForm?.subtitle || 'Be the first to know when our courses launch and get exclusive early access.'}
+                      <p className="text-muted-foreground">
+                        {t?.learning?.signupForm?.subtitle || 'Fill the form and our team will contact you within 24 hours.'}
                       </p>
                     </div>
                     <form onSubmit={handleSubmit} className="space-y-6">
                       <div>
-                        <Label htmlFor="fullName" className="text-sm font-medium text-gray-700">
+                        <Label htmlFor="fullName" className="text-sm font-medium">
                           {t?.learning?.signupForm?.fields?.fullName || 'Full Name'}
                         </Label>
                         <Input
                           id="fullName"
-                          type="text"
                           value={formData.fullName}
                           onChange={(e) => handleInputChange('fullName', e.target.value)}
+                          placeholder="Dr. María García"
                           className="mt-1"
-                          required
-                          disabled={isSubmitting}
                         />
                       </div>
                       <div>
-                        <Label htmlFor="country" className="text-sm font-medium text-gray-700">
+                        <Label htmlFor="country" className="text-sm font-medium">
                           {t?.learning?.signupForm?.fields?.country || 'Country of Residence'}
                         </Label>
                         <Input
                           id="country"
-                          type="text"
                           value={formData.country}
                           onChange={(e) => handleInputChange('country', e.target.value)}
+                          placeholder="Spain"
                           className="mt-1"
-                          required
-                          disabled={isSubmitting}
                         />
                       </div>
                       <div>
-                        <Label htmlFor="email" className="text-sm font-medium text-gray-700">
-                          {t?.learning?.signupForm?.fields?.email || 'Email Address'}
+                        <Label htmlFor="email" className="text-sm font-medium">
+                          {t?.learning?.signupForm?.fields?.email || 'Email'}
                         </Label>
                         <Input
                           id="email"
                           type="email"
                           value={formData.email}
                           onChange={(e) => handleInputChange('email', e.target.value)}
+                          placeholder="doctor@email.com"
                           className="mt-1"
-                          required
-                          disabled={isSubmitting}
                         />
                       </div>
                       <div>
-                        <Label htmlFor="profession" className="text-sm font-medium text-gray-700">
+                        <Label htmlFor="profession" className="text-sm font-medium">
                           {t?.learning?.signupForm?.fields?.profession || 'Your Profession'}
                         </Label>
                         <Input
                           id="profession"
-                          type="text"
                           value={formData.profession}
                           onChange={(e) => handleInputChange('profession', e.target.value)}
-                          className="mt-1"
                           placeholder={t?.learning?.signupForm?.fields?.professionPlaceholder || 'e.g., Doctor, Nurse, Medical Student'}
-                          required
-                          disabled={isSubmitting}
+                          className="mt-1"
                         />
                       </div>
-                      <div>
-                        <Label className="text-sm font-medium text-gray-700 mb-3 block">
+                      <div className="space-y-3">
+                        <Label className="text-sm font-medium">
                           {t?.learning?.signupForm?.interests?.title || 'What are you interested in?'}
                         </Label>
-                        <div className="space-y-3">
-                          <div className="flex items-center space-x-2">
-                            <Checkbox
-                              id="germanLanguage"
-                              checked={formData.germanLanguage}
-                              onCheckedChange={(checked) => handleInputChange('germanLanguage', checked)}
-                              disabled={isSubmitting}
-                            />
-                            <Label htmlFor="germanLanguage" className="text-sm text-gray-700">
-                              {t?.learning?.signupForm?.interests?.germanLanguage || 'German Language Courses'}
-                            </Label>
-                          </div>
-                          <div className="flex items-center space-x-2">
-                            <Checkbox
-                              id="fspPreparation"
-                              checked={formData.fspPreparation}
-                              onCheckedChange={(checked) => handleInputChange('fspPreparation', checked)}
-                              disabled={isSubmitting}
-                            />
-                            <Label htmlFor="fspPreparation" className="text-sm text-gray-700">
-                              {t?.learning?.signupForm?.interests?.fspPreparation || 'FSP Preparation'}
-                            </Label>
-                          </div>
+                        <div className="flex items-center space-x-2">
+                          <Checkbox
+                            id="germanLanguage"
+                            checked={formData.germanLanguage}
+                            onCheckedChange={(checked) => handleInputChange('germanLanguage', checked as boolean)}
+                          />
+                          <label htmlFor="germanLanguage" className="text-sm cursor-pointer">
+                            {t?.learning?.signupForm?.interests?.germanLanguage || 'Medical Language Courses'}
+                          </label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <Checkbox
+                            id="fspPreparation"
+                            checked={formData.fspPreparation}
+                            onCheckedChange={(checked) => handleInputChange('fspPreparation', checked as boolean)}
+                          />
+                          <label htmlFor="fspPreparation" className="text-sm cursor-pointer">
+                            {t?.learning?.signupForm?.interests?.fspPreparation || 'Exam Preparation (FSP, TELC, etc.)'}
+                          </label>
                         </div>
                       </div>
                       <Button 
                         type="submit" 
-                        className="w-full bg-primary hover:bg-primary/90 text-white py-3"
+                        className="w-full py-6 text-lg"
                         disabled={isSubmitting}
                       >
-                        {isSubmitting ? 'Submitting...' : (t?.learning?.signupForm?.submit || 'Submit')}
+                        {isSubmitting 
+                          ? (t?.learning?.signupForm?.submitting || 'Submitting...') 
+                          : (t?.learning?.signupForm?.submit || 'Submit')}
                       </Button>
                     </form>
                   </>
                 ) : (
-                  <div className="text-center py-12">
-                    <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <Check className="w-8 h-8 text-green-600" />
+                  <div className="text-center py-8">
+                    <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <ArrowRight className="w-8 h-8 text-primary" />
                     </div>
-                    <h3 className="text-2xl font-bold text-gray-900 mb-2">
-                      {t?.learning?.signupForm?.success?.title || 'Thank You!'}
+                    <h3 className="text-2xl font-bold text-foreground mb-2">
+                      {t?.learning?.signupForm?.success?.title || 'Thank you!'}
                     </h3>
-                    <p className="text-gray-600">
-                      {t?.learning?.signupForm?.success?.message || 'Your form has been submitted successfully.'}
+                    <p className="text-muted-foreground">
+                      {t?.learning?.signupForm?.success?.message || 'Your form has been submitted successfully. We will contact you soon.'}
                     </p>
                   </div>
                 )}
               </CardContent>
             </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* Final CTA */}
+      <section className="py-20 bg-primary text-primary-foreground">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            {getFinalCTATitle()}
+          </h2>
+          <p className="text-lg opacity-90 mb-8 max-w-2xl mx-auto">
+            {getFinalCTASubtitle()}
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button 
+              size="lg" 
+              variant="secondary"
+              onClick={scrollToWizard}
+              className="text-lg px-8"
+            >
+              {getPrimaryCTA()}
+              <ArrowRight className="ml-2 w-5 h-5" />
+            </Button>
+            <Button 
+              size="lg" 
+              variant="outline"
+              onClick={scrollToForm}
+              className="text-lg px-8 bg-transparent border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-primary"
+            >
+              {getSecondaryCTA()}
+            </Button>
           </div>
         </div>
       </section>

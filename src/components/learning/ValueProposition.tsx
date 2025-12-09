@@ -3,7 +3,7 @@ import { Check, Users, BookOpen, Award, Clock, Globe } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
 
 const ValueProposition: React.FC = () => {
-  const { t, language } = useLanguage();
+  const { t, currentLanguage: language } = useLanguage();
 
   const getValuePoints = () => {
     const points = [
