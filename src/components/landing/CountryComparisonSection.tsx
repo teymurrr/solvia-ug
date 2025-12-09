@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Clock, ArrowRight, Globe } from 'lucide-react';
+import { Clock, ArrowRight, Globe, Banknote } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
 
 const CountryComparisonSection = () => {
@@ -17,33 +17,37 @@ const CountryComparisonSection = () => {
       name: "Germany",
       flag: "🇩🇪",
       processDuration: "6–12 months",
-      price: "€750",
+      positions: 85,
+      salary: "5,500–8,000",
       highlight: "Best salaries",
-      includes: ["Document preparation", "FSP guidance", "Job placement"]
+      badgeColor: "bg-emerald-500"
     },
     austria: {
       name: "Austria",
       flag: "🇦🇹",
       processDuration: "4–8 months",
-      price: "€750",
+      positions: 42,
+      salary: "4,500–7,000",
       highlight: "Simplest process",
-      includes: ["Document preparation", "Nostrifizierung", "Job placement"]
+      badgeColor: "bg-blue-500"
     },
     spain: {
       name: "Spain",
       flag: "🇪🇸",
       processDuration: "2–6 months",
-      price: "€290",
+      positions: 38,
+      salary: "2,500–4,000",
       highlight: "Fast homologation",
-      includes: ["Document preparation", "MIR support", "Job placement"]
+      badgeColor: "bg-amber-500"
     },
     france: {
       name: "France",
       flag: "🇫🇷",
       processDuration: "4–10 months",
-      price: "€750",
+      positions: 25,
+      salary: "3,500–6,000",
       highlight: "Great quality of life",
-      includes: ["Document preparation", "PAE support", "Job placement"]
+      badgeColor: "bg-violet-500"
     }
   };
 
@@ -59,54 +63,61 @@ const CountryComparisonSection = () => {
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 rounded-full mb-6">
               <Globe className="h-5 w-5 text-primary" />
               <span className="text-sm font-medium text-primary">
-                {comparison?.badge || "Homologation Services"}
+                {comparison?.badge || "Compare Destinations"}
               </span>
             </div>
             <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
               {comparison?.title || "Choose Your Destination"}
             </h2>
             <p className="text-lg text-muted-foreground">
-              {comparison?.subtitle || "Complete homologation packages with transparent pricing"}
+              {comparison?.subtitle || "See expected earnings and timeline for each country"}
             </p>
           </div>
 
-          {/* Country Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+          {/* Country Cards - Redesigned */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-10">
             {countryKeys.map((key) => {
               const country = countries[key] || defaultCountries[key];
-              const isGermany = key === 'germany';
+              const defaultData = defaultCountries[key];
+              
               return (
                 <Card 
                   key={key} 
-                  className={`p-6 border-border/50 hover:shadow-lg transition-all hover:border-primary/30 relative overflow-hidden ${isGermany ? 'ring-2 ring-primary/50' : ''}`}
+                  className="p-5 border-border/50 hover:border-primary/50 hover:shadow-lg transition-all duration-300 bg-card relative"
                 >
                   {/* Highlight Badge */}
-                  <Badge className={`absolute top-4 right-4 ${isGermany ? 'bg-primary text-primary-foreground' : 'bg-primary/10 text-primary'} hover:bg-primary/20`}>
-                    {country.highlight}
+                  <Badge className={`absolute -top-3 left-1/2 -translate-x-1/2 ${defaultData.badgeColor} text-white text-xs px-3 py-1 whitespace-nowrap`}>
+                    {country.highlight || defaultData.highlight}
                   </Badge>
                   
-                  {/* Flag & Name */}
-                  <div className="text-center mb-6 pt-4">
-                    <div className="text-5xl mb-3">{country.flag}</div>
-                    <h3 className="text-xl font-bold text-foreground">{country.name}</h3>
-                  </div>
-                  
-                  {/* Price */}
-                  <div className="text-center mb-4">
-                    <div className="flex items-center justify-center gap-1">
-                      <span className="text-3xl font-bold text-primary">{country.price}</span>
+                  <div className="space-y-4 pt-2">
+                    {/* Country header */}
+                    <div className="text-center">
+                      <span className="text-4xl block mb-2">{country.flag || defaultData.flag}</span>
+                      <h4 className="font-bold text-lg text-foreground">{country.name || defaultData.name}</h4>
+                      <p className="text-sm text-muted-foreground">
+                        {defaultData.positions} {comparison?.positionsAvailable || "positions available"}
+                      </p>
                     </div>
-                    <p className="text-xs text-muted-foreground mt-1">
-                      {comparison?.oneTimePayment || "One-time payment"}
-                    </p>
-                  </div>
-                  
-                  {/* Duration */}
-                  <div className="flex items-center justify-center gap-2 p-3 bg-muted/50 rounded-lg">
-                    <Clock className="h-4 w-4 text-muted-foreground" />
-                    <span className="text-sm text-foreground">
-                      {country.processDuration}
-                    </span>
+                    
+                    {/* Main highlight: Expected Earnings */}
+                    <div className="bg-primary/5 rounded-lg p-3 text-center">
+                      <div className="flex items-center justify-center gap-1.5 text-muted-foreground text-xs mb-1">
+                        <Banknote className="h-3.5 w-3.5" />
+                        <span>{comparison?.expectedSalary || "Expected salary"}</span>
+                      </div>
+                      <p className="text-xl font-bold text-primary">€{country.salary || defaultData.salary}</p>
+                      <p className="text-xs text-muted-foreground">/{comparison?.perMonth || "month"}</p>
+                    </div>
+                    
+                    {/* Duration highlight */}
+                    <div className="flex items-center justify-center gap-2 py-2 border-t border-border/50">
+                      <Clock className="h-4 w-4 text-muted-foreground" />
+                      <div className="text-center">
+                        <p className="text-sm font-medium text-foreground">{country.processDuration || defaultData.processDuration}</p>
+                        <p className="text-xs text-muted-foreground">{comparison?.estimatedTime || "Estimated time"}</p>
+                      </div>
+                    </div>
                   </div>
                 </Card>
               );

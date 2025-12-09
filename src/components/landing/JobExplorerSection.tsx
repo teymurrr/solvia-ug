@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { MapPin, Briefcase, ArrowRight, Clock, Euro } from 'lucide-react';
+import { MapPin, Briefcase, ArrowRight, Clock, Banknote } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
 
 const JobExplorerSection = () => {
@@ -55,37 +55,37 @@ const JobExplorerSection = () => {
       flag: '🇩🇪', 
       name: 'Germany',
       positions: 85,
-      price: '€750',
       processDuration: '6–12 months',
       highlight: 'Best salaries',
-      salary: '€5,500–€8,000/month'
+      salary: '5,500–8,000',
+      badgeColor: 'bg-emerald-500'
     },
     austria: { 
       flag: '🇦🇹', 
       name: 'Austria',
       positions: 42,
-      price: '€750',
       processDuration: '4–8 months',
       highlight: 'Simplest process',
-      salary: '€4,500–€7,000/month'
+      salary: '4,500–7,000',
+      badgeColor: 'bg-blue-500'
     },
     spain: { 
       flag: '🇪🇸', 
       name: 'Spain',
       positions: 38,
-      price: '€290',
       processDuration: '2–6 months',
       highlight: 'Fast homologation',
-      salary: '€2,500–€4,000/month'
+      salary: '2,500–4,000',
+      badgeColor: 'bg-amber-500'
     },
     france: { 
       flag: '🇫🇷', 
       name: 'France',
       positions: 25,
-      price: '€750',
       processDuration: '4–10 months',
       highlight: 'Great quality of life',
-      salary: '€3,500–€6,000/month'
+      salary: '3,500–6,000',
+      badgeColor: 'bg-violet-500'
     }
   };
 
@@ -140,52 +140,54 @@ const JobExplorerSection = () => {
             ))}
           </div>
 
-          {/* Country Cards with Pricing */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
+          {/* Country Cards - Redesigned with focus on earnings and duration */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
             {countryKeys.map((key) => {
               const countryTranslations = comparison?.countries?.[key];
-                const country = {
-                ...defaultCountryData[key],
-                name: countryTranslations?.name || jobExplorer?.countries?.[key] || defaultCountryData[key].name,
-                price: countryTranslations?.price || defaultCountryData[key].price,
-                processDuration: countryTranslations?.processDuration || defaultCountryData[key].processDuration,
-                highlight: countryTranslations?.highlight || defaultCountryData[key].highlight,
-                salary: countryTranslations?.salary || defaultCountryData[key].salary
+              const defaultData = defaultCountryData[key];
+              const country = {
+                ...defaultData,
+                name: countryTranslations?.name || jobExplorer?.countries?.[key] || defaultData.name,
+                processDuration: countryTranslations?.processDuration || defaultData.processDuration,
+                highlight: countryTranslations?.highlight || defaultData.highlight,
+                salary: countryTranslations?.salary || defaultData.salary
               };
-              const isGermany = key === 'germany';
               
               return (
                 <Card 
                   key={key} 
-                  className={`p-5 text-center hover:shadow-lg transition-all cursor-pointer border-border/50 hover:border-primary/30 relative ${isGermany ? 'ring-2 ring-primary/50' : ''}`}
+                  className="p-5 text-center hover:shadow-lg transition-all border-border/50 hover:border-primary/30 relative"
                 >
                   {/* Highlight Badge */}
-                  <Badge className={`absolute top-3 right-3 text-xs ${isGermany ? 'bg-primary text-primary-foreground' : 'bg-primary/10 text-primary'}`}>
+                  <Badge className={`absolute -top-3 left-1/2 -translate-x-1/2 ${defaultData.badgeColor} text-white text-xs px-3 py-1 whitespace-nowrap`}>
                     {country.highlight}
                   </Badge>
                   
-                  <div className="text-4xl mb-2 mt-4">{country.flag}</div>
-                  <h4 className="font-bold text-lg text-foreground mb-1">{country.name}</h4>
-                  <p className="text-xs text-muted-foreground mb-3">
-                    {country.positions} {jobExplorer?.positionsAvailable || "positions available"}
-                  </p>
-                  
-                  {/* Price */}
-                  <div className="text-2xl font-bold text-primary mb-1">{country.price}</div>
-                  <p className="text-xs text-muted-foreground mb-3">
-                    {comparison?.oneTimePayment || "One-time payment"}
-                  </p>
-                  
-                  {/* Salary */}
-                  <div className="flex items-center justify-center gap-2 p-2 bg-primary/5 rounded-lg mb-2">
-                    <Euro className="h-3.5 w-3.5 text-primary" />
-                    <span className="text-xs font-medium text-foreground">{country.salary}</span>
-                  </div>
-                  
-                  {/* Duration */}
-                  <div className="flex items-center justify-center gap-2 p-2 bg-muted/50 rounded-lg">
-                    <Clock className="h-3.5 w-3.5 text-muted-foreground" />
-                    <span className="text-xs text-foreground">{country.processDuration}</span>
+                  <div className="space-y-3 pt-3">
+                    <div className="text-4xl mb-2">{country.flag}</div>
+                    <h4 className="font-bold text-lg text-foreground">{country.name}</h4>
+                    <p className="text-xs text-muted-foreground">
+                      {country.positions} {jobExplorer?.positionsAvailable || "positions available"}
+                    </p>
+                    
+                    {/* Salary - Main highlight */}
+                    <div className="bg-primary/5 rounded-lg p-3">
+                      <div className="flex items-center justify-center gap-1.5 text-muted-foreground text-xs mb-1">
+                        <Banknote className="h-3.5 w-3.5" />
+                        <span>{comparison?.expectedSalary || "Expected salary"}</span>
+                      </div>
+                      <p className="text-lg font-bold text-primary">€{country.salary}</p>
+                      <p className="text-xs text-muted-foreground">/{comparison?.perMonth || "month"}</p>
+                    </div>
+                    
+                    {/* Duration */}
+                    <div className="flex items-center justify-center gap-2 py-2 border-t border-border/50">
+                      <Clock className="h-4 w-4 text-muted-foreground" />
+                      <div>
+                        <p className="text-sm font-medium text-foreground">{country.processDuration}</p>
+                        <p className="text-xs text-muted-foreground">{comparison?.estimatedTime || "Estimated time"}</p>
+                      </div>
+                    </div>
                   </div>
                 </Card>
               );
