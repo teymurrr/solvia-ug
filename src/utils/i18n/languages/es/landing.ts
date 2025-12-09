@@ -129,6 +129,7 @@ export const landing = {
         processDuration: "6–12 meses",
         price: "€750",
         highlight: "Mejores salarios",
+        salary: "€5.500–€8.000/mes",
         includes: ["Preparación de documentos", "Guía FSP", "Colocación laboral"]
       },
       austria: {
@@ -137,6 +138,7 @@ export const landing = {
         processDuration: "4–8 meses",
         price: "€750",
         highlight: "Proceso más simple",
+        salary: "€4.500–€7.000/mes",
         includes: ["Preparación de documentos", "Nostrifizierung", "Colocación laboral"]
       },
       spain: {
@@ -145,6 +147,7 @@ export const landing = {
         processDuration: "2–6 meses",
         price: "€290",
         highlight: "Homologación rápida",
+        salary: "€2.500–€4.000/mes",
         includes: ["Preparación de documentos", "Soporte MIR", "Colocación laboral"]
       },
       france: {
@@ -153,6 +156,7 @@ export const landing = {
         processDuration: "4–10 meses",
         price: "€750",
         highlight: "Gran calidad de vida",
+        salary: "€3.500–€6.000/mes",
         includes: ["Preparación de documentos", "Soporte PAE", "Colocación laboral"]
       }
     }

@@ -129,6 +129,7 @@ export const landing = {
         processDuration: "6–12 месяцев",
         price: "€750",
         highlight: "Самые высокие зарплаты",
+        salary: "€5 500–€8 000/месяц",
         includes: ["Подготовка документов", "Сопровождение FSP", "Трудоустройство"]
       },
       austria: {
@@ -137,6 +138,7 @@ export const landing = {
         processDuration: "4–8 месяцев",
         price: "€750",
         highlight: "Более простой процесс",
+        salary: "€4 500–€7 000/месяц",
         includes: ["Подготовка документов", "Нострификация", "Трудоустройство"]
       },
       spain: {
@@ -145,6 +147,7 @@ export const landing = {
         processDuration: "2–6 месяцев",
         price: "€290",
         highlight: "Быстрая нострификация",
+        salary: "€2 500–€4 000/месяц",
         includes: ["Подготовка документов", "Поддержка MIR", "Трудоустройство"]
       },
       france: {
@@ -153,6 +156,7 @@ export const landing = {
         processDuration: "4–10 месяцев",
         price: "€750",
         highlight: "Высокое качество жизни",
+        salary: "€3 500–€6 000/месяц",
         includes: ["Подготовка документов", "Поддержка PAE", "Трудоустройство"]
       }
     }
