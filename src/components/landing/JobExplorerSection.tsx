@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { MapPin, Briefcase, ArrowRight, Clock } from 'lucide-react';
+import { MapPin, Briefcase, ArrowRight, Clock, Euro } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
 
 const JobExplorerSection = () => {
@@ -57,7 +57,8 @@ const JobExplorerSection = () => {
       positions: 85,
       price: '€750',
       processDuration: '6–12 months',
-      highlight: 'Best salaries'
+      highlight: 'Best salaries',
+      salary: '€5,500–€8,000/month'
     },
     austria: { 
       flag: '🇦🇹', 
@@ -65,7 +66,8 @@ const JobExplorerSection = () => {
       positions: 42,
       price: '€750',
       processDuration: '4–8 months',
-      highlight: 'Simplest process'
+      highlight: 'Simplest process',
+      salary: '€4,500–€7,000/month'
     },
     spain: { 
       flag: '🇪🇸', 
@@ -73,7 +75,8 @@ const JobExplorerSection = () => {
       positions: 38,
       price: '€290',
       processDuration: '2–6 months',
-      highlight: 'Fast homologation'
+      highlight: 'Fast homologation',
+      salary: '€2,500–€4,000/month'
     },
     france: { 
       flag: '🇫🇷', 
@@ -81,7 +84,8 @@ const JobExplorerSection = () => {
       positions: 25,
       price: '€750',
       processDuration: '4–10 months',
-      highlight: 'Great quality of life'
+      highlight: 'Great quality of life',
+      salary: '€3,500–€6,000/month'
     }
   };
 
@@ -140,12 +144,13 @@ const JobExplorerSection = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
             {countryKeys.map((key) => {
               const countryTranslations = comparison?.countries?.[key];
-              const country = {
+                const country = {
                 ...defaultCountryData[key],
                 name: countryTranslations?.name || jobExplorer?.countries?.[key] || defaultCountryData[key].name,
                 price: countryTranslations?.price || defaultCountryData[key].price,
                 processDuration: countryTranslations?.processDuration || defaultCountryData[key].processDuration,
-                highlight: countryTranslations?.highlight || defaultCountryData[key].highlight
+                highlight: countryTranslations?.highlight || defaultCountryData[key].highlight,
+                salary: countryTranslations?.salary || defaultCountryData[key].salary
               };
               const isGermany = key === 'germany';
               
@@ -170,6 +175,12 @@ const JobExplorerSection = () => {
                   <p className="text-xs text-muted-foreground mb-3">
                     {comparison?.oneTimePayment || "One-time payment"}
                   </p>
+                  
+                  {/* Salary */}
+                  <div className="flex items-center justify-center gap-2 p-2 bg-primary/5 rounded-lg mb-2">
+                    <Euro className="h-3.5 w-3.5 text-primary" />
+                    <span className="text-xs font-medium text-foreground">{country.salary}</span>
+                  </div>
                   
                   {/* Duration */}
                   <div className="flex items-center justify-center gap-2 p-2 bg-muted/50 rounded-lg">
