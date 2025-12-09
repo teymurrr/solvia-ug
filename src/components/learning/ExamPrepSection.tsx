@@ -10,7 +10,7 @@ interface ExamPrepSectionProps {
 }
 
 const ExamPrepSection: React.FC<ExamPrepSectionProps> = ({ onSelectCountry }) => {
-  const { t, language } = useLanguage();
+  const { t, currentLanguage: language } = useLanguage();
 
   const getExamDetails = () => {
     const details: Record<string, Record<string, { exams: string[]; note: string }>> = {

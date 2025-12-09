@@ -1,82 +1,81 @@
 export const learning = {
-  title: "Aprendizaje Solvia",
-  subtitle: "Mejora tu carrera médica con nuestros cursos especializados de alemán médico y preparación FSP",
-  advanceCareer: "Avanza en Tu Carrera",
-  startJourney: "Comienza Tu Viaje de Aprendizaje Hoy",
-  additionalSupport: "Apoyo Adicional",
-  prepareForSuccess: "Prepárate para el Éxito en Alemania",
-  compactDescription: "Domina el alemán médico y aprueba tu examen FSP con nuestros cursos especializados.",
+  title: "Solvia Learning",
+  subtitle: "Aprende el idioma médico que necesitas para trabajar en Europa",
+  
   hero: {
-    title: "Impulsa tu Carrera Médica con Solvia Learning",
-    subtitle: "Cursos Especializados de Alemán Médico y Preparación FSP para Médicos Internacionales",
-    cta: "Regístrate para Consulta Gratuita"
+    title: "Aprende el idioma médico que necesitas para trabajar en Europa",
+    subtitle: "Cursos especializados de alemán, francés, italiano y español médico, diseñados para profesionales de la salud internacionales.",
+    primaryCta: "Crear mi Plan de Aprendizaje",
+    secondaryCta: "Hablar con un asesor"
   },
-  germanCourses: {
-    title: 'Alemán Médico A1-C1',
-    subtitle: 'Domina el alemán médico con nuestros cursos especializados',
-    description: "Nuestros cursos de alemán están diseñados para profesionales de la salud ocupados. Con contexto médico real, instrucción experta y formatos flexibles, te ayudaremos a hablar con confianza en hospitales, exámenes y más allá.",
-    cta: "Explorar Más",
-    features: [
-      "Alemán General y Médico de A1 a C1 - Plan de estudios estructurado desde principiante hasta avanzado con vocabulario médico incluido desde las primeras etapas",
-      "Opciones de Aprendizaje Flexibles - Elige entre clases en vivo, módulos a tu ritmo o formatos híbridos, diseñados para profesionales con horarios ocupados",
-      "Preparación para TELC B2-C1 Medizin - Obtén práctica específica para el examen de idioma médico más reconocido y aceptado en toda Alemania",
-      "Herramientas de Práctica Interactivas - Tarjetas de vocabulario, ejercicios de pronunciación y simulaciones de conversaciones médico-paciente",
-      "Seguimiento de Progreso - Monitorea tus avances y recibe recordatorios para sesiones de práctica, tareas y exámenes"
-    ]
+
+  wizard: {
+    step1Title: "Elige tu país de destino",
+    step2Title: "¿Cuál es tu nivel actual del idioma?",
+    step3Title: "¿Cuál es tu profesión médica?",
+    back: "Atrás",
+    next: "Siguiente",
+    seeMyPlan: "Ver Mi Plan de Aprendizaje"
   },
-  fspCourses: {
-    title: 'Preparación del Examen FSP',
-    subtitle: 'Preparación integral para tu licencia médica en Alemania',
-    description: "El FSP es un paso crítico para ejercer en Alemania. Nuestro curso te brinda estructura, práctica y orientación experta para tener éxito en tu primer intento.",
-    cta: "Explorar Más",
-    features: [
-      "Currículo FSP Completo - Lecciones estructuradas que reflejan el formato real del examen: anamnesis, discusión de hallazgos y comunicación médica",
-      "Exámenes de Práctica - Múltiples simulacros completos del FSP con retroalimentación de entrenadores certificados",
-      "Mentoría Personalizada - Recibe comentarios personales de profesionales médicos que han aprobado el FSP",
-      "Escenarios de Casos Reales - Entrena con casos clínicos realistas para desarrollar vocabulario y confianza",
-      "App de Simulación de Examen (Próximamente) - Practica en cualquier momento con nuestra herramienta digital que simula el entorno FSP"
-    ],
-    steps: [
-      {
-        title: "Entrenamiento de Anamnesis",
-        description: "Domina la toma de historia clínica"
-      },
-      {
-        title: "Discusión de Hallazgos",
-        description: "Presenta y discute hallazgos médicos"
-      },
-      {
-        title: "Diálogo Médico",
-        description: "Comunicación médica profesional"
-      }
-    ]
+
+  plan: {
+    planReady: "¡Tu plan personalizado está listo!",
+    titlePrefix: "Tu Plan de Aprendizaje para",
+    subtitle: "Aprende el idioma y prepárate para tu carrera médica",
+    estimatedDuration: "Duración Estimada",
+    requiredExams: "Exámenes Requeridos",
+    recommendedCourses: "Cursos Recomendados",
+    languageCourse: "Curso de Idioma",
+    languageCourseDesc: "Desde tu nivel actual hasta competencia profesional",
+    medicalTerminology: "Terminología Médica",
+    medicalTerminologyDesc: "Vocabulario especializado para entornos clínicos",
+    examPrep: "Preparación de Examen",
+    examPrepDesc: "Preparación completa para tu examen de licencia médica",
+    whatIncluded: "Qué Incluye",
+    feature1: "Clases en vivo online con hablantes nativos",
+    feature2: "Módulos de aprendizaje a tu ritmo",
+    feature3: "Simulaciones de casos clínicos reales",
+    feature4: "Sesiones de mentoría individual",
+    feature5: "Exámenes de práctica con retroalimentación",
+    feature6: "Certificado al completar",
+    getFreeConsultation: "Obtener Consulta Gratuita",
+    startHomologation: "Iniciar Proceso de Homologación",
+    changePlan: "← Cambiar mis selecciones"
   },
+
+  catalog: {
+    title: "Catálogo de Cursos de Idioma Médico",
+    subtitle: "Cursos de idioma especializados para cada país europeo",
+    levelsLabel: "Niveles",
+    objectiveLabel: "Objetivo",
+    workIn: "Trabajar en"
+  },
+
+  exams: {
+    title: "Preparación de Exámenes Médicos para Europa",
+    subtitle: "FSP, OET, TELC y más — prepárate para el examen que tu país requiere",
+    cta: "Ver preparación según tu país"
+  },
+
   testimonials: {
-    title: "Lo Que Dicen Nuestros Estudiantes",
-    items: [
-      {
-        name: "Dra. Sofia Ramirez",
-        profession: "Médica General",
-        country: "Colombia",
-        quote: "Estaba preocupada por aprender alemán mientras trabajaba tiempo completo, pero Solvia lo hizo muy manejable. El enfoque médico me ayudó a sentirme segura hablando con pacientes. La preparación TELC fue exactamente lo que necesitaba."
-      },
-      {
-        name: "Dr. Luis Herrera",
-        profession: "Residente de Medicina Interna",
-        country: "México",
-        quote: "La mentoría FSP fue un cambio total. ¡Aprobé mi examen en el primer intento! Me dieron casos reales para practicar y retroalimentación muy honesta. Sentí que estaba aprendiendo con amigos."
-      },
-      {
-        name: "Dra. Camila Torres",
-        profession: "Pediatra",
-        country: "Argentina",
-        quote: "Lo que más me gustó fue la flexibilidad. Podía unirme a clases en vivo o verlas después. Además, el coaching personalizado me dio la confianza para presentar hallazgos en alemán como un médico nativo."
-      }
-    ]
+    title: "Historias de Éxito por País",
+    subtitle: "Experiencias reales de profesionales de la salud que lograron sus metas",
+    noTestimonials: "¡Más historias de éxito próximamente!"
   },
+
+  faq: {
+    title: "Preguntas Frecuentes",
+    subtitle: "Todo lo que necesitas saber sobre aprender idiomas médicos",
+    takeTest: "→ Haz el test gratuito ahora"
+  },
+
+  value: {
+    title: "Por qué Funciona Solvia Learning"
+  },
+
   signupForm: {
-    title: "Completa el formulario para una Consultoría Gratuita",
-    subtitle: "Sé el primero en saber cuándo lancemos nuestros cursos y obtén acceso exclusivo temprano.",
+    title: "Obtén una Consulta Gratuita",
+    subtitle: "Completa el formulario y nuestro equipo te contactará en 24 horas.",
     fields: {
       fullName: "Nombre Completo",
       country: "País de Residencia",
@@ -86,33 +85,49 @@ export const learning = {
     },
     interests: {
       title: "¿En qué estás interesado?",
-      germanLanguage: "Cursos de Alemán Médico",
-      fspPreparation: "Preparación FSP"
+      germanLanguage: "Cursos de Idioma Médico",
+      fspPreparation: "Preparación de Exámenes (FSP, TELC, etc.)"
     },
     submit: "Enviar",
+    submitting: "Enviando...",
     success: {
       title: "¡Gracias!",
-      message: "Tu formulario ha sido enviado exitosamente."
+      message: "Tu formulario ha sido enviado exitosamente. Te contactaremos pronto."
     }
   },
-  exploreCourses: 'Explorar Cursos',
-  startLearningJourney: "Comienza Tu Viaje de Aprendizaje Hoy",
-  joinProfessionals: "Únete a más de 1000+ profesionales de la salud que eligieron Aprendizaje Solvia",
-  exploreAllCourses: "Explorar Todos los Cursos",
-  getFreeConsultation: "Obtener Consulta Gratuita",
-  students: "estudiantes",
-  rating: "calificación",
-  passRate: "tasa de aprobación",
-  mostPopular: "Lo más popular",
-  bestResults: "Mejores resultados",
-  duration6to12: "6-12 meses",
-  duration3to6: "3-6 meses",
-  courseDescription1: "Cursos de alemán diseñados específicamente para profesionales de la salud",
-  courseDescription2: "Preparación intensiva para el examen Fachsprachprüfung con métodos de éxito probado",
-  medicalVocabularyFocus: "Enfoque en vocabulario médico",
-  interactiveLessons: "Lecciones interactivas", 
-  nativeSpeakerInstructors: "Instructores nativos",
-  mockExams: "Exámenes de prueba",
-  oneOnOneCoaching: "Entrenamiento individualizado",
-  passRatePercent: "Índice de aprobados del 95%"
+
+  form: {
+    fillRequired: "Por favor completa todos los campos requeridos",
+    selectInterest: "Por favor selecciona al menos un área de interés",
+    success: "¡Gracias! Tu formulario ha sido enviado exitosamente."
+  },
+
+  finalCta: {
+    title: "Empieza tu plan de idioma médico hoy",
+    subtitle: "Aprende el idioma que necesitas para trabajar en el país de tus sueños."
+  },
+
+  // Legacy keys for backward compatibility
+  germanCourses: {
+    title: 'Alemán Médico A1-C1',
+    subtitle: 'Domina el alemán médico con nuestros cursos especializados',
+    features: [
+      "Alemán General y Médico de A1 a C1",
+      "Opciones de Aprendizaje Flexibles",
+      "Preparación para TELC B2-C1 Medizin",
+      "Herramientas de Práctica Interactivas",
+      "Seguimiento de Progreso"
+    ]
+  },
+  fspCourses: {
+    title: 'Preparación del Examen FSP',
+    subtitle: 'Preparación integral para tu licencia médica en Alemania',
+    features: [
+      "Currículo FSP Completo",
+      "Exámenes de Práctica",
+      "Mentoría Personalizada",
+      "Escenarios de Casos Reales",
+      "App de Simulación de Examen"
+    ]
+  }
 };

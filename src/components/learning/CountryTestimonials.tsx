@@ -6,7 +6,7 @@ import { useLanguage } from '@/hooks/useLanguage';
 import { countries, testimonialsByCountry } from '@/data/learningData';
 
 const CountryTestimonials: React.FC = () => {
-  const { t, language } = useLanguage();
+  const { t, currentLanguage: language } = useLanguage();
   const [activeTab, setActiveTab] = useState('germany');
 
   const getTestimonialsForCountry = (countryId: string) => {

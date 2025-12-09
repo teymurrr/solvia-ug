@@ -13,7 +13,7 @@ interface LearningFAQProps {
 }
 
 const LearningFAQ: React.FC<LearningFAQProps> = ({ onTakeTest }) => {
-  const { t, language } = useLanguage();
+  const { t, currentLanguage: language } = useLanguage();
 
   const faqs = [
     {
