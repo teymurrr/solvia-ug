@@ -106,7 +106,7 @@ const CountryComparisonSection = () => {
                         <Banknote className="h-3.5 w-3.5" />
                         <span>{comparison?.expectedSalary || "Expected salary"}</span>
                       </div>
-                      <p className="text-xl font-bold text-primary">€{country.salary || defaultData.salary}</p>
+                      <p className="text-xl font-bold text-primary">{country.salary || defaultData.salary}</p>
                       <p className="text-xs text-muted-foreground">/{comparison?.perMonth || "month"}</p>
                     </div>
                     
