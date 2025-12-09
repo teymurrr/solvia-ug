@@ -43,7 +43,11 @@ const ConversionFAQSection = () => {
   ];
 
   const items = faq?.items || defaultItems;
-  const countryLinks = ['Germany', 'Austria', 'Spain'];
+  const countryLinks = [
+    { name: 'Germany', id: 'germany' },
+    { name: 'Austria', id: 'austria' },
+    { name: 'Spain', id: 'spain' }
+  ];
 
   return (
     <section className="py-16 bg-background">
@@ -80,11 +84,11 @@ const ConversionFAQSection = () => {
                   <div className="flex flex-wrap gap-2">
                     {countryLinks.map((country) => (
                       <Link
-                        key={country}
-                        to="/country-selection"
+                        key={country.id}
+                        to={`/homologation-wizard?country=${country.id}`}
                         className="inline-flex items-center gap-1 text-sm text-primary hover:text-primary/80 font-medium group"
                       >
-                        {faq?.viewPlanFor || "View my plan for"} {country}
+                        {faq?.viewPlanFor || "View my plan for"} {country.name}
                         <ArrowRight className="h-3 w-3 group-hover:translate-x-1 transition-transform" />
                       </Link>
                     ))}
