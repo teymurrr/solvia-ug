@@ -8,6 +8,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 interface LearningWizardProps {
   onComplete: (data: WizardData) => void;
+  initialCountry?: string;
 }
 
 export interface WizardData {
@@ -16,11 +17,11 @@ export interface WizardData {
   profession: string;
 }
 
-const LearningWizard: React.FC<LearningWizardProps> = ({ onComplete }) => {
+const LearningWizard: React.FC<LearningWizardProps> = ({ onComplete, initialCountry }) => {
   const { t, currentLanguage: language } = useLanguage();
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(initialCountry ? 2 : 1);
   const [wizardData, setWizardData] = useState<WizardData>({
-    country: '',
+    country: initialCountry || '',
     level: '',
     profession: ''
   });

@@ -156,8 +156,8 @@ const HomologationResult = () => {
     window.open('https://calendly.com/david-rehrl-thesolvia/30min', '_blank');
   };
 
-  const handleGermanClasses = () => {
-    navigate('/solvia-learning');
+  const handleLanguageLearning = () => {
+    navigate(`/learning?country=${wizardData.targetCountry}`);
   };
 
   const handleStartHomologation = () => {
@@ -300,7 +300,7 @@ const HomologationResult = () => {
                       </p>
                       <Button 
                         size="sm" 
-                        onClick={handleGermanClasses}
+                        onClick={handleLanguageLearning}
                         className="w-full gap-2"
                       >
                         <GraduationCap className="h-4 w-4" />
