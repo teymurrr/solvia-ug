@@ -1,4 +1,5 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import MainLayout from '@/components/MainLayout';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -22,10 +23,21 @@ import {
 
 const SolviaLearning = () => {
   const { t, currentLanguage: language } = useLanguage();
+  const [searchParams] = useSearchParams();
+  const initialCountry = searchParams.get('country') || undefined;
   const [showPlan, setShowPlan] = useState(false);
   const [wizardData, setWizardData] = useState<WizardData | null>(null);
   const formRef = useRef<HTMLDivElement>(null);
   const wizardRef = useRef<HTMLDivElement>(null);
+
+  // Auto-scroll to wizard if country is pre-selected
+  useEffect(() => {
+    if (initialCountry && wizardRef.current) {
+      setTimeout(() => {
+        wizardRef.current?.scrollIntoView({ behavior: 'smooth' });
+      }, 300);
+    }
+  }, [initialCountry]);
 
   const [formData, setFormData] = useState({
     fullName: '',
@@ -200,7 +212,7 @@ const SolviaLearning = () => {
       <section ref={wizardRef} className="py-20 bg-background" id="wizard">
         <div className="container mx-auto px-4">
           {!showPlan ? (
-            <LearningWizard onComplete={handleWizardComplete} />
+            <LearningWizard onComplete={handleWizardComplete} initialCountry={initialCountry} />
           ) : (
             wizardData && (
               <LearningPlanResult 
