@@ -1,7 +1,9 @@
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { CheckCircle, Clock, Globe, TrendingUp, Star } from 'lucide-react';
+import { Clock, Globe, TrendingUp, Banknote, Briefcase } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { ArrowRight } from 'lucide-react';
 
 interface CountryData {
   name: string;
@@ -9,9 +11,8 @@ interface CountryData {
   offers: number;
   salaryRange: string;
   homologationTime: string;
-  languageRequired: string;
-  isRecommended?: boolean;
-  recommendationReason?: string;
+  badge?: string;
+  badgeColor?: string;
 }
 
 interface CountryComparisonBarProps {
@@ -20,96 +21,100 @@ interface CountryComparisonBarProps {
 }
 
 const CountryComparisonBar = ({ profession, specialty }: CountryComparisonBarProps) => {
-  // Mock data - in production this would come from backend based on user profile
   const countries: CountryData[] = [
     {
       name: 'Alemania',
       flag: '🇩🇪',
-      offers: 127,
-      salaryRange: '50.000 - 85.000 €/año',
-      homologationTime: '6-12 meses',
-      languageRequired: 'B2 alemán',
-      isRecommended: true,
-      recommendationReason: 'Más ofertas para tu perfil',
+      offers: 85,
+      salaryRange: '5.500–8.000',
+      homologationTime: '6–12 meses',
+      badge: 'Mejores salarios',
+      badgeColor: 'bg-emerald-500',
     },
     {
       name: 'Austria',
       flag: '🇦🇹',
-      offers: 45,
-      salaryRange: '55.000 - 90.000 €/año',
-      homologationTime: '4-8 meses',
-      languageRequired: 'B2 alemán',
+      offers: 42,
+      salaryRange: '4.500–7.000',
+      homologationTime: '4–8 meses',
+      badge: 'Proceso más simple',
+      badgeColor: 'bg-blue-500',
     },
     {
       name: 'España',
       flag: '🇪🇸',
-      offers: 89,
-      salaryRange: '35.000 - 55.000 €/año',
-      homologationTime: '2-4 meses',
-      languageRequired: 'Español nativo',
-      recommendationReason: 'Homologación más rápida',
+      offers: 38,
+      salaryRange: '2.500–4.000',
+      homologationTime: '2–6 meses',
+      badge: 'Homologación rápida',
+      badgeColor: 'bg-amber-500',
+    },
+    {
+      name: 'Francia',
+      flag: '🇫🇷',
+      offers: 25,
+      salaryRange: '3.500–6.000',
+      homologationTime: '4–10 meses',
+      badge: 'Gran calidad de vida',
+      badgeColor: 'bg-violet-500',
     },
   ];
 
   return (
-    <div className="space-y-4">
-      <div className="flex items-center gap-2">
+    <div className="space-y-6">
+      <div className="flex items-center gap-2 justify-center">
         <Globe className="h-5 w-5 text-primary" />
-        <h3 className="font-semibold text-lg">Comparativa de países</h3>
+        <h3 className="font-semibold text-lg">Compara destinos</h3>
       </div>
       
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {countries.map((country) => (
           <Card 
             key={country.name} 
-            className={`p-4 relative ${country.isRecommended ? 'border-primary border-2 ring-2 ring-primary/20' : 'border-border/50'}`}
+            className="p-5 relative border-border/50 hover:border-primary/50 hover:shadow-lg transition-all duration-300 bg-card"
           >
-            {country.isRecommended && (
-              <Badge className="absolute -top-2 -right-2 bg-primary text-primary-foreground">
-                <Star className="h-3 w-3 mr-1" />
-                Recomendado
+            {country.badge && (
+              <Badge className={`absolute -top-3 left-1/2 -translate-x-1/2 ${country.badgeColor} text-white text-xs px-3 py-1 whitespace-nowrap`}>
+                {country.badge}
               </Badge>
             )}
             
-            <div className="space-y-3">
-              <div className="flex items-center gap-2">
-                <span className="text-2xl">{country.flag}</span>
-                <span className="font-semibold text-lg">{country.name}</span>
+            <div className="space-y-4 pt-2">
+              {/* Country header */}
+              <div className="text-center">
+                <span className="text-4xl block mb-2">{country.flag}</span>
+                <h4 className="font-bold text-lg text-foreground">{country.name}</h4>
+                <p className="text-sm text-muted-foreground">{country.offers} posiciones disponibles</p>
               </div>
               
-              <div className="space-y-2 text-sm">
-                <div className="flex items-center justify-between">
-                  <span className="text-muted-foreground">Ofertas disponibles</span>
-                  <span className="font-medium text-primary">{country.offers}</span>
+              {/* Main highlight: Expected Earnings */}
+              <div className="bg-primary/5 rounded-lg p-3 text-center">
+                <div className="flex items-center justify-center gap-1.5 text-muted-foreground text-xs mb-1">
+                  <Banknote className="h-3.5 w-3.5" />
+                  <span>Salario esperado</span>
                 </div>
-                
-                <div className="flex items-center justify-between">
-                  <span className="text-muted-foreground">Rango salarial</span>
-                  <span className="font-medium">{country.salaryRange}</span>
-                </div>
-                
-                <div className="flex items-center gap-2 text-muted-foreground">
-                  <Clock className="h-4 w-4" />
-                  <span>Homologación: {country.homologationTime}</span>
-                </div>
-                
-                <div className="flex items-center gap-2 text-muted-foreground">
-                  <CheckCircle className="h-4 w-4" />
-                  <span>{country.languageRequired}</span>
-                </div>
+                <p className="text-xl font-bold text-primary">€{country.salaryRange}</p>
+                <p className="text-xs text-muted-foreground">/mes</p>
               </div>
               
-              {country.recommendationReason && (
-                <div className="pt-2 border-t border-border/50">
-                  <div className="flex items-center gap-1 text-xs text-primary">
-                    <TrendingUp className="h-3 w-3" />
-                    <span>{country.recommendationReason}</span>
-                  </div>
+              {/* Duration highlight */}
+              <div className="flex items-center justify-center gap-2 py-2 border-t border-border/50">
+                <Clock className="h-4 w-4 text-muted-foreground" />
+                <div className="text-center">
+                  <p className="text-sm font-medium text-foreground">{country.homologationTime}</p>
+                  <p className="text-xs text-muted-foreground">Tiempo estimado</p>
                 </div>
-              )}
+              </div>
             </div>
           </Card>
         ))}
+      </div>
+
+      <div className="flex justify-center pt-2">
+        <Button size="lg" className="gap-2">
+          Obtener mi plan personalizado
+          <ArrowRight className="h-4 w-4" />
+        </Button>
       </div>
     </div>
   );
