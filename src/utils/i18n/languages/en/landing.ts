@@ -122,6 +122,10 @@ export const landing = {
     oneTimePayment: "One-time payment",
     cta: "Get my personalized plan",
     ctaSubtext: "Free assessment • No commitment required",
+    positionsAvailable: "positions available",
+    expectedSalary: "Expected salary",
+    perMonth: "month",
+    estimatedTime: "Estimated time",
     countries: {
       germany: {
         name: "Germany",
@@ -129,7 +133,7 @@ export const landing = {
         processDuration: "6–12 months",
         price: "€750",
         highlight: "Best salaries",
-        salary: "€5,500–€8,000/month",
+        salary: "5,500–8,000",
         includes: ["Document preparation", "FSP guidance", "Job placement"]
       },
       austria: {
@@ -138,7 +142,7 @@ export const landing = {
         processDuration: "4–8 months",
         price: "€750",
         highlight: "Simplest process",
-        salary: "€4,500–€7,000/month",
+        salary: "4,500–7,000",
         includes: ["Document preparation", "Nostrifizierung", "Job placement"]
       },
       spain: {
@@ -147,7 +151,7 @@ export const landing = {
         processDuration: "2–6 months",
         price: "€290",
         highlight: "Fast homologation",
-        salary: "€2,500–€4,000/month",
+        salary: "2,500–4,000",
         includes: ["Document preparation", "MIR support", "Job placement"]
       },
       france: {
@@ -156,7 +160,7 @@ export const landing = {
         processDuration: "4–10 months",
         price: "€750",
         highlight: "Great quality of life",
-        salary: "€3,500–€6,000/month",
+        salary: "3,500–6,000",
         includes: ["Document preparation", "PAE support", "Job placement"]
       }
     }

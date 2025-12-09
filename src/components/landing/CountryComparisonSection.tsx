@@ -18,7 +18,7 @@ const CountryComparisonSection = () => {
       flag: "🇩🇪",
       processDuration: "6–12 months",
       positions: 85,
-      salary: "€5,500–€8,000",
+      salary: "5,500–8,000",
       highlight: "Best salaries",
       badgeColor: "bg-emerald-500"
     },
@@ -27,7 +27,7 @@ const CountryComparisonSection = () => {
       flag: "🇦🇹",
       processDuration: "4–8 months",
       positions: 42,
-      salary: "€4,500–€7,000",
+      salary: "4,500–7,000",
       highlight: "Simplest process",
       badgeColor: "bg-blue-500"
     },
@@ -36,7 +36,7 @@ const CountryComparisonSection = () => {
       flag: "🇪🇸",
       processDuration: "2–6 months",
       positions: 38,
-      salary: "€2,500–€4,000",
+      salary: "2,500–4,000",
       highlight: "Fast homologation",
       badgeColor: "bg-amber-500"
     },
@@ -45,7 +45,7 @@ const CountryComparisonSection = () => {
       flag: "🇫🇷",
       processDuration: "4–10 months",
       positions: 25,
-      salary: "€3,500–€6,000",
+      salary: "3,500–6,000",
       highlight: "Great quality of life",
       badgeColor: "bg-violet-500"
     }
@@ -106,7 +106,7 @@ const CountryComparisonSection = () => {
                         <Banknote className="h-3.5 w-3.5" />
                         <span>{comparison?.expectedSalary || "Expected salary"}</span>
                       </div>
-                      <p className="text-xl font-bold text-primary">{country.salary || defaultData.salary}</p>
+                      <p className="text-xl font-bold text-primary">€{country.salary || defaultData.salary}</p>
                       <p className="text-xs text-muted-foreground">/{comparison?.perMonth || "month"}</p>
                     </div>
                     
