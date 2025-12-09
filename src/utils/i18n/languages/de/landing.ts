@@ -199,7 +199,7 @@ export const landing = {
     secondaryCta: "Meinen kostenlosen Anerkennungsplan erhalten"
   },
   learningMiniBanner: {
-    text: "Brauchen Sie medizinisches Deutsch?",
+    text: "Müssen Sie die medizinische Fachsprache für Europa lernen?",
     cta: "Mehr erfahren"
   }
 };

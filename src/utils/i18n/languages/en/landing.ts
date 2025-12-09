@@ -199,7 +199,7 @@ export const landing = {
     secondaryCta: "Get my free homologation plan"
   },
   learningMiniBanner: {
-    text: "Need Medical German?",
+    text: "Need to learn the medical language for Europe?",
     cta: "Learn more"
   }
 };
