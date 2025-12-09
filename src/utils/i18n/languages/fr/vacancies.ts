@@ -23,5 +23,9 @@ export const vacancies = {
     browsePosistions: 'Parcourir toutes les positions',
     getHelp: 'Obtenir de l\'aide personnelle'
   },
+  blurredCard: {
+    viewOffers: 'Voir les offres',
+    homologateTitle: 'Homologuer diplôme'
+  },
   publishedDaysAgo: 'Publié il y a {days} jours'
 };

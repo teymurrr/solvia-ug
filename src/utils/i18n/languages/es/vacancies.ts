@@ -25,6 +25,10 @@ export const vacancies = {
     browsePosistions: 'Explorar todas las posiciones',
     getHelp: 'Obtener ayuda personal'
   },
+  blurredCard: {
+    viewOffers: 'Ver ofertas',
+    homologateTitle: 'Homologar título'
+  },
   jobTypes: {
     fullTime: 'Tiempo completo',
     partTime: 'Tiempo parcial',

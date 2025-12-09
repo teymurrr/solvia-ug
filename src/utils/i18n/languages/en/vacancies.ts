@@ -23,5 +23,9 @@ export const vacancies = {
     subtitle: 'Join thousands of healthcare professionals who found their perfect role',
     browsePosistions: 'Browse All Positions',
     getHelp: 'Get Personal Help'
+  },
+  blurredCard: {
+    viewOffers: 'View offers',
+    homologateTitle: 'Homologate degree'
   }
 };

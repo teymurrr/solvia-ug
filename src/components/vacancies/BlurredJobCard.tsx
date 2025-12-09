@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Card } from '@/components/ui/card';
-import { MapPin, Euro, Lock, Building, UserPlus, FileCheck, ArrowRight } from 'lucide-react';
+import { MapPin, Euro, Lock, Building, UserPlus, FileCheck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 interface BlurredJobCardProps {
@@ -65,22 +65,21 @@ const BlurredJobCard = ({
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/60 to-background" />
         </div>
 
-        {/* CTAs - Two action buttons */}
-        <div className="flex flex-col gap-2 pt-2">
+        {/* CTAs - Two action buttons side by side */}
+        <div className="flex gap-2 pt-2">
           {/* Primary CTA - Unlock all offers */}
-          <Button asChild size="sm" className="w-full group/btn">
-            <Link to="/signup/professional" className="flex items-center justify-center gap-2">
-              <UserPlus className="h-4 w-4" />
-              <span>Acceder a todas las ofertas</span>
-              <ArrowRight className="h-3 w-3 opacity-0 -ml-2 group-hover/btn:opacity-100 group-hover/btn:ml-0 transition-all" />
+          <Button asChild size="sm" className="flex-1 group/btn text-xs px-2">
+            <Link to="/signup/professional" className="flex items-center justify-center gap-1">
+              <UserPlus className="h-3.5 w-3.5 flex-shrink-0" />
+              <span className="truncate">Ver ofertas</span>
             </Link>
           </Button>
           
-          {/* Secondary CTA - Start homologation */}
-          <Button asChild variant="outline" size="sm" className="w-full group/btn">
-            <Link to="/homologation-wizard" className="flex items-center justify-center gap-2">
-              <FileCheck className="h-4 w-4" />
-              <span>Homologa tu título gratis</span>
+          {/* Secondary CTA - Start homologation for this opportunity */}
+          <Button asChild variant="outline" size="sm" className="flex-1 group/btn text-xs px-2">
+            <Link to="/homologation-wizard" className="flex items-center justify-center gap-1">
+              <FileCheck className="h-3.5 w-3.5 flex-shrink-0" />
+              <span className="truncate">Homologar título</span>
             </Link>
           </Button>
         </div>

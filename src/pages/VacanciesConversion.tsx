@@ -12,12 +12,12 @@ import { Briefcase, Lock, Sparkles, Filter } from 'lucide-react';
 
 // Mock blurred job data for the locked state
 const mockBlurredJobs = [
-  { hospital: 'Hospital Universitario de Hamburgo', specialty: 'Pediatría', city: 'Hamburgo', country: 'germany', salaryRange: '52.000 - 60.000 €/año' },
-  { hospital: 'Charité Berlin', specialty: 'Cardiología', city: 'Berlín', country: 'germany', salaryRange: '58.000 - 72.000 €/año' },
-  { hospital: 'Klinikum München', specialty: 'Cirugía General', city: 'Múnich', country: 'germany', salaryRange: '55.000 - 68.000 €/año' },
-  { hospital: 'AKH Wien', specialty: 'Neurología', city: 'Viena', country: 'austria', salaryRange: '60.000 - 75.000 €/año' },
-  { hospital: 'Hospital Clínic Barcelona', specialty: 'Medicina Interna', city: 'Barcelona', country: 'spain', salaryRange: '42.000 - 52.000 €/año' },
-  { hospital: 'Hôpital Universitaire Lyon', specialty: 'Anestesiología', city: 'Lyon', country: 'france', salaryRange: '54.000 - 65.000 €/año' },
+  { hospital: 'Hospital Universitario de Hamburgo', specialty: 'Pediatría', city: 'Hamburgo', country: 'germany', profession: 'doctor', salaryRange: '52.000 - 60.000 €/año' },
+  { hospital: 'Charité Berlin', specialty: 'Cardiología', city: 'Berlín', country: 'germany', profession: 'doctor', salaryRange: '58.000 - 72.000 €/año' },
+  { hospital: 'Klinikum München', specialty: 'Cirugía General', city: 'Múnich', country: 'germany', profession: 'doctor', salaryRange: '55.000 - 68.000 €/año' },
+  { hospital: 'AKH Wien', specialty: 'Neurología', city: 'Viena', country: 'austria', profession: 'doctor', salaryRange: '60.000 - 75.000 €/año' },
+  { hospital: 'Hospital Clínic Barcelona', specialty: 'Enfermería General', city: 'Barcelona', country: 'spain', profession: 'nurse', salaryRange: '32.000 - 42.000 €/año' },
+  { hospital: 'Hôpital Universitaire Lyon', specialty: 'Anestesiología', city: 'Lyon', country: 'france', profession: 'doctor', salaryRange: '54.000 - 65.000 €/año' },
 ];
 
 const countryDisplayNames: Record<string, string> = {
@@ -36,13 +36,24 @@ const VacanciesConversion = () => {
     setFilters(newFilters);
   };
 
-  // Filter blurred jobs based on selected country
+  // Filter blurred jobs based on selected country and profession
   const filteredBlurredJobs = useMemo(() => {
-    if (!filters.targetCountry) return mockBlurredJobs;
-    return mockBlurredJobs.filter(job => 
-      job.country.toLowerCase() === filters.targetCountry.toLowerCase()
-    );
-  }, [filters.targetCountry]);
+    let filtered = mockBlurredJobs;
+    
+    if (filters.targetCountry) {
+      filtered = filtered.filter(job => 
+        job.country.toLowerCase() === filters.targetCountry.toLowerCase()
+      );
+    }
+    
+    if (filters.profession) {
+      filtered = filtered.filter(job => 
+        job.profession.toLowerCase() === filters.profession.toLowerCase()
+      );
+    }
+    
+    return filtered;
+  }, [filters.targetCountry, filters.profession]);
 
   // Filter real vacancies based on selected country
   const filteredVacancies = useMemo(() => {
