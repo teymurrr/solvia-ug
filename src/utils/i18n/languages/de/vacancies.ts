@@ -23,6 +23,10 @@ export const vacancies = {
     browsePosistions: 'Alle Positionen durchsuchen',
     getHelp: 'Persönliche Hilfe erhalten'
   },
+  blurredCard: {
+    viewOffers: 'Angebote ansehen',
+    homologateTitle: 'Titel anerkennen'
+  },
   publishedDaysAgo: 'Vor {days} Tagen veröffentlicht',
   jobTitles: {
     doctor: 'Arzt/Ärztin',

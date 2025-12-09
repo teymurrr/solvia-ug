@@ -23,5 +23,9 @@ export const vacancies = {
     browsePosistions: 'Просмотреть все позиции',
     getHelp: 'Получить персональную помощь'
   },
+  blurredCard: {
+    viewOffers: 'Смотреть вакансии',
+    homologateTitle: 'Подтвердить диплом'
+  },
   publishedDaysAgo: 'Опубликовано {days} дней назад'
 };
