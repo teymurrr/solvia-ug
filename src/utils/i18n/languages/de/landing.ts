@@ -122,6 +122,10 @@ export const landing = {
     oneTimePayment: "Einmalzahlung",
     cta: "Meinen personalisierten Plan erhalten",
     ctaSubtext: "Kostenlose Bewertung • Keine Verpflichtung",
+    positionsAvailable: "Stellen verfügbar",
+    expectedSalary: "Erwartetes Gehalt",
+    perMonth: "Monat",
+    estimatedTime: "Geschätzte Zeit",
     countries: {
       germany: {
         name: "Deutschland",
@@ -129,7 +133,7 @@ export const landing = {
         processDuration: "6–12 Monate",
         price: "€750",
         highlight: "Höchste Gehälter",
-        salary: "€5.500–€8.000/Monat",
+        salary: "5.500–8.000",
         includes: ["Dokumentenvorbereitung", "FSP-Begleitung", "Jobvermittlung"]
       },
       austria: {
@@ -138,7 +142,7 @@ export const landing = {
         processDuration: "4–8 Monate",
         price: "€750",
         highlight: "Einfacherer Prozess",
-        salary: "€4.500–€7.000/Monat",
+        salary: "4.500–7.000",
         includes: ["Dokumentenvorbereitung", "Nostrifizierung", "Jobvermittlung"]
       },
       spain: {
@@ -147,7 +151,7 @@ export const landing = {
         processDuration: "2–6 Monate",
         price: "€290",
         highlight: "Schnelle Anerkennung",
-        salary: "€2.500–€4.000/Monat",
+        salary: "2.500–4.000",
         includes: ["Dokumentenvorbereitung", "MIR-Unterstützung", "Jobvermittlung"]
       },
       france: {
@@ -156,7 +160,7 @@ export const landing = {
         processDuration: "4–10 Monate",
         price: "€750",
         highlight: "Hohe Lebensqualität",
-        salary: "€3.500–€6.000/Monat",
+        salary: "3.500–6.000",
         includes: ["Dokumentenvorbereitung", "PAE-Unterstützung", "Jobvermittlung"]
       }
     }
