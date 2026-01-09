@@ -69,7 +69,9 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16 items-center">
           <div className="flex-shrink-0 flex items-center">
-            <Logo />
+            <Link to="/">
+              <Logo />
+            </Link>
           </div>
           
           <div className="absolute left-1/2 transform -translate-x-1/2 hidden sm:flex sm:items-end pb-4">
