@@ -186,5 +186,118 @@ export const dashboard: DashboardTranslations = {
     description: "Commencez votre processus d'homologation pour pratiquer la médecine en Allemagne",
     ctaButton: "Démarrer le processus d'homologation",
     benefits: "Reconnaissance officielle de votre diplôme médical pour exercer en Allemagne"
+  },
+  // Institution Dashboard
+  institution: {
+    title: "Tableau de Bord Institution",
+    subtitle: "Gérez le profil de votre hôpital et les offres d'emploi",
+    postVacancy: "Publier une Nouvelle Offre",
+    tabs: {
+      profile: "Profil",
+      vacancies: "Vos Offres",
+      applications: "Candidatures",
+      talents: "Recherche de Talents"
+    },
+    profile: {
+      title: "Profil de l'Hôpital",
+      description: "C'est ainsi que les professionnels de santé verront votre institution",
+      email: "Email",
+      website: "Site web",
+      size: "Taille",
+      location: "Emplacement",
+      about: "À propos",
+      incompleteProfile: "Votre profil est incomplet. Ajoutez plus d'informations sur votre institution pour attirer les professionnels de santé.",
+      completeProfile: "Compléter Votre Profil"
+    },
+    vacancies: {
+      title: "Vos Offres Publiées",
+      description: "Gérez les offres d'emploi et consultez les candidatures",
+      noVacancies: "Aucune offre publiée pour l'instant",
+      noVacanciesDesc: "Publiez votre première offre d'emploi pour attirer les professionnels de santé",
+      postVacancy: "Publier une Offre",
+      postAnother: "Publier une Autre Offre",
+      edit: "Modifier",
+      delete: "Supprimer"
+    },
+    talents: {
+      title: "Recherche de Talents",
+      description: "Trouvez des professionnels de santé qualifiés",
+      search: "Rechercher",
+      searchPlaceholder: "Rechercher des professionnels...",
+      noResults: "Aucun professionnel correspondant trouvé",
+      noResultsDesc: "Essayez d'ajuster vos critères de recherche",
+      noProfessionals: "Aucun professionnel disponible pour le moment",
+      checkLater: "Veuillez revenir plus tard",
+      filters: {
+        allRoles: "Tous les Rôles",
+        allProfessions: "Toutes les Professions",
+        allCountries: "Tous les Pays",
+        allLanguages: "Toutes les Langues"
+      }
+    },
+    featuredVacancies: "Offres en Vedette",
+    sampleVacancies: "Exemples d'Offres",
+    sampleVacanciesDesc: "Exemples d'offres d'emploi d'établissements de santé de premier plan"
+  },
+  // Workforce Analytics
+  workforce: {
+    title: "Analyse des Effectifs",
+    demo: "Démo",
+    demoTooltip: "Ce sont des données de démonstration. Connectez votre système RH pour voir les vraies métriques.",
+    lastUpdated: "Dernière mise à jour",
+    refresh: "Actualiser",
+    collapse: "Réduire",
+    expand: "Développer",
+    loading: "Chargement de l'analyse des effectifs...",
+    executiveSnapshot: "Aperçu Exécutif",
+    kpis: {
+      totalFTE: "ETP Total",
+      ofPlanned: "sur {planned} prévus",
+      staffingCoverage: "Couverture du Personnel",
+      hospitalWide: "Ensemble de l'hôpital",
+      criticalOpenings: "Postes Critiques",
+      positionsRequiringFill: "Postes nécessitant un recrutement urgent",
+      sickLeaveRate: "Taux d'Arrêts Maladie",
+      rolling30Days: "30 derniers jours"
+    },
+    riskRadar: {
+      title: "Radar des Risques",
+      description: "Évaluation des risques de dotation par département",
+      highRisk: "Risque Élevé",
+      medium: "Moyen",
+      stable: "Stable",
+      vacancy: "Vacance",
+      sickLeave: "Arrêts maladie",
+      overtime: "Heures sup",
+      expiring: "expirant",
+      riskBasedOn: "Risque basé sur : taux de vacance, tendance des arrêts maladie, heures supplémentaires, fins de contrat (<6 mois)"
+    },
+    costExposure: {
+      title: "Exposition aux Coûts",
+      description: "Coûts de personnel vs budget",
+      monthlyPersonnelCost: "Coût Mensuel du Personnel",
+      ofBudget: "du budget",
+      budget: "Budget",
+      underBudget: "sous le budget",
+      overBudget: "au-dessus du budget",
+      overtimeCost: "Coût des Heures Supplémentaires",
+      increasing: "En augmentation",
+      decreasing: "En diminution"
+    },
+    hiringBlockers: {
+      title: "Blocages de Recrutement",
+      description: "Rôles critiques et goulots d'étranglement",
+      criticalOpenRoles: "Postes Critiques Ouverts",
+      openFor: "Ouvert depuis",
+      days: "jours",
+      approvalDelay: "Retard d'Approbation",
+      pipelineIssue: "Problème de Pipeline",
+      onboardingAdmin: "Admin Intégration",
+      critical: "Critique",
+      internationalHires: "Recrutements Internationaux - Statut de Reconnaissance",
+      pending: "En Attente",
+      inProgress: "En Cours",
+      approved: "Approuvé"
+    }
   }
 };

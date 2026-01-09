@@ -12,8 +12,10 @@ import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
 import { useLocation } from 'react-router-dom';
 import { featuredVacancies } from '@/data/landingPageData';
+import { useLanguage } from '@/hooks/useLanguage';
 
 const InstitutionDashboard = () => {
+  const { t } = useLanguage();
   const location = useLocation();
   const [vacancyFormOpen, setVacancyFormOpen] = useState(false);
   const [vacancyFormMode, setVacancyFormMode] = useState<'create' | 'edit'>('create');
@@ -231,10 +233,10 @@ const InstitutionDashboard = () => {
         ) : (
           <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
             <TabsList className="grid w-full md:w-auto grid-cols-4">
-              <TabsTrigger value="profile">Profile</TabsTrigger>
-              <TabsTrigger value="vacancies">Your Vacancies</TabsTrigger>
-              <TabsTrigger value="applications">Applications</TabsTrigger>
-              <TabsTrigger value="talents">Talent Search</TabsTrigger>
+              <TabsTrigger value="profile">{t('dashboard.institution.tabs.profile')}</TabsTrigger>
+              <TabsTrigger value="vacancies">{t('dashboard.institution.tabs.vacancies')}</TabsTrigger>
+              <TabsTrigger value="applications">{t('dashboard.institution.tabs.applications')}</TabsTrigger>
+              <TabsTrigger value="talents">{t('dashboard.institution.tabs.talents')}</TabsTrigger>
             </TabsList>
             
             <TabsContent value="profile" className="space-y-6">

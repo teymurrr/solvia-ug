@@ -195,5 +195,118 @@ export const dashboard: DashboardTranslations = {
     description: "Inicie su proceso de homologación para ejercer medicina en Alemania",
     ctaButton: "Inicia tu proceso de homologación",
     benefits: "Reconocimiento oficial de su diploma médico para ejercer en Alemania"
+  },
+  // Institution Dashboard
+  institution: {
+    title: "Panel de Institución",
+    subtitle: "Gestiona el perfil de tu hospital y las ofertas de empleo",
+    postVacancy: "Publicar Nueva Vacante",
+    tabs: {
+      profile: "Perfil",
+      vacancies: "Tus Vacantes",
+      applications: "Solicitudes",
+      talents: "Búsqueda de Talentos"
+    },
+    profile: {
+      title: "Perfil del Hospital",
+      description: "Así es como los profesionales de la salud verán tu institución",
+      email: "Correo electrónico",
+      website: "Sitio web",
+      size: "Tamaño",
+      location: "Ubicación",
+      about: "Acerca de",
+      incompleteProfile: "Tu perfil está incompleto. Añade más información sobre tu institución para atraer profesionales de la salud.",
+      completeProfile: "Completar Tu Perfil"
+    },
+    vacancies: {
+      title: "Tus Vacantes Publicadas",
+      description: "Gestiona ofertas de empleo y revisa solicitudes",
+      noVacancies: "Aún no hay vacantes publicadas",
+      noVacanciesDesc: "Publica tu primera oferta de empleo para atraer profesionales de la salud",
+      postVacancy: "Publicar una Vacante",
+      postAnother: "Publicar Otra Vacante",
+      edit: "Editar",
+      delete: "Eliminar"
+    },
+    talents: {
+      title: "Búsqueda de Talentos",
+      description: "Encuentra profesionales de la salud cualificados",
+      search: "Buscar",
+      searchPlaceholder: "Buscar profesionales...",
+      noResults: "No se encontraron profesionales",
+      noResultsDesc: "Intenta ajustar tus criterios de búsqueda",
+      noProfessionals: "No hay profesionales disponibles en este momento",
+      checkLater: "Por favor, vuelve más tarde",
+      filters: {
+        allRoles: "Todos los Roles",
+        allProfessions: "Todas las Profesiones",
+        allCountries: "Todos los Países",
+        allLanguages: "Todos los Idiomas"
+      }
+    },
+    featuredVacancies: "Vacantes Destacadas",
+    sampleVacancies: "Vacantes de Ejemplo",
+    sampleVacanciesDesc: "Ejemplos de ofertas de empleo de instituciones de salud líderes"
+  },
+  // Workforce Analytics
+  workforce: {
+    title: "Análisis de Personal",
+    demo: "Demo",
+    demoTooltip: "Estos son datos de demostración. Conecta tu sistema de RR.HH. para ver métricas reales.",
+    lastUpdated: "Última actualización",
+    refresh: "Actualizar",
+    collapse: "Contraer",
+    expand: "Expandir",
+    loading: "Cargando análisis de personal...",
+    executiveSnapshot: "Resumen Ejecutivo",
+    kpis: {
+      totalFTE: "FTE Total",
+      ofPlanned: "de {planned} planificados",
+      staffingCoverage: "Cobertura de Personal",
+      hospitalWide: "Todo el hospital",
+      criticalOpenings: "Vacantes Críticas",
+      positionsRequiringFill: "Puestos que requieren urgente cobertura",
+      sickLeaveRate: "Tasa de Bajas",
+      rolling30Days: "Últimos 30 días"
+    },
+    riskRadar: {
+      title: "Radar de Riesgos",
+      description: "Evaluación de riesgo de personal por departamento",
+      highRisk: "Alto Riesgo",
+      medium: "Medio",
+      stable: "Estable",
+      vacancy: "Vacante",
+      sickLeave: "Bajas",
+      overtime: "Horas extra",
+      expiring: "por expirar",
+      riskBasedOn: "Riesgo basado en: tasa de vacantes, tendencia de bajas, horas extra, vencimientos de contrato (<6 meses)"
+    },
+    costExposure: {
+      title: "Exposición de Costos",
+      description: "Costos de personal vs presupuesto",
+      monthlyPersonnelCost: "Costo Mensual de Personal",
+      ofBudget: "del presupuesto",
+      budget: "Presupuesto",
+      underBudget: "bajo presupuesto",
+      overBudget: "sobre presupuesto",
+      overtimeCost: "Costo de Horas Extra",
+      increasing: "Aumentando",
+      decreasing: "Disminuyendo"
+    },
+    hiringBlockers: {
+      title: "Bloqueos de Contratación",
+      description: "Roles críticos y cuellos de botella",
+      criticalOpenRoles: "Roles Críticos Abiertos",
+      openFor: "Abierto por",
+      days: "días",
+      approvalDelay: "Retraso en Aprobación",
+      pipelineIssue: "Problema de Pipeline",
+      onboardingAdmin: "Admin de Incorporación",
+      critical: "Crítico",
+      internationalHires: "Contrataciones Internacionales - Estado de Reconocimiento",
+      pending: "Pendiente",
+      inProgress: "En Progreso",
+      approved: "Aprobado"
+    }
   }
 };

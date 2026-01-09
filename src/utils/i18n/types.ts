@@ -251,5 +251,122 @@ export interface DashboardTranslations {
     description: string;
     ctaButton: string;
     benefits: string;
+    tabTitle?: string;
+    yourProcesses?: string;
+    trackProgress?: string;
+    addCountry?: string;
+    languagePackage?: string;
+    premiumPackage?: string;
+  };
+  institution?: {
+    title: string;
+    subtitle: string;
+    postVacancy: string;
+    tabs: {
+      profile: string;
+      vacancies: string;
+      applications: string;
+      talents: string;
+    };
+    profile: {
+      title: string;
+      description: string;
+      email: string;
+      website: string;
+      size: string;
+      location: string;
+      about: string;
+      incompleteProfile: string;
+      completeProfile: string;
+    };
+    vacancies: {
+      title: string;
+      description: string;
+      noVacancies: string;
+      noVacanciesDesc: string;
+      postVacancy: string;
+      postAnother: string;
+      edit: string;
+      delete: string;
+    };
+    talents: {
+      title: string;
+      description: string;
+      search: string;
+      searchPlaceholder: string;
+      noResults: string;
+      noResultsDesc: string;
+      noProfessionals: string;
+      checkLater: string;
+      filters: {
+        allRoles: string;
+        allProfessions: string;
+        allCountries: string;
+        allLanguages: string;
+      };
+    };
+    featuredVacancies: string;
+    sampleVacancies: string;
+    sampleVacanciesDesc: string;
+  };
+  workforce?: {
+    title: string;
+    demo: string;
+    demoTooltip: string;
+    lastUpdated: string;
+    refresh: string;
+    collapse: string;
+    expand: string;
+    loading: string;
+    executiveSnapshot: string;
+    kpis: {
+      totalFTE: string;
+      ofPlanned: string;
+      staffingCoverage: string;
+      hospitalWide: string;
+      criticalOpenings: string;
+      positionsRequiringFill: string;
+      sickLeaveRate: string;
+      rolling30Days: string;
+    };
+    riskRadar: {
+      title: string;
+      description: string;
+      highRisk: string;
+      medium: string;
+      stable: string;
+      vacancy: string;
+      sickLeave: string;
+      overtime: string;
+      expiring: string;
+      riskBasedOn: string;
+    };
+    costExposure: {
+      title: string;
+      description: string;
+      monthlyPersonnelCost: string;
+      ofBudget: string;
+      budget: string;
+      underBudget: string;
+      overBudget: string;
+      overtimeCost: string;
+      increasing: string;
+      decreasing: string;
+    };
+    hiringBlockers: {
+      title: string;
+      description: string;
+      criticalOpenRoles: string;
+      openFor: string;
+      days: string;
+      approvalDelay: string;
+      pipelineIssue: string;
+      onboardingAdmin: string;
+      critical: string;
+      internationalHires: string;
+      pending: string;
+      inProgress: string;
+      approved: string;
+    };
   };
 }

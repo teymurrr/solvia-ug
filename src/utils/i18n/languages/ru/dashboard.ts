@@ -26,7 +26,7 @@ export const dashboard = {
   filterByType: 'Фильтровать по типу',
   viewAllVacancies: 'Просмотреть все вакансии',
   vacancy: 'Вакансия',
-  institution: 'Учреждение',
+  institutionLabel: 'Учреждение',
   date: 'Дата',
   status: 'Статус',
   
@@ -200,5 +200,118 @@ export const dashboard = {
     description: "Начните процесс гомологации для практики медицины в Германии",
     ctaButton: "Начать процесс гомологации",
     benefits: "Официальное признание вашего медицинского диплома для практики в Германии"
+  },
+  // Institution Dashboard
+  institution: {
+    title: "Панель Учреждения",
+    subtitle: "Управляйте профилем вашей больницы и вакансиями",
+    postVacancy: "Опубликовать Новую Вакансию",
+    tabs: {
+      profile: "Профиль",
+      vacancies: "Ваши Вакансии",
+      applications: "Заявки",
+      talents: "Поиск Талантов"
+    },
+    profile: {
+      title: "Профиль Больницы",
+      description: "Так медицинские специалисты будут видеть ваше учреждение",
+      email: "Email",
+      website: "Веб-сайт",
+      size: "Размер",
+      location: "Местоположение",
+      about: "О нас",
+      incompleteProfile: "Ваш профиль не заполнен. Добавьте больше информации о вашем учреждении, чтобы привлечь медицинских специалистов.",
+      completeProfile: "Заполнить Профиль"
+    },
+    vacancies: {
+      title: "Ваши Опубликованные Вакансии",
+      description: "Управляйте вакансиями и просматривайте заявки",
+      noVacancies: "Пока нет опубликованных вакансий",
+      noVacanciesDesc: "Опубликуйте вашу первую вакансию, чтобы привлечь медицинских специалистов",
+      postVacancy: "Опубликовать Вакансию",
+      postAnother: "Опубликовать Ещё Вакансию",
+      edit: "Редактировать",
+      delete: "Удалить"
+    },
+    talents: {
+      title: "Поиск Талантов",
+      description: "Найдите квалифицированных медицинских специалистов",
+      search: "Поиск",
+      searchPlaceholder: "Поиск специалистов...",
+      noResults: "Подходящие специалисты не найдены",
+      noResultsDesc: "Попробуйте изменить критерии поиска",
+      noProfessionals: "В настоящее время нет доступных специалистов",
+      checkLater: "Пожалуйста, зайдите позже",
+      filters: {
+        allRoles: "Все Роли",
+        allProfessions: "Все Профессии",
+        allCountries: "Все Страны",
+        allLanguages: "Все Языки"
+      }
+    },
+    featuredVacancies: "Избранные Вакансии",
+    sampleVacancies: "Примеры Вакансий",
+    sampleVacanciesDesc: "Примеры вакансий ведущих медицинских учреждений"
+  },
+  // Workforce Analytics
+  workforce: {
+    title: "Аналитика Персонала",
+    demo: "Демо",
+    demoTooltip: "Это демонстрационные данные. Подключите вашу HR-систему для просмотра реальных метрик.",
+    lastUpdated: "Последнее обновление",
+    refresh: "Обновить",
+    collapse: "Свернуть",
+    expand: "Развернуть",
+    loading: "Загрузка аналитики персонала...",
+    executiveSnapshot: "Обзор для Руководства",
+    kpis: {
+      totalFTE: "Всего ШЕ",
+      ofPlanned: "из {planned} запланированных",
+      staffingCoverage: "Укомплектованность",
+      hospitalWide: "По всей больнице",
+      criticalOpenings: "Критические Вакансии",
+      positionsRequiringFill: "Позиции, требующие срочного заполнения",
+      sickLeaveRate: "Уровень Больничных",
+      rolling30Days: "За последние 30 дней"
+    },
+    riskRadar: {
+      title: "Радар Рисков",
+      description: "Оценка кадровых рисков по отделениям",
+      highRisk: "Высокий Риск",
+      medium: "Средний",
+      stable: "Стабильный",
+      vacancy: "Вакансия",
+      sickLeave: "Больничные",
+      overtime: "Переработки",
+      expiring: "истекает",
+      riskBasedOn: "Риск основан на: уровне вакансий, тренде больничных, переработках, истечении контрактов (<6 месяцев)"
+    },
+    costExposure: {
+      title: "Затраты",
+      description: "Расходы на персонал vs бюджет",
+      monthlyPersonnelCost: "Ежемесячные Расходы на Персонал",
+      ofBudget: "от бюджета",
+      budget: "Бюджет",
+      underBudget: "ниже бюджета",
+      overBudget: "выше бюджета",
+      overtimeCost: "Стоимость Переработок",
+      increasing: "Растёт",
+      decreasing: "Снижается"
+    },
+    hiringBlockers: {
+      title: "Блокировки Найма",
+      description: "Критические роли и узкие места",
+      criticalOpenRoles: "Критические Открытые Позиции",
+      openFor: "Открыта",
+      days: "дней",
+      approvalDelay: "Задержка Согласования",
+      pipelineIssue: "Проблема Воронки",
+      onboardingAdmin: "Админ Онбординга",
+      critical: "Критично",
+      internationalHires: "Международный Найм - Статус Признания",
+      pending: "Ожидание",
+      inProgress: "В Процессе",
+      approved: "Одобрено"
+    }
   }
 };

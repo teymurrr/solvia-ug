@@ -3,20 +3,23 @@ import { Building2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { WorkforceAnalyticsDashboard } from './workforce';
+import { useLanguage } from '@/hooks/useLanguage';
 
 interface ProfileTabProps {
   onEditProfile: () => void;
 }
 
 const ProfileTab: React.FC<ProfileTabProps> = ({ onEditProfile }) => {
+  const { t } = useLanguage();
+  
   return (
     <div className="space-y-6">
       {/* Hospital Profile Card */}
       <Card>
         <CardHeader>
-          <CardTitle>Hospital Profile</CardTitle>
+          <CardTitle>{t('dashboard.institution.profile.title')}</CardTitle>
           <CardDescription>
-            This is how healthcare professionals will see your institution
+            {t('dashboard.institution.profile.description')}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -35,31 +38,31 @@ const ProfileTab: React.FC<ProfileTabProps> = ({ onEditProfile }) => {
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <h3 className="text-sm font-medium text-muted-foreground">Email</h3>
+                  <h3 className="text-sm font-medium text-muted-foreground">{t('dashboard.institution.profile.email')}</h3>
                   <p>contact@hospital.com</p>
                 </div>
                 <div>
-                  <h3 className="text-sm font-medium text-muted-foreground">Website</h3>
-                  <p>Not specified</p>
+                  <h3 className="text-sm font-medium text-muted-foreground">{t('dashboard.institution.profile.website')}</h3>
+                  <p>{t('dashboard.profile.notSpecified')}</p>
                 </div>
                 <div>
-                  <h3 className="text-sm font-medium text-muted-foreground">Size</h3>
-                  <p>Not specified</p>
+                  <h3 className="text-sm font-medium text-muted-foreground">{t('dashboard.institution.profile.size')}</h3>
+                  <p>{t('dashboard.profile.notSpecified')}</p>
                 </div>
                 <div>
-                  <h3 className="text-sm font-medium text-muted-foreground">Location</h3>
+                  <h3 className="text-sm font-medium text-muted-foreground">{t('dashboard.institution.profile.location')}</h3>
                   <p>New York, USA</p>
                 </div>
               </div>
               
               <div>
-                <h3 className="text-sm font-medium text-muted-foreground">About</h3>
+                <h3 className="text-sm font-medium text-muted-foreground">{t('dashboard.institution.profile.about')}</h3>
                 <p className="text-muted-foreground">
-                  Your profile is incomplete. Add more information about your institution to attract healthcare professionals.
+                  {t('dashboard.institution.profile.incompleteProfile')}
                 </p>
               </div>
               
-              <Button variant="default" onClick={onEditProfile}>Complete Your Profile</Button>
+              <Button variant="default" onClick={onEditProfile}>{t('dashboard.institution.profile.completeProfile')}</Button>
             </div>
           </div>
         </CardContent>
