@@ -30,8 +30,8 @@ const VacanciesTab: React.FC<VacanciesTabProps> = ({
 }) => {
   const { t } = useLanguage();
   
-  const displayTitle = title || t('dashboard.institution.vacancies.title');
-  const displayDescription = description || t('dashboard.institution.vacancies.description');
+  const displayTitle = title || t?.dashboard?.institution?.vacancies?.title || 'Your Vacancies';
+  const displayDescription = description || t?.dashboard?.institution?.vacancies?.description || 'Manage your job postings';
   
   return (
     <Card>
@@ -86,7 +86,7 @@ const VacanciesTab: React.FC<VacanciesTabProps> = ({
                       className="text-primary hover:bg-primary/10"
                     >
                       <Edit className="h-4 w-4 mr-1" />
-                      {t('dashboard.institution.vacancies.edit')}
+                      {t?.dashboard?.institution?.vacancies?.edit || 'Edit'}
                     </Button>
                     <Button 
                       variant="outline" 
@@ -95,7 +95,7 @@ const VacanciesTab: React.FC<VacanciesTabProps> = ({
                       className="text-destructive hover:bg-destructive/10"
                     >
                       <Trash2 className="h-4 w-4 mr-1" />
-                      {t('dashboard.institution.vacancies.delete')}
+                      {t?.dashboard?.institution?.vacancies?.delete || 'Delete'}
                     </Button>
                   </div>
                 </div>
@@ -104,21 +104,21 @@ const VacanciesTab: React.FC<VacanciesTabProps> = ({
             {showAddButton && (
               <Button onClick={onAddVacancy} className="w-full">
                 <Plus className="h-4 w-4 mr-2" />
-                {t('dashboard.institution.vacancies.postAnother')}
+                {t?.dashboard?.institution?.vacancies?.postAnother || 'Post Another Vacancy'}
               </Button>
             )}
           </div>
         ) : (
           <div className="text-center py-8">
             <Briefcase className="h-12 w-12 mx-auto text-muted-foreground" />
-            <h3 className="mt-4 text-lg font-medium">{t('dashboard.institution.vacancies.noVacancies')}</h3>
+            <h3 className="mt-4 text-lg font-medium">{t?.dashboard?.institution?.vacancies?.noVacancies || 'No vacancies yet'}</h3>
             <p className="text-muted-foreground">
-              {t('dashboard.institution.vacancies.noVacanciesDesc')}
+              {t?.dashboard?.institution?.vacancies?.noVacanciesDesc || 'Post your first vacancy to start receiving applications'}
             </p>
             {showAddButton && (
               <Button className="mt-4" onClick={onAddVacancy}>
                 <Plus className="h-4 w-4 mr-2" />
-                {t('dashboard.institution.vacancies.postVacancy')}
+                {t?.dashboard?.institution?.vacancies?.postVacancy || 'Post Vacancy'}
               </Button>
             )}
           </div>
