@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Briefcase, Plus, Edit, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -6,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { getJobTypeBadgeVariant } from '@/components/vacancy/utils';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useLanguage } from '@/hooks/useLanguage';
 
 export interface VacanciesTabProps {
   vacancies: any[];
@@ -24,16 +24,21 @@ const VacanciesTab: React.FC<VacanciesTabProps> = ({
   onEditVacancy,
   onDeleteVacancy,
   loading = false,
-  title = "Your Posted Vacancies",
-  description = "Manage job listings and view applications",
+  title,
+  description,
   showAddButton = true
 }) => {
+  const { t } = useLanguage();
+  
+  const displayTitle = title || t('dashboard.institution.vacancies.title');
+  const displayDescription = description || t('dashboard.institution.vacancies.description');
+  
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{title}</CardTitle>
+        <CardTitle>{displayTitle}</CardTitle>
         <CardDescription>
-          {description}
+          {displayDescription}
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -81,7 +86,7 @@ const VacanciesTab: React.FC<VacanciesTabProps> = ({
                       className="text-primary hover:bg-primary/10"
                     >
                       <Edit className="h-4 w-4 mr-1" />
-                      Edit
+                      {t('dashboard.institution.vacancies.edit')}
                     </Button>
                     <Button 
                       variant="outline" 
@@ -90,7 +95,7 @@ const VacanciesTab: React.FC<VacanciesTabProps> = ({
                       className="text-destructive hover:bg-destructive/10"
                     >
                       <Trash2 className="h-4 w-4 mr-1" />
-                      Delete
+                      {t('dashboard.institution.vacancies.delete')}
                     </Button>
                   </div>
                 </div>
@@ -99,21 +104,21 @@ const VacanciesTab: React.FC<VacanciesTabProps> = ({
             {showAddButton && (
               <Button onClick={onAddVacancy} className="w-full">
                 <Plus className="h-4 w-4 mr-2" />
-                Post Another Vacancy
+                {t('dashboard.institution.vacancies.postAnother')}
               </Button>
             )}
           </div>
         ) : (
           <div className="text-center py-8">
             <Briefcase className="h-12 w-12 mx-auto text-muted-foreground" />
-            <h3 className="mt-4 text-lg font-medium">No vacancies posted yet</h3>
+            <h3 className="mt-4 text-lg font-medium">{t('dashboard.institution.vacancies.noVacancies')}</h3>
             <p className="text-muted-foreground">
-              Post your first job listing to attract healthcare professionals
+              {t('dashboard.institution.vacancies.noVacanciesDesc')}
             </p>
             {showAddButton && (
               <Button className="mt-4" onClick={onAddVacancy}>
                 <Plus className="h-4 w-4 mr-2" />
-                Post a Vacancy
+                {t('dashboard.institution.vacancies.postVacancy')}
               </Button>
             )}
           </div>

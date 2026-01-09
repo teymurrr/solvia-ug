@@ -100,5 +100,118 @@ export const dashboard = {
     addCountry: "Add Another Country",
     languagePackage: "Homologation & Language",
     premiumPackage: "Premium"
+  },
+  // Institution Dashboard
+  institution: {
+    title: "Institution Dashboard",
+    subtitle: "Manage your hospital profile and job listings",
+    postVacancy: "Post New Vacancy",
+    tabs: {
+      profile: "Profile",
+      vacancies: "Your Vacancies",
+      applications: "Applications",
+      talents: "Talent Search"
+    },
+    profile: {
+      title: "Hospital Profile",
+      description: "This is how healthcare professionals will see your institution",
+      email: "Email",
+      website: "Website",
+      size: "Size",
+      location: "Location",
+      about: "About",
+      incompleteProfile: "Your profile is incomplete. Add more information about your institution to attract healthcare professionals.",
+      completeProfile: "Complete Your Profile"
+    },
+    vacancies: {
+      title: "Your Posted Vacancies",
+      description: "Manage job listings and view applications",
+      noVacancies: "No vacancies posted yet",
+      noVacanciesDesc: "Post your first job listing to attract healthcare professionals",
+      postVacancy: "Post a Vacancy",
+      postAnother: "Post Another Vacancy",
+      edit: "Edit",
+      delete: "Delete"
+    },
+    talents: {
+      title: "Talent Search",
+      description: "Find qualified healthcare professionals",
+      search: "Search",
+      searchPlaceholder: "Search professionals...",
+      noResults: "No matching professionals found",
+      noResultsDesc: "Try adjusting your search criteria",
+      noProfessionals: "No professionals available at this time",
+      checkLater: "Please check back later",
+      filters: {
+        allRoles: "All Roles",
+        allProfessions: "All Professions",
+        allCountries: "All Countries",
+        allLanguages: "All Languages"
+      }
+    },
+    featuredVacancies: "Featured Vacancies",
+    sampleVacancies: "Sample Vacancies",
+    sampleVacanciesDesc: "Examples of vacancy listings from leading healthcare institutions"
+  },
+  // Workforce Analytics
+  workforce: {
+    title: "Workforce Analytics",
+    demo: "Demo",
+    demoTooltip: "This is demo data. Connect your HR system to see real metrics.",
+    lastUpdated: "Last updated",
+    refresh: "Refresh",
+    collapse: "Collapse",
+    expand: "Expand",
+    loading: "Loading workforce analytics...",
+    executiveSnapshot: "Executive Snapshot",
+    kpis: {
+      totalFTE: "Total FTE",
+      ofPlanned: "of {planned} planned",
+      staffingCoverage: "Staffing Coverage",
+      hospitalWide: "Hospital-wide",
+      criticalOpenings: "Critical Openings",
+      positionsRequiringFill: "Positions requiring urgent fill",
+      sickLeaveRate: "Sick Leave Rate",
+      rolling30Days: "Rolling 30 days"
+    },
+    riskRadar: {
+      title: "Risk Radar",
+      description: "Department staffing risk assessment",
+      highRisk: "High Risk",
+      medium: "Medium",
+      stable: "Stable",
+      vacancy: "Vacancy",
+      sickLeave: "Sick leave",
+      overtime: "OT",
+      expiring: "expiring",
+      riskBasedOn: "Risk based on: vacancy rate, sick leave trend, overtime hours, contract expiries (<6 months)"
+    },
+    costExposure: {
+      title: "Cost Exposure",
+      description: "Personnel costs vs budget",
+      monthlyPersonnelCost: "Monthly Personnel Cost",
+      ofBudget: "of budget",
+      budget: "Budget",
+      underBudget: "under budget",
+      overBudget: "over budget",
+      overtimeCost: "Overtime Cost",
+      increasing: "Increasing",
+      decreasing: "Decreasing"
+    },
+    hiringBlockers: {
+      title: "Hiring & Onboarding Blockers",
+      description: "Critical roles and bottlenecks",
+      criticalOpenRoles: "Critical Open Roles",
+      openFor: "Open for",
+      days: "days",
+      approvalDelay: "Approval Delay",
+      pipelineIssue: "Pipeline Issue",
+      onboardingAdmin: "Onboarding Admin",
+      critical: "Critical",
+      internationalHires: "International Hires - Recognition Status",
+      pending: "Pending",
+      inProgress: "In Progress",
+      approved: "Approved"
+    }
   }
 };
