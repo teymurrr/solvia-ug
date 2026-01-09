@@ -1,7 +1,7 @@
 
-const CACHE_NAME = 'solvia-v3';
-const STATIC_CACHE_NAME = 'solvia-static-v3';
-const DYNAMIC_CACHE_NAME = 'solvia-dynamic-v3';
+const CACHE_NAME = 'solvia-v4';
+const STATIC_CACHE_NAME = 'solvia-static-v4';
+const DYNAMIC_CACHE_NAME = 'solvia-dynamic-v4';
 
 // Cache static assets (removed root path as it's dynamic content)
 const STATIC_ASSETS = [
@@ -46,16 +46,36 @@ self.addEventListener('activate', (event) => {
         return Promise.all(
           cacheNames
             .filter((cacheName) => 
-              // Remove old caches and any caches not from this version
-              cacheName.startsWith('solvia-v1') || 
-              cacheName.startsWith('solvia-v2') ||
-              (!cacheName.startsWith('solvia-v3') && cacheName.startsWith('solvia-'))
+              // Remove ALL old solvia caches that aren't the current version
+              cacheName.startsWith('solvia-') && !cacheName.includes('-v4')
             )
-            .map((cacheName) => caches.delete(cacheName))
+            .map((cacheName) => {
+              console.log('Deleting old cache:', cacheName);
+              return caches.delete(cacheName);
+            })
         );
       })
       .then(() => self.clients.claim())
   );
+});
+
+// Listen for messages from the app to clear cache
+self.addEventListener('message', (event) => {
+  if (event.data && event.data.type === 'CLEAR_ALL_CACHES') {
+    event.waitUntil(
+      caches.keys().then((cacheNames) => {
+        return Promise.all(
+          cacheNames.map((cacheName) => {
+            console.log('Force clearing cache:', cacheName);
+            return caches.delete(cacheName);
+          })
+        );
+      }).then(() => {
+        // Notify the client that caches are cleared
+        event.source.postMessage({ type: 'CACHES_CLEARED' });
+      })
+    );
+  }
 });
 
 self.addEventListener('fetch', (event) => {
