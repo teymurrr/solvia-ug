@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import MainLayout from '@/components/MainLayout';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import VacancyForm from '@/components/VacancyForm';
-import InstitutionProfileEditForm from '@/components/InstitutionProfileEditForm';
-import { ProfileTab, VacanciesTab, TalentsTab, DashboardHeader } from '@/components/institution-dashboard';
+import { VacanciesTab, TalentsTab, DashboardHeader } from '@/components/institution-dashboard';
+import AnalyticsTab from '@/components/institution-dashboard/ProfileTab';
 import ApplicationsTab from '@/components/institution-dashboard/ApplicationsTab';
 import { useProfessionals } from '@/hooks/useProfessionals';
 import { useVacancies, VacancyInput } from '@/hooks/useVacancies';
@@ -20,7 +20,6 @@ const InstitutionDashboard = () => {
   const [vacancyFormOpen, setVacancyFormOpen] = useState(false);
   const [vacancyFormMode, setVacancyFormMode] = useState<'create' | 'edit'>('create');
   const [currentVacancy, setCurrentVacancy] = useState(null);
-  const [profileEditOpen, setProfileEditOpen] = useState(false);
   const { session, user, loading: authLoading } = useAuth();
   const { 
     professionals, 
@@ -63,7 +62,7 @@ const InstitutionDashboard = () => {
     country: 'all_countries',
     language: 'all_languages'
   });
-  const [activeTab, setActiveTab] = useState('profile');
+  const [activeTab, setActiveTab] = useState('analytics');
   const { toast } = useToast();
   
   // Get active tab from location state if available
@@ -233,14 +232,14 @@ const InstitutionDashboard = () => {
         ) : (
           <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
             <TabsList className="grid w-full md:w-auto grid-cols-4">
-              <TabsTrigger value="profile">{t('dashboard.institution.tabs.profile')}</TabsTrigger>
+              <TabsTrigger value="analytics">{t('dashboard.institution.tabs.analytics') || 'Analytics'}</TabsTrigger>
               <TabsTrigger value="vacancies">{t('dashboard.institution.tabs.vacancies')}</TabsTrigger>
               <TabsTrigger value="applications">{t('dashboard.institution.tabs.applications')}</TabsTrigger>
               <TabsTrigger value="talents">{t('dashboard.institution.tabs.talents')}</TabsTrigger>
             </TabsList>
             
-            <TabsContent value="profile" className="space-y-6">
-              <ProfileTab onEditProfile={() => setProfileEditOpen(true)} />
+            <TabsContent value="analytics" className="space-y-6">
+              <AnalyticsTab />
             </TabsContent>
             
             <TabsContent value="vacancies" className="space-y-6">
@@ -313,10 +312,6 @@ const InstitutionDashboard = () => {
         mode={vacancyFormMode}
       />
 
-      <InstitutionProfileEditForm
-        open={profileEditOpen}
-        onOpenChange={setProfileEditOpen}
-      />
     </MainLayout>
   );
 };

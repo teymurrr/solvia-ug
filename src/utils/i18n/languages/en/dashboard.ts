@@ -108,6 +108,7 @@ export const dashboard = {
     postVacancy: "Post New Vacancy",
     tabs: {
       profile: "Profile",
+      analytics: "Analytics",
       vacancies: "Your Vacancies",
       applications: "Applications",
       talents: "Talent Search"

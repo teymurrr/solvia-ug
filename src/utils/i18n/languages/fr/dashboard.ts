@@ -194,6 +194,7 @@ export const dashboard: DashboardTranslations = {
     postVacancy: "Publier une Nouvelle Offre",
     tabs: {
       profile: "Profil",
+      analytics: "Analytique",
       vacancies: "Vos Offres",
       applications: "Candidatures",
       talents: "Recherche de Talents"

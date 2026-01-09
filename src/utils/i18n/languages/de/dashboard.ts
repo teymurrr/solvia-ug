@@ -220,6 +220,7 @@ export const dashboard = {
     postVacancy: "Neue Stelle veröffentlichen",
     tabs: {
       profile: "Profil",
+      analytics: "Analytik",
       vacancies: "Ihre Stellen",
       applications: "Bewerbungen",
       talents: "Talentsuche"
