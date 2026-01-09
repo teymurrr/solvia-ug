@@ -13,13 +13,13 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = ({ onAddVacancy }) => {
   return (
     <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
       <div>
-        <h1 className="text-3xl font-bold">{t('dashboard.institution.title')}</h1>
-        <p className="text-muted-foreground">{t('dashboard.institution.subtitle')}</p>
+        <h1 className="text-3xl font-bold">{t?.dashboard?.institution?.title || 'Institution Dashboard'}</h1>
+        <p className="text-muted-foreground">{t?.dashboard?.institution?.subtitle || 'Manage your vacancies and applications'}</p>
       </div>
       <div className="flex flex-col md:flex-row gap-2">
         <Button onClick={onAddVacancy}>
           <Plus className="h-4 w-4 mr-2" />
-          {t('dashboard.institution.postVacancy')}
+          {t?.dashboard?.institution?.postVacancy || 'Post Vacancy'}
         </Button>
       </div>
     </div>
