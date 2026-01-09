@@ -8,38 +8,90 @@ const SUPABASE_PUBLISHABLE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiO
 // Import the supabase client like this:
 // import { supabase } from "@/integrations/supabase/client";
 
-// Safe localStorage wrapper that handles corrupted data
-const safeStorage = {
-  getItem: (key: string): string | null => {
-    try {
-      return localStorage.getItem(key);
-    } catch (e) {
-      console.error('Error reading from localStorage:', e);
-      return null;
-    }
-  },
-  setItem: (key: string, value: string): void => {
-    try {
-      localStorage.setItem(key, value);
-    } catch (e) {
-      console.error('Error writing to localStorage:', e);
-      // Try to clear storage if it's full or corrupted
-      try {
-        localStorage.clear();
-        localStorage.setItem(key, value);
-      } catch (clearError) {
-        console.error('Failed to recover localStorage:', clearError);
-      }
-    }
-  },
-  removeItem: (key: string): void => {
-    try {
-      localStorage.removeItem(key);
-    } catch (e) {
-      console.error('Error removing from localStorage:', e);
-    }
+// Check if localStorage is available and working
+const isLocalStorageAvailable = (): boolean => {
+  try {
+    const testKey = '__storage_test__';
+    window.localStorage.setItem(testKey, testKey);
+    window.localStorage.removeItem(testKey);
+    return true;
+  } catch (e) {
+    console.warn('localStorage is not available:', e);
+    return false;
   }
 };
+
+// Validate that stored session data is valid JSON
+const isValidSessionData = (data: string | null): boolean => {
+  if (!data) return true; // null is valid (no session)
+  try {
+    JSON.parse(data);
+    return true;
+  } catch {
+    return false;
+  }
+};
+
+// Safe localStorage wrapper that handles corrupted data
+const createSafeStorage = () => {
+  const localStorageAvailable = isLocalStorageAvailable();
+  
+  // In-memory fallback for when localStorage is not available
+  const memoryStorage: Record<string, string> = {};
+  
+  return {
+    getItem: (key: string): string | null => {
+      try {
+        if (!localStorageAvailable) {
+          return memoryStorage[key] || null;
+        }
+        
+        const value = window.localStorage.getItem(key);
+        
+        // If it's a supabase auth key, validate it
+        if (key.includes('supabase.auth') && !isValidSessionData(value)) {
+          console.warn(`Corrupted session data detected for key: ${key}, clearing...`);
+          window.localStorage.removeItem(key);
+          return null;
+        }
+        
+        return value;
+      } catch (e) {
+        console.error('Error reading from localStorage:', e);
+        return memoryStorage[key] || null;
+      }
+    },
+    setItem: (key: string, value: string): void => {
+      try {
+        if (!localStorageAvailable) {
+          memoryStorage[key] = value;
+          return;
+        }
+        
+        window.localStorage.setItem(key, value);
+      } catch (e) {
+        console.error('Error writing to localStorage:', e);
+        // Fall back to memory storage
+        memoryStorage[key] = value;
+      }
+    },
+    removeItem: (key: string): void => {
+      try {
+        if (!localStorageAvailable) {
+          delete memoryStorage[key];
+          return;
+        }
+        
+        window.localStorage.removeItem(key);
+      } catch (e) {
+        console.error('Error removing from localStorage:', e);
+        delete memoryStorage[key];
+      }
+    }
+  };
+};
+
+const safeStorage = createSafeStorage();
 
 export const supabase = createClient<Database>(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
   auth: {

@@ -45,12 +45,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
 
   React.useEffect(() => {
+    let mounted = true;
+    
     const initSession = async () => {
       console.log("🔍 [AuthContext] Initializing auth session...");
       
       // Set up auth state listener FIRST
       const { data: { subscription } } = supabase.auth.onAuthStateChange(
         (event, session) => {
+          if (!mounted) return;
+          
           console.log("🔍 [AuthContext] Auth state change event:", event);
           console.log("🔍 [AuthContext] Session:", session ? "Session exists" : "No session");
           console.log("🔍 [AuthContext] User email:", session?.user?.email);
@@ -76,8 +80,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         console.log("🔍 [AuthContext] Checking for existing session...");
         const { data, error } = await supabase.auth.getSession();
         
+        if (!mounted) return;
+        
         if (error) {
           console.error("❌ [AuthContext] Error getting session:", error);
+          // Clear potentially corrupted session data
+          try {
+            await supabase.auth.signOut();
+          } catch (signOutError) {
+            console.error("❌ [AuthContext] Error signing out after session error:", signOutError);
+          }
+          setLoading(false);
+          return;
         }
         
         console.log("🔍 [AuthContext] Got session data:", data.session ? "Session exists" : "No session");
@@ -97,7 +111,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       } catch (error) {
         console.error("❌ [AuthContext] Unexpected error during session initialization:", error);
       } finally {
-        setLoading(false);
+        if (mounted) {
+          setLoading(false);
+        }
       }
 
       return () => {
@@ -106,6 +122,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     };
 
     initSession();
+    
+    return () => {
+      mounted = false;
+    };
   }, []);
 
   const signIn = async (email: string, password: string) => {
