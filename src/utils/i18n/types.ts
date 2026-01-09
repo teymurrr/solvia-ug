@@ -264,6 +264,7 @@ export interface DashboardTranslations {
     postVacancy: string;
     tabs: {
       profile: string;
+      analytics: string;
       vacancies: string;
       applications: string;
       talents: string;

@@ -208,6 +208,7 @@ export const dashboard = {
     postVacancy: "Опубликовать Новую Вакансию",
     tabs: {
       profile: "Профиль",
+      analytics: "Аналитика",
       vacancies: "Ваши Вакансии",
       applications: "Заявки",
       talents: "Поиск Талантов"

@@ -1,7 +1,7 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Building, LogOut, Mail, User } from 'lucide-react';
+import { Building, LogOut, Mail, Settings, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import {
@@ -14,6 +14,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { useToast } from '@/hooks/use-toast';
 import { useLanguage } from '@/hooks/useLanguage';
+import InstitutionProfileEditForm from '@/components/InstitutionProfileEditForm';
 
 interface UserDropdownProps {
   userType: string | null;
@@ -25,6 +26,7 @@ const UserDropdown: React.FC<UserDropdownProps> = ({ userType, hasUnreadMessages
   const { toast } = useToast();
   const navigate = useNavigate();
   const { t } = useLanguage();
+  const [profileEditOpen, setProfileEditOpen] = useState(false);
 
   const handleSignOut = async () => {
     try {
@@ -46,38 +48,54 @@ const UserDropdown: React.FC<UserDropdownProps> = ({ userType, hasUnreadMessages
   };
   
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="icon" className="relative">
-          {userType === 'professional' ? (
-            <User className="h-4 w-4" />
-          ) : (
-            <Building className="h-4 w-4" />
-          )}
-          {hasUnreadMessages && (
-            <span className="absolute -top-1 -right-1 h-3 w-3 bg-red-500 rounded-full" />
-          )}
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-56">
-        <DropdownMenuLabel>{t?.common?.myAccount || "My Account"}</DropdownMenuLabel>
+    <>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="outline" size="icon" className="relative">
+            {userType === 'professional' ? (
+              <User className="h-4 w-4" />
+            ) : (
+              <Building className="h-4 w-4" />
+            )}
+            {hasUnreadMessages && (
+              <span className="absolute -top-1 -right-1 h-3 w-3 bg-red-500 rounded-full" />
+            )}
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end" className="w-56">
+          <DropdownMenuLabel>{t?.common?.myAccount || "My Account"}</DropdownMenuLabel>
 
-        <DropdownMenuItem asChild>
-          <Link to="/messages">
-            <Mail className="h-4 w-4 mr-2" />
-            {t?.common?.messages || "Messages"}
-            {hasUnreadMessages && <Badge className="ml-2 bg-red-500 text-white">1</Badge>}
-          </Link>
-        </DropdownMenuItem>
+          {userType === 'institution' && (
+            <DropdownMenuItem onClick={() => setProfileEditOpen(true)}>
+              <Settings className="h-4 w-4 mr-2" />
+              {t?.common?.editProfile || "Edit Profile"}
+            </DropdownMenuItem>
+          )}
 
-        <DropdownMenuSeparator />
-        
-        <DropdownMenuItem onClick={handleSignOut} className="text-red-500">
-          <LogOut className="h-4 w-4 mr-2" />
-          {t?.common?.logout || "Sign out"}
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+          <DropdownMenuItem asChild>
+            <Link to="/messages">
+              <Mail className="h-4 w-4 mr-2" />
+              {t?.common?.messages || "Messages"}
+              {hasUnreadMessages && <Badge className="ml-2 bg-red-500 text-white">1</Badge>}
+            </Link>
+          </DropdownMenuItem>
+
+          <DropdownMenuSeparator />
+          
+          <DropdownMenuItem onClick={handleSignOut} className="text-red-500">
+            <LogOut className="h-4 w-4 mr-2" />
+            {t?.common?.logout || "Sign out"}
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+
+      {userType === 'institution' && (
+        <InstitutionProfileEditForm
+          open={profileEditOpen}
+          onOpenChange={setProfileEditOpen}
+        />
+      )}
+    </>
   );
 };
 
