@@ -85,18 +85,83 @@
     <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
     <script type="module" src="/src/main.tsx"></script>
     
-    <!-- Service Worker Registration -->
+    <!-- Service Worker Registration with Recovery -->
     <script>
+      // Global function to clear all caches and reload
+      window.clearCachesAndReload = async function() {
+        try {
+          // Unregister all service workers
+          if ('serviceWorker' in navigator) {
+            const registrations = await navigator.serviceWorker.getRegistrations();
+            for (const registration of registrations) {
+              await registration.unregister();
+            }
+          }
+          
+          // Clear all caches
+          if ('caches' in window) {
+            const cacheNames = await caches.keys();
+            await Promise.all(cacheNames.map(name => caches.delete(name)));
+          }
+          
+          // Clear localStorage (but preserve important keys if needed)
+          try {
+            const keysToPreserve = [];
+            const preservedData = {};
+            keysToPreserve.forEach(key => {
+              const value = localStorage.getItem(key);
+              if (value) preservedData[key] = value;
+            });
+            localStorage.clear();
+            Object.entries(preservedData).forEach(([key, value]) => {
+              localStorage.setItem(key, value);
+            });
+          } catch (e) {
+            console.error('Error clearing localStorage:', e);
+          }
+          
+          // Force reload from server
+          window.location.reload(true);
+        } catch (error) {
+          console.error('Error clearing caches:', error);
+          window.location.reload(true);
+        }
+      };
+      
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
           navigator.serviceWorker.register('/sw.js')
             .then((registration) => {
               console.log('SW registered: ', registration);
+              
+              // Check for updates
+              registration.addEventListener('updatefound', () => {
+                const newWorker = registration.installing;
+                newWorker.addEventListener('statechange', () => {
+                  if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                    // New service worker available, reload to get latest
+                    console.log('New service worker available, reloading...');
+                    window.location.reload();
+                  }
+                });
+              });
             })
             .catch((registrationError) => {
               console.log('SW registration failed: ', registrationError);
             });
         });
+        
+        // Recovery: if page fails to load properly, try clearing caches
+        let pageLoaded = false;
+        window.addEventListener('load', () => { pageLoaded = true; });
+        
+        setTimeout(() => {
+          const root = document.getElementById('root');
+          if (!pageLoaded || (root && root.children.length === 0)) {
+            console.log('Page may not have loaded correctly, offering recovery...');
+            // Don't auto-clear, but log for debugging
+          }
+        }, 10000);
       }
     </script>
     
