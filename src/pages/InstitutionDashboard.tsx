@@ -232,10 +232,10 @@ const InstitutionDashboard = () => {
         ) : (
           <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
             <TabsList className="grid w-full md:w-auto grid-cols-4">
-              <TabsTrigger value="analytics">{t('dashboard.institution.tabs.analytics') || 'Analytics'}</TabsTrigger>
-              <TabsTrigger value="vacancies">{t('dashboard.institution.tabs.vacancies')}</TabsTrigger>
-              <TabsTrigger value="applications">{t('dashboard.institution.tabs.applications')}</TabsTrigger>
-              <TabsTrigger value="talents">{t('dashboard.institution.tabs.talents')}</TabsTrigger>
+              <TabsTrigger value="analytics">{t?.dashboard?.institution?.tabs?.analytics || 'Analytics'}</TabsTrigger>
+              <TabsTrigger value="vacancies">{t?.dashboard?.institution?.tabs?.vacancies || 'Your Vacancies'}</TabsTrigger>
+              <TabsTrigger value="applications">{t?.dashboard?.institution?.tabs?.applications || 'Applications'}</TabsTrigger>
+              <TabsTrigger value="talents">{t?.dashboard?.institution?.tabs?.talents || 'Talent Search'}</TabsTrigger>
             </TabsList>
             
             <TabsContent value="analytics" className="space-y-6">
