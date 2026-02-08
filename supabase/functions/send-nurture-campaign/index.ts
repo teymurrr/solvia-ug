@@ -15,34 +15,34 @@ const corsHeaders = {
 // =============================================================================
 
 type Language = 'es' | 'en' | 'de' | 'fr' | 'ru';
+type TemplateId = 'feedbackAsk' | 'valueInsight';
 
 interface CampaignRequest {
-  templateId?: 'feedbackAsk' | 'valueInsight';
+  templateId?: TemplateId;
   testMode?: boolean;
   testEmail?: string;
   language?: Language;
+  includeAllSources?: boolean; // Query all tables, not just leads
 }
 
-interface Lead {
+interface EmailRecipient {
   id: string;
   email: string;
   first_name: string | null;
   last_name: string | null;
-  target_country: string | null;
   study_country: string | null;
+  target_country: string | null;
   doctor_type: string | null;
   language_level: string | null;
-  email_sequence_day: number;
   preferred_language: string | null;
+  source_table: string;
 }
 
 // =============================================================================
-// EMAIL TEMPLATES: Personal, Conversation-Starting
+// EMAIL TEMPLATES
 // =============================================================================
 
 const emailTemplates = {
-  // Email 1: "Why did you sign up?" - Day 0
-  // Goal: Start a conversation, get replies, understand their problem
   feedbackAsk: {
     subject: {
       es: 'Pregunta rápida sobre por qué te registraste',
@@ -114,8 +114,6 @@ Une courte phrase suffit amplement.`,
     }
   },
 
-  // Email 2: Value insight for silent users - Day 3-5
-  // Goal: Provide real value, trigger curiosity, invite reply (no CTA button)
   valueInsight: {
     subject: {
       es: 'Lo que muchos médicos subestiman al mudarse a Alemania',
@@ -182,7 +180,6 @@ Si tu considères toujours l'Allemagne/Autriche et que tu veux éviter ça, je t
 // LANGUAGE DETECTION
 // =============================================================================
 
-// Countries where we support the local language
 const spanishCountries = [
   'mexico', 'méxico', 'colombia', 'chile', 'peru', 'perú', 'bolivia', 
   'venezuela', 'cuba', 'argentina', 'ecuador', 'uruguay', 'paraguay',
@@ -195,60 +192,34 @@ const germanCountries = ['germany', 'deutschland', 'austria', 'österreich', 'sw
 const frenchCountries = ['france', 'belgium', 'belgique', 'switzerland', 'suisse', 'canada', 'morocco', 'algeria', 'tunisia'];
 const russianCountries = ['russia', 'ukraine', 'belarus', 'kazakhstan', 'uzbekistan', 'kyrgyzstan'];
 
-const detectLeadLanguage = (lead: Lead): Language => {
-  // Priority 1: Explicit preferred_language
-  if (lead.preferred_language) {
-    const pref = lead.preferred_language.toLowerCase();
+const detectLanguage = (recipient: EmailRecipient): Language => {
+  if (recipient.preferred_language) {
+    const pref = recipient.preferred_language.toLowerCase();
     if (['es', 'de', 'en', 'fr', 'ru'].includes(pref)) {
-      console.log(`[Language] Using preferred_language for ${lead.email}: ${pref}`);
       return pref as Language;
     }
   }
   
-  const study = (lead.study_country || '').toLowerCase();
+  const study = (recipient.study_country || '').toLowerCase();
   
-  // Priority 2: Study country → supported language
-  if (spanishCountries.some(c => study.includes(c))) {
-    console.log(`[Language] Spanish for ${lead.email} (study: ${lead.study_country})`);
-    return 'es';
-  }
+  if (spanishCountries.some(c => study.includes(c))) return 'es';
+  if (germanCountries.some(c => study.includes(c))) return 'de';
+  if (frenchCountries.some(c => study.includes(c))) return 'fr';
+  if (russianCountries.some(c => study.includes(c))) return 'ru';
   
-  if (germanCountries.some(c => study.includes(c))) {
-    console.log(`[Language] German for ${lead.email} (study: ${lead.study_country})`);
-    return 'de';
-  }
-  
-  if (frenchCountries.some(c => study.includes(c))) {
-    console.log(`[Language] French for ${lead.email} (study: ${lead.study_country})`);
-    return 'fr';
-  }
-  
-  if (russianCountries.some(c => study.includes(c))) {
-    console.log(`[Language] Russian for ${lead.email} (study: ${lead.study_country})`);
-    return 'ru';
-  }
-  
-  // DEFAULT: English for all unsupported countries (Indonesia, India, etc.)
-  console.log(`[Language] English (default) for ${lead.email} (study: ${lead.study_country || 'unknown'})`);
   return 'en';
 };
 
 // =============================================================================
-// EMAIL HTML GENERATION (Plain-text style - looks personal, not automated)
+// EMAIL HTML GENERATION
 // =============================================================================
 
-const generatePlainEmail = (
-  greeting: string,
-  body: string,
-  signature: string
-): string => {
-  // Convert body paragraphs to HTML, preserving line breaks
+const generatePlainEmail = (greeting: string, body: string, signature: string): string => {
   const bodyHtml = body
     .split('\n\n')
     .map(paragraph => `<p style="margin: 0 0 16px 0;">${paragraph.replace(/\n/g, '<br>')}</p>`)
     .join('');
 
-  // Minimal, clean HTML that looks like a personal email
   return `<!DOCTYPE html>
 <html>
 <head>
@@ -264,9 +235,7 @@ const generatePlainEmail = (
       padding: 24px;
       background-color: #ffffff;
     }
-    p {
-      margin: 0 0 16px 0;
-    }
+    p { margin: 0 0 16px 0; }
   </style>
 </head>
 <body>
@@ -278,11 +247,56 @@ const generatePlainEmail = (
 };
 
 // =============================================================================
+// DEDUPLICATION: Check if email+template already sent
+// =============================================================================
+
+const checkAlreadySent = async (
+  supabase: ReturnType<typeof createClient>,
+  email: string,
+  templateId: TemplateId
+): Promise<boolean> => {
+  const { data } = await supabase
+    .from('email_sends')
+    .select('id')
+    .eq('template_id', templateId)
+    .ilike('email', email)
+    .limit(1);
+  
+  return (data && data.length > 0);
+};
+
+// =============================================================================
+// LOG EMAIL SEND
+// =============================================================================
+
+const logEmailSend = async (
+  supabase: ReturnType<typeof createClient>,
+  recipient: EmailRecipient,
+  templateId: TemplateId,
+  language: Language,
+  resendEmailId: string | null,
+  status: 'sent' | 'failed'
+): Promise<void> => {
+  try {
+    await supabase.from('email_sends').insert({
+      email: recipient.email.toLowerCase(),
+      template_id: templateId,
+      language,
+      lead_id: recipient.source_table === 'leads' ? recipient.id : null,
+      source_table: recipient.source_table,
+      resend_email_id: resendEmailId,
+      status
+    });
+  } catch (err) {
+    console.error(`[logEmailSend] Error logging send for ${recipient.email}:`, err);
+  }
+};
+
+// =============================================================================
 // MAIN HANDLER
 // =============================================================================
 
 const handler = async (req: Request): Promise<Response> => {
-  // Handle CORS preflight
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
@@ -294,24 +308,27 @@ const handler = async (req: Request): Promise<Response> => {
     );
 
     const body: CampaignRequest = await req.json().catch(() => ({}));
-    const { templateId = 'feedbackAsk', testMode = false, testEmail, language } = body;
+    const { 
+      templateId = 'feedbackAsk', 
+      testMode = false, 
+      testEmail, 
+      language,
+      includeAllSources = false 
+    } = body;
 
-    console.log(`[send-nurture-campaign] Starting. Test: ${testMode}, Template: ${templateId}`);
+    console.log(`[send-nurture-campaign] Starting. Test: ${testMode}, Template: ${templateId}, AllSources: ${includeAllSources}`);
 
-    // Validate template
     if (!['feedbackAsk', 'valueInsight'].includes(templateId)) {
       return new Response(
-        JSON.stringify({ error: `Invalid template: ${templateId}. Use 'feedbackAsk' or 'valueInsight'` }),
+        JSON.stringify({ error: `Invalid template: ${templateId}` }),
         { status: 400, headers: { "Content-Type": "application/json", ...corsHeaders } }
       );
     }
 
-    // Get leads to email
-    let leadsToEmail: Lead[] = [];
+    let recipients: EmailRecipient[] = [];
 
     if (testMode && testEmail) {
-      // Test mode: create a mock lead
-      leadsToEmail = [{
+      recipients = [{
         id: 'test-lead',
         email: testEmail,
         first_name: null,
@@ -321,115 +338,133 @@ const handler = async (req: Request): Promise<Response> => {
         target_country: 'germany',
         doctor_type: 'general',
         language_level: 'B1',
-        email_sequence_day: 0
+        source_table: 'test'
       }];
       console.log(`[send-nurture-campaign] Test mode - sending to ${testEmail}`);
     } else {
-      // Production mode: get leads based on template type
-      if (templateId === 'feedbackAsk') {
-        // Day 0: New leads who haven't received any email yet
-        const { data, error } = await supabase
-          .from('leads')
-          .select('*')
-          .eq('status', 'new')
-          .eq('email_sequence_day', 0)
+      // Get recipients from leads table (primary source)
+      const { data: leadsData, error: leadsError } = await supabase
+        .from('leads')
+        .select('id, email, first_name, last_name, study_country, target_country, doctor_type, language_level, preferred_language')
+        .eq('status', 'new')
+        .not('email', 'is', null)
+        .limit(100);
+
+      if (leadsError) throw leadsError;
+
+      recipients = (leadsData || []).map(l => ({
+        ...l,
+        source_table: 'leads'
+      }));
+
+      // If includeAllSources, also get from other tables (deduplicated by email_sends)
+      if (includeAllSources) {
+        // Get from learning_form_submissions not already in email_sends
+        const { data: learningData } = await supabase
+          .from('learning_form_submissions')
+          .select('id, email, full_name, country, preferred_language')
+          .not('email', 'is', null)
           .limit(50);
 
-        if (error) {
-          console.error('[send-nurture-campaign] Error fetching leads:', error);
-          throw error;
+        if (learningData) {
+          for (const l of learningData) {
+            const [firstName, ...lastParts] = (l.full_name || '').split(' ');
+            recipients.push({
+              id: l.id,
+              email: l.email,
+              first_name: firstName || null,
+              last_name: lastParts.join(' ') || null,
+              study_country: l.country,
+              target_country: null,
+              doctor_type: null,
+              language_level: null,
+              preferred_language: l.preferred_language,
+              source_table: 'learning_form_submissions'
+            });
+          }
         }
-        leadsToEmail = data || [];
-        console.log(`[send-nurture-campaign] Found ${leadsToEmail.length} new leads for feedbackAsk`);
-      } else if (templateId === 'valueInsight') {
-        // Day 3-5: Leads who received feedbackAsk but haven't replied
-        // (email_sequence_day = 1, last_email_sent between 3-5 days ago)
-        const fiveDaysAgo = new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString();
-        const threeDaysAgo = new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString();
-        
-        const { data, error } = await supabase
-          .from('leads')
-          .select('*')
-          .eq('email_sequence_day', 1)
-          .gte('last_email_sent', fiveDaysAgo)
-          .lte('last_email_sent', threeDaysAgo)
-          .limit(50);
-
-        if (error) {
-          console.error('[send-nurture-campaign] Error fetching leads:', error);
-          throw error;
-        }
-        leadsToEmail = data || [];
-        console.log(`[send-nurture-campaign] Found ${leadsToEmail.length} leads for valueInsight`);
       }
+
+      console.log(`[send-nurture-campaign] Found ${recipients.length} potential recipients`);
     }
 
-    if (leadsToEmail.length === 0) {
+    if (recipients.length === 0) {
       return new Response(
-        JSON.stringify({ success: true, message: "No leads to email", sent: 0 }),
+        JSON.stringify({ success: true, message: "No recipients found", sent: 0, skipped: 0 }),
         { status: 200, headers: { "Content-Type": "application/json", ...corsHeaders } }
       );
     }
 
-    // Send emails
-    const results = { sent: 0, failed: 0, errors: [] as string[] };
+    const results = { sent: 0, skipped: 0, failed: 0, errors: [] as string[] };
     const template = emailTemplates[templateId];
 
-    for (const lead of leadsToEmail) {
+    for (const recipient of recipients) {
       try {
-        const lang = language || detectLeadLanguage(lead);
-        
-        const subject = template.subject[lang];
-        const greeting = template.greeting[lang];
-        const bodyText = template.body[lang];
-        const signature = template.signature[lang];
+        // DEDUPLICATION CHECK: Skip if already sent this template to this email
+        if (!testMode) {
+          const alreadySent = await checkAlreadySent(supabase, recipient.email, templateId);
+          if (alreadySent) {
+            console.log(`[send-nurture-campaign] Skipping ${recipient.email} - already received ${templateId}`);
+            results.skipped++;
+            continue;
+          }
+        }
 
-        const html = generatePlainEmail(greeting, bodyText, signature);
+        const lang = language || detectLanguage(recipient);
+        const html = generatePlainEmail(
+          template.greeting[lang],
+          template.body[lang],
+          template.signature[lang]
+        );
 
-        console.log(`[send-nurture-campaign] Sending ${templateId} to ${lead.email} in ${lang}`);
+        console.log(`[send-nurture-campaign] Sending ${templateId} to ${recipient.email} in ${lang}`);
 
         const emailResponse = await resend.emails.send({
           from: "David from Solvia <david@thesolvia.com>",
-          to: [lead.email],
-          subject: subject,
-          html: html,
+          to: [recipient.email],
+          subject: template.subject[lang],
+          html,
           reply_to: "David.rehrl@thesolvia.com"
         });
 
-        console.log(`[send-nurture-campaign] Email sent:`, emailResponse);
+        const resendEmailId = emailResponse?.data?.id || null;
 
-        // Update lead status (unless test mode)
+        // Log the send to email_sends table
         if (!testMode) {
-          const newSequenceDay = templateId === 'feedbackAsk' ? 1 : 2;
-          
-          const { error: updateError } = await supabase
-            .from('leads')
-            .update({
-              email_sequence_day: newSequenceDay,
-              last_email_sent: new Date().toISOString(),
-              email_campaign: templateId
-            })
-            .eq('id', lead.id);
+          await logEmailSend(supabase, recipient, templateId, lang, resendEmailId, 'sent');
 
-          if (updateError) {
-            console.error(`[send-nurture-campaign] Error updating lead ${lead.id}:`, updateError);
+          // Also update leads table if from leads
+          if (recipient.source_table === 'leads') {
+            await supabase
+              .from('leads')
+              .update({
+                email_sequence_day: templateId === 'feedbackAsk' ? 1 : 2,
+                last_email_sent: new Date().toISOString(),
+                email_campaign: templateId
+              })
+              .eq('id', recipient.id);
           }
         }
 
         results.sent++;
       } catch (emailError: any) {
-        console.error(`[send-nurture-campaign] Error sending to ${lead.email}:`, emailError);
+        console.error(`[send-nurture-campaign] Error sending to ${recipient.email}:`, emailError);
         results.failed++;
-        results.errors.push(`${lead.email}: ${emailError.message}`);
+        results.errors.push(`${recipient.email}: ${emailError.message}`);
+        
+        // Log failed send
+        if (!testMode) {
+          await logEmailSend(supabase, recipient, templateId, 'en', null, 'failed');
+        }
       }
     }
 
-    console.log(`[send-nurture-campaign] Complete. Sent: ${results.sent}, Failed: ${results.failed}`);
+    console.log(`[send-nurture-campaign] Complete. Sent: ${results.sent}, Skipped: ${results.skipped}, Failed: ${results.failed}`);
 
     return new Response(
       JSON.stringify({
         success: true,
-        message: `Sent ${results.sent} emails, ${results.failed} failed`,
+        message: `Sent ${results.sent}, skipped ${results.skipped} (already sent), failed ${results.failed}`,
         templateId,
         ...results
       }),
