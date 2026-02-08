@@ -1,250 +1,111 @@
 
 
-# Email System Redesign: From Sales Funnel to Personal Conversations
+# Extend Nurture Campaign to Registered Users
 
-## Current State vs. New Approach
+## Overview
 
-| Current Approach | New Approach |
-|-----------------|--------------|
-| 5-email sales sequence (day0-day7) | 2-3 simple, personal emails |
-| CTA buttons → payment page | Reply-focused, no buttons |
-| Branded HTML with logos | Plain-text feel, personal |
-| "Buy now" urgency | "Quick question" curiosity |
-| Features & benefits | Genuine question about their problem |
-| Automated pipeline | Conversation starter |
+Extend the email campaign to include **47 registered users** (from `professional_profiles`) who aren't in the `leads` table. These are high-intent users who signed up directly without completing the wizard.
 
-## No Emails Sent Yet
+## Current Situation
 
-All 113+ leads still have `email_sequence_day: 0` and `status: new`. Only test emails went to `david.rehrl@me.com`.
+| Source | Total | Already Emailed | Remaining |
+|--------|-------|-----------------|-----------|
+| Leads table | 56 | 56 | 0 |
+| Professional profiles (not in leads) | 47 | 0 | **47** |
 
----
+## Approach
 
-## New Email Templates
+**Option A: Add registered users to leads table first (Recommended)**
+- Insert the 47 professional profiles into the `leads` table with `source: 'direct_signup'`
+- This keeps tracking unified and allows the existing edge function to work without major changes
 
-### Email 1: "Why Did You Sign Up?" (Day 0)
+**Option B: Modify edge function to query both tables**
+- More complex, requires parallel tracking in two tables
 
-**Subject (by language):**
-- ES: `Pregunta rápida sobre por qué te registraste`
-- EN: `Quick question about why you signed up`
-- DE: `Kurze Frage, warum du dich angemeldet hast`
-- FR: `Petite question sur ton inscription`
+I recommend **Option A** for simplicity and unified tracking.
 
-**Body (Spanish example):**
-```
-Hola,
+## Implementation Steps
 
-Te registraste en Solvia hace poco — quería hacer un breve check-in.
+### Step 1: Database Migration
+Insert registered users into the leads table (only those not already there):
 
-Cuando alguien se registra, normalmente es por un problema específico
-(reconocimiento de título, encontrar hospital, exámenes de idioma, mudanza).
-
-Estoy trabajando en la próxima versión y quería preguntarte directamente:
-
-¿Con qué esperabas que Solvia te ayudara?
-
-Una frase corta es más que suficiente.
-
-Gracias,
-
-David
-```
-
-**Why it works:**
-- Zero pressure
-- Ego-boost ("your opinion matters")
-- Opens conversation
-- Replies = sales gold
-
----
-
-### Email 2: Value Email for Silent Users (Day 3-5)
-
-**Subject:**
-- ES: `Lo que muchos médicos subestiman al mudarse a Alemania`
-- EN: `What most doctors underestimate about moving to Germany`
-- DE: `Was die meisten Ärzte beim Umzug nach Deutschland unterschätzen`
-
-**Body (Spanish example):**
-```
-Hola,
-
-Un dato rápido de trabajar con médicos internacionales:
-
-Los mayores retrasos no vienen del idioma — vienen de
-[cuello de botella burocrático específico].
-
-Hemos visto a personas perder 6-12 meses solo por este paso.
-
-Si todavía estás considerando Alemania/Austria y quieres
-evitar eso, con gusto te explico tus opciones.
-
-Saludos,
-
-David
+```sql
+INSERT INTO leads (id, email, first_name, last_name, target_country, study_country, 
+                   doctor_type, language_level, source, status, email_sequence_day)
+SELECT 
+  pp.id,
+  pp.email,
+  pp.first_name,
+  pp.last_name,
+  pp.target_country,
+  pp.study_country,
+  pp.doctor_type,
+  pp.language_level,
+  'direct_signup',        -- Mark source as direct signup
+  'new',                  -- New status for email sequence
+  0                       -- Ready for feedbackAsk email
+FROM professional_profiles pp
+LEFT JOIN leads l ON LOWER(pp.email) = LOWER(l.email)
+WHERE l.id IS NULL
+  AND pp.email IS NOT NULL;
 ```
 
-**No CTA button.** Just "reply if relevant."
-
----
-
-## Implementation Plan
-
-### Step 1: Create New Template System
-
-Replace the current 5-template system with 2 focused templates:
-
-| Template ID | Purpose | Timing |
-|-------------|---------|--------|
-| `feedback_ask` | "Why did you sign up?" | Day 0-1 |
-| `value_insight` | Bureaucracy insight | Day 3-5 (if no reply) |
-
-### Step 2: Update Edge Function
-
-Modify `supabase/functions/send-nurture-campaign/index.ts`:
-
-1. **Remove complex HTML styling** - use minimal, plain-text-like HTML
-2. **Remove CTA buttons** - no payment links in initial emails
-3. **Update copy** - personal, from "David", asks for replies
-4. **Keep language detection** - still auto-detect ES/EN/DE/FR
-5. **Keep branding minimal** - no logo in body, just simple footer
-
-### Step 3: Simplify the Email Structure
-
-```
-┌─────────────────────────────────────┐
-│                                     │
-│   Hola,                             │  ← No name (we don't have it)
-│                                     │
-│   [Personal message - 4-5 lines]   │
-│                                     │
-│   ¿Con qué esperabas que Solvia    │  ← The question
-│   te ayudara?                       │
-│                                     │
-│   Una frase corta es suficiente.   │
-│                                     │
-│   Gracias,                          │
-│   David                             │  ← Personal signature
-│                                     │
-└─────────────────────────────────────┘
-No footer. No logo. No unsubscribe (reply-based).
+### Step 2: Send Emails
+After migration, simply call the existing edge function:
+```json
+{
+  "templateId": "feedbackAsk",
+  "testMode": false
+}
 ```
 
-### Step 4: Handle the "No First Name" Problem
+The function will pick up the 47 new leads (now with `email_sequence_day: 0`) and send emails.
 
-Looking at your leads database: **none of them have first_name populated**.
+## Data Mapping
 
-Options:
-- A: Use just "Hola," (casual, works in Spanish)
-- B: Use "Hola, colega" (peer-to-peer, medical)
-- C: Keep it blank (most personal)
+| Professional Profile Field | Leads Field | Notes |
+|---------------------------|-------------|-------|
+| id | id | UUID preserved |
+| email | email | Direct copy |
+| first_name | first_name | Direct copy |
+| last_name | last_name | Direct copy |
+| target_country | target_country | Direct copy |
+| study_country | study_country | Used for language detection |
+| doctor_type | doctor_type | Direct copy |
+| language_level | language_level | Direct copy |
+| - | source | Set to `'direct_signup'` |
+| - | status | Set to `'new'` |
+| - | email_sequence_day | Set to `0` |
 
-I recommend **Option A** - just "Hola," for Spanish, "Hi," for English, etc.
+## Language Detection
 
----
+The existing language detection logic will work because it uses `study_country`:
+- Spanish-speaking countries → Spanish email
+- German-speaking countries → German email
+- Other countries → English email (default)
 
-## Files to Modify
-
-| File | Changes |
-|------|---------|
-| `supabase/functions/send-nurture-campaign/index.ts` | Complete template overhaul: plain-text style, personal copy, reply-focused |
-
----
+**Note:** Many direct signup users have `NULL` study_country, so they'll receive English emails by default.
 
 ## Technical Details
 
-### New `uiStrings` Structure
+### Edge Function Behavior (No Changes Needed)
 
-```typescript
-const uiStrings = {
-  // Email 1: Feedback Ask
-  feedbackSubject: {
-    es: 'Pregunta rápida sobre por qué te registraste',
-    en: 'Quick question about why you signed up',
-    de: 'Kurze Frage, warum du dich angemeldet hast',
-    fr: 'Petite question sur ton inscription'
-  },
-  feedbackBody: {
-    es: `Te registraste en Solvia hace poco — quería hacer un breve check-in.
+The edge function already:
+1. Queries leads with `status='new'` and `email_sequence_day=0`
+2. Sends email in detected language
+3. Updates `email_sequence_day` to `1` after sending
 
-Cuando alguien se registra, normalmente es por un problema específico (reconocimiento de título, encontrar hospital, exámenes de idioma, mudanza).
+### Tracking
 
-Estoy trabajando en la próxima versión y quería preguntarte directamente:
+After sending, all 47 users will have:
+- `email_sequence_day: 1`
+- `last_email_sent: [timestamp]`
+- `email_campaign: 'feedbackAsk'`
+- `source: 'direct_signup'` (distinguishes them from wizard leads)
 
-¿Con qué esperabas que Solvia te ayudara?
+## Execution Plan
 
-Una frase corta es más que suficiente.`,
-    // ... other languages
-  },
-  
-  // Email 2: Value Insight
-  valueSubject: {
-    es: 'Lo que muchos médicos subestiman al mudarse a Alemania',
-    // ...
-  },
-  valueBody: {
-    es: `Un dato rápido de trabajar con médicos internacionales:
-
-Los mayores retrasos no vienen del idioma — vienen del proceso de reconocimiento de documentos.
-
-Hemos visto a personas perder 6-12 meses solo por este paso.
-
-Si todavía estás considerando Alemania/Austria y quieres evitar eso, con gusto te explico tus opciones.`,
-    // ...
-  },
-  
-  signature: {
-    es: 'Gracias,\n\nDavid',
-    en: 'Thanks,\n\nDavid',
-    de: 'Danke,\n\nDavid',
-    fr: 'Merci,\n\nDavid'
-  }
-};
-```
-
-### Minimal Email HTML (Plain-text feel)
-
-```typescript
-const getPlainStyleEmail = (body: string, signature: string) => `
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <style>
-    body { 
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; 
-      line-height: 1.6; 
-      color: #1a1a1a; 
-      max-width: 600px; 
-      margin: 0 auto; 
-      padding: 20px;
-    }
-  </style>
-</head>
-<body>
-  <p>Hola,</p>
-  ${body.split('\n\n').map(p => `<p>${p}</p>`).join('')}
-  <p style="white-space: pre-line;">${signature}</p>
-</body>
-</html>
-`;
-```
-
----
-
-## Expected Outcomes
-
-1. **Higher Reply Rate**: 20-40% vs ~1% click rate on current emails
-2. **Conversation Starters**: Each reply is a potential sale
-3. **Market Research**: Learn what problems people actually have
-4. **Trust Building**: Personal touch beats automated sequences
-5. **Deliverability**: Plain emails less likely to hit spam
-
----
-
-## What This Does NOT Change
-
-- Logo is still uploaded to `email-assets` bucket (for future use, payment emails, etc.)
-- Language detection still works
-- Lead segmentation still available
-- Test mode still works
+1. Run the SQL migration to add 47 professional profiles to leads table
+2. Call the edge function with `testMode: false`
+3. Monitor results (expect ~47 emails sent)
 
