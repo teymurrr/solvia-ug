@@ -1,141 +1,213 @@
 
-# Multi-Language Email Campaign Implementation Plan
 
-## Current Situation
-- **Existing emails**: Spanish-only (day0, day1, day3, day5, day7)
-- **Target leads**: 113 total
-- **Study country breakdown**: 
-  - Latin America: ~85 leads (Mexico 18, Colombia 8, Chile 5, Peru 3, Ecuador 2, others)
-  - Europe: ~28 leads (Spain 6, Austria 3, Germany 2, France, Italy, etc.)
-- **Required languages**: Spanish, German, English (+ French for ~5 leads)
-- **No language preference field** in `leads` table - must auto-detect based on `study_country` and `target_country`
+# Email Deliverability & Language Preference Implementation Plan
 
-## Implementation Strategy
+## Problem Analysis
 
-### Phase 1: Language Detection Logic
-Create a function in the `send-nurture-campaign` edge function to auto-detect the best language for each lead:
+### Issue 1: Email Going to Spam (david.rehrl@me.com)
+The email was received correctly on `@thesolvia.com` but may have landed in spam on `@me.com` (Apple iCloud). This is a common deliverability issue caused by:
 
-**Logic:**
-1. If `study_country` is in Latin America → Spanish
-2. If `target_country` is Germany/Austria → German
-3. If `target_country` is France → French
-4. Fallback: English (for unknown cases)
+1. **Missing DMARC record** - Most critical for iCloud/Apple Mail
+2. **No warm-up period** - New sending domains need gradual volume increases
+3. **Link/tracking URLs mismatch** - CTA buttons may point to different domains than the sending domain
+4. **Potential SPF/DKIM misconfiguration** - Need to verify records are correctly set up
 
-**Language Mapping:**
-- **Spanish**: Mexico, Colombia, Chile, Peru, Bolivia, Venezuela, Cuba, Argentina, Ecuador (85 leads)
-- **German**: Germany, Austria (if they also came from these countries or speak German)
-- **French**: France, Algeria (5 leads)
-- **English**: Default/Unknown
+### Issue 2: No Language Preference Stored
+Currently, language is **auto-detected** at send time based on `study_country`. This works but has limitations:
+- No way to know a user's actual preference
+- Can't handle edge cases (e.g., a Mexican living in Germany who prefers German)
+- No user choice in the matter
 
-### Phase 2: Email Template Translation
-Create translated versions of all 5 email templates:
-- Day 0: "Tu plan para trabajar en..." → "Dein Plan für die Arbeit in..." / "Your plan to work in..."
-- Day 1: Success story template (translate for each language)
-- Day 3: 3 common mistakes (translate for each language)
-- Day 5: Price increase urgency (translate for each language)
-- Day 7: Final offer with free consultation (translate for each language)
+---
 
-Each template will have:
-- Subject line in the detected language
-- HTML body in the detected language
-- Personalization for country names, professions, timelines
+## Solution 1: Email Deliverability Improvements
 
-### Phase 3: Test Email to David
-Before full campaign launch:
-1. Create a test lead object for `david.rehrl@thesolvia.com`
-2. Send the Day 0 template in all languages to verify rendering
-3. Let David choose which version looks best
-4. Confirm language detection logic is working
+### A. DNS Authentication (Action Required: You/Admin)
+You need to verify these DNS records are set up correctly in your domain registrar:
 
-### Phase 4: Full Campaign Execution
-Once David approves the test:
-1. Query all 113 leads from the `leads` table
-2. Auto-detect language for each lead based on `study_country`
-3. Send Day 0 personalized email in their language
-4. Update `email_sequence_day` to 1 for tracking
+| Record Type | Name | Value |
+|-------------|------|-------|
+| TXT (SPF) | `send.thesolvia.com` | Check Resend dashboard for exact value |
+| TXT (DKIM) | `resend._domainkey.thesolvia.com` | Check Resend dashboard for exact value |
+| TXT (DMARC) | `_dmarc.thesolvia.com` | `v=DMARC1; p=none; rua=mailto:dmarc@thesolvia.com` |
 
-## Technical Details
+**DMARC is critical** - Apple iCloud, Gmail, and Outlook all require DMARC for trusted delivery.
 
-### Language Detection Function
+### B. Subdomain Strategy (Recommended)
+Instead of sending from `team@thesolvia.com`, use a subdomain like:
+- `team@mail.thesolvia.com` or `team@updates.thesolvia.com`
+
+This isolates your marketing/campaign reputation from your main domain.
+
+### C. Link/URL Consistency
+Ensure all links in emails match the sending domain:
+- Current: Sending from `thesolvia.com`, linking to `thesolvia.com` ✅
+- Verify: All CTA buttons and footer links use `thesolvia.com`
+
+### D. Email Content Best Practices
+- Avoid spam trigger words in subject lines
+- Keep HTML clean and accessible
+- Include plain-text alternative (Resend supports this)
+- Add physical address in footer (CAN-SPAM compliance)
+
+### E. Warm-up Strategy
+For new sending domains:
+1. Start with 50-100 emails/day
+2. Increase by 50% every 2-3 days
+3. Monitor bounce rates and complaints
+4. Full volume after 2-3 weeks
+
+---
+
+## Solution 2: Store Language Preference
+
+### A. Database Schema Change
+Add a `preferred_language` column to all relevant tables:
+
+```text
++---------------------------+
+|         leads             |
++---------------------------+
+| id                        |
+| email                     |
+| first_name                |
+| ...                       |
+| preferred_language  (NEW) |  -- 'es', 'de', 'en', 'fr', or NULL
++---------------------------+
+
++---------------------------+
+|   professional_profiles   |
++---------------------------+
+| ...                       |
+| preferred_language  (NEW) |
++---------------------------+
+
++---------------------------+
+| learning_form_submissions |
++---------------------------+
+| ...                       |
+| preferred_language  (NEW) |
++---------------------------+
 ```
-detectLeadLanguage(studyCountry, targetCountry) {
-  const latAmCountries = ['Mexico', 'Colombia', 'Chile', 'Peru', 'Bolivia', 'Venezuela', 'Cuba', 'Argentina', 'Ecuador'];
-  
-  if (latAmCountries.includes(studyCountry)) return 'es';
-  if (['Germany', 'Austria'].includes(targetCountry)) return 'de';
-  if (['France'].includes(targetCountry)) return 'fr';
-  return 'en';
-}
+
+### B. Language Selection at Capture Time
+When users fill out the wizard/forms, we can:
+
+**Option 1: Auto-detect from browser**
+- Capture `navigator.language` from the user's browser
+- Store as `preferred_language`
+- Works automatically, no user action needed
+
+**Option 2: Explicit selection**
+- Add a language selector dropdown to signup/wizard forms
+- User explicitly chooses their preferred email language
+
+**Recommendation:** Combine both - auto-detect from browser but allow manual override.
+
+### C. Update Edge Function Logic
+Modify `send-nurture-campaign` to:
+1. First check `preferred_language` field
+2. If NULL, fall back to auto-detection based on `study_country`
+3. Log which method was used for analytics
+
+```text
+Priority order for language selection:
+1. preferred_language (if set by user)
+2. Browser language (if captured during signup)
+3. Auto-detect from study_country
+4. Default to 'en'
 ```
 
-### Email Template Structure
-For each template (day0, day1, day3, day5, day7), create:
-- `templates.day0.es` (Spanish)
-- `templates.day0.de` (German)
-- `templates.day0.en` (English)
-- `templates.day0.fr` (French)
+---
 
-### Country Names & Professions
-Expand the existing mappings to include German and French:
-```
-countryNames: {
-  germany: { es: 'Alemania', en: 'Germany', de: 'Deutschland', fr: 'Allemagne' },
-  ...
-}
+## Implementation Steps
 
-professionNames: {
-  general: { es: 'médico general', en: 'general practitioner', de: 'Allgemeinarzt', fr: 'Médecin généraliste' },
-  ...
-}
-```
+### Phase 1: Email Deliverability (Immediate)
+1. **Check DNS records** in Resend dashboard (https://resend.com/domains)
+   - Verify SPF is configured correctly
+   - Verify DKIM is configured correctly
+   - Add DMARC record if missing
 
-## Sequence
+2. **Add plain-text version** of emails in the edge function
 
-1. **Modify `send-nurture-campaign` function**:
-   - Add language detection logic
-   - Add translated email templates for all 5 days in all 4 languages
-   - Keep backward compatibility with existing `segment` and `templateId` parameters
-   - Add `language` parameter for manual override (optional)
+3. **Add physical address** to email footer for compliance
 
-2. **Send test email to David** in Spanish (most common language):
-   - Subject: "David, tu plan para trabajar en [country] - precio especial €49"
-   - Full personalized Day 0 template
-   - Verify rendering in email client
+### Phase 2: Database & Language Capture
+1. Add `preferred_language` column to:
+   - `leads` table
+   - `professional_profiles` table
+   - `learning_form_submissions` table
 
-3. **Get approval from David** on template quality
+2. Update the `capture-lead` edge function to:
+   - Accept `browser_language` parameter
+   - Store it as `preferred_language`
 
-4. **Launch full campaign**:
-   - Send Day 0 to all 113 leads in their detected language
-   - Schedule Day 1 for next day
-   - Continue with Day 3, 5, 7 sequence
+3. Update frontend forms (HomologationWizard, OnboardingWizard) to:
+   - Capture `navigator.language`
+   - Send it with the lead data
 
-## Expected Results
+### Phase 3: Update Email Sending Logic
+1. Modify `send-nurture-campaign` to prioritize `preferred_language`
+2. Add logging for language source tracking
+3. Test with sample leads
 
-**Language Distribution for First Campaign:**
-- Spanish speakers: ~85 emails (75%)
-- German speakers: ~20 emails (18%)
-- French speakers: ~5 emails (5%)
-- English: ~3 emails (3%)
-
-Each segment will receive the exact same value proposition and offer, just in their native language for maximum effectiveness.
+---
 
 ## Files to Modify
 
-1. **supabase/functions/send-nurture-campaign/index.ts** (Major update):
-   - Add language detection function
-   - Add translated templates for all 5 days × 4 languages
-   - Expand country/profession mappings
-   - Add language parameter to request interface
-   - Auto-select language per lead
+1. **Database migrations** (via Supabase migration tool):
+   - Add `preferred_language TEXT` to `leads`, `professional_profiles`, `learning_form_submissions`
 
-2. **supabase/config.toml** (Minor update):
-   - Already updated, no changes needed
+2. **supabase/functions/capture-lead/index.ts**:
+   - Accept `browser_language` parameter
+   - Store in `preferred_language` column
 
-## Testing Checklist
+3. **supabase/functions/send-nurture-campaign/index.ts**:
+   - Prioritize `preferred_language` over auto-detection
+   - Add plain-text email alternative
 
-- [ ] Test email renders correctly in Gmail, Outlook, Apple Mail
-- [ ] Verify personalization fields populate correctly (firstName, country, timeline, etc.)
-- [ ] Confirm language detection logic maps study countries correctly
-- [ ] Check that strikethrough pricing shows (€99 → €49)
-- [ ] Verify CTA button links work
-- [ ] Confirm footer links are correct
+4. **Frontend forms**:
+   - `src/pages/HomologationWizard.tsx`
+   - `src/pages/OnboardingWizard.tsx`
+   - Capture and send `navigator.language`
+
+---
+
+## Technical Details
+
+### DNS Records to Verify (in Resend Dashboard)
+
+Go to https://resend.com/domains and check that `thesolvia.com` shows:
+- SPF: ✅ Verified
+- DKIM: ✅ Verified
+- DMARC: ✅ Configured (if missing, add it)
+
+### DMARC Record to Add
+
+If DMARC is not configured, add this TXT record in your DNS:
+
+| Type | Name | Value |
+|------|------|-------|
+| TXT | `_dmarc` | `v=DMARC1; p=none; rua=mailto:dmarc-reports@thesolvia.com` |
+
+Start with `p=none` (monitoring only), then move to `p=quarantine` or `p=reject` after verification.
+
+---
+
+## Expected Outcomes
+
+After implementing these changes:
+
+1. **Improved Deliverability**: Emails will be less likely to go to spam, especially on Apple/iCloud, Gmail, and Outlook
+2. **Language Consistency**: Every user will receive emails in their preferred language
+3. **Future-Proof**: New leads will automatically have their language preference captured
+4. **Backfill Option**: Existing leads can be updated based on auto-detection to populate `preferred_language`
+
+---
+
+## Immediate Next Steps
+
+1. **Check Resend Domain Settings**: Go to https://resend.com/domains and verify DNS authentication status
+2. **Add DMARC Record**: If missing, add the DMARC TXT record to your DNS
+3. **Approve this plan**: I'll implement the database changes and code updates
+
