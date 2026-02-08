@@ -1,111 +1,164 @@
 
-
-# Extend Nurture Campaign to Registered Users
+# Set Up Resend Webhook Tracking for Email Events
 
 ## Overview
 
-Extend the email campaign to include **47 registered users** (from `professional_profiles`) who aren't in the `leads` table. These are high-intent users who signed up directly without completing the wizard.
+Implement a new Edge Function (`resend-webhooks`) to capture email events from Resend (opens, clicks, bounces, complaints) and automatically update the `email_sends` table with engagement metrics. This provides real-time visibility into email performance and enables sophisticated follow-up strategies.
 
-## Current Situation
+## Current State Analysis
 
-| Source | Total | Already Emailed | Remaining |
-|--------|-------|-----------------|-----------|
-| Leads table | 56 | 56 | 0 |
-| Professional profiles (not in leads) | 47 | 0 | **47** |
+**Email Sends Table Structure** (already exists):
+- Core fields: `id`, `email`, `template_id`, `language`, `resend_email_id`, `status`
+- Engagement fields: `opened_at`, `clicked_at`, `bounced_at`, `metadata` (already in schema!)
+- These fields are currently NULL because there's no webhook handler
 
-## Approach
+**Resend Integration**:
+- Already using Resend for sending campaigns
+- No webhook handler currently exists
+- RESEND_API_KEY secret is already configured
 
-**Option A: Add registered users to leads table first (Recommended)**
-- Insert the 47 professional profiles into the `leads` table with `source: 'direct_signup'`
-- This keeps tracking unified and allows the existing edge function to work without major changes
+**Pattern to Follow**:
+- Stripe webhook exists at `supabase/functions/stripe-webhook/index.ts`
+- Uses signature verification (similar approach needed for Resend)
 
-**Option B: Modify edge function to query both tables**
-- More complex, requires parallel tracking in two tables
+## Requirements Met
 
-I recommend **Option A** for simplicity and unified tracking.
+✅ One email per address: Deduplication already enforced via unique constraint on `(LOWER(email), template_id)`
+✅ Unified tracking: All sources logged to single `email_sends` table
+✅ Event capture: Database schema already has fields for `opened_at`, `clicked_at`, `bounced_at`
+✅ Webhook signature verification: Use Resend SDK's `webhooks.verify()` method
 
-## Implementation Steps
+## Implementation Plan
 
-### Step 1: Database Migration
-Insert registered users into the leads table (only those not already there):
+### Step 1: Add Resend Webhook Secret
+- Create new Supabase secret: `RESEND_WEBHOOK_SECRET`
+- This will be provided to Resend when configuring the webhook endpoint
+- User will need to set this after deployment
 
-```sql
-INSERT INTO leads (id, email, first_name, last_name, target_country, study_country, 
-                   doctor_type, language_level, source, status, email_sequence_day)
-SELECT 
-  pp.id,
-  pp.email,
-  pp.first_name,
-  pp.last_name,
-  pp.target_country,
-  pp.study_country,
-  pp.doctor_type,
-  pp.language_level,
-  'direct_signup',        -- Mark source as direct signup
-  'new',                  -- New status for email sequence
-  0                       -- Ready for feedbackAsk email
-FROM professional_profiles pp
-LEFT JOIN leads l ON LOWER(pp.email) = LOWER(l.email)
-WHERE l.id IS NULL
-  AND pp.email IS NOT NULL;
+### Step 2: Create `resend-webhooks` Edge Function
+
+**Location**: `supabase/functions/resend-webhooks/index.ts`
+
+**Key Components**:
+1. **Webhook Verification** (using Resend SDK):
+   - Extract raw request body and headers
+   - Call `resend.webhooks.verify()` with signing secret
+   - Return 400 if signature invalid
+
+2. **Event Processing**:
+   - Handle events: `email.opened`, `email.clicked`, `email.bounced`, `email.complained`
+   - Extract `resend_email_id` from webhook event metadata
+   - Update corresponding row in `email_sends` table
+
+3. **Update Logic**:
+   - `email.opened` → Set `opened_at = now()`
+   - `email.clicked` → Set `clicked_at = now()`
+   - `email.bounced` → Set `bounced_at = now()`, store bounce reason in `metadata`
+   - `email.complained` → Set `metadata['complained'] = true`, store complaint reason
+
+4. **Error Handling**:
+   - Log all events (successful and failed)
+   - Return 200 for valid signatures (even if DB update fails) to prevent Resend retries
+   - Use try-catch to handle database errors gracefully
+
+### Step 3: Update Supabase Configuration
+
+Add function config to `supabase/config.toml`:
+```toml
+[functions.resend-webhooks]
+verify_jwt = false
 ```
 
-### Step 2: Send Emails
-After migration, simply call the existing edge function:
-```json
-{
-  "templateId": "feedbackAsk",
-  "testMode": false
+Note: `verify_jwt = false` because webhooks from Resend won't have JWT auth; signature verification provides security.
+
+### Step 4: Manual Configuration in Resend Dashboard
+
+After deployment, user must:
+1. Go to Resend Dashboard → Webhooks
+2. Create new webhook endpoint: `https://ehrxpaxvyuwiwqclqkyh.functions.supabase.co/resend-webhooks`
+3. Subscribe to events: `email.opened`, `email.clicked`, `email.bounced`, `email.complained`
+4. Copy the signing secret from Resend
+5. Add it to Lovable project as `RESEND_WEBHOOK_SECRET` secret
+
+### Implementation Details
+
+**Edge Function Structure**:
+```typescript
+// Dependencies: resend SDK (already installed)
+// Authentication: Signature verification via RESEND_WEBHOOK_SECRET
+
+const handler = async (req: Request): Promise<Response> => {
+  if (req.method === "OPTIONS") return CORS response
+
+  try {
+    // 1. Get raw body for signature verification
+    const rawBody = await req.text()
+    
+    // 2. Extract headers
+    const headers = {
+      id: req.headers.get('svix-id'),
+      timestamp: req.headers.get('svix-timestamp'),
+      signature: req.headers.get('svix-signature')
+    }
+    
+    // 3. Verify webhook signature using Resend SDK
+    const event = resend.webhooks.verify({
+      payload: rawBody,
+      headers,
+      webhookSecret: Deno.env.get("RESEND_WEBHOOK_SECRET")
+    })
+    
+    // 4. Parse event and update email_sends table
+    switch(event.type) {
+      case 'email.opened':
+        UPDATE email_sends SET opened_at = NOW() WHERE resend_email_id = event.data.email_id
+      case 'email.clicked':
+        UPDATE email_sends SET clicked_at = NOW() WHERE resend_email_id = event.data.email_id
+      case 'email.bounced':
+        UPDATE email_sends SET bounced_at = NOW(), metadata = {reason: event.data.bounce_reason}
+      case 'email.complained':
+        UPDATE email_sends SET metadata = {complained: true, reason: event.data.reason}
+    }
+    
+    // 5. Log and return 200 (Resend expects 200 for successful receipt)
+    return Response(200, { status: "ok" })
+    
+  } catch (error) {
+    // Return 400 for signature verification failures
+    // Log error for debugging
+    return Response(400, { error: "Invalid signature" })
+  }
 }
 ```
 
-The function will pick up the 47 new leads (now with `email_sequence_day: 0`) and send emails.
+**Database Updates** (no schema changes needed):
+- `opened_at`, `clicked_at`, `bounced_at` columns already exist
+- `metadata` JSONB column stores additional event data
+- All updates are simple row updates by `resend_email_id`
 
-## Data Mapping
+### Benefits
 
-| Professional Profile Field | Leads Field | Notes |
-|---------------------------|-------------|-------|
-| id | id | UUID preserved |
-| email | email | Direct copy |
-| first_name | first_name | Direct copy |
-| last_name | last_name | Direct copy |
-| target_country | target_country | Direct copy |
-| study_country | study_country | Used for language detection |
-| doctor_type | doctor_type | Direct copy |
-| language_level | language_level | Direct copy |
-| - | source | Set to `'direct_signup'` |
-| - | status | Set to `'new'` |
-| - | email_sequence_day | Set to `0` |
+✅ **Real-time Engagement Tracking**: Opens/clicks captured automatically
+✅ **Smart Follow-ups**: Can query unopened emails for Wave 2 campaigns
+✅ **Bounce Management**: Automatically mark invalid addresses for future exclusion
+✅ **Performance Analytics**: Language/template performance by engagement metrics
+✅ **No Code Changes**: Existing send function doesn't need modification
+✅ **Secure**: Webhook signature verification prevents spoofing
 
-## Language Detection
+### Testing Strategy
 
-The existing language detection logic will work because it uses `study_country`:
-- Spanish-speaking countries → Spanish email
-- German-speaking countries → German email
-- Other countries → English email (default)
+1. **Initial Setup Test**: Send test email via `send-nurture-campaign`
+2. **Verification**: Check `resend_email_id` is captured in `email_sends`
+3. **Event Simulation**: Use Resend dashboard to send test webhook events
+4. **Database Validation**: Query `email_sends` to verify event timestamps updated
+5. **Production**: Monitor Edge Function logs for webhook receipts
 
-**Note:** Many direct signup users have `NULL` study_country, so they'll receive English emails by default.
+### Sequence of Steps for User
 
-## Technical Details
-
-### Edge Function Behavior (No Changes Needed)
-
-The edge function already:
-1. Queries leads with `status='new'` and `email_sequence_day=0`
-2. Sends email in detected language
-3. Updates `email_sequence_day` to `1` after sending
-
-### Tracking
-
-After sending, all 47 users will have:
-- `email_sequence_day: 1`
-- `last_email_sent: [timestamp]`
-- `email_campaign: 'feedbackAsk'`
-- `source: 'direct_signup'` (distinguishes them from wizard leads)
-
-## Execution Plan
-
-1. Run the SQL migration to add 47 professional profiles to leads table
-2. Call the edge function with `testMode: false`
-3. Monitor results (expect ~47 emails sent)
+1. **AI creates the Edge Function** ✓ (this plan)
+2. **Deploy** (automatic when preview builds)
+3. **User adds RESEND_WEBHOOK_SECRET** via Lovable secrets modal
+4. **User configures webhook in Resend Dashboard** (manual step)
+5. **Test with sample email** to verify webhook is working
+6. **Run campaigns** - events will auto-populate in real-time
 
