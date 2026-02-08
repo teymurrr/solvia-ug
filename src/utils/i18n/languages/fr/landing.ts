@@ -133,7 +133,7 @@ export const landing = {
         processDuration: "6–12 mois",
         price: "€750",
         highlight: "Meilleurs salaires",
-        salary: "5 500–8 000",
+        salary: "5 500–12 000",
         includes: ["Préparation des documents", "Accompagnement FSP", "Placement professionnel"]
       },
       austria: {
@@ -142,7 +142,7 @@ export const landing = {
         processDuration: "4–8 mois",
         price: "€750",
         highlight: "Processus plus simple",
-        salary: "4 500–7 000",
+        salary: "5 000–13 000",
         includes: ["Préparation des documents", "Nostrifizierung", "Placement professionnel"]
       },
       spain: {
@@ -151,7 +151,7 @@ export const landing = {
         processDuration: "2–6 mois",
         price: "€290",
         highlight: "Homologation rapide",
-        salary: "2 500–4 000",
+        salary: "3 000–8 000",
         includes: ["Préparation des documents", "Support MIR", "Placement professionnel"]
       },
       france: {
@@ -160,7 +160,7 @@ export const landing = {
         processDuration: "4–10 mois",
         price: "€750",
         highlight: "Excellente qualité de vie",
-        salary: "3 500–6 000",
+        salary: "4 000–10 000",
         includes: ["Préparation des documents", "Support PAE", "Placement professionnel"]
       }
     }

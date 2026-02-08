@@ -57,7 +57,7 @@ const JobExplorerSection = () => {
       positions: 85,
       processDuration: '6–12 months',
       highlight: 'Best salaries',
-      salary: '5,500–8,000',
+      salary: '5,500–12,000',
       badgeColor: 'bg-emerald-500'
     },
     austria: { 
@@ -66,7 +66,7 @@ const JobExplorerSection = () => {
       positions: 42,
       processDuration: '4–8 months',
       highlight: 'Simplest process',
-      salary: '4,500–7,000',
+      salary: '5,000–13,000',
       badgeColor: 'bg-blue-500'
     },
     spain: { 
@@ -75,7 +75,7 @@ const JobExplorerSection = () => {
       positions: 38,
       processDuration: '2–6 months',
       highlight: 'Fast homologation',
-      salary: '2,500–4,000',
+      salary: '3,000–8,000',
       badgeColor: 'bg-amber-500'
     },
     france: { 
@@ -84,7 +84,7 @@ const JobExplorerSection = () => {
       positions: 25,
       processDuration: '4–10 months',
       highlight: 'Great quality of life',
-      salary: '3,500–6,000',
+      salary: '4,000–10,000',
       badgeColor: 'bg-violet-500'
     }
   };
