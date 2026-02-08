@@ -393,7 +393,7 @@ const handler = async (req: Request): Promise<Response> => {
           to: [lead.email],
           subject: subject,
           html: html,
-          reply_to: "david@thesolvia.com"
+          reply_to: "David.rehrl@thesolvia.com"
         });
 
         console.log(`[send-nurture-campaign] Email sent:`, emailResponse);
