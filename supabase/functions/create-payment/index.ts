@@ -15,24 +15,27 @@ interface PaymentRequest {
   locale?: 'en' | 'es' | 'de' | 'fr' | 'ru';
 }
 
-// Country-specific pricing configuration - LAUNCH WEEK PRICING (amounts in cents)
+// Country-specific pricing configuration - CONVERSION WEEK PRICING (amounts in cents)
 const getProductConfig = (productType: string, targetCountry: string | undefined) => {
-  // Launch week pricing: €99 / €399 / €999 for all countries (same pricing)
-  const configs: Record<string, { name: string; description: string; amount: number }> = {
+  // CONVERSION WEEK: Aggressive pricing €49 / €199 / €499
+  const configs: Record<string, { name: string; description: string; amount: number; regularPrice: number }> = {
     digital_starter: {
       name: 'Digital Starter',
       description: 'Self-service document preparation kit with templates & videos',
-      amount: 9900, // €99 launch week special
+      amount: 4900, // €49 CONVERSION WEEK
+      regularPrice: 9900, // Regular €99
     },
     complete: {
       name: 'Complete Package',
       description: 'Full homologation support + German language preparation',
-      amount: 39900, // €399 launch week special
+      amount: 19900, // €199 CONVERSION WEEK
+      regularPrice: 39900, // Regular €399
     },
     personal_mentorship: {
       name: 'Personal Mentorship',
       description: 'Dedicated team with 1:1 lessons and full support',
-      amount: 99900, // €999 launch week special
+      amount: 49900, // €499 CONVERSION WEEK
+      regularPrice: 99900, // Regular €999
     }
   };
   

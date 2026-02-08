@@ -30,18 +30,18 @@ interface PackageConfig {
   id: ProductType;
   icon: React.ReactNode;
   price: number;
+  regularPrice: number;
   popular?: boolean;
   features: string[];
 }
 
-// Country-specific pricing configuration - LAUNCH WEEK PRICING
-const getPricingByCountry = (country: string | null): Record<ProductType, number> => {
-  const isSpain = country === 'spain';
-  
+// Country-specific pricing configuration - CONVERSION WEEK PRICING
+const getPricingByCountry = (country: string | null): Record<ProductType, { price: number; regularPrice: number }> => {
+  // CONVERSION WEEK: Aggressive pricing €49 / €199 / €499
   return {
-    digital_starter: isSpain ? 9900 : 9900,         // €99 launch week (normally €199/€349)
-    complete: isSpain ? 39900 : 39900,              // €399 launch week (normally €500/€990)
-    personal_mentorship: isSpain ? 99900 : 99900,   // €999 launch week (normally €1,299/€2,699)
+    digital_starter: { price: 4900, regularPrice: 9900 },      // €49 (was €99)
+    complete: { price: 19900, regularPrice: 39900 },           // €199 (was €399)
+    personal_mentorship: { price: 49900, regularPrice: 99900 }, // €499 (was €999)
   };
 };
 
@@ -120,7 +120,8 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
     {
       id: 'digital_starter',
       icon: <Shield className="w-8 h-8" />,
-      price: pricing.digital_starter,
+      price: pricing.digital_starter.price,
+      regularPrice: pricing.digital_starter.regularPrice,
       features: [
         t?.payments?.packages?.digitalStarter?.features?.[0] || 'Access to document checklist & templates',
         t?.payments?.packages?.digitalStarter?.features?.[1] || 'Self-paced video tutorials',
@@ -131,7 +132,8 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
     {
       id: 'complete',
       icon: <BookOpen className="w-8 h-8" />,
-      price: pricing.complete,
+      price: pricing.complete.price,
+      regularPrice: pricing.complete.regularPrice,
       popular: true,
       features: [
         t?.payments?.packages?.complete?.features?.[0] || 'Everything in Digital Starter',
@@ -143,7 +145,8 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
     {
       id: 'personal_mentorship',
       icon: <Users className="w-8 h-8" />,
-      price: pricing.personal_mentorship,
+      price: pricing.personal_mentorship.price,
+      regularPrice: pricing.personal_mentorship.regularPrice,
       features: [
         t?.payments?.packages?.personalMentorship?.features?.[0] || 'Everything in Complete Package',
         t?.payments?.packages?.personalMentorship?.features?.[1] || 'Personal mentor assigned to your case',
@@ -351,7 +354,9 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
             
             <CardContent className="text-center pb-6">
               <div className="mb-6">
-                <span className="text-4xl font-bold text-foreground">{formatPrice(pkg.price)}</span>
+                <span className="text-lg line-through text-muted-foreground mr-2">{formatPrice(pkg.regularPrice)}</span>
+                <span className="text-4xl font-bold text-primary">{formatPrice(pkg.price)}</span>
+                <span className="ml-2 text-sm font-medium text-destructive">-50%</span>
               </div>
               
               <div className="space-y-3 text-left">

@@ -20,3 +20,6 @@ verify_jwt = true
 
 [functions.support-chat]
 verify_jwt = false
+
+[functions.send-nurture-campaign]
+verify_jwt = false
