@@ -59,13 +59,13 @@ const emailTemplates = {
       ru: 'Привет,'
     },
     body: {
-      es: `Te registraste en Solvia hace poco — quería hacer un breve check-in.
+      es: `te registraste en Solvia hace poco y quería hacer un breve check-in.
 
-Cuando alguien se registra, normalmente es por un problema específico (reconocimiento de título, encontrar hospital, exámenes de idioma, mudanza).
+Normalmente, cuando alguien se registra es porque tiene un problema muy concreto (reconocimiento de título, encontrar hospital, exámenes de idioma, mudanza, etc.).
 
 Estoy trabajando en la próxima versión y quería preguntarte directamente:
 
-¿Con qué esperabas que Solvia te ayudara?
+¿con qué esperabas que Solvia te ayudara?
 
 Una frase corta es más que suficiente.`,
       en: `You signed up to Solvia a while ago — quick check-in from my side.
