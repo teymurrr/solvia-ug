@@ -182,14 +182,17 @@ Si tu considères toujours l'Allemagne/Autriche et que tu veux éviter ça, je t
 // LANGUAGE DETECTION
 // =============================================================================
 
-// Latin American countries for Spanish language detection
-const latAmCountries = [
+// Countries where we support the local language
+const spanishCountries = [
   'mexico', 'méxico', 'colombia', 'chile', 'peru', 'perú', 'bolivia', 
   'venezuela', 'cuba', 'argentina', 'ecuador', 'uruguay', 'paraguay',
   'panama', 'panamá', 'costa rica', 'guatemala', 'honduras', 'el salvador',
-  'nicaragua', 'dominican republic', 'república dominicana', 'puerto rico'
+  'nicaragua', 'dominican republic', 'república dominicana', 'puerto rico',
+  'spain', 'españa'
 ];
 
+const germanCountries = ['germany', 'deutschland', 'austria', 'österreich', 'switzerland', 'schweiz'];
+const frenchCountries = ['france', 'belgium', 'belgique', 'switzerland', 'suisse', 'canada', 'morocco', 'algeria', 'tunisia'];
 const russianCountries = ['russia', 'ukraine', 'belarus', 'kazakhstan', 'uzbekistan', 'kyrgyzstan'];
 
 const detectLeadLanguage = (lead: Lead): Language => {
@@ -203,34 +206,31 @@ const detectLeadLanguage = (lead: Lead): Language => {
   }
   
   const study = (lead.study_country || '').toLowerCase();
-  const target = (lead.target_country || '').toLowerCase();
   
-  // Priority 2: Study country inference
-  if (latAmCountries.some(c => study.includes(c))) {
-    console.log(`[Language] Auto-detected Spanish for ${lead.email} (study: ${lead.study_country})`);
+  // Priority 2: Study country → supported language
+  if (spanishCountries.some(c => study.includes(c))) {
+    console.log(`[Language] Spanish for ${lead.email} (study: ${lead.study_country})`);
     return 'es';
   }
-  if (study.includes('spain') || study.includes('españa')) return 'es';
+  
+  if (germanCountries.some(c => study.includes(c))) {
+    console.log(`[Language] German for ${lead.email} (study: ${lead.study_country})`);
+    return 'de';
+  }
+  
+  if (frenchCountries.some(c => study.includes(c))) {
+    console.log(`[Language] French for ${lead.email} (study: ${lead.study_country})`);
+    return 'fr';
+  }
   
   if (russianCountries.some(c => study.includes(c))) {
-    console.log(`[Language] Auto-detected Russian for ${lead.email} (study: ${lead.study_country})`);
+    console.log(`[Language] Russian for ${lead.email} (study: ${lead.study_country})`);
     return 'ru';
   }
   
-  if (study.includes('germany') || study.includes('deutschland')) return 'de';
-  if (study.includes('austria') || study.includes('österreich')) return 'de';
-  
-  if (study.includes('france') || study.includes('algeria') || study.includes('morocco')) return 'fr';
-  
-  // Priority 3: Target country (less reliable but useful)
-  if (target.includes('germany') || target.includes('alemania') || target.includes('deutschland')) {
-    // Target is Germany, but they're likely not German speakers - default to Spanish
-    console.log(`[Language] Target is Germany, defaulting to Spanish for ${lead.email}`);
-    return 'es';
-  }
-  
-  console.log(`[Language] Defaulting to Spanish for ${lead.email}`);
-  return 'es';
+  // DEFAULT: English for all unsupported countries (Indonesia, India, etc.)
+  console.log(`[Language] English (default) for ${lead.email} (study: ${lead.study_country || 'unknown'})`);
+  return 'en';
 };
 
 // =============================================================================
