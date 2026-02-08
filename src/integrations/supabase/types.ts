@@ -647,13 +647,17 @@ export type Database = {
       }
       leads: {
         Row: {
+          converted: boolean | null
           converted_at: string | null
           created_at: string | null
           doctor_type: string | null
           email: string
+          email_campaign: string | null
+          email_sequence_day: number | null
           first_name: string | null
           id: string
           language_level: string | null
+          last_email_sent: string | null
           last_name: string | null
           source: string | null
           status: string | null
@@ -662,13 +666,17 @@ export type Database = {
           updated_at: string | null
         }
         Insert: {
+          converted?: boolean | null
           converted_at?: string | null
           created_at?: string | null
           doctor_type?: string | null
           email: string
+          email_campaign?: string | null
+          email_sequence_day?: number | null
           first_name?: string | null
           id?: string
           language_level?: string | null
+          last_email_sent?: string | null
           last_name?: string | null
           source?: string | null
           status?: string | null
@@ -677,13 +685,17 @@ export type Database = {
           updated_at?: string | null
         }
         Update: {
+          converted?: boolean | null
           converted_at?: string | null
           created_at?: string | null
           doctor_type?: string | null
           email?: string
+          email_campaign?: string | null
+          email_sequence_day?: number | null
           first_name?: string | null
           id?: string
           language_level?: string | null
+          last_email_sent?: string | null
           last_name?: string | null
           source?: string | null
           status?: string | null
