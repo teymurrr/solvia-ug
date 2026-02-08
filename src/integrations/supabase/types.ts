@@ -536,6 +536,65 @@ export type Database = {
           },
         ]
       }
+      email_sends: {
+        Row: {
+          bounced_at: string | null
+          clicked_at: string | null
+          created_at: string
+          email: string
+          id: string
+          language: string
+          lead_id: string | null
+          metadata: Json | null
+          opened_at: string | null
+          resend_email_id: string | null
+          sent_at: string
+          source_table: string | null
+          status: string
+          template_id: string
+        }
+        Insert: {
+          bounced_at?: string | null
+          clicked_at?: string | null
+          created_at?: string
+          email: string
+          id?: string
+          language?: string
+          lead_id?: string | null
+          metadata?: Json | null
+          opened_at?: string | null
+          resend_email_id?: string | null
+          sent_at?: string
+          source_table?: string | null
+          status?: string
+          template_id: string
+        }
+        Update: {
+          bounced_at?: string | null
+          clicked_at?: string | null
+          created_at?: string
+          email?: string
+          id?: string
+          language?: string
+          lead_id?: string | null
+          metadata?: Json | null
+          opened_at?: string | null
+          resend_email_id?: string | null
+          sent_at?: string
+          source_table?: string | null
+          status?: string
+          template_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "email_sends_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "leads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       experiences: {
         Row: {
           current: boolean | null
