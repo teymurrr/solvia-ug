@@ -659,6 +659,7 @@ export type Database = {
           language_level: string | null
           last_email_sent: string | null
           last_name: string | null
+          preferred_language: string | null
           source: string | null
           status: string | null
           study_country: string | null
@@ -678,6 +679,7 @@ export type Database = {
           language_level?: string | null
           last_email_sent?: string | null
           last_name?: string | null
+          preferred_language?: string | null
           source?: string | null
           status?: string | null
           study_country?: string | null
@@ -697,6 +699,7 @@ export type Database = {
           language_level?: string | null
           last_email_sent?: string | null
           last_name?: string | null
+          preferred_language?: string | null
           source?: string | null
           status?: string | null
           study_country?: string | null
@@ -714,6 +717,7 @@ export type Database = {
           full_name: string
           german_language: boolean
           id: string
+          preferred_language: string | null
           profession: string
           updated_at: string
         }
@@ -725,6 +729,7 @@ export type Database = {
           full_name: string
           german_language?: boolean
           id?: string
+          preferred_language?: string | null
           profession: string
           updated_at?: string
         }
@@ -736,6 +741,7 @@ export type Database = {
           full_name?: string
           german_language?: boolean
           id?: string
+          preferred_language?: string | null
           profession?: string
           updated_at?: string
         }
@@ -823,6 +829,7 @@ export type Database = {
           last_name: string
           location: string | null
           open_to_relocation: boolean | null
+          preferred_language: string | null
           profession: string | null
           profile_image: string | null
           specialty: string | null
@@ -845,6 +852,7 @@ export type Database = {
           last_name: string
           location?: string | null
           open_to_relocation?: boolean | null
+          preferred_language?: string | null
           profession?: string | null
           profile_image?: string | null
           specialty?: string | null
@@ -867,6 +875,7 @@ export type Database = {
           last_name?: string
           location?: string | null
           open_to_relocation?: boolean | null
+          preferred_language?: string | null
           profession?: string | null
           profile_image?: string | null
           specialty?: string | null

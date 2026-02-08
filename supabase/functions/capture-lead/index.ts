@@ -14,6 +14,7 @@ interface LeadData {
   doctorType?: string;
   languageLevel?: string;
   source?: string;
+  browserLanguage?: string; // Browser language for preferred_language
 }
 
 Deno.serve(async (req) => {
@@ -51,18 +52,28 @@ Deno.serve(async (req) => {
 
     if (existingLead) {
       // Update existing lead with new data
+      const updateData: Record<string, any> = {
+        first_name: body.firstName || undefined,
+        last_name: body.lastName || undefined,
+        target_country: body.targetCountry || undefined,
+        study_country: body.studyCountry || undefined,
+        doctor_type: body.doctorType || undefined,
+        language_level: body.languageLevel || undefined,
+        source: body.source || 'wizard',
+        updated_at: new Date().toISOString(),
+      };
+      
+      // Only update preferred_language if provided and not already set
+      if (body.browserLanguage) {
+        // Map browser language to our supported languages
+        const browserLang = body.browserLanguage.toLowerCase().split('-')[0];
+        const langMap: Record<string, string> = { es: 'es', de: 'de', en: 'en', fr: 'fr' };
+        updateData.preferred_language = langMap[browserLang] || 'en';
+      }
+      
       const { error: updateError } = await supabase
         .from('leads')
-        .update({
-          first_name: body.firstName || undefined,
-          last_name: body.lastName || undefined,
-          target_country: body.targetCountry || undefined,
-          study_country: body.studyCountry || undefined,
-          doctor_type: body.doctorType || undefined,
-          language_level: body.languageLevel || undefined,
-          source: body.source || 'wizard',
-          updated_at: new Date().toISOString(),
-        })
+        .update(updateData)
         .eq('id', existingLead.id);
 
       if (updateError) {
@@ -76,7 +87,14 @@ Deno.serve(async (req) => {
         { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     } else {
-      // Insert new lead
+      // Insert new lead - map browser language to preferred_language
+      let preferredLanguage = 'en'; // default
+      if (body.browserLanguage) {
+        const browserLang = body.browserLanguage.toLowerCase().split('-')[0];
+        const langMap: Record<string, string> = { es: 'es', de: 'de', en: 'en', fr: 'fr' };
+        preferredLanguage = langMap[browserLang] || 'en';
+      }
+      
       const { error: insertError } = await supabase
         .from('leads')
         .insert({
@@ -88,6 +106,7 @@ Deno.serve(async (req) => {
           doctor_type: body.doctorType || null,
           language_level: body.languageLevel || null,
           source: body.source || 'wizard',
+          preferred_language: preferredLanguage,
         });
 
       if (insertError) {

@@ -29,6 +29,7 @@ interface Lead {
   doctor_type: string | null;
   language_level: string | null;
   email_sequence_day: number;
+  preferred_language: string | null; // NEW: User's preferred language
 }
 
 // Latin American countries for Spanish language detection
@@ -39,13 +40,27 @@ const latAmCountries = [
   'nicaragua', 'dominican republic', 'república dominicana', 'puerto rico'
 ];
 
-// Language detection based on study_country and target_country
-const detectLeadLanguage = (studyCountry: string | null, targetCountry: string | null): Language => {
-  const study = (studyCountry || '').toLowerCase();
-  const target = (targetCountry || '').toLowerCase();
+// Language detection based on preferred_language, study_country, and target_country
+// Priority: preferred_language > study_country/target_country detection > 'en' fallback
+const detectLeadLanguage = (lead: Lead): Language => {
+  // 1. First, check if preferred_language is set (from browser or explicit choice)
+  if (lead.preferred_language) {
+    const pref = lead.preferred_language.toLowerCase();
+    if (['es', 'de', 'en', 'fr'].includes(pref)) {
+      console.log(`Using preferred_language for ${lead.email}: ${pref}`);
+      return pref as Language;
+    }
+  }
+  
+  // 2. Fall back to auto-detection based on study_country and target_country
+  const study = (lead.study_country || '').toLowerCase();
+  const target = (lead.target_country || '').toLowerCase();
   
   // Spanish for Latin American leads
-  if (latAmCountries.some(c => study.includes(c))) return 'es';
+  if (latAmCountries.some(c => study.includes(c))) {
+    console.log(`Auto-detected Spanish for ${lead.email} based on study_country: ${lead.study_country}`);
+    return 'es';
+  }
   if (study.includes('spain') || study.includes('españa')) return 'es';
   
   // German for Germany/Austria targets or origins
@@ -61,6 +76,7 @@ const detectLeadLanguage = (studyCountry: string | null, targetCountry: string |
   if (study.includes('morocco') || study.includes('marruecos')) return 'fr';
   
   // Default to English
+  console.log(`Defaulting to English for ${lead.email}`);
   return 'en';
 };
 
@@ -725,10 +741,10 @@ serve(async (req) => {
 
     console.log(`📧 Starting nurture campaign - Segment: ${segment}, Template: ${templateId}, TestMode: ${testMode}, Language override: ${language || 'auto'}`);
 
-    // Fetch all leads from the leads table
+    // Fetch all leads from the leads table (including preferred_language)
     const { data: leadsData, error: leadsError } = await supabase
       .from('leads')
-      .select('id, email, first_name, last_name, target_country, study_country, doctor_type, language_level, email_sequence_day')
+      .select('id, email, first_name, last_name, target_country, study_country, doctor_type, language_level, email_sequence_day, preferred_language')
       .eq('converted', false);
 
     if (leadsError) {
@@ -760,6 +776,7 @@ serve(async (req) => {
             doctor_type: 'general',
             language_level: 'B1',
             email_sequence_day: 0,
+            preferred_language: null, // Let auto-detection handle it
           }];
         }
       } else {
@@ -780,8 +797,8 @@ serve(async (req) => {
     for (const lead of leads) {
       try {
         // Detect language for this lead (or use override)
-        const detectedLang = language || detectLeadLanguage(lead.study_country, lead.target_country);
-        console.log(`🌍 Lead ${lead.email}: study=${lead.study_country}, target=${lead.target_country} → language=${detectedLang}`);
+        const detectedLang = language || detectLeadLanguage(lead);
+        console.log(`🌍 Lead ${lead.email}: preferred=${lead.preferred_language}, study=${lead.study_country}, target=${lead.target_country} → language=${detectedLang}`);
         
         // Build personalized payment URL with lead data
         const paymentUrl = `${paymentBaseUrl}?email=${encodeURIComponent(lead.email)}&country=${encodeURIComponent(lead.target_country || 'germany')}`;
