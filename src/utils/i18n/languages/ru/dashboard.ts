@@ -110,6 +110,15 @@ export const dashboard = {
   language: 'Язык',
   level: 'Уровень',
   certificate: 'Сертификат',
+  languagesCard: {
+    title: 'Языковые Навыки',
+    description: 'Ваши уровни владения языками',
+    noLanguages: 'Языки ещё не добавлены',
+    addLanguages: 'Добавить Языки',
+    editLanguages: 'Редактировать Языки',
+    certified: 'Сертифицировано',
+    level: 'Уровень'
+  },
   
   // Application statuses
   applicationStatus: {

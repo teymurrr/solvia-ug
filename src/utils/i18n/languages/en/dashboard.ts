@@ -25,6 +25,15 @@ export const dashboard = {
     experience: "Experience",
     education: "Education",
     languages: "Languages",
+    languagesCard: {
+      title: "Language Skills",
+      description: "Your language proficiency levels",
+      noLanguages: "No languages added yet",
+      addLanguages: "Add Languages",
+      editLanguages: "Edit Languages",
+      certified: "Certified",
+      level: "Level"
+    },
     about: "About",
     incompleteProfile: "Your profile is incomplete. Add more information about yourself to attract potential employers.",
     at: "at",

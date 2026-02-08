@@ -110,6 +110,15 @@ export const dashboard = {
   language: 'Sprache',
   level: 'Niveau',
   certificate: 'Zertifikat',
+  languagesCard: {
+    title: 'Sprachkenntnisse',
+    description: 'Ihre Sprachkenntnisstufen',
+    noLanguages: 'Noch keine Sprachen hinzugefügt',
+    addLanguages: 'Sprachen hinzufügen',
+    editLanguages: 'Sprachen bearbeiten',
+    certified: 'Zertifiziert',
+    level: 'Niveau'
+  },
   
   // Skills section
   certificates: 'Zertifikate',

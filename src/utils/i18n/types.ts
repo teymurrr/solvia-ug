@@ -175,6 +175,15 @@ export interface DashboardTranslations {
     languageLevel?: string;
     selectLevel?: string;
     certificate?: string;
+    languagesCard?: {
+      title: string;
+      description: string;
+      noLanguages: string;
+      addLanguages: string;
+      editLanguages: string;
+      certified: string;
+      level: string;
+    };
     about: string;
     aboutPlaceholder?: string;
     incompleteProfile: string;

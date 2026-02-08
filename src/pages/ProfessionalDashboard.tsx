@@ -13,6 +13,7 @@ import {
   NoResults,
   useDashboard,
 } from '@/components/professional-dashboard';
+import LanguagesCard from '@/components/professional-dashboard/LanguagesCard';
 import SavedAndApplied from '@/components/professional-dashboard/SavedAndApplied';
 import HomologationTab from '@/components/professional-dashboard/HomologationTab';
 import { useToast } from '@/hooks/use-toast';
@@ -295,6 +296,13 @@ const ProfessionalDashboard: React.FC = () => {
                 )}
               </CardContent>
             </Card>
+            
+            {/* Languages Card */}
+            <LanguagesCard
+              languages={profileData?.languages || []}
+              onEdit={() => setIsEditProfileOpen(true)}
+              loading={loading}
+            />
           </TabsContent>
 
           <TabsContent value="homologation" className="space-y-6">
