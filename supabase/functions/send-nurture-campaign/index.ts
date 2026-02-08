@@ -789,11 +789,16 @@ serve(async (req) => {
         const template = getEmailTemplate(templateId, lead, paymentUrl, detectedLang);
 
         const emailResponse = await resend.emails.send({
-          from: "Solvia <hello@solvia.eu>",
+          from: "Solvia <team@thesolvia.com>",
           to: [lead.email],
           subject: template.subject,
           html: template.html,
         });
+
+        // Check if Resend returned an error
+        if (emailResponse.error) {
+          throw new Error(`Resend error: ${emailResponse.error.message}`);
+        }
 
         console.log(`✅ Email sent to ${lead.email} (${detectedLang}):`, emailResponse);
         results.languageBreakdown[detectedLang]++;
