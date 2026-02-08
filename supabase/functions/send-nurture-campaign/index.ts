@@ -148,10 +148,10 @@ const uiStrings: Record<string, Record<Language, string>> = {
   inCountry: { es: 'en', en: 'in', de: 'in', fr: 'en' },
   toWorkAs: { es: '', en: '', de: 'zu arbeiten', fr: '' },
   thousandsWork: {
-    es: 'Miles de médicos latinoamericanos ya ejercen en',
-    en: 'Thousands of Latin American doctors already practice in',
-    de: 'Tausende lateinamerikanischer Ärzte praktizieren bereits in',
-    fr: 'Des milliers de médecins latino-américains exercent déjà en'
+    es: 'Miles de médicos internacionales ya ejercen en',
+    en: 'Thousands of international doctors already practice in',
+    de: 'Tausende internationale Ärzte praktizieren bereits in',
+    fr: 'Des milliers de médecins internationaux exercent déjà en'
   },
   clearProcess: {
     es: 'El proceso es claro, solo necesitas el roadmap correcto.',
@@ -400,7 +400,7 @@ const getEmailTemplate = (templateId: string, lead: Lead, paymentUrl: string, la
       <p>${ui.warmRegards[lang]},<br><strong>${ui.team[lang]}</strong></p>
     </div>
     <div class="footer">
-      <p>© 2024 Solvia | <a href="https://solvia-flexkapg.lovable.app">solvia.eu</a></p>
+      <p>© 2026 Solvia | <a href="https://thesolvia.com">thesolvia.com</a></p>
       <p style="font-size: 12px; color: #999;">${ui.unsubscribe[lang]}</p>
     </div>
   </div>
@@ -471,7 +471,8 @@ const getEmailTemplate = (templateId: string, lead: Lead, paymentUrl: string, la
       <p>${ui.warmRegards[lang]},<br><strong>${ui.team[lang]}</strong></p>
     </div>
     <div class="footer">
-      <p>© 2024 Solvia | <a href="https://solvia-flexkapg.lovable.app">solvia.eu</a></p>
+      <p>© 2026 Solvia | <a href="https://thesolvia.com">thesolvia.com</a></p>
+      <p style="font-size: 12px; color: #999;">${ui.unsubscribe[lang]}</p>
     </div>
   </div>
 </body>
@@ -542,7 +543,8 @@ const getEmailTemplate = (templateId: string, lead: Lead, paymentUrl: string, la
       <p>${ui.warmRegards[lang]},<br><strong>${ui.team[lang]}</strong></p>
     </div>
     <div class="footer">
-      <p>© 2024 Solvia | <a href="https://solvia-flexkapg.lovable.app">solvia.eu</a></p>
+      <p>© 2026 Solvia | <a href="https://thesolvia.com">thesolvia.com</a></p>
+      <p style="font-size: 12px; color: #999;">${ui.unsubscribe[lang]}</p>
     </div>
   </div>
 </body>
@@ -615,7 +617,8 @@ const getEmailTemplate = (templateId: string, lead: Lead, paymentUrl: string, la
       <p>${ui.warmRegards[lang]},<br><strong>${ui.team[lang]}</strong></p>
     </div>
     <div class="footer">
-      <p>© 2024 Solvia | <a href="https://solvia-flexkapg.lovable.app">solvia.eu</a></p>
+      <p>© 2026 Solvia | <a href="https://thesolvia.com">thesolvia.com</a></p>
+      <p style="font-size: 12px; color: #999;">${ui.unsubscribe[lang]}</p>
     </div>
   </div>
 </body>
@@ -681,7 +684,8 @@ const getEmailTemplate = (templateId: string, lead: Lead, paymentUrl: string, la
       <p>${ui.warmRegards[lang]},<br><strong>${ui.team[lang]}</strong></p>
     </div>
     <div class="footer">
-      <p>© 2024 Solvia | <a href="https://solvia-flexkapg.lovable.app">solvia.eu</a></p>
+      <p>© 2026 Solvia | <a href="https://thesolvia.com">thesolvia.com</a></p>
+      <p style="font-size: 12px; color: #999;">${ui.unsubscribe[lang]}</p>
     </div>
   </div>
 </body>
@@ -788,7 +792,7 @@ serve(async (req) => {
       console.log(`🧪 Test mode: sending to ${leads.length} lead(s): ${leads.map(l => l.email).join(', ')}`);
     }
 
-    const paymentBaseUrl = 'https://solvia-flexkapg.lovable.app/homologation-payment';
+    const paymentBaseUrl = 'https://thesolvia.com/homologation-payment';
     const results = {
       sent: 0,
       failed: 0,
