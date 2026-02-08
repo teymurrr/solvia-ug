@@ -1,4 +1,3 @@
-
 export const vacancies = {
   title: 'Offene Stellen',
   subtitle: 'Entdecken Sie spannende Möglichkeiten in führenden Gesundheitseinrichtungen',
@@ -17,6 +16,8 @@ export const vacancies = {
   saved: 'Gespeichert',
   positions: 'Aktive Stellen',
   latestOpportunities: 'Neueste Möglichkeiten',
+  publishedDaysAgo: 'Vor {days} Tagen veröffentlicht',
+  startHomologationToApply: 'Homologation starten um sich zu bewerben',
   readyToFindJob: {
     title: 'Bereit, Ihren Traumjob zu finden?',
     subtitle: 'Schließen Sie sich Tausenden von Gesundheitsfachkräften an, die ihre perfekte Rolle gefunden haben',
@@ -25,9 +26,13 @@ export const vacancies = {
   },
   blurredCard: {
     viewOffers: 'Bewerben',
-    homologateTitle: 'Titel anerkennen'
+    homologateTitle: 'Titel anerkennen',
+    requirements: 'Anforderungen',
+    benefits: 'Vorteile',
+    homologatedTitle: 'anerkannter Titel',
+    permanentContract: 'Unbefristeter Vertrag',
+    relocationHelp: 'Umzugshilfe'
   },
-  publishedDaysAgo: 'Vor {days} Tagen veröffentlicht',
   jobTitles: {
     doctor: 'Arzt/Ärztin',
     cardiologist: 'Kardiologe/Kardiologin',

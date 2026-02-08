@@ -1,4 +1,3 @@
-
 export const vacancies = {
   title: 'Puestos Disponibles',
   subtitle: 'Explore oportunidades emocionantes en las principales instituciones sanitarias',
@@ -19,6 +18,7 @@ export const vacancies = {
   saved: 'Guardado',
   positions: 'Puestos activos',
   latestOpportunities: 'Últimas Oportunidades',
+  startHomologationToApply: 'Iniciar homologación para aplicar',
   readyToFindJob: {
     title: '¿Listo para encontrar el trabajo de tus sueños?',
     subtitle: 'Únete a miles de profesionales sanitarios que encontraron su rol perfecto',
@@ -27,7 +27,12 @@ export const vacancies = {
   },
   blurredCard: {
     viewOffers: 'Aplicar',
-    homologateTitle: 'Homologar título'
+    homologateTitle: 'Homologar título',
+    requirements: 'Requisitos',
+    benefits: 'Beneficios',
+    homologatedTitle: 'título homologado',
+    permanentContract: 'Contrato indefinido',
+    relocationHelp: 'ayuda con mudanza'
   },
   jobTypes: {
     fullTime: 'Tiempo completo',

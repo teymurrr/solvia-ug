@@ -1,4 +1,3 @@
-
 export const vacancies = {
   title: "Вакансии",
   subtitle: "Откройте для себя интересные возможности в ведущих медицинских учреждениях",
@@ -17,6 +16,10 @@ export const vacancies = {
   saveSuccess: "Вакансия сохранена!",
   removeSuccess: "Вакансия удалена из сохраненных!",
   latestOpportunities: 'Последние возможности',
+  publishedDaysAgo: 'Опубликовано {days} дней назад',
+  keyRequirements: 'Ключевые требования',
+  more: 'ещё',
+  startHomologationToApply: 'Начать гомологацию для подачи заявки',
   readyToFindJob: {
     title: 'Готовы найти работу мечты?',
     subtitle: 'Присоединяйтесь к тысячам медицинских специалистов, которые нашли свою идеальную работу',
@@ -25,7 +28,11 @@ export const vacancies = {
   },
   blurredCard: {
     viewOffers: 'Откликнуться',
-    homologateTitle: 'Подтвердить диплом'
-  },
-  publishedDaysAgo: 'Опубликовано {days} дней назад'
+    homologateTitle: 'Подтвердить диплом',
+    requirements: 'Требования',
+    benefits: 'Преимущества',
+    homologatedTitle: 'подтверждённый диплом',
+    permanentContract: 'Бессрочный контракт',
+    relocationHelp: 'помощь с переездом'
+  }
 };
