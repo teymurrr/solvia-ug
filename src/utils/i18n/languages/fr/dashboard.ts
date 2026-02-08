@@ -92,6 +92,15 @@ export const dashboard: DashboardTranslations = {
     languageLevel: "Niveau",
     selectLevel: "Sélectionner un niveau",
     certificate: "Certificat",
+    languagesCard: {
+      title: "Compétences Linguistiques",
+      description: "Vos niveaux de maîtrise linguistique",
+      noLanguages: "Aucune langue ajoutée",
+      addLanguages: "Ajouter des Langues",
+      editLanguages: "Modifier les Langues",
+      certified: "Certifié",
+      level: "Niveau"
+    },
     about: "À propos",
     aboutPlaceholder: "Partagez des informations sur vos intérêts professionnels, vos recherches ou vos objectifs de carrière...",
     incompleteProfile: "Votre profil est incomplet. Ajoutez plus d'informations sur vous-même pour attirer des employeurs potentiels.",
