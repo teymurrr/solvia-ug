@@ -218,15 +218,18 @@ const HomologationResult = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
             >
-              <Card className="h-full">
+              <Card className="h-full relative overflow-hidden">
+                {/* Blur overlay */}
+                <div className="absolute inset-0 bg-gradient-to-br from-background/0 to-background/80 backdrop-blur-sm z-10" />
+                
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <Clock className="h-5 w-5 text-primary" />
                     {t.homologationResult.timeline.title}
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="grid grid-cols-3 gap-4 text-center">
+                <CardContent className="space-y-4 relative z-0">
+                  <div className="grid grid-cols-3 gap-4 text-center opacity-60">
                     <div className="p-4 bg-green-500/10 rounded-lg">
                       <p className="text-2xl font-bold text-green-600">{countryData.processTime.min}</p>
                       <p className="text-sm text-muted-foreground">{t.homologationResult.timeline.bestCase}</p>
@@ -240,20 +243,21 @@ const HomologationResult = () => {
                       <p className="text-sm text-muted-foreground">{t.homologationResult.timeline.complexCases}</p>
                     </div>
                   </div>
-                  {professionInfo && (
-                    <p className="text-sm text-muted-foreground bg-muted/50 p-3 rounded-lg">
-                      <strong>{t.homologationResult.timeline.note}:</strong> {professionInfo}
-                    </p>
-                  )}
                   
-                  {/* CTA after timeline */}
-                  <Button 
-                    onClick={handleStartHomologation}
-                    className="w-full gap-2"
-                  >
-                    {t.homologationResult.timeline.startNow || "Start Homologation Now"}
-                    <ArrowRight className="h-4 w-4" />
-                  </Button>
+                  <div className="text-center py-8">
+                    <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium mb-4">
+                      <BookOpen className="h-4 w-4" />
+                      Full timeline hidden - unlock for €99
+                    </div>
+                    <p className="text-sm text-muted-foreground mb-6">Get your complete timeline, step-by-step roadmap, and personalized action plan</p>
+                    <Button 
+                      onClick={handleStartHomologation}
+                      className="w-full gap-2"
+                    >
+                      {t.homologationResult.timeline.startNow || "Unlock Full Plan - €99"}
+                      <ArrowRight className="h-4 w-4" />
+                    </Button>
+                  </div>
                 </CardContent>
               </Card>
             </motion.div>
@@ -264,50 +268,49 @@ const HomologationResult = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
             >
-              <Card className="h-full border-2 border-primary/20">
+              <Card className="h-full border-2 border-primary/20 relative overflow-hidden">
+                {/* Blur overlay */}
+                <div className="absolute inset-0 bg-gradient-to-br from-background/0 to-background/80 backdrop-blur-sm z-10" />
+                
                 <CardHeader className="pb-3">
                   <CardTitle className="flex items-center gap-2">
                     <Languages className="h-5 w-5 text-primary" />
                     {t.homologationResult.language.title}
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="flex items-center justify-between">
+                <CardContent className="space-y-4 relative z-0">
+                  <div className="flex items-center justify-between opacity-60">
                     <span className="text-muted-foreground">{t.homologationResult.language.requiredLevel}</span>
                     <Badge className="text-lg px-4 py-1">{countryData.languageRequirement.level}</Badge>
                   </div>
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between opacity-60">
                     <span className="text-muted-foreground">{t.homologationResult.language.yourLevel}</span>
                     <Badge variant={needsLanguageCourses() ? "secondary" : "default"} className="text-lg px-4 py-1">
                       {wizardData.languageLevel || t.homologationResult.language.notSpecified}
                     </Badge>
                   </div>
                   <Separator />
-                  <div>
-                    <p className="font-medium mb-1">{countryData.languageRequirement.exam}</p>
-                    <p className="text-sm text-muted-foreground">{getLanguageDescription(wizardData.targetCountry)}</p>
-                  </div>
                   
-                  {/* Language CTA inside card */}
-                  {needsLanguageCourses() && (
-                    <div className="bg-gradient-to-r from-primary/10 to-accent/10 rounded-lg p-4 border border-primary/20">
-                      <div className="flex items-center gap-2 mb-2">
-                        <Zap className="h-4 w-4 text-primary" />
-                        <span className="font-semibold text-sm">{t.homologationResult.language.needHelp || "Need to reach this level?"}</span>
-                      </div>
-                      <p className="text-xs text-muted-foreground mb-3">
-                        {t.homologationResult.language.joinCourses || "Join our specialized language courses designed for medical professionals."}
-                      </p>
-                      <Button 
-                        size="sm" 
-                        onClick={handleLanguageLearning}
-                        className="w-full gap-2"
-                      >
-                        <GraduationCap className="h-4 w-4" />
-                        {t.homologationResult.language.startLearning || "Start Learning"}
-                      </Button>
+                  <div className="text-center py-8">
+                    <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium mb-4">
+                      <Languages className="h-4 w-4" />
+                      Language details hidden - unlock for €99
                     </div>
-                  )}
+                    <p className="text-sm text-muted-foreground mb-6">
+                      {needsLanguageCourses() 
+                        ? "See your personalized language learning path and access to courses"
+                        : "See detailed language requirements and exam preparation materials"
+                      }
+                    </p>
+                    <Button 
+                      size="sm" 
+                      onClick={handleStartHomologation}
+                      className="w-full gap-2"
+                    >
+                      <BookOpen className="h-4 w-4" />
+                      Unlock Full Plan - €99
+                    </Button>
+                  </div>
                 </CardContent>
               </Card>
             </motion.div>

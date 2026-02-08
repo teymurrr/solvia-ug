@@ -15,25 +15,24 @@ interface PaymentRequest {
   locale?: 'en' | 'es' | 'de' | 'fr' | 'ru';
 }
 
-// Country-specific pricing configuration (amounts in cents)
+// Country-specific pricing configuration - LAUNCH WEEK PRICING (amounts in cents)
 const getProductConfig = (productType: string, targetCountry: string | undefined) => {
-  const isSpain = targetCountry === 'spain';
-  
+  // Launch week pricing: €99 / €399 / €999 for all countries (same pricing)
   const configs: Record<string, { name: string; description: string; amount: number }> = {
     digital_starter: {
       name: 'Digital Starter',
-      description: `Self-service document preparation kit for ${isSpain ? 'Spain' : 'Germany/Austria'}`,
-      amount: isSpain ? 19900 : 34900, // €199 or €349
+      description: 'Self-service document preparation kit with templates & videos',
+      amount: 9900, // €99 launch week special
     },
     complete: {
       name: 'Complete Package',
-      description: `Full homologation support + German language preparation for ${isSpain ? 'Spain' : 'Germany/Austria'}`,
-      amount: isSpain ? 50000 : 99000, // €500 or €990
+      description: 'Full homologation support + German language preparation',
+      amount: 39900, // €399 launch week special
     },
     personal_mentorship: {
       name: 'Personal Mentorship',
-      description: `Dedicated team with 1:1 lessons and full support for ${isSpain ? 'Spain' : 'Germany/Austria'}`,
-      amount: isSpain ? 129900 : 269900, // €1,299 or €2,699
+      description: 'Dedicated team with 1:1 lessons and full support',
+      amount: 99900, // €999 launch week special
     }
   };
   

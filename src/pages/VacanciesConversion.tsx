@@ -9,6 +9,7 @@ import { useVacancies } from '@/hooks/useVacancies';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Badge } from '@/components/ui/badge';
 import { Briefcase, Lock, Sparkles, Filter } from 'lucide-react';
+import { useLanguage } from '@/hooks/useLanguage';
 
 // Mock blurred job data for the locked state
 const mockBlurredJobs = [
@@ -20,20 +21,31 @@ const mockBlurredJobs = [
   { hospital: 'Hôpital Universitaire Lyon', specialty: 'Anestesiología', city: 'Lyon', country: 'france', profession: 'doctor', salaryRange: '54.000 - 65.000 €/año' },
 ];
 
-const countryDisplayNames: Record<string, string> = {
-  germany: 'Alemania',
-  austria: 'Austria',
-  spain: 'España',
-  france: 'Francia'
+const getCountryDisplayNames = (lang?: string): Record<string, string> => {
+  if (lang === 'es') {
+    return { germany: 'Alemania', austria: 'Austria', spain: 'España', france: 'Francia' };
+  } else if (lang === 'de') {
+    return { germany: 'Deutschland', austria: 'Österreich', spain: 'Spanien', france: 'Frankreich' };
+  } else if (lang === 'fr') {
+    return { germany: 'Allemagne', austria: 'Autriche', spain: 'Espagne', france: 'France' };
+  }
+  return { germany: 'Germany', austria: 'Austria', spain: 'Spain', france: 'France' };
 };
 
 const VacanciesConversion = () => {
+  const { t, currentLanguage } = useLanguage();
   const { vacancies, loading } = useVacancies();
   const [filters, setFilters] = useState<FilterData>({ profession: '', targetCountry: '' });
   const [savedVacancies, setSavedVacancies] = useState<string[]>([]);
 
+  const countryDisplayNames = getCountryDisplayNames(currentLanguage);
+
   const handleFilter = (newFilters: FilterData) => {
     setFilters(newFilters);
+  };
+
+  const getCountryDisplayName = (countryId: string): string => {
+    return countryDisplayNames[countryId] || countryId;
   };
 
   // Filter blurred jobs based on selected country and profession
@@ -69,17 +81,6 @@ const VacanciesConversion = () => {
     );
   };
 
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    const now = new Date();
-    const diffDays = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60 * 24));
-    
-    if (diffDays === 0) return 'Hoy';
-    if (diffDays === 1) return 'Ayer';
-    if (diffDays < 7) return `Hace ${diffDays} días`;
-    return date.toLocaleDateString('es-ES', { day: 'numeric', month: 'short' });
-  };
-
   const hasActiveFilters = filters.profession || filters.targetCountry;
 
   return (
@@ -90,13 +91,13 @@ const VacanciesConversion = () => {
           <div className="max-w-3xl mx-auto text-center space-y-4">
             <Badge variant="secondary" className="mb-4">
               <Briefcase className="h-4 w-4 mr-2" />
-              Ofertas verificadas
+              {t?.vacancies?.verifiedOffers || 'Verified Offers'}
             </Badge>
             <h1 className="text-3xl md:text-4xl font-bold">
-              Trabaja en Europa: oportunidades según tu especialidad
+              {t?.vacancies?.heroTitle || 'Work in Europe: opportunities based on your specialty'}
             </h1>
             <p className="text-lg text-muted-foreground">
-              Filtra por profesión y país para ver ofertas relevantes
+              {t?.vacancies?.heroSubtitle || 'Filter by profession and country to see relevant offers'}
             </p>
           </div>
         </div>
@@ -116,9 +117,9 @@ const VacanciesConversion = () => {
               <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
                 <Filter className="h-4 w-4" />
                 <span>
-                  Mostrando ofertas
-                  {filters.targetCountry && ` en ${countryDisplayNames[filters.targetCountry] || filters.targetCountry}`}
-                  {filters.profession && ` para ${filters.profession === 'doctor' ? 'médicos' : filters.profession === 'nurse' ? 'enfermeros' : filters.profession}`}
+                  {t?.vacancies?.showingOffers || 'Showing offers'}
+                  {filters.targetCountry && ` ${t?.vacancies?.in || 'in'} ${getCountryDisplayName(filters.targetCountry)}`}
+                  {filters.profession && ` ${t?.vacancies?.for || 'for'} ${filters.profession === 'doctor' ? (t?.wizard?.doctorType?.general || 'doctors') : filters.profession === 'nurse' ? (t?.wizard?.doctorType?.nurse || 'nurses') : filters.profession}`}
                 </span>
               </div>
             )}
@@ -127,7 +128,7 @@ const VacanciesConversion = () => {
             <div className="space-y-4">
               <div className="flex items-center justify-center gap-2 text-muted-foreground">
                 <Lock className="h-4 w-4" />
-                <span className="text-sm">Vista previa de ofertas disponibles ({filteredBlurredJobs.length})</span>
+                <span className="text-sm">{t?.vacancies?.preview || 'Preview of available offers'} ({filteredBlurredJobs.length})</span>
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -138,14 +139,14 @@ const VacanciesConversion = () => {
                       hospital={job.hospital}
                       specialty={job.specialty}
                       city={job.city}
-                      country={countryDisplayNames[job.country] || job.country}
+                      country={getCountryDisplayName(job.country)}
                       salaryRange={job.salaryRange}
                     />
                   ))
                 ) : (
                   <div className="col-span-full text-center py-12 text-muted-foreground">
-                    <p>No hay ofertas disponibles para los filtros seleccionados.</p>
-                    <p className="text-sm mt-2">Prueba con otros filtros o limpia la búsqueda.</p>
+                    <p>{t?.vacancies?.noOffers || 'No offers available for the selected filters.'}</p>
+                    <p className="text-sm mt-2">{t?.vacancies?.tryOtherFilters || 'Try other filters or clear the search.'}</p>
                   </div>
                 )}
               </div>

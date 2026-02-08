@@ -20,12 +20,14 @@ serve(async (req) => {
   try {
     console.log("🔍 [VERIFY-PAYMENT] Function started");
 
-    // Get authenticated user
-    const authHeader = req.headers.get("Authorization")!;
-    const token = authHeader.replace("Bearer ", "");
-    const { data } = await supabaseClient.auth.getUser(token);
-    const user = data.user;
-    if (!user?.email) throw new Error("User not authenticated or email not available");
+    // Get authenticated user (optional for guest checkouts)
+    let userId: string | null = null;
+    const authHeader = req.headers.get("Authorization");
+    if (authHeader) {
+      const token = authHeader.replace("Bearer ", "");
+      const { data } = await supabaseClient.auth.getUser(token);
+      userId = data.user?.id || null;
+    }
 
     const { sessionId } = await req.json();
     if (!sessionId) throw new Error("Session ID is required");
@@ -58,11 +60,18 @@ serve(async (req) => {
       updated_at: new Date().toISOString(),
     };
 
-    const { data: payment, error: paymentError } = await supabaseClient
+    // For guest checkouts, match by session_id only
+    // For authenticated users, ensure we match their payment
+    let query = supabaseClient
       .from('payments')
       .update(updateData)
-      .eq('stripe_session_id', sessionId)
-      .eq('user_id', user.id)
+      .eq('stripe_session_id', sessionId);
+    
+    if (userId) {
+      query = query.eq('user_id', userId);
+    }
+
+    const { data: payment, error: paymentError } = await query
       .select()
       .single();
 
@@ -75,16 +84,25 @@ serve(async (req) => {
     if (session.payment_status === 'paid' && payment.discount_code) {
       console.log("🎫 [VERIFY-PAYMENT] Incrementing discount code usage:", payment.discount_code);
       
-      const { error: discountError } = await supabaseClient
+      // Note: Can't use supabaseClient.sql for increment, use RPC or handle in app
+      const { data: discountData, error: fetchError } = await supabaseClient
         .from('discount_codes')
-        .update({ 
-          used_count: supabaseClient.sql`used_count + 1`,
-          updated_at: new Date().toISOString()
-        })
-        .eq('code', payment.discount_code);
+        .select('used_count')
+        .eq('code', payment.discount_code)
+        .single();
 
-      if (discountError) {
-        console.error("❌ [VERIFY-PAYMENT] Error updating discount usage:", discountError);
+      if (!fetchError && discountData) {
+        const { error: discountError } = await supabaseClient
+          .from('discount_codes')
+          .update({ 
+            used_count: (discountData.used_count || 0) + 1,
+            updated_at: new Date().toISOString()
+          })
+          .eq('code', payment.discount_code);
+
+        if (discountError) {
+          console.error("❌ [VERIFY-PAYMENT] Error updating discount usage:", discountError);
+        }
       }
     }
 

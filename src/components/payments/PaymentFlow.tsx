@@ -8,7 +8,7 @@ import { useLanguage } from '@/hooks/useLanguage';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { Check, Shield, Clock, BookOpen, Users, Star, ExternalLink } from 'lucide-react';
-import BlackFridayBanner from './BlackFridayBanner';
+import LaunchWeekBanner from './BlackFridayBanner';
 import { isSafari, preOpenPaymentWindow, redirectPaymentWindow } from '@/utils/browserDetection';
 type ProductType = 'digital_starter' | 'complete' | 'personal_mentorship';
 
@@ -34,14 +34,14 @@ interface PackageConfig {
   features: string[];
 }
 
-// Country-specific pricing configuration
+// Country-specific pricing configuration - LAUNCH WEEK PRICING
 const getPricingByCountry = (country: string | null): Record<ProductType, number> => {
   const isSpain = country === 'spain';
   
   return {
-    digital_starter: isSpain ? 19900 : 34900,      // €199 or €349
-    complete: isSpain ? 50000 : 99000,             // €500 or €990
-    personal_mentorship: isSpain ? 129900 : 269900, // €1,299 or €2,699
+    digital_starter: isSpain ? 9900 : 9900,         // €99 launch week (normally €199/€349)
+    complete: isSpain ? 39900 : 39900,              // €399 launch week (normally €500/€990)
+    personal_mentorship: isSpain ? 99900 : 99900,   // €999 launch week (normally €1,299/€2,699)
   };
 };
 
@@ -299,8 +299,8 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
 
   return (
     <div className="max-w-5xl mx-auto space-y-8">
-      {/* Black Friday Banner */}
-      <BlackFridayBanner />
+      {/* Launch Week Urgency Banner */}
+      <LaunchWeekBanner />
       
       {/* Country Indicator */}
       {targetCountry && (
