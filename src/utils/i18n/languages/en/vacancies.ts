@@ -25,7 +25,7 @@ export const vacancies = {
     getHelp: 'Get Personal Help'
   },
   blurredCard: {
-    viewOffers: 'View offers',
+    viewOffers: 'Apply',
     homologateTitle: 'Homologate degree'
   }
 };

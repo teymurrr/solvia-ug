@@ -26,7 +26,7 @@ export const vacancies = {
     getHelp: 'Obtener ayuda personal'
   },
   blurredCard: {
-    viewOffers: 'Ver ofertas',
+    viewOffers: 'Aplicar',
     homologateTitle: 'Homologar título'
   },
   jobTypes: {

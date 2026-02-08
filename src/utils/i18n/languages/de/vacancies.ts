@@ -24,7 +24,7 @@ export const vacancies = {
     getHelp: 'Persönliche Hilfe erhalten'
   },
   blurredCard: {
-    viewOffers: 'Angebote ansehen',
+    viewOffers: 'Bewerben',
     homologateTitle: 'Titel anerkennen'
   },
   publishedDaysAgo: 'Vor {days} Tagen veröffentlicht',
