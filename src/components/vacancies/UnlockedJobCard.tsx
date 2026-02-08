@@ -2,8 +2,9 @@ import React from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
-import { MapPin, Euro, Building, Clock, CheckCircle, ArrowRight, Bookmark } from 'lucide-react';
+import { MapPin, Euro, Building, CheckCircle, ArrowRight, Bookmark } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
+import { useLanguage } from '@/hooks/useLanguage';
 
 interface UnlockedJobCardProps {
   id: string;
@@ -34,6 +35,8 @@ const UnlockedJobCard = ({
   onSave,
   isSaved = false,
 }: UnlockedJobCardProps) => {
+  const { t } = useLanguage();
+  
   return (
     <Card className="p-5 border-border/50 hover:shadow-lg transition-all group">
       <div className="space-y-4">
@@ -84,7 +87,7 @@ const UnlockedJobCard = ({
         {/* Requirements */}
         {requirements && requirements.length > 0 && (
           <div className="space-y-2">
-            <p className="text-sm font-medium text-foreground">Requisitos:</p>
+            <p className="text-sm font-medium text-foreground">{t?.vacancies?.keyRequirements || 'Requirements'}:</p>
             <div className="flex flex-wrap gap-2">
               {requirements.slice(0, 4).map((req, index) => (
                 <div key={index} className="flex items-center gap-1 text-xs text-muted-foreground bg-muted px-2 py-1 rounded">
@@ -93,7 +96,7 @@ const UnlockedJobCard = ({
                 </div>
               ))}
               {requirements.length > 4 && (
-                <span className="text-xs text-muted-foreground">+{requirements.length - 4} más</span>
+                <span className="text-xs text-muted-foreground">+{requirements.length - 4} {t?.vacancies?.more || 'more'}</span>
               )}
             </div>
           </div>
@@ -103,7 +106,7 @@ const UnlockedJobCard = ({
         <div className="flex items-center gap-3 pt-3 border-t border-border/50">
           <Button asChild className="flex-1 group/btn">
             <Link to="/homologation-wizard" onClick={() => window.scrollTo(0, 0)}>
-              Iniciar homologación para aplicar
+              {t?.vacancies?.startHomologationToApply || 'Start homologation to apply'}
               <ArrowRight className="h-4 w-4 ml-2 group-hover/btn:translate-x-1 transition-transform" />
             </Link>
           </Button>

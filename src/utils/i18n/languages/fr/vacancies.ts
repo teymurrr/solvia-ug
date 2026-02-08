@@ -1,4 +1,3 @@
-
 export const vacancies = {
   title: 'Postes Ouverts',
   subtitle: 'Explorez des opportunités passionnantes dans des établissements de santé de premier plan',
@@ -17,6 +16,8 @@ export const vacancies = {
   saved: 'Enregistré',
   positions: 'Postes actifs',
   latestOpportunities: 'Dernières Opportunités',
+  publishedDaysAgo: 'Publié il y a {days} jours',
+  startHomologationToApply: 'Commencer l\'homologation pour postuler',
   readyToFindJob: {
     title: 'Prêt à trouver l\'emploi de vos rêves?',
     subtitle: 'Rejoignez des milliers de professionnels de santé qui ont trouvé leur rôle parfait',
@@ -25,7 +26,11 @@ export const vacancies = {
   },
   blurredCard: {
     viewOffers: 'Postuler',
-    homologateTitle: 'Homologuer diplôme'
-  },
-  publishedDaysAgo: 'Publié il y a {days} jours'
+    homologateTitle: 'Homologuer diplôme',
+    requirements: 'Exigences',
+    benefits: 'Avantages',
+    homologatedTitle: 'diplôme homologué',
+    permanentContract: 'Contrat permanent',
+    relocationHelp: 'aide au déménagement'
+  }
 };

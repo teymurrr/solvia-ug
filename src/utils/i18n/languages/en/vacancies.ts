@@ -1,4 +1,3 @@
-
 export const vacancies = {
   title: 'Open Positions',
   subtitle: 'Explore exciting opportunities at leading healthcare institutions',
@@ -18,6 +17,7 @@ export const vacancies = {
   saved: 'Saved',
   positions: 'Active Positions',
   latestOpportunities: 'Latest Opportunities',
+  startHomologationToApply: 'Start homologation to apply',
   readyToFindJob: {
     title: 'Ready to Find Your Dream Job?',
     subtitle: 'Join thousands of healthcare professionals who found their perfect role',
@@ -26,6 +26,11 @@ export const vacancies = {
   },
   blurredCard: {
     viewOffers: 'Apply',
-    homologateTitle: 'Homologate degree'
+    homologateTitle: 'Homologate degree',
+    requirements: 'Requirements',
+    benefits: 'Benefits',
+    homologatedTitle: 'homologated title',
+    permanentContract: 'Permanent contract',
+    relocationHelp: 'relocation assistance'
   }
 };
