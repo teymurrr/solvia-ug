@@ -739,7 +739,10 @@ serve(async (req) => {
 
     const { segment = 'all', templateId = 'day0', testMode = false, testEmail, language }: CampaignRequest = await req.json();
 
-    console.log(`📧 Starting nurture campaign - Segment: ${segment}, Template: ${templateId}, TestMode: ${testMode}, Language override: ${language || 'auto'}`);
+    // If testEmail is provided, automatically enable test mode
+    const effectiveTestMode = testMode || !!testEmail;
+
+    console.log(`📧 Starting nurture campaign - Segment: ${segment}, Template: ${templateId}, TestMode: ${effectiveTestMode}, TestEmail: ${testEmail || 'none'}, Language override: ${language || 'auto'}`);
 
     // Fetch all leads from the leads table (including preferred_language)
     const { data: leadsData, error: leadsError } = await supabase
@@ -760,7 +763,7 @@ serve(async (req) => {
     console.log(`📊 After segmentation (${segment}): ${leads.length} leads`);
 
     // In test mode, only send to one email
-    if (testMode) {
+    if (effectiveTestMode) {
       if (testEmail) {
         leads = leads.filter(l => l.email.toLowerCase() === testEmail.toLowerCase());
         // If test email not found in leads, create a mock lead for testing
@@ -782,7 +785,7 @@ serve(async (req) => {
       } else {
         leads = leads.slice(0, 1);
       }
-      console.log(`🧪 Test mode: sending to ${leads.length} leads`);
+      console.log(`🧪 Test mode: sending to ${leads.length} lead(s): ${leads.map(l => l.email).join(', ')}`);
     }
 
     const paymentBaseUrl = 'https://solvia-flexkapg.lovable.app/homologation-payment';
@@ -794,7 +797,17 @@ serve(async (req) => {
       languageBreakdown: { es: 0, de: 0, en: 0, fr: 0 } as Record<Language, number>,
     };
 
-    for (const lead of leads) {
+    // Helper function to add delay between API calls to respect Resend rate limits (2 req/sec)
+    const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
+    for (let i = 0; i < leads.length; i++) {
+      const lead = leads[i];
+      
+      // Add 600ms delay between emails to stay under 2 req/sec rate limit
+      if (i > 0) {
+        await delay(600);
+      }
+      
       try {
         // Detect language for this lead (or use override)
         const detectedLang = language || detectLeadLanguage(lead);
