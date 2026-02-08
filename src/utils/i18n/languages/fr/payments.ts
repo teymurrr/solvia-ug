@@ -26,35 +26,35 @@ export const payments = {
     french: 'Français',
   },
   packages: {
-    homologation: {
-      title: 'Forfait Homologation',
-      description: 'Accompagnement complet pour votre homologation',
+    digitalStarter: {
+      title: 'Digital Starter',
+      description: 'Préparez vos documents de manière autonome avec nos guides numériques',
       features: [
-        'Révision et vérification complète des documents',
-        'Guide étape par étape pour la candidature',
-        'Support pour la communication avec les autorités',
-        'Support par email sous 48h'
+        'Accès à la checklist et modèles de documents',
+        'Tutoriels vidéo à votre rythme',
+        'Guide de vérification numérique',
+        'Support par email (réponse en 72h)'
       ]
     },
-    languagePrep: {
-      titleBase: 'Forfait Homologation &',
-      descriptionBase: 'Homologation + préparation en',
-      descriptionEnd: '',
+    complete: {
+      titleBase: 'Forfait Complet +',
+      descriptionBase: 'Accompagnement complet d\'homologation +',
+      descriptionEnd: 'préparation linguistique',
       features: [
-        'Tout le Forfait Homologation',
-        'Préparation de l\'examen de langue',
-        'Matériaux de cours de langue médicale',
-        'Suivi hebdomadaire des progrès'
+        'Tout du Digital Starter',
+        'Révision personnelle des documents',
+        'Accès au cours d\'allemand médical',
+        'Matériaux de préparation FSP'
       ]
     },
-    premiumSupport: {
-      title: 'Forfait Premium',
-      descriptionBase: 'Assistance personnelle & cours 1:1 de',
+    personalMentorship: {
+      title: 'Mentorat Personnel',
+      descriptionBase: 'Votre équipe dédiée vous guide avec des cours 1:1 de',
       descriptionEnd: '',
       features: [
-        'Tout le Forfait Homologation & Langue',
-        'Mentor personnel tout au long du processus',
-        'Cours 1:1 de langue avec professeur natif',
+        'Tout du Forfait Complet',
+        'Mentor personnel assigné à votre cas',
+        'Cours 1:1 avec professionnel médical natif',
         'Aide à la recherche d\'emploi'
       ]
     }

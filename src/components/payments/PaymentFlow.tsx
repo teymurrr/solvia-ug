@@ -7,10 +7,10 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { useLanguage } from '@/hooks/useLanguage';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import { Check, Shield, Clock, BookOpen, Users, GraduationCap, Star, ExternalLink } from 'lucide-react';
+import { Check, Shield, Clock, BookOpen, Users, Star, ExternalLink } from 'lucide-react';
 import BlackFridayBanner from './BlackFridayBanner';
 import { isSafari, preOpenPaymentWindow, redirectPaymentWindow } from '@/utils/browserDetection';
-type ProductType = 'homologation' | 'language_prep' | 'premium_support';
+type ProductType = 'digital_starter' | 'complete' | 'personal_mentorship';
 
 interface PaymentFlowProps {
   productType?: ProductType;
@@ -39,9 +39,9 @@ const getPricingByCountry = (country: string | null): Record<ProductType, number
   const isSpain = country === 'spain';
   
   return {
-    homologation: isSpain ? 25000 : 75000,      // €250 or €750
-    language_prep: isSpain ? 50000 : 99000,     // €500 or €990
-    premium_support: isSpain ? 129900 : 269900, // €1,299 or €2,699
+    digital_starter: isSpain ? 19900 : 34900,      // €199 or €349
+    complete: isSpain ? 50000 : 99000,             // €500 or €990
+    personal_mentorship: isSpain ? 129900 : 269900, // €1,299 or €2,699
   };
 };
 
@@ -118,37 +118,37 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
 
   const packages: PackageConfig[] = [
     {
-      id: 'homologation',
+      id: 'digital_starter',
       icon: <Shield className="w-8 h-8" />,
-      price: pricing.homologation,
+      price: pricing.digital_starter,
       features: [
-        t?.payments?.packages?.homologation?.features?.[0] || 'Complete document review & verification',
-        t?.payments?.packages?.homologation?.features?.[1] || 'Step-by-step application guidance',
-        t?.payments?.packages?.homologation?.features?.[2] || 'Authority communication support',
-        t?.payments?.packages?.homologation?.features?.[3] || 'Email support within 48h',
+        t?.payments?.packages?.digitalStarter?.features?.[0] || 'Access to document checklist & templates',
+        t?.payments?.packages?.digitalStarter?.features?.[1] || 'Self-paced video tutorials',
+        t?.payments?.packages?.digitalStarter?.features?.[2] || 'Digital verification guide',
+        t?.payments?.packages?.digitalStarter?.features?.[3] || 'Email support (72h response)',
       ]
     },
     {
-      id: 'language_prep',
+      id: 'complete',
       icon: <BookOpen className="w-8 h-8" />,
-      price: pricing.language_prep,
+      price: pricing.complete,
       popular: true,
       features: [
-        t?.payments?.packages?.languagePrep?.features?.[0] || 'Everything in Homologation Package',
-        t?.payments?.packages?.languagePrep?.features?.[1] || 'FSP & Fachsprachenprüfung preparation',
-        t?.payments?.packages?.languagePrep?.features?.[2] || 'Medical German course materials',
-        t?.payments?.packages?.languagePrep?.features?.[3] || 'Weekly progress check-ins',
+        t?.payments?.packages?.complete?.features?.[0] || 'Everything in Digital Starter',
+        t?.payments?.packages?.complete?.features?.[1] || 'Personal document review & verification',
+        t?.payments?.packages?.complete?.features?.[2] || 'German medical language course access',
+        t?.payments?.packages?.complete?.features?.[3] || 'FSP exam preparation materials',
       ]
     },
     {
-      id: 'premium_support',
-      icon: <GraduationCap className="w-8 h-8" />,
-      price: pricing.premium_support,
+      id: 'personal_mentorship',
+      icon: <Users className="w-8 h-8" />,
+      price: pricing.personal_mentorship,
       features: [
-        t?.payments?.packages?.premiumSupport?.features?.[0] || 'Everything in Homologation & German Package',
-        t?.payments?.packages?.premiumSupport?.features?.[1] || 'Personal mentor throughout the process',
-        t?.payments?.packages?.premiumSupport?.features?.[2] || '1-on-1 German lessons with native teacher',
-        t?.payments?.packages?.premiumSupport?.features?.[3] || 'Job placement assistance in Germany',
+        t?.payments?.packages?.personalMentorship?.features?.[0] || 'Everything in Complete Package',
+        t?.payments?.packages?.personalMentorship?.features?.[1] || 'Personal mentor assigned to your case',
+        t?.payments?.packages?.personalMentorship?.features?.[2] || '1:1 German lessons with native medical professional',
+        t?.payments?.packages?.personalMentorship?.features?.[3] || 'Job placement assistance',
       ]
     }
   ];
@@ -156,30 +156,30 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
   const getPackageTitle = (id: ProductType) => {
     const languageName = getLanguageForCountry(targetCountry, t);
     switch (id) {
-      case 'homologation':
-        return t?.payments?.packages?.homologation?.title || 'Homologation Package';
-      case 'language_prep':
+      case 'digital_starter':
+        return t?.payments?.packages?.digitalStarter?.title || 'Digital Starter';
+      case 'complete':
         // Dynamic language name based on country
-        const langPrepBase = t?.payments?.packages?.languagePrep?.titleBase || 'Homologation &';
-        return `${langPrepBase} ${languageName}`;
-      case 'premium_support':
-        return t?.payments?.packages?.premiumSupport?.title || 'Premium Package';
+        const completeBase = t?.payments?.packages?.complete?.titleBase || 'Complete Package +';
+        return `${completeBase} ${languageName}`;
+      case 'personal_mentorship':
+        return t?.payments?.packages?.personalMentorship?.title || 'Personal Mentorship';
     }
   };
 
   const getPackageDescription = (id: ProductType) => {
     const languageName = getLanguageForCountry(targetCountry, t);
     switch (id) {
-      case 'homologation':
-        return t?.payments?.packages?.homologation?.description || 'Complete homologation support';
-      case 'language_prep':
+      case 'digital_starter':
+        return t?.payments?.packages?.digitalStarter?.description || 'Prepare your documents independently with our digital guides';
+      case 'complete':
         // Dynamic language name in description
-        const descBase = t?.payments?.packages?.languagePrep?.descriptionBase || 'Homologation +';
-        const descEnd = t?.payments?.packages?.languagePrep?.descriptionEnd || 'language preparation';
+        const descBase = t?.payments?.packages?.complete?.descriptionBase || 'Full homologation support +';
+        const descEnd = t?.payments?.packages?.complete?.descriptionEnd || 'language preparation';
         return `${descBase} ${languageName} ${descEnd}`;
-      case 'premium_support':
-        const premiumBase = t?.payments?.packages?.premiumSupport?.descriptionBase || 'Personal assistance & 1:1';
-        const premiumEnd = t?.payments?.packages?.premiumSupport?.descriptionEnd || 'lessons';
+      case 'personal_mentorship':
+        const premiumBase = t?.payments?.packages?.personalMentorship?.descriptionBase || 'Your dedicated team guiding you with 1:1';
+        const premiumEnd = t?.payments?.packages?.personalMentorship?.descriptionEnd || 'lessons';
         return `${premiumBase} ${languageName} ${premiumEnd}`;
     }
   };

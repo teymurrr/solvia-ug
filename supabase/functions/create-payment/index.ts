@@ -8,7 +8,7 @@ const corsHeaders = {
 };
 
 interface PaymentRequest {
-  productType: 'homologation' | 'language_prep' | 'premium_support';
+  productType: 'digital_starter' | 'complete' | 'personal_mentorship';
   targetCountry?: string;
   customerEmail?: string;
   discountCode?: string;
@@ -20,19 +20,19 @@ const getProductConfig = (productType: string, targetCountry: string | undefined
   const isSpain = targetCountry === 'spain';
   
   const configs: Record<string, { name: string; description: string; amount: number }> = {
-    homologation: {
-      name: 'Homologation Package',
-      description: `Complete homologation support for ${isSpain ? 'Spain' : 'Germany/Austria'}`,
-      amount: isSpain ? 25000 : 75000, // €250 or €750
+    digital_starter: {
+      name: 'Digital Starter',
+      description: `Self-service document preparation kit for ${isSpain ? 'Spain' : 'Germany/Austria'}`,
+      amount: isSpain ? 19900 : 34900, // €199 or €349
     },
-    language_prep: {
-      name: 'Homologation & German Package',
-      description: `Homologation + German language preparation for ${isSpain ? 'Spain' : 'Germany/Austria'}`,
+    complete: {
+      name: 'Complete Package',
+      description: `Full homologation support + German language preparation for ${isSpain ? 'Spain' : 'Germany/Austria'}`,
       amount: isSpain ? 50000 : 99000, // €500 or €990
     },
-    premium_support: {
-      name: 'Premium Package',
-      description: `Personal assistance & 1:1 German lessons for ${isSpain ? 'Spain' : 'Germany/Austria'}`,
+    personal_mentorship: {
+      name: 'Personal Mentorship',
+      description: `Dedicated team with 1:1 lessons and full support for ${isSpain ? 'Spain' : 'Germany/Austria'}`,
       amount: isSpain ? 129900 : 269900, // €1,299 or €2,699
     }
   };

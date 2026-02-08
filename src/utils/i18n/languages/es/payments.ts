@@ -26,35 +26,35 @@ export const payments = {
     french: 'Francés',
   },
   packages: {
-    homologation: {
-      title: 'Paquete Homologación',
-      description: 'Apoyo completo para tu reconocimiento de licencia',
+    digitalStarter: {
+      title: 'Digital Starter',
+      description: 'Prepara tus documentos de forma independiente con nuestras guías digitales',
       features: [
-        'Revisión y verificación completa de documentos',
-        'Guía paso a paso para la solicitud',
-        'Apoyo en comunicación con autoridades',
-        'Soporte por email en 48h'
+        'Acceso a checklist y plantillas de documentos',
+        'Tutoriales en video a tu ritmo',
+        'Guía de verificación digital',
+        'Soporte por email (respuesta en 72h)'
       ]
     },
-    languagePrep: {
-      titleBase: 'Paquete Homologación &',
-      descriptionBase: 'Homologación + preparación de',
-      descriptionEnd: '',
+    complete: {
+      titleBase: 'Paquete Completo +',
+      descriptionBase: 'Apoyo completo de homologación +',
+      descriptionEnd: 'preparación de idioma',
       features: [
-        'Todo lo del Paquete Homologación',
-        'Preparación del examen de idioma',
-        'Materiales de idioma médico',
-        'Seguimiento semanal de progreso'
+        'Todo lo del Digital Starter',
+        'Revisión personal de documentos',
+        'Acceso al curso de alemán médico',
+        'Materiales de preparación FSP'
       ]
     },
-    premiumSupport: {
-      title: 'Paquete Premium',
-      descriptionBase: 'Asistencia personal y clases 1:1 de',
+    personalMentorship: {
+      title: 'Mentoría Personal',
+      descriptionBase: 'Tu equipo dedicado guiándote con clases 1:1 de',
       descriptionEnd: '',
       features: [
-        'Todo lo del Paquete Homologación & Idioma',
-        'Mentor personal durante todo el proceso',
-        'Clases 1:1 de idioma con profesor nativo',
+        'Todo lo del Paquete Completo',
+        'Mentor personal asignado a tu caso',
+        'Clases 1:1 con profesional médico nativo',
         'Asistencia para encontrar trabajo'
       ]
     }

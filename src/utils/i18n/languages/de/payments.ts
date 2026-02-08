@@ -26,35 +26,35 @@ export const payments = {
     french: 'Französisch',
   },
   packages: {
-    homologation: {
-      title: 'Homologations-Paket',
-      description: 'Komplette Unterstützung für Ihre Approbation',
+    digitalStarter: {
+      title: 'Digital Starter',
+      description: 'Bereiten Sie Ihre Dokumente eigenständig mit unseren digitalen Anleitungen vor',
       features: [
-        'Vollständige Dokumentenprüfung & Verifizierung',
-        'Schritt-für-Schritt Antragsbegleitung',
-        'Behördenkommunikation Unterstützung',
-        'E-Mail-Support innerhalb von 48h'
+        'Zugang zu Dokumenten-Checkliste & Vorlagen',
+        'Video-Tutorials im eigenen Tempo',
+        'Digitaler Verifizierungsleitfaden',
+        'E-Mail-Support (Antwort in 72h)'
       ]
     },
-    languagePrep: {
-      titleBase: 'Homologation &',
-      descriptionBase: 'Homologation +',
+    complete: {
+      titleBase: 'Komplett-Paket +',
+      descriptionBase: 'Volle Approbationsunterstützung +',
       descriptionEnd: 'Sprachvorbereitung',
       features: [
-        'Alles aus dem Homologations-Paket',
-        'Fachsprachenprüfung Vorbereitung',
-        'Medizinische Sprachkursmaterialien',
-        'Wöchentliche Fortschritts-Check-ins'
+        'Alles aus Digital Starter',
+        'Persönliche Dokumentenprüfung',
+        'Zugang zum medizinischen Deutschkurs',
+        'FSP-Prüfungsvorbereitungsmaterialien'
       ]
     },
-    premiumSupport: {
-      title: 'Premium-Paket',
-      descriptionBase: 'Persönliche Betreuung & 1:1',
+    personalMentorship: {
+      title: 'Persönliche Mentorenschaft',
+      descriptionBase: 'Ihr dediziertes Team begleitet Sie mit 1:1',
       descriptionEnd: 'Unterricht',
       features: [
-        'Alles aus dem Homologation & Sprach Paket',
-        'Persönlicher Mentor während des gesamten Prozesses',
-        '1:1 Sprachunterricht mit Muttersprachler',
+        'Alles aus dem Komplett-Paket',
+        'Persönlicher Mentor für Ihren Fall',
+        '1:1 Deutschunterricht mit medizinischem Muttersprachler',
         'Unterstützung bei der Jobsuche'
       ]
     }

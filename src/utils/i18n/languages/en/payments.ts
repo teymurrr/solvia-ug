@@ -26,35 +26,35 @@ export const payments = {
     french: 'French',
   },
   packages: {
-    homologation: {
-      title: 'Homologation Package',
-      description: 'Complete homologation support',
+    digitalStarter: {
+      title: 'Digital Starter',
+      description: 'Prepare your documents independently with our digital guides',
       features: [
-        'Complete document review & verification',
-        'Step-by-step application guidance',
-        'Authority communication support',
-        'Email support within 48h'
+        'Access to document checklist & templates',
+        'Self-paced video tutorials',
+        'Digital verification guide',
+        'Email support (72h response)'
       ]
     },
-    languagePrep: {
-      titleBase: 'Homologation &',
-      descriptionBase: 'Homologation +',
+    complete: {
+      titleBase: 'Complete Package +',
+      descriptionBase: 'Full homologation support +',
       descriptionEnd: 'language preparation',
       features: [
-        'Everything in Homologation Package',
-        'FSP & language exam preparation',
-        'Medical language course materials',
-        'Weekly progress check-ins'
+        'Everything in Digital Starter',
+        'Personal document review & verification',
+        'German medical language course access',
+        'FSP exam preparation materials'
       ]
     },
-    premiumSupport: {
-      title: 'Premium Package',
-      descriptionBase: 'Personal assistance & 1:1',
+    personalMentorship: {
+      title: 'Personal Mentorship',
+      descriptionBase: 'Your dedicated team guiding you with 1:1',
       descriptionEnd: 'lessons',
       features: [
-        'Everything in Homologation & Language Package',
-        'Personal mentor throughout the process',
-        '1:1 language lessons with native teacher',
+        'Everything in Complete Package',
+        'Personal mentor assigned to your case',
+        '1:1 German lessons with native medical professional',
         'Job placement assistance'
       ]
     }
