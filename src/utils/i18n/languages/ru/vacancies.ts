@@ -24,7 +24,7 @@ export const vacancies = {
     getHelp: 'Получить персональную помощь'
   },
   blurredCard: {
-    viewOffers: 'Смотреть вакансии',
+    viewOffers: 'Откликнуться',
     homologateTitle: 'Подтвердить диплом'
   },
   publishedDaysAgo: 'Опубликовано {days} дней назад'
