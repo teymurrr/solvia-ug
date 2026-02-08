@@ -3,23 +3,26 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { FileCheck, CheckCircle, ArrowRight, Clock, FileText, GraduationCap } from 'lucide-react';
+import { useLanguage } from '@/hooks/useLanguage';
 
 const HomologationPlanPanel = () => {
+  const { t } = useLanguage();
+
   const steps = [
     {
       icon: FileText,
-      title: 'Análisis de documentos',
-      description: 'Revisamos tu título y certificados',
+      title: t?.homologationResult?.timeline?.title || 'Document Analysis',
+      description: t?.homologationResult?.timeline?.bestCase || 'Review your credentials',
     },
     {
       icon: GraduationCap,
-      title: 'Plan de idioma',
-      description: 'Ruta para alcanzar B2 alemán',
+      title: t?.homologationResult?.language?.title || 'Language Plan',
+      description: t?.homologationResult?.language?.requiredLevel || 'Path to reach B2',
     },
     {
       icon: FileCheck,
-      title: 'Trámites de homologación',
-      description: 'Te guiamos paso a paso',
+      title: t?.homologationResult?.cta?.benefit1 || 'Homologation Steps',
+      description: t?.homologationResult?.cta?.benefit3 || 'Guided through every step',
     },
   ];
 
@@ -30,9 +33,9 @@ const HomologationPlanPanel = () => {
           <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-primary/10 mb-2">
             <FileCheck className="h-6 w-6 text-primary" />
           </div>
-          <h3 className="font-bold text-lg">Tu plan de homologación personalizado</h3>
+          <h3 className="font-bold text-lg">{t?.homologationResult?.yourPlan || 'Your personalized homologation plan'}</h3>
           <p className="text-sm text-muted-foreground">
-            Preparamos todo para que puedas aplicar a estas ofertas
+            {t?.homologationResult?.emailSent || 'We prepare everything so you can apply to these offers'}
           </p>
         </div>
 
@@ -54,13 +57,13 @@ const HomologationPlanPanel = () => {
         {/* Time estimate */}
         <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground py-2 border-y border-border/50">
           <Clock className="h-4 w-4" />
-          <span>Tiempo estimado: 6-9 meses</span>
+          <span>{t?.homologationResult?.timeline?.average || 'Estimated time: 6-9 months'}</span>
         </div>
 
         {/* CTA */}
         <Button asChild className="w-full group" size="lg">
           <Link to="/homologation-wizard" onClick={() => window.scrollTo(0, 0)}>
-            Recibir mi plan completo
+            {t?.homologationResult?.cta?.startProcess || 'Get my full plan'}
             <ArrowRight className="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform" />
           </Link>
         </Button>
@@ -68,7 +71,7 @@ const HomologationPlanPanel = () => {
         {/* Trust badge */}
         <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground">
           <CheckCircle className="h-3 w-3 text-green-500" />
-          <span>+500 profesionales homologados</span>
+          <span>{t?.homologationResult?.cta?.benefit3 || '+500 medical professionals homologated'}</span>
         </div>
       </div>
     </Card>
