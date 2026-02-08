@@ -9,11 +9,14 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
+type Language = 'es' | 'de' | 'en' | 'fr';
+
 interface CampaignRequest {
   segment?: 'hot_leads' | 'germany_beginners' | 'advanced_speakers' | 'cold_leads' | 'all';
   templateId?: 'day0' | 'day1' | 'day3' | 'day5' | 'day7';
-  testMode?: boolean; // If true, only sends to one email
+  testMode?: boolean;
   testEmail?: string;
+  language?: Language; // Manual language override
 }
 
 interface Lead {
@@ -28,47 +31,299 @@ interface Lead {
   email_sequence_day: number;
 }
 
-// Country name mapping for personalization
-const countryNames: Record<string, { es: string; en: string; de: string }> = {
-  germany: { es: 'Alemania', en: 'Germany', de: 'Deutschland' },
-  spain: { es: 'España', en: 'Spain', de: 'Spanien' },
-  austria: { es: 'Austria', en: 'Austria', de: 'Österreich' },
-  france: { es: 'Francia', en: 'France', de: 'Frankreich' },
-  italy: { es: 'Italia', en: 'Italy', de: 'Italien' },
+// Latin American countries for Spanish language detection
+const latAmCountries = [
+  'mexico', 'méxico', 'colombia', 'chile', 'peru', 'perú', 'bolivia', 
+  'venezuela', 'cuba', 'argentina', 'ecuador', 'uruguay', 'paraguay',
+  'panama', 'panamá', 'costa rica', 'guatemala', 'honduras', 'el salvador',
+  'nicaragua', 'dominican republic', 'república dominicana', 'puerto rico'
+];
+
+// Language detection based on study_country and target_country
+const detectLeadLanguage = (studyCountry: string | null, targetCountry: string | null): Language => {
+  const study = (studyCountry || '').toLowerCase();
+  const target = (targetCountry || '').toLowerCase();
+  
+  // Spanish for Latin American leads
+  if (latAmCountries.some(c => study.includes(c))) return 'es';
+  if (study.includes('spain') || study.includes('españa')) return 'es';
+  
+  // German for Germany/Austria targets or origins
+  if (target.includes('germany') || target.includes('alemania') || target.includes('deutschland')) return 'de';
+  if (target.includes('austria') || target.includes('österreich')) return 'de';
+  if (study.includes('germany') || study.includes('alemania') || study.includes('deutschland')) return 'de';
+  if (study.includes('austria') || study.includes('österreich')) return 'de';
+  
+  // French for France targets
+  if (target.includes('france') || target.includes('francia') || target.includes('frankreich')) return 'fr';
+  if (study.includes('france') || study.includes('francia')) return 'fr';
+  if (study.includes('algeria') || study.includes('argelia')) return 'fr';
+  if (study.includes('morocco') || study.includes('marruecos')) return 'fr';
+  
+  // Default to English
+  return 'en';
 };
 
-// Profession mapping
-const professionNames: Record<string, { es: string; en: string }> = {
-  general: { es: 'médico general', en: 'general practitioner' },
-  specialist: { es: 'especialista', en: 'specialist' },
-  nurse: { es: 'enfermero/a', en: 'nurse' },
-  dentist: { es: 'dentista', en: 'dentist' },
-  other: { es: 'profesional de la salud', en: 'healthcare professional' },
+// Country name mapping for personalization (all 4 languages)
+const countryNames: Record<string, Record<Language, string>> = {
+  germany: { es: 'Alemania', en: 'Germany', de: 'Deutschland', fr: 'Allemagne' },
+  alemania: { es: 'Alemania', en: 'Germany', de: 'Deutschland', fr: 'Allemagne' },
+  deutschland: { es: 'Alemania', en: 'Germany', de: 'Deutschland', fr: 'Allemagne' },
+  spain: { es: 'España', en: 'Spain', de: 'Spanien', fr: 'Espagne' },
+  españa: { es: 'España', en: 'Spain', de: 'Spanien', fr: 'Espagne' },
+  austria: { es: 'Austria', en: 'Austria', de: 'Österreich', fr: 'Autriche' },
+  österreich: { es: 'Austria', en: 'Austria', de: 'Österreich', fr: 'Autriche' },
+  france: { es: 'Francia', en: 'France', de: 'Frankreich', fr: 'France' },
+  francia: { es: 'Francia', en: 'France', de: 'Frankreich', fr: 'France' },
+  italy: { es: 'Italia', en: 'Italy', de: 'Italien', fr: 'Italie' },
+  italia: { es: 'Italia', en: 'Italy', de: 'Italien', fr: 'Italie' },
+  switzerland: { es: 'Suiza', en: 'Switzerland', de: 'Schweiz', fr: 'Suisse' },
 };
 
-// Get estimated timeline based on language level
-const getTimeline = (languageLevel: string | null): string => {
+// Profession mapping (all 4 languages)
+const professionNames: Record<string, Record<Language, string>> = {
+  general: { es: 'médico general', en: 'general practitioner', de: 'Allgemeinarzt/ärztin', fr: 'médecin généraliste' },
+  specialist: { es: 'especialista', en: 'specialist', de: 'Facharzt/ärztin', fr: 'spécialiste' },
+  nurse: { es: 'enfermero/a', en: 'nurse', de: 'Krankenpfleger/in', fr: 'infirmier/ère' },
+  dentist: { es: 'dentista', en: 'dentist', de: 'Zahnarzt/ärztin', fr: 'dentiste' },
+  other: { es: 'profesional de la salud', en: 'healthcare professional', de: 'Gesundheitsfachkraft', fr: 'professionnel de santé' },
+};
+
+// Timeline translations
+const getTimeline = (languageLevel: string | null, lang: Language): string => {
   const level = languageLevel?.toLowerCase() || '';
-  if (level.includes('mother') || level.includes('materna') || level.includes('c2')) return '6-9 meses';
-  if (level.includes('c1')) return '9-12 meses';
-  if (level.includes('b2')) return '12-15 meses';
-  if (level.includes('b1')) return '15-18 meses';
-  if (level.includes('a2')) return '18-24 meses';
-  return '18-24 meses';
+  
+  const timelines: Record<string, Record<Language, string>> = {
+    fast: { es: '6-9 meses', en: '6-9 months', de: '6-9 Monate', fr: '6-9 mois' },
+    medium: { es: '9-12 meses', en: '9-12 months', de: '9-12 Monate', fr: '9-12 mois' },
+    normal: { es: '12-15 meses', en: '12-15 months', de: '12-15 Monate', fr: '12-15 mois' },
+    slow: { es: '15-18 meses', en: '15-18 months', de: '15-18 Monate', fr: '15-18 mois' },
+    slower: { es: '18-24 meses', en: '18-24 months', de: '18-24 Monate', fr: '18-24 mois' },
+  };
+  
+  if (level.includes('mother') || level.includes('materna') || level.includes('c2')) return timelines.fast[lang];
+  if (level.includes('c1')) return timelines.medium[lang];
+  if (level.includes('b2')) return timelines.normal[lang];
+  if (level.includes('b1')) return timelines.slow[lang];
+  return timelines.slower[lang];
 };
 
-// Generate personalized email templates
-const getEmailTemplate = (templateId: string, lead: Lead, paymentUrl: string) => {
-  const firstName = lead.first_name || 'Profesional';
-  const country = countryNames[lead.target_country?.toLowerCase() || 'germany']?.es || lead.target_country || 'Europa';
-  const profession = professionNames[lead.doctor_type?.toLowerCase() || 'general']?.es || 'médico';
-  const studyCountry = lead.study_country || 'tu país';
-  const languageLevel = lead.language_level || 'por determinar';
-  const timeline = getTimeline(lead.language_level);
+// Common UI translations
+const uiStrings: Record<string, Record<Language, string>> = {
+  hello: { es: '¡Hola', en: 'Hello', de: 'Hallo', fr: 'Bonjour' },
+  yourSituation: { es: 'Tu situación actual', en: 'Your current situation', de: 'Deine aktuelle Situation', fr: 'Ta situation actuelle' },
+  originCountry: { es: 'País de origen', en: 'Country of origin', de: 'Herkunftsland', fr: 'Pays d\'origine' },
+  languageLevel: { es: 'Nivel de idioma', en: 'Language level', de: 'Sprachniveau', fr: 'Niveau de langue' },
+  estimatedTime: { es: 'Tiempo estimado', en: 'Estimated time', de: 'Geschätzte Zeit', fr: 'Temps estimé' },
+  goodNews: { es: 'La buena noticia', en: 'The good news', de: 'Die gute Nachricht', fr: 'La bonne nouvelle' },
+  unlockPlan: { es: 'DESBLOQUEAR MI PLAN', en: 'UNLOCK MY PLAN', de: 'MEINEN PLAN FREISCHALTEN', fr: 'DÉBLOQUER MON PLAN' },
+  spotsLeft: { es: 'Solo 23 spots disponibles a este precio', en: 'Only 23 spots available at this price', de: 'Nur 23 Plätze zu diesem Preis verfügbar', fr: 'Seulement 23 places disponibles à ce prix' },
+  validUntil: { es: 'Oferta válida hasta el domingo', en: 'Offer valid until Sunday', de: 'Angebot gültig bis Sonntag', fr: 'Offre valable jusqu\'à dimanche' },
+  warmRegards: { es: 'Un abrazo', en: 'Best regards', de: 'Herzliche Grüße', fr: 'Cordialement' },
+  team: { es: 'Equipo Solvia', en: 'Team Solvia', de: 'Team Solvia', fr: 'Équipe Solvia' },
+  unsubscribe: { es: 'Si no deseas recibir más emails, responde a este mensaje con "CANCELAR"', en: 'If you wish to unsubscribe, reply to this email with "UNSUBSCRIBE"', de: 'Wenn du keine weiteren E-Mails erhalten möchtest, antworte mit "ABMELDEN"', fr: 'Si tu ne souhaites plus recevoir d\'emails, réponds avec "DÉSABONNER"' },
+  // Day 0 specific
+  iSawAnalysis: { 
+    es: 'Vi que completaste el análisis para trabajar como', 
+    en: 'I saw you completed the analysis to work as', 
+    de: 'Ich habe gesehen, dass du die Analyse abgeschlossen hast, um als', 
+    fr: 'J\'ai vu que tu as complété l\'analyse pour travailler comme' 
+  },
+  inCountry: { es: 'en', en: 'in', de: 'in', fr: 'en' },
+  toWorkAs: { es: '', en: '', de: 'zu arbeiten', fr: '' },
+  thousandsWork: {
+    es: 'Miles de médicos latinoamericanos ya ejercen en',
+    en: 'Thousands of Latin American doctors already practice in',
+    de: 'Tausende lateinamerikanischer Ärzte praktizieren bereits in',
+    fr: 'Des milliers de médecins latino-américains exercent déjà en'
+  },
+  clearProcess: {
+    es: 'El proceso es claro, solo necesitas el roadmap correcto.',
+    en: 'The process is clear, you just need the right roadmap.',
+    de: 'Der Prozess ist klar, du brauchst nur die richtige Roadmap.',
+    fr: 'Le processus est clair, tu as juste besoin de la bonne feuille de route.'
+  },
+  thisWeekOffer: {
+    es: 'Esta semana, estamos ofreciendo nuestro paquete Digital Starter a solo €49 (precio normal €99) que incluye:',
+    en: 'This week, we\'re offering our Digital Starter package for just €49 (regular price €99) which includes:',
+    de: 'Diese Woche bieten wir unser Digital Starter-Paket für nur €49 an (Normalpreis €99), das enthält:',
+    fr: 'Cette semaine, nous offrons notre pack Digital Starter à seulement €49 (prix normal €99) qui comprend:'
+  },
+  benefit1: {
+    es: 'Lista de documentos personalizada para',
+    en: 'Personalized document checklist for',
+    de: 'Personalisierte Dokumentenliste für',
+    fr: 'Liste de documents personnalisée pour'
+  },
+  benefit2: { es: 'Videos tutoriales paso a paso', en: 'Step-by-step tutorial videos', de: 'Schritt-für-Schritt-Videotutorials', fr: 'Tutoriels vidéo étape par étape' },
+  benefit3: { es: 'Plantillas de formularios oficiales', en: 'Official form templates', de: 'Offizielle Formularvorlagen', fr: 'Modèles de formulaires officiels' },
+  benefit4: { es: 'Soporte por email durante 30 días', en: '30-day email support', de: '30 Tage E-Mail-Support', fr: 'Support par email pendant 30 jours' },
+  // Day 1 - Success story
+  successStoryTitle: {
+    es: 'Cómo María pasó de México a',
+    en: 'How María went from Mexico to',
+    de: 'Wie María von Mexiko nach',
+    fr: 'Comment María est passée du Mexique à'
+  },
+  successStoryTitleEnd: { es: 'en 14 meses', en: 'in 14 months', de: 'in 14 Monaten kam', fr: 'en 14 mois' },
+  todayShare: {
+    es: 'Hoy quiero compartirte la historia de María, una médica general de Guadalajara que ahora trabaja en un hospital universitario en',
+    en: 'Today I want to share the story of María, a general practitioner from Guadalajara who now works at a university hospital in',
+    de: 'Heute möchte ich dir die Geschichte von María erzählen, einer Allgemeinärztin aus Guadalajara, die jetzt in einem Universitätsklinikum in',
+    fr: 'Aujourd\'hui, je veux te partager l\'histoire de María, une médecin généraliste de Guadalajara qui travaille maintenant dans un hôpital universitaire en'
+  },
+  todayShareEnd: { es: '', en: '', de: 'arbeitet', fr: '' },
+  mariaQuote: {
+    es: 'Cuando empecé, pensé que tomaría años. Con el plan correcto y la documentación en orden, en 14 meses ya estaba ejerciendo.',
+    en: 'When I started, I thought it would take years. With the right plan and proper documentation, in 14 months I was already practicing.',
+    de: 'Als ich anfing, dachte ich, es würde Jahre dauern. Mit dem richtigen Plan und der richtigen Dokumentation praktizierte ich nach 14 Monaten bereits.',
+    fr: 'Quand j\'ai commencé, je pensais que ça prendrait des années. Avec le bon plan et la bonne documentation, en 14 mois j\'exerçais déjà.'
+  },
+  herTimeline: { es: 'Su timeline', en: 'Her timeline', de: 'Ihr Zeitplan', fr: 'Son calendrier' },
+  month: { es: 'Mes', en: 'Month', de: 'Monat', fr: 'Mois' },
+  timeline1: { es: 'Recopilación de documentos y apostillas', en: 'Document collection and apostilles', de: 'Dokumentensammlung und Apostillen', fr: 'Collecte de documents et apostilles' },
+  timeline2: { es: 'Curso intensivo de alemán (A1→B2)', en: 'Intensive German course (A1→B2)', de: 'Intensiver Deutschkurs (A1→B2)', fr: 'Cours intensif d\'allemand (A1→B2)' },
+  timeline3: { es: 'Preparación FSP', en: 'FSP preparation', de: 'FSP-Vorbereitung', fr: 'Préparation FSP' },
+  timeline4: { es: 'Examen FSP aprobado', en: 'FSP exam passed', de: 'FSP-Prüfung bestanden', fr: 'Examen FSP réussi' },
+  timeline5: { es: 'Primer día de trabajo', en: 'First day of work', de: 'Erster Arbeitstag', fr: 'Premier jour de travail' },
+  mariaUsed: {
+    es: 'María usó exactamente el mismo plan que ahora ofrecemos en nuestro paquete Digital Starter.',
+    en: 'María used exactly the same plan that we now offer in our Digital Starter package.',
+    de: 'María verwendete genau denselben Plan, den wir jetzt in unserem Digital Starter-Paket anbieten.',
+    fr: 'María a utilisé exactement le même plan que nous proposons maintenant dans notre pack Digital Starter.'
+  },
+  wantSameRoadmap: {
+    es: '¿Quieres el mismo roadmap que usó María?',
+    en: 'Want the same roadmap María used?',
+    de: 'Willst du dieselbe Roadmap, die María verwendet hat?',
+    fr: 'Tu veux la même feuille de route que María a utilisée?'
+  },
+  viewMyPlan: { es: 'VER MI PLAN PERSONALIZADO', en: 'VIEW MY PERSONALIZED PLAN', de: 'MEINEN PERSÖNLICHEN PLAN ANSEHEN', fr: 'VOIR MON PLAN PERSONNALISÉ' },
+  // Day 3 - 3 Errors
+  errorsTitle: { es: '3 errores que retrasan tu homologación (y cómo evitarlos)', en: '3 mistakes that delay your homologation (and how to avoid them)', de: '3 Fehler, die deine Approbation verzögern (und wie du sie vermeidest)', fr: '3 erreurs qui retardent ton homologation (et comment les éviter)' },
+  costlyErrors: { es: '3 Errores Costosos', en: '3 Costly Mistakes', de: '3 kostspielige Fehler', fr: '3 erreurs coûteuses' },
+  afterHelping: {
+    es: 'Después de ayudar a cientos de médicos con su homologación en',
+    en: 'After helping hundreds of doctors with their homologation in',
+    de: 'Nachdem wir Hunderten von Ärzten bei ihrer Approbation in',
+    fr: 'Après avoir aidé des centaines de médecins avec leur homologation en'
+  },
+  identifiedErrors: {
+    es: 'hemos identificado 3 errores comunes que pueden retrasar tu proceso hasta 12 meses:',
+    en: 'we\'ve identified 3 common mistakes that can delay your process by up to 12 months:',
+    de: 'geholfen haben, haben wir 3 häufige Fehler identifiziert, die deinen Prozess um bis zu 12 Monate verzögern können:',
+    fr: 'nous avons identifié 3 erreurs courantes qui peuvent retarder ton processus jusqu\'à 12 mois:'
+  },
+  error1Title: { es: 'Apostillar documentos incorrectamente', en: 'Apostilling documents incorrectly', de: 'Dokumente falsch apostillieren', fr: 'Apostiller les documents incorrectement' },
+  error1Desc: {
+    es: 'El 40% de los rechazos son por apostillas incorrectas o faltantes. Cada país tiene requisitos específicos que cambian constantemente.',
+    en: '40% of rejections are due to incorrect or missing apostilles. Each country has specific requirements that constantly change.',
+    de: '40% der Ablehnungen sind auf falsche oder fehlende Apostillen zurückzuführen. Jedes Land hat spezifische Anforderungen, die sich ständig ändern.',
+    fr: '40% des rejets sont dus à des apostilles incorrectes ou manquantes. Chaque pays a des exigences spécifiques qui changent constamment.'
+  },
+  error2Title: { es: 'No validar traducciones antes de enviar', en: 'Not validating translations before sending', de: 'Übersetzungen vor dem Einreichen nicht validieren', fr: 'Ne pas valider les traductions avant l\'envoi' },
+  error2Desc: {
+    es: 'Una traducción rechazada significa 2-3 meses perdidos. Las traducciones deben seguir formatos específicos para cada Landesärztekammer.',
+    en: 'A rejected translation means 2-3 months lost. Translations must follow specific formats for each Landesärztekammer.',
+    de: 'Eine abgelehnte Übersetzung bedeutet 2-3 Monate Verzögerung. Übersetzungen müssen spezifische Formate für jede Landesärztekammer einhalten.',
+    fr: 'Une traduction rejetée signifie 2-3 mois perdus. Les traductions doivent suivre des formats spécifiques pour chaque Landesärztekammer.'
+  },
+  error3Title: { es: 'Empezar el idioma sin un plan estructurado', en: 'Starting language without a structured plan', de: 'Mit dem Sprachkurs ohne strukturierten Plan beginnen', fr: 'Commencer la langue sans plan structuré' },
+  error3Desc: {
+    es: 'Muchos gastan €2,000+ en cursos que no los preparan para el B2 médico o el FSP. El orden y el enfoque importan.',
+    en: 'Many spend €2,000+ on courses that don\'t prepare them for medical B2 or FSP. Order and focus matter.',
+    de: 'Viele geben €2.000+ für Kurse aus, die sie nicht auf das medizinische B2 oder FSP vorbereiten. Reihenfolge und Fokus sind entscheidend.',
+    fr: 'Beaucoup dépensent plus de 2 000€ en cours qui ne les préparent pas au B2 médical ou au FSP. L\'ordre et la concentration comptent.'
+  },
+  theSolution: { es: 'La solución', en: 'The solution', de: 'Die Lösung', fr: 'La solution' },
+  packageIncludes: { es: 'Nuestro paquete Digital Starter incluye:', en: 'Our Digital Starter package includes:', de: 'Unser Digital Starter-Paket enthält:', fr: 'Notre pack Digital Starter comprend:' },
+  apostilleChecklist: { es: 'Checklist de apostillas específico para', en: 'Apostille checklist specific to', de: 'Apostillen-Checkliste speziell für', fr: 'Liste de contrôle des apostilles spécifique à' },
+  translationTemplates: { es: 'Plantillas de traducción pre-validadas', en: 'Pre-validated translation templates', de: 'Vorvalidierte Übersetzungsvorlagen', fr: 'Modèles de traduction pré-validés' },
+  languagePlan: { es: 'Plan de estudio de idioma optimizado', en: 'Optimized language study plan', de: 'Optimierter Sprachlernplan', fr: 'Plan d\'étude de langue optimisé' },
+  avoidErrors: { es: 'EVITAR ESTOS ERRORES', en: 'AVOID THESE MISTAKES', de: 'DIESE FEHLER VERMEIDEN', fr: 'ÉVITER CES ERREURS' },
+  // Day 5 - Price increase
+  priceIncrease: { es: 'el precio sube en 48 horas', en: 'price increases in 48 hours', de: 'Preiserhöhung in 48 Stunden', fr: 'le prix augmente dans 48 heures' },
+  lastChance: { es: 'Última oportunidad', en: 'Last chance', de: 'Letzte Chance', fr: 'Dernière chance' },
+  lastTimeSee: {
+    es: 'Esta es la última vez que verás el paquete Digital Starter a €49.',
+    en: 'This is the last time you\'ll see the Digital Starter package at €49.',
+    de: 'Dies ist das letzte Mal, dass du das Digital Starter-Paket für €49 siehst.',
+    fr: 'C\'est la dernière fois que tu verras le pack Digital Starter à 49€.'
+  },
+  priceGoesUp: { es: 'El precio sube en', en: 'Price increases in', de: 'Preiserhöhung in', fr: 'Le prix augmente dans' },
+  hours48: { es: '48 HORAS', en: '48 HOURS', de: '48 STUNDEN', fr: '48 HEURES' },
+  sundayBack: { es: 'El domingo a medianoche vuelve a €99', en: 'Sunday at midnight it goes back to €99', de: 'Sonntag um Mitternacht wieder €99', fr: 'Dimanche à minuit, retour à 99€' },
+  yourTimelineFor: { es: 'Tu timeline para', en: 'Your timeline for', de: 'Dein Zeitplan für', fr: 'Ton calendrier pour' },
+  estimatedTimeLabel: { es: 'Tiempo estimado', en: 'Estimated time', de: 'Geschätzte Zeit', fr: 'Temps estimé' },
+  totalInvestment: { es: 'Inversión total estimada', en: 'Estimated total investment', de: 'Geschätzte Gesamtinvestition', fr: 'Investissement total estimé' },
+  avgSalary: { es: 'Salario promedio en', en: 'Average salary in', de: 'Durchschnittsgehalt in', fr: 'Salaire moyen en' },
+  for49Get: {
+    es: 'Por €49, obtienes el roadmap exacto que te ahorrará meses de investigación y miles de euros en errores.',
+    en: 'For €49, you get the exact roadmap that will save you months of research and thousands of euros in mistakes.',
+    de: 'Für €49 erhältst du die exakte Roadmap, die dir Monate an Recherche und Tausende Euro an Fehlern erspart.',
+    fr: 'Pour 49€, tu obtiens la feuille de route exacte qui te fera économiser des mois de recherche et des milliers d\'euros d\'erreurs.'
+  },
+  after: { es: 'DESPUÉS', en: 'AFTER', de: 'DANACH', fr: 'APRÈS' },
+  now: { es: 'AHORA', en: 'NOW', de: 'JETZT', fr: 'MAINTENANT' },
+  securePrice: { es: 'ASEGURAR PRECIO €49', en: 'SECURE €49 PRICE', de: '€49 PREIS SICHERN', fr: 'SÉCURISER LE PRIX 49€' },
+  // Day 7 - Final offer
+  finalOffer: { es: 'Último día: €49 + Consulta GRATIS', en: 'Last day: €49 + FREE Consultation', de: 'Letzter Tag: €49 + GRATIS Beratung', fr: 'Dernier jour: 49€ + Consultation GRATUITE' },
+  finalOfferHeader: { es: 'Oferta Final', en: 'Final Offer', de: 'Letztes Angebot', fr: 'Offre Finale' },
+  lastEmail: {
+    es: 'Este es el último email que te envío sobre esta oferta.',
+    en: 'This is the last email I\'ll send you about this offer.',
+    de: 'Dies ist die letzte E-Mail, die ich dir zu diesem Angebot schicke.',
+    fr: 'C\'est le dernier email que je t\'envoie sur cette offre.'
+  },
+  tonightMidnight: {
+    es: 'Hoy a medianoche, el precio vuelve a €99. Pero antes de que eso pase, quiero añadir algo especial:',
+    en: 'Tonight at midnight, the price goes back to €99. But before that happens, I want to add something special:',
+    de: 'Heute Nacht um Mitternacht geht der Preis zurück auf €99. Aber bevor das passiert, möchte ich etwas Besonderes hinzufügen:',
+    fr: 'Ce soir à minuit, le prix repasse à 99€. Mais avant que cela n\'arrive, je veux ajouter quelque chose de spécial:'
+  },
+  bonusConsult: { es: 'BONUS: Consulta 1:1 GRATIS', en: 'BONUS: FREE 1:1 Consultation', de: 'BONUS: KOSTENLOSES 1:1 Beratungsgespräch', fr: 'BONUS: Consultation 1:1 GRATUITE' },
+  bonusDesc: {
+    es: 'Solo para quienes compren HOY: Una llamada de 30 minutos conmigo para revisar tu caso específico.',
+    en: 'Only for those who buy TODAY: A 30-minute call with me to review your specific case.',
+    de: 'Nur für diejenigen, die HEUTE kaufen: Ein 30-minütiges Gespräch mit mir, um deinen spezifischen Fall zu besprechen.',
+    fr: 'Uniquement pour ceux qui achètent AUJOURD\'HUI: Un appel de 30 minutes avec moi pour examiner ton cas spécifique.'
+  },
+  bonusValue: { es: 'Valor: €50 → Hoy: GRATIS', en: 'Value: €50 → Today: FREE', de: 'Wert: €50 → Heute: GRATIS', fr: 'Valeur: 50€ → Aujourd\'hui: GRATUIT' },
+  lastOpportunity: { es: 'Última oportunidad', en: 'Last opportunity', de: 'Letzte Gelegenheit', fr: 'Dernière opportunité' },
+  digitalStarterPlus: { es: 'Digital Starter + Consulta 1:1 incluida', en: 'Digital Starter + 1:1 Consultation included', de: 'Digital Starter + 1:1 Beratung inklusive', fr: 'Digital Starter + Consultation 1:1 incluse' },
+  buyNow: { es: 'COMPRAR AHORA', en: 'BUY NOW', de: 'JETZT KAUFEN', fr: 'ACHETER MAINTENANT' },
+  offerEndsMidnight: { es: 'Oferta termina a medianoche', en: 'Offer ends at midnight', de: 'Angebot endet um Mitternacht', fr: 'L\'offre se termine à minuit' },
+  guarantee: { es: 'Garantía 30 días', en: '30-day guarantee', de: '30 Tage Garantie', fr: 'Garantie 30 jours' },
+  guaranteeDesc: {
+    es: 'Si no te es útil, te devolvemos el 100% de tu dinero. Sin preguntas.',
+    en: 'If it\'s not useful to you, we\'ll refund 100% of your money. No questions asked.',
+    de: 'Wenn es dir nicht nützlich ist, erstatten wir dir 100% deines Geldes zurück. Ohne Fragen.',
+    fr: 'Si ce n\'est pas utile, nous te remboursons 100% de ton argent. Sans questions.'
+  },
+  thankYou: {
+    es: 'Gracias por considerar Solvia. Espero poder ayudarte en tu camino a',
+    en: 'Thank you for considering Solvia. I hope to help you on your journey to',
+    de: 'Danke, dass du Solvia in Betracht ziehst. Ich hoffe, dir auf deinem Weg nach',
+    fr: 'Merci de considérer Solvia. J\'espère t\'aider dans ton parcours vers'
+  },
+  thankYouEnd: { es: '', en: '', de: 'helfen zu können', fr: '' },
+};
+
+// Get email template with language support
+const getEmailTemplate = (templateId: string, lead: Lead, paymentUrl: string, lang: Language) => {
+  const firstName = lead.first_name || (lang === 'es' ? 'Profesional' : lang === 'de' ? 'Kolleg/in' : lang === 'fr' ? 'Professionnel' : 'Professional');
+  const countryKey = lead.target_country?.toLowerCase() || 'germany';
+  const country = countryNames[countryKey]?.[lang] || lead.target_country || (lang === 'es' ? 'Europa' : lang === 'de' ? 'Europa' : lang === 'fr' ? 'Europe' : 'Europe');
+  const professionKey = lead.doctor_type?.toLowerCase() || 'general';
+  const profession = professionNames[professionKey]?.[lang] || professionNames.general[lang];
+  const studyCountry = lead.study_country || (lang === 'es' ? 'tu país' : lang === 'de' ? 'deinem Land' : lang === 'fr' ? 'ton pays' : 'your country');
+  const languageLevel = lead.language_level || (lang === 'es' ? 'por determinar' : lang === 'de' ? 'noch festzulegen' : lang === 'fr' ? 'à déterminer' : 'to be determined');
+  const timeline = getTimeline(lead.language_level, lang);
+  const ui = uiStrings;
 
   const templates: Record<string, { subject: string; html: string }> = {
     day0: {
-      subject: `${firstName}, tu plan para trabajar en ${country} - precio especial €49`,
+      subject: `${firstName}, ${lang === 'es' ? 'tu plan para trabajar en' : lang === 'de' ? 'dein Plan für die Arbeit in' : lang === 'fr' ? 'ton plan pour travailler en' : 'your plan to work in'} ${country} - ${lang === 'es' ? 'precio especial' : lang === 'de' ? 'Sonderpreis' : lang === 'fr' ? 'prix spécial' : 'special price'} €49`,
       html: `
 <!DOCTYPE html>
 <html>
@@ -94,43 +349,43 @@ const getEmailTemplate = (templateId: string, lead: Lead, paymentUrl: string) =>
 <body>
   <div class="container">
     <div class="header">
-      <h1>¡Hola ${firstName}!</h1>
+      <h1>${ui.hello[lang]} ${firstName}!</h1>
     </div>
     <div class="content">
-      <p>Vi que completaste el análisis para trabajar como <strong>${profession}</strong> en <strong>${country}</strong>.</p>
+      <p>${ui.iSawAnalysis[lang]} <strong>${profession}</strong> ${ui.inCountry[lang]} <strong>${country}</strong>${ui.toWorkAs[lang]}.</p>
       
       <div class="situation-box">
-        <p><strong>📍 Tu situación actual:</strong></p>
-        <p>• País de origen: ${studyCountry}</p>
-        <p>• Nivel de idioma: ${languageLevel}</p>
-        <p>• Tiempo estimado: ${timeline}</p>
+        <p><strong>📍 ${ui.yourSituation[lang]}:</strong></p>
+        <p>• ${ui.originCountry[lang]}: ${studyCountry}</p>
+        <p>• ${ui.languageLevel[lang]}: ${languageLevel}</p>
+        <p>• ${ui.estimatedTime[lang]}: ${timeline}</p>
       </div>
       
-      <p><strong>La buena noticia:</strong> Miles de médicos latinoamericanos ya ejercen en ${country}. El proceso es claro, solo necesitas el roadmap correcto.</p>
+      <p><strong>${ui.goodNews[lang]}:</strong> ${ui.thousandsWork[lang]} ${country}. ${ui.clearProcess[lang]}</p>
       
-      <p>Esta semana, estamos ofreciendo nuestro paquete <strong>Digital Starter</strong> a solo <strong>€49</strong> (precio normal €99) que incluye:</p>
+      <p>${ui.thisWeekOffer[lang]}</p>
       
       <div class="benefits">
-        <div class="benefit"><span class="benefit-check">✓</span> Lista de documentos personalizada para ${studyCountry}</div>
-        <div class="benefit"><span class="benefit-check">✓</span> Videos tutoriales paso a paso</div>
-        <div class="benefit"><span class="benefit-check">✓</span> Plantillas de formularios oficiales</div>
-        <div class="benefit"><span class="benefit-check">✓</span> Soporte por email durante 30 días</div>
+        <div class="benefit"><span class="benefit-check">✓</span> ${ui.benefit1[lang]} ${studyCountry}</div>
+        <div class="benefit"><span class="benefit-check">✓</span> ${ui.benefit2[lang]}</div>
+        <div class="benefit"><span class="benefit-check">✓</span> ${ui.benefit3[lang]}</div>
+        <div class="benefit"><span class="benefit-check">✓</span> ${ui.benefit4[lang]}</div>
       </div>
       
       <div style="text-align: center;">
-        <a href="${paymentUrl}" class="cta-button">DESBLOQUEAR MI PLAN - €49</a>
+        <a href="${paymentUrl}" class="cta-button">${ui.unlockPlan[lang]} - €49</a>
       </div>
       
       <div class="urgency">
-        <strong>⏰ Solo 23 spots disponibles a este precio</strong><br>
-        Oferta válida hasta el domingo
+        <strong>⏰ ${ui.spotsLeft[lang]}</strong><br>
+        ${ui.validUntil[lang]}
       </div>
       
-      <p>Un abrazo,<br><strong>Equipo Solvia</strong></p>
+      <p>${ui.warmRegards[lang]},<br><strong>${ui.team[lang]}</strong></p>
     </div>
     <div class="footer">
       <p>© 2024 Solvia | <a href="https://solvia-flexkapg.lovable.app">solvia.eu</a></p>
-      <p style="font-size: 12px; color: #999;">Si no deseas recibir más emails, responde a este mensaje con "CANCELAR"</p>
+      <p style="font-size: 12px; color: #999;">${ui.unsubscribe[lang]}</p>
     </div>
   </div>
 </body>
@@ -138,7 +393,7 @@ const getEmailTemplate = (templateId: string, lead: Lead, paymentUrl: string) =>
       `,
     },
     day1: {
-      subject: `Cómo María pasó de México a ${country} en 14 meses`,
+      subject: `${ui.successStoryTitle[lang]} ${country} ${ui.successStoryTitleEnd[lang]}`,
       html: `
 <!DOCTYPE html>
 <html>
@@ -163,41 +418,41 @@ const getEmailTemplate = (templateId: string, lead: Lead, paymentUrl: string) =>
 <body>
   <div class="container">
     <div class="header">
-      <h1>Historia de éxito: De México a ${country}</h1>
+      <h1>${lang === 'es' ? 'Historia de éxito: De México a' : lang === 'de' ? 'Erfolgsgeschichte: Von Mexiko nach' : lang === 'fr' ? 'Histoire de réussite: Du Mexique à' : 'Success story: From Mexico to'} ${country}</h1>
     </div>
     <div class="content">
-      <p>Hola ${firstName},</p>
+      <p>${ui.hello[lang]} ${firstName},</p>
       
-      <p>Hoy quiero compartirte la historia de María, una médica general de Guadalajara que ahora trabaja en un hospital universitario en ${country}.</p>
+      <p>${ui.todayShare[lang]} ${country}${ui.todayShareEnd[lang]}.</p>
       
       <div class="story-box">
-        <p><strong>María García, 32 años</strong></p>
-        <p>Médica General - Guadalajara, México → ${country}</p>
+        <p><strong>María García, 32 ${lang === 'es' ? 'años' : lang === 'de' ? 'Jahre' : lang === 'fr' ? 'ans' : 'years'}</strong></p>
+        <p>${lang === 'es' ? 'Médica General' : lang === 'de' ? 'Allgemeinärztin' : lang === 'fr' ? 'Médecin Généraliste' : 'General Practitioner'} - Guadalajara, México → ${country}</p>
         
         <div class="quote">
-          "Cuando empecé, pensé que tomaría años. Con el plan correcto y la documentación en orden, en 14 meses ya estaba ejerciendo."
+          "${ui.mariaQuote[lang]}"
         </div>
       </div>
       
-      <p><strong>Su timeline:</strong></p>
+      <p><strong>${ui.herTimeline[lang]}:</strong></p>
       
       <div class="timeline">
-        <div class="timeline-item"><span class="timeline-month">Mes 1-3:</span> Recopilación de documentos y apostillas</div>
-        <div class="timeline-item"><span class="timeline-month">Mes 4-8:</span> Curso intensivo de alemán (A1→B2)</div>
-        <div class="timeline-item"><span class="timeline-month">Mes 9-11:</span> Preparación FSP</div>
-        <div class="timeline-item"><span class="timeline-month">Mes 12:</span> Examen FSP aprobado ✓</div>
-        <div class="timeline-item"><span class="timeline-month">Mes 14:</span> Primer día de trabajo</div>
+        <div class="timeline-item"><span class="timeline-month">${ui.month[lang]} 1-3:</span> ${ui.timeline1[lang]}</div>
+        <div class="timeline-item"><span class="timeline-month">${ui.month[lang]} 4-8:</span> ${ui.timeline2[lang]}</div>
+        <div class="timeline-item"><span class="timeline-month">${ui.month[lang]} 9-11:</span> ${ui.timeline3[lang]}</div>
+        <div class="timeline-item"><span class="timeline-month">${ui.month[lang]} 12:</span> ${ui.timeline4[lang]} ✓</div>
+        <div class="timeline-item"><span class="timeline-month">${ui.month[lang]} 14:</span> ${ui.timeline5[lang]}</div>
       </div>
       
-      <p>María usó exactamente el mismo plan que ahora ofrecemos en nuestro paquete Digital Starter.</p>
+      <p>${ui.mariaUsed[lang]}</p>
       
-      <p><strong>¿Quieres el mismo roadmap que usó María?</strong></p>
+      <p><strong>${ui.wantSameRoadmap[lang]}</strong></p>
       
       <div style="text-align: center;">
-        <a href="${paymentUrl}" class="cta-button">VER MI PLAN PERSONALIZADO - €49</a>
+        <a href="${paymentUrl}" class="cta-button">${ui.viewMyPlan[lang]} - €49</a>
       </div>
       
-      <p>Un abrazo,<br><strong>Equipo Solvia</strong></p>
+      <p>${ui.warmRegards[lang]},<br><strong>${ui.team[lang]}</strong></p>
     </div>
     <div class="footer">
       <p>© 2024 Solvia | <a href="https://solvia-flexkapg.lovable.app">solvia.eu</a></p>
@@ -208,7 +463,7 @@ const getEmailTemplate = (templateId: string, lead: Lead, paymentUrl: string) =>
       `,
     },
     day3: {
-      subject: `⚠️ 3 errores que retrasan tu homologación (y cómo evitarlos)`,
+      subject: `⚠️ ${ui.errorsTitle[lang]}`,
       html: `
 <!DOCTYPE html>
 <html>
@@ -232,43 +487,43 @@ const getEmailTemplate = (templateId: string, lead: Lead, paymentUrl: string) =>
 <body>
   <div class="container">
     <div class="header">
-      <h1>⚠️ 3 Errores Costosos</h1>
+      <h1>⚠️ ${ui.costlyErrors[lang]}</h1>
     </div>
     <div class="content">
-      <p>Hola ${firstName},</p>
+      <p>${ui.hello[lang]} ${firstName},</p>
       
-      <p>Después de ayudar a cientos de médicos con su homologación en ${country}, hemos identificado <strong>3 errores comunes</strong> que pueden retrasar tu proceso hasta 12 meses:</p>
+      <p>${ui.afterHelping[lang]} ${country}, ${ui.identifiedErrors[lang]}</p>
       
       <div class="error-box">
-        <p class="error-title">❌ Error #1: Apostillar documentos incorrectamente</p>
-        <p>El 40% de los rechazos son por apostillas incorrectas o faltantes. Cada país tiene requisitos específicos que cambian constantemente.</p>
+        <p class="error-title">❌ ${lang === 'es' ? 'Error' : lang === 'de' ? 'Fehler' : lang === 'fr' ? 'Erreur' : 'Mistake'} #1: ${ui.error1Title[lang]}</p>
+        <p>${ui.error1Desc[lang]}</p>
       </div>
       
       <div class="error-box">
-        <p class="error-title">❌ Error #2: No validar traducciones antes de enviar</p>
-        <p>Una traducción rechazada significa 2-3 meses perdidos. Las traducciones deben seguir formatos específicos para cada Landesärztekammer.</p>
+        <p class="error-title">❌ ${lang === 'es' ? 'Error' : lang === 'de' ? 'Fehler' : lang === 'fr' ? 'Erreur' : 'Mistake'} #2: ${ui.error2Title[lang]}</p>
+        <p>${ui.error2Desc[lang]}</p>
       </div>
       
       <div class="error-box">
-        <p class="error-title">❌ Error #3: Empezar el idioma sin un plan estructurado</p>
-        <p>Muchos gastan €2,000+ en cursos que no los preparan para el B2 médico o el FSP. El orden y el enfoque importan.</p>
+        <p class="error-title">❌ ${lang === 'es' ? 'Error' : lang === 'de' ? 'Fehler' : lang === 'fr' ? 'Erreur' : 'Mistake'} #3: ${ui.error3Title[lang]}</p>
+        <p>${ui.error3Desc[lang]}</p>
       </div>
       
       <div class="solution-box">
-        <p class="solution-title">✅ La solución</p>
-        <p>Nuestro paquete Digital Starter incluye:</p>
+        <p class="solution-title">✅ ${ui.theSolution[lang]}</p>
+        <p>${ui.packageIncludes[lang]}</p>
         <ul>
-          <li>Checklist de apostillas específico para ${studyCountry}</li>
-          <li>Plantillas de traducción pre-validadas</li>
-          <li>Plan de estudio de idioma optimizado</li>
+          <li>${ui.apostilleChecklist[lang]} ${studyCountry}</li>
+          <li>${ui.translationTemplates[lang]}</li>
+          <li>${ui.languagePlan[lang]}</li>
         </ul>
       </div>
       
       <div style="text-align: center;">
-        <a href="${paymentUrl}" class="cta-button">EVITAR ESTOS ERRORES - €49</a>
+        <a href="${paymentUrl}" class="cta-button">${ui.avoidErrors[lang]} - €49</a>
       </div>
       
-      <p>Un abrazo,<br><strong>Equipo Solvia</strong></p>
+      <p>${ui.warmRegards[lang]},<br><strong>${ui.team[lang]}</strong></p>
     </div>
     <div class="footer">
       <p>© 2024 Solvia | <a href="https://solvia-flexkapg.lovable.app">solvia.eu</a></p>
@@ -279,7 +534,7 @@ const getEmailTemplate = (templateId: string, lead: Lead, paymentUrl: string) =>
       `,
     },
     day5: {
-      subject: `${firstName}, el precio sube en 48 horas ⏰`,
+      subject: `${firstName}, ${ui.priceIncrease[lang]} ⏰`,
       html: `
 <!DOCTYPE html>
 <html>
@@ -304,44 +559,44 @@ const getEmailTemplate = (templateId: string, lead: Lead, paymentUrl: string) =>
 <body>
   <div class="container">
     <div class="header">
-      <h1>⏰ Última oportunidad</h1>
+      <h1>⏰ ${ui.lastChance[lang]}</h1>
     </div>
     <div class="content">
-      <p>Hola ${firstName},</p>
+      <p>${ui.hello[lang]} ${firstName},</p>
       
-      <p>Esta es la última vez que verás el paquete Digital Starter a <strong>€49</strong>.</p>
+      <p>${ui.lastTimeSee[lang]}</p>
       
       <div class="countdown">
-        <p style="margin: 0; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;">El precio sube en</p>
-        <p class="countdown-time">48 HORAS</p>
-        <p style="margin: 0; font-size: 14px;">El domingo a medianoche vuelve a €99</p>
+        <p style="margin: 0; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;">${ui.priceGoesUp[lang]}</p>
+        <p class="countdown-time">${ui.hours48[lang]}</p>
+        <p style="margin: 0; font-size: 14px;">${ui.sundayBack[lang]}</p>
       </div>
       
-      <p>Tu timeline para ${country}:</p>
+      <p>${ui.yourTimelineFor[lang]} ${country}:</p>
       <ul>
-        <li>Tiempo estimado: <strong>${timeline}</strong></li>
-        <li>Inversión total estimada: <strong>€3,000-5,000</strong> (idioma + trámites)</li>
-        <li>Salario promedio en ${country}: <strong>€60,000-80,000/año</strong></li>
+        <li>${ui.estimatedTimeLabel[lang]}: <strong>${timeline}</strong></li>
+        <li>${ui.totalInvestment[lang]}: <strong>€3,000-5,000</strong> (${lang === 'es' ? 'idioma + trámites' : lang === 'de' ? 'Sprache + Formalitäten' : lang === 'fr' ? 'langue + démarches' : 'language + procedures'})</li>
+        <li>${ui.avgSalary[lang]} ${country}: <strong>€60,000-80,000/${lang === 'es' ? 'año' : lang === 'de' ? 'Jahr' : lang === 'fr' ? 'an' : 'year'}</strong></li>
       </ul>
       
-      <p>Por <strong>€49</strong>, obtienes el roadmap exacto que te ahorrará meses de investigación y miles de euros en errores.</p>
+      <p>${ui.for49Get[lang]}</p>
       
       <div class="price-compare">
         <div>
-          <p style="margin: 0; font-size: 12px; color: #666;">DESPUÉS</p>
+          <p style="margin: 0; font-size: 12px; color: #666;">${ui.after[lang]}</p>
           <p class="price-old">€99</p>
         </div>
         <div>
-          <p style="margin: 0; font-size: 12px; color: #666;">AHORA</p>
+          <p style="margin: 0; font-size: 12px; color: #666;">${ui.now[lang]}</p>
           <p class="price-new">€49</p>
         </div>
       </div>
       
       <div style="text-align: center;">
-        <a href="${paymentUrl}" class="cta-button">ASEGURAR PRECIO €49</a>
+        <a href="${paymentUrl}" class="cta-button">${ui.securePrice[lang]}</a>
       </div>
       
-      <p>Un abrazo,<br><strong>Equipo Solvia</strong></p>
+      <p>${ui.warmRegards[lang]},<br><strong>${ui.team[lang]}</strong></p>
     </div>
     <div class="footer">
       <p>© 2024 Solvia | <a href="https://solvia-flexkapg.lovable.app">solvia.eu</a></p>
@@ -352,7 +607,7 @@ const getEmailTemplate = (templateId: string, lead: Lead, paymentUrl: string) =>
       `,
     },
     day7: {
-      subject: `🎁 Último día: €49 + Consulta GRATIS`,
+      subject: `🎁 ${ui.finalOffer[lang]}`,
       html: `
 <!DOCTYPE html>
 <html>
@@ -377,37 +632,37 @@ const getEmailTemplate = (templateId: string, lead: Lead, paymentUrl: string) =>
 <body>
   <div class="container">
     <div class="header">
-      <h1>🎁 Oferta Final</h1>
+      <h1>🎁 ${ui.finalOfferHeader[lang]}</h1>
     </div>
     <div class="content">
-      <p>Hola ${firstName},</p>
+      <p>${ui.hello[lang]} ${firstName},</p>
       
-      <p>Este es el <strong>último email</strong> que te envío sobre esta oferta.</p>
+      <p>${ui.lastEmail[lang]}</p>
       
-      <p>Hoy a medianoche, el precio vuelve a €99. Pero antes de que eso pase, quiero añadir algo especial:</p>
+      <p>${ui.tonightMidnight[lang]}</p>
       
       <div class="bonus-box">
-        <p class="bonus-title">🎁 BONUS: Consulta 1:1 GRATIS</p>
-        <p>Solo para quienes compren HOY: Una llamada de 30 minutos conmigo para revisar tu caso específico.</p>
-        <p style="font-size: 14px; color: #666;">Valor: €50 → Hoy: GRATIS</p>
+        <p class="bonus-title">🎁 ${ui.bonusConsult[lang]}</p>
+        <p>${ui.bonusDesc[lang]}</p>
+        <p style="font-size: 14px; color: #666;">${ui.bonusValue[lang]}</p>
       </div>
       
       <div class="final-offer">
-        <p style="margin: 0; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;">Última oportunidad</p>
+        <p style="margin: 0; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;">${ui.lastOpportunity[lang]}</p>
         <p class="final-price">€49</p>
-        <p style="margin: 10px 0;">Digital Starter + Consulta 1:1 incluida</p>
-        <a href="${paymentUrl}" class="cta-button">COMPRAR AHORA</a>
-        <p style="font-size: 12px; margin-top: 15px; opacity: 0.9;">Oferta termina a medianoche</p>
+        <p style="margin: 10px 0;">${ui.digitalStarterPlus[lang]}</p>
+        <a href="${paymentUrl}" class="cta-button">${ui.buyNow[lang]}</a>
+        <p style="font-size: 12px; margin-top: 15px; opacity: 0.9;">${ui.offerEndsMidnight[lang]}</p>
       </div>
       
       <div class="guarantee">
-        <p><strong>🛡️ Garantía 30 días</strong></p>
-        <p style="margin: 0; font-size: 14px;">Si no te es útil, te devolvemos el 100% de tu dinero. Sin preguntas.</p>
+        <p><strong>🛡️ ${ui.guarantee[lang]}</strong></p>
+        <p style="margin: 0; font-size: 14px;">${ui.guaranteeDesc[lang]}</p>
       </div>
       
-      <p>Gracias por considerar Solvia. Espero poder ayudarte en tu camino a ${country}.</p>
+      <p>${ui.thankYou[lang]} ${country}${ui.thankYouEnd[lang]}.</p>
       
-      <p>Un abrazo,<br><strong>Equipo Solvia</strong></p>
+      <p>${ui.warmRegards[lang]},<br><strong>${ui.team[lang]}</strong></p>
     </div>
     <div class="footer">
       <p>© 2024 Solvia | <a href="https://solvia-flexkapg.lovable.app">solvia.eu</a></p>
@@ -426,7 +681,6 @@ const getEmailTemplate = (templateId: string, lead: Lead, paymentUrl: string) =>
 const segmentLeads = (leads: Lead[], segment: string): Lead[] => {
   switch (segment) {
     case 'hot_leads':
-      // Native speakers going to Spain (easiest conversion)
       return leads.filter(l => {
         const lang = l.language_level?.toLowerCase() || '';
         const country = l.target_country?.toLowerCase() || '';
@@ -435,7 +689,6 @@ const segmentLeads = (leads: Lead[], segment: string): Lead[] => {
       });
     
     case 'germany_beginners':
-      // Germany-bound with A1/A2 level
       return leads.filter(l => {
         const lang = l.language_level?.toLowerCase() || '';
         const country = l.target_country?.toLowerCase() || '';
@@ -444,7 +697,6 @@ const segmentLeads = (leads: Lead[], segment: string): Lead[] => {
       });
     
     case 'advanced_speakers':
-      // B2/C1 speakers going to Germany
       return leads.filter(l => {
         const lang = l.language_level?.toLowerCase() || '';
         const country = l.target_country?.toLowerCase() || '';
@@ -453,9 +705,6 @@ const segmentLeads = (leads: Lead[], segment: string): Lead[] => {
       });
     
     case 'cold_leads':
-      // Everyone else
-      return leads;
-    
     case 'all':
     default:
       return leads;
@@ -472,9 +721,9 @@ serve(async (req) => {
     const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
-    const { segment = 'all', templateId = 'day0', testMode = false, testEmail }: CampaignRequest = await req.json();
+    const { segment = 'all', templateId = 'day0', testMode = false, testEmail, language }: CampaignRequest = await req.json();
 
-    console.log(`📧 Starting nurture campaign - Segment: ${segment}, Template: ${templateId}, TestMode: ${testMode}`);
+    console.log(`📧 Starting nurture campaign - Segment: ${segment}, Template: ${templateId}, TestMode: ${testMode}, Language override: ${language || 'auto'}`);
 
     // Fetch all leads from the leads table
     const { data: leadsData, error: leadsError } = await supabase
@@ -498,6 +747,21 @@ serve(async (req) => {
     if (testMode) {
       if (testEmail) {
         leads = leads.filter(l => l.email.toLowerCase() === testEmail.toLowerCase());
+        // If test email not found in leads, create a mock lead for testing
+        if (leads.length === 0) {
+          console.log(`🧪 Test email ${testEmail} not in leads, creating mock lead for testing`);
+          leads = [{
+            id: 'test-lead',
+            email: testEmail,
+            first_name: 'David',
+            last_name: 'Rehrl',
+            target_country: 'germany',
+            study_country: 'Mexico',
+            doctor_type: 'general',
+            language_level: 'B1',
+            email_sequence_day: 0,
+          }];
+        }
       } else {
         leads = leads.slice(0, 1);
       }
@@ -510,14 +774,19 @@ serve(async (req) => {
       failed: 0,
       skipped: 0,
       errors: [] as string[],
+      languageBreakdown: { es: 0, de: 0, en: 0, fr: 0 } as Record<Language, number>,
     };
 
     for (const lead of leads) {
       try {
+        // Detect language for this lead (or use override)
+        const detectedLang = language || detectLeadLanguage(lead.study_country, lead.target_country);
+        console.log(`🌍 Lead ${lead.email}: study=${lead.study_country}, target=${lead.target_country} → language=${detectedLang}`);
+        
         // Build personalized payment URL with lead data
         const paymentUrl = `${paymentBaseUrl}?email=${encodeURIComponent(lead.email)}&country=${encodeURIComponent(lead.target_country || 'germany')}`;
         
-        const template = getEmailTemplate(templateId, lead, paymentUrl);
+        const template = getEmailTemplate(templateId, lead, paymentUrl, detectedLang);
 
         const emailResponse = await resend.emails.send({
           from: "Solvia <hello@solvia.eu>",
@@ -526,18 +795,21 @@ serve(async (req) => {
           html: template.html,
         });
 
-        console.log(`✅ Email sent to ${lead.email}:`, emailResponse);
+        console.log(`✅ Email sent to ${lead.email} (${detectedLang}):`, emailResponse);
+        results.languageBreakdown[detectedLang]++;
 
-        // Update lead tracking
-        const dayNumber = parseInt(templateId.replace('day', ''));
-        await supabase
-          .from('leads')
-          .update({
-            email_sequence_day: dayNumber,
-            last_email_sent: new Date().toISOString(),
-            email_campaign: `nurture_${segment}_${templateId}`,
-          })
-          .eq('id', lead.id);
+        // Update lead tracking (skip for mock test leads)
+        if (lead.id !== 'test-lead') {
+          const dayNumber = parseInt(templateId.replace('day', ''));
+          await supabase
+            .from('leads')
+            .update({
+              email_sequence_day: dayNumber,
+              last_email_sent: new Date().toISOString(),
+              email_campaign: `nurture_${segment}_${templateId}_${detectedLang}`,
+            })
+            .eq('id', lead.id);
+        }
 
         results.sent++;
       } catch (emailError: any) {
