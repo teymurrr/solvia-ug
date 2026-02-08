@@ -124,7 +124,7 @@ const HomologationWizard = () => {
     const updatedData = { ...wizardData, email };
     setWizardData(updatedData);
     
-    // Capture lead data to database
+    // Capture lead data to database (with browser language for preferred_language)
     try {
       await supabase.functions.invoke('capture-lead', {
         body: {
@@ -133,10 +133,11 @@ const HomologationWizard = () => {
           studyCountry: updatedData.studyCountry,
           doctorType: updatedData.doctorType,
           languageLevel: updatedData.languageLevel,
-          source: 'wizard'
+          source: 'wizard',
+          browserLanguage: navigator.language || 'en', // Capture browser language
         }
       });
-      console.log('Lead captured successfully');
+      console.log('Lead captured successfully with browser language:', navigator.language);
     } catch (error) {
       console.error('Lead capture error:', error);
     }
