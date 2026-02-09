@@ -15,6 +15,7 @@ interface HomologationPlanRequest {
   studyCountry?: string;
   languageLevel?: string;
   language?: string;
+  browserLanguage?: string;
 }
 
 const countryNames: Record<string, Record<string, string>> = {
@@ -33,8 +34,41 @@ const doctorTypeNames: Record<string, Record<string, string>> = {
   other: { en: 'Medical Professional', es: 'Profesional Médico', de: 'Medizinischer Fachmann', fr: 'Professionnel Médical', ru: 'Медицинский специалист' },
 };
 
+// Country-based language detection
+const spanishSpeakingCountries = [
+  'mexico', 'méxico', 'colombia', 'chile', 'peru', 'perú', 'bolivia',
+  'venezuela', 'cuba', 'argentina', 'ecuador', 'uruguay', 'paraguay',
+  'panama', 'panamá', 'costa rica', 'guatemala', 'honduras', 'el salvador',
+  'nicaragua', 'dominican republic', 'república dominicana', 'puerto rico',
+  'spain', 'españa'
+];
+const germanSpeakingCountries = ['germany', 'deutschland', 'austria', 'österreich', 'switzerland', 'schweiz'];
+const frenchSpeakingCountries = ['france', 'belgium', 'belgique', 'morocco', 'algeria', 'tunisia'];
+const russianSpeakingCountries = ['russia', 'ukraine', 'belarus', 'kazakhstan', 'uzbekistan'];
+
+const detectLanguageFromCountry = (country: string | undefined): string | null => {
+  if (!country) return null;
+  const c = country.toLowerCase();
+  if (spanishSpeakingCountries.some(sc => c.includes(sc))) return 'es';
+  if (germanSpeakingCountries.some(sc => c.includes(sc))) return 'de';
+  if (frenchSpeakingCountries.some(sc => c.includes(sc))) return 'fr';
+  if (russianSpeakingCountries.some(sc => c.includes(sc))) return 'ru';
+  return null;
+};
+
 const getEmailContent = (data: HomologationPlanRequest) => {
-  const lang = data.language || 'en';
+  // Priority: explicit non-default language > study country detection > browser language > 'en'
+  let lang = data.language || 'en';
+  if (lang === 'en') {
+    const detected = detectLanguageFromCountry(data.studyCountry);
+    if (detected) {
+      lang = detected;
+    } else if (data.browserLanguage) {
+      const browserLang = data.browserLanguage.toLowerCase().split('-')[0];
+      const langMap: Record<string, string> = { es: 'es', de: 'de', fr: 'fr', ru: 'ru' };
+      if (langMap[browserLang]) lang = langMap[browserLang];
+    }
+  }
   const countryName = countryNames[data.targetCountry]?.[lang] || data.targetCountry;
   const professionName = doctorTypeNames[data.doctorType || 'general']?.[lang] || data.doctorType;
   

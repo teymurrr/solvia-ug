@@ -192,7 +192,23 @@ const germanCountries = ['germany', 'deutschland', 'austria', 'österreich', 'sw
 const frenchCountries = ['france', 'belgium', 'belgique', 'switzerland', 'suisse', 'canada', 'morocco', 'algeria', 'tunisia'];
 const russianCountries = ['russia', 'ukraine', 'belarus', 'kazakhstan', 'uzbekistan', 'kyrgyzstan'];
 
+// Email TLD to language mapping
+const spanishTLDs = ['.es', '.ar', '.mx', '.co', '.cl', '.pe', '.ve', '.ec', '.uy', '.py', '.bo', '.cr', '.gt', '.hn', '.sv', '.ni', '.pa', '.do', '.cu'];
+const germanTLDs = ['.de', '.at', '.ch'];
+const frenchTLDs = ['.fr', '.be'];
+const russianTLDs = ['.ru', '.by', '.kz', '.uz'];
+
+const detectLanguageFromEmailTLD = (email: string): Language | null => {
+  const domain = email.toLowerCase().split('@')[1] || '';
+  if (spanishTLDs.some(tld => domain.endsWith(tld))) return 'es';
+  if (germanTLDs.some(tld => domain.endsWith(tld))) return 'de';
+  if (frenchTLDs.some(tld => domain.endsWith(tld))) return 'fr';
+  if (russianTLDs.some(tld => domain.endsWith(tld))) return 'ru';
+  return null;
+};
+
 const detectLanguage = (recipient: EmailRecipient): Language => {
+  // 1. Explicit preferred_language
   if (recipient.preferred_language) {
     const pref = recipient.preferred_language.toLowerCase();
     if (['es', 'de', 'en', 'fr', 'ru'].includes(pref)) {
@@ -200,12 +216,16 @@ const detectLanguage = (recipient: EmailRecipient): Language => {
     }
   }
   
+  // 2. Study country detection
   const study = (recipient.study_country || '').toLowerCase();
-  
   if (spanishCountries.some(c => study.includes(c))) return 'es';
   if (germanCountries.some(c => study.includes(c))) return 'de';
   if (frenchCountries.some(c => study.includes(c))) return 'fr';
   if (russianCountries.some(c => study.includes(c))) return 'ru';
+  
+  // 3. Email TLD as fallback signal
+  const tldLang = detectLanguageFromEmailTLD(recipient.email);
+  if (tldLang) return tldLang;
   
   return 'en';
 };
