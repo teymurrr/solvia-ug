@@ -151,7 +151,8 @@ const HomologationWizard = () => {
           doctorType: updatedData.doctorType,
           studyCountry: updatedData.studyCountry,
           languageLevel: updatedData.languageLevel,
-          language: localStorage.getItem('language') || 'en'
+          language: localStorage.getItem('language') || 'en',
+          browserLanguage: navigator.language
         }
       });
       console.log('Homologation plan email sent successfully');
