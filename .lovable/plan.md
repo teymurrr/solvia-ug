@@ -1,115 +1,135 @@
 
 
-# Localized Supabase Auth Emails
+# Quick-Win Product: "Medical German Starter Kit" -- Digital Product for Immediate Sales
 
-## Problem
+## Analysis: Why This Will Sell Fastest
 
-Supabase Auth sends confirmation and password-reset emails using built-in templates configured in the Supabase dashboard. These templates are in a single language (English), so all users receive them in English regardless of their browser/UI language.
+### What we already have built:
+- Full learning page with wizard (country > level > profession)
+- Payment infrastructure with Stripe (3 tiers: 49/199/499 EUR)
+- Lead capture form sending to Resend
+- Localized content in 5 languages
+- Exam prep data for FSP/TELC
 
-## Approach
+### What's missing for fast sales:
+The current flow goes: Wizard -> Free Plan Result -> "Get Free Consultation" (lead form). There is NO direct purchase path from the Learning page. The payment flow only exists on `/homologation-payment` and is tied to the homologation process, not language learning specifically.
 
-Instead of relying on Supabase's built-in email templates, we will:
+### The fastest-to-sell product: "German Medical Language Starter Kit" at EUR 29
 
-1. **Create a new edge function** (`send-auth-email`) that sends localized confirmation and password-reset emails via Resend
-2. **Store the user's preferred language** in their `user_metadata` at signup time so we know which language to use
-3. **Configure Supabase to use a custom SMTP** or **Auth Hook** to route emails through our function
+**Why EUR 29?**
+- Aligns with the "small yes" strategy already documented in memory (EUR 29-49 entry products)
+- Low enough for impulse purchase -- no committee decision needed
+- High enough to filter serious buyers from tire-kickers
+- Creates a buyer relationship for upselling to Complete (EUR 199) or Mentorship (EUR 499)
 
-However, since Supabase's Auth email templates cannot be replaced by edge functions directly (they are triggered internally by Supabase Auth), the most practical approach is:
+**What it includes (digital, zero marginal cost):**
+1. PDF: "50 Essential Medical German Phrases for Day 1 at the Hospital"
+2. PDF: "FSP Exam Structure & Timeline Guide"  
+3. PDF: "Your Personal Roadmap: A1 to Approbation"
+4. Audio: 10 pronunciation examples of critical medical terms (can link to external hosted files)
+5. Checklist: "Document Checklist for Approbation in Germany"
+6. Bonus: 1 free 15-minute consultation call booking link
 
-### Option chosen: Custom signup flow with `autoconfirm` disabled + edge function
+**Why this is fast to implement:**
+- All content is informational (PDFs can be stored in Supabase Storage or linked externally)
+- We already have Stripe payment infrastructure
+- We already have the learning page as the funnel
+- We just need: a new product card, a payment path, and a delivery email
 
-We keep Supabase's email confirmation flow but **replace the email content** by:
+## Implementation Plan
 
-1. Passing `preferred_language` in user metadata during signup
-2. Creating a **Database Webhook / Auth Hook** (Supabase Auth Hook on `signup` event) that triggers our edge function to send a localized email
-3. Alternatively (simpler): after calling `signUp()`, immediately call our own edge function to send a branded, localized confirmation email, and configure Supabase's built-in template to be a minimal fallback
+### 1. New Landing Section: "German Starter Kit" Card on Learning Page
+Add a dedicated product card between the wizard result and the consultation form on `/learning`. When the user completes the wizard and selects Germany, show this as a prominent "Start Now for EUR 29" offer alongside the existing plan result.
 
-**Simplest reliable approach**: Since Supabase does not easily let you fully replace auth emails with custom ones via hooks in the hosted platform, we will:
+**Key conversion elements:**
+- Show it right after the wizard result (highest intent moment)
+- Urgency: "Limited introductory price"
+- Social proof: "Join 500+ professionals who started here"
+- Clear deliverables list
+- One-click buy button
 
-1. Pass `preferred_language` into user metadata at signup
-2. Create a `send-auth-email` edge function that sends localized confirmation/welcome emails via Resend
-3. Call this function from the frontend right after a successful `signUp()` call
-4. Update the Supabase dashboard confirmation email template to be multilingual as a fallback (instructions provided to user)
+### 2. Dedicated Purchase Page: `/learning/starter-kit`
+A focused, single-product landing page for the German Starter Kit:
+- Hero with value proposition
+- What's included (visual checklist)
+- Testimonial from existing learning data
+- Email input + "Buy Now EUR 29" button
+- FAQ (2-3 questions)
+- Money-back guarantee badge
 
-## Technical Changes
+### 3. Backend: New Stripe Product + Delivery Edge Function
 
-### Step 1: Pass language into user metadata at signup
+**Edge function: `create-learning-payment`**
+- Creates a Stripe Checkout session for EUR 29
+- Metadata includes: product type `german_starter_kit`, customer email, language
+- Success/cancel URLs point to dedicated pages
 
-**Files:** `src/components/signup/ProfessionalSignupForm.tsx`, `src/components/signup/InstitutionSignupForm.tsx`, `src/contexts/AuthContext.tsx`
+**Edge function: `deliver-starter-kit`** (triggered by Stripe webhook or on payment success page)
+- Sends a localized email with download links to the purchased materials
+- Records the purchase in the database
+- Triggers a follow-up nurture sequence (upsell to Complete Package after 3 days)
 
-- Add `preferred_language` to the metadata type in `AuthContext.tsx`
-- In both signup forms, read `currentLanguage` from `useLanguage()` and include it in the `signUp()` metadata call
+### 4. Payment Success Page Update
+After purchase, redirect to a thank-you page with:
+- Immediate access to materials (download links)
+- "Your next step" upsell to Complete Package (EUR 199)
+- Consultation booking link (the free 15-min bonus)
 
-```typescript
-await signUp(data.email, data.password, {
-  first_name: data.firstName,
-  last_name: data.lastName,
-  user_type: 'professional',
-  preferred_language: currentLanguage, // NEW
-});
-```
+### 5. Integration Points on Existing Pages
+- **Learning page wizard result**: When country = Germany, show "Start with the Starter Kit" CTA (EUR 29) alongside existing "Get Free Consultation"
+- **Landing page LearningMiniBanner**: Update to mention "German Starter Kit from EUR 29"
+- **Homologation result page**: Cross-sell the Starter Kit for users who selected Germany
 
-### Step 2: Create `send-auth-email` edge function
+### 6. Translation Keys
+Add `starterKit` section to all 5 language files with product descriptions, CTAs, and delivery email content.
 
-**File:** `supabase/functions/send-auth-email/index.ts`
-
-This function:
-- Accepts `email`, `type` (confirmation/welcome), and `language` parameters
-- Contains localized email templates for all 5 languages (en, es, de, fr, ru)
-- Sends the email via Resend from `team@thesolvia.com`
-- For confirmation emails, includes the confirmation link from Supabase
-
-### Step 3: Call the edge function after signup
-
-**Files:** `src/components/signup/ProfessionalSignupForm.tsx`, `src/components/signup/InstitutionSignupForm.tsx`
-
-After a successful `signUp()` call, invoke the edge function:
-
-```typescript
-await supabase.functions.invoke('send-auth-email', {
-  body: {
-    email: data.email,
-    type: 'welcome',
-    language: currentLanguage,
-    firstName: data.firstName,
-  },
-});
-```
-
-### Step 4: Add config.toml entry
-
-**File:** `supabase/config.toml`
-
-```toml
-[functions.send-auth-email]
-verify_jwt = false
-```
-
-### Step 5: Supabase Dashboard instructions
-
-Since the actual "Confirm your email" link is sent by Supabase Auth internally, we cannot fully replace it in code. The user needs to:
-
-1. Go to **Supabase Dashboard > Authentication > Email Templates**
-2. Update the **Confirm signup** template to include multilingual content (we will provide the exact HTML)
-3. Similarly update the **Reset password** template
-
-The edge function will handle a branded welcome/onboarding email in the correct language, sent alongside the Supabase confirmation email.
-
-## Email Templates (5 languages)
-
-The edge function will include templates for:
-- **Welcome email** (sent after signup, in user's language)
-- Subjects, greetings, body text, and CTAs in en/es/de/fr/ru
-
-## Summary of files to create/modify
+## Technical Changes Summary
 
 | File | Action |
 |------|--------|
-| `src/contexts/AuthContext.tsx` | Add `preferred_language` to metadata type |
-| `src/components/signup/ProfessionalSignupForm.tsx` | Pass language in metadata + call edge function |
-| `src/components/signup/InstitutionSignupForm.tsx` | Pass language in metadata + call edge function |
-| `supabase/functions/send-auth-email/index.ts` | New edge function with localized email templates |
-| `supabase/config.toml` | Add function config entry |
+| `src/pages/GermanStarterKit.tsx` | NEW -- Dedicated product landing page |
+| `src/components/learning/StarterKitOffer.tsx` | NEW -- Product card component for wizard result |
+| `src/components/learning/LearningPlanResult.tsx` | EDIT -- Add Starter Kit CTA when country is Germany |
+| `src/routes.tsx` | EDIT -- Add `/learning/starter-kit` route |
+| `supabase/functions/create-learning-payment/index.ts` | NEW -- Stripe checkout for EUR 29 product |
+| `supabase/functions/deliver-starter-kit/index.ts` | NEW -- Email delivery with download links after purchase |
+| `supabase/functions/stripe-webhook/index.ts` | EDIT -- Handle `german_starter_kit` product type |
+| `src/pages/PaymentSuccess.tsx` | EDIT -- Handle starter kit delivery display |
+| `src/utils/i18n/languages/*/learning.ts` | EDIT -- Add `starterKit` translation keys (all 5 languages) |
+| `src/components/landing/LearningMiniBanner.tsx` | EDIT -- Mention starter kit price |
+| `supabase/config.toml` | EDIT -- Add new function configs |
 
-Additionally, instructions will be provided on how to update the Supabase dashboard email templates to be multilingual for the confirmation and password reset emails.
+## Sales Funnel Flow
+
+```text
+Landing Page / Learning Page
+        |
+        v
+  Learning Wizard (select Germany)
+        |
+        v
+  Plan Result + Starter Kit Offer (EUR 29)
+        |
+   +---------+---------+
+   |                   |
+   v                   v
+Buy EUR 29         Free Consultation
+   |                   |
+   v                   v
+Stripe Checkout    Lead Form (existing)
+   |
+   v
+Thank You + Downloads + Upsell (EUR 199)
+   |
+   v
+Nurture Email (Day 3): "Ready for the full package?"
+```
+
+## Timeline Estimate
+- Implementation: 1 session (all infrastructure exists)
+- Content: PDFs need to be created/uploaded separately (you provide or we use placeholder links)
+- Go live: Same day after content upload
+
+## Revenue Projection
+At EUR 29 with even 5% conversion of learning page visitors, this creates immediate revenue AND a buyer list for upselling to EUR 199/499 packages -- which is where the real margin sits.
 
