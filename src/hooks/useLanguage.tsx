@@ -34,12 +34,22 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
   const [translations, setTranslations] = useState<any>(en);
   const { setCookie, getCookie } = useCookies();
 
-  // Effect to load language from cookies on component mount
+  // Effect to load language from cookies on component mount, or auto-detect on first visit
   useEffect(() => {
     const storedLanguage = getCookie('language') || localStorage.getItem('language');
     if (storedLanguage) {
       setCurrentLanguage(storedLanguage);
       switchLanguage(storedLanguage);
+    } else {
+      // Auto-detect from browser on first visit
+      const browserLang = navigator.language?.toLowerCase().split('-')[0];
+      const supportedLanguages = ['en', 'es', 'de', 'fr', 'ru'];
+      if (browserLang && supportedLanguages.includes(browserLang) && browserLang !== 'en') {
+        setCurrentLanguage(browserLang);
+        switchLanguage(browserLang);
+        setCookie('language', browserLang, 'essential', { expires: 365 });
+        localStorage.setItem('language', browserLang);
+      }
     }
   }, [getCookie]);
 
