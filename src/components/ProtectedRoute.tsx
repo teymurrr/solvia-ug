@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth, UserType } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
+import { useLanguage } from '@/hooks/useLanguage';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -13,14 +14,14 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, userType }) =
   const { isLoggedIn, userType: currentUserType, loading } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
+  const { t } = useLanguage();
   
   useEffect(() => {
-    // Only show toast and redirect after authentication state is confirmed
     if (!loading) {
       if (!isLoggedIn) {
         toast({
-          title: "Authentication Required",
-          description: "Please sign in to access this page.",
+          title: t?.chat?.authRequired || "Authentication Required",
+          description: t?.chat?.authRequiredLogin || "Please sign in to access this page.",
           variant: "default",
         });
         navigate("/login", { replace: true });
@@ -29,12 +30,11 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, userType }) =
       
       if (userType && userType !== currentUserType) {
         toast({
-          title: "Access Denied",
+          title: t?.chat?.accessDenied || "Access Denied",
           description: `This page is only accessible to ${userType}s.`,
           variant: "destructive",
         });
         
-        // Redirect to the appropriate dashboard based on user type
         if (currentUserType === 'professional') {
           navigate("/dashboard/professional", { replace: true });
         } else if (currentUserType === 'institution') {
@@ -44,9 +44,8 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, userType }) =
         }
       }
     }
-  }, [isLoggedIn, userType, currentUserType, loading, toast, navigate]);
+  }, [isLoggedIn, userType, currentUserType, loading, toast, navigate, t]);
   
-  // Show loading or nothing while auth state is being determined
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -55,12 +54,10 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, userType }) =
     );
   }
   
-  // Only render children when authenticated with correct user type
   if (isLoggedIn && (!userType || userType === currentUserType)) {
     return <>{children}</>;
   }
   
-  // Return null during transitions to prevent rendering children
   return null;
 };
 

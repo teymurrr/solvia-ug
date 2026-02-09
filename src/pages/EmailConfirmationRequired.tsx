@@ -53,7 +53,7 @@ const EmailConfirmationRequired = () => {
     } catch (err) {
       toast({ 
         title: t.common.error, 
-        description: 'Failed to resend email', 
+        description: t?.chat?.failedToResend || 'Failed to resend email', 
         variant: 'destructive' 
       });
     } finally {

@@ -71,7 +71,7 @@ const SolviaLearning = () => {
 
     try {
       const { data, error } = await supabase.functions.invoke('submit-learning-form', {
-        body: formData
+        body: { ...formData, language }
       });
 
       if (error) throw new Error(error.message || 'Failed to submit form');
@@ -79,7 +79,7 @@ const SolviaLearning = () => {
       setIsSubmitted(true);
       toast.success(t?.learning?.form?.success || 'Thank you! Your form has been submitted successfully.');
     } catch (error: any) {
-      toast.error(error.message || 'Failed to submit form. Please try again.');
+      toast.error(error.message || t?.chat?.failedToSubmit || 'Failed to submit form. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
