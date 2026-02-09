@@ -30,6 +30,7 @@ interface AuthContextType {
       doctor_type?: string;
       documents_ready?: string;
       language_level?: string;
+      preferred_language?: string;
     }
   ) => Promise<void>;
   signOut: () => Promise<void>;
@@ -171,7 +172,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     study_country?: string;
     doctor_type?: string;
     documents_ready?: string;
-    language_level?: string;
+      language_level?: string;
+      preferred_language?: string;
   }) => {
     console.log(`Attempting to sign up with email: ${email}`);
     try {
