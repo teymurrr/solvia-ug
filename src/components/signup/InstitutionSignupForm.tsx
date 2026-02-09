@@ -13,13 +13,14 @@ import { EmailField } from './EmailField';
 import { PasswordFields } from './PasswordFields';
 import { TermsAgreement } from './TermsAgreement';
 import { useLanguage } from '@/hooks/useLanguage';
+import { supabase } from '@/integrations/supabase/client';
 
 export const InstitutionSignupForm = () => {
   const { toast } = useToast();
   const { signUp } = useAuth();
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const { t } = useLanguage();
+  const { t, currentLanguage } = useLanguage();
   
   const form = useForm<InstitutionSignupFormValues>({
     resolver: zodResolver(institutionSignupSchema),
@@ -46,7 +47,22 @@ export const InstitutionSignupForm = () => {
         institution_type: data.institutionType,
         location: data.location,
         website: data.website,
+        preferred_language: currentLanguage,
       });
+
+      // Send localized welcome email
+      try {
+        await supabase.functions.invoke('send-auth-email', {
+          body: {
+            email: data.email,
+            type: 'welcome',
+            language: currentLanguage,
+            firstName: data.institutionName,
+          },
+        });
+      } catch (emailError) {
+        console.error('Welcome email failed (non-blocking):', emailError);
+      }
       
       // Store email for confirmation page
       localStorage.setItem('pendingConfirmationEmail', data.email);

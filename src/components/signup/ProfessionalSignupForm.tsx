@@ -14,13 +14,14 @@ import { PasswordFields } from './PasswordFields';
 import { TermsAgreement } from './TermsAgreement';
 import { useLanguage } from '@/hooks/useLanguage';
 import { Gift } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
 
 export const ProfessionalSignupForm: React.FC = () => {
   const { toast } = useToast();
   const { signUp } = useAuth();
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const { t } = useLanguage();
+  const { t, currentLanguage } = useLanguage();
   
   const form = useForm<ProfessionalSignupFormValues>({
     resolver: zodResolver(professionalSignupSchema),
@@ -43,7 +44,22 @@ export const ProfessionalSignupForm: React.FC = () => {
         first_name: data.firstName,
         last_name: data.lastName,
         user_type: 'professional',
+        preferred_language: currentLanguage,
       });
+
+      // Send localized welcome email
+      try {
+        await supabase.functions.invoke('send-auth-email', {
+          body: {
+            email: data.email,
+            type: 'welcome',
+            language: currentLanguage,
+            firstName: data.firstName,
+          },
+        });
+      } catch (emailError) {
+        console.error('Welcome email failed (non-blocking):', emailError);
+      }
 
       // Store email for confirmation page
       localStorage.setItem('pendingConfirmationEmail', data.email);
