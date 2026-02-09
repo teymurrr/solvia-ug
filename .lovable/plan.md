@@ -1,59 +1,50 @@
 
 
-# Fix Email Language Detection
+# Auto-Detect Browser Language for First-Time Visitors
 
 ## Problem
 
-Two issues are causing emails to go out in English instead of Spanish:
-
-### 1. Homologation Plan Email
-The `send-homologation-plan` function receives the language from `localStorage.getItem('language') || 'en'`. If the user never switched the site language, it defaults to English -- even when their study country is Spain. The function itself has no smart language detection; it blindly uses whatever is passed.
-
-### 2. Nurture Campaign Emails
-The `send-nurture-campaign` function has language detection logic that checks:
-1. `preferred_language` from the database (usually `null` for most leads)
-2. `study_country` (also `null` for most imported leads)
-3. Falls back to English
-
-Most leads in the database have no `preferred_language` and no `study_country`, so everything defaults to English.
+The `LanguageProvider` in `src/hooks/useLanguage.tsx` always initializes to English (`'en'`). It only switches language if a cookie or localStorage value already exists. First-time visitors from Spain (or any non-English country) see the entire site in English because no preference has been stored yet.
 
 ## Solution
 
-### Step 1: Add language detection to `send-homologation-plan`
-- Add the same country-based language detection logic that exists in `send-nurture-campaign`
-- Use `studyCountry` from the request to auto-detect language when no explicit language is provided or when it's the default `'en'`
-- Priority: explicit non-default language > study country detection > `'en'`
-
-### Step 2: Improve the HomologationWizard frontend call
-- Instead of only passing `localStorage.getItem('language')`, also consider the study country the user selected in the wizard to infer language
-- If the user selected Spain as study country and never changed the site language, send `'es'` instead of `'en'`
-
-### Step 3: Improve nurture campaign language detection
-- Add email domain analysis as an additional signal (e.g., `.es`, `.ar`, `.mx` domains suggest Spanish)
-- Add name-based heuristics as a weaker signal
-- For leads with no data, check if their email was captured on a page where the site language was set (this would require storing the language at capture time)
-
-### Step 4: Backfill lead data
-- Update the `capture-lead` edge function to store the browser language / site language at time of capture as `preferred_language` when not already set
-- For existing leads without language data, we can update them based on available signals (email domain, etc.)
+On first visit (no stored language preference), detect the browser language via `navigator.language` and auto-set the UI language if it matches one of our supported languages (es, de, fr, ru). Otherwise, keep English as the default.
 
 ## Technical Changes
 
-### File: `supabase/functions/send-homologation-plan/index.ts`
-- Add a `detectLanguageFromCountry(studyCountry)` function mapping Spanish-speaking countries to `'es'`, etc.
-- In `getEmailContent`, change `const lang = data.language || 'en'` to: use detected language from `studyCountry` when `data.language` is missing or is `'en'` (the default)
+### File: `src/hooks/useLanguage.tsx`
 
-### File: `src/pages/HomologationWizard.tsx`
-- Change line 154 to pass a smarter language value: detect from `studyCountry` if localStorage language is the default `'en'`
+In the `useEffect` that runs on mount:
 
-### File: `supabase/functions/send-nurture-campaign/index.ts`
-- Enhance `detectLanguage` to also check email TLD as a fallback signal before defaulting to English
-- Add common Spanish email domains (`.es`, `.ar`, `.co`, `.mx`, `.cl`, `.pe`, etc.)
+1. Check for stored language (cookie or localStorage) -- keep existing behavior.
+2. If no stored preference exists, read `navigator.language`, extract the base code (e.g., `es` from `es-ES`), and check if it matches a supported language.
+3. If it matches, set that language (both in state and storage so it persists).
+4. If it doesn't match, keep English.
 
-### File: `supabase/functions/capture-lead/index.ts`
-- Ensure `browserLanguage` or site language is saved as `preferred_language` when capturing leads
+```
+useEffect(() => {
+  const storedLanguage = getCookie('language') || localStorage.getItem('language');
+  if (storedLanguage) {
+    setCurrentLanguage(storedLanguage);
+    switchLanguage(storedLanguage);
+  } else {
+    // Auto-detect from browser on first visit
+    const browserLang = navigator.language?.toLowerCase().split('-')[0];
+    const supportedLanguages = ['en', 'es', 'de', 'fr', 'ru'];
+    if (browserLang && supportedLanguages.includes(browserLang) && browserLang !== 'en') {
+      setCurrentLanguage(browserLang);
+      switchLanguage(browserLang);
+      // Persist so detection only happens once
+      setCookie('language', browserLang, 'essential', { expires: 365 });
+      localStorage.setItem('language', browserLang);
+    }
+  }
+}, []);
+```
 
-## Impact
-- Future homologation plan emails will be sent in the correct language based on study country
-- Nurture emails will have better language detection for leads without explicit language preferences
-- New leads will have language data captured at signup time
+This single change ensures:
+- A user from Spain with browser set to Spanish sees the site in Spanish immediately
+- The detected language is stored, so subsequent visits use the same language
+- The HomologationWizard then picks up `'es'` from localStorage instead of the default `'en'`
+- Emails triggered from the wizard will correctly use Spanish
+
