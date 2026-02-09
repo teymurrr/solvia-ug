@@ -26,6 +26,7 @@ import { onboarding } from './onboarding';
 import { documents } from './documents';
 import { homologationResult } from './homologationResult';
 import { landing } from './landing';
+import { chat } from './chat';
 
 export const fr = {
   hero,
@@ -57,5 +58,6 @@ export const fr = {
   onboarding,
   documents,
   homologationResult,
-  landing
+  landing,
+  chat
 };

@@ -11,8 +11,9 @@ import { toast as sonnerToast } from 'sonner';
 import { useAuth } from '@/contexts/AuthContext';
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { useMessages, type Message } from '@/hooks/useMessages';
+import { useLanguage } from '@/hooks/useLanguage';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 
 const Messages = () => {
@@ -20,6 +21,7 @@ const Messages = () => {
   const { toast } = useToast();
   const { user, userType } = useAuth();
   const { messages, addMessage, markAsRead, markConversationAsRead, unreadCount } = useMessages();
+  const { t } = useLanguage();
   
   const [activeConversation, setActiveConversation] = useState<{
     partnerId: string;
@@ -88,8 +90,8 @@ const Messages = () => {
   const handleSendMessage = () => {
     if (!newMessageData.recipient_id || !newMessageData.content) {
       toast({
-        title: "Missing information",
-        description: "Please fill in all required fields",
+        title: t?.chat?.missingInfo || "Missing information",
+        description: t?.chat?.fillRequired || "Please fill in all required fields",
         variant: "destructive",
       });
       return;
@@ -103,8 +105,8 @@ const Messages = () => {
     });
 
     toast({
-      title: "Message sent",
-      description: "Your message has been sent successfully",
+      title: t?.chat?.messageSent || "Message sent",
+      description: t?.chat?.messageSentDesc || "Your message has been sent successfully",
     });
 
     setNewMessageData({
@@ -118,7 +120,7 @@ const Messages = () => {
   
   const handleSendReply = () => {
     if (!replyText || !activeConversation || !user) {
-      sonnerToast.error("Cannot send empty message");
+      sonnerToast.error(t?.chat?.emptyMessage || "Cannot send empty message");
       return;
     }
     
@@ -168,14 +170,14 @@ const Messages = () => {
                 )}
                 <div>
                   <CardTitle>
-                    {activeConversation ? 'Conversation' : 'Messages'}
+                    {activeConversation ? (t?.chat?.conversation || 'Conversation') : (t?.chat?.messages || 'Messages')}
                   </CardTitle>
                   <CardDescription>
                     {activeConversation ? 
-                      'Your conversation history' : 
+                      (t?.chat?.conversationHistory || 'Your conversation history') : 
                       userType === 'professional' 
-                        ? "Messages from institutions interested in your profile" 
-                        : "Communicate with healthcare professionals"
+                        ? (t?.chat?.messagesFromInstitutions || "Messages from institutions interested in your profile")
+                        : (t?.chat?.communicateWithProfessionals || "Communicate with healthcare professionals")
                     }
                   </CardDescription>
                 </div>
@@ -183,7 +185,7 @@ const Messages = () => {
               {!activeConversation && userType !== 'professional' && (
                 <Button onClick={() => setNewMessageDialog(true)}>
                   <Mail className="mr-2 h-4 w-4" />
-                  New Message
+                  {t?.chat?.newMessage || 'New Message'}
                 </Button>
               )}
             </div>
@@ -197,7 +199,7 @@ const Messages = () => {
                     <div className="relative">
                       <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                       <Input 
-                        placeholder="Search messages..."
+                        placeholder={t?.chat?.searchMessages || "Search messages..."}
                         className="pl-10"
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
@@ -229,7 +231,7 @@ const Messages = () => {
                                       {hasUnread && (
                                         <span className="inline-block w-2 h-2 bg-primary rounded-full"></span>
                                       )}
-                                      {lastMessage.sender_id === user?.id ? 'You' : 'User'}
+                                      {lastMessage.sender_id === user?.id ? (t?.chat?.you || 'You') : (t?.chat?.user || 'User')}
                                     </span>
                                     <span className="text-xs text-muted-foreground">
                                       {new Date(lastMessage.created_at || '').toLocaleDateString()}
@@ -246,16 +248,16 @@ const Messages = () => {
                   ) : (
                     <div className="flex flex-col items-center justify-center h-[calc(100vh-320px)] text-center p-4">
                       <Inbox className="h-16 w-16 text-muted-foreground mb-4" />
-                      <h3 className="text-lg font-medium mb-2">No messages yet</h3>
+                      <h3 className="text-lg font-medium mb-2">{t?.chat?.noMessages || 'No messages yet'}</h3>
                       <p className="text-muted-foreground max-w-md">
-                        {searchQuery ? 'No messages match your search.' : userType === 'professional' 
-                          ? 'When institutions contact you, their messages will appear here.' 
-                          : 'Start conversations with healthcare professionals to build connections.'}
+                        {searchQuery ? (t?.chat?.noMessagesMatch || 'No messages match your search.') : userType === 'professional' 
+                          ? (t?.chat?.institutionsWillContact || 'When institutions contact you, their messages will appear here.')
+                          : (t?.chat?.startConversations || 'Start conversations with healthcare professionals to build connections.')}
                       </p>
                       {userType !== 'professional' && !searchQuery && (
                         <Button className="mt-6" onClick={() => setNewMessageDialog(true)}>
                           <MessageSquare className="mr-2 h-4 w-4" />
-                          Start a Conversation
+                          {t?.chat?.startAConversation || 'Start a Conversation'}
                         </Button>
                       )}
                     </div>
@@ -305,7 +307,7 @@ const Messages = () => {
                       <Textarea 
                         value={replyText}
                         onChange={(e) => setReplyText(e.target.value)}
-                        placeholder="Type your message..."
+                        placeholder={t?.chat?.typePlaceholder || "Type your message..."}
                         className="min-h-[80px] resize-none"
                         onKeyDown={(e) => {
                           if (e.key === 'Enter' && !e.shiftKey) {
@@ -316,7 +318,7 @@ const Messages = () => {
                       />
                       <Button onClick={handleSendReply} size="lg" className="self-end">
                         <Send className="h-4 w-4 mr-2" />
-                        Send
+                        {t?.chat?.send || 'Send'}
                       </Button>
                     </div>
                   </div>
@@ -331,35 +333,35 @@ const Messages = () => {
       <Dialog open={newMessageDialog} onOpenChange={setNewMessageDialog}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>New Message</DialogTitle>
+            <DialogTitle>{t?.chat?.newMessage || 'New Message'}</DialogTitle>
             <DialogDescription>
-              Send a message to a healthcare professional
+              {t?.chat?.sendToHealthcare || 'Send a message to a healthcare professional'}
             </DialogDescription>
           </DialogHeader>
           
           <div className="space-y-4 py-4">
             <div>
-              <label className="block text-sm font-medium mb-1">Recipient ID</label>
+              <label className="block text-sm font-medium mb-1">{t?.chat?.recipientId || 'Recipient ID'}</label>
               <Input 
                 value={newMessageData.recipient_id}
                 onChange={(e) => setNewMessageData({...newMessageData, recipient_id: e.target.value})}
-                placeholder="Enter recipient ID"
+                placeholder={t?.chat?.enterRecipientId || "Enter recipient ID"}
               />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1">Subject</label>
+              <label className="block text-sm font-medium mb-1">{t?.chat?.subject || 'Subject'}</label>
               <Input 
                 value={newMessageData.subject}
                 onChange={(e) => setNewMessageData({...newMessageData, subject: e.target.value})}
-                placeholder="Enter message subject"
+                placeholder={t?.chat?.enterSubject || "Enter message subject"}
               />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1">Message</label>
+              <label className="block text-sm font-medium mb-1">{t?.chat?.message || 'Message'}</label>
               <Textarea 
                 value={newMessageData.content}
                 onChange={(e) => setNewMessageData({...newMessageData, content: e.target.value})}
-                placeholder="Type your message here"
+                placeholder={t?.chat?.typeMessageHere || "Type your message here"}
                 rows={5}
               />
             </div>
@@ -367,11 +369,11 @@ const Messages = () => {
           
           <DialogFooter>
             <Button variant="outline" onClick={() => setNewMessageDialog(false)}>
-              Cancel
+              {t?.common?.cancel || 'Cancel'}
             </Button>
             <Button onClick={handleSendMessage} className="ml-2">
               <Send className="mr-2 h-4 w-4" />
-              Send Message
+              {t?.chat?.sendMessage || 'Send Message'}
             </Button>
           </DialogFooter>
         </DialogContent>

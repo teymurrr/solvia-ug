@@ -55,7 +55,6 @@ const SupportChat = () => {
     const userMessage = inputText.trim();
     setInputText('');
     
-    // Add user message immediately
     const updatedMessages: Message[] = [...messages, { role: 'user', content: userMessage }];
     setMessages(updatedMessages);
     setIsLoading(true);
@@ -77,7 +76,7 @@ const SupportChat = () => {
 
       if (!response.ok) {
         if (response.status === 429) {
-          toast.error("Too many requests. Please wait a moment and try again.");
+          toast.error(t?.chat?.tooManyRequests || "Too many requests. Please wait a moment and try again.");
           return;
         }
         throw new Error('Failed to get response');
@@ -89,7 +88,6 @@ const SupportChat = () => {
       const decoder = new TextDecoder();
       let textBuffer = '';
 
-      // Add empty assistant message that we'll update
       setMessages(prev => [...prev, { role: 'assistant', content: '' }]);
 
       while (true) {
@@ -98,7 +96,6 @@ const SupportChat = () => {
 
         textBuffer += decoder.decode(value, { stream: true });
 
-        // Process complete lines only
         let newlineIndex: number;
         while ((newlineIndex = textBuffer.indexOf('\n')) !== -1) {
           let line = textBuffer.slice(0, newlineIndex);
@@ -126,14 +123,12 @@ const SupportChat = () => {
               });
             }
           } catch {
-            // Put back incomplete JSON and wait for more data
             textBuffer = line + '\n' + textBuffer;
             break;
           }
         }
       }
 
-      // Final flush for any remaining buffered content
       if (textBuffer.trim()) {
         for (let raw of textBuffer.split('\n')) {
           if (!raw) continue;
@@ -161,8 +156,7 @@ const SupportChat = () => {
       }
     } catch (error) {
       console.error('Chat error:', error);
-      toast.error("Something went wrong. Please try again.");
-      // Remove the empty assistant message on error
+      toast.error(t?.chat?.somethingWentWrong || "Something went wrong. Please try again.");
       setMessages(prev => prev.filter((_, i) => i !== prev.length - 1));
     } finally {
       setIsLoading(false);
@@ -192,8 +186,8 @@ const SupportChat = () => {
                   <MessageCircle className="h-5 w-5" />
                 </div>
                 <div>
-                  <SheetTitle className="text-primary-foreground">Solvia Support</SheetTitle>
-                  <p className="text-xs text-primary-foreground/80">We typically reply instantly</p>
+                  <SheetTitle className="text-primary-foreground">{t?.chat?.supportTitle || 'Solvia Support'}</SheetTitle>
+                  <p className="text-xs text-primary-foreground/80">{t?.chat?.supportSubtitle || 'We typically reply instantly'}</p>
                 </div>
               </div>
               <Button 
@@ -245,7 +239,7 @@ const SupportChat = () => {
               <Textarea 
                 value={inputText}
                 onChange={(e) => setInputText(e.target.value)}
-                placeholder="Type your message..."
+                placeholder={t?.chat?.typePlaceholder || "Type your message..."}
                 className="min-h-[44px] max-h-[120px] resize-none"
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' && !e.shiftKey) {
@@ -271,7 +265,7 @@ const SupportChat = () => {
               onClick={handleWhatsAppClick}
             >
               <Phone className="h-4 w-4" />
-              Chat on WhatsApp
+              {t?.chat?.whatsappButton || 'Chat on WhatsApp'}
             </Button>
           </div>
         </SheetContent>

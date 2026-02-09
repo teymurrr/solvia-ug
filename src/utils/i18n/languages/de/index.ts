@@ -26,6 +26,7 @@ import { onboarding } from './onboarding';
 import { documents } from './documents';
 import { homologationResult } from './homologationResult';
 import { landing } from './landing';
+import { chat } from './chat';
 
 export const de = {
   hero,
@@ -57,5 +58,6 @@ export const de = {
   onboarding,
   documents,
   homologationResult,
-  landing
+  landing,
+  chat
 };

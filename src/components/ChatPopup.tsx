@@ -6,17 +6,15 @@ import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Separator } from '@/components/ui/separator';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { useMessages, type Message } from '@/hooks/useMessages';
 import { useAuth } from '@/contexts/AuthContext';
 import { useProtectedAction } from '@/hooks/useProtectedAction';
 import { useNavigate } from 'react-router-dom';
+import { useLanguage } from '@/hooks/useLanguage';
 import { toast } from 'sonner';
 
-// Create a wrapper component that handles conditional hook usage
 const ChatPopupContent = () => {
-  // State management
   const [replyText, setReplyText] = useState('');
   const [activeMessage, setActiveMessage] = useState<Message | null>(null);
   const [activeSenderId, setActiveSenderId] = useState<string | null>(null);
@@ -25,11 +23,10 @@ const ChatPopupContent = () => {
   const { user, userType, isLoggedIn } = useAuth();
   const { handleProtectedAction } = useProtectedAction();
   const navigate = useNavigate();
+  const { t } = useLanguage();
   
-  // Initialize the hook safely - always initialize it but conditionally use its data
   const messagesHook = useMessages();
   
-  // Destructure hook values but only use them when the component should
   const { 
     messages = [], 
     addMessage = async () => null, 
@@ -42,14 +39,12 @@ const ChatPopupContent = () => {
     unreadCount: 0,
   };
   
-  // Scroll to bottom of messages when conversation changes
   useEffect(() => {
     if (messagesEndRef.current && isOpen) {
       messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [activeMessage, isOpen]);
   
-  // Handle opening the chat and setting conversation as read
   const handleOpenChat = (senderId: string) => {
     if (!isLoggedIn) {
       handleProtectedAction();
@@ -59,7 +54,6 @@ const ChatPopupContent = () => {
     setActiveSenderId(senderId);
     markConversationAsRead(senderId);
     
-    // Get related messages for this conversation
     const conversationMessages = messages.filter(message => 
       (message.sender_id === senderId && message.recipient_id === user?.id) ||
       (message.sender_id === user?.id && message.recipient_id === senderId)
@@ -74,17 +68,15 @@ const ChatPopupContent = () => {
     setIsOpen(true);
   };
   
-  // Clean up when closing chat
   const handleCloseChat = () => {
     setActiveSenderId(null);
     setActiveMessage(null);
     setIsOpen(false);
   };
 
-  // Send message reply
   const handleSendReply = async () => {
     if (!replyText.trim() || !activeSenderId || !user) {
-      toast.error("Cannot send empty message");
+      toast.error(t?.chat?.emptyMessage || "Cannot send empty message");
       return;
     }
     
@@ -100,13 +92,11 @@ const ChatPopupContent = () => {
     }
   };
   
-  // Get unique conversation partners with memoization to prevent recalculation
   const conversationPartners = React.useMemo(() => {
     if (!user || !messages.length) return [];
     
     const partners = new Map<string, Message>();
     
-    // Group by partner and keep the latest message
     messages.forEach(message => {
       const partnerId = message.sender_id === user.id ? message.recipient_id : message.sender_id;
       
@@ -123,7 +113,6 @@ const ChatPopupContent = () => {
     }));
   }, [messages, user]);
   
-  // Get conversation messages for active sender with memoization
   const conversationMessages = React.useMemo(() => {
     if (!user || !activeSenderId || !messages.length) return [];
     
@@ -141,7 +130,6 @@ const ChatPopupContent = () => {
     <div className="fixed bottom-4 right-4 z-50">
       <Sheet open={isOpen} onOpenChange={(open) => {
         setIsOpen(open);
-        // Fetch messages when opening
         if (open && isLoggedIn) {
           fetchMessages();
         }
@@ -178,7 +166,7 @@ const ChatPopupContent = () => {
                       </Button>
                     )}
                     <SheetTitle>
-                      {activeSenderId ? "Chat" : "Messages"}
+                      {activeSenderId ? "Chat" : (t?.chat?.messages || "Messages")}
                     </SheetTitle>
                   </div>
                   <Button size="icon" variant="ghost" className="h-8 w-8" onClick={handleCloseChat}>
@@ -222,7 +210,7 @@ const ChatPopupContent = () => {
                       <Textarea 
                         value={replyText}
                         onChange={(e) => setReplyText(e.target.value)}
-                        placeholder="Type a message..."
+                        placeholder={t?.chat?.typeMessagePlaceholder || "Type a message..."}
                         className="min-h-[60px] resize-none"
                         onKeyDown={(e) => {
                           if (e.key === 'Enter' && !e.shiftKey) {
@@ -260,7 +248,7 @@ const ChatPopupContent = () => {
                                     {hasUnread && (
                                       <span className="inline-block w-2 h-2 bg-primary rounded-full"></span>
                                     )}
-                                    {lastMessage.sender_id === user?.id ? 'You' : 'User'}
+                                    {lastMessage.sender_id === user?.id ? (t?.chat?.you || 'You') : (t?.chat?.user || 'User')}
                                   </span>
                                   <span className="text-xs text-muted-foreground">
                                     {new Date(lastMessage.created_at || '').toLocaleDateString()}
@@ -274,11 +262,11 @@ const ChatPopupContent = () => {
                       ) : (
                         <div className="text-center py-8 text-muted-foreground">
                           <MessageCircle className="h-12 w-12 mx-auto mb-2 opacity-50" />
-                          <p>No messages yet</p>
+                          <p>{t?.chat?.noMessages || 'No messages yet'}</p>
                           <p className="text-sm">
                             {userType === 'professional' 
-                              ? 'Institutions will contact you here' 
-                              : 'Start a conversation from professional profiles'}
+                              ? (t?.chat?.institutionsContact || 'Institutions will contact you here')
+                              : (t?.chat?.startConversation || 'Start a conversation from professional profiles')}
                           </p>
                         </div>
                       )}
@@ -296,27 +284,27 @@ const ChatPopupContent = () => {
                     navigate('/messages');
                   }}
                 >
-                  View All in Inbox
+                  {t?.chat?.viewInbox || 'View All in Inbox'}
                 </Button>
               </div>
             </div>
           ) : (
             <div className="p-6 flex flex-col items-center justify-center h-full text-center">
               <MessageCircle className="h-12 w-12 mb-4 text-muted-foreground" />
-              <h3 className="text-lg font-medium mb-2">Sign in to access messaging</h3>
-              <p className="text-muted-foreground mb-6">You need an account to send and receive messages</p>
+              <h3 className="text-lg font-medium mb-2">{t?.chat?.signInRequired || 'Sign in to access messaging'}</h3>
+              <p className="text-muted-foreground mb-6">{t?.chat?.signInDescription || 'You need an account to send and receive messages'}</p>
               <div className="space-x-4">
                 <Button onClick={() => {
                   setIsOpen(false);
                   navigate('/login');
                 }}>
-                  Login
+                  {t?.common?.login || 'Login'}
                 </Button>
                 <Button variant="outline" onClick={() => {
                   setIsOpen(false);
                   navigate('/signup');
                 }}>
-                  Sign Up
+                  {t?.common?.signup || 'Sign Up'}
                 </Button>
               </div>
             </div>
@@ -327,7 +315,6 @@ const ChatPopupContent = () => {
   );
 };
 
-// Main wrapper component that safely renders the ChatPopup
 const ChatPopup = () => {
   return <ChatPopupContent />;
 };
