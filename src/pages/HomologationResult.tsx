@@ -220,7 +220,24 @@ const HomologationResult = () => {
             >
               <Card className="h-full relative overflow-hidden">
                 {/* Blur overlay */}
-                <div className="absolute inset-0 bg-gradient-to-br from-background/0 to-background/80 backdrop-blur-sm z-10" />
+                <div className="absolute inset-0 bg-gradient-to-br from-background/0 to-background/80 backdrop-blur-sm z-10 flex items-center justify-center">
+                  <div className="text-center p-6">
+                    <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium mb-4">
+                      <BookOpen className="h-4 w-4" />
+                      {t.homologationResult.timeline.startNow || "Start Homologation Now"}
+                    </div>
+                    <p className="text-sm text-muted-foreground mb-4">
+                      {t.homologationResult.cta.readyDescription || "The homologation process is complex and full of potential pitfalls. One mistake can cost you months of delay."}
+                    </p>
+                    <Button 
+                      onClick={handleStartHomologation}
+                      className="w-full gap-2"
+                    >
+                      {t.homologationResult.cta.startProcess || "Start My Process"}
+                      <ArrowRight className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </div>
                 
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
@@ -229,7 +246,7 @@ const HomologationResult = () => {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4 relative z-0">
-                  <div className="grid grid-cols-3 gap-4 text-center opacity-60">
+                  <div className="grid grid-cols-3 gap-4 text-center opacity-40">
                     <div className="p-4 bg-green-500/10 rounded-lg">
                       <p className="text-2xl font-bold text-green-600">{countryData.processTime.min}</p>
                       <p className="text-sm text-muted-foreground">{t.homologationResult.timeline.bestCase}</p>
@@ -243,21 +260,6 @@ const HomologationResult = () => {
                       <p className="text-sm text-muted-foreground">{t.homologationResult.timeline.complexCases}</p>
                     </div>
                   </div>
-                  
-                  <div className="text-center py-8">
-                    <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium mb-4">
-                      <BookOpen className="h-4 w-4" />
-                      Full timeline hidden - unlock for €99
-                    </div>
-                    <p className="text-sm text-muted-foreground mb-6">Get your complete timeline, step-by-step roadmap, and personalized action plan</p>
-                    <Button 
-                      onClick={handleStartHomologation}
-                      className="w-full gap-2"
-                    >
-                      {t.homologationResult.timeline.startNow || "Unlock Full Plan - €99"}
-                      <ArrowRight className="h-4 w-4" />
-                    </Button>
-                  </div>
                 </CardContent>
               </Card>
             </motion.div>
@@ -270,7 +272,31 @@ const HomologationResult = () => {
             >
               <Card className="h-full border-2 border-primary/20 relative overflow-hidden">
                 {/* Blur overlay */}
-                <div className="absolute inset-0 bg-gradient-to-br from-background/0 to-background/80 backdrop-blur-sm z-10" />
+                <div className="absolute inset-0 bg-gradient-to-br from-background/0 to-background/80 backdrop-blur-sm z-10 flex items-center justify-center">
+                  <div className="text-center p-6">
+                    <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium mb-4">
+                      <Languages className="h-4 w-4" />
+                      {t.homologationResult.language.title}
+                    </div>
+                    <p className="text-sm text-muted-foreground mb-4">
+                      {needsLanguageCourses() 
+                        ? (t.homologationResult.language.recommendation || "Based on your current level, we recommend language preparation before starting the process.")
+                        : (t.homologationResult.language.needHelp || "Need to reach this level?")
+                      }
+                    </p>
+                    <Button 
+                      size="sm" 
+                      onClick={needsLanguageCourses() ? handleLanguageLearning : handleStartHomologation}
+                      className="w-full gap-2"
+                    >
+                      {needsLanguageCourses() 
+                        ? (t.homologationResult.language.startLearning || "Start Learning")
+                        : (t.homologationResult.cta.startProcess || "Start My Process")
+                      }
+                      <ArrowRight className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </div>
                 
                 <CardHeader className="pb-3">
                   <CardTitle className="flex items-center gap-2">
@@ -279,38 +305,17 @@ const HomologationResult = () => {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4 relative z-0">
-                  <div className="flex items-center justify-between opacity-60">
+                  <div className="flex items-center justify-between opacity-40">
                     <span className="text-muted-foreground">{t.homologationResult.language.requiredLevel}</span>
                     <Badge className="text-lg px-4 py-1">{countryData.languageRequirement.level}</Badge>
                   </div>
-                  <div className="flex items-center justify-between opacity-60">
+                  <div className="flex items-center justify-between opacity-40">
                     <span className="text-muted-foreground">{t.homologationResult.language.yourLevel}</span>
                     <Badge variant={needsLanguageCourses() ? "secondary" : "default"} className="text-lg px-4 py-1">
                       {wizardData.languageLevel || t.homologationResult.language.notSpecified}
                     </Badge>
                   </div>
                   <Separator />
-                  
-                  <div className="text-center py-8">
-                    <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium mb-4">
-                      <Languages className="h-4 w-4" />
-                      Language details hidden - unlock for €99
-                    </div>
-                    <p className="text-sm text-muted-foreground mb-6">
-                      {needsLanguageCourses() 
-                        ? "See your personalized language learning path and access to courses"
-                        : "See detailed language requirements and exam preparation materials"
-                      }
-                    </p>
-                    <Button 
-                      size="sm" 
-                      onClick={handleStartHomologation}
-                      className="w-full gap-2"
-                    >
-                      <BookOpen className="h-4 w-4" />
-                      Unlock Full Plan - €99
-                    </Button>
-                  </div>
                 </CardContent>
               </Card>
             </motion.div>
@@ -356,10 +361,6 @@ const HomologationResult = () => {
             <Card className="bg-gradient-to-r from-primary/10 via-primary/5 to-accent/10 border-2 border-primary/30">
               <CardContent className="pt-6">
                 <div className="flex flex-col items-center text-center gap-4">
-                  <div className="inline-flex items-center gap-2 bg-red-500/20 text-red-600 dark:text-red-400 px-3 py-1 rounded-full text-sm font-medium">
-                    <Sparkles className="h-3 w-3" />
-                    {t.homologationResult.cta?.limitedSpots || "Limited spots available!"}
-                  </div>
                   <div>
                     <h3 className="text-2xl font-bold mb-2">{t.homologationResult.cta.readyTitle}</h3>
                     <p className="text-muted-foreground max-w-2xl">
