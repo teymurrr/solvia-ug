@@ -30,10 +30,13 @@ export const useVacancyApplication = () => {
             title: t?.vacancies?.applyDialog?.alreadyApplied || "Already applied",
             description: t?.vacancies?.applyDialog?.alreadyAppliedDesc || "You have already expressed interest in this position.",
           });
-          return true; // Still counts as applied
+          return true;
         }
         throw error;
       }
+
+      // Fire notification email in the background (non-blocking)
+      sendNotificationEmail(user, vacancyId, message);
 
       toast({
         title: t?.vacancies?.applyDialog?.successTitle || "Interest submitted!",
@@ -55,3 +58,28 @@ export const useVacancyApplication = () => {
 
   return { submitApplication, isSubmitting };
 };
+
+async function sendNotificationEmail(user: any, vacancyId: string, message?: string) {
+  try {
+    // Fetch vacancy + profile info for the email
+    const [vacancyRes, profileRes] = await Promise.all([
+      supabase.from('vacancies').select('title, institution').eq('id', vacancyId).single(),
+      supabase.from('professional_profiles').select('first_name, last_name, email').eq('id', user.id).single(),
+    ]);
+
+    const vacancy = vacancyRes.data;
+    const profile = profileRes.data;
+
+    await supabase.functions.invoke('notify-new-application', {
+      body: {
+        applicantName: profile ? `${profile.first_name} ${profile.last_name}` : user.email,
+        applicantEmail: profile?.email || user.email,
+        vacancyTitle: vacancy?.title || 'Unknown vacancy',
+        vacancyInstitution: vacancy?.institution,
+        message,
+      },
+    });
+  } catch (err) {
+    console.error('Failed to send notification email:', err);
+  }
+}
