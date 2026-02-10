@@ -1,118 +1,48 @@
 
 
-# Landing Page CTA Overhaul + Dual Offer Strategy
+# Cleanup: Remove Unused Pages and Components
 
-## Understanding the Two Offers
+## Summary
 
-Solvia has two independent services that different users may need:
+After analyzing the codebase, I found **4 files** that are dead code -- not routed, not imported, or fully superseded by newer implementations. Removing them reduces bundle size and avoids confusion.
 
-1. **Homologation Service** (credential recognition) — Document preparation, apostilles, translations, file submission, personal advisor, job placement. The packages with manual accompaniment are EUR 199 (Complete) and EUR 499 (Personal Mentorship). The EUR 49 (Digital Starter) is self-service.
+---
 
-2. **Language Classes** (Medical German/French/etc.) — Starter Kit (EUR 29, self-study PDFs + audio), plus presumably live classes at higher tiers. Not everyone going to Spain needs German classes. Not everyone who needs German classes also needs homologation help.
+## Files to Delete
 
-Currently the landing page treats these as one blended funnel, which creates confusion. Some users only need classes (e.g., they can handle paperwork themselves), and some only need homologation (e.g., they already speak the language).
+### 1. `src/pages/Auth.tsx`
+- **Why**: Old combined login/signup page with hardcoded English strings. Fully replaced by the dedicated `Login.tsx`, `ProfessionalSignup.tsx`, and `InstitutionSignup.tsx` pages. Not imported anywhere -- no route, no reference.
 
-## Proposed Strategy: Single Entry Point, Needs Detected in Wizard
+### 2. `src/pages/GermanStarterKit.tsx`
+- **Why**: Superseded by the new country-generic `StarterKit.tsx` (created in the last session). Not referenced in routes or imported anywhere. The new `StarterKit.tsx` handles Germany and all other countries via `?country=` parameter.
 
-Rather than splitting the landing page into two funnels (which halves conversion), the best approach is:
+### 3. `src/pages/Institutions.tsx`
+- **Why**: Contains only hardcoded sample data (fake hospitals). It is imported in `routes.tsx` but **has no `<Route>` element** -- completely unreachable dead code. The institution browsing concept is handled differently through the dashboard.
 
-- **One primary CTA everywhere** that leads to the **homologation wizard** (`/homologation-wizard`)
-- The wizard already captures country + profession + language level
-- Based on wizard answers, the **result page** shows relevant offers:
-  - Low language level + going to Germany? Show both homologation + language classes
-  - Already B2 German? Show only homologation packages
-  - Going to Spain (same language)? Show only homologation, no classes needed
-- The **Learning Mini Banner** stays as a secondary soft entry for users who know they only need classes
+### 4. `src/components/payments/BlackFridayBanner.tsx`
+- **Why**: The "Launch Week" / "Black Friday" fake-urgency banner. It was already removed from `PaymentFlow.tsx` in a previous cleanup. No remaining imports anywhere -- orphaned file.
 
-This way we don't force users to self-segment on the landing page.
+---
 
-## Changes Required
+## Route Cleanup
 
-### 1. Fix All CTAs and Links (all 5 languages)
+In `src/routes.tsx`, the lazy import for `Institutions` will be removed since the page is being deleted. Additionally, the `Vacancies` import (for the `/vacancies-old` route) should be reviewed -- it serves as a legacy fallback but the active route is `VacanciesConversion` at `/vacancies`. I will **remove the `/vacancies-old` route and `Vacancies.tsx`** as well if you approve, since it's a 549-line legacy page that's been replaced.
 
-**Hero Section** (`HeroSectionWithSearch.tsx` + all `hero.ts` files):
-- Primary CTA: "Start my free assessment" -> `/homologation-wizard`
-- Secondary CTA: "Explore open positions" -> `/vacancies`
-- Swap the current primary/secondary — vacancies becomes the soft secondary option
+### 5. `src/pages/Vacancies.tsx` (optional -- recommend removing)
+- **Why**: 549-line legacy vacancies page, only accessible via `/vacancies-old`. Fully replaced by `VacanciesConversion.tsx` which is the active `/vacancies` route. Keeping it creates maintenance confusion.
 
-| Language | New Primary CTA | New Secondary CTA |
-|----------|----------------|-------------------|
-| EN | Start my free assessment | Explore open positions |
-| ES | Comenzar mi evaluacion gratuita | Explorar posiciones abiertas |
-| DE | Meine kostenlose Bewertung starten | Offene Stellen ansehen |
-| FR | Commencer mon evaluation gratuite | Explorer les postes ouverts |
-| RU | Начать бесплатную оценку | Посмотреть открытые позиции |
+---
 
-**Path to Success** (`PathToSuccessSection.tsx` + all `pathToSuccess.ts` files):
-- CTA: "Start my free assessment" -> `/homologation-wizard` (currently `/signup`)
+## Changes Summary
 
-| Language | New CTA |
-|----------|---------|
-| EN | Start My Free Assessment |
-| ES | Comenzar Mi Evaluacion Gratuita |
-| DE | Meine kostenlose Bewertung starten |
-| FR | Commencer Mon Evaluation Gratuite |
-| RU | Начать Бесплатную Оценку |
+| Action | File |
+|--------|------|
+| Delete | `src/pages/Auth.tsx` |
+| Delete | `src/pages/GermanStarterKit.tsx` |
+| Delete | `src/pages/Institutions.tsx` |
+| Delete | `src/components/payments/BlackFridayBanner.tsx` |
+| Delete | `src/pages/Vacancies.tsx` (recommended) |
+| Edit | `src/routes.tsx` -- remove dead imports (`Institutions`, `Vacancies`) and the `/vacancies-old` route |
 
-**Success Stories** (`SuccessStoriesSection.tsx`):
-- Fix micro-CTA link: `/homologation` -> `/homologation-wizard`
-- Fix card CTA links: `/homologation` -> `/homologation-wizard`
-
-**Super CTA** (`SuperCTASection.tsx` + all `landing.ts` files):
-- Primary: "Start my free assessment" -> `/homologation-wizard`
-- Secondary: "Explore open positions" -> `/vacancies`
-- Fix links from `/signup/professional` and `/homologation`
-
-| Language | New Primary | New Secondary |
-|----------|------------|---------------|
-| EN | Start my free assessment | Explore open positions |
-| ES | Comenzar mi evaluacion gratuita | Explorar posiciones abiertas |
-| DE | Meine kostenlose Bewertung starten | Offene Stellen ansehen |
-| FR | Commencer mon evaluation gratuite | Explorer les postes ouverts |
-| RU | Начать бесплатную оценку | Посмотреть открытые позиции |
-
-### 2. Remove Distracting/Problematic Elements
-
-**Remove from `Index.tsx`:**
-- `BlackFridayBanner` (fake urgency with resetting countdown and `Math.random()` spots)
-- `EmployerBanner` (targets wrong audience — B2B on a B2C page)
-
-### 3. Keep Learning Mini Banner As-Is
-
-The `LearningMiniBanner` stays as the secondary entry point for users who only need language classes. It links to `/learning/starter-kit` which is correct — it serves the "I only need classes" segment without cluttering the main funnel.
-
-### 4. FAQ Micro-CTAs Are Already Correct
-
-The `ConversionFAQSection` already links to `/homologation-wizard?country=X` — no changes needed there.
-
-## Files to Modify
-
-| File | Change |
-|------|--------|
-| `src/components/landing/HeroSectionWithSearch.tsx` | Swap CTA destinations and translation keys |
-| `src/components/landing/PathToSuccessSection.tsx` | Change link from `/signup` to `/homologation-wizard` |
-| `src/components/landing/SuccessStoriesSection.tsx` | Change 3 links from `/homologation` to `/homologation-wizard` |
-| `src/components/landing/SuperCTASection.tsx` | Change both CTA destinations and translation keys |
-| `src/pages/Index.tsx` | Remove BlackFridayBanner and EmployerBanner |
-| `src/utils/i18n/languages/en/hero.ts` | Update CTA text |
-| `src/utils/i18n/languages/es/hero.ts` | Update CTA text |
-| `src/utils/i18n/languages/de/hero.ts` | Update CTA text |
-| `src/utils/i18n/languages/fr/hero.ts` | Update CTA text |
-| `src/utils/i18n/languages/ru/hero.ts` | Update CTA text |
-| `src/utils/i18n/languages/en/landing.ts` | Update superCta text |
-| `src/utils/i18n/languages/es/landing.ts` | Update superCta text |
-| `src/utils/i18n/languages/de/landing.ts` | Update superCta text |
-| `src/utils/i18n/languages/fr/landing.ts` | Update superCta text |
-| `src/utils/i18n/languages/ru/landing.ts` | Update superCta text |
-| `src/utils/i18n/languages/en/pathToSuccess.ts` | Update CTA text |
-| `src/utils/i18n/languages/es/pathToSuccess.ts` | Update CTA text |
-| `src/utils/i18n/languages/de/pathToSuccess.ts` | Update CTA text |
-| `src/utils/i18n/languages/fr/pathToSuccess.ts` | Update CTA text |
-| `src/utils/i18n/languages/ru/pathToSuccess.ts` | Update CTA text |
-
-## What This Does NOT Cover (Future Work)
-
-- Modifying the wizard result page to conditionally show classes vs. homologation based on user answers — that is a separate, larger piece of work
-- Clarifying what the EUR 49/199/499 packages actually deliver (needs your input)
-- The classes product page and its own funnel
+No database changes, no translation file changes, no component dependency breakage.
 
