@@ -8,9 +8,14 @@ import { Textarea } from '@/components/ui/textarea';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import MainLayout from '@/components/MainLayout';
 import { useCommunityPost, useCommunityReplies, useCreateReply, useToggleVote, useUserVotes } from '@/hooks/useCommunity';
+import { useTranslatedPosts, useTranslatedReplies } from '@/hooks/useTranslatedPosts';
 import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/hooks/useLanguage';
+import TranslatedBadge from '@/components/community/TranslatedBadge';
 import { formatDistanceToNow } from 'date-fns';
+import { de, fr, es, ru } from 'date-fns/locale';
+
+const dateFnsLocaleMap: Record<string, any> = { de, fr, es, ru };
 
 const CommunityPostPage = () => {
   const { id } = useParams();
@@ -20,8 +25,19 @@ const CommunityPostPage = () => {
   const createReply = useCreateReply();
   const toggleVote = useToggleVote();
   const { isLoggedIn } = useAuth();
-  const { t } = useLanguage();
+  const { t, currentLanguage } = useLanguage();
   const [replyContent, setReplyContent] = useState('');
+
+  const postsArray = post ? [post] : undefined;
+  const { data: translationData } = useTranslatedPosts(postsArray, currentLanguage);
+  const displayPost = translationData?.posts?.[0] || post;
+  const postTranslated = translationData?.translatedIds?.has(post?.id || '') || false;
+
+  const { data: replyTranslationData } = useTranslatedReplies(replies, currentLanguage);
+  const displayReplies = replyTranslationData?.replies || replies;
+  const translatedReplyIds = replyTranslationData?.translatedIds || new Set<string>();
+
+  const dateFnsLocale = dateFnsLocaleMap[currentLanguage];
 
   const ct = (t as any)?.community;
 
@@ -52,7 +68,7 @@ const CommunityPostPage = () => {
     );
   }
 
-  if (!post) {
+  if (!displayPost) {
     return (
       <MainLayout>
         <div className="max-w-3xl mx-auto px-4 py-16 text-center">
@@ -75,63 +91,64 @@ const CommunityPostPage = () => {
         {/* Post */}
         <article className="bg-card border border-border rounded-lg p-6 mb-6">
           <div className="flex items-center gap-2 mb-3">
-            {post.is_pinned && <Pin className="h-4 w-4 text-primary" />}
-            <Badge variant="outline">{categoryLabel(post.category)}</Badge>
-            {post.tags?.map(tag => (
+            {displayPost.is_pinned && <Pin className="h-4 w-4 text-primary" />}
+            <Badge variant="outline">{categoryLabel(displayPost.category)}</Badge>
+            {displayPost.tags?.map(tag => (
               <Badge key={tag} variant="secondary" className="text-xs">{tag}</Badge>
             ))}
+            {postTranslated && <TranslatedBadge />}
           </div>
           
-          <h1 className="text-2xl font-bold text-foreground mb-4">{post.title}</h1>
+          <h1 className="text-2xl font-bold text-foreground mb-4">{displayPost.title}</h1>
           
           <div className="flex items-center gap-3 mb-4">
             <Avatar className="h-8 w-8">
-              <AvatarImage src={post.author?.profile_image || undefined} />
+              <AvatarImage src={displayPost.author?.profile_image || undefined} />
               <AvatarFallback className="bg-primary/10 text-primary text-xs">
-                {post.author?.first_name?.[0]}{post.author?.last_name?.[0]}
+                {displayPost.author?.first_name?.[0]}{displayPost.author?.last_name?.[0]}
               </AvatarFallback>
             </Avatar>
             <div>
-              <span className="text-sm font-medium">{post.author?.first_name} {post.author?.last_name}</span>
-              {post.author?.specialty && <span className="text-xs text-muted-foreground ml-2">{post.author.specialty}</span>}
+              <span className="text-sm font-medium">{displayPost.author?.first_name} {displayPost.author?.last_name}</span>
+              {displayPost.author?.specialty && <span className="text-xs text-muted-foreground ml-2">{displayPost.author.specialty}</span>}
             </div>
             <span className="text-xs text-muted-foreground ml-auto">
-              {formatDistanceToNow(new Date(post.created_at), { addSuffix: true })}
+              {formatDistanceToNow(new Date(displayPost.created_at), { addSuffix: true, locale: dateFnsLocale })}
             </span>
           </div>
 
           <div className="prose prose-sm max-w-none text-foreground whitespace-pre-wrap mb-4">
-            {post.content}
+            {displayPost.content}
           </div>
 
           <div className="flex items-center gap-4 pt-4 border-t border-border">
             <Button
               variant="ghost"
               size="sm"
-              onClick={() => isLoggedIn && toggleVote.mutate({ postId: post.id })}
-              className={userVotes?.postVotes?.has(post.id) ? 'text-primary' : ''}
+              onClick={() => isLoggedIn && toggleVote.mutate({ postId: displayPost.id })}
+              className={userVotes?.postVotes?.has(displayPost.id) ? 'text-primary' : ''}
               disabled={!isLoggedIn}
             >
-              <ThumbsUp className="h-4 w-4 mr-1" /> {post.upvotes}
+              <ThumbsUp className="h-4 w-4 mr-1" /> {displayPost.upvotes}
             </Button>
             <span className="text-sm text-muted-foreground flex items-center gap-1">
-              <MessageSquare className="h-4 w-4" /> {post.reply_count} {ct?.replies || 'replies'}
+              <MessageSquare className="h-4 w-4" /> {displayPost.reply_count} {ct?.replies || 'replies'}
             </span>
           </div>
         </article>
 
         {/* Replies */}
         <div className="space-y-4 mb-6">
-          <h2 className="text-lg font-semibold">{ct?.replies || 'Replies'} ({replies?.length || 0})</h2>
+          <h2 className="text-lg font-semibold">{ct?.replies || 'Replies'} ({displayReplies?.length || 0})</h2>
           
           {repliesLoading ? (
             <div className="flex justify-center py-8">
               <div className="animate-spin rounded-full h-6 w-6 border-t-2 border-b-2 border-primary" />
             </div>
-          ) : replies?.length === 0 ? (
+          ) : displayReplies?.length === 0 ? (
             <p className="text-muted-foreground text-sm py-4">{ct?.noReplies || 'No replies yet. Be the first to respond!'}</p>
           ) : (
-            replies?.map(reply => (
+            displayReplies?.map(reply => (
               <div
                 key={reply.id}
                 className={`bg-card border rounded-lg p-4 ${reply.is_best_answer ? 'border-primary bg-primary/5' : 'border-border'}`}
@@ -150,8 +167,9 @@ const CommunityPostPage = () => {
                   </Avatar>
                   <span className="text-sm font-medium">{reply.author?.first_name} {reply.author?.last_name}</span>
                   {reply.author?.specialty && <Badge variant="secondary" className="text-xs py-0">{reply.author.specialty}</Badge>}
+                  {translatedReplyIds.has(reply.id) && <TranslatedBadge />}
                   <span className="text-xs text-muted-foreground ml-auto">
-                    {formatDistanceToNow(new Date(reply.created_at), { addSuffix: true })}
+                    {formatDistanceToNow(new Date(reply.created_at), { addSuffix: true, locale: dateFnsLocale })}
                   </span>
                 </div>
                 <p className="text-sm text-foreground whitespace-pre-wrap mb-3">{reply.content}</p>
