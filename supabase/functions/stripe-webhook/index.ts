@@ -82,6 +82,28 @@ serve(async (req) => {
 
         console.log("✅ [STRIPE-WEBHOOK] Payment updated:", payment.id);
 
+        // Deliver starter kit if applicable
+        if (payment.product_type === 'german_starter_kit' && session.payment_status === 'paid') {
+          const customerEmail = session.customer_email || (payment.metadata as any)?.customerEmail;
+          const locale = (payment.metadata as any)?.locale || 'en';
+          if (customerEmail) {
+            try {
+              const deliverUrl = `${Deno.env.get("SUPABASE_URL")}/functions/v1/deliver-starter-kit`;
+              await fetch(deliverUrl, {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${Deno.env.get("SUPABASE_ANON_KEY")}`,
+                },
+                body: JSON.stringify({ email: customerEmail, language: locale }),
+              });
+              console.log("📦 [STRIPE-WEBHOOK] Starter kit delivery triggered for:", customerEmail);
+            } catch (deliverError) {
+              console.error("❌ [STRIPE-WEBHOOK] Failed to deliver starter kit:", deliverError);
+            }
+          }
+        }
+
         // Increment discount code usage if applicable
         if (payment.discount_code && session.payment_status === "paid") {
           const { data: discountData } = await supabaseClient

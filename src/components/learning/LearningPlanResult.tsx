@@ -1,5 +1,6 @@
 import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
+import StarterKitOffer from './StarterKitOffer';
 import { Button } from '@/components/ui/button';
 import { Check, Clock, Award, BookOpen, MessageCircle, ArrowRight } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
@@ -154,8 +155,13 @@ const LearningPlanResult: React.FC<LearningPlanResultProps> = ({
         </CardContent>
       </Card>
 
+      {/* Starter Kit Offer for Germany */}
+      {wizardData.country === 'germany' && (
+        <StarterKitOffer />
+      )}
+
       {/* CTAs */}
-      <div className="flex flex-col sm:flex-row gap-4 justify-center">
+      <div className="flex flex-col sm:flex-row gap-4 justify-center mt-8">
         <Button
           size="lg"
           onClick={onConsultation}
