@@ -31,8 +31,10 @@ export const hero = {
   },
   stats: {
     professionals: 'Registered professionals',
-    homologations: 'Homologations in progress',
+    homologations: 'Open positions',
     countries: 'Countries available',
-    satisfaction: 'User satisfaction'
+    satisfaction: 'User satisfaction',
+    accelerators: 'Accelerator partners',
+    digital: 'Digital process'
   }
 };

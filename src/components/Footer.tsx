@@ -1,43 +1,13 @@
 
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '@/contexts/AuthContext';
+import { Link } from 'react-router-dom';
 import Logo from './Logo';
-import { useToast } from '@/hooks/use-toast';
 import { useLanguage } from '@/hooks/useLanguage';
 import { Instagram, Linkedin } from 'lucide-react';
 
 const Footer: React.FC = () => {
-  const { isLoggedIn } = useAuth();
-  const navigate = useNavigate();
-  const { toast } = useToast();
   const { t } = useLanguage();
 
-  const handleProfessionalLink = (e: React.MouseEvent<HTMLAnchorElement>, path: string) => {
-    e.preventDefault();
-    if (isLoggedIn) {
-      navigate(path);
-    } else {
-      toast({
-        title: "Authentication Required",
-        description: "Please sign up as a professional to access this feature.",
-      });
-      navigate('/signup/professional');
-    }
-  };
-
-  const handleInstitutionLink = (e: React.MouseEvent<HTMLAnchorElement>, path: string) => {
-    e.preventDefault();
-    if (isLoggedIn) {
-      navigate(path);
-    } else {
-      toast({
-        title: "Authentication Required",
-        description: "Please sign up as an institution to access this feature.",
-      });
-      navigate('/signup/institution');
-    }
-  };
 
   return (
     <footer className="bg-white border-t">
@@ -54,22 +24,14 @@ const Footer: React.FC = () => {
             <h4 className="font-medium text-base">{t?.footer?.forProfessionals || "For Professionals"}</h4>
             <ul className="space-y-2">
               <li>
-                <a 
-                  href="#" 
-                  onClick={(e) => handleProfessionalLink(e, '/professionals')}
-                  className="text-sm text-muted-foreground hover:text-medical-600 transition-colors"
-                >
+                <Link to="/signup/professional" className="text-sm text-muted-foreground hover:text-primary transition-colors">
                   {t?.footer?.createProfile || "Create Profile"}
-                </a>
+                </Link>
               </li>
               <li>
-                <a 
-                  href="#" 
-                  onClick={(e) => handleProfessionalLink(e, '/professionals/search')}
-                  className="text-sm text-muted-foreground hover:text-medical-600 transition-colors"
-                >
+                <Link to="/vacancies" className="text-sm text-muted-foreground hover:text-primary transition-colors">
                   {t?.footer?.findOpportunities || "Find Opportunities"}
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
@@ -78,22 +40,14 @@ const Footer: React.FC = () => {
             <h4 className="font-medium text-base">{t?.footer?.forInstitutions || "For Institutions"}</h4>
             <ul className="space-y-2">
               <li>
-                <a 
-                  href="#" 
-                  onClick={(e) => handleInstitutionLink(e, '/institutions')}
-                  className="text-sm text-muted-foreground hover:text-medical-600 transition-colors"
-                >
+                <Link to="/employers" className="text-sm text-muted-foreground hover:text-primary transition-colors">
                   {t?.footer?.postPositions || "Post Positions"}
-                </a>
+                </Link>
               </li>
               <li>
-                <a 
-                  href="#" 
-                  onClick={(e) => handleInstitutionLink(e, '/institutions/search')}
-                  className="text-sm text-muted-foreground hover:text-medical-600 transition-colors"
-                >
+                <Link to="/signup/institution" className="text-sm text-muted-foreground hover:text-primary transition-colors">
                   {t?.footer?.searchProfessionals || "Search Professionals"}
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
@@ -102,27 +56,27 @@ const Footer: React.FC = () => {
             <h4 className="font-medium text-base">{t?.footer?.company || "Company"}</h4>
             <ul className="space-y-2">
               <li>
-                <Link to="/about" className="text-sm text-muted-foreground hover:text-medical-600 transition-colors">
+                <Link to="/about" className="text-sm text-muted-foreground hover:text-primary transition-colors">
                   {t?.common?.about || "About Us"}
                 </Link>
               </li>
               <li>
-                <Link to="/contact" className="text-sm text-muted-foreground hover:text-medical-600 transition-colors">
+                <Link to="/contact" className="text-sm text-muted-foreground hover:text-primary transition-colors">
                   {t?.common?.contact || "Contact"}
                 </Link>
               </li>
               <li>
-                <Link to="/privacy" className="text-sm text-muted-foreground hover:text-medical-600 transition-colors">
+                <Link to="/privacy" className="text-sm text-muted-foreground hover:text-primary transition-colors">
                   {t?.footer?.privacyPolicy || "Privacy Policy"}
                 </Link>
               </li>
               <li>
-                <Link to="/terms" className="text-sm text-muted-foreground hover:text-medical-600 transition-colors">
+                <Link to="/terms" className="text-sm text-muted-foreground hover:text-primary transition-colors">
                   {t?.footer?.termsOfService || "Terms of Service"}
                 </Link>
               </li>
               <li>
-                <Link to="/impressum" className="text-sm text-muted-foreground hover:text-medical-600 transition-colors">
+                <Link to="/impressum" className="text-sm text-muted-foreground hover:text-primary transition-colors">
                   {t?.footer?.impressum || "Impressum"}
                 </Link>
               </li>

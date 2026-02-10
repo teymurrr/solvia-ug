@@ -205,5 +205,18 @@ export const landing = {
   learningMiniBanner: {
     text: "¿Necesitas aprender el idioma médico para Europa?",
     cta: "Aprende más"
+  },
+  pricingTeaser: "Planes desde €49",
+  whatYouGet: {
+    title: "Lo que Solvia hace por ti",
+    subtitle: "Nos encargamos del papeleo complejo para que tú te concentres en tu carrera",
+    features: [
+      { title: "Preparación de documentos", description: "Revisamos, organizamos y preparamos tu expediente completo — sin riesgo de rechazo." },
+      { title: "Traducciones y apostillas", description: "Traducciones certificadas y coordinación de apostillas incluidas." },
+      { title: "Gestión de homologación", description: "Gestión completa del reconocimiento de tu título en el país de destino." },
+      { title: "Ofertas laborales", description: "Acceso a posiciones verificadas en hospitales y clínicas de Europa." },
+      { title: "Asesor personal", description: "Un gestor dedicado te guía en cada paso del proceso." },
+      { title: "Soporte continuo", description: "Seguimiento continuo hasta que estés trabajando en tu nuevo país." }
+    ]
   }
 };

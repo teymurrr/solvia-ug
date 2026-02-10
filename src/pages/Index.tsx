@@ -6,6 +6,7 @@ import PartnersSection from '@/components/landing/PartnersSection';
 
 // Lazy load sections below the fold
 const JobExplorerSection = React.lazy(() => import('@/components/landing/JobExplorerSection'));
+const WhatYouGetSection = React.lazy(() => import('@/components/landing/WhatYouGetSection'));
 const SuccessStoriesSection = React.lazy(() => import('@/components/landing/SuccessStoriesSection'));
 const ConversionFAQSection = React.lazy(() => import('@/components/landing/ConversionFAQSection'));
 const LearningMiniBanner = React.lazy(() => import('@/components/landing/LearningMiniBanner'));
@@ -31,6 +32,11 @@ const Index = () => {
       <div id="path-to-success">
         <PathToSuccessSection />
       </div>
+      
+      {/* What Solvia handles for you */}
+      <Suspense fallback={<LoadingFallback height="h-64" />}>
+        <WhatYouGetSection />
+      </Suspense>
       
       {/* Job Explorer - includes country comparison with pricing */}
       <Suspense fallback={<LoadingFallback height="h-96" />}>

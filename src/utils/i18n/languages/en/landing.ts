@@ -205,5 +205,18 @@ export const landing = {
   learningMiniBanner: {
     text: "Need to learn the medical language for Europe?",
     cta: "Learn more"
+  },
+  pricingTeaser: "Plans from €49",
+  whatYouGet: {
+    title: "What Solvia Handles for You",
+    subtitle: "We take care of the complex paperwork so you can focus on your career",
+    features: [
+      { title: "Document Preparation", description: "We review, organize, and prepare your complete file for submission — no risk of rejection." },
+      { title: "Translations & Apostilles", description: "Certified translations and apostille coordination handled for you." },
+      { title: "Homologation Management", description: "End-to-end management of your license recognition process in your target country." },
+      { title: "Job Matching", description: "Access to verified positions in hospitals and clinics across Europe." },
+      { title: "Personal Advisor", description: "A dedicated case manager guides you through every step of the process." },
+      { title: "Ongoing Support", description: "Continuous follow-up until you're working in your new country." }
+    ]
   }
 };

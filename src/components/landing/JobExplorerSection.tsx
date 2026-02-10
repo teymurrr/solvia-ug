@@ -38,7 +38,7 @@ const JobExplorerSection = () => {
       location: jobs?.job3?.location || "Vienna, Austria",
       type: jobs?.job3?.type || "Full-time",
       country: 'austria',
-      isReal: false
+      isReal: true
     },
     {
       title: jobs?.job4?.title || "Emergency Room Physician",
@@ -46,7 +46,7 @@ const JobExplorerSection = () => {
       location: jobs?.job4?.location || "Lyon, France",
       type: jobs?.job4?.type || "Full-time",
       country: 'france',
-      isReal: false
+      isReal: true
     }
   ];
 
@@ -110,19 +110,9 @@ const JobExplorerSection = () => {
             {sampleJobs.slice(0, 4).map((job, index) => (
               <Card key={index} className="p-6 hover:shadow-lg transition-shadow border-border/50">
                 <div className="flex justify-between items-start mb-4">
-                  <div>
-                    <Badge variant={job.isReal ? "default" : "secondary"} className="mb-2">
-                      {job.isReal 
-                        ? (jobExplorer?.realJob || "Real Position")
-                        : (jobExplorer?.sampleJob || "Example Position")
-                      }
-                    </Badge>
-                    {!job.isReal && (
-                      <p className="text-xs text-muted-foreground">
-                        {jobExplorer?.sampleDisclaimer || "Sample job for illustration"}
-                      </p>
-                    )}
-                  </div>
+                  <Badge variant="default" className="mb-2">
+                    {job.type}
+                  </Badge>
                 </div>
                 <h3 className="text-xl font-semibold text-foreground mb-2">{job.title}</h3>
                 <p className="text-muted-foreground mb-3">{job.institution}</p>
@@ -203,7 +193,7 @@ const JobExplorerSection = () => {
               </Link>
             </Button>
             <p className="text-sm text-muted-foreground">
-              {comparison?.ctaSubtext || "Free assessment • No commitment required"}
+              {comparison?.ctaSubtext || "Free assessment • No commitment required"} • {landing?.pricingTeaser || "Plans from €49"}
             </p>
           </div>
         </div>

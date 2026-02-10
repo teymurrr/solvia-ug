@@ -16,10 +16,10 @@ const HeroSectionWithSearch = React.memo(() => {
   ];
 
   const stats = [
-    { number: "+500", label: t.hero.stats?.professionals || "Registered professionals" },
-    { number: "+200", label: t.hero.stats?.homologations || "Homologations in progress" },
-    { number: "5", label: t.hero.stats?.countries || "Countries available" },
-    { number: "92%", label: t.hero.stats?.satisfaction || "User satisfaction" }
+    { number: "4", label: t.hero.stats?.countries || "Countries available" },
+    { number: "200+", label: t.hero.stats?.homologations || "Open positions" },
+    { number: "2", label: t.hero.stats?.accelerators || "Accelerator partners" },
+    { number: "100%", label: t.hero.stats?.digital || "Digital process" }
   ];
   
   return (
@@ -32,7 +32,7 @@ const HeroSectionWithSearch = React.memo(() => {
           style={{ backgroundImage: `url(${heroBackground})` }}
         />
         {/* Overlay for text readability - subtle background */}
-        <div className="absolute inset-0 bg-background/90" />
+        <div className="absolute inset-0 bg-background/60" />
         <div className="container mx-auto px-4 py-24 md:py-32 lg:py-40 relative z-10">
           <div className="max-w-3xl mx-auto text-center space-y-6">
             {/* Main Headline */}
