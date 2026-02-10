@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { MessageSquare, ThumbsUp, ArrowRight, Users } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -8,6 +8,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { useCommunityPosts } from '@/hooks/useCommunity';
 import { useLanguage } from '@/hooks/useLanguage';
 import { formatDistanceToNow } from 'date-fns';
+import { de, fr, es, ru } from 'date-fns/locale';
 
 interface CommunityWidgetProps {
   userSpecialty?: string | null;
@@ -16,8 +17,13 @@ interface CommunityWidgetProps {
 
 const CommunityWidget: React.FC<CommunityWidgetProps> = ({ userSpecialty, compact = false }) => {
   const { data: posts, isLoading } = useCommunityPosts();
-  const { t } = useLanguage();
+  const { t, currentLanguage } = useLanguage();
   const ct = (t as any)?.community;
+
+  const dateFnsLocale = useMemo(() => {
+    const localeMap = { de, fr, es, ru } as Record<string, typeof de>;
+    return localeMap[currentLanguage];
+  }, [currentLanguage]);
 
   const maxPosts = compact ? 2 : 3;
 
@@ -91,7 +97,7 @@ const CommunityWidget: React.FC<CommunityWidgetProps> = ({ userSpecialty, compac
                     <MessageSquare className="h-3 w-3" /> {post.reply_count}
                   </span>
                   <span className="ml-auto">
-                    {formatDistanceToNow(new Date(post.created_at), { addSuffix: true })}
+                    {formatDistanceToNow(new Date(post.created_at), { addSuffix: true, locale: dateFnsLocale })}
                   </span>
                 </div>
               </Link>
