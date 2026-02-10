@@ -11,6 +11,7 @@ const SuccessStoriesSection = React.lazy(() => import('@/components/landing/Succ
 const ConversionFAQSection = React.lazy(() => import('@/components/landing/ConversionFAQSection'));
 const LearningMiniBanner = React.lazy(() => import('@/components/landing/LearningMiniBanner'));
 const SuperCTASection = React.lazy(() => import('@/components/landing/SuperCTASection'));
+const CommunitySection = React.lazy(() => import('@/components/landing/CommunitySection'));
 
 // Simple loading fallback
 const LoadingFallback = ({ height }: { height: string }) => (
@@ -43,6 +44,11 @@ const Index = () => {
         <SuccessStoriesSection />
       </Suspense>
       
+      {/* Community Section */}
+      <Suspense fallback={<LoadingFallback height="h-96" />}>
+        <CommunitySection />
+      </Suspense>
+
       {/* Conversion FAQ with micro-CTAs */}
       <Suspense fallback={<LoadingFallback height="h-96" />}>
         <ConversionFAQSection />
