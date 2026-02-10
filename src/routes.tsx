@@ -41,11 +41,9 @@ const SolviaLearning = lazy(() => import("@/pages/SolviaLearning"));
 const StarterKit = lazy(() => import("@/pages/StarterKit"));
 const Professionals = lazy(() => import("@/pages/Professionals"));
 const ProfessionalProfile = lazy(() => import("@/pages/ProfessionalProfile"));
-const Institutions = lazy(() => import("@/pages/Institutions"));
 const NotFound = lazy(() => import("@/pages/NotFound"));
 
 // Vacancy related pages
-const Vacancies = lazy(() => import("@/pages/Vacancies"));
 const VacanciesConversion = lazy(() => import("@/pages/VacanciesConversion"));
 
 // Messaging page
@@ -132,7 +130,6 @@ const AppRoutes = () => {
 
         {/* Vacancy routes */}
         <Route path="/vacancies" element={<VacanciesConversion />} />
-        <Route path="/vacancies-old" element={<Vacancies />} />
 
         {/* Protected routes */}
         <Route
