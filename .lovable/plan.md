@@ -1,135 +1,118 @@
 
 
-# Quick-Win Product: "Medical German Starter Kit" -- Digital Product for Immediate Sales
+# Landing Page CTA Overhaul + Dual Offer Strategy
 
-## Analysis: Why This Will Sell Fastest
+## Understanding the Two Offers
 
-### What we already have built:
-- Full learning page with wizard (country > level > profession)
-- Payment infrastructure with Stripe (3 tiers: 49/199/499 EUR)
-- Lead capture form sending to Resend
-- Localized content in 5 languages
-- Exam prep data for FSP/TELC
+Solvia has two independent services that different users may need:
 
-### What's missing for fast sales:
-The current flow goes: Wizard -> Free Plan Result -> "Get Free Consultation" (lead form). There is NO direct purchase path from the Learning page. The payment flow only exists on `/homologation-payment` and is tied to the homologation process, not language learning specifically.
+1. **Homologation Service** (credential recognition) — Document preparation, apostilles, translations, file submission, personal advisor, job placement. The packages with manual accompaniment are EUR 199 (Complete) and EUR 499 (Personal Mentorship). The EUR 49 (Digital Starter) is self-service.
 
-### The fastest-to-sell product: "German Medical Language Starter Kit" at EUR 29
+2. **Language Classes** (Medical German/French/etc.) — Starter Kit (EUR 29, self-study PDFs + audio), plus presumably live classes at higher tiers. Not everyone going to Spain needs German classes. Not everyone who needs German classes also needs homologation help.
 
-**Why EUR 29?**
-- Aligns with the "small yes" strategy already documented in memory (EUR 29-49 entry products)
-- Low enough for impulse purchase -- no committee decision needed
-- High enough to filter serious buyers from tire-kickers
-- Creates a buyer relationship for upselling to Complete (EUR 199) or Mentorship (EUR 499)
+Currently the landing page treats these as one blended funnel, which creates confusion. Some users only need classes (e.g., they can handle paperwork themselves), and some only need homologation (e.g., they already speak the language).
 
-**What it includes (digital, zero marginal cost):**
-1. PDF: "50 Essential Medical German Phrases for Day 1 at the Hospital"
-2. PDF: "FSP Exam Structure & Timeline Guide"  
-3. PDF: "Your Personal Roadmap: A1 to Approbation"
-4. Audio: 10 pronunciation examples of critical medical terms (can link to external hosted files)
-5. Checklist: "Document Checklist for Approbation in Germany"
-6. Bonus: 1 free 15-minute consultation call booking link
+## Proposed Strategy: Single Entry Point, Needs Detected in Wizard
 
-**Why this is fast to implement:**
-- All content is informational (PDFs can be stored in Supabase Storage or linked externally)
-- We already have Stripe payment infrastructure
-- We already have the learning page as the funnel
-- We just need: a new product card, a payment path, and a delivery email
+Rather than splitting the landing page into two funnels (which halves conversion), the best approach is:
 
-## Implementation Plan
+- **One primary CTA everywhere** that leads to the **homologation wizard** (`/homologation-wizard`)
+- The wizard already captures country + profession + language level
+- Based on wizard answers, the **result page** shows relevant offers:
+  - Low language level + going to Germany? Show both homologation + language classes
+  - Already B2 German? Show only homologation packages
+  - Going to Spain (same language)? Show only homologation, no classes needed
+- The **Learning Mini Banner** stays as a secondary soft entry for users who know they only need classes
 
-### 1. New Landing Section: "German Starter Kit" Card on Learning Page
-Add a dedicated product card between the wizard result and the consultation form on `/learning`. When the user completes the wizard and selects Germany, show this as a prominent "Start Now for EUR 29" offer alongside the existing plan result.
+This way we don't force users to self-segment on the landing page.
 
-**Key conversion elements:**
-- Show it right after the wizard result (highest intent moment)
-- Urgency: "Limited introductory price"
-- Social proof: "Join 500+ professionals who started here"
-- Clear deliverables list
-- One-click buy button
+## Changes Required
 
-### 2. Dedicated Purchase Page: `/learning/starter-kit`
-A focused, single-product landing page for the German Starter Kit:
-- Hero with value proposition
-- What's included (visual checklist)
-- Testimonial from existing learning data
-- Email input + "Buy Now EUR 29" button
-- FAQ (2-3 questions)
-- Money-back guarantee badge
+### 1. Fix All CTAs and Links (all 5 languages)
 
-### 3. Backend: New Stripe Product + Delivery Edge Function
+**Hero Section** (`HeroSectionWithSearch.tsx` + all `hero.ts` files):
+- Primary CTA: "Start my free assessment" -> `/homologation-wizard`
+- Secondary CTA: "Explore open positions" -> `/vacancies`
+- Swap the current primary/secondary — vacancies becomes the soft secondary option
 
-**Edge function: `create-learning-payment`**
-- Creates a Stripe Checkout session for EUR 29
-- Metadata includes: product type `german_starter_kit`, customer email, language
-- Success/cancel URLs point to dedicated pages
+| Language | New Primary CTA | New Secondary CTA |
+|----------|----------------|-------------------|
+| EN | Start my free assessment | Explore open positions |
+| ES | Comenzar mi evaluacion gratuita | Explorar posiciones abiertas |
+| DE | Meine kostenlose Bewertung starten | Offene Stellen ansehen |
+| FR | Commencer mon evaluation gratuite | Explorer les postes ouverts |
+| RU | Начать бесплатную оценку | Посмотреть открытые позиции |
 
-**Edge function: `deliver-starter-kit`** (triggered by Stripe webhook or on payment success page)
-- Sends a localized email with download links to the purchased materials
-- Records the purchase in the database
-- Triggers a follow-up nurture sequence (upsell to Complete Package after 3 days)
+**Path to Success** (`PathToSuccessSection.tsx` + all `pathToSuccess.ts` files):
+- CTA: "Start my free assessment" -> `/homologation-wizard` (currently `/signup`)
 
-### 4. Payment Success Page Update
-After purchase, redirect to a thank-you page with:
-- Immediate access to materials (download links)
-- "Your next step" upsell to Complete Package (EUR 199)
-- Consultation booking link (the free 15-min bonus)
+| Language | New CTA |
+|----------|---------|
+| EN | Start My Free Assessment |
+| ES | Comenzar Mi Evaluacion Gratuita |
+| DE | Meine kostenlose Bewertung starten |
+| FR | Commencer Mon Evaluation Gratuite |
+| RU | Начать Бесплатную Оценку |
 
-### 5. Integration Points on Existing Pages
-- **Learning page wizard result**: When country = Germany, show "Start with the Starter Kit" CTA (EUR 29) alongside existing "Get Free Consultation"
-- **Landing page LearningMiniBanner**: Update to mention "German Starter Kit from EUR 29"
-- **Homologation result page**: Cross-sell the Starter Kit for users who selected Germany
+**Success Stories** (`SuccessStoriesSection.tsx`):
+- Fix micro-CTA link: `/homologation` -> `/homologation-wizard`
+- Fix card CTA links: `/homologation` -> `/homologation-wizard`
 
-### 6. Translation Keys
-Add `starterKit` section to all 5 language files with product descriptions, CTAs, and delivery email content.
+**Super CTA** (`SuperCTASection.tsx` + all `landing.ts` files):
+- Primary: "Start my free assessment" -> `/homologation-wizard`
+- Secondary: "Explore open positions" -> `/vacancies`
+- Fix links from `/signup/professional` and `/homologation`
 
-## Technical Changes Summary
+| Language | New Primary | New Secondary |
+|----------|------------|---------------|
+| EN | Start my free assessment | Explore open positions |
+| ES | Comenzar mi evaluacion gratuita | Explorar posiciones abiertas |
+| DE | Meine kostenlose Bewertung starten | Offene Stellen ansehen |
+| FR | Commencer mon evaluation gratuite | Explorer les postes ouverts |
+| RU | Начать бесплатную оценку | Посмотреть открытые позиции |
 
-| File | Action |
+### 2. Remove Distracting/Problematic Elements
+
+**Remove from `Index.tsx`:**
+- `BlackFridayBanner` (fake urgency with resetting countdown and `Math.random()` spots)
+- `EmployerBanner` (targets wrong audience — B2B on a B2C page)
+
+### 3. Keep Learning Mini Banner As-Is
+
+The `LearningMiniBanner` stays as the secondary entry point for users who only need language classes. It links to `/learning/starter-kit` which is correct — it serves the "I only need classes" segment without cluttering the main funnel.
+
+### 4. FAQ Micro-CTAs Are Already Correct
+
+The `ConversionFAQSection` already links to `/homologation-wizard?country=X` — no changes needed there.
+
+## Files to Modify
+
+| File | Change |
 |------|--------|
-| `src/pages/GermanStarterKit.tsx` | NEW -- Dedicated product landing page |
-| `src/components/learning/StarterKitOffer.tsx` | NEW -- Product card component for wizard result |
-| `src/components/learning/LearningPlanResult.tsx` | EDIT -- Add Starter Kit CTA when country is Germany |
-| `src/routes.tsx` | EDIT -- Add `/learning/starter-kit` route |
-| `supabase/functions/create-learning-payment/index.ts` | NEW -- Stripe checkout for EUR 29 product |
-| `supabase/functions/deliver-starter-kit/index.ts` | NEW -- Email delivery with download links after purchase |
-| `supabase/functions/stripe-webhook/index.ts` | EDIT -- Handle `german_starter_kit` product type |
-| `src/pages/PaymentSuccess.tsx` | EDIT -- Handle starter kit delivery display |
-| `src/utils/i18n/languages/*/learning.ts` | EDIT -- Add `starterKit` translation keys (all 5 languages) |
-| `src/components/landing/LearningMiniBanner.tsx` | EDIT -- Mention starter kit price |
-| `supabase/config.toml` | EDIT -- Add new function configs |
+| `src/components/landing/HeroSectionWithSearch.tsx` | Swap CTA destinations and translation keys |
+| `src/components/landing/PathToSuccessSection.tsx` | Change link from `/signup` to `/homologation-wizard` |
+| `src/components/landing/SuccessStoriesSection.tsx` | Change 3 links from `/homologation` to `/homologation-wizard` |
+| `src/components/landing/SuperCTASection.tsx` | Change both CTA destinations and translation keys |
+| `src/pages/Index.tsx` | Remove BlackFridayBanner and EmployerBanner |
+| `src/utils/i18n/languages/en/hero.ts` | Update CTA text |
+| `src/utils/i18n/languages/es/hero.ts` | Update CTA text |
+| `src/utils/i18n/languages/de/hero.ts` | Update CTA text |
+| `src/utils/i18n/languages/fr/hero.ts` | Update CTA text |
+| `src/utils/i18n/languages/ru/hero.ts` | Update CTA text |
+| `src/utils/i18n/languages/en/landing.ts` | Update superCta text |
+| `src/utils/i18n/languages/es/landing.ts` | Update superCta text |
+| `src/utils/i18n/languages/de/landing.ts` | Update superCta text |
+| `src/utils/i18n/languages/fr/landing.ts` | Update superCta text |
+| `src/utils/i18n/languages/ru/landing.ts` | Update superCta text |
+| `src/utils/i18n/languages/en/pathToSuccess.ts` | Update CTA text |
+| `src/utils/i18n/languages/es/pathToSuccess.ts` | Update CTA text |
+| `src/utils/i18n/languages/de/pathToSuccess.ts` | Update CTA text |
+| `src/utils/i18n/languages/fr/pathToSuccess.ts` | Update CTA text |
+| `src/utils/i18n/languages/ru/pathToSuccess.ts` | Update CTA text |
 
-## Sales Funnel Flow
+## What This Does NOT Cover (Future Work)
 
-```text
-Landing Page / Learning Page
-        |
-        v
-  Learning Wizard (select Germany)
-        |
-        v
-  Plan Result + Starter Kit Offer (EUR 29)
-        |
-   +---------+---------+
-   |                   |
-   v                   v
-Buy EUR 29         Free Consultation
-   |                   |
-   v                   v
-Stripe Checkout    Lead Form (existing)
-   |
-   v
-Thank You + Downloads + Upsell (EUR 199)
-   |
-   v
-Nurture Email (Day 3): "Ready for the full package?"
-```
-
-## Timeline Estimate
-- Implementation: 1 session (all infrastructure exists)
-- Content: PDFs need to be created/uploaded separately (you provide or we use placeholder links)
-- Go live: Same day after content upload
-
-## Revenue Projection
-At EUR 29 with even 5% conversion of learning page visitors, this creates immediate revenue AND a buyer list for upselling to EUR 199/499 packages -- which is where the real margin sits.
+- Modifying the wizard result page to conditionally show classes vs. homologation based on user answers — that is a separate, larger piece of work
+- Clarifying what the EUR 49/199/499 packages actually deliver (needs your input)
+- The classes product page and its own funnel
 
