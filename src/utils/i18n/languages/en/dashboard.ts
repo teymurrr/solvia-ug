@@ -266,5 +266,25 @@ export const dashboard = {
       inProgress: "In Progress",
       approved: "Approved"
     }
-  }
+  },
+  myJourney: {
+    tabTitle: "My Journey",
+    title: "My Journey",
+    subtitle: "Your path to practicing medicine abroad",
+    subtitleWithCountry: "Your path to practicing medicine in",
+    stepLanguage: "Learn the Language",
+    stepLanguageDesc: "Pass the required language exam for your target country",
+    stepHomologation: "Get Your Diploma Recognized",
+    stepHomologationDesc: "Complete the document and verification process",
+    stepWork: "Find Your Position",
+    stepWorkDesc: "Browse vacancies matching your qualifications",
+    browseVacancies: "Browse Vacancies",
+    setCountry: "Set Your Target Country",
+  },
+  languagePath: {
+    title: "Your Language Path",
+    required: "required",
+    setLevel: "Add your language level in your profile to track progress",
+    cta: "Get Starter Kit (from €29)",
+  },
 };

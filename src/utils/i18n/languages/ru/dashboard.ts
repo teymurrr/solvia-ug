@@ -366,5 +366,25 @@ export const dashboard = {
       inProgress: "В Процессе",
       approved: "Одобрено"
     }
-  }
+  },
+  myJourney: {
+    tabTitle: "Мой Путь",
+    title: "Мой Путь",
+    subtitle: "Ваш путь к медицинской практике за рубежом",
+    subtitleWithCountry: "Ваш путь к медицинской практике в",
+    stepLanguage: "Выучить язык",
+    stepLanguageDesc: "Сдать необходимый языковой экзамен для вашей целевой страны",
+    stepHomologation: "Подтвердить диплом",
+    stepHomologationDesc: "Пройти процесс документации и верификации",
+    stepWork: "Найти должность",
+    stepWorkDesc: "Просмотреть вакансии, соответствующие вашей квалификации",
+    browseVacancies: "Просмотреть вакансии",
+    setCountry: "Выбрать целевую страну",
+  },
+  languagePath: {
+    title: "Ваш языковой путь",
+    required: "требуется",
+    setLevel: "Добавьте свой уровень языка в профиль для отслеживания прогресса",
+    cta: "Получить Starter Kit (от 29€)",
+  },
 };

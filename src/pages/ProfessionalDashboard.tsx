@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 import MainLayout from '@/components/MainLayout';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Briefcase, GraduationCap, Heart } from 'lucide-react';
+import { Briefcase, GraduationCap, Heart, Compass } from 'lucide-react';
 import { ProfessionalProfileEditForm } from '@/components/professional-profile';
 import VacancyCard from '@/components/VacancyCard';
 import {
@@ -18,6 +18,7 @@ import SavedAndApplied from '@/components/professional-dashboard/SavedAndApplied
 import WelcomeSection from '@/components/professional-dashboard/WelcomeSection';
 import RecommendedVacancies from '@/components/professional-dashboard/RecommendedVacancies';
 import DashboardSidebar from '@/components/professional-dashboard/DashboardSidebar';
+import MyJourneyTab from '@/components/professional-dashboard/MyJourneyTab';
 import OnboardingChecklist from '@/components/professional-dashboard/OnboardingChecklist';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
@@ -43,10 +44,10 @@ const ProfessionalDashboard: React.FC = () => {
   const { t } = useLanguage();
   const { paidCountries } = usePaymentAccess();
   
-  const defaultTab = location.state?.activeTab || 'vacancies';
+  const initialTab = location.state?.activeTab || 'journey';
   
   const [isEditProfileOpen, setIsEditProfileOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState(defaultTab);
+  const [activeTab, setActiveTab] = useState(initialTab);
   const {
     searchQuery,
     setSearchQuery,
@@ -97,13 +98,6 @@ const ProfessionalDashboard: React.FC = () => {
     }
   }, [location.state, setSearchQuery, setCurrentPage, toast]);
 
-  useEffect(() => {
-    if (activeTab === 'saved') {
-      refreshSavedVacancies();
-      refreshAppliedVacancies();
-    }
-  }, [activeTab, refreshSavedVacancies, refreshAppliedVacancies]);
-
   const calculateProfileCompletion = (profile: typeof profileData): number => {
     if (!profile) return 0;
     let totalFields = 0;
@@ -123,6 +117,24 @@ const ProfessionalDashboard: React.FC = () => {
     if (profile.fspCertificate) completedFields++;
     return Math.round((completedFields / totalFields) * 100);
   };
+
+  // Auto-switch to vacancies for users with complete profiles (if no explicit tab was set)
+  useEffect(() => {
+    if (location.state?.activeTab) return;
+    if (!profileData || !loading) {
+      const completion = profileData ? calculateProfileCompletion(profileData) : 0;
+      if (paidCountries.length > 0 || completion >= 50) {
+        setActiveTab(prev => prev === 'journey' ? 'vacancies' : prev);
+      }
+    }
+  }, [profileData, paidCountries, loading, location.state?.activeTab]);
+
+  useEffect(() => {
+    if (activeTab === 'saved') {
+      refreshSavedVacancies();
+      refreshAppliedVacancies();
+    }
+  }, [activeTab, refreshSavedVacancies, refreshAppliedVacancies]);
 
   const getJobTypeIcon = (jobType: string) => {
     switch(jobType) {
@@ -217,7 +229,10 @@ const ProfessionalDashboard: React.FC = () => {
           {/* LEFT: Tabs (2/3 width) */}
           <div className="flex-1 min-w-0">
             <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-              <TabsList className="grid w-full grid-cols-3 gap-1 h-auto p-1">
+              <TabsList className="grid w-full grid-cols-4 gap-1 h-auto p-1">
+                <TabsTrigger value="journey" className="text-xs sm:text-sm px-2 py-2">
+                  {(t as any)?.dashboard?.myJourney?.tabTitle || "My Journey"}
+                </TabsTrigger>
                 <TabsTrigger value="vacancies" className="text-xs sm:text-sm px-2 py-2">
                   {t?.common?.vacancies || "Vacancies"}
                 </TabsTrigger>
@@ -228,6 +243,10 @@ const ProfessionalDashboard: React.FC = () => {
                   {t?.common?.profile || "Profile"}
                 </TabsTrigger>
               </TabsList>
+
+              <TabsContent value="journey" className="space-y-6">
+                <MyJourneyTab profileData={profileData} />
+              </TabsContent>
 
               <TabsContent value="vacancies" className="space-y-6">
                 {/* Recommended Vacancies at the top */}
@@ -433,7 +452,7 @@ const ProfessionalDashboard: React.FC = () => {
           <div className="w-full lg:w-80 xl:w-96 flex-shrink-0">
             <DashboardSidebar
               profileData={profileData}
-              showHomologationPreview={paidCountries.length === 0}
+              showHomologationPreview={true}
             />
           </div>
         </div>

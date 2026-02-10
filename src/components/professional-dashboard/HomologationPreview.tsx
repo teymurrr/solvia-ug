@@ -37,7 +37,38 @@ const HomologationPreview: React.FC<HomologationPreviewProps> = ({ profileData }
     return { monthlySalary: salary, currency };
   }, [countryData, doctorType]);
 
-  if (!countryData) return null;
+  // Fallback when no valid country data: show a prompt to set target country
+  if (!countryData) {
+    return (
+      <Card className="border-amber-200/50 dark:border-amber-800/30 bg-gradient-to-br from-amber-50/50 via-background to-orange-50/30 dark:from-amber-950/10 dark:to-orange-950/10">
+        <CardHeader>
+          <CardTitle className="text-lg flex items-center gap-2">
+            🌍 {t?.dashboard?.homologationPreview?.title || 'Your Homologation Roadmap'}
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="flex items-start gap-3 p-4 bg-amber-50 dark:bg-amber-950/20 rounded-xl border border-amber-200/50 dark:border-amber-800/30">
+            <AlertTriangle className="w-5 h-5 text-amber-600 dark:text-amber-400 mt-0.5 flex-shrink-0" />
+            <div>
+              <p className="text-sm font-medium text-amber-800 dark:text-amber-300">
+                {(t as any)?.dashboard?.homologationPreview?.noCountryTitle || 'Set your target country'}
+              </p>
+              <p className="text-xs text-amber-600 dark:text-amber-400 mt-1">
+                {(t as any)?.dashboard?.homologationPreview?.noCountryDesc || 'Take our free assessment to see your personalized homologation roadmap, timeline, and costs.'}
+              </p>
+            </div>
+          </div>
+          <Button 
+            onClick={() => navigate('/homologation-wizard')}
+            className="w-full gap-2"
+          >
+            {(t as any)?.dashboard?.homologationPreview?.takeAssessment || 'Take Free Assessment'}
+            <ArrowRight className="w-4 h-4" />
+          </Button>
+        </CardContent>
+      </Card>
+    );
+  }
 
   const COUNTRY_FLAGS: Record<string, string> = {
     germany: '🇩🇪', austria: '🇦🇹', spain: '🇪🇸', italy: '🇮🇹', france: '🇫🇷',
