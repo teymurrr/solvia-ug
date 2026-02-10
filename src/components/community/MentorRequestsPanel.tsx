@@ -8,17 +8,14 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useMyMentorRequests, useIncomingMentorRequests, useUpdateMentorRequest, useMyMentorProfile } from '@/hooks/useMentors';
 import { useAuth } from '@/contexts/AuthContext';
+import { useLanguage } from '@/hooks/useLanguage';
 import { formatDistanceToNow } from 'date-fns';
-
-const statusConfig: Record<string, { label: string; icon: React.ReactNode; className: string }> = {
-  pending: { label: 'Pending', icon: <Clock className="h-3.5 w-3.5" />, className: 'bg-yellow-500/10 text-yellow-700 border-yellow-200' },
-  accepted: { label: 'Accepted', icon: <CheckCircle className="h-3.5 w-3.5" />, className: 'bg-green-500/10 text-green-700 border-green-200' },
-  declined: { label: 'Declined', icon: <XCircle className="h-3.5 w-3.5" />, className: 'bg-red-500/10 text-red-700 border-red-200' },
-  cancelled: { label: 'Cancelled', icon: <XCircle className="h-3.5 w-3.5" />, className: 'bg-muted text-muted-foreground' },
-};
 
 const MentorRequestsPanel: React.FC = () => {
   const { isLoggedIn } = useAuth();
+  const { t } = useLanguage();
+  const ct = (t as any)?.community;
+  const mt = ct?.mentor;
   const { data: myMentorProfile } = useMyMentorProfile();
   const { data: sentRequests, isLoading: sentLoading } = useMyMentorRequests();
   const { data: incomingRequests, isLoading: incomingLoading } = useIncomingMentorRequests();
@@ -29,12 +26,19 @@ const MentorRequestsPanel: React.FC = () => {
   const isMentor = !!myMentorProfile;
   const pendingIncoming = (incomingRequests || []).filter(r => r.status === 'pending').length;
 
+  const statusConfig: Record<string, { label: string; icon: React.ReactNode; className: string }> = {
+    pending: { label: mt?.status?.pending || 'Pending', icon: <Clock className="h-3.5 w-3.5" />, className: 'bg-yellow-500/10 text-yellow-700 border-yellow-200' },
+    accepted: { label: mt?.status?.accepted || 'Accepted', icon: <CheckCircle className="h-3.5 w-3.5" />, className: 'bg-green-500/10 text-green-700 border-green-200' },
+    declined: { label: mt?.status?.declined || 'Declined', icon: <XCircle className="h-3.5 w-3.5" />, className: 'bg-red-500/10 text-red-700 border-red-200' },
+    cancelled: { label: mt?.status?.cancelled || 'Cancelled', icon: <XCircle className="h-3.5 w-3.5" />, className: 'bg-muted text-muted-foreground' },
+  };
+
   return (
     <Card>
       <CardHeader className="pb-3">
         <CardTitle className="text-base flex items-center gap-2">
           <MessageSquare className="h-4 w-4 text-primary" />
-          Mentor Requests
+          {mt?.title || 'Mentor Requests'}
         </CardTitle>
       </CardHeader>
       <CardContent>
@@ -42,12 +46,12 @@ const MentorRequestsPanel: React.FC = () => {
           <TabsList className="w-full mb-3">
             <TabsTrigger value="sent" className="flex-1 gap-1.5 text-xs">
               <Send className="h-3.5 w-3.5" />
-              Sent ({(sentRequests || []).length})
+              {mt?.sent || 'Sent'} ({(sentRequests || []).length})
             </TabsTrigger>
             {isMentor && (
               <TabsTrigger value="incoming" className="flex-1 gap-1.5 text-xs">
                 <Inbox className="h-3.5 w-3.5" />
-                Incoming
+                {mt?.incoming || 'Incoming'}
                 {pendingIncoming > 0 && (
                   <span className="ml-1 bg-primary text-primary-foreground text-[10px] rounded-full px-1.5 py-0.5 font-bold">
                     {pendingIncoming}
@@ -57,7 +61,6 @@ const MentorRequestsPanel: React.FC = () => {
             )}
           </TabsList>
 
-          {/* Sent requests (mentee view) */}
           <TabsContent value="sent" className="mt-0">
             {sentLoading ? (
               <div className="space-y-2">
@@ -65,7 +68,7 @@ const MentorRequestsPanel: React.FC = () => {
               </div>
             ) : !(sentRequests || []).length ? (
               <p className="text-sm text-muted-foreground text-center py-4">
-                No requests sent yet. Browse the mentor directory to find a mentor!
+                {mt?.noSentRequests || 'No requests sent yet. Browse the mentor directory to find a mentor!'}
               </p>
             ) : (
               <div className="space-y-2 max-h-[300px] overflow-y-auto">
@@ -106,7 +109,6 @@ const MentorRequestsPanel: React.FC = () => {
             )}
           </TabsContent>
 
-          {/* Incoming requests (mentor view) */}
           {isMentor && (
             <TabsContent value="incoming" className="mt-0">
               {incomingLoading ? (
@@ -115,7 +117,7 @@ const MentorRequestsPanel: React.FC = () => {
                 </div>
               ) : !(incomingRequests || []).length ? (
                 <p className="text-sm text-muted-foreground text-center py-4">
-                  No incoming requests yet.
+                  {mt?.noIncomingRequests || 'No incoming requests yet.'}
                 </p>
               ) : (
                 <div className="space-y-2 max-h-[300px] overflow-y-auto">
@@ -162,7 +164,7 @@ const MentorRequestsPanel: React.FC = () => {
                               disabled={updateRequest.isPending}
                             >
                               <CheckCircle className="h-3.5 w-3.5 mr-1" />
-                              Accept
+                              {mt?.accept || 'Accept'}
                             </Button>
                             <Button
                               size="sm"
@@ -171,7 +173,7 @@ const MentorRequestsPanel: React.FC = () => {
                               disabled={updateRequest.isPending}
                             >
                               <XCircle className="h-3.5 w-3.5 mr-1" />
-                              Decline
+                              {mt?.decline || 'Decline'}
                             </Button>
                           </div>
                         )}

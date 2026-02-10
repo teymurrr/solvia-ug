@@ -23,7 +23,8 @@ const ReputationProfile: React.FC = () => {
   const { data: reputation, isLoading: repLoading } = useUserReputation(user?.id);
   const { data: earnedBadges, isLoading: badgesLoading } = useUserBadges(user?.id);
   const { data: allBadges } = useAllBadges();
-  const { currentLanguage } = useLanguage();
+  const { currentLanguage, t } = useLanguage();
+  const rt = (t as any)?.community?.reputation;
 
   const isLoading = repLoading || badgesLoading;
 
@@ -49,10 +50,8 @@ const ReputationProfile: React.FC = () => {
   const points = reputation?.total_points || 0;
   const earnedIds = new Set((earnedBadges || []).map(b => b.badge_id));
 
-  // Find next unearned badge (lowest requirement not yet met)
   const nextBadge = (allBadges || []).find(b => !earnedIds.has(b.id));
 
-  // Calculate progress toward next badge
   let progressPercent = 100;
   let progressLabel = '';
   if (nextBadge) {
@@ -71,9 +70,9 @@ const ReputationProfile: React.FC = () => {
   }
 
   const stats = [
-    { label: 'Posts', value: reputation?.posts_count || 0, icon: <MessageSquare className="h-3.5 w-3.5" /> },
-    { label: 'Replies', value: reputation?.replies_count || 0, icon: <MessageSquare className="h-3.5 w-3.5" /> },
-    { label: 'Upvotes', value: reputation?.upvotes_received || 0, icon: <ThumbsUp className="h-3.5 w-3.5" /> },
+    { label: rt?.posts || 'Posts', value: reputation?.posts_count || 0, icon: <MessageSquare className="h-3.5 w-3.5" /> },
+    { label: rt?.replies || 'Replies', value: reputation?.replies_count || 0, icon: <MessageSquare className="h-3.5 w-3.5" /> },
+    { label: rt?.upvotes || 'Upvotes', value: reputation?.upvotes_received || 0, icon: <ThumbsUp className="h-3.5 w-3.5" /> },
   ];
 
   return (
@@ -82,13 +81,12 @@ const ReputationProfile: React.FC = () => {
         <div className="flex items-center justify-between">
           <CardTitle className="text-base flex items-center gap-2">
             <Star className="h-4 w-4 text-primary" />
-            Your Reputation
+            {rt?.title || 'Your Reputation'}
           </CardTitle>
-          <span className="text-lg font-bold text-primary">{points} pts</span>
+          <span className="text-lg font-bold text-primary">{points} {(t as any)?.community?.leaderboard?.points || 'pts'}</span>
         </div>
       </CardHeader>
       <CardContent className="space-y-4">
-        {/* Stats row */}
         <div className="grid grid-cols-3 gap-2">
           {stats.map(stat => (
             <div key={stat.label} className="bg-muted/50 rounded-lg p-2.5 text-center">
@@ -101,10 +99,9 @@ const ReputationProfile: React.FC = () => {
           ))}
         </div>
 
-        {/* Earned badges */}
         {(earnedBadges || []).length > 0 && (
           <div>
-            <p className="text-xs font-medium text-muted-foreground mb-2">Earned Badges</p>
+            <p className="text-xs font-medium text-muted-foreground mb-2">{rt?.earnedBadges || 'Earned Badges'}</p>
             <TooltipProvider>
               <div className="flex flex-wrap gap-2">
                 {(earnedBadges || []).map(ub => (
@@ -127,13 +124,12 @@ const ReputationProfile: React.FC = () => {
           </div>
         )}
 
-        {/* Next badge progress */}
         {nextBadge && (
           <div className="bg-muted/30 rounded-lg p-3 border border-border">
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center gap-1.5">
                 <TrendingUp className="h-3.5 w-3.5 text-muted-foreground" />
-                <span className="text-xs font-medium text-muted-foreground">Next badge</span>
+                <span className="text-xs font-medium text-muted-foreground">{rt?.nextBadge || 'Next badge'}</span>
               </div>
               <span className="text-xs text-muted-foreground">{progressLabel}</span>
             </div>
@@ -149,11 +145,10 @@ const ReputationProfile: React.FC = () => {
           </div>
         )}
 
-        {/* All badges earned */}
         {!nextBadge && (earnedBadges || []).length > 0 && (
           <div className="bg-primary/5 rounded-lg p-3 text-center border border-primary/20">
             <CheckCircle className="h-5 w-5 text-primary mx-auto mb-1" />
-            <p className="text-sm font-medium text-primary">All badges earned!</p>
+            <p className="text-sm font-medium text-primary">{rt?.allBadgesEarned || 'All badges earned!'}</p>
           </div>
         )}
       </CardContent>

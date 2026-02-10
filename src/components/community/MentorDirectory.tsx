@@ -10,23 +10,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, Di
 import { Textarea } from '@/components/ui/textarea';
 import { useMentorDirectory, useSendMentorRequest, EXPERTISE_OPTIONS, MentorProfile } from '@/hooks/useMentors';
 import { useAuth } from '@/contexts/AuthContext';
-
-const expertiseLabels: Record<string, string> = {
-  'homologation': 'Homologation',
-  'fsp-preparation': 'FSP Preparation',
-  'german-language': 'German Language',
-  'job-search': 'Job Search',
-  'relocation': 'Relocation',
-  'visa-process': 'Visa Process',
-  'hospital-life': 'Hospital Life',
-  'specialty-training': 'Specialty Training',
-};
-
-const availabilityConfig: Record<string, { label: string; color: string; icon: React.ReactNode }> = {
-  available: { label: 'Available', color: 'bg-green-500/10 text-green-700 border-green-200', icon: <CheckCircle className="h-3 w-3" /> },
-  limited: { label: 'Limited', color: 'bg-yellow-500/10 text-yellow-700 border-yellow-200', icon: <Clock className="h-3 w-3" /> },
-  unavailable: { label: 'Unavailable', color: 'bg-muted text-muted-foreground', icon: <Clock className="h-3 w-3" /> },
-};
+import { useLanguage } from '@/hooks/useLanguage';
 
 const MentorDirectory = () => {
   const [expertiseFilter, setExpertiseFilter] = useState<string>('');
@@ -40,6 +24,25 @@ const MentorDirectory = () => {
   });
   const sendRequest = useSendMentorRequest();
   const { isLoggedIn, user } = useAuth();
+  const { t } = useLanguage();
+  const mt = (t as any)?.community?.mentor;
+
+  const expertiseLabels: Record<string, string> = mt?.expertiseLabels || {
+    'homologation': 'Homologation',
+    'fsp-preparation': 'FSP Preparation',
+    'german-language': 'German Language',
+    'job-search': 'Job Search',
+    'relocation': 'Relocation',
+    'visa-process': 'Visa Process',
+    'hospital-life': 'Hospital Life',
+    'specialty-training': 'Specialty Training',
+  };
+
+  const availabilityConfig: Record<string, { label: string; color: string; icon: React.ReactNode }> = {
+    available: { label: mt?.available || 'Available', color: 'bg-green-500/10 text-green-700 border-green-200', icon: <CheckCircle className="h-3 w-3" /> },
+    limited: { label: mt?.limited || 'Limited', color: 'bg-yellow-500/10 text-yellow-700 border-yellow-200', icon: <Clock className="h-3 w-3" /> },
+    unavailable: { label: mt?.unavailable || 'Unavailable', color: 'bg-muted text-muted-foreground', icon: <Clock className="h-3 w-3" /> },
+  };
 
   const handleSendRequest = () => {
     if (!requestMentor) return;
@@ -57,10 +60,10 @@ const MentorDirectory = () => {
           <Filter className="h-4 w-4 text-muted-foreground" />
           <Select value={expertiseFilter} onValueChange={setExpertiseFilter}>
             <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="All expertise" />
+              <SelectValue placeholder={mt?.allExpertise || 'All expertise'} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All expertise</SelectItem>
+              <SelectItem value="all">{mt?.allExpertise || 'All expertise'}</SelectItem>
               {EXPERTISE_OPTIONS.map(opt => (
                 <SelectItem key={opt} value={opt}>{expertiseLabels[opt] || opt}</SelectItem>
               ))}
@@ -69,10 +72,10 @@ const MentorDirectory = () => {
         </div>
         <Select value={languageFilter} onValueChange={setLanguageFilter}>
           <SelectTrigger className="w-[160px]">
-            <SelectValue placeholder="All languages" />
+            <SelectValue placeholder={mt?.allLanguages || 'All languages'} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">All languages</SelectItem>
+            <SelectItem value="all">{mt?.allLanguages || 'All languages'}</SelectItem>
             <SelectItem value="English">English</SelectItem>
             <SelectItem value="German">German</SelectItem>
             <SelectItem value="Spanish">Spanish</SelectItem>
@@ -90,8 +93,8 @@ const MentorDirectory = () => {
       ) : !mentors?.length ? (
         <div className="text-center py-16">
           <Users className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-          <h3 className="text-lg font-medium text-foreground mb-2">No mentors found</h3>
-          <p className="text-muted-foreground">Be the first to become a mentor and help others!</p>
+          <h3 className="text-lg font-medium text-foreground mb-2">{mt?.noMentors || 'No mentors found'}</h3>
+          <p className="text-muted-foreground">{mt?.noMentorsDesc || 'Be the first to become a mentor and help others!'}</p>
         </div>
       ) : (
         <div className="grid gap-4 sm:grid-cols-2">
@@ -155,12 +158,12 @@ const MentorDirectory = () => {
 
                   <div className="flex items-center justify-between">
                     <span className="text-xs text-muted-foreground">
-                      {spotsLeft > 0 ? `${spotsLeft} spot${spotsLeft > 1 ? 's' : ''} left` : 'No spots available'}
+                      {spotsLeft > 0 ? `${spotsLeft} ${mt?.spotsLeft || 'spot(s) left'}` : (mt?.noSpots || 'No spots available')}
                     </span>
                     {isLoggedIn && !isSelf && mentor.availability !== 'unavailable' && spotsLeft > 0 && (
                       <Button size="sm" variant="outline" onClick={() => setRequestMentor(mentor)}>
                         <MessageSquare className="h-3.5 w-3.5 mr-1.5" />
-                        Request
+                        {mt?.request || 'Request'}
                       </Button>
                     )}
                   </div>
@@ -175,22 +178,21 @@ const MentorDirectory = () => {
       <Dialog open={!!requestMentor} onOpenChange={() => { setRequestMentor(null); setRequestMessage(''); }}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Request Mentorship</DialogTitle>
+            <DialogTitle>{mt?.requestMentorship || 'Request Mentorship'}</DialogTitle>
             <DialogDescription>
-              Send a request to {requestMentor?.author?.first_name} {requestMentor?.author?.last_name}. 
-              Introduce yourself and explain what you'd like help with.
+              {mt?.requestDescription || `Introduce yourself and explain what you'd like help with.`}
             </DialogDescription>
           </DialogHeader>
           <Textarea
-            placeholder="Hi! I'm looking for guidance on..."
+            placeholder={mt?.messagePlaceholder || "Hi! I'm looking for guidance on..."}
             value={requestMessage}
             onChange={e => setRequestMessage(e.target.value)}
             rows={4}
           />
           <DialogFooter>
-            <Button variant="outline" onClick={() => setRequestMentor(null)}>Cancel</Button>
+            <Button variant="outline" onClick={() => setRequestMentor(null)}>{mt?.cancel || 'Cancel'}</Button>
             <Button onClick={handleSendRequest} disabled={sendRequest.isPending}>
-              {sendRequest.isPending ? 'Sending...' : 'Send Request'}
+              {sendRequest.isPending ? (mt?.sending || 'Sending...') : (mt?.sendRequest || 'Send Request')}
             </Button>
           </DialogFooter>
         </DialogContent>
