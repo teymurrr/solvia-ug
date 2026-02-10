@@ -55,6 +55,66 @@ export type Database = {
           },
         ]
       }
+      badge_definitions: {
+        Row: {
+          category: string
+          created_at: string
+          description_de: string | null
+          description_en: string
+          description_es: string | null
+          description_fr: string | null
+          description_ru: string | null
+          icon: string
+          id: string
+          name_de: string | null
+          name_en: string
+          name_es: string | null
+          name_fr: string | null
+          name_ru: string | null
+          requirement_type: string
+          requirement_value: number
+          slug: string
+        }
+        Insert: {
+          category?: string
+          created_at?: string
+          description_de?: string | null
+          description_en: string
+          description_es?: string | null
+          description_fr?: string | null
+          description_ru?: string | null
+          icon?: string
+          id?: string
+          name_de?: string | null
+          name_en: string
+          name_es?: string | null
+          name_fr?: string | null
+          name_ru?: string | null
+          requirement_type: string
+          requirement_value?: number
+          slug: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          description_de?: string | null
+          description_en?: string
+          description_es?: string | null
+          description_fr?: string | null
+          description_ru?: string | null
+          icon?: string
+          id?: string
+          name_de?: string | null
+          name_en?: string
+          name_es?: string | null
+          name_fr?: string | null
+          name_ru?: string | null
+          requirement_type?: string
+          requirement_value?: number
+          slug?: string
+        }
+        Relationships: []
+      }
       blog_comments: {
         Row: {
           blog_post_id: string
@@ -1155,6 +1215,71 @@ export type Database = {
           role?: string
           session_id?: string
           user_id?: string | null
+        }
+        Relationships: []
+      }
+      user_badges: {
+        Row: {
+          badge_id: string
+          earned_at: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          badge_id: string
+          earned_at?: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          badge_id?: string
+          earned_at?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_badges_badge_id_fkey"
+            columns: ["badge_id"]
+            isOneToOne: false
+            referencedRelation: "badge_definitions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_reputation: {
+        Row: {
+          best_answers_count: number
+          created_at: string
+          id: string
+          posts_count: number
+          replies_count: number
+          total_points: number
+          updated_at: string
+          upvotes_received: number
+          user_id: string
+        }
+        Insert: {
+          best_answers_count?: number
+          created_at?: string
+          id?: string
+          posts_count?: number
+          replies_count?: number
+          total_points?: number
+          updated_at?: string
+          upvotes_received?: number
+          user_id: string
+        }
+        Update: {
+          best_answers_count?: number
+          created_at?: string
+          id?: string
+          posts_count?: number
+          replies_count?: number
+          total_points?: number
+          updated_at?: string
+          upvotes_received?: number
+          user_id?: string
         }
         Relationships: []
       }

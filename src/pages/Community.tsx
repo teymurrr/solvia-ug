@@ -11,6 +11,7 @@ import { useCommunityPosts } from '@/hooks/useCommunity';
 import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/hooks/useLanguage';
 import CreatePostDialog from '@/components/community/CreatePostDialog';
+import Leaderboard from '@/components/community/Leaderboard';
 import { formatDistanceToNow } from 'date-fns';
 
 const CATEGORIES = [
@@ -51,6 +52,8 @@ const Community = () => {
   return (
     <MainLayout>
       <div className="max-w-5xl mx-auto px-4 py-8">
+        <div className="flex flex-col lg:flex-row gap-8">
+        <div className="flex-1 min-w-0">
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
           <div>
@@ -150,6 +153,13 @@ const Community = () => {
             ))}
           </div>
         )}
+        </div>
+
+        {/* Sidebar */}
+        <div className="w-full lg:w-72 shrink-0 space-y-4">
+          <Leaderboard />
+        </div>
+        </div>
       </div>
 
       <CreatePostDialog open={createOpen} onOpenChange={setCreateOpen} />
