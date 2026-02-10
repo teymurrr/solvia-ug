@@ -11,17 +11,20 @@ import { formatDistanceToNow } from 'date-fns';
 
 interface CommunityWidgetProps {
   userSpecialty?: string | null;
+  compact?: boolean;
 }
 
-const CommunityWidget: React.FC<CommunityWidgetProps> = ({ userSpecialty }) => {
+const CommunityWidget: React.FC<CommunityWidgetProps> = ({ userSpecialty, compact = false }) => {
   const { data: posts, isLoading } = useCommunityPosts();
   const { t } = useLanguage();
   const ct = (t as any)?.community;
 
-  // Show up to 3 trending posts (sorted by upvotes + reply activity)
+  const maxPosts = compact ? 2 : 3;
+
+  // Show trending posts (sorted by upvotes + reply activity)
   const trendingPosts = (posts || [])
     .sort((a, b) => (b.upvotes + b.reply_count) - (a.upvotes + a.reply_count))
-    .slice(0, 3);
+    .slice(0, maxPosts);
 
   if (isLoading) {
     return (
