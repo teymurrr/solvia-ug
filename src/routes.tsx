@@ -71,6 +71,7 @@ const DocumentStatus = lazy(() => import("@/pages/DocumentStatus"));
 
 // Admin pages
 const AdminUserManagement = lazy(() => import("@/pages/admin/UserManagement"));
+const AdminApplications = lazy(() => import("@/pages/admin/Applications"));
 
 const AppRoutes = () => {
   const { isLoggedIn, userType } = useAuth();
@@ -216,6 +217,11 @@ const AppRoutes = () => {
         <Route path="/admin/users" element={
           <AdminRoute>
             <AdminUserManagement />
+          </AdminRoute>
+        } />
+        <Route path="/admin/applications" element={
+          <AdminRoute>
+            <AdminApplications />
           </AdminRoute>
         } />
         
