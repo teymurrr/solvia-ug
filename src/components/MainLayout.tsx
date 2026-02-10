@@ -21,7 +21,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children, hideEditProfile }) =>
       </main>
       <Footer />
       <CookieConsent />
-      <SupportChat />
+      {/* <SupportChat /> — hidden, not deleted */}
       <WhatsAppButton />
       <Toaster />
     </div>

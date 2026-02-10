@@ -1,7 +1,7 @@
 import React from 'react';
 import { MessageCircle } from 'lucide-react';
 
-const WHATSAPP_NUMBER = '4915510781160';
+const WHATSAPP_NUMBER = '4915259018297';
 const WHATSAPP_MESSAGE = encodeURIComponent('Hola! Me interesa el servicio de homologación de Solvia.');
 
 const WhatsAppButton: React.FC = () => {
