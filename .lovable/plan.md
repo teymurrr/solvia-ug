@@ -1,132 +1,75 @@
 
 
-# Building a Community Hub for Solvia
+# Professional Dashboard Restructuring
 
-## Analysis: What Makes Sense for Your Platform
+## Problem Analysis
 
-Your users are healthcare professionals navigating the complex homologation process in a foreign country. They share a very specific, high-stakes journey. This creates a natural foundation for community -- people going through the same process want to hear from others who have done it.
+The current dashboard suffers from **information overload without hierarchy**. Users see 4 full-width cards stacked vertically before reaching any tabs. There's no clear visual priority, and the key conversion driver (HomologationPreview) gets buried. The Profile tab also duplicates information already shown in the WelcomeSection.
 
-After analyzing your codebase, here is what you already have that supports community:
-- Blog with comments (though 0 comments so far)
-- Success stories section
-- Messaging system (stub, not yet functional)
-- 57 registered professionals across various specialties
+## Proposed Structure: Hub-and-Spoke Layout
 
-**The most valuable community feature for your stage is a Q&A / Discussion Forum**, not a full social network. Here is why:
+Reorganize the page into 3 clear zones with distinct purposes:
 
-1. **Immediate value**: New users get answers to real questions about homologation, FSP prep, language exams, and relocation
-2. **SEO benefit**: Discussion threads rank in search, bringing organic traffic
-3. **Trust signal**: Active discussions prove the platform is alive and helpful
-4. **Low maintenance**: Users generate the content, you moderate
-5. **Conversion driver**: Non-logged-in visitors see the discussions, but must sign up to participate
+```text
++--------------------------------------------------+
+|  1. HERO ZONE: WelcomeSection (compact)           |
+|     Progress ring + next action CTA only          |
++--------------------------------------------------+
+|                                                    |
+|  2. ACTION ZONE (2-column grid on desktop)         |
+|  +---------------------+  +---------------------+ |
+|  | LEFT (2/3 width)    |  | RIGHT (1/3 width)   | |
+|  |                     |  |                      | |
+|  | Tabs:               |  | HomologationPreview  | |
+|  |  - Vacancies (def)  |  | (sticky sidebar,     | |
+|  |  - Saved & Applied  |  |  conversion card)    | |
+|  |  - Profile          |  |                      | |
+|  |                     |  | CommunityWidget      | |
+|  |                     |  | (compact)            | |
+|  +---------------------+  +---------------------+ |
+|                                                    |
++--------------------------------------------------+
+```
 
-## Proposed Feature: "Community" Discussion Forum
+### Key Changes
 
-### What Users Can Do
-- Browse discussion categories (Homologation, Language Learning, FSP Preparation, Life in Germany, Job Search)
-- Post questions and share experiences
-- Reply to and upvote helpful answers
-- Filter by specialty, target country, or category
-- See author badges: "Verified Professional", "Homologated", "Solvia Team"
+**1. Compact WelcomeSection**
+- Remove the right-side checklist from the hero. Keep only the greeting, progress ring, and single primary CTA button.
+- Move checklist items into the Profile tab as a "Complete Your Profile" card.
+- This reduces the hero from ~300px to ~120px height.
 
-### How It Drives Value
-- Users searching "how to pass FSP exam" or "homologation timeline Germany" find your forum via search engines
-- Active discussions keep users coming back between homologation milestones
-- Success stories and tips from peers are more trusted than marketing copy
-- Professionals who help others become advocates for the platform
+**2. Tabs become the primary content area (left column, 2/3 width)**
+- Reorder tabs to: **Vacancies** (default) > Saved & Applied > Profile
+- Remove the Homologation tab (it's redundant with the sidebar preview and the dedicated `/homologation-wizard` page)
+- Vacancies tab now shows RecommendedVacancies at the top, followed by all vacancies with search/filters -- merging two currently separate sections
+- Profile tab absorbs the onboarding checklist (incomplete items shown as actionable cards)
 
-## Technical Implementation
+**3. Sticky conversion sidebar (right column, 1/3 width)**
+- HomologationPreview moves here with `sticky top-24` positioning so it follows scroll
+- CommunityWidget sits below it (compact, 2 posts max instead of 3)
+- For paying users (who already have homologation access), the sidebar shows a compact progress tracker instead of the sales card
 
-### 1. Database Tables
+**4. Default tab changes to Vacancies**
+- Most users return to the dashboard to check jobs, not to stare at their profile
+- This drives higher engagement and faster time-to-value
 
-**`community_posts`**
-- `id` (uuid, primary key)
-- `user_id` (uuid, references auth.users)
-- `title` (text, required)
-- `content` (text, required)
-- `category` (text: homologation, language, fsp, life-abroad, job-search)
-- `tags` (text array, e.g. specialty or country tags)
-- `upvotes` (integer, default 0)
-- `reply_count` (integer, default 0)
-- `is_pinned` (boolean, default false)
-- `created_at`, `updated_at`
+### Technical Details
 
-**`community_replies`**
-- `id` (uuid, primary key)
-- `post_id` (uuid, references community_posts)
-- `user_id` (uuid, references auth.users)
-- `content` (text, required)
-- `upvotes` (integer, default 0)
-- `is_best_answer` (boolean, default false)
-- `created_at`, `updated_at`
+**Files to modify:**
+- `src/pages/ProfessionalDashboard.tsx` -- restructure layout to 2-column grid with sidebar, reorder tabs, change default tab to "vacancies"
+- `src/components/professional-dashboard/WelcomeSection.tsx` -- simplify to compact hero (remove checklist, keep progress ring + single CTA)
+- `src/components/professional-dashboard/CommunityWidget.tsx` -- add `compact` prop to show 2 posts instead of 3, reduce padding
 
-**`community_votes`**
-- `id` (uuid, primary key)
-- `user_id` (uuid)
-- `post_id` (uuid, nullable)
-- `reply_id` (uuid, nullable)
-- `vote_type` (text: 'up')
-- Unique constraint on (user_id, post_id) and (user_id, reply_id)
+**Files to create:**
+- `src/components/professional-dashboard/OnboardingChecklist.tsx` -- extracted checklist component (from WelcomeSection) to embed inside the Profile tab
+- `src/components/professional-dashboard/DashboardSidebar.tsx` -- wrapper component for the right column containing HomologationPreview + CommunityWidget with sticky positioning
 
-### 2. New Pages and Components
+**No new dependencies required.**
 
-**Page: `/community`** -- Main forum listing
-- Category filter tabs across the top
-- List of discussion threads sorted by recent activity
-- Each card shows: title, author (name + specialty badge), category, reply count, upvote count, time ago
-- "Ask a Question" button (requires login)
-- Sidebar: "Popular This Week", "Unanswered Questions"
+### Impact on Conversion
 
-**Page: `/community/:id`** -- Single discussion thread
-- Full post content with author profile mini-card
-- Reply thread below
-- Upvote buttons on post and replies
-- "Mark as Best Answer" for the original poster
-- Related discussions sidebar
-
-**Component: `CommunityPreview`** -- Dashboard widget
-- Shows 2-3 recent/trending discussions relevant to the user's specialty
-- "Join the Discussion" CTA
-- Placed on the Professional Dashboard
-
-**Component: `CommunityCard`** -- Landing page section
-- Social proof: "57 professionals sharing their journey"
-- 2-3 preview cards of popular discussions
-- CTA: "Join the Community"
-
-### 3. Navigation Updates
-- Add "Community" link to main navbar between "Blog" and other items
-- Add community tab or widget to the Professional Dashboard
-
-### 4. RLS Policies
-- Anyone can read posts and replies (including non-logged-in users for SEO)
-- Logged-in users can create posts, replies, and votes
-- Users can edit/delete only their own content
-- Admins can pin posts and mark best answers
-
-### 5. i18n Translations
-- Add `community` translation keys across EN, ES, DE, FR, RU
-- Keys for: page titles, categories, buttons, empty states, form labels
-
-### 6. Seed Content Strategy
-Before launch, seed 5-10 discussion threads with common questions:
-- "How long did your homologation take in Bavaria?"
-- "Tips for FSP preparation as a pediatrician"
-- "Best cities for international doctors in Germany"
-- "Language school recommendations for B2 preparation"
-
-This gives new users something to engage with immediately.
-
-## Implementation Sequence
-
-1. Database migration: create tables + RLS policies
-2. Core hooks: `useCommunityPosts`, `useCommunityReplies`, `useCommunityVotes`
-3. Community listing page (`/community`)
-4. Single post page (`/community/:id`)
-5. "Ask a Question" dialog/form
-6. Dashboard widget (CommunityPreview)
-7. Landing page section (CommunityCard)
-8. Navbar update
-9. i18n translations (all 5 languages)
-10. Seed initial content
+- HomologationPreview (salary loss counter + CTA) is now **always visible** as users scroll through vacancies, dramatically increasing exposure
+- Default tab is Vacancies, which creates a "job board" feel that keeps users coming back
+- Reduced cognitive load above the fold means users reach actionable content faster
+- Profile completion checklist moved into the Profile tab creates a clear "to-do" feeling when they visit that tab
 
