@@ -3,8 +3,6 @@ import MainLayout from '@/components/MainLayout';
 import HeroSectionWithSearch from '@/components/landing/HeroSectionWithSearch';
 import PathToSuccessSection from '@/components/landing/PathToSuccessSection';
 import PartnersSection from '@/components/landing/PartnersSection';
-import EmployerBanner from '@/components/landing/EmployerBanner';
-import BlackFridayBanner from '@/components/payments/BlackFridayBanner';
 
 // Lazy load sections below the fold
 const JobExplorerSection = React.lazy(() => import('@/components/landing/JobExplorerSection'));
@@ -26,15 +24,10 @@ const Index = () => {
       {/* Critical above-the-fold content - load immediately */}
       <HeroSectionWithSearch />
       
-      {/* Black Friday Banner - promotional content */}
-      <div className="container mx-auto px-4 py-6">
-        <BlackFridayBanner />
-      </div>
-      
       {/* Partners/Accelerators Section */}
       <PartnersSection />
       
-      {/* Path to Success section - 5 steps timeline */}
+      {/* Path to Success section - 4 steps timeline */}
       <div id="path-to-success">
         <PathToSuccessSection />
       </div>
@@ -43,9 +36,6 @@ const Index = () => {
       <Suspense fallback={<LoadingFallback height="h-96" />}>
         <JobExplorerSection />
       </Suspense>
-      
-      {/* Employer Banner */}
-      <EmployerBanner />
       
       {/* Success Stories - 3 static cards focused on homologation */}
       <Suspense fallback={<LoadingFallback height="h-96" />}>

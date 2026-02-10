@@ -76,7 +76,7 @@ const SuccessStoriesSection = () => {
             
             {/* Micro CTA above cards */}
             <Link 
-              to="/homologation" 
+               to="/homologation-wizard" 
               className="inline-flex items-center gap-2 text-primary hover:text-primary/80 font-medium group"
             >
               <span>{successStories?.microCta || "Want to be next?"}</span>
@@ -137,7 +137,7 @@ const SuccessStoriesSection = () => {
                 
                 {/* CTA Link */}
                 <Link 
-                  to="/homologation" 
+                  to="/homologation-wizard" 
                   className="mt-4 pt-4 border-t border-border/50 flex items-center gap-2 text-primary hover:text-primary/80 font-medium text-sm group"
                 >
                   {successStories?.ctaText || "View my homologation plan"}

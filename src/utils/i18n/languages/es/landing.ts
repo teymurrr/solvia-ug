@@ -199,8 +199,8 @@ export const landing = {
   superCta: {
     title: "Empieza tu viaje hacia Europa hoy",
     subtitle: "Miles de médicos y enfermeros ya iniciaron su proceso con Solvia",
-    primaryCta: "Ver ofertas para mi perfil",
-    secondaryCta: "Recibir mi plan de homologación gratis"
+    primaryCta: "Comenzar mi evaluación gratuita",
+    secondaryCta: "Explorar posiciones abiertas"
   },
   learningMiniBanner: {
     text: "¿Necesitas aprender el idioma médico para Europa?",

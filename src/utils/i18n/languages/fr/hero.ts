@@ -2,8 +2,8 @@
 export const hero = {
   title: 'Travaillez en Europe en tant que médecin ou infirmier.',
   subtitle: 'Consultez vos offres par pays et obtenez des conseils pour démarrer votre carrière dans le pays de vos rêves.',
-  cta: 'Voir les offres pour mon profil',
-  secondaryCta: 'Recevoir mon plan d\'homologation gratuit',
+  cta: 'Commencer mon évaluation gratuite',
+  secondaryCta: 'Explorer les postes ouverts',
   learnMore: 'En savoir plus',
   searchPlaceholder: 'Titre du poste, spécialité ou mot-clé...',
   locationPlaceholder: 'Lieu...',
