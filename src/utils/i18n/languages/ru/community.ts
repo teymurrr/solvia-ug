@@ -25,6 +25,7 @@ export const community = {
   submitPost: 'Опубликовать обсуждение',
   postCreated: 'Обсуждение опубликовано!',
   postCreatedDesc: 'Ваш вопрос теперь виден сообществу.',
+  viewAll: 'Показать все',
   categories: {
     homologation: 'Гомологация',
     language: 'Изучение языка',
