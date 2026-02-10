@@ -536,6 +536,36 @@ export type Database = {
           },
         ]
       }
+      digest_preferences: {
+        Row: {
+          categories: string[]
+          created_at: string
+          enabled: boolean
+          frequency: string
+          id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          categories?: string[]
+          created_at?: string
+          enabled?: boolean
+          frequency?: string
+          id?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          categories?: string[]
+          created_at?: string
+          enabled?: boolean
+          frequency?: string
+          id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       discount_codes: {
         Row: {
           applicable_products: string[] | null
