@@ -19,6 +19,7 @@ import HomologationTab from '@/components/professional-dashboard/HomologationTab
 import WelcomeSection from '@/components/professional-dashboard/WelcomeSection';
 import HomologationPreview from '@/components/professional-dashboard/HomologationPreview';
 import RecommendedVacancies from '@/components/professional-dashboard/RecommendedVacancies';
+import CommunityWidget from '@/components/professional-dashboard/CommunityWidget';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/hooks/useLanguage';
@@ -262,6 +263,9 @@ const ProfessionalDashboard: React.FC = () => {
           appliedVacancies={appliedVacancies}
           onSaveToggle={toggleSaveVacancy}
         />
+
+        {/* Community Widget */}
+        <CommunityWidget userSpecialty={profileData?.specialty} />
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
           <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 gap-1 h-auto p-1">

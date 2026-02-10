@@ -25,6 +25,7 @@ export const community = {
   submitPost: 'Publier la discussion',
   postCreated: 'Discussion publiée !',
   postCreatedDesc: 'Votre question est maintenant visible par la communauté.',
+  viewAll: 'Voir tout',
   categories: {
     homologation: 'Homologation',
     language: 'Apprentissage des langues',
