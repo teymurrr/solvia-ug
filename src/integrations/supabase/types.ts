@@ -1077,6 +1077,89 @@ export type Database = {
         }
         Relationships: []
       }
+      mentor_profiles: {
+        Row: {
+          availability: string
+          bio: string | null
+          created_at: string
+          current_mentees: number
+          expertise: string[]
+          id: string
+          is_active: boolean
+          languages_spoken: string[]
+          max_mentees: number
+          updated_at: string
+          user_id: string
+          years_experience: number | null
+        }
+        Insert: {
+          availability?: string
+          bio?: string | null
+          created_at?: string
+          current_mentees?: number
+          expertise?: string[]
+          id?: string
+          is_active?: boolean
+          languages_spoken?: string[]
+          max_mentees?: number
+          updated_at?: string
+          user_id: string
+          years_experience?: number | null
+        }
+        Update: {
+          availability?: string
+          bio?: string | null
+          created_at?: string
+          current_mentees?: number
+          expertise?: string[]
+          id?: string
+          is_active?: boolean
+          languages_spoken?: string[]
+          max_mentees?: number
+          updated_at?: string
+          user_id?: string
+          years_experience?: number | null
+        }
+        Relationships: []
+      }
+      mentor_requests: {
+        Row: {
+          created_at: string
+          id: string
+          mentee_id: string
+          mentor_id: string
+          message: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          mentee_id: string
+          mentor_id: string
+          message?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          mentee_id?: string
+          mentor_id?: string
+          message?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mentor_requests_mentor_id_fkey"
+            columns: ["mentor_id"]
+            isOneToOne: false
+            referencedRelation: "mentor_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       notifications: {
         Row: {
           created_at: string
