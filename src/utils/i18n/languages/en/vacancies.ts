@@ -83,5 +83,16 @@ export const vacancies = {
     homologatedTitle: 'homologated title',
     permanentContract: 'Permanent contract',
     relocationHelp: 'relocation assistance'
+  },
+  applyDialog: {
+    title: 'Express Interest',
+    subtitle: "Let us know you're interested in:",
+    placeholder: "Optional: Add a message about why you're interested in this position...",
+    submit: 'Submit Interest',
+    successTitle: 'Interest submitted!',
+    successDesc: "We've received your interest! Our team will match you with this opportunity as part of your homologation journey.",
+    alreadyApplied: 'Already applied',
+    alreadyAppliedDesc: 'You have already expressed interest in this position.',
+    errorDesc: 'Something went wrong. Please try again.',
   }
 };
