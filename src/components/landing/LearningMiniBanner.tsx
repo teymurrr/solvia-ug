@@ -19,12 +19,12 @@ const LearningMiniBanner = () => {
               <GraduationCap className="h-5 w-5 text-primary" />
             </div>
             <span className="text-foreground font-medium">
-              {banner?.text || "Need Medical German?"}
+              {banner?.text || "Medical German Starter Kit — from €29"}
             </span>
           </div>
           <Button asChild variant="link" className="text-primary group p-0">
-            <Link to="/learning" className="flex items-center gap-1">
-              {banner?.cta || "Learn more"}
+            <Link to="/learning/starter-kit" className="flex items-center gap-1">
+              {banner?.cta || "Get Started"}
               <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
             </Link>
           </Button>
