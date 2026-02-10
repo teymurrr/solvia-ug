@@ -2,6 +2,8 @@
 export const community = {
   title: 'Communauté',
   subtitle: 'Posez des questions, partagez vos expériences et apprenez des autres professionnels',
+  professionalsSharing: '57+ professionnels partagent leur parcours',
+  joinCommunity: 'Rejoindre la Communauté',
   askQuestion: 'Poser une question',
   searchPlaceholder: 'Rechercher des discussions...',
   allCategories: 'Toutes',

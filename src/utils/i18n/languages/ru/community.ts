@@ -2,6 +2,8 @@
 export const community = {
   title: 'Сообщество',
   subtitle: 'Задавайте вопросы, делитесь опытом и учитесь у коллег',
+  professionalsSharing: '57+ специалистов делятся своим опытом',
+  joinCommunity: 'Присоединиться к Сообществу',
   askQuestion: 'Задать вопрос',
   searchPlaceholder: 'Поиск обсуждений...',
   allCategories: 'Все',
