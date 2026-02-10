@@ -18,6 +18,57 @@ export const vacancies = {
   latestOpportunities: 'Neueste Möglichkeiten',
   publishedDaysAgo: 'Vor {days} Tagen veröffentlicht',
   startHomologationToApply: 'Homologation starten um sich zu bewerben',
+  verifiedOffers: 'Verifizierte Angebote',
+  heroTitle: 'Arbeiten in Europa: Möglichkeiten basierend auf Ihrer Fachrichtung',
+  heroSubtitle: 'Filtern Sie nach Beruf und Land, um relevante Angebote zu sehen',
+  preview: 'Vorschau verfügbarer Angebote',
+  showingOffers: 'Angebote anzeigen',
+  in: 'in',
+  for: 'für',
+  noOffers: 'Keine Angebote für die ausgewählten Filter verfügbar.',
+  tryOtherFilters: 'Versuchen Sie andere Filter oder setzen Sie die Suche zurück.',
+  filter: 'Filtern',
+  profession: 'Beruf',
+  targetCountry: 'Zielland',
+  compareDestinations: 'Ziele vergleichen',
+  availablePositions: 'verfügbare Stellen',
+  expectedSalary: 'Erwartetes Gehalt',
+  perMonth: '/Monat',
+  estimatedTime: 'Geschätzte Dauer',
+  getPersonalizedPlan: 'Meinen personalisierten Plan erhalten',
+  professions: {
+    doctor: 'Arzt/Ärztin',
+    nurse: 'Krankenpfleger/in',
+    dentist: 'Zahnarzt/Zahnärztin',
+    pharmacist: 'Apotheker/in',
+    physiotherapist: 'Physiotherapeut/in'
+  },
+  countries: {
+    germany: 'Deutschland',
+    austria: 'Österreich',
+    spain: 'Spanien',
+    france: 'Frankreich'
+  },
+  countryBadges: {
+    germany: 'Beste Gehälter',
+    austria: 'Einfachster Prozess',
+    spain: 'Schnelle Anerkennung',
+    france: 'Hohe Lebensqualität'
+  },
+  homologationTime: {
+    germany: '6–12 Monate',
+    austria: '4–8 Monate',
+    spain: '2–6 Monate',
+    france: '4–10 Monate'
+  },
+  specialties: {
+    pediatrics: 'Pädiatrie',
+    cardiology: 'Kardiologie',
+    generalSurgery: 'Allgemeinchirurgie',
+    neurology: 'Neurologie',
+    generalNursing: 'Allgemeine Pflege',
+    anesthesiology: 'Anästhesiologie'
+  },
   readyToFindJob: {
     title: 'Bereit, Ihren Traumjob zu finden?',
     subtitle: 'Schließen Sie sich Tausenden von Gesundheitsfachkräften an, die ihre perfekte Rolle gefunden haben',

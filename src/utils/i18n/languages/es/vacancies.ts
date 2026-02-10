@@ -19,6 +19,57 @@ export const vacancies = {
   positions: 'Puestos activos',
   latestOpportunities: 'Últimas Oportunidades',
   startHomologationToApply: 'Iniciar homologación para aplicar',
+  verifiedOffers: 'Ofertas Verificadas',
+  heroTitle: 'Trabaja en Europa: oportunidades según tu especialidad',
+  heroSubtitle: 'Filtra por profesión y país para ver ofertas relevantes',
+  preview: 'Vista previa de ofertas disponibles',
+  showingOffers: 'Mostrando ofertas',
+  in: 'en',
+  for: 'para',
+  noOffers: 'No hay ofertas disponibles para los filtros seleccionados.',
+  tryOtherFilters: 'Prueba otros filtros o limpia la búsqueda.',
+  filter: 'Filtrar',
+  profession: 'Profesión',
+  targetCountry: 'País de destino',
+  compareDestinations: 'Compara destinos',
+  availablePositions: 'posiciones disponibles',
+  expectedSalary: 'Salario esperado',
+  perMonth: '/mes',
+  estimatedTime: 'Tiempo estimado',
+  getPersonalizedPlan: 'Obtener mi plan personalizado',
+  professions: {
+    doctor: 'Médico',
+    nurse: 'Enfermero/a',
+    dentist: 'Dentista',
+    pharmacist: 'Farmacéutico/a',
+    physiotherapist: 'Fisioterapeuta'
+  },
+  countries: {
+    germany: 'Alemania',
+    austria: 'Austria',
+    spain: 'España',
+    france: 'Francia'
+  },
+  countryBadges: {
+    germany: 'Mejores salarios',
+    austria: 'Proceso más simple',
+    spain: 'Homologación rápida',
+    france: 'Gran calidad de vida'
+  },
+  homologationTime: {
+    germany: '6–12 meses',
+    austria: '4–8 meses',
+    spain: '2–6 meses',
+    france: '4–10 meses'
+  },
+  specialties: {
+    pediatrics: 'Pediatría',
+    cardiology: 'Cardiología',
+    generalSurgery: 'Cirugía General',
+    neurology: 'Neurología',
+    generalNursing: 'Enfermería General',
+    anesthesiology: 'Anestesiología'
+  },
   readyToFindJob: {
     title: '¿Listo para encontrar el trabajo de tus sueños?',
     subtitle: 'Únete a miles de profesionales sanitarios que encontraron su rol perfecto',

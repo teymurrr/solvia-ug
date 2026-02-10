@@ -28,20 +28,14 @@ export interface FilterData {
   targetCountry: string;
 }
 
-const professions = [
-  { value: 'doctor', label: 'Médico' },
-  { value: 'nurse', label: 'Enfermero/a' },
-  { value: 'dentist', label: 'Dentista' },
-  { value: 'pharmacist', label: 'Farmacéutico/a' },
-  { value: 'physiotherapist', label: 'Fisioterapeuta' },
-];
-
-const countries = [
-  { value: 'germany', label: '🇩🇪 Alemania' },
-  { value: 'austria', label: '🇦🇹 Austria' },
-  { value: 'spain', label: '🇪🇸 España' },
-  { value: 'france', label: '🇫🇷 Francia' },
-];
+const professionKeys = ['doctor', 'nurse', 'dentist', 'pharmacist', 'physiotherapist'] as const;
+const countryKeys = ['germany', 'austria', 'spain', 'france'] as const;
+const countryFlags: Record<string, string> = {
+  germany: '🇩🇪',
+  austria: '🇦🇹',
+  spain: '🇪🇸',
+  france: '🇫🇷',
+};
 
 const MiniOnboardingForm = ({ onFilter, onComplete }: MiniOnboardingFormProps) => {
   const { t } = useLanguage();
@@ -72,12 +66,12 @@ const MiniOnboardingForm = ({ onFilter, onComplete }: MiniOnboardingFormProps) =
         onValueChange={(value) => setFormData({ ...formData, profession: value })}
       >
         <SelectTrigger className="w-full sm:w-48 bg-background">
-          <SelectValue placeholder="Profesión" />
+          <SelectValue placeholder={t?.vacancies?.profession || 'Profession'} />
         </SelectTrigger>
         <SelectContent>
-          {professions.map((prof) => (
-            <SelectItem key={prof.value} value={prof.value}>
-              {prof.label}
+          {professionKeys.map((key) => (
+            <SelectItem key={key} value={key}>
+              {t?.vacancies?.professions?.[key] || key}
             </SelectItem>
           ))}
         </SelectContent>
@@ -88,12 +82,12 @@ const MiniOnboardingForm = ({ onFilter, onComplete }: MiniOnboardingFormProps) =
         onValueChange={(value) => setFormData({ ...formData, targetCountry: value })}
       >
         <SelectTrigger className="w-full sm:w-48 bg-background">
-          <SelectValue placeholder="País de destino" />
+          <SelectValue placeholder={t?.vacancies?.targetCountry || 'Destination country'} />
         </SelectTrigger>
         <SelectContent>
-          {countries.map((country) => (
-            <SelectItem key={country.value} value={country.value}>
-              {country.label}
+          {countryKeys.map((key) => (
+            <SelectItem key={key} value={key}>
+              {countryFlags[key]} {t?.vacancies?.countries?.[key] || key}
             </SelectItem>
           ))}
         </SelectContent>
@@ -105,7 +99,7 @@ const MiniOnboardingForm = ({ onFilter, onComplete }: MiniOnboardingFormProps) =
           className="flex-1 sm:flex-none"
         >
           <Search className="h-4 w-4 mr-2" />
-          Filtrar
+          {t?.vacancies?.filter || 'Filter'}
         </Button>
         
         {hasFilters && (

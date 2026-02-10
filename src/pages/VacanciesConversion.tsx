@@ -11,26 +11,15 @@ import { Badge } from '@/components/ui/badge';
 import { Briefcase, Lock, Sparkles, Filter } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
 
-// Mock blurred job data for the locked state
+// Mock blurred job data — specialty keys reference translations
 const mockBlurredJobs = [
-  { hospital: 'Hospital Universitario de Hamburgo', specialty: 'Pediatría', city: 'Hamburgo', country: 'germany', profession: 'doctor', salaryRange: '52.000 - 60.000 €/año' },
-  { hospital: 'Charité Berlin', specialty: 'Cardiología', city: 'Berlín', country: 'germany', profession: 'doctor', salaryRange: '58.000 - 72.000 €/año' },
-  { hospital: 'Klinikum München', specialty: 'Cirugía General', city: 'Múnich', country: 'germany', profession: 'doctor', salaryRange: '55.000 - 68.000 €/año' },
-  { hospital: 'AKH Wien', specialty: 'Neurología', city: 'Viena', country: 'austria', profession: 'doctor', salaryRange: '60.000 - 75.000 €/año' },
-  { hospital: 'Hospital Clínic Barcelona', specialty: 'Enfermería General', city: 'Barcelona', country: 'spain', profession: 'nurse', salaryRange: '32.000 - 42.000 €/año' },
-  { hospital: 'Hôpital Universitaire Lyon', specialty: 'Anestesiología', city: 'Lyon', country: 'france', profession: 'doctor', salaryRange: '54.000 - 65.000 €/año' },
+  { hospital: 'Hospital Universitario de Hamburgo', specialtyKey: 'pediatrics', city: 'Hamburgo', country: 'germany', profession: 'doctor', salaryRange: '52.000 - 60.000 €/año' },
+  { hospital: 'Charité Berlin', specialtyKey: 'cardiology', city: 'Berlín', country: 'germany', profession: 'doctor', salaryRange: '58.000 - 72.000 €/año' },
+  { hospital: 'Klinikum München', specialtyKey: 'generalSurgery', city: 'Múnich', country: 'germany', profession: 'doctor', salaryRange: '55.000 - 68.000 €/año' },
+  { hospital: 'AKH Wien', specialtyKey: 'neurology', city: 'Viena', country: 'austria', profession: 'doctor', salaryRange: '60.000 - 75.000 €/año' },
+  { hospital: 'Hospital Clínic Barcelona', specialtyKey: 'generalNursing', city: 'Barcelona', country: 'spain', profession: 'nurse', salaryRange: '32.000 - 42.000 €/año' },
+  { hospital: 'Hôpital Universitaire Lyon', specialtyKey: 'anesthesiology', city: 'Lyon', country: 'france', profession: 'doctor', salaryRange: '54.000 - 65.000 €/año' },
 ];
-
-const getCountryDisplayNames = (lang?: string): Record<string, string> => {
-  if (lang === 'es') {
-    return { germany: 'Alemania', austria: 'Austria', spain: 'España', france: 'Francia' };
-  } else if (lang === 'de') {
-    return { germany: 'Deutschland', austria: 'Österreich', spain: 'Spanien', france: 'Frankreich' };
-  } else if (lang === 'fr') {
-    return { germany: 'Allemagne', austria: 'Autriche', spain: 'Espagne', france: 'France' };
-  }
-  return { germany: 'Germany', austria: 'Austria', spain: 'Spain', france: 'France' };
-};
 
 const VacanciesConversion = () => {
   const { t, currentLanguage } = useLanguage();
@@ -38,14 +27,16 @@ const VacanciesConversion = () => {
   const [filters, setFilters] = useState<FilterData>({ profession: '', targetCountry: '' });
   const [savedVacancies, setSavedVacancies] = useState<string[]>([]);
 
-  const countryDisplayNames = getCountryDisplayNames(currentLanguage);
-
   const handleFilter = (newFilters: FilterData) => {
     setFilters(newFilters);
   };
 
   const getCountryDisplayName = (countryId: string): string => {
-    return countryDisplayNames[countryId] || countryId;
+    return t?.vacancies?.countries?.[countryId as keyof typeof t.vacancies.countries] || countryId;
+  };
+
+  const getProfessionLabel = (profKey: string): string => {
+    return t?.vacancies?.professions?.[profKey as keyof typeof t.vacancies.professions] || profKey;
   };
 
   // Filter blurred jobs based on selected country and profession
@@ -119,7 +110,7 @@ const VacanciesConversion = () => {
                 <span>
                   {t?.vacancies?.showingOffers || 'Showing offers'}
                   {filters.targetCountry && ` ${t?.vacancies?.in || 'in'} ${getCountryDisplayName(filters.targetCountry)}`}
-                  {filters.profession && ` ${t?.vacancies?.for || 'for'} ${filters.profession === 'doctor' ? (t?.wizard?.doctorType?.general || 'doctors') : filters.profession === 'nurse' ? (t?.wizard?.doctorType?.nurse || 'nurses') : filters.profession}`}
+                  {filters.profession && ` ${t?.vacancies?.for || 'for'} ${getProfessionLabel(filters.profession)}`}
                 </span>
               </div>
             )}
@@ -137,7 +128,7 @@ const VacanciesConversion = () => {
                     <BlurredJobCard
                       key={index}
                       hospital={job.hospital}
-                      specialty={job.specialty}
+                      specialty={t?.vacancies?.specialties?.[job.specialtyKey as keyof typeof t.vacancies.specialties] || job.specialtyKey}
                       city={job.city}
                       country={getCountryDisplayName(job.country)}
                       salaryRange={job.salaryRange}
