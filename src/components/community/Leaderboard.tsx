@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Trophy, Award, Star, Crown, Medal } from 'lucide-react';
+import { Trophy, Award, Medal, Crown } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useLeaderboard } from '@/hooks/useReputation';
@@ -16,13 +16,18 @@ const RANK_ICONS = [
 
 const Leaderboard: React.FC = () => {
   const { data: leaders, isLoading } = useLeaderboard(5);
-  const { currentLanguage } = useLanguage();
+  const { currentLanguage, t } = useLanguage();
+  const ct = (t as any)?.community?.leaderboard;
+
+  const title = ct?.title || 'Top Contributors';
+  const noActivity = ct?.noActivity || 'No activity yet. Be the first to contribute!';
+  const ptsLabel = ct?.points || 'pts';
 
   if (isLoading) {
     return (
       <div className="bg-card border border-border rounded-lg p-4">
         <h3 className="font-semibold text-foreground mb-3 flex items-center gap-2">
-          <Trophy className="h-4 w-4 text-primary" /> Top Contributors
+          <Trophy className="h-4 w-4 text-primary" /> {title}
         </h3>
         <div className="space-y-3">
           {[1, 2, 3].map(i => (
@@ -43,9 +48,9 @@ const Leaderboard: React.FC = () => {
     return (
       <div className="bg-card border border-border rounded-lg p-4">
         <h3 className="font-semibold text-foreground mb-3 flex items-center gap-2">
-          <Trophy className="h-4 w-4 text-primary" /> Top Contributors
+          <Trophy className="h-4 w-4 text-primary" /> {title}
         </h3>
-        <p className="text-sm text-muted-foreground">No activity yet. Be the first to contribute!</p>
+        <p className="text-sm text-muted-foreground">{noActivity}</p>
       </div>
     );
   }
@@ -53,7 +58,7 @@ const Leaderboard: React.FC = () => {
   return (
     <div className="bg-card border border-border rounded-lg p-4">
       <h3 className="font-semibold text-foreground mb-3 flex items-center gap-2">
-        <Trophy className="h-4 w-4 text-primary" /> Top Contributors
+        <Trophy className="h-4 w-4 text-primary" /> {title}
       </h3>
       <div className="space-y-3">
         {leaders.map((leader, index) => (
@@ -74,7 +79,7 @@ const Leaderboard: React.FC = () => {
                 {leader.profile?.first_name} {leader.profile?.last_name}
               </p>
               <div className="flex items-center gap-1.5">
-                <span className="text-xs text-primary font-semibold">{leader.total_points} pts</span>
+                <span className="text-xs text-primary font-semibold">{leader.total_points} {ptsLabel}</span>
                 <TooltipProvider>
                   <div className="flex -space-x-1">
                     {leader.badges.slice(0, 3).map(ub => (

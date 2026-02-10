@@ -77,7 +77,7 @@ const Community = () => {
             ) : (
               <Button onClick={() => isLoggedIn ? setMentorOpen(true) : navigate('/login')}>
                 <Heart className="h-4 w-4 mr-2" />
-                Become a Mentor
+                {ct?.becomeMentor || 'Become a Mentor'}
               </Button>
             )}
           </div>
@@ -87,10 +87,10 @@ const Community = () => {
         <Tabs value={activeTab} onValueChange={setActiveTab} className="mb-6">
           <TabsList>
             <TabsTrigger value="discussions" className="gap-1.5">
-              <MessageSquare className="h-4 w-4" /> Discussions
+              <MessageSquare className="h-4 w-4" /> {ct?.discussions || 'Discussions'}
             </TabsTrigger>
             <TabsTrigger value="mentors" className="gap-1.5">
-              <Users className="h-4 w-4" /> Find a Mentor
+              <Users className="h-4 w-4" /> {ct?.findMentor || 'Find a Mentor'}
             </TabsTrigger>
           </TabsList>
         </Tabs>

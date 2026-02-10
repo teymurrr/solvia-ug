@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useJourneyUpdates, useCreateJourneyUpdate, useToggleReaction, MILESTONE_TYPES, MILESTONE_TEMPLATES } from '@/hooks/useJourneyUpdates';
 import { useAuth } from '@/contexts/AuthContext';
+import { useLanguage } from '@/hooks/useLanguage';
 import { formatDistanceToNow } from 'date-fns';
 
 const REACTION_EMOJIS = ['🎉', '👏', '💪', '❤️'];
@@ -15,6 +16,8 @@ const JourneyFeed: React.FC = () => {
   const createUpdate = useCreateJourneyUpdate();
   const toggleReaction = useToggleReaction();
   const { isLoggedIn } = useAuth();
+  const { t } = useLanguage();
+  const jt = (t as any)?.community?.journey;
 
   const [showCompose, setShowCompose] = useState(false);
   const [content, setContent] = useState('');
@@ -40,7 +43,7 @@ const JourneyFeed: React.FC = () => {
   return (
     <div className="bg-card border border-border rounded-lg p-4">
       <h3 className="font-semibold text-foreground mb-3 flex items-center gap-2">
-        <Sparkles className="h-4 w-4 text-primary" /> Journey Updates
+        <Sparkles className="h-4 w-4 text-primary" /> {jt?.title || 'Journey Updates'}
       </h3>
 
       {/* Compose */}
@@ -51,11 +54,10 @@ const JourneyFeed: React.FC = () => {
               onClick={() => setShowCompose(true)}
               className="w-full text-left text-sm text-muted-foreground bg-muted/50 rounded-md px-3 py-2 hover:bg-muted transition-colors"
             >
-              Share a milestone...
+              {jt?.shareMilestone || 'Share a milestone...'}
             </button>
           ) : (
             <div className="space-y-2">
-              {/* Milestone type pills */}
               <div className="flex flex-wrap gap-1">
                 {MILESTONE_TYPES.map(mt => (
                   <button
@@ -74,11 +76,10 @@ const JourneyFeed: React.FC = () => {
               <textarea
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
-                placeholder="What milestone did you reach?"
+                placeholder={jt?.whatMilestone || 'What milestone did you reach?'}
                 className="w-full text-sm bg-background border border-border rounded-md px-3 py-2 resize-none focus:outline-none focus:ring-1 focus:ring-ring min-h-[60px]"
                 maxLength={280}
               />
-              {/* Templates */}
               {!content && (
                 <div className="flex flex-wrap gap-1">
                   {MILESTONE_TEMPLATES.slice(0, 3).map((tpl, i) => (
@@ -96,11 +97,11 @@ const JourneyFeed: React.FC = () => {
                 <span className="text-xs text-muted-foreground">{content.length}/280</span>
                 <div className="flex gap-2">
                   <Button variant="ghost" size="sm" onClick={() => { setShowCompose(false); setContent(''); }}>
-                    Cancel
+                    {jt?.cancel || 'Cancel'}
                   </Button>
                   <Button size="sm" onClick={handleSubmit} disabled={!content.trim() || createUpdate.isPending}>
                     <Send className="h-3 w-3 mr-1" />
-                    {createUpdate.isPending ? 'Posting...' : 'Share'}
+                    {createUpdate.isPending ? (jt?.posting || 'Posting...') : (jt?.share || 'Share')}
                   </Button>
                 </div>
               </div>
@@ -124,7 +125,7 @@ const JourneyFeed: React.FC = () => {
         </div>
       ) : !updates || updates.length === 0 ? (
         <p className="text-sm text-muted-foreground text-center py-4">
-          No journey updates yet. Share your first milestone!
+          {jt?.noUpdates || 'No journey updates yet. Share your first milestone!'}
         </p>
       ) : (
         <div className="space-y-3">
@@ -152,7 +153,6 @@ const JourneyFeed: React.FC = () => {
                     </span>
                   </div>
                   <p className="text-sm text-foreground mt-0.5">{update.content}</p>
-                  {/* Reactions */}
                   <div className="flex items-center gap-1 mt-1">
                     {update.reactions.map(r => (
                       <button
@@ -167,7 +167,6 @@ const JourneyFeed: React.FC = () => {
                         {r.emoji} {r.count}
                       </button>
                     ))}
-                    {/* Add reaction button */}
                     {isLoggedIn && (
                       <div className="relative group">
                         <button className="text-xs text-muted-foreground hover:text-foreground px-1 py-0.5 rounded transition-colors">
