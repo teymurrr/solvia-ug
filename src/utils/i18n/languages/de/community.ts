@@ -2,6 +2,8 @@
 export const community = {
   title: 'Community',
   subtitle: 'Stellen Sie Fragen, teilen Sie Erfahrungen und lernen Sie von anderen Fachkräften',
+  professionalsSharing: '57+ Fachkräfte teilen ihren Weg',
+  joinCommunity: 'Community beitreten',
   askQuestion: 'Frage stellen',
   searchPlaceholder: 'Diskussionen durchsuchen...',
   allCategories: 'Alle',
