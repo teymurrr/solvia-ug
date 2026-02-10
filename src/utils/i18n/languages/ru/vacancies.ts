@@ -20,6 +20,57 @@ export const vacancies = {
   keyRequirements: 'Ключевые требования',
   more: 'ещё',
   startHomologationToApply: 'Начать гомологацию для подачи заявки',
+  verifiedOffers: 'Проверенные вакансии',
+  heroTitle: 'Работа в Европе: возможности по вашей специальности',
+  heroSubtitle: 'Фильтруйте по профессии и стране, чтобы увидеть подходящие предложения',
+  preview: 'Предпросмотр доступных предложений',
+  showingOffers: 'Показаны предложения',
+  in: 'в',
+  for: 'для',
+  noOffers: 'Нет предложений для выбранных фильтров.',
+  tryOtherFilters: 'Попробуйте другие фильтры или сбросьте поиск.',
+  filter: 'Фильтр',
+  profession: 'Профессия',
+  targetCountry: 'Страна назначения',
+  compareDestinations: 'Сравнить направления',
+  availablePositions: 'доступных позиций',
+  expectedSalary: 'Ожидаемая зарплата',
+  perMonth: '/месяц',
+  estimatedTime: 'Ориентировочный срок',
+  getPersonalizedPlan: 'Получить мой персональный план',
+  professions: {
+    doctor: 'Врач',
+    nurse: 'Медсестра/Медбрат',
+    dentist: 'Стоматолог',
+    pharmacist: 'Фармацевт',
+    physiotherapist: 'Физиотерапевт'
+  },
+  countries: {
+    germany: 'Германия',
+    austria: 'Австрия',
+    spain: 'Испания',
+    france: 'Франция'
+  },
+  countryBadges: {
+    germany: 'Лучшие зарплаты',
+    austria: 'Простейший процесс',
+    spain: 'Быстрая гомологация',
+    france: 'Высокое качество жизни'
+  },
+  homologationTime: {
+    germany: '6–12 месяцев',
+    austria: '4–8 месяцев',
+    spain: '2–6 месяцев',
+    france: '4–10 месяцев'
+  },
+  specialties: {
+    pediatrics: 'Педиатрия',
+    cardiology: 'Кардиология',
+    generalSurgery: 'Общая хирургия',
+    neurology: 'Неврология',
+    generalNursing: 'Общий уход',
+    anesthesiology: 'Анестезиология'
+  },
   readyToFindJob: {
     title: 'Готовы найти работу мечты?',
     subtitle: 'Присоединяйтесь к тысячам медицинских специалистов, которые нашли свою идеальную работу',
