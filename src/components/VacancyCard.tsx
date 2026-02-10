@@ -198,6 +198,7 @@ const VacancyCard: React.FC<VacancyCardProps> = ({
         <div className="px-5 pb-5 pt-2">
           <VacancyFooter 
             id={id}
+            title={title}
             isLandingPageCard={isLandingPageCard}
             fromLandingPage={fromLandingPage}
             isLoggedIn={isLoggedIn}

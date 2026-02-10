@@ -83,5 +83,16 @@ export const vacancies = {
     homologatedTitle: 'diplôme homologué',
     permanentContract: 'Contrat permanent',
     relocationHelp: 'aide au déménagement'
+  },
+  applyDialog: {
+    title: 'Exprimer son intérêt',
+    subtitle: 'Faites-nous savoir que vous êtes intéressé(e) par :',
+    placeholder: 'Optionnel : Ajoutez un message expliquant pourquoi cette position vous intéresse...',
+    submit: "Soumettre l'intérêt",
+    successTitle: 'Intérêt soumis !',
+    successDesc: 'Nous avons reçu votre intérêt ! Notre équipe vous mettra en relation avec cette opportunité dans le cadre de votre parcours d\'homologation.',
+    alreadyApplied: 'Déjà postulé',
+    alreadyAppliedDesc: 'Vous avez déjà exprimé votre intérêt pour ce poste.',
+    errorDesc: 'Une erreur est survenue. Veuillez réessayer.',
   }
 };

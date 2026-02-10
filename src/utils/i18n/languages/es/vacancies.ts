@@ -114,5 +114,16 @@ export const vacancies = {
     frankfurt: 'Frankfurt, Hesse',
     barcelona: 'Barcelona, España',
     stockholm: 'Estocolmo, Suecia'
+  },
+  applyDialog: {
+    title: 'Expresar interés',
+    subtitle: 'Déjanos saber que estás interesado/a en:',
+    placeholder: 'Opcional: Agrega un mensaje sobre por qué te interesa esta posición...',
+    submit: 'Enviar interés',
+    successTitle: '¡Interés enviado!',
+    successDesc: '¡Hemos recibido tu interés! Nuestro equipo te conectará con esta oportunidad como parte de tu proceso de homologación.',
+    alreadyApplied: 'Ya aplicaste',
+    alreadyAppliedDesc: 'Ya has expresado interés en esta posición.',
+    errorDesc: 'Algo salió mal. Por favor, inténtalo de nuevo.',
   }
 };

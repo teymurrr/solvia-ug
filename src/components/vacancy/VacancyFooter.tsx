@@ -1,20 +1,16 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 import { FileCheck, ExternalLink } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
-import { 
-  isSafari, 
-  stateToQueryParams, 
-  createDashboardReturnState, 
-  handleDirectApply,
-  openInNewTab
-} from '@/utils/browserDetection';
+import { isSafari } from '@/utils/browserDetection';
+import ApplyDialog from './ApplyDialog';
 
 interface VacancyFooterProps {
   id: string;
+  title?: string;
   isDashboardCard?: boolean;
   applicationLink?: string;
   fromDashboard?: boolean;
@@ -25,161 +21,75 @@ interface VacancyFooterProps {
   isLandingPageCard?: boolean;
   isLoggedIn?: boolean;
   isApplied?: boolean;
+  onApplied?: () => void;
 }
 
 const VacancyFooter: React.FC<VacancyFooterProps> = ({ 
   id, 
+  title = '',
   isDashboardCard = false, 
   applicationLink,
   fromDashboard = false,
   fromLandingPage = false,
-  searchQuery,
-  currentPage,
-  selectedFilters,
   isLandingPageCard = false,
   isLoggedIn = false,
-  isApplied = false
+  isApplied = false,
+  onApplied
 }) => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const { t } = useLanguage();
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [localApplied, setLocalApplied] = useState(false);
   
-  // Get translations with fallbacks
   const applyNowText = t?.vacancies?.apply || "Apply Now";
   const appliedText = t?.common?.applied || "Applied";
   
-  // Enhanced logging for debugging
-  console.log('[VacancyFooter] Props received:', {
-    id,
-    isDashboardCard,
-    fromDashboard,
-    fromLandingPage,
-    applicationLink: applicationLink ? 'exists' : 'none',
-    isApplied,
-    isSafari: isSafari()
-  });
-  
-  // Create state object with all relevant information
-  const createNavigationState = () => {
-    // This is critical - always set dashboard param to true if we're in dashboard
-    // or if isDashboardCard is true
-    const dashboardParam = isDashboardCard || fromDashboard ? true : false;
-    console.log('[VacancyFooter] Is from dashboard:', dashboardParam);
-    
-    return { 
-      fromDashboard: dashboardParam, 
-      fromLandingPage,
-      searchQuery,
-      currentPage,
-      selectedFilters,
-      // Add this to ensure we can go back to dashboard directly
-      directToDashboard: dashboardParam
-    };
-  };
-  
+  const applied = isApplied || localApplied;
+
   const handleAppliedClick = () => {
     toast({
-      title: "Already applied",
-      description: "You have already applied for this vacancy",
+      title: t?.vacancies?.applyDialog?.alreadyApplied || "Already applied",
+      description: t?.vacancies?.applyDialog?.alreadyAppliedDesc || "You have already expressed interest in this position.",
     });
-  };
-  
-  const handleSignupRedirect = () => {
-    toast({
-      title: "Sign up required",
-      description: "Please sign up or log in to apply for this vacancy",
-    });
-    navigate('/signup/professional');
   };
 
   const handleApplyClick = (e: React.MouseEvent) => {
-    // If already applied, don't do anything
-    if (isApplied) {
-      e.preventDefault();
+    e.preventDefault();
+    e.stopPropagation();
+    
+    if (applied) {
       handleAppliedClick();
       return;
     }
     
-    // Redirect to signup if user is not logged in (from any page)
     if (!isLoggedIn) {
-      e.preventDefault();
-      handleSignupRedirect();
+      toast({
+        title: "Sign up required",
+        description: "Please sign up or log in to apply for this vacancy",
+      });
+      navigate('/signup/professional');
       return;
     }
     
-    const state = createNavigationState();
-    const dashboardParam = isDashboardCard || fromDashboard ? true : false;
-    
-    // Store application state before proceeding
+    // If there's an external application link, open it
     if (applicationLink) {
-      localStorage.setItem('vacancyApplicationState', JSON.stringify({
-        fromDashboard: dashboardParam,
-        timestamp: Date.now(),
-        externalApplication: true
-      }));
-      
-      // For Safari, we'll let the anchor tag handle the navigation
-      if (!isSafari() && dashboardParam) {
-        // After a short delay, navigate back to dashboard
-        setTimeout(() => {
-          const returnState = createDashboardReturnState(true, {
-            activeTab: 'vacancies',
-            externalApplication: true
-          });
-          
-          navigate('/dashboard/professional', { state: returnState });
-        }, 100);
-      }
-    } else {
-      // For internal applications, we'll prevent default and handle with navigate
-      e.preventDefault();
-      navigate(`/vacancies/${id}/apply`, { state });
+      window.open(applicationLink, '_blank', 'noopener,noreferrer');
+      return;
     }
+    
+    // Open the interest dialog
+    setDialogOpen(true);
   };
 
-  // For landing page cards, only show Apply Now button/link
-  if (isLandingPageCard) {
-    return (
-      <div className="pt-2 flex justify-center">
-        {isApplied ? (
-          <Button 
-            disabled
-            size={isDashboardCard ? "sm" : "default"}
-            variant="outline"
-            className="w-full"
-          >
-            <FileCheck className="mr-2 h-4 w-4" />
-            {appliedText}
-          </Button>
-        ) : (
-          applicationLink ? (
-            <a 
-              href={applicationLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={handleApplyClick}
-              className={`inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 w-full bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2`}
-            >
-              {applyNowText}
-            </a>
-          ) : (
-            <a
-              href={`/vacancies/${id}/apply`}
-              onClick={handleApplyClick}
-              className={`inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 w-full bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2`}
-            >
-              {applyNowText}
-            </a>
-          )
-        )}
-      </div>
-    );
-  }
+  const handleApplicationSuccess = () => {
+    setLocalApplied(true);
+    onApplied?.();
+  };
 
-  // Regular view with only Apply Now button/link for all other cards
-  return (
-    <div className="pt-2 flex justify-between gap-2">
-      {isApplied ? (
+  const renderButton = () => {
+    if (applied) {
+      return (
         <Button 
           disabled
           size={isDashboardCard ? "sm" : "default"}
@@ -189,28 +99,34 @@ const VacancyFooter: React.FC<VacancyFooterProps> = ({
           <FileCheck className="mr-2 h-4 w-4" />
           {appliedText}
         </Button>
-      ) : (
-        applicationLink ? (
-          <a 
-            href={applicationLink}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={handleApplyClick}
-            className={`inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 w-full bg-primary text-primary-foreground hover:bg-primary/90 ${isDashboardCard ? 'h-9 rounded-md px-3' : 'h-10 px-4 py-2'}`}
-          >
-            {applyNowText} <ExternalLink className="h-4 w-4 ml-1" />
-          </a>
-        ) : (
-          <a
-            href={`/vacancies/${id}/apply`}
-            onClick={handleApplyClick}
-            className={`inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 w-full bg-primary text-primary-foreground hover:bg-primary/90 ${isDashboardCard ? 'h-9 rounded-md px-3' : 'h-10 px-4 py-2'}`}
-          >
-            {applyNowText}
-          </a>
-        )
-      )}
-    </div>
+      );
+    }
+
+    return (
+      <Button
+        size={isDashboardCard ? "sm" : "default"}
+        className="w-full"
+        onClick={handleApplyClick}
+      >
+        {applyNowText}
+        {applicationLink && <ExternalLink className="h-4 w-4 ml-1" />}
+      </Button>
+    );
+  };
+
+  return (
+    <>
+      <div className={`pt-2 ${isLandingPageCard ? 'flex justify-center' : 'flex justify-between gap-2'}`}>
+        {renderButton()}
+      </div>
+      <ApplyDialog
+        open={dialogOpen}
+        onOpenChange={setDialogOpen}
+        vacancyId={id}
+        vacancyTitle={title}
+        onSuccess={handleApplicationSuccess}
+      />
+    </>
   );
 };
 

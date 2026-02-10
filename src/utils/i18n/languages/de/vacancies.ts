@@ -97,5 +97,16 @@ export const vacancies = {
     anesthesiologist: 'Anästhesist/in',
     pediatrician: 'Kinderarzt/Kinderärztin',
     surgeon: 'Chirurg/Chirurgin'
+  },
+  applyDialog: {
+    title: 'Interesse bekunden',
+    subtitle: 'Lassen Sie uns wissen, dass Sie interessiert sind an:',
+    placeholder: 'Optional: Fügen Sie eine Nachricht hinzu, warum Sie an dieser Position interessiert sind...',
+    submit: 'Interesse einreichen',
+    successTitle: 'Interesse eingereicht!',
+    successDesc: 'Wir haben Ihr Interesse erhalten! Unser Team wird Sie mit dieser Möglichkeit im Rahmen Ihres Anerkennungsverfahrens verbinden.',
+    alreadyApplied: 'Bereits beworben',
+    alreadyAppliedDesc: 'Sie haben bereits Interesse an dieser Position bekundet.',
+    errorDesc: 'Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut.',
   }
 };
