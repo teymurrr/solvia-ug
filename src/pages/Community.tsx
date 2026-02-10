@@ -12,6 +12,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/hooks/useLanguage';
 import CreatePostDialog from '@/components/community/CreatePostDialog';
 import Leaderboard from '@/components/community/Leaderboard';
+import JourneyFeed from '@/components/community/JourneyFeed';
 import { formatDistanceToNow } from 'date-fns';
 
 const CATEGORIES = [
@@ -51,7 +52,7 @@ const Community = () => {
 
   return (
     <MainLayout>
-      <div className="max-w-5xl mx-auto px-4 py-8">
+      <div className="max-w-6xl mx-auto px-4 py-8">
         <div className="flex flex-col lg:flex-row gap-8">
         <div className="flex-1 min-w-0">
         {/* Header */}
@@ -156,7 +157,8 @@ const Community = () => {
         </div>
 
         {/* Sidebar */}
-        <div className="w-full lg:w-72 shrink-0 space-y-4">
+        <div className="w-full lg:w-80 shrink-0 space-y-4">
+          <JourneyFeed />
           <Leaderboard />
         </div>
         </div>
