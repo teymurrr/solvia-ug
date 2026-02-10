@@ -857,6 +857,62 @@ export type Database = {
         }
         Relationships: []
       }
+      journey_reactions: {
+        Row: {
+          created_at: string
+          emoji: string
+          id: string
+          update_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          emoji: string
+          id?: string
+          update_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          emoji?: string
+          id?: string
+          update_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "journey_reactions_update_id_fkey"
+            columns: ["update_id"]
+            isOneToOne: false
+            referencedRelation: "journey_updates"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      journey_updates: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          milestone_type: string
+          user_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          milestone_type?: string
+          user_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          milestone_type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       languages: {
         Row: {
           certificate: string | null
