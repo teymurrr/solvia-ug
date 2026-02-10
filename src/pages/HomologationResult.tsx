@@ -245,7 +245,7 @@ const HomologationResult = () => {
             >
               <Card className="h-full relative overflow-hidden">
                 {/* Blur overlay */}
-                <div className="absolute inset-0 bg-gradient-to-br from-background/0 to-background/80 backdrop-blur-sm z-10 flex items-center justify-center">
+                <div className="absolute inset-0 bg-gradient-to-t from-background/95 via-background/70 to-background/30 z-10 flex items-end justify-center pb-6">
                   <div className="text-center p-6">
                     <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium mb-4">
                       <BookOpen className="h-4 w-4" />
@@ -271,7 +271,7 @@ const HomologationResult = () => {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4 relative z-0">
-                  <div className="grid grid-cols-3 gap-4 text-center opacity-40">
+                  <div className="grid grid-cols-3 gap-4 text-center">
                     <div className="p-4 bg-green-500/10 rounded-lg">
                       <p className="text-2xl font-bold text-green-600">{countryData.processTime.min}</p>
                       <p className="text-sm text-muted-foreground">{t.homologationResult.timeline.bestCase}</p>
@@ -298,7 +298,7 @@ const HomologationResult = () => {
             >
               <Card className="h-full border-2 border-primary/20 relative overflow-hidden">
                 {/* Blur overlay */}
-                <div className="absolute inset-0 bg-gradient-to-br from-background/0 to-background/80 backdrop-blur-sm z-10 flex items-center justify-center">
+                <div className="absolute inset-0 bg-gradient-to-t from-background/95 via-background/70 to-background/30 z-10 flex items-end justify-center pb-6">
                   <div className="text-center p-6">
                     <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium mb-4">
                       <Languages className="h-4 w-4" />
@@ -331,11 +331,11 @@ const HomologationResult = () => {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4 relative z-0">
-                  <div className="flex items-center justify-between opacity-40">
+                  <div className="flex items-center justify-between">
                     <span className="text-muted-foreground">{t.homologationResult.language.requiredLevel}</span>
                     <Badge className="text-lg px-4 py-1">{countryData.languageRequirement.level}</Badge>
                   </div>
-                  <div className="flex items-center justify-between opacity-40">
+                  <div className="flex items-center justify-between">
                     <span className="text-muted-foreground">{t.homologationResult.language.yourLevel}</span>
                     <Badge variant={needsLanguagePrep() ? "secondary" : "default"} className="text-lg px-4 py-1">
                       {wizardData.languageLevel || t.homologationResult.language.notSpecified}
