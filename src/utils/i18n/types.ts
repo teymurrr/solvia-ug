@@ -2,7 +2,49 @@
 export interface DashboardTranslations {
   title?: string;
   subtitle?: string;
-  welcome?: string;
+  welcome?: string | {
+    goodMorning?: string;
+    goodAfternoon?: string;
+    goodEvening?: string;
+    subtitle?: string;
+    readiness?: string;
+    stepsCompleted?: string;
+    gettingStarted?: string;
+    allComplete?: string;
+    checklistProfile?: string;
+    checklistExperience?: string;
+    checklistLanguages?: string;
+    checklistHomologation?: string;
+    checklistVacancies?: string;
+  };
+  homologationPreview?: {
+    title?: string;
+    subtitle?: string;
+    free?: string;
+    salaryLossTitle?: string;
+    perMonth?: string;
+    salaryLossDesc?: string;
+    fastest?: string;
+    average?: string;
+    longest?: string;
+    requiredDocs?: string;
+    moreDocuments?: string;
+    unlockAccess?: string;
+    testimonial?: string;
+    testimonialAuthor?: string;
+    ctaUnlock?: string;
+    viewPlans?: string;
+  };
+  recommended?: {
+    title?: string;
+    description?: string;
+    badge?: string;
+  };
+  notifications?: {
+    title?: string;
+    markAllRead?: string;
+    empty?: string;
+  };
   hero?: {
     title: string;
     subtitle: string;
