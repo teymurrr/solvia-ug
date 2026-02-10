@@ -73,16 +73,6 @@ const SuccessStoriesSection = () => {
             <p className="text-lg text-muted-foreground mb-6">
               {successStories?.subtitle || "Here are some of the professionals who transformed their careers with us"}
             </p>
-            
-            {/* Micro CTA above cards */}
-            <Link 
-               to="/homologation-wizard" 
-              className="inline-flex items-center gap-2 text-primary hover:text-primary/80 font-medium group"
-            >
-              <span>{successStories?.microCta || "Want to be next?"}</span>
-              <span className="underline">{successStories?.microCtaLink || "Get your free homologation plan"}</span>
-              <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
-            </Link>
           </div>
 
           {/* 3 Static Cards */}

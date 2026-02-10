@@ -1,7 +1,7 @@
 export const landing = {
   jobExplorer: {
-    title: "Entdecken Sie echte Möglichkeiten in Europa",
-    subtitle: "Über 200+ aktive Stellen in Deutschland, Österreich, Spanien und Frankreich",
+    title: "200+ Stellen warten auf qualifizierte Fachkräfte",
+    subtitle: "Echte Krankenhäuser und Kliniken in 4 Ländern stellen jetzt ein.",
     realJob: "Echte Stelle",
     sampleJob: "Beispielstelle",
     sampleDisclaimer: "Beispiel zur Veranschaulichung",
@@ -67,7 +67,7 @@ export const landing = {
   },
   successStories: {
     badge: "Erfolgsgeschichten",
-    title: "Fachkräfte, die Solvia vertraut haben",
+    title: "Sie haben dort angefangen, wo Sie jetzt sind",
     subtitle: "Hier sind einige der Fachkräfte, die ihre Karriere mit uns verändert haben",
     microCta: "Möchten Sie der Nächste sein?",
     microCtaLink: "Erhalten Sie Ihren kostenlosen Anerkennungsplan",
@@ -197,8 +197,9 @@ export const landing = {
     ]
   },
   superCta: {
+    badge: "Starten Sie heute",
     title: "Starten Sie heute Ihre Reise nach Europa",
-    subtitle: "Tausende Ärzte und Pflegekräfte haben bereits ihren Prozess mit Solvia begonnen",
+    subtitle: "Schließen Sie sich 230+ Gesundheitsfachkräften an, die bereits ihren Weg begonnen haben.",
     primaryCta: "Meine kostenlose Bewertung starten",
     secondaryCta: "Offene Stellen ansehen"
   },

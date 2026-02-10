@@ -1,7 +1,7 @@
 
 export const hero = {
-  title: 'Work in Europe as a doctor or nurse.',
-  subtitle: 'See your offers by country and get guidance to start your career in your dream country.',
+  title: 'Your medical career in Europe starts here.',
+  subtitle: 'We handle your license recognition, find you a job, and guide you every step of the way.',
   cta: 'Start my free assessment',
   secondaryCta: 'Explore open positions',
   learnMore: 'Learn More',
