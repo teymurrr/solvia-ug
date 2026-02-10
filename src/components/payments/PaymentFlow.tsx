@@ -8,8 +8,8 @@ import { useLanguage } from '@/hooks/useLanguage';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { Check, Shield, Clock, BookOpen, Users, Star, ExternalLink } from 'lucide-react';
-import LaunchWeekBanner from './BlackFridayBanner';
-import { isSafari, preOpenPaymentWindow, redirectPaymentWindow } from '@/utils/browserDetection';
+import { preOpenPaymentWindow, redirectPaymentWindow, isSafari } from '@/utils/browserDetection';
+
 type ProductType = 'digital_starter' | 'complete' | 'personal_mentorship';
 
 interface PaymentFlowProps {
@@ -302,8 +302,7 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
 
   return (
     <div className="max-w-5xl mx-auto space-y-8">
-      {/* Launch Week Urgency Banner */}
-      <LaunchWeekBanner />
+      {/* Country Indicator */}
       
       {/* Country Indicator */}
       {targetCountry && (
