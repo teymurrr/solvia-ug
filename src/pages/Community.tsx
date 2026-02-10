@@ -13,6 +13,7 @@ import { useLanguage } from '@/hooks/useLanguage';
 import CreatePostDialog from '@/components/community/CreatePostDialog';
 import Leaderboard from '@/components/community/Leaderboard';
 import JourneyFeed from '@/components/community/JourneyFeed';
+import DigestSettings from '@/components/community/DigestSettings';
 import { formatDistanceToNow } from 'date-fns';
 
 const CATEGORIES = [
@@ -61,13 +62,15 @@ const Community = () => {
             <h1 className="text-3xl font-bold text-foreground">{ct?.title || 'Community'}</h1>
             <p className="text-muted-foreground mt-1">{ct?.subtitle || 'Ask questions, share experiences, and learn from fellow professionals'}</p>
           </div>
-          <Button
-            onClick={() => isLoggedIn ? setCreateOpen(true) : navigate('/login')}
-            className="shrink-0"
-          >
-            <Plus className="h-4 w-4 mr-2" />
-            {ct?.askQuestion || 'Ask a Question'}
-          </Button>
+          <div className="flex items-center gap-2 shrink-0">
+            <DigestSettings />
+            <Button
+              onClick={() => isLoggedIn ? setCreateOpen(true) : navigate('/login')}
+            >
+              <Plus className="h-4 w-4 mr-2" />
+              {ct?.askQuestion || 'Ask a Question'}
+            </Button>
+          </div>
         </div>
 
         {/* Search */}
