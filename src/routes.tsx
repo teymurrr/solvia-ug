@@ -52,6 +52,10 @@ const Messages = lazy(() => import("@/pages/Messages"));
 // Insights page
 const Insights = lazy(() => import("@/pages/Insights"));
 
+// Community pages
+const Community = lazy(() => import("@/pages/Community"));
+const CommunityPost = lazy(() => import("@/pages/CommunityPost"));
+
 // Payment pages
 const PaymentSuccess = lazy(() => import("@/pages/PaymentSuccess"));
 const PaymentCancelled = lazy(() => import("@/pages/PaymentCancelled"));
@@ -109,6 +113,8 @@ const AppRoutes = () => {
         <Route path="/impressum" element={<Impressum />} />
         <Route path="/employers" element={<EmployersLanding />} />
         <Route path="/blog" element={<Blog />} />
+        <Route path="/community" element={<Community />} />
+        <Route path="/community/:id" element={<CommunityPost />} />
         
         {/* Auth routes */}
         <Route path="/signup" element={<Signup />} />
