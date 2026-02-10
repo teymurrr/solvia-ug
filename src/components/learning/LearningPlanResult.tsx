@@ -155,10 +155,8 @@ const LearningPlanResult: React.FC<LearningPlanResultProps> = ({
         </CardContent>
       </Card>
 
-      {/* Starter Kit Offer for Germany */}
-      {wizardData.country === 'germany' && (
-        <StarterKitOffer />
-      )}
+      {/* Starter Kit Offer for all countries */}
+      <StarterKitOffer />
 
       {/* CTAs */}
       <div className="flex flex-col sm:flex-row gap-4 justify-center mt-8">

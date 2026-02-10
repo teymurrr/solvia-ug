@@ -132,13 +132,38 @@ const HomologationResult = () => {
     return mapping[type] || type;
   };
 
-  const needsLanguageCourses = () => {
-    const level = wizardData.languageLevel?.toLowerCase();
-    if (!level) return true;
-    if (level.includes('mother') || level.includes('mutter') || level.includes('matern')) return false;
-    if (level === 'c1' || level === 'c2') return false;
+  // Determine if the target country requires a foreign language for this user
+  const requiresForeignLanguage = () => {
+    const target = wizardData.targetCountry?.toLowerCase();
+    const origin = wizardData.studyCountry?.toLowerCase() || '';
+    
+    // Spanish-speaking countries whose graduates likely speak Spanish natively
+    const spanishSpeakingCountries = ['spain', 'mexico', 'colombia', 'argentina', 'venezuela', 'peru', 'chile', 'ecuador', 'cuba', 'dominican republic', 'guatemala', 'honduras', 'el salvador', 'nicaragua', 'costa rica', 'panama', 'uruguay', 'paraguay', 'bolivia'];
+    const frenchSpeakingCountries = ['france', 'belgium', 'canada', 'senegal', 'cameroon', 'ivory coast', 'morocco', 'tunisia', 'algeria', 'haiti'];
+    const italianSpeakingCountries = ['italy'];
+    const germanSpeakingCountries = ['germany', 'austria', 'switzerland'];
+    
+    // If going to Spain and from a Spanish-speaking country → no foreign language needed
+    if (target === 'spain' && spanishSpeakingCountries.includes(origin)) return false;
+    if ((target === 'france') && frenchSpeakingCountries.includes(origin)) return false;
+    if (target === 'italy' && italianSpeakingCountries.includes(origin)) return false;
+    if ((target === 'germany' || target === 'austria') && germanSpeakingCountries.includes(origin)) return false;
+    
     return true;
   };
+
+  const needsLanguagePrep = () => {
+    // If the target country language is the user's native language, no prep needed
+    if (!requiresForeignLanguage()) return false;
+    
+    const level = wizardData.languageLevel?.toLowerCase();
+    if (!level) return true; // Not specified = assume they need it
+    if (level.includes('mother') || level.includes('mutter') || level.includes('matern') || level.includes('nativ')) return false;
+    if (level === 'b2' || level === 'c1' || level === 'c2') return false;
+    return true; // A1, A2, B1 = needs prep
+  };
+
+  const showLanguageCard = requiresForeignLanguage();
 
   // Get monthly salary loss based on profession
   const getMonthlySalaryLoss = () => {
@@ -211,7 +236,7 @@ const HomologationResult = () => {
           </motion.div>
 
           {/* Main Content Grid */}
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className={`grid ${showLanguageCard ? 'md:grid-cols-2' : 'md:grid-cols-1 max-w-2xl mx-auto'} gap-6`}>
             {/* Timeline Card with CTA */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -264,7 +289,8 @@ const HomologationResult = () => {
               </Card>
             </motion.div>
 
-            {/* Language Requirement Card with CTA */}
+            {/* Language Requirement Card - only shown when target country requires foreign language */}
+            {showLanguageCard && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -279,17 +305,17 @@ const HomologationResult = () => {
                       {t.homologationResult.language.title}
                     </div>
                     <p className="text-sm text-muted-foreground mb-4">
-                      {needsLanguageCourses() 
+                      {needsLanguagePrep() 
                         ? (t.homologationResult.language.recommendation || "Based on your current level, we recommend language preparation before starting the process.")
                         : (t.homologationResult.language.needHelp || "Need to reach this level?")
                       }
                     </p>
                     <Button 
                       size="sm" 
-                      onClick={needsLanguageCourses() ? handleLanguageLearning : handleStartHomologation}
+                      onClick={needsLanguagePrep() ? handleLanguageLearning : handleStartHomologation}
                       className="w-full gap-2"
                     >
-                      {needsLanguageCourses() 
+                      {needsLanguagePrep() 
                         ? (t.homologationResult.language.startLearning || "Start Learning")
                         : (t.homologationResult.cta.startProcess || "Start My Process")
                       }
@@ -311,7 +337,7 @@ const HomologationResult = () => {
                   </div>
                   <div className="flex items-center justify-between opacity-40">
                     <span className="text-muted-foreground">{t.homologationResult.language.yourLevel}</span>
-                    <Badge variant={needsLanguageCourses() ? "secondary" : "default"} className="text-lg px-4 py-1">
+                    <Badge variant={needsLanguagePrep() ? "secondary" : "default"} className="text-lg px-4 py-1">
                       {wizardData.languageLevel || t.homologationResult.language.notSpecified}
                     </Badge>
                   </div>
@@ -319,6 +345,7 @@ const HomologationResult = () => {
                 </CardContent>
               </Card>
             </motion.div>
+            )}
 
           </div>
 

@@ -38,7 +38,7 @@ const InstitutionDashboard = lazy(() => import("@/pages/InstitutionDashboard"));
 
 // Other pages - load individually as needed
 const SolviaLearning = lazy(() => import("@/pages/SolviaLearning"));
-const GermanStarterKit = lazy(() => import("@/pages/GermanStarterKit"));
+const StarterKit = lazy(() => import("@/pages/StarterKit"));
 const Professionals = lazy(() => import("@/pages/Professionals"));
 const ProfessionalProfile = lazy(() => import("@/pages/ProfessionalProfile"));
 const Institutions = lazy(() => import("@/pages/Institutions"));
@@ -120,7 +120,7 @@ const AppRoutes = () => {
         <Route path="/confirm-email" element={<EmailConfirmationRequired />} />
         
         <Route path="/learning" element={<SolviaLearning />} />
-        <Route path="/learning/starter-kit" element={<GermanStarterKit />} />
+        <Route path="/learning/starter-kit" element={<StarterKit />} />
 
         {/* Professionals routes */}
         <Route path="/professionals" element={<Professionals />} />
