@@ -4,6 +4,7 @@ import Navbar from './Navbar';
 import Footer from './Footer';
 import CookieConsent from './CookieConsent';
 import SupportChat from './SupportChat';
+import WhatsAppButton from './WhatsAppButton';
 import { Toaster } from './ui/toaster';
 
 interface MainLayoutProps {
@@ -21,6 +22,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children, hideEditProfile }) =>
       <Footer />
       <CookieConsent />
       <SupportChat />
+      <WhatsAppButton />
       <Toaster />
     </div>
   );
