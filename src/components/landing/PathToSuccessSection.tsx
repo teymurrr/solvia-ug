@@ -153,7 +153,7 @@ const PathToSuccessSection = () => {
 
         <div className="mt-12 flex justify-center">
           <Button asChild size="lg" className="hover-scale">
-            <Link to="/signup" aria-label={t?.pathToSuccess?.ctaLabel || "Start My Journey with Solvia"}>
+            <Link to="/homologation-wizard" aria-label={t?.pathToSuccess?.ctaLabel || "Start My Free Assessment with Solvia"}>
               {t?.pathToSuccess?.cta || "Start My Journey"}
             </Link>
           </Button>

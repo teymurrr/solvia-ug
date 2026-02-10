@@ -44,8 +44,8 @@ const SuperCTASection = () => {
               variant="secondary"
               className="group text-base px-8 py-6"
             >
-              <Link to="/signup/professional" className="flex items-center gap-2">
-                {superCta?.primaryCta || "View offers for my profile"}
+              <Link to="/homologation-wizard" className="flex items-center gap-2">
+                {superCta?.primaryCta || "Start my free assessment"}
                 <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
               </Link>
             </Button>
@@ -56,8 +56,8 @@ const SuperCTASection = () => {
               variant="outline"
               className="group text-base px-8 py-6 bg-transparent text-white border-white hover:bg-white/10"
             >
-              <Link to="/homologation" className="flex items-center gap-2">
-                {superCta?.secondaryCta || "Get my free homologation plan"}
+              <Link to="/vacancies" className="flex items-center gap-2">
+                {superCta?.secondaryCta || "Explore open positions"}
                 <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
               </Link>
             </Button>

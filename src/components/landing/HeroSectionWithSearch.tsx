@@ -50,7 +50,7 @@ const HeroSectionWithSearch = React.memo(() => {
               <Button 
                 size="lg" 
                 className="h-14 px-10 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
-                onClick={() => navigate('/vacancies')}
+                onClick={() => navigate('/homologation-wizard')}
               >
                 {t.hero.cta} →
               </Button>
@@ -58,7 +58,7 @@ const HeroSectionWithSearch = React.memo(() => {
                 variant="outline" 
                 size="lg" 
                 className="h-14 px-10 text-lg font-semibold border-2 bg-background shadow-sm hover:bg-muted transition-all duration-300"
-                onClick={() => navigate('/homologation-wizard')}
+                onClick={() => navigate('/vacancies')}
               >
                 {t.hero.secondaryCta}
               </Button>

@@ -2,8 +2,8 @@ export const pathToSuccess = {
   title: 'So funktioniert es',
   subtitle: 'Ihr Weg zur medizinischen Karriere in Europa, vereinfacht.',
   stepLabel: 'Schritt',
-  cta: 'Meine Reise starten',
-  ctaLabel: 'Meine Reise mit Solvia starten',
+  cta: 'Meine kostenlose Bewertung starten',
+  ctaLabel: 'Meine kostenlose Bewertung mit Solvia starten',
   steps: {
     'step1.title': 'Wählen Sie Ihr Land',
     'step1.description': 'Entscheiden Sie, wo Sie in Europa arbeiten möchten.',

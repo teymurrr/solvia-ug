@@ -199,8 +199,8 @@ export const landing = {
   superCta: {
     title: "Starten Sie heute Ihre Reise nach Europa",
     subtitle: "Tausende Ärzte und Pflegekräfte haben bereits ihren Prozess mit Solvia begonnen",
-    primaryCta: "Angebote für mein Profil ansehen",
-    secondaryCta: "Meinen kostenlosen Anerkennungsplan erhalten"
+    primaryCta: "Meine kostenlose Bewertung starten",
+    secondaryCta: "Offene Stellen ansehen"
   },
   learningMiniBanner: {
     text: "Müssen Sie die medizinische Fachsprache für Europa lernen?",
