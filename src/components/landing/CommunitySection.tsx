@@ -6,11 +6,15 @@ import { Badge } from '@/components/ui/badge';
 import { useCommunityPosts } from '@/hooks/useCommunity';
 import { useLanguage } from '@/hooks/useLanguage';
 import { formatDistanceToNow } from 'date-fns';
+import { de, fr, es, ru } from 'date-fns/locale';
 
 const CommunitySection: React.FC = () => {
   const { data: posts } = useCommunityPosts();
-  const { t } = useLanguage();
+  const { t, currentLanguage } = useLanguage();
   const ct = (t as any)?.community;
+
+  const dateFnsLocaleMap: Record<string, any> = { de, fr, es, ru };
+  const dateFnsLocale = dateFnsLocaleMap[currentLanguage];
 
   const topPosts = (posts || [])
     .sort((a, b) => (b.upvotes + b.reply_count) - (a.upvotes + a.reply_count))
@@ -71,7 +75,7 @@ const CommunitySection: React.FC = () => {
                     <MessageSquare className="h-3 w-3" /> {post.reply_count}
                   </span>
                   <span className="ml-auto">
-                    {formatDistanceToNow(new Date(post.created_at), { addSuffix: true })}
+                    {formatDistanceToNow(new Date(post.created_at), { addSuffix: true, locale: dateFnsLocale })}
                   </span>
                 </div>
               </Link>
