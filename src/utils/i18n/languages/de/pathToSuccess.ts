@@ -1,6 +1,6 @@
 export const pathToSuccess = {
   title: 'So funktioniert es',
-  subtitle: 'Ihr Weg zur medizinischen Karriere in Europa, vereinfacht.',
+  subtitle: 'Von der ersten Beratung bis zu Ihrem ersten Arbeitstag — wir kümmern uns um alles.',
   stepLabel: 'Schritt',
   cta: 'Meine kostenlose Bewertung starten',
   ctaLabel: 'Meine kostenlose Bewertung mit Solvia starten',

@@ -1,7 +1,7 @@
 export const landing = {
   jobExplorer: {
-    title: "Explore Real Opportunities in Europe",
-    subtitle: "Over 200+ active positions in Germany, Austria, Spain and France",
+    title: "200+ positions waiting for qualified professionals",
+    subtitle: "Real hospitals and clinics across 4 countries are hiring now.",
     realJob: "Real Position",
     sampleJob: "Example Position",
     sampleDisclaimer: "Sample job for illustration",
@@ -67,7 +67,7 @@ export const landing = {
   },
   successStories: {
     badge: "Success Stories",
-    title: "Professionals who trusted Solvia",
+    title: "They started where you are now",
     subtitle: "Here are some of the professionals who transformed their careers with us",
     microCta: "Want to be next?",
     microCtaLink: "Get your free homologation plan",
@@ -197,8 +197,9 @@ export const landing = {
     ]
   },
   superCta: {
+    badge: "Start Today",
     title: "Start Your Journey to Europe Today",
-    subtitle: "Thousands of doctors and nurses have already started their process with Solvia",
+    subtitle: "Join 230+ healthcare professionals who already started their journey.",
     primaryCta: "Start my free assessment",
     secondaryCta: "Explore open positions"
   },

@@ -1,7 +1,7 @@
 export const landing = {
   jobExplorer: {
-    title: "Explorez de vraies opportunités en Europe",
-    subtitle: "Plus de 200+ postes actifs en Allemagne, Autriche, Espagne et France",
+    title: "200+ postes en attente de professionnels qualifiés",
+    subtitle: "De vrais hôpitaux et cliniques dans 4 pays recrutent maintenant.",
     realJob: "Poste Réel",
     sampleJob: "Poste Exemple",
     sampleDisclaimer: "Exemple illustratif",
@@ -67,7 +67,7 @@ export const landing = {
   },
   successStories: {
     badge: "Histoires de Réussite",
-    title: "Professionnels qui ont fait confiance à Solvia",
+    title: "Ils ont commencé là où vous êtes maintenant",
     subtitle: "Voici quelques-uns des professionnels qui ont transformé leur carrière avec nous",
     microCta: "Voulez-vous être le prochain?",
     microCtaLink: "Obtenez votre plan d'homologation gratuit",
@@ -197,8 +197,9 @@ export const landing = {
     ]
   },
   superCta: {
+    badge: "Commencez aujourd'hui",
     title: "Commencez votre voyage vers l'Europe aujourd'hui",
-    subtitle: "Des milliers de médecins et infirmiers ont déjà commencé leur processus avec Solvia",
+    subtitle: "Rejoignez les 230+ professionnels de santé qui ont déjà commencé leur parcours.",
     primaryCta: "Commencer mon évaluation gratuite",
     secondaryCta: "Explorer les postes ouverts"
   },

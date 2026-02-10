@@ -1,7 +1,7 @@
 
 export const hero = {
-  title: 'Trabaja en Europa como médico o enfermero.',
-  subtitle: 'Ve tus ofertas por país y recibe orientación para iniciar tu carrera en el país de tus sueños.',
+  title: 'Tu carrera médica en Europa empieza aquí.',
+  subtitle: 'Nos encargamos del reconocimiento de tu título, te encontramos trabajo y te guiamos en cada paso.',
   cta: 'Comenzar mi evaluación gratuita',
   secondaryCta: 'Explorar posiciones abiertas',
   learnMore: 'Más información',

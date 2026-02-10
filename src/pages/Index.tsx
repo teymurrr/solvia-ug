@@ -2,16 +2,12 @@ import React, { Suspense } from 'react';
 import MainLayout from '@/components/MainLayout';
 import HeroSectionWithSearch from '@/components/landing/HeroSectionWithSearch';
 import PathToSuccessSection from '@/components/landing/PathToSuccessSection';
-import PartnersSection from '@/components/landing/PartnersSection';
 
 // Lazy load sections below the fold
 const JobExplorerSection = React.lazy(() => import('@/components/landing/JobExplorerSection'));
-
 const SuccessStoriesSection = React.lazy(() => import('@/components/landing/SuccessStoriesSection'));
 const ConversionFAQSection = React.lazy(() => import('@/components/landing/ConversionFAQSection'));
-const LearningMiniBanner = React.lazy(() => import('@/components/landing/LearningMiniBanner'));
 const SuperCTASection = React.lazy(() => import('@/components/landing/SuperCTASection'));
-const CommunitySection = React.lazy(() => import('@/components/landing/CommunitySection'));
 
 // Simple loading fallback
 const LoadingFallback = ({ height }: { height: string }) => (
@@ -23,43 +19,30 @@ const LoadingFallback = ({ height }: { height: string }) => (
 const Index = () => {
   return (
     <MainLayout>
-      {/* Critical above-the-fold content - load immediately */}
+      {/* 1. PROMISE — Hero + Stats */}
       <HeroSectionWithSearch />
       
-      {/* Partners/Accelerators Section */}
-      <PartnersSection />
-      
-      {/* Path to Success section - 4 steps timeline */}
+      {/* 2. HOW — Path to Success (4 steps) */}
       <div id="path-to-success">
         <PathToSuccessSection />
       </div>
       
-      {/* Job Explorer - includes country comparison with pricing */}
+      {/* 3. PROOF — Real jobs waiting */}
       <Suspense fallback={<LoadingFallback height="h-96" />}>
         <JobExplorerSection />
       </Suspense>
       
-      {/* Success Stories - 3 static cards focused on homologation */}
+      {/* 4. TRUST — Success stories */}
       <Suspense fallback={<LoadingFallback height="h-96" />}>
         <SuccessStoriesSection />
       </Suspense>
       
-      {/* Community Section */}
-      <Suspense fallback={<LoadingFallback height="h-96" />}>
-        <CommunitySection />
-      </Suspense>
-
-      {/* Conversion FAQ with micro-CTAs */}
+      {/* 5. OBJECTIONS — FAQ */}
       <Suspense fallback={<LoadingFallback height="h-96" />}>
         <ConversionFAQSection />
       </Suspense>
       
-      {/* Learning Mini Banner - minimal, non-intrusive */}
-      <Suspense fallback={<LoadingFallback height="h-16" />}>
-        <LearningMiniBanner />
-      </Suspense>
-      
-      {/* Super CTA - Final conversion section */}
+      {/* 6. ACTION — Final CTA */}
       <Suspense fallback={<LoadingFallback height="h-64" />}>
         <SuperCTASection />
       </Suspense>

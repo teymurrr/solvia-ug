@@ -1,7 +1,7 @@
 
 export const hero = {
-  title: 'Arbeiten Sie in Europa als Arzt oder Krankenpfleger.',
-  subtitle: 'Sehen Sie Ihre Angebote nach Land und erhalten Sie Beratung, um Ihre Karriere in Ihrem Traumland zu starten.',
+  title: 'Ihre medizinische Karriere in Europa beginnt hier.',
+  subtitle: 'Wir kümmern uns um die Anerkennung Ihres Titels, finden Ihnen einen Job und begleiten Sie bei jedem Schritt.',
   cta: 'Meine kostenlose Bewertung starten',
   secondaryCta: 'Offene Stellen ansehen',
   learnMore: 'Mehr erfahren',
