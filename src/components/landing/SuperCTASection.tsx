@@ -28,7 +28,7 @@ const SuperCTASection = () => {
           
           {/* Title */}
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 leading-tight">
-            🎯 {superCta?.title || "Start Your Journey to Europe Today"}
+            {superCta?.title || "Start Your Journey to Europe Today"}
           </h2>
           
           {/* Subtitle */}

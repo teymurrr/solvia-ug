@@ -31,8 +31,10 @@ export const hero = {
   },
   stats: {
     professionals: 'Registrierte Fachkräfte',
-    homologations: 'Anerkennungen in Bearbeitung',
+    homologations: 'Offene Stellen',
     countries: 'Verfügbare Länder',
-    satisfaction: 'Nutzerzufriedenheit'
+    satisfaction: 'Nutzerzufriedenheit',
+    accelerators: 'Accelerator-Partner',
+    digital: 'Digitaler Prozess'
   }
 };

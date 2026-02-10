@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Heart, BarChart, LayoutDashboard, BookOpen, FileText, Stethoscope } from 'lucide-react';
+import { BarChart, LayoutDashboard, Briefcase, Users } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
 
 interface NavLinksProps {
@@ -12,8 +12,30 @@ interface NavLinksProps {
 const NavLinks: React.FC<NavLinksProps> = ({ isLoggedIn, userType }) => {
   const { t } = useLanguage();
 
+  // Public navigation for non-logged-in visitors
   if (!isLoggedIn) {
-    return null;
+    return (
+      <div className="flex justify-center space-x-8 flex-1">
+        <Link
+          to="/vacancies"
+          className="flex flex-col items-center group"
+        >
+          <div className="p-2 rounded-full group-hover:bg-muted transition-colors">
+            <Briefcase className="h-5 w-5 text-muted-foreground group-hover:text-foreground" />
+          </div>
+          <span className="text-sm text-muted-foreground group-hover:text-foreground">{t?.common?.vacancies || "Vacancies"}</span>
+        </Link>
+        <Link
+          to="/employers"
+          className="flex flex-col items-center group"
+        >
+          <div className="p-2 rounded-full group-hover:bg-muted transition-colors">
+            <Users className="h-5 w-5 text-muted-foreground group-hover:text-foreground" />
+          </div>
+          <span className="text-sm text-muted-foreground group-hover:text-foreground">{t?.common?.forEmployers || "For Employers"}</span>
+        </Link>
+      </div>
+    );
   }
 
   if (userType === 'professional') {
@@ -23,10 +45,10 @@ const NavLinks: React.FC<NavLinksProps> = ({ isLoggedIn, userType }) => {
           to="/dashboard/professional"
           className="flex flex-col items-center group"
         >
-          <div className="p-2 rounded-full group-hover:bg-gray-100 transition-colors">
-            <LayoutDashboard className="h-5 w-5 text-gray-600 group-hover:text-gray-900" />
+          <div className="p-2 rounded-full group-hover:bg-muted transition-colors">
+            <LayoutDashboard className="h-5 w-5 text-muted-foreground group-hover:text-foreground" />
           </div>
-          <span className="text-sm text-gray-600 group-hover:text-gray-900">{t?.common?.dashboard || "Dashboard"}</span>
+          <span className="text-sm text-muted-foreground group-hover:text-foreground">{t?.common?.dashboard || "Dashboard"}</span>
         </Link>
       </div>
     );
@@ -39,20 +61,20 @@ const NavLinks: React.FC<NavLinksProps> = ({ isLoggedIn, userType }) => {
           to="/dashboard/institution"
           className="flex flex-col items-center group"
         >
-          <div className="p-2 rounded-full group-hover:bg-gray-100 transition-colors">
-            <LayoutDashboard className="h-5 w-5 text-gray-600 group-hover:text-gray-900" />
+          <div className="p-2 rounded-full group-hover:bg-muted transition-colors">
+            <LayoutDashboard className="h-5 w-5 text-muted-foreground group-hover:text-foreground" />
           </div>
-          <span className="text-sm text-gray-600 group-hover:text-gray-900">{t?.common?.dashboard || "Dashboard"}</span>
+          <span className="text-sm text-muted-foreground group-hover:text-foreground">{t?.common?.dashboard || "Dashboard"}</span>
         </Link>
 
         <Link
           to="/insights"
           className="flex flex-col items-center group"
         >
-          <div className="p-2 rounded-full group-hover:bg-gray-100 transition-colors">
-            <BarChart className="h-5 w-5 text-gray-600 group-hover:text-gray-900" />
+          <div className="p-2 rounded-full group-hover:bg-muted transition-colors">
+            <BarChart className="h-5 w-5 text-muted-foreground group-hover:text-foreground" />
           </div>
-          <span className="text-sm text-gray-600 group-hover:text-gray-900">{t?.insights?.title || "Solvia Insights"}</span>
+          <span className="text-sm text-muted-foreground group-hover:text-foreground">{t?.insights?.title || "Solvia Insights"}</span>
         </Link>
       </div>
     );

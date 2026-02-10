@@ -205,5 +205,18 @@ export const landing = {
   learningMiniBanner: {
     text: "Müssen Sie die medizinische Fachsprache für Europa lernen?",
     cta: "Mehr erfahren"
+  },
+  pricingTeaser: "Pläne ab €49",
+  whatYouGet: {
+    title: "Was Solvia für Sie übernimmt",
+    subtitle: "Wir kümmern uns um den komplexen Papierkram, damit Sie sich auf Ihre Karriere konzentrieren können",
+    features: [
+      { title: "Dokumentenvorbereitung", description: "Wir prüfen, organisieren und bereiten Ihre komplette Akte vor — kein Ablehnungsrisiko." },
+      { title: "Übersetzungen & Apostillen", description: "Beglaubigte Übersetzungen und Apostillen-Koordination inklusive." },
+      { title: "Anerkennungsmanagement", description: "Komplette Verwaltung Ihres Anerkennungsprozesses im Zielland." },
+      { title: "Jobvermittlung", description: "Zugang zu geprüften Stellen in Krankenhäusern und Kliniken in Europa." },
+      { title: "Persönlicher Berater", description: "Ein dedizierter Fallmanager begleitet Sie bei jedem Schritt." },
+      { title: "Laufende Unterstützung", description: "Kontinuierliche Betreuung bis Sie in Ihrem neuen Land arbeiten." }
+    ]
   }
 };
