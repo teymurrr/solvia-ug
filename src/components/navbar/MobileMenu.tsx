@@ -2,7 +2,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Badge } from '@/components/ui/badge';
-import { Briefcase, FileText, LayoutDashboard, BookOpen, BarChart, Stethoscope } from 'lucide-react';
+import { Briefcase, FileText, LayoutDashboard, BookOpen, BarChart, Stethoscope, MessageSquare } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
 
 interface MobileMenuProps {
@@ -30,6 +30,16 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
   return (
     <div className="sm:hidden bg-white">
       <div className="pt-2 pb-3 space-y-1">
+        {/* Community link for everyone */}
+        <Link
+          to="/community"
+          className="flex items-center space-x-3 px-4 py-2 hover:bg-gray-50"
+          onClick={onClose}
+        >
+          <MessageSquare className="h-5 w-5 text-gray-600" />
+          <span>{(t as any)?.community?.title || "Community"}</span>
+        </Link>
+
         {!isLoggedIn && (
           <>
             <Link
