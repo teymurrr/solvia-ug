@@ -1,88 +1,89 @@
 
 
-# Auto-Translate Community Posts for Every Reader
+# Redesign Professional Dashboard to Match User Priorities
 
 ## The Problem
 
-Community posts and replies are displayed in whatever language they were written in. A Spanish doctor's post appears in Spanish for everyone, even users browsing in English or German.
+Two issues:
 
-## Solution: On-Demand AI Translation via Edge Function
+1. **HomologationPreview teaser is invisible** -- It only renders when `profileData` exists AND `profileData.targetCountry` maps to a valid country in `homologationDataByCountry`. If the user hasn't set a target country in their profile, the component returns `null` silently.
 
-Use Lovable AI (already available via `LOVABLE_API_KEY`) to translate post titles, content, and replies on the fly, then cache translations in a new database table so each text is only translated once per language.
+2. **Dashboard doesn't reflect what users actually care about** -- The current dashboard leads with job vacancies, but your clients' real priorities are:
+   - Language learning (how do I prepare for B2/FSP?)
+   - Understanding the homologation process (what steps do I need?)
+   - How can I work in my target country? (what's the path?)
 
-```text
-User loads Community page (language = DE)
-        |
-        v
-Frontend checks: do cached translations exist for these posts in DE?
-        |
-   YES -+- NO
-   |        |
-   v        v
-Show cached  Call translate-community edge function
-             (sends texts + target language)
-                    |
-                    v
-             Lovable AI translates
-                    |
-                    v
-             Cache in community_translations table
-                    |
-                    v
-             Return translated texts
-```
+The dashboard should guide users through these priorities, not just show job listings.
 
-## Changes
+## Proposed Redesign
 
-### 1. New database table: `community_translations`
+### New Sidebar Structure (right column)
 
-Caches translations so we don't re-translate the same content repeatedly.
+Replace the current sidebar (HomologationPreview + CommunityWidget) with three priority-ordered action cards:
 
-| Column | Type | Description |
-|--------|------|-------------|
-| id | uuid | Primary key |
-| source_type | text | 'post_title', 'post_content', or 'reply_content' |
-| source_id | uuid | ID of the post or reply |
-| language | text | Target language code (en, de, fr, es, ru) |
-| translated_text | text | The translated content |
-| created_at | timestamptz | When the translation was cached |
+**Card 1: "Your Language Path"** (always visible)
+- Shows the user's current language level (from profile) vs. required level (B2/C1 depending on country)
+- Visual progress indicator (e.g., A1 -> A2 -> B1 -> B2)
+- CTA: "Start your Starter Kit (from EUR 29)" linking to `/learning/starter-kit`
+- If user has no target country set, show a prompt to set one
 
-Unique constraint on (source_type, source_id, language) to prevent duplicates. RLS enabled with public read, service-role write.
+**Card 2: "Your Homologation Roadmap"** (the current HomologationPreview, fixed)
+- Fix the rendering bug: show even without `targetCountry` by defaulting to Germany and prompting "Set your target country" instead of returning null
+- Keep the salary loss counter and document preview as-is
+- For users who HAVE paid: replace teaser with the `HomologationProgressCard` inline (from HomologationTab)
 
-### 2. New Edge Function: `translate-community`
+**Card 3: Community Widget** (keep as-is, already working)
 
-- Receives: array of `{ id, type, text }` items + target language
-- Checks `community_translations` for existing cached translations
-- For uncached items, calls Lovable AI (`google/gemini-3-flash-preview`) with a batch translation prompt
-- Stores results in `community_translations` and returns them
-- Skips translation when the target language matches the source (detected by the AI)
+### Fix HomologationPreview Visibility
 
-### 3. New React hook: `useTranslatedPosts`
+The component currently returns `null` when `countryData` is undefined. Instead:
+- If no `targetCountry` in profile, show a simplified card asking the user to set their target country via the free assessment
+- This ensures the teaser is always visible for non-paying users
 
-- Takes an array of posts + the current language
-- If current language is the original post language, returns posts as-is
-- Otherwise, calls the edge function for any missing translations
-- Merges translated titles/content into the post objects
-- Uses React Query with cache key including language, so switching languages is instant after first load
+### Add "My Journey" Tab (4th tab)
 
-### 4. Update Community pages
+Add a new tab alongside Vacancies / Saved & Applied / Profile called **"My Journey"** that consolidates:
+- Language learning status and next steps
+- Homologation process status (uses existing `HomologationTab` component)
+- Country-specific requirements summary
 
-- **`Community.tsx`**: Wrap posts through `useTranslatedPosts` before rendering
-- **`CommunityPost.tsx`**: Translate the single post + its replies
-- **`CommunityWidget.tsx`** (dashboard): Translate the preview posts
-- **`CommunitySection.tsx`** (landing): Translate the top 3 posts
-- Add a small "Translated" indicator badge so users know the text was auto-translated
-- Also fix the missing `date-fns` locale on `Community.tsx` and `CommunityPost.tsx` (same pattern already applied elsewhere)
+This gives users a single place to understand "where am I in the process?"
 
-### 5. Config
+### Updated Tab Order
 
-- Register `translate-community` in `supabase/config.toml` with `verify_jwt = false`
+Reorder tabs to match user priorities:
+1. **My Journey** (new, default tab for new users) -- language + homologation + country info
+2. **Vacancies** (current default, becomes default only after profile is complete)
+3. **Saved & Applied**
+4. **Profile**
 
-## Technical Details
+The default tab logic: if user has no paid countries and profile is less than 50% complete, default to "My Journey". Otherwise default to "Vacancies".
 
-**Edge function prompt strategy**: Send all untranslated texts in a single batch to minimize API calls. The prompt instructs the model to return a JSON array mapping each item ID to its translation. Uses tool calling for structured output.
+## Technical Changes
 
-**Cost control**: Translations are cached permanently. A post is only translated once per language. With 5 languages and ~50 posts, that's ~250 cached translations total -- minimal storage and API usage.
+### 1. New component: `LanguagePathCard.tsx`
+- Reads `profileData.languages` to find German/target language level
+- Reads `profileData.targetCountry` to determine required level
+- Shows visual progress bar from current to required level
+- CTA to Starter Kit page
 
-**UX**: Translations load asynchronously. Posts appear immediately in their original language, then swap to translated text once ready (with a brief shimmer/skeleton on the text). The "Translated" badge lets users know the content was auto-translated.
+### 2. New component: `MyJourneyTab.tsx`
+- Combines `LanguagePathCard`, `HomologationTab`, and a brief country requirements summary
+- Guides users through the three priorities in order
+
+### 3. Fix `HomologationPreview.tsx`
+- Remove the early `return null` when `countryData` is missing
+- Show a fallback card prompting users to take the free assessment
+
+### 4. Update `DashboardSidebar.tsx`
+- Add `LanguagePathCard` above `HomologationPreview`
+- Always show `HomologationPreview` (remove the conditional `showHomologationPreview` for non-paid users)
+
+### 5. Update `ProfessionalDashboard.tsx`
+- Add 4th tab "My Journey"
+- Update default tab logic based on user state
+- Update `TabsList` from `grid-cols-3` to `grid-cols-4`
+
+### 6. i18n updates
+- Add keys for "My Journey", "Your Language Path", language level labels, and the target country prompt across all 5 languages
 
