@@ -111,6 +111,13 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
             >
               {t?.common?.login || "Log in"}
             </Link>
+            <Link
+              to="/signup"
+              className="block pl-3 pr-4 py-2 border-l-4 border-primary text-base font-medium text-primary hover:bg-gray-50"
+              onClick={onClose}
+            >
+              {t?.common?.freeSignup || "Free Sign Up"}
+            </Link>
           </div>
         )}
       </div>

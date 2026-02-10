@@ -99,12 +99,7 @@ const Navbar = () => {
             )}
           </div>
 
-          <div className="-mr-2 flex items-center gap-2 sm:hidden">
-            {!isLoggedIn && (
-              <Button size="sm" asChild>
-                <Link to="/signup">{t?.common?.signup || "Sign Up"}</Link>
-              </Button>
-            )}
+          <div className="-mr-2 flex items-center gap-1 sm:hidden">
             <LanguageSelector />
             <Button variant="ghost" size="icon" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
               <span className="sr-only">Open main menu</span>
