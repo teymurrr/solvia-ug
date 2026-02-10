@@ -18,6 +18,7 @@ import DigestSettings from '@/components/community/DigestSettings';
 import MentorDirectory from '@/components/community/MentorDirectory';
 import ReputationProfile from '@/components/community/ReputationProfile';
 import BecomeMentorDialog from '@/components/community/BecomeMentorDialog';
+import MentorRequestsPanel from '@/components/community/MentorRequestsPanel';
 import { formatDistanceToNow } from 'date-fns';
 
 const CATEGORIES = [
@@ -191,6 +192,7 @@ const Community = () => {
           {/* Sidebar */}
           <div className="w-full lg:w-80 shrink-0 space-y-4">
             <ReputationProfile />
+            <MentorRequestsPanel />
             <JourneyFeed />
             <Leaderboard />
           </div>

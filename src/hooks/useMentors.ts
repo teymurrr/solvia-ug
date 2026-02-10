@@ -178,27 +178,78 @@ export const useSendMentorRequest = () => {
 export const useMyMentorRequests = () => {
   const { user } = useAuth();
   return useQuery({
-    queryKey: ['mentor-requests', user?.id],
+    queryKey: ['mentor-requests', 'mentee', user?.id],
     queryFn: async () => {
       if (!user?.id) return [];
       const { data, error } = await supabase
         .from('mentor_requests')
         .select('*')
-        .or(`mentee_id.eq.${user.id},mentor_id.in.(select id from mentor_profiles where user_id = '${user.id}')`)
+        .eq('mentee_id', user.id)
         .order('created_at', { ascending: false });
+      if (error) throw error;
+
+      // Enrich with mentor profile data
+      const enriched = await Promise.all(
+        (data || []).map(async (req) => {
+          const { data: mentorProfile } = await supabase
+            .from('mentor_profiles')
+            .select('*, user_id')
+            .eq('id', req.mentor_id)
+            .single();
+          
+          let author = undefined;
+          if (mentorProfile) {
+            const { data: profile } = await supabase
+              .from('professional_profiles')
+              .select('first_name, last_name, profile_image, specialty')
+              .eq('id', mentorProfile.user_id)
+              .single();
+            author = profile || undefined;
+          }
+          return { ...req, mentorAuthor: author };
+        })
+      );
+      return enriched;
+    },
+    enabled: !!user?.id,
+  });
+};
+
+export const useIncomingMentorRequests = () => {
+  const { user } = useAuth();
+  return useQuery({
+    queryKey: ['mentor-requests', 'incoming', user?.id],
+    queryFn: async () => {
+      if (!user?.id) return [];
       
-      // Fallback: fetch separately for mentor requests
-      if (error) {
-        // Try just mentee requests
-        const { data: menteeData, error: menteeError } = await supabase
-          .from('mentor_requests')
-          .select('*')
-          .eq('mentee_id', user.id)
-          .order('created_at', { ascending: false });
-        if (menteeError) throw menteeError;
-        return menteeData || [];
-      }
-      return data || [];
+      // First get user's mentor profile
+      const { data: mentorProfile } = await supabase
+        .from('mentor_profiles')
+        .select('id')
+        .eq('user_id', user.id)
+        .maybeSingle();
+      
+      if (!mentorProfile) return [];
+
+      const { data, error } = await supabase
+        .from('mentor_requests')
+        .select('*')
+        .eq('mentor_id', mentorProfile.id)
+        .order('created_at', { ascending: false });
+      if (error) throw error;
+
+      // Enrich with mentee profile data
+      const enriched = await Promise.all(
+        (data || []).map(async (req) => {
+          const { data: profile } = await supabase
+            .from('professional_profiles')
+            .select('first_name, last_name, profile_image, specialty')
+            .eq('id', req.mentee_id)
+            .single();
+          return { ...req, menteeAuthor: profile || undefined };
+        })
+      );
+      return enriched;
     },
     enabled: !!user?.id,
   });
