@@ -494,6 +494,33 @@ export type Database = {
           },
         ]
       }
+      community_translations: {
+        Row: {
+          created_at: string
+          id: string
+          language: string
+          source_id: string
+          source_type: string
+          translated_text: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          language: string
+          source_id: string
+          source_type: string
+          translated_text: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          language?: string
+          source_id?: string
+          source_type?: string
+          translated_text?: string
+        }
+        Relationships: []
+      }
       community_votes: {
         Row: {
           created_at: string

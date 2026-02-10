@@ -9,6 +9,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import MainLayout from '@/components/MainLayout';
 import { useCommunityPosts } from '@/hooks/useCommunity';
+import { useTranslatedPosts } from '@/hooks/useTranslatedPosts';
 import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/hooks/useLanguage';
 import CreatePostDialog from '@/components/community/CreatePostDialog';
@@ -19,7 +20,9 @@ import MentorDirectory from '@/components/community/MentorDirectory';
 import ReputationProfile from '@/components/community/ReputationProfile';
 import BecomeMentorDialog from '@/components/community/BecomeMentorDialog';
 import MentorRequestsPanel from '@/components/community/MentorRequestsPanel';
+import TranslatedBadge from '@/components/community/TranslatedBadge';
 import { formatDistanceToNow } from 'date-fns';
+import { de, fr, es, ru } from 'date-fns/locale';
 
 const CATEGORIES = [
   { key: 'all', label: 'All' },
@@ -30,6 +33,8 @@ const CATEGORIES = [
   { key: 'job-search', label: 'Job Search' },
 ];
 
+const dateFnsLocaleMap: Record<string, any> = { de, fr, es, ru };
+
 const Community = () => {
   const [category, setCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
@@ -39,11 +44,17 @@ const Community = () => {
   const { data: posts, isLoading } = useCommunityPosts(category);
   const { isLoggedIn } = useAuth();
   const navigate = useNavigate();
-  const { t } = useLanguage();
+  const { t, currentLanguage } = useLanguage();
+
+  const { data: translationData } = useTranslatedPosts(posts, currentLanguage);
+  const displayPosts = translationData?.posts || posts;
+  const translatedIds = translationData?.translatedIds || new Set<string>();
+
+  const dateFnsLocale = dateFnsLocaleMap[currentLanguage];
 
   const ct = (t as any)?.community;
 
-  const filteredPosts = (posts || []).filter(post =>
+  const filteredPosts = (displayPosts || []).filter(post =>
     !searchQuery || post.title.toLowerCase().includes(searchQuery.toLowerCase()) || post.content.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
@@ -161,6 +172,7 @@ const Community = () => {
                             <div className="flex items-center gap-2 mb-1">
                               {post.is_pinned && <Pin className="h-3.5 w-3.5 text-primary shrink-0" />}
                               <h3 className="font-semibold text-foreground truncate">{post.title}</h3>
+                              {translatedIds.has(post.id) && <TranslatedBadge />}
                             </div>
                             <p className="text-sm text-muted-foreground line-clamp-2 mb-2">{post.content}</p>
                             <div className="flex items-center gap-4 text-xs text-muted-foreground">
@@ -175,7 +187,7 @@ const Community = () => {
                               <span className="flex items-center gap-1">
                                 <MessageSquare className="h-3 w-3" /> {post.reply_count}
                               </span>
-                              <span>{formatDistanceToNow(new Date(post.created_at), { addSuffix: true })}</span>
+                              <span>{formatDistanceToNow(new Date(post.created_at), { addSuffix: true, locale: dateFnsLocale })}</span>
                             </div>
                           </div>
                         </div>

@@ -4,7 +4,9 @@ import { MessageSquare, ThumbsUp, Users, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { useCommunityPosts } from '@/hooks/useCommunity';
+import { useTranslatedPosts } from '@/hooks/useTranslatedPosts';
 import { useLanguage } from '@/hooks/useLanguage';
+import TranslatedBadge from '@/components/community/TranslatedBadge';
 import { formatDistanceToNow } from 'date-fns';
 import { de, fr, es, ru } from 'date-fns/locale';
 
@@ -19,6 +21,10 @@ const CommunitySection: React.FC = () => {
   const topPosts = (posts || [])
     .sort((a, b) => (b.upvotes + b.reply_count) - (a.upvotes + a.reply_count))
     .slice(0, 3);
+
+  const { data: translationData } = useTranslatedPosts(topPosts.length > 0 ? topPosts : undefined, currentLanguage);
+  const displayPosts = translationData?.posts || topPosts;
+  const translatedIds = translationData?.translatedIds || new Set<string>();
 
   const categoryLabel = (cat: string) => {
     const map: Record<string, string> = {
@@ -47,17 +53,20 @@ const CommunitySection: React.FC = () => {
           </p>
         </div>
 
-        {topPosts.length > 0 ? (
+        {displayPosts.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-            {topPosts.map(post => (
+            {displayPosts.map(post => (
               <Link
                 key={post.id}
                 to={`/community/${post.id}`}
                 className="bg-card border border-border rounded-xl p-5 hover:shadow-lg transition-shadow flex flex-col"
               >
-                <Badge variant="outline" className="w-fit text-xs mb-3">
-                  {categoryLabel(post.category)}
-                </Badge>
+                <div className="flex items-center gap-2 mb-3">
+                  <Badge variant="outline" className="w-fit text-xs">
+                    {categoryLabel(post.category)}
+                  </Badge>
+                  {translatedIds.has(post.id) && <TranslatedBadge />}
+                </div>
                 <h3 className="font-semibold text-foreground line-clamp-2 mb-2 flex-1">
                   {post.title}
                 </h3>

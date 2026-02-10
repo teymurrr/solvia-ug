@@ -6,7 +6,9 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useCommunityPosts } from '@/hooks/useCommunity';
+import { useTranslatedPosts } from '@/hooks/useTranslatedPosts';
 import { useLanguage } from '@/hooks/useLanguage';
+import TranslatedBadge from '@/components/community/TranslatedBadge';
 import { formatDistanceToNow } from 'date-fns';
 import { de, fr, es, ru } from 'date-fns/locale';
 
@@ -31,6 +33,10 @@ const CommunityWidget: React.FC<CommunityWidgetProps> = ({ userSpecialty, compac
   const trendingPosts = (posts || [])
     .sort((a, b) => (b.upvotes + b.reply_count) - (a.upvotes + a.reply_count))
     .slice(0, maxPosts);
+
+  const { data: translationData } = useTranslatedPosts(trendingPosts.length > 0 ? trendingPosts : undefined, currentLanguage);
+  const displayPosts = translationData?.posts || trendingPosts;
+  const translatedIds = translationData?.translatedIds || new Set<string>();
 
   if (isLoading) {
     return (
@@ -62,7 +68,7 @@ const CommunityWidget: React.FC<CommunityWidgetProps> = ({ userSpecialty, compac
         </Button>
       </CardHeader>
       <CardContent>
-        {trendingPosts.length === 0 ? (
+        {displayPosts.length === 0 ? (
           <div className="text-center py-6">
             <MessageSquare className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
             <p className="text-sm text-muted-foreground mb-3">
@@ -74,15 +80,18 @@ const CommunityWidget: React.FC<CommunityWidgetProps> = ({ userSpecialty, compac
           </div>
         ) : (
           <div className="space-y-2">
-            {trendingPosts.map(post => (
+            {displayPosts.map(post => (
               <Link
                 key={post.id}
                 to={`/community/${post.id}`}
                 className="block p-3 rounded-lg border border-border hover:bg-accent/50 transition-colors"
               >
-                <h4 className="font-medium text-sm text-foreground line-clamp-1 mb-1">
-                  {post.title}
-                </h4>
+                <div className="flex items-center gap-1.5 mb-1">
+                  <h4 className="font-medium text-sm text-foreground line-clamp-1 flex-1">
+                    {post.title}
+                  </h4>
+                  {translatedIds.has(post.id) && <TranslatedBadge />}
+                </div>
                 <p className="text-xs text-muted-foreground line-clamp-1 mb-2">
                   {post.content}
                 </p>
