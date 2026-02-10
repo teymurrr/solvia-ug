@@ -97,7 +97,12 @@ const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({ form, profess
             <FormItem>
               <FormLabel>{t?.dashboard?.contact?.email || "Email"}</FormLabel>
               <FormControl>
-                <Input placeholder={t?.dashboard?.profile?.emailPlaceholder || "name@example.com"} {...field} />
+                <Input 
+                  placeholder={t?.dashboard?.profile?.emailPlaceholder || "name@example.com"} 
+                  {...field} 
+                  readOnly 
+                  className="bg-muted cursor-not-allowed"
+                />
               </FormControl>
               <FormMessage />
             </FormItem>

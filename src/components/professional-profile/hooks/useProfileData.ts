@@ -62,6 +62,10 @@ export const useProfileData = () => {
       console.log('Loading fresh profile data for user:', user.id);
       const data = await loadProfileFromDb(user.id);
       if (data) {
+        // Ensure email is always populated from auth if not in profile
+        if (!data.email && user.email) {
+          data.email = user.email;
+        }
         setProfileData(data);
       }
       return data;

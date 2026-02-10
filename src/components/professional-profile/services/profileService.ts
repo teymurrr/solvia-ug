@@ -248,7 +248,7 @@ export const loadProfileFromDb = async (userId: string) => {
         languages,
         fspCertificate: profileData.fsp_certificate || false,
         fspCertificateFile: profileData.fsp_certificate_file || '',
-        email: '', // Add an empty email field to match ProfileFormValues type
+        email: profileData.email || '',
         targetCountry: profileData.target_country || '',
         studyCountry: profileData.study_country || '',
         doctorType: profileData.doctor_type || '',
