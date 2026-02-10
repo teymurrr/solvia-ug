@@ -28,34 +28,39 @@ export const payments = {
   packages: {
     digitalStarter: {
       title: 'Digital Starter',
-      description: 'Prepare your documents independently with our digital guides',
+      description: 'Prepare your documents independently with our digital toolkit',
       features: [
-        'Access to document checklist & templates',
-        'Self-paced video tutorials',
-        'Digital verification guide',
-        'Email support (72h response)'
+        'Country-specific document checklist & templates',
+        'Step-by-step video guides for each document',
+        'Apostille & translation instructions',
+        'CV template adapted for medical applications',
+        'Email support (response within 72h)'
       ]
     },
     complete: {
       titleBase: 'Complete Package +',
-      descriptionBase: 'Full homologation support +',
+      descriptionBase: 'Expert-guided homologation +',
       descriptionEnd: 'language preparation',
       features: [
         'Everything in Digital Starter',
-        'Personal document review & verification',
-        'German medical language course access',
-        'FSP exam preparation materials'
+        'Expert review of every document before submission',
+        'AI-powered document validation with instant feedback',
+        '6-month medical language course access',
+        'FSP exam prep: study plan, practice questions & mock exams',
+        'Priority support (response within 24h)'
       ]
     },
     personalMentorship: {
       title: 'Personal Mentorship',
-      descriptionBase: 'Your dedicated team guiding you with 1:1',
-      descriptionEnd: 'lessons',
+      descriptionBase: 'White-glove service with dedicated case manager & 1:1',
+      descriptionEnd: 'coaching',
       features: [
         'Everything in Complete Package',
-        'Personal mentor assigned to your case',
-        '1:1 German lessons with native medical professional',
-        'Job placement assistance'
+        'Dedicated case manager from start to finish',
+        '4× live 1:1 sessions (60 min): documents, exam prep & interview practice',
+        'We submit your application on your behalf',
+        'Job matching with open positions on our platform',
+        'Direct WhatsApp & phone support with your case manager'
       ]
     }
   },

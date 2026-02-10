@@ -28,34 +28,39 @@ export const payments = {
   packages: {
     digitalStarter: {
       title: 'Digital Starter',
-      description: 'Préparez vos documents de manière autonome avec nos guides numériques',
+      description: 'Préparez vos documents de manière autonome avec notre kit numérique',
       features: [
-        'Accès à la checklist et modèles de documents',
-        'Tutoriels vidéo à votre rythme',
-        'Guide de vérification numérique',
+        'Checklist de documents spécifique au pays et modèles',
+        'Guides vidéo étape par étape pour chaque document',
+        'Instructions pour apostille et traduction',
+        'Modèle de CV adapté aux candidatures médicales',
         'Support par email (réponse en 72h)'
       ]
     },
     complete: {
       titleBase: 'Forfait Complet +',
-      descriptionBase: 'Accompagnement complet d\'homologation +',
+      descriptionBase: 'Homologation guidée par des experts +',
       descriptionEnd: 'préparation linguistique',
       features: [
         'Tout du Digital Starter',
-        'Révision personnelle des documents',
-        'Accès au cours d\'allemand médical',
-        'Matériaux de préparation FSP'
+        'Révision experte de chaque document avant soumission',
+        'Validation de documents par IA avec feedback instantané',
+        'Accès au cours de langue médicale pendant 6 mois',
+        'Préparation FSP : plan d\'étude, questions pratiques et examens blancs',
+        'Support prioritaire (réponse en 24h)'
       ]
     },
     personalMentorship: {
       title: 'Mentorat Personnel',
-      descriptionBase: 'Votre équipe dédiée vous guide avec des cours 1:1 de',
+      descriptionBase: 'Service premium avec gestionnaire de cas dédié et coaching 1:1 en',
       descriptionEnd: '',
       features: [
         'Tout du Forfait Complet',
-        'Mentor personnel assigné à votre cas',
-        'Cours 1:1 avec professionnel médical natif',
-        'Aide à la recherche d\'emploi'
+        'Gestionnaire de cas dédié du début à la fin',
+        '4 sessions en direct 1:1 (60 min) : documents, préparation d\'examen et entretien',
+        'Nous soumettons votre candidature en votre nom',
+        'Mise en relation avec les postes ouverts sur notre plateforme',
+        'Support direct WhatsApp et téléphone avec votre gestionnaire de cas'
       ]
     }
   },

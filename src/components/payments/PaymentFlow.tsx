@@ -30,18 +30,16 @@ interface PackageConfig {
   id: ProductType;
   icon: React.ReactNode;
   price: number;
-  regularPrice: number;
   popular?: boolean;
   features: string[];
 }
 
-// Country-specific pricing configuration - CONVERSION WEEK PRICING
-const getPricingByCountry = (country: string | null): Record<ProductType, { price: number; regularPrice: number }> => {
-  // CONVERSION WEEK: Aggressive pricing €49 / €199 / €499
+// Package pricing configuration
+const getPricingByCountry = (country: string | null): Record<ProductType, { price: number }> => {
   return {
-    digital_starter: { price: 4900, regularPrice: 9900 },      // €49 (was €99)
-    complete: { price: 19900, regularPrice: 39900 },           // €199 (was €399)
-    personal_mentorship: { price: 49900, regularPrice: 99900 }, // €499 (was €999)
+    digital_starter: { price: 4900 },       // €49
+    complete: { price: 19900 },              // €199
+    personal_mentorship: { price: 49900 },   // €499
   };
 };
 
@@ -121,37 +119,39 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
       id: 'digital_starter',
       icon: <Shield className="w-8 h-8" />,
       price: pricing.digital_starter.price,
-      regularPrice: pricing.digital_starter.regularPrice,
-      features: [
-        t?.payments?.packages?.digitalStarter?.features?.[0] || 'Access to document checklist & templates',
-        t?.payments?.packages?.digitalStarter?.features?.[1] || 'Self-paced video tutorials',
-        t?.payments?.packages?.digitalStarter?.features?.[2] || 'Digital verification guide',
-        t?.payments?.packages?.digitalStarter?.features?.[3] || 'Email support (72h response)',
+      features: t?.payments?.packages?.digitalStarter?.features || [
+        'Country-specific document checklist & templates',
+        'Step-by-step video guides for each document',
+        'Apostille & translation instructions',
+        'CV template adapted for medical applications',
+        'Email support (response within 72h)'
       ]
     },
     {
       id: 'complete',
       icon: <BookOpen className="w-8 h-8" />,
       price: pricing.complete.price,
-      regularPrice: pricing.complete.regularPrice,
       popular: true,
-      features: [
-        t?.payments?.packages?.complete?.features?.[0] || 'Everything in Digital Starter',
-        t?.payments?.packages?.complete?.features?.[1] || 'Personal document review & verification',
-        t?.payments?.packages?.complete?.features?.[2] || 'German medical language course access',
-        t?.payments?.packages?.complete?.features?.[3] || 'FSP exam preparation materials',
+      features: t?.payments?.packages?.complete?.features || [
+        'Everything in Digital Starter',
+        'Expert review of every document before submission',
+        'AI-powered document validation with instant feedback',
+        '6-month medical language course access',
+        'FSP exam prep: study plan, practice questions & mock exams',
+        'Priority support (response within 24h)'
       ]
     },
     {
       id: 'personal_mentorship',
       icon: <Users className="w-8 h-8" />,
       price: pricing.personal_mentorship.price,
-      regularPrice: pricing.personal_mentorship.regularPrice,
-      features: [
-        t?.payments?.packages?.personalMentorship?.features?.[0] || 'Everything in Complete Package',
-        t?.payments?.packages?.personalMentorship?.features?.[1] || 'Personal mentor assigned to your case',
-        t?.payments?.packages?.personalMentorship?.features?.[2] || '1:1 German lessons with native medical professional',
-        t?.payments?.packages?.personalMentorship?.features?.[3] || 'Job placement assistance',
+      features: t?.payments?.packages?.personalMentorship?.features || [
+        'Everything in Complete Package',
+        'Dedicated case manager from start to finish',
+        '4× live 1:1 sessions (60 min): documents, exam prep & interview practice',
+        'We submit your application on your behalf',
+        'Job matching with open positions on our platform',
+        'Direct WhatsApp & phone support with your case manager'
       ]
     }
   ];
@@ -353,9 +353,8 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
             
             <CardContent className="text-center pb-6">
               <div className="mb-6">
-                <span className="text-lg line-through text-muted-foreground mr-2">{formatPrice(pkg.regularPrice)}</span>
                 <span className="text-4xl font-bold text-primary">{formatPrice(pkg.price)}</span>
-                <span className="ml-2 text-sm font-medium text-destructive">-50%</span>
+                <span className="text-sm text-muted-foreground ml-2">{t?.payments?.oneTime || 'one-time'}</span>
               </div>
               
               <div className="space-y-3 text-left">

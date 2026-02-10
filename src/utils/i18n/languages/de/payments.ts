@@ -28,34 +28,39 @@ export const payments = {
   packages: {
     digitalStarter: {
       title: 'Digital Starter',
-      description: 'Bereiten Sie Ihre Dokumente eigenständig mit unseren digitalen Anleitungen vor',
+      description: 'Bereiten Sie Ihre Dokumente eigenständig mit unserem digitalen Toolkit vor',
       features: [
-        'Zugang zu Dokumenten-Checkliste & Vorlagen',
-        'Video-Tutorials im eigenen Tempo',
-        'Digitaler Verifizierungsleitfaden',
-        'E-Mail-Support (Antwort in 72h)'
+        'Länderspezifische Dokumenten-Checkliste & Vorlagen',
+        'Schritt-für-Schritt-Videoanleitungen für jedes Dokument',
+        'Apostille- & Übersetzungsanleitungen',
+        'Lebenslaufvorlage für medizinische Bewerbungen',
+        'E-Mail-Support (Antwort innerhalb von 72h)'
       ]
     },
     complete: {
       titleBase: 'Komplett-Paket +',
-      descriptionBase: 'Volle Approbationsunterstützung +',
+      descriptionBase: 'Expertenbegleitete Approbation +',
       descriptionEnd: 'Sprachvorbereitung',
       features: [
         'Alles aus Digital Starter',
-        'Persönliche Dokumentenprüfung',
-        'Zugang zum medizinischen Deutschkurs',
-        'FSP-Prüfungsvorbereitungsmaterialien'
+        'Expertenprüfung jedes Dokuments vor Einreichung',
+        'KI-gestützte Dokumentenvalidierung mit sofortigem Feedback',
+        '6 Monate Zugang zum medizinischen Sprachkurs',
+        'FSP-Vorbereitung: Lernplan, Übungsfragen & Probeprüfungen',
+        'Prioritäts-Support (Antwort innerhalb von 24h)'
       ]
     },
     personalMentorship: {
       title: 'Persönliche Mentorenschaft',
-      descriptionBase: 'Ihr dediziertes Team begleitet Sie mit 1:1',
-      descriptionEnd: 'Unterricht',
+      descriptionBase: 'Premium-Service mit persönlichem Fallmanager & 1:1',
+      descriptionEnd: 'Coaching',
       features: [
         'Alles aus dem Komplett-Paket',
-        'Persönlicher Mentor für Ihren Fall',
-        '1:1 Deutschunterricht mit medizinischem Muttersprachler',
-        'Unterstützung bei der Jobsuche'
+        'Persönlicher Fallmanager von Anfang bis Ende',
+        '4× Live-1:1-Sitzungen (60 Min): Dokumente, Prüfungsvorbereitung & Interviewtraining',
+        'Wir reichen Ihren Antrag in Ihrem Namen ein',
+        'Job-Matching mit offenen Stellen auf unserer Plattform',
+        'Direkter WhatsApp- & Telefon-Support mit Ihrem Fallmanager'
       ]
     }
   },

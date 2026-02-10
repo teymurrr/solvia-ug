@@ -28,34 +28,39 @@ export const payments = {
   packages: {
     digitalStarter: {
       title: 'Digital Starter',
-      description: 'Prepara tus documentos de forma independiente con nuestras guías digitales',
+      description: 'Prepara tus documentos de forma independiente con nuestro kit digital',
       features: [
-        'Acceso a checklist y plantillas de documentos',
-        'Tutoriales en video a tu ritmo',
-        'Guía de verificación digital',
+        'Checklist de documentos específica por país y plantillas',
+        'Guías en video paso a paso para cada documento',
+        'Instrucciones de apostilla y traducción',
+        'Plantilla de CV adaptada para solicitudes médicas',
         'Soporte por email (respuesta en 72h)'
       ]
     },
     complete: {
       titleBase: 'Paquete Completo +',
-      descriptionBase: 'Apoyo completo de homologación +',
-      descriptionEnd: 'preparación de idioma',
+      descriptionBase: 'Homologación guiada por expertos +',
+      descriptionEnd: 'preparación lingüística',
       features: [
         'Todo lo del Digital Starter',
-        'Revisión personal de documentos',
-        'Acceso al curso de alemán médico',
-        'Materiales de preparación FSP'
+        'Revisión experta de cada documento antes del envío',
+        'Validación de documentos con IA y feedback instantáneo',
+        'Acceso a curso de idioma médico por 6 meses',
+        'Preparación FSP: plan de estudio, preguntas de práctica y simulacros',
+        'Soporte prioritario (respuesta en 24h)'
       ]
     },
     personalMentorship: {
       title: 'Mentoría Personal',
-      descriptionBase: 'Tu equipo dedicado guiándote con clases 1:1 de',
+      descriptionBase: 'Servicio premium con gestor de caso dedicado y coaching 1:1 de',
       descriptionEnd: '',
       features: [
         'Todo lo del Paquete Completo',
-        'Mentor personal asignado a tu caso',
-        'Clases 1:1 con profesional médico nativo',
-        'Asistencia para encontrar trabajo'
+        'Gestor de caso dedicado de principio a fin',
+        '4 sesiones en vivo 1:1 (60 min): documentos, preparación de examen y entrevista',
+        'Enviamos tu solicitud en tu nombre',
+        'Emparejamiento laboral con posiciones abiertas en nuestra plataforma',
+        'Soporte directo por WhatsApp y teléfono con tu gestor de caso'
       ]
     }
   },
