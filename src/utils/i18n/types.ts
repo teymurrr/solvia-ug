@@ -421,4 +421,24 @@ export interface DashboardTranslations {
       approved: string;
     };
   };
+  myJourney?: {
+    tabTitle?: string;
+    title?: string;
+    subtitle?: string;
+    subtitleWithCountry?: string;
+    stepLanguage?: string;
+    stepLanguageDesc?: string;
+    stepHomologation?: string;
+    stepHomologationDesc?: string;
+    stepWork?: string;
+    stepWorkDesc?: string;
+    browseVacancies?: string;
+    setCountry?: string;
+  };
+  languagePath?: {
+    title?: string;
+    required?: string;
+    setLevel?: string;
+    cta?: string;
+  };
 }

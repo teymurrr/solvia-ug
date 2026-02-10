@@ -352,5 +352,25 @@ export const dashboard: DashboardTranslations = {
       inProgress: "En Cours",
       approved: "Approuvé"
     }
-  }
+  },
+  myJourney: {
+    tabTitle: "Mon Parcours",
+    title: "Mon Parcours",
+    subtitle: "Votre chemin pour exercer la médecine à l'étranger",
+    subtitleWithCountry: "Votre chemin pour exercer la médecine en",
+    stepLanguage: "Apprendre la Langue",
+    stepLanguageDesc: "Réussir l'examen linguistique requis pour votre pays cible",
+    stepHomologation: "Faire Reconnaître Votre Diplôme",
+    stepHomologationDesc: "Compléter le processus de documentation et de vérification",
+    stepWork: "Trouver Votre Poste",
+    stepWorkDesc: "Parcourir les offres correspondant à vos qualifications",
+    browseVacancies: "Parcourir les Offres",
+    setCountry: "Définir Votre Pays Cible",
+  },
+  languagePath: {
+    title: "Votre Parcours Linguistique",
+    required: "requis",
+    setLevel: "Ajoutez votre niveau de langue dans votre profil pour suivre vos progrès",
+    cta: "Obtenir le Starter Kit (à partir de 29€)",
+  },
 };

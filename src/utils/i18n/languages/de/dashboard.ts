@@ -335,5 +335,25 @@ export const dashboard = {
       inProgress: "In Bearbeitung",
       approved: "Genehmigt"
     }
-  }
+  },
+  myJourney: {
+    tabTitle: "Mein Weg",
+    title: "Mein Weg",
+    subtitle: "Ihr Weg zur ärztlichen Tätigkeit im Ausland",
+    subtitleWithCountry: "Ihr Weg zur ärztlichen Tätigkeit in",
+    stepLanguage: "Sprache lernen",
+    stepLanguageDesc: "Bestehen Sie die erforderliche Sprachprüfung für Ihr Zielland",
+    stepHomologation: "Diplom anerkennen lassen",
+    stepHomologationDesc: "Dokumentations- und Anerkennungsverfahren abschließen",
+    stepWork: "Stelle finden",
+    stepWorkDesc: "Passende Stellenangebote durchsuchen",
+    browseVacancies: "Stellenangebote durchsuchen",
+    setCountry: "Zielland festlegen",
+  },
+  languagePath: {
+    title: "Ihr Sprachweg",
+    required: "erforderlich",
+    setLevel: "Fügen Sie Ihr Sprachniveau in Ihrem Profil hinzu, um Ihren Fortschritt zu verfolgen",
+    cta: "Starter Kit holen (ab 29€)",
+  },
 };

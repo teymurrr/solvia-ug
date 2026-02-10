@@ -1,4 +1,5 @@
 import React from 'react';
+import LanguagePathCard from './LanguagePathCard';
 import HomologationPreview from './HomologationPreview';
 import CommunityWidget from './CommunityWidget';
 import { ProfileFormValues } from '@/components/professional-profile/types';
@@ -14,7 +15,8 @@ const DashboardSidebar: React.FC<DashboardSidebarProps> = ({
 }) => {
   return (
     <div className="space-y-6 lg:sticky lg:top-24">
-      {showHomologationPreview && profileData && (
+      <LanguagePathCard profileData={profileData} />
+      {showHomologationPreview && (
         <HomologationPreview profileData={profileData} />
       )}
       <CommunityWidget userSpecialty={profileData?.specialty} compact />

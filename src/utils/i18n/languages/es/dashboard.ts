@@ -361,5 +361,25 @@ export const dashboard: DashboardTranslations = {
       inProgress: "En Progreso",
       approved: "Aprobado"
     }
-  }
+  },
+  myJourney: {
+    tabTitle: "Mi Camino",
+    title: "Mi Camino",
+    subtitle: "Tu camino para ejercer medicina en el extranjero",
+    subtitleWithCountry: "Tu camino para ejercer medicina en",
+    stepLanguage: "Aprende el Idioma",
+    stepLanguageDesc: "Aprueba el examen de idioma requerido para tu país objetivo",
+    stepHomologation: "Homologa tu Diploma",
+    stepHomologationDesc: "Completa el proceso de documentación y verificación",
+    stepWork: "Encuentra tu Puesto",
+    stepWorkDesc: "Explora vacantes que coincidan con tus cualificaciones",
+    browseVacancies: "Explorar Vacantes",
+    setCountry: "Establece tu País Objetivo",
+  },
+  languagePath: {
+    title: "Tu Camino Lingüístico",
+    required: "requerido",
+    setLevel: "Añade tu nivel de idioma en tu perfil para seguir tu progreso",
+    cta: "Obtener Starter Kit (desde 29€)",
+  },
 };
