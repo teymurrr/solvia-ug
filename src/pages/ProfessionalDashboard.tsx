@@ -16,9 +16,13 @@ import {
 import LanguagesCard from '@/components/professional-dashboard/LanguagesCard';
 import SavedAndApplied from '@/components/professional-dashboard/SavedAndApplied';
 import HomologationTab from '@/components/professional-dashboard/HomologationTab';
+import WelcomeSection from '@/components/professional-dashboard/WelcomeSection';
+import HomologationPreview from '@/components/professional-dashboard/HomologationPreview';
+import RecommendedVacancies from '@/components/professional-dashboard/RecommendedVacancies';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/hooks/useLanguage';
+import { usePaymentAccess } from '@/hooks/usePaymentAccess';
 import {
   Pagination,
   PaginationContent,
@@ -37,6 +41,7 @@ const ProfessionalDashboard: React.FC = () => {
   const { toast } = useToast();
   const { user } = useAuth();
   const { t } = useLanguage();
+  const { paidCountries } = usePaymentAccess();
   
   // Get the active tab from location state if provided
   const defaultTab = location.state?.activeTab || 'profile';
@@ -234,22 +239,29 @@ const ProfessionalDashboard: React.FC = () => {
 
   return (
     <MainLayout hideEditProfile={true}>
-      <div className="container py-8">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
-          <div>
-            <h1 className="text-3xl font-bold">{t?.dashboard?.title || "Professional Dashboard"}</h1>
-            <p className="text-muted-foreground">{t?.dashboard?.subtitle || "Manage your profile and view opportunities"}</p>
-          </div>
-          <div className="flex-shrink-0">
-            <button
-              onClick={() => window.location.href = '/homologation-payment'}
-              className="inline-flex items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-blue-600 to-blue-700 text-white hover:from-blue-700 hover:to-blue-800 transition-all duration-200 px-4 py-3 text-sm font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
-            >
-              <GraduationCap className="h-4 w-4" />
-              {t?.dashboard?.homologation?.ctaButton || "Start Homologation Process"}
-            </button>
-          </div>
-        </div>
+      <div className="container py-8 space-y-6">
+        {/* Welcome Section */}
+        <WelcomeSection
+          profileData={profileData}
+          onEditProfile={() => setIsEditProfileOpen(true)}
+          savedVacanciesCount={savedVacancies.length}
+          appliedVacanciesCount={appliedVacancies.length}
+          onTabChange={setActiveTab}
+        />
+
+        {/* Homologation Preview for non-paying users */}
+        {paidCountries.length === 0 && profileData && (
+          <HomologationPreview profileData={profileData} />
+        )}
+
+        {/* Recommended Vacancies */}
+        <RecommendedVacancies
+          vacancies={vacancyResults}
+          profileData={profileData}
+          savedVacancies={savedVacancies}
+          appliedVacancies={appliedVacancies}
+          onSaveToggle={toggleSaveVacancy}
+        />
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
           <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 gap-1 h-auto p-1">

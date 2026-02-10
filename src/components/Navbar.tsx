@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
 import { cn } from '@/lib/utils';
 import Logo from './Logo';
+import NotificationBell from './NotificationBell';
 import NavLinks from './navbar/NavLinks';
 import UserDropdown from './navbar/UserDropdown';
 import MobileMenu from './navbar/MobileMenu';
@@ -80,6 +81,7 @@ const Navbar = () => {
 
           <div className="hidden sm:ml-6 sm:flex sm:items-center gap-2">
             <LanguageSelector />
+            {isLoggedIn && <NotificationBell />}
             
             {isLoggedIn ? (
               <UserDropdown 
