@@ -14,7 +14,7 @@ export const dashboard = {
   openToRelocation: 'Готов к переезду',
   
   // Professional Dashboard
-  welcome: 'Добро пожаловать обратно',
+  
   findYourNextRole: 'Найдите свою следующую роль',
   suggestedVacancies: 'Рекомендуемые вакансии',
   savedVacancies: 'Сохраненные вакансии',
@@ -204,11 +204,54 @@ export const dashboard = {
     noVacanciesFound: 'Вакансии не найдены',
     noVacanciesDesc: 'Попробуйте изменить критерии поиска'
   },
+  welcome: {
+    goodMorning: "Доброе утро",
+    goodAfternoon: "Добрый день",
+    goodEvening: "Добрый вечер",
+    subtitle: "Вот что нужно сделать для начала",
+    readiness: "Ваша готовность",
+    stepsCompleted: "шагов выполнено",
+    gettingStarted: "Начало Работы",
+    allComplete: "Всё готово! Продолжайте изучать возможности.",
+    checklistProfile: "Заполните свой профиль",
+    checklistExperience: "Добавьте опыт работы и образование",
+    checklistLanguages: "Добавьте ваши языковые навыки",
+    checklistHomologation: "Начните процесс гомологации",
+    checklistVacancies: "Изучите вакансии",
+  },
+  homologationPreview: {
+    title: "Ваша Дорожная Карта Гомологации",
+    subtitle: "Ориентировочный обзор процесса",
+    free: "Бесплатный Предпросмотр",
+    salaryLossTitle: "Упущенная Выгода",
+    perMonth: "месяц",
+    salaryLossDesc: "Каждый месяц без признанного диплома — это месяц упущенного потенциального дохода.",
+    fastest: "Быстрее всего",
+    average: "В среднем",
+    longest: "Дольше всего",
+    requiredDocs: "Необходимые Документы",
+    moreDocuments: "ещё документов",
+    unlockAccess: "Разблокируйте полный доступ с планом",
+    testimonial: "Я завершила гомологацию за 6 месяцев с полным пакетом Solvia. Пошаговое руководство сэкономило мне месяцы поисков.",
+    testimonialAuthor: "Мария, врач из Колумбии",
+    ctaUnlock: "Разблокировать Полную Дорожную Карту",
+    viewPlans: "Посмотреть Планы",
+  },
+  recommended: {
+    title: "Рекомендовано для Вас",
+    description: "Вакансии, соответствующие вашему профилю и предпочтениям",
+    badge: "Рекомендовано",
+  },
   homologation: {
     title: "Получите признание своего диплома",
     description: "Начните процесс гомологации для практики медицины в Германии",
     ctaButton: "Начать процесс гомологации",
     benefits: "Официальное признание вашего медицинского диплома для практики в Германии"
+  },
+  notifications: {
+    title: "Уведомления",
+    markAllRead: "Отметить все как прочитанные",
+    empty: "Уведомлений пока нет",
   },
   // Institution Dashboard
   institution: {

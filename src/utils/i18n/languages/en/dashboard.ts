@@ -98,6 +98,44 @@ export const dashboard = {
     noVacanciesFound: "No vacancies found",
     noVacanciesDesc: "Try adjusting your search criteria"
   },
+  welcome: {
+    goodMorning: "Good morning",
+    goodAfternoon: "Good afternoon",
+    goodEvening: "Good evening",
+    subtitle: "Here's what you need to do to get started",
+    readiness: "Your readiness",
+    stepsCompleted: "steps completed",
+    gettingStarted: "Getting Started",
+    allComplete: "You're all set! Keep exploring opportunities.",
+    checklistProfile: "Complete your profile",
+    checklistExperience: "Add work experience & education",
+    checklistLanguages: "Add your language skills",
+    checklistHomologation: "Start your homologation process",
+    checklistVacancies: "Explore job opportunities",
+  },
+  homologationPreview: {
+    title: "Your Homologation Roadmap",
+    subtitle: "Estimated process overview",
+    free: "Free Preview",
+    salaryLossTitle: "Opportunity Cost",
+    perMonth: "month",
+    salaryLossDesc: "Every month without your recognized diploma is a month of lost potential earnings.",
+    fastest: "Fastest",
+    average: "Average",
+    longest: "Longest",
+    requiredDocs: "Required Documents",
+    moreDocuments: "more documents",
+    unlockAccess: "Unlock full access with a plan",
+    testimonial: "I completed my homologation in 6 months with Solvia's Complete Package. The step-by-step guidance saved me months of research.",
+    testimonialAuthor: "Maria, Doctor from Colombia",
+    ctaUnlock: "Unlock Your Full Roadmap",
+    viewPlans: "View Plans",
+  },
+  recommended: {
+    title: "Recommended for You",
+    description: "Vacancies matching your profile and preferences",
+    badge: "Recommended",
+  },
   homologation: {
     title: "Get Your Diploma Recognized",
     tabTitle: "Homologation",
@@ -109,6 +147,11 @@ export const dashboard = {
     addCountry: "Add Another Country",
     languagePackage: "Homologation & Language",
     premiumPackage: "Premium"
+  },
+  notifications: {
+    title: "Notifications",
+    markAllRead: "Mark all read",
+    empty: "No notifications yet",
   },
   // Institution Dashboard
   institution: {

@@ -4,7 +4,7 @@ import { DashboardTranslations } from "../../types";
 export const dashboard: DashboardTranslations = {
   title: "Tableau de Bord Professionnel",
   subtitle: "Gérez votre profil et consultez les opportunités",
-  welcome: "Bienvenue dans votre tableau de bord",
+  
   vacancies: {
     title: "Postes vacants",
     subtitle: "Explorez les postes ouverts dans les établissements de santé",
@@ -190,11 +190,54 @@ export const dashboard: DashboardTranslations = {
     vacancyRemoved: "Poste supprimé",
     vacancyRemovedDesc: "Le poste a été supprimé de votre liste d'enregistrements."
   },
+  welcome: {
+    goodMorning: "Bonjour",
+    goodAfternoon: "Bon après-midi",
+    goodEvening: "Bonsoir",
+    subtitle: "Voici ce que vous devez faire pour commencer",
+    readiness: "Votre préparation",
+    stepsCompleted: "étapes complétées",
+    gettingStarted: "Premiers Pas",
+    allComplete: "Tout est prêt ! Continuez à explorer les opportunités.",
+    checklistProfile: "Compléter votre profil",
+    checklistExperience: "Ajouter expérience professionnelle et formation",
+    checklistLanguages: "Ajouter vos compétences linguistiques",
+    checklistHomologation: "Démarrer votre processus d'homologation",
+    checklistVacancies: "Explorer les opportunités d'emploi",
+  },
+  homologationPreview: {
+    title: "Votre Feuille de Route d'Homologation",
+    subtitle: "Aperçu estimé du processus",
+    free: "Aperçu Gratuit",
+    salaryLossTitle: "Coût d'Opportunité",
+    perMonth: "mois",
+    salaryLossDesc: "Chaque mois sans votre diplôme reconnu est un mois de revenus potentiels perdus.",
+    fastest: "Plus rapide",
+    average: "Moyen",
+    longest: "Plus long",
+    requiredDocs: "Documents Requis",
+    moreDocuments: "documents supplémentaires",
+    unlockAccess: "Débloquez l'accès complet avec un plan",
+    testimonial: "J'ai complété mon homologation en 6 mois avec le Pack Complet de Solvia. Le guide étape par étape m'a fait gagner des mois de recherche.",
+    testimonialAuthor: "Maria, Médecin de Colombie",
+    ctaUnlock: "Débloquez Votre Feuille de Route Complète",
+    viewPlans: "Voir les Plans",
+  },
+  recommended: {
+    title: "Recommandé pour Vous",
+    description: "Postes correspondant à votre profil et vos préférences",
+    badge: "Recommandé",
+  },
   homologation: {
     title: "Faites reconnaître votre diplôme",
     description: "Commencez votre processus d'homologation pour pratiquer la médecine en Allemagne",
     ctaButton: "Démarrer le processus d'homologation",
     benefits: "Reconnaissance officielle de votre diplôme médical pour exercer en Allemagne"
+  },
+  notifications: {
+    title: "Notifications",
+    markAllRead: "Tout marquer comme lu",
+    empty: "Aucune notification pour l'instant",
   },
   // Institution Dashboard
   institution: {

@@ -123,21 +123,21 @@ const NotificationBell: React.FC = () => {
       <PopoverContent className="w-80 p-0" align="end">
         <div className="flex items-center justify-between p-4 border-b">
           <h4 className="font-semibold text-sm">
-            {t?.notifications?.title || 'Notifications'}
+            {t?.dashboard?.notifications?.title || 'Notifications'}
           </h4>
           {unreadCount > 0 && (
             <button
               onClick={markAllAsRead}
               className="text-xs text-primary hover:underline"
             >
-              {t?.notifications?.markAllRead || 'Mark all read'}
+              {t?.dashboard?.notifications?.markAllRead || 'Mark all read'}
             </button>
           )}
         </div>
         <ScrollArea className="h-[300px]">
           {notifications.length === 0 ? (
             <div className="p-8 text-center text-sm text-muted-foreground">
-              {t?.notifications?.empty || 'No notifications yet'}
+              {t?.dashboard?.notifications?.empty || 'No notifications yet'}
             </div>
           ) : (
             <div className="divide-y">

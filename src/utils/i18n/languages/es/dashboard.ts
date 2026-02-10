@@ -4,7 +4,7 @@ import { DashboardTranslations } from "../../types";
 export const dashboard: DashboardTranslations = {
   title: "Panel de Control Profesional",
   subtitle: "Gestiona tu perfil y consulta oportunidades",
-  welcome: "Bienvenido al panel de control",
+  
   hero: {
     title: "Encuentra el trabajo de tus sueños en el sector sanitario",
     subtitle:
@@ -199,11 +199,54 @@ export const dashboard: DashboardTranslations = {
     vacancyRemoved: "Vacante eliminada",
     vacancyRemovedDesc: "La vacante ha sido eliminada de tu lista de guardados."
   },
+  welcome: {
+    goodMorning: "Buenos días",
+    goodAfternoon: "Buenas tardes",
+    goodEvening: "Buenas noches",
+    subtitle: "Esto es lo que necesitas hacer para empezar",
+    readiness: "Tu preparación",
+    stepsCompleted: "pasos completados",
+    gettingStarted: "Primeros Pasos",
+    allComplete: "¡Todo listo! Sigue explorando oportunidades.",
+    checklistProfile: "Completa tu perfil",
+    checklistExperience: "Añade experiencia laboral y educación",
+    checklistLanguages: "Añade tus habilidades lingüísticas",
+    checklistHomologation: "Inicia tu proceso de homologación",
+    checklistVacancies: "Explora oportunidades laborales",
+  },
+  homologationPreview: {
+    title: "Tu Hoja de Ruta de Homologación",
+    subtitle: "Resumen estimado del proceso",
+    free: "Vista Previa Gratuita",
+    salaryLossTitle: "Costo de Oportunidad",
+    perMonth: "mes",
+    salaryLossDesc: "Cada mes sin tu diploma reconocido es un mes de ingresos potenciales perdidos.",
+    fastest: "Más rápido",
+    average: "Promedio",
+    longest: "Más largo",
+    requiredDocs: "Documentos Requeridos",
+    moreDocuments: "documentos más",
+    unlockAccess: "Desbloquea acceso completo con un plan",
+    testimonial: "Completé mi homologación en 6 meses con el Paquete Completo de Solvia. La guía paso a paso me ahorró meses de investigación.",
+    testimonialAuthor: "María, Doctora de Colombia",
+    ctaUnlock: "Desbloquea Tu Hoja de Ruta Completa",
+    viewPlans: "Ver Planes",
+  },
+  recommended: {
+    title: "Recomendado para Ti",
+    description: "Vacantes que coinciden con tu perfil y preferencias",
+    badge: "Recomendado",
+  },
   homologation: {
     title: "Consiga el reconocimiento de su diploma",
     description: "Inicie su proceso de homologación para ejercer medicina en Alemania",
     ctaButton: "Inicia tu proceso de homologación",
     benefits: "Reconocimiento oficial de su diploma médico para ejercer en Alemania"
+  },
+  notifications: {
+    title: "Notificaciones",
+    markAllRead: "Marcar todo como leído",
+    empty: "Sin notificaciones aún",
   },
   // Institution Dashboard
   institution: {
