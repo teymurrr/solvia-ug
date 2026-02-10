@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -93,6 +93,7 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
   const [guestEmail, setGuestEmail] = useState('');
   const [fallbackUrl, setFallbackUrl] = useState<string | null>(null);
   const [showFallbackDialog, setShowFallbackDialog] = useState(false);
+  const paymentSummaryRef = useRef<HTMLDivElement>(null);
 
   // Read wizard data from localStorage on mount
   useEffect(() => {
@@ -110,6 +111,15 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
       }
     }
   }, []);
+
+  // Auto-scroll to payment summary when a package is selected
+  useEffect(() => {
+    if (selectedPackage && paymentSummaryRef.current) {
+      setTimeout(() => {
+        paymentSummaryRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
+    }
+  }, [selectedPackage]);
 
   // Get pricing based on selected country
   const pricing = getPricingByCountry(targetCountry);
@@ -388,7 +398,7 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
 
       {/* Discount Code & Payment Section */}
       {selectedPackage && (
-        <Card className="animate-in fade-in-50 duration-300">
+        <Card ref={paymentSummaryRef} className="animate-in fade-in-50 duration-300">
           <CardHeader>
             <CardTitle className="text-lg">
               {t?.payments?.summary?.title || 'Payment Summary'}
