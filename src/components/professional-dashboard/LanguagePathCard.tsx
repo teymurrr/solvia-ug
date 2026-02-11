@@ -32,11 +32,8 @@ const LanguagePathCard: React.FC<LanguagePathCardProps> = ({ profileData, compac
   const requiredLevel = countryData?.languageRequirement?.level?.split('-')[0] || 'B2';
   const targetLanguageName = COUNTRY_LANGUAGE_MAP[targetCountry] || 'German';
 
-  // Find user's current level for the target language
-  const targetLangEntry = profileData?.languages?.find(
-    l => l.language?.toLowerCase() === targetLanguageName.toLowerCase()
-  );
-  const currentLevel = targetLangEntry?.level?.toUpperCase() || '';
+  // Use the profile's languageLevel field directly (set via dropdown, no free-text matching needed)
+  const currentLevel = profileData?.languageLevel?.toUpperCase() || '';
   const currentIndex = LANGUAGE_LEVELS.indexOf(currentLevel);
   const requiredIndex = LANGUAGE_LEVELS.indexOf(requiredLevel);
 
