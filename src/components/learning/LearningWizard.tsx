@@ -5,6 +5,7 @@ import { Check, ChevronRight, ChevronLeft, HelpCircle } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
 import { countries, languageLevels, professions } from '@/data/learningData';
 import { motion, AnimatePresence } from 'framer-motion';
+import Analytics from '@/utils/analyticsTracking';
 
 interface LearningWizardProps {
   onComplete: (data: WizardData) => void;
@@ -27,8 +28,9 @@ const LearningWizard: React.FC<LearningWizardProps> = ({ onComplete, initialCoun
   });
 
   const handleCountrySelect = (countryId: string) => {
-    setWizardData(prev => ({ ...prev, country: countryId }));
-  };
+     Analytics.countrySelected(countryId);
+     setWizardData(prev => ({ ...prev, country: countryId }));
+   };
 
   const handleLevelSelect = (levelId: string) => {
     setWizardData(prev => ({ ...prev, level: levelId }));

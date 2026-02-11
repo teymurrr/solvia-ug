@@ -9,6 +9,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { Check, Shield, Clock, BookOpen, Users, Star, ExternalLink } from 'lucide-react';
 import { preOpenPaymentWindow, redirectPaymentWindow, isSafari } from '@/utils/browserDetection';
+import Analytics from '@/utils/analyticsTracking';
 
 type ProductType = 'digital_starter' | 'complete' | 'personal_mentorship';
 
@@ -241,31 +242,36 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   };
 
-  const handlePayment = async () => {
-    if (!selectedPackage) {
-      toast.error(t?.payments?.errors?.selectPackage || 'Please select a package');
-      return;
-    }
+   const handlePayment = async () => {
+     if (!selectedPackage) {
+       toast.error(t?.payments?.errors?.selectPackage || 'Please select a package');
+       return;
+     }
 
-    if (!guestEmail || !isValidEmail(guestEmail)) {
-      toast.error(t?.payments?.errors?.invalidEmail || 'Please enter a valid email address');
-      return;
-    }
+     if (!guestEmail || !isValidEmail(guestEmail)) {
+       toast.error(t?.payments?.errors?.invalidEmail || 'Please enter a valid email address');
+       return;
+     }
 
-    // Pre-open window for Safari BEFORE the async call
-    const preOpenedWindow = preOpenPaymentWindow();
+     // Track payment start
+     const baseAmount = selectedConfig?.price || 0;
+     const finalAmount = appliedDiscount ? appliedDiscount.finalAmount : baseAmount;
+     Analytics.paymentStarted(selectedPackage, finalAmount);
 
-    setIsProcessingPayment(true);
-    try {
-      const { data, error } = await supabase.functions.invoke('create-payment', {
-        body: {
-          productType: selectedPackage,
-          targetCountry: targetCountry,
-          customerEmail: guestEmail,
-          discountCode: appliedDiscount?.code,
-          locale: currentLanguage as 'en' | 'es' | 'de' | 'fr' | 'ru'
-        }
-      });
+     // Pre-open window for Safari BEFORE the async call
+     const preOpenedWindow = preOpenPaymentWindow();
+
+     setIsProcessingPayment(true);
+     try {
+       const { data, error } = await supabase.functions.invoke('create-payment', {
+         body: {
+           productType: selectedPackage,
+           targetCountry: targetCountry,
+           customerEmail: guestEmail,
+           discountCode: appliedDiscount?.code,
+           locale: currentLanguage as 'en' | 'es' | 'de' | 'fr' | 'ru'
+         }
+       });
 
       if (error) throw error;
 

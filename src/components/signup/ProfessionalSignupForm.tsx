@@ -15,6 +15,7 @@ import { TermsAgreement } from './TermsAgreement';
 import { useLanguage } from '@/hooks/useLanguage';
 import { Gift } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
+import Analytics from '@/utils/analyticsTracking';
 
 export const ProfessionalSignupForm: React.FC = () => {
   const { toast } = useToast();
@@ -36,16 +37,19 @@ export const ProfessionalSignupForm: React.FC = () => {
   });
 
   const onSubmit = async (data: ProfessionalSignupFormValues) => {
-    if (isSubmitting) return;
-    try {
-      setIsSubmitting(true);
-      
-      await signUp(data.email, data.password, {
-        first_name: data.firstName,
-        last_name: data.lastName,
-        user_type: 'professional',
-        preferred_language: currentLanguage,
-      });
+     if (isSubmitting) return;
+     try {
+       setIsSubmitting(true);
+       
+       await signUp(data.email, data.password, {
+         first_name: data.firstName,
+         last_name: data.lastName,
+         user_type: 'professional',
+         preferred_language: currentLanguage,
+       });
+
+       // Track signup completion
+       Analytics.signupCompleted('professional');
 
       // Send localized welcome email
       try {
