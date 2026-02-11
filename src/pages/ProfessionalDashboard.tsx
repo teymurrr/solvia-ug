@@ -116,16 +116,7 @@ const ProfessionalDashboard: React.FC = () => {
     return Math.round((completedFields / totalFields) * 100);
   };
 
-  // Auto-switch to vacancies for users with complete profiles (if no explicit tab was set)
-  useEffect(() => {
-    if (location.state?.activeTab) return;
-    if (!profileData || !loading) {
-      const completion = profileData ? calculateProfileCompletion(profileData) : 0;
-      if (paidCountries.length > 0 || completion >= 50) {
-        setActiveTab(prev => prev === 'journey' ? 'vacancies' : prev);
-      }
-    }
-  }, [profileData, paidCountries, loading, location.state?.activeTab]);
+  // Default tab is always 'journey' unless explicitly set via location.state
 
   useEffect(() => {
     if (activeTab === 'saved') {

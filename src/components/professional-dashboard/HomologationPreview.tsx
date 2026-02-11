@@ -6,7 +6,6 @@ import { Badge } from '@/components/ui/badge';
 import { 
   Lock, 
   Clock, 
-  DollarSign, 
   FileText, 
   ArrowRight,
   TrendingDown,
@@ -199,7 +198,7 @@ const HomologationPreview: React.FC<HomologationPreviewProps> = ({ profileData }
             className="flex-1 gap-2"
             size="lg"
           >
-            <DollarSign className="w-4 h-4" />
+            <FileText className="w-4 h-4" />
             {t?.dashboard?.homologationPreview?.ctaUnlock || 'Unlock Your Full Roadmap'}
             <ArrowRight className="w-4 h-4" />
           </Button>
