@@ -213,6 +213,7 @@ export const de = {
       checklistExperience: "Berufserfahrung & Ausbildung hinzufügen",
       checklistLanguages: "Sprachkenntnisse hinzufügen",
       checklistHomologation: "Anerkennungsverfahren starten",
+      checklistUploadDocs: "Dokumente hochladen",
       checklistVacancies: "Stellenangebote erkunden",
     },
     homologationPreview: {

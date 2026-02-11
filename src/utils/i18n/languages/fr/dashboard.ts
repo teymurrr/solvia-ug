@@ -224,6 +224,7 @@ export const dashboard: DashboardTranslations = {
     checklistExperience: "Ajouter expérience professionnelle et formation",
     checklistLanguages: "Ajouter vos compétences linguistiques",
     checklistHomologation: "Démarrer votre processus d'homologation",
+    checklistUploadDocs: "Télécharger vos documents",
     checklistVacancies: "Explorer les opportunités d'emploi",
   },
   homologationPreview: {
