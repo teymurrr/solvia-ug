@@ -15,6 +15,7 @@ export interface DashboardTranslations {
     checklistExperience?: string;
     checklistLanguages?: string;
     checklistHomologation?: string;
+    checklistUploadDocs?: string;
     checklistVacancies?: string;
   };
   homologationPreview?: {

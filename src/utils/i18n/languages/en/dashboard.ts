@@ -132,6 +132,7 @@ export const dashboard = {
     checklistExperience: "Add work experience & education",
     checklistLanguages: "Add your language skills",
     checklistHomologation: "Start your homologation process",
+    checklistUploadDocs: "Upload your documents",
     checklistVacancies: "Explore job opportunities",
   },
   homologationPreview: {

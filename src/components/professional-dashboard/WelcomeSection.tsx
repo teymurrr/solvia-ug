@@ -102,9 +102,9 @@ const WelcomeSection: React.FC<WelcomeSectionProps> = ({
         label: hasHomologation
           ? ((t as any)?.dashboard?.welcome?.checklistUploadDocs || 'Upload your documents')
           : (t?.dashboard?.welcome?.checklistHomologation || 'Start your homologation process'),
-        completed: hasHomologation && hasExplored, // simplified: paid + engaged
+        completed: hasHomologation && hasExplored,
         action: hasHomologation
-          ? () => navigate('/documents')
+          ? () => navigate('/documents-upload')
           : () => navigate('/homologation-wizard'),
         icon: <FileText className="w-4 h-4" />,
         priority: 5,
