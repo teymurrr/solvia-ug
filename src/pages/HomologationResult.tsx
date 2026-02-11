@@ -453,10 +453,11 @@ const HomologationResult = () => {
                 <Button size="lg" onClick={handleStartProcess} className="gap-2 w-full max-w-xs">
                   {t.homologationResult.cta.startProcess} <ArrowRight className="h-4 w-4" />
                 </Button>
-                <button
+              <button
                   onClick={handleBookConsultation}
-                  className="text-sm text-muted-foreground hover:text-foreground underline underline-offset-2 transition-colors"
+                  className="text-sm text-muted-foreground hover:text-foreground underline underline-offset-2 transition-colors flex items-center gap-1.5"
                 >
+                  <Calendar className="h-3.5 w-3.5" />
                   {t.homologationResult.cta.bookConsultation}
                 </button>
               </div>
