@@ -1,47 +1,59 @@
 
 
-# Smart Dashboard: Payment-Aware Journey + Better Welcome CTA
+# Homologation Result Page - Visual Redesign
 
-## Problems Identified
+The current page has several aesthetic issues: the layout feels flat, sections are disconnected, there's redundant CTA messaging (the same "Start My Process" appears three times), and the overall visual hierarchy doesn't guide the user's eye effectively. Here's the plan to make it significantly more polished and conversion-oriented.
 
-1. **WelcomeSection CTA is redundant** -- It shows "Explora oportunidades laborales" which just duplicates the Vacancies tab that's already visible. The CTA should point to the most impactful *next action* within the user's journey, not repeat tab navigation.
+## Key Problems Identified
 
-2. **Paying customers see a sales teaser instead of their progress** -- The HomologationPreview in Step 2 of "My Journey" always shows the "Free Preview" with "Unlock Your Full Roadmap" CTA, even for users who already paid. It should show their actual document upload progress instead.
+1. **Redundant CTAs** -- "Iniciar Mi Proceso" appears inside the Timeline card, potentially in the Language card, AND again in the bottom CTA card. This dilutes urgency and looks repetitive.
+2. **Flat, boxy layout** -- Every section is a plain bordered card with no visual depth or contrast variation.
+3. **Urgency banner feels disconnected** -- It sits between the header and content without visual integration.
+4. **Benefits row is generic** -- Four small cards with icons feel like filler rather than trust signals.
+5. **No visual storytelling** -- The page reads like a list of boxes rather than a guided journey.
 
-## Solution
+## Redesign Approach
 
-### 1. Make Step 2 (Homologation) payment-aware in MyJourneyTab
+### 1. Hero Section -- Make it feel premium
+- Add a subtle gradient background card behind the title area instead of just centered text
+- Integrate the urgency/salary-loss message directly into the hero as an accent callout (inline amber text or a small pill), removing the separate banner block
+- Show the user's profile summary (doctor type, origin country, target) as styled pills/tags
 
-Pass payment status into the HomologationPreview component. When the user has paid for a country:
-- Show a compact version of the HomologationProgressCard (progress bar, document status counts, "Continue Upload" / "View Status" buttons)
-- Remove the salary loss urgency block, locked documents, and "Unlock Roadmap" CTA since they already purchased
+### 2. Timeline Card -- Visual upgrade
+- Replace the three plain colored boxes with a horizontal step-indicator style (dots connected by a line, with labels below)
+- Use subtle gradient backgrounds instead of flat color blocks
+- Remove the duplicate CTA from inside this card
 
-When the user has NOT paid:
-- Keep the current teaser exactly as-is (salary loss, timeline, locked docs, purchase CTA)
+### 3. Language Card -- Cleaner presentation
+- Use a visual progress indicator (e.g., A1 to C2 scale with the user's level and required level marked) instead of two Badge rows
+- Keep the single contextual CTA here (this one makes sense since it routes differently based on language needs)
 
-### 2. Improve the WelcomeSection CTA
+### 4. Benefits Section -- Social proof strip
+- Convert from 4 separate bordered cards to a single row with a light background, no borders, just icons and text inline -- feels more like a trust bar
+- Add subtle separator dots between items
 
-Replace the generic checklist-based CTA with a smarter one that reflects the user's actual next step in their journey:
+### 5. Bottom CTA -- Single, strong call to action
+- Replace the gradient-bordered card with a clean, bold section
+- One primary button + one secondary (consultation)
+- Add the "limited spots" urgency badge here
 
-- If profile is incomplete: "Complete your profile"
-- If they haven't set a target country: "Set your target country"
-- If they have a target country but no payment: "Start homologation process"
-- If they've paid but documents are incomplete: "Upload documents"
-- If everything is progressing: "Browse vacancies"
+### 6. Overall Polish
+- Increase spacing between sections for breathing room
+- Add subtle background color shifts between sections for visual rhythm
+- Ensure motion animations are staggered smoothly
 
-This makes the CTA contextually valuable rather than duplicating the tabs.
+## Technical Details
 
-## Technical Changes
+**Files to modify:**
+- `src/pages/HomologationResult.tsx` -- Main restructuring of the layout, removing duplicate CTAs, updating styling classes
 
-| File | Action | What |
-|------|--------|------|
-| `MyJourneyTab.tsx` | Edit | Import `usePaymentAccess`, check if user has paid for their target country. If paid, render a compact progress view (reusing HomologationProgressCard logic inline) instead of HomologationPreview. If not paid, keep HomologationPreview as-is. |
-| `HomologationPreview.tsx` | No change | Stays as the sales teaser for non-paying users |
-| `WelcomeSection.tsx` | Edit | Replace the generic "first incomplete checklist item" CTA with journey-stage-aware logic that surfaces the most impactful next action |
+**No new dependencies needed** -- all changes use existing Tailwind classes, Framer Motion, Lucide icons, and shadcn/ui components.
 
-### What stays the same
-- HomologationPreview component (untouched, still used for non-paying users)
-- HomologationTab (separate tab, untouched)
-- All vacancy and profile functionality
-- Progress ring and greeting in WelcomeSection
+**Changes summary:**
+- Merge urgency banner into the hero section as a compact callout
+- Restyle timeline from 3 colored boxes to a connected step-indicator layout with gradient backgrounds
+- Add a visual language level scale (A1-C2 bar) to the language card
+- Convert benefits from 4 bordered cards to a seamless trust bar
+- Remove redundant CTAs (keep one in timeline/language cards contextually, one strong bottom CTA)
+- Improve spacing and add section background alternation
 
