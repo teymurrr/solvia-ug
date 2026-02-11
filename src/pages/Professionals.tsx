@@ -125,14 +125,16 @@ const Professionals = () => {
     };
   };
 
+  const p = (t as any)?.professionals;
+
   return (
     <MainLayout>
       <section className="bg-muted/50 py-12">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center space-y-4">
-            <h1 className="text-3xl font-bold">{t('professionals.title')}</h1>
+            <h1 className="text-3xl font-bold">{p?.title || 'Healthcare Professionals'}</h1>
             <p className="text-muted-foreground">
-              {t('professionals.subtitle')}
+              {p?.subtitle || 'Browse qualified healthcare professionals'}
             </p>
           </div>
         </div>
@@ -144,7 +146,7 @@ const Professionals = () => {
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground h-4 w-4" />
               <Input
-                placeholder="Search by name, specialty, etc."
+                placeholder={p?.searchPlaceholder || "Search by name, specialty, etc."}
                 className="pl-9"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
@@ -156,7 +158,7 @@ const Professionals = () => {
               onClick={toggleFilters}
             >
               <SlidersHorizontal className="h-4 w-4" />
-              {t('professionals.filters')}
+              {p?.filters || 'Filters'}
             </Button>
           </div>
         </div>
@@ -166,7 +168,7 @@ const Professionals = () => {
         <div className="flex flex-col md:flex-row gap-8">
           <aside className={`md:w-64 lg:w-72 space-y-6 ${filtersVisible ? 'block' : 'hidden'} md:block`}>
             <div className="flex items-center justify-between md:justify-start">
-              <h2 className="font-semibold text-lg">{t('professionals.filters')}</h2>
+              <h2 className="font-semibold text-lg">{p?.filters || 'Filters'}</h2>
               <Button 
                 variant="ghost" 
                 size="sm" 
@@ -179,13 +181,13 @@ const Professionals = () => {
             
             <div className="space-y-4">
               <div className="space-y-2">
-                <label className="text-sm font-medium">{t('professionals.specialty')}</label>
+                <label className="text-sm font-medium">{p?.specialty || 'Specialty'}</label>
                 <Select value={selectedSpecialty} onValueChange={setSelectedSpecialty}>
                   <SelectTrigger>
-                    <SelectValue placeholder="All Specialties" />
+                    <SelectValue placeholder={p?.allSpecialties || "All Specialties"} />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">All Specialties</SelectItem>
+                    <SelectItem value="all">{p?.allSpecialties || "All Specialties"}</SelectItem>
                     {specialties.map(specialty => (
                       <SelectItem key={specialty} value={specialty}>{specialty}</SelectItem>
                     ))}
@@ -194,13 +196,13 @@ const Professionals = () => {
               </div>
               
               <div className="space-y-2">
-                <label className="text-sm font-medium">{t('professionals.location')}</label>
+                <label className="text-sm font-medium">{p?.location || 'Location'}</label>
                 <Select value={selectedLocation} onValueChange={setSelectedLocation}>
                   <SelectTrigger>
-                    <SelectValue placeholder="All Locations" />
+                    <SelectValue placeholder={p?.allLocations || "All Locations"} />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">All Locations</SelectItem>
+                    <SelectItem value="all">{p?.allLocations || "All Locations"}</SelectItem>
                     {locations.map(location => (
                       <SelectItem key={location} value={location}>{location}</SelectItem>
                     ))}
@@ -210,8 +212,8 @@ const Professionals = () => {
               
               <div className="space-y-2">
                 <div className="flex justify-between">
-                  <label className="text-sm font-medium">{t('professionals.experience')}</label>
-                  <span className="text-sm text-muted-foreground">{minExperience} years</span>
+                  <label className="text-sm font-medium">{p?.experience || 'Experience'}</label>
+                  <span className="text-sm text-muted-foreground">{minExperience} {p?.years || 'years'}</span>
                 </div>
                 <Slider
                   value={[minExperience]}
@@ -223,7 +225,7 @@ const Professionals = () => {
               </div>
               
               <div className="space-y-2">
-                <label className="text-sm font-medium">Languages</label>
+                <label className="text-sm font-medium">{p?.languagesLabel || 'Languages'}</label>
                 <div className="space-y-2">
                   {availableLanguages.map((language) => (
                     <div key={language} className="flex items-center space-x-2">
@@ -252,7 +254,7 @@ const Professionals = () => {
                 setMinExperience(0);
                 setSelectedLanguages([]);
               }}>
-                Reset Filters
+                {p?.resetFilters || 'Reset Filters'}
               </Button>
             </div>
           </aside>
@@ -260,18 +262,18 @@ const Professionals = () => {
           <div className="flex-1">
             <div className="flex justify-between items-center mb-6">
               <h3 className="font-medium">
-                {loading ? '...' : filteredProfessionals.length} {filteredProfessionals.length === 1 ? 'Professional' : 'Professionals'}
+                {loading ? '...' : filteredProfessionals.length} {filteredProfessionals.length === 1 ? (p?.professional || 'Professional') : (p?.professionalsLabel || 'Professionals')}
               </h3>
               <Select defaultValue="relevance">
                 <SelectTrigger className="w-[180px]">
-                  <SelectValue placeholder="Sort by" />
+                  <SelectValue placeholder={p?.sortBy || "Sort by"} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="relevance">Relevance</SelectItem>
-                  <SelectItem value="experience-high">Experience (High to Low)</SelectItem>
-                  <SelectItem value="experience-low">Experience (Low to High)</SelectItem>
-                  <SelectItem value="name-asc">Name (A-Z)</SelectItem>
-                  <SelectItem value="name-desc">Name (Z-A)</SelectItem>
+                  <SelectItem value="relevance">{p?.relevance || 'Relevance'}</SelectItem>
+                  <SelectItem value="experience-high">{p?.expHighToLow || 'Experience (High to Low)'}</SelectItem>
+                  <SelectItem value="experience-low">{p?.expLowToHigh || 'Experience (Low to High)'}</SelectItem>
+                  <SelectItem value="name-asc">{p?.nameAZ || 'Name (A-Z)'}</SelectItem>
+                  <SelectItem value="name-desc">{p?.nameZA || 'Name (Z-A)'}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -307,9 +309,9 @@ const Professionals = () => {
               </div>
             ) : (
               <div className="text-center py-12 border rounded-lg bg-muted/50">
-                <h3 className="text-lg font-medium mb-2">No professionals found</h3>
+                <h3 className="text-lg font-medium mb-2">{p?.noResults || 'No professionals found'}</h3>
                 <p className="text-muted-foreground mb-6">
-                  {error || 'Try adjusting your search filters'}
+                  {error || p?.tryAdjusting || 'Try adjusting your search filters'}
                 </p>
                 <Button onClick={() => {
                   setSearchQuery('');
@@ -318,7 +320,7 @@ const Professionals = () => {
                   setMinExperience(0);
                   setSelectedLanguages([]);
                 }}>
-                  Reset Filters
+                  {p?.resetFilters || 'Reset Filters'}
                 </Button>
               </div>
             )}
