@@ -10,6 +10,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { saveWizardDataToProfile } from '@/services/wizardProfileService';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
+import Analytics from '@/utils/analyticsTracking';
 
 type WizardStep = 'country' | 'study-country' | 'doctor-type' | 'language' | 'firstName' | 'lastName' | 'email' | 'summary' | 'password';
 
@@ -86,10 +87,13 @@ const HomologationWizard = () => {
   };
 
   const handleCountrySelect = (countryId: string) => {
-    setSelectedTargetCountry(countryId);
-    setWizardData({ ...wizardData, targetCountry: countryId });
-    setCurrentStep('study-country');
-  };
+     // Track country selection
+     Analytics.countrySelected(countryId);
+     
+     setSelectedTargetCountry(countryId);
+     setWizardData({ ...wizardData, targetCountry: countryId });
+     setCurrentStep('study-country');
+   };
 
   const handleStudyCountrySelect = (country: string) => {
     setWizardData({ ...wizardData, studyCountry: country });

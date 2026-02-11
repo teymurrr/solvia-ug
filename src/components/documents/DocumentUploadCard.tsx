@@ -25,6 +25,7 @@ import { Progress } from '@/components/ui/progress';
 import { useLanguage } from '@/hooks/useLanguage';
 import { DocumentRequirement, ClientDocument } from '@/hooks/useDocuments';
 import { cn } from '@/lib/utils';
+import Analytics from '@/utils/analyticsTracking';
 
 interface DocumentUploadCardProps {
   requirement: DocumentRequirement;
@@ -134,12 +135,14 @@ export const DocumentUploadCard: React.FC<DocumentUploadCardProps> = ({
   }, [onUpload]);
 
   const handleFileSelect = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      await onUpload(file);
-    }
-    e.target.value = '';
-  }, [onUpload]);
+     const file = e.target.files?.[0];
+     if (file) {
+       // Track document upload
+       Analytics.documentUploaded(requirement.document_type, file.size);
+       await onUpload(file);
+     }
+     e.target.value = '';
+   }, [onUpload, requirement.document_type]);
 
   return (
     <Card className={cn(

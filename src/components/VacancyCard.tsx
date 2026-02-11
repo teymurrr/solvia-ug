@@ -11,6 +11,7 @@ import VacancyDetails from './vacancy/VacancyDetails';
 import { useLanguage } from '@/hooks/useLanguage';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
+import Analytics from '@/utils/analyticsTracking';
 
 const getRandomDaysAgo = () => {
   const days = [2, 3, 4, 5, 6, 7, 10];
@@ -90,12 +91,16 @@ const VacancyCard: React.FC<VacancyCardProps> = ({
   const daysAgo = getRandomDaysAgo();
   
   const handleSaveClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (onSaveToggle) {
-      onSaveToggle(id);
-    }
-  };
+     e.preventDefault();
+     e.stopPropagation();
+     if (onSaveToggle) {
+       // Track vacancy saved
+       if (!isSaved) {
+         Analytics.vacancySaved(id, location);
+       }
+       onSaveToggle(id);
+     }
+   };
 
   // Removed handleCardClick since cards are no longer clickable
 

@@ -12,6 +12,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { useVacancyApplication } from '@/hooks/useVacancyApplication';
 import { useLanguage } from '@/hooks/useLanguage';
 import { Loader2, CheckCircle2 } from 'lucide-react';
+import Analytics from '@/utils/analyticsTracking';
 
 interface ApplyDialogProps {
   open: boolean;
@@ -34,17 +35,20 @@ const ApplyDialog: React.FC<ApplyDialogProps> = ({
   const { t } = useLanguage();
 
   const handleSubmit = async () => {
-    const success = await submitApplication(vacancyId, message || undefined);
-    if (success) {
-      setSubmitted(true);
-      onSuccess?.();
-      setTimeout(() => {
-        onOpenChange(false);
-        setSubmitted(false);
-        setMessage('');
-      }, 2000);
-    }
-  };
+     const success = await submitApplication(vacancyId, message || undefined);
+     if (success) {
+       // Track vacancy application
+       Analytics.vacancyApplied(vacancyId);
+       
+       setSubmitted(true);
+       onSuccess?.();
+       setTimeout(() => {
+         onOpenChange(false);
+         setSubmitted(false);
+         setMessage('');
+       }, 2000);
+     }
+   };
 
   const handleClose = (open: boolean) => {
     if (!isSubmitting) {
