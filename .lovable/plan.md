@@ -1,59 +1,59 @@
 
 
-# Homologation Result Page - Visual Redesign
+# Homologation Result Page -- Streamline for Conversion
 
-The current page has several aesthetic issues: the layout feels flat, sections are disconnected, there's redundant CTA messaging (the same "Start My Process" appears three times), and the overall visual hierarchy doesn't guide the user's eye effectively. Here's the plan to make it significantly more polished and conversion-oriented.
+## Analysis of Current Page
 
-## Key Problems Identified
+The current structure is strong narratively, but there's redundancy and wasted space that weakens the impact. Here's what I found:
 
-1. **Redundant CTAs** -- "Iniciar Mi Proceso" appears inside the Timeline card, potentially in the Language card, AND again in the bottom CTA card. This dilutes urgency and looks repetitive.
-2. **Flat, boxy layout** -- Every section is a plain bordered card with no visual depth or contrast variation.
-3. **Urgency banner feels disconnected** -- It sits between the header and content without visual integration.
-4. **Benefits row is generic** -- Four small cards with icons feel like filler rather than trust signals.
-5. **No visual storytelling** -- The page reads like a list of boxes rather than a guided journey.
+**What works well:**
+- Hero with diagnosis framing and profile pills -- clean, personal
+- 3 diagnosis cards (duration, language gap, documents) -- effective at-a-glance
+- Locked roadmap with gradient fade -- strong conversion mechanic
+- Price anchoring (salary vs 49 euros) -- compelling
 
-## Redesign Approach
+**What's redundant or unnecessary:**
+1. **Final CTA section ("Ready to Start Your Journey?")** duplicates the roadmap's "Unlock your complete roadmap" button. Two separate conversion prompts dilute each other.
+2. **Guarantee text appears twice** -- once inside the price card, and again below the final CTA.
+3. **Trust bar** sits awkwardly between the price card and the final CTA, adding visual noise without earning its space.
+4. **"Book Free Consultation"** as a same-size button alongside "Start My Process" splits attention. It should be secondary (a text link).
 
-### 1. Hero Section -- Make it feel premium
-- Add a subtle gradient background card behind the title area instead of just centered text
-- Integrate the urgency/salary-loss message directly into the hero as an accent callout (inline amber text or a small pill), removing the separate banner block
-- Show the user's profile summary (doctor type, origin country, target) as styled pills/tags
+## Proposed Changes
 
-### 2. Timeline Card -- Visual upgrade
-- Replace the three plain colored boxes with a horizontal step-indicator style (dots connected by a line, with labels below)
-- Use subtle gradient backgrounds instead of flat color blocks
-- Remove the duplicate CTA from inside this card
+### 1. Remove the standalone Final CTA section entirely (Section 6)
+The "Unlock your complete roadmap" button in the roadmap IS the primary CTA. Below the price card, we only need the two action buttons -- no extra heading or description.
 
-### 3. Language Card -- Cleaner presentation
-- Use a visual progress indicator (e.g., A1 to C2 scale with the user's level and required level marked) instead of two Badge rows
-- Keep the single contextual CTA here (this one makes sense since it routes differently based on language needs)
+### 2. Merge trust signals into the price card
+Move the 4 trust items (experts, 98% success, 24/7 support, no hidden costs) as a compact row inside the price card, below the guarantee line. This consolidates all "why buy" signals in one place.
 
-### 4. Benefits Section -- Social proof strip
-- Convert from 4 separate bordered cards to a single row with a light background, no borders, just icons and text inline -- feels more like a trust bar
-- Add subtle separator dots between items
+### 3. Simplify the bottom of the page
+After the price card (which now contains trust signals), show only:
+- Primary button: "Start My Process"
+- Secondary: "Book Free Consultation" as a text link (not a full button)
+- Guarantee reminder (single instance)
 
-### 5. Bottom CTA -- Single, strong call to action
-- Replace the gradient-bordered card with a clean, bold section
-- One primary button + one secondary (consultation)
-- Add the "limited spots" urgency badge here
+### 4. Tighten the salary urgency line
+Move it from a standalone line into the hero section as a subtle accent below the subtitle, reducing one visual "section break."
 
-### 6. Overall Polish
-- Increase spacing between sections for breathing room
-- Add subtle background color shifts between sections for visual rhythm
-- Ensure motion animations are staggered smoothly
+### 5. Result: 4 clean sections instead of 7
+```text
+1. Hero (title + pills + salary urgency inline)
+2. Diagnosis cards (3 cards)
+3. Locked Roadmap (with unlock CTA)
+4. Price Card (salary vs cost + trust signals + action buttons + guarantee)
+```
 
 ## Technical Details
 
-**Files to modify:**
-- `src/pages/HomologationResult.tsx` -- Main restructuring of the layout, removing duplicate CTAs, updating styling classes
+**File to modify:** `src/pages/HomologationResult.tsx`
 
-**No new dependencies needed** -- all changes use existing Tailwind classes, Framer Motion, Lucide icons, and shadcn/ui components.
+**Changes:**
+- Delete Section 5 (trust bar) and Section 6 (final CTA) -- approximately 50 lines removed
+- Move the 4 trust items into the price card section, below the separator
+- Move salary urgency line into the hero section (below subtitle, above pills)
+- Add "Start My Process" and "Book Consultation" (as text link) into the price card bottom
+- Remove duplicate guarantee text
+- Reduce `space-y-8` to `space-y-6` for tighter overall spacing
 
-**Changes summary:**
-- Merge urgency banner into the hero section as a compact callout
-- Restyle timeline from 3 colored boxes to a connected step-indicator layout with gradient backgrounds
-- Add a visual language level scale (A1-C2 bar) to the language card
-- Convert benefits from 4 bordered cards to a seamless trust bar
-- Remove redundant CTAs (keep one in timeline/language cards contextually, one strong bottom CTA)
-- Improve spacing and add section background alternation
+No translation file changes needed -- all keys already exist.
 
