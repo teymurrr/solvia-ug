@@ -1,12 +1,12 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { BookOpen, FileCheck, Briefcase, ArrowRight, Globe } from 'lucide-react';
+import { BookOpen, FileCheck, Briefcase, ArrowRight, Globe, Users } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
 import { ProfileFormValues } from '@/components/professional-profile/types';
 import LanguagePathCard from './LanguagePathCard';
-import HomologationTab from './HomologationTab';
+import HomologationPreview from './HomologationPreview';
 
 interface MyJourneyTabProps {
   profileData: ProfileFormValues | null;
@@ -54,7 +54,7 @@ const MyJourneyTab: React.FC<MyJourneyTabProps> = ({ profileData }) => {
         </div>
       </div>
 
-      {/* Step 1: Language */}
+      {/* Step 1: Language — inline progress, no card-in-card */}
       <Card>
         <CardHeader className="pb-3">
           <div className="flex items-center gap-2">
@@ -71,11 +71,11 @@ const MyJourneyTab: React.FC<MyJourneyTabProps> = ({ profileData }) => {
           </div>
         </CardHeader>
         <CardContent>
-          <LanguagePathCard profileData={profileData} />
+          <LanguagePathCard profileData={profileData} compact />
         </CardContent>
       </Card>
 
-      {/* Step 2: Homologation */}
+      {/* Step 2: Homologation — lightweight preview teaser */}
       <Card>
         <CardHeader className="pb-3">
           <div className="flex items-center gap-2">
@@ -92,7 +92,7 @@ const MyJourneyTab: React.FC<MyJourneyTabProps> = ({ profileData }) => {
           </div>
         </CardHeader>
         <CardContent>
-          <HomologationTab />
+          <HomologationPreview profileData={profileData} />
         </CardContent>
       </Card>
 
@@ -128,6 +128,18 @@ const MyJourneyTab: React.FC<MyJourneyTabProps> = ({ profileData }) => {
           </div>
         </CardContent>
       </Card>
+
+      {/* Community Link */}
+      <div className="flex items-center justify-center py-2">
+        <Link
+          to="/community"
+          className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+        >
+          <Users className="w-4 h-4" />
+          {(t as any)?.community?.title || 'Join the Community'}
+          <ArrowRight className="w-3 h-3" />
+        </Link>
+      </div>
     </div>
   );
 };
