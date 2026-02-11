@@ -5,8 +5,10 @@ import { Button } from '@/components/ui/button';
 import { BookOpen, FileCheck, Briefcase, ArrowRight, Globe, Users } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
 import { ProfileFormValues } from '@/components/professional-profile/types';
+import { usePaymentAccess } from '@/hooks/usePaymentAccess';
 import LanguagePathCard from './LanguagePathCard';
 import HomologationPreview from './HomologationPreview';
+import HomologationProgressCompact from './HomologationProgressCompact';
 
 interface MyJourneyTabProps {
   profileData: ProfileFormValues | null;
@@ -27,6 +29,7 @@ const COUNTRY_FLAGS: Record<string, string> = {
 const MyJourneyTab: React.FC<MyJourneyTabProps> = ({ profileData }) => {
   const navigate = useNavigate();
   const { t, currentLanguage } = useLanguage();
+  const { hasPaidAccess } = usePaymentAccess();
 
   const targetCountry = profileData?.targetCountry;
   const countryName = targetCountry
@@ -35,6 +38,7 @@ const MyJourneyTab: React.FC<MyJourneyTabProps> = ({ profileData }) => {
   const flag = targetCountry ? COUNTRY_FLAGS[targetCountry] || '🌍' : '🌍';
 
   const mj = (t as any)?.dashboard?.myJourney;
+  const hasPaidForCountry = targetCountry ? hasPaidAccess(targetCountry) : false;
 
   return (
     <div className="space-y-6">
@@ -92,7 +96,11 @@ const MyJourneyTab: React.FC<MyJourneyTabProps> = ({ profileData }) => {
           </div>
         </CardHeader>
         <CardContent>
-          <HomologationPreview profileData={profileData} />
+          {hasPaidForCountry && targetCountry ? (
+            <HomologationProgressCompact country={targetCountry} />
+          ) : (
+            <HomologationPreview profileData={profileData} />
+          )}
         </CardContent>
       </Card>
 
