@@ -66,16 +66,31 @@ const handler = async (req: Request): Promise<Response> => {
       });
     }
 
-    // Get all users from auth.users
-    const { data: authUsers, error: authUsersError } = await supabaseAdmin.auth.admin.listUsers();
+    // Get ALL users from auth.users (paginate through all pages)
+    let allAuthUsers: any[] = [];
+    let currentPage = 1;
+    const fetchPerPage = 1000;
 
-    if (authUsersError) {
-      console.error('Error fetching auth users:', authUsersError);
-      return new Response(JSON.stringify({ error: 'Failed to fetch users' }), {
-        status: 500,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    while (true) {
+      const { data: authUsers, error: authUsersError } = await supabaseAdmin.auth.admin.listUsers({
+        page: currentPage,
+        perPage: fetchPerPage,
       });
+
+      if (authUsersError) {
+        console.error('Error fetching auth users:', authUsersError);
+        return new Response(JSON.stringify({ error: 'Failed to fetch users' }), {
+          status: 500,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        });
+      }
+
+      allAuthUsers = allAuthUsers.concat(authUsers.users);
+      if (authUsers.users.length < fetchPerPage) break;
+      currentPage++;
     }
+
+    console.log('Total auth users fetched:', allAuthUsers.length);
 
     // Get professional profiles
     const { data: professionals, error: profError } = await supabaseAdmin
@@ -101,7 +116,7 @@ const handler = async (req: Request): Promise<Response> => {
     // Add professionals
     if (professionals) {
       professionals.forEach(prof => {
-        const authUser = authUsers.users.find(u => u.id === prof.id);
+        const authUser = allAuthUsers.find(u => u.id === prof.id);
         if (authUser) {
           usersWithEmails.push({
             id: prof.id,
@@ -118,7 +133,7 @@ const handler = async (req: Request): Promise<Response> => {
     // Add institutions
     if (institutions) {
       institutions.forEach(inst => {
-        const authUser = authUsers.users.find(u => u.id === inst.id);
+        const authUser = allAuthUsers.find(u => u.id === inst.id);
         if (authUser && !usersWithEmails.find(user => user.id === inst.id)) {
           usersWithEmails.push({
             id: inst.id,
