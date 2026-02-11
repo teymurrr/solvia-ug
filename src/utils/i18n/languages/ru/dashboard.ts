@@ -185,7 +185,28 @@ export const dashboard = {
     selectDoctorType: 'Выберите тип',
     documentsReady: 'Документы готовы',
     selectDocumentsStatus: 'Выберите статус',
-    selectLanguageLevel: 'Выберите уровень'
+    selectLanguageLevel: 'Выберите уровень',
+    languageOptions: {
+      english: 'Английский',
+      german: 'Немецкий',
+      french: 'Французский',
+      spanish: 'Испанский',
+      italian: 'Итальянский',
+      portuguese: 'Португальский',
+      dutch: 'Нидерландский',
+      polish: 'Польский',
+      romanian: 'Румынский',
+      greek: 'Греческий',
+      swedish: 'Шведский',
+      norwegian: 'Норвежский',
+      danish: 'Датский',
+      finnish: 'Финский',
+      czech: 'Чешский',
+      hungarian: 'Венгерский',
+      russian: 'Русский',
+      ukrainian: 'Украинский',
+      other: 'Другой'
+    }
   },
 
   // Vacancies-related properties for FilterBar component

@@ -16,9 +16,9 @@ interface LanguageSectionProps {
 }
 
 const LANGUAGE_OPTIONS = [
-  'German', 'French', 'Spanish', 'Italian', 'English', 'Portuguese', 
-  'Arabic', 'Russian', 'Turkish', 'Polish', 'Romanian', 'Ukrainian',
-  'Dutch', 'Greek', 'Chinese', 'Japanese', 'Korean', 'Hindi', 'Other'
+  'English', 'German', 'French', 'Spanish', 'Italian', 'Portuguese', 
+  'Dutch', 'Polish', 'Romanian', 'Greek', 'Swedish', 'Norwegian',
+  'Danish', 'Finnish', 'Czech', 'Hungarian', 'Russian', 'Ukrainian', 'Other'
 ];
 
 const LanguageSection: React.FC<LanguageSectionProps> = ({ form, handleLanguageCertificateChange, languageLevels }) => {
