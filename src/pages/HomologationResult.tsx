@@ -213,6 +213,17 @@ const HomologationResult = () => {
                 .replace('{country}', translatedCountryName)}
             </p>
 
+            {/* Salary urgency inline */}
+            <div className="flex items-center justify-center gap-2 text-sm text-amber-700 dark:text-amber-400 mb-6">
+              <AlertTriangle className="h-3.5 w-3.5 shrink-0" />
+              <span>
+                {(t.homologationResult.urgency?.salaryLoss || "You are losing approximately {salary} {currency}/month by not working in {country}.")
+                  .replace('{salary}', monthlySalary.toLocaleString())
+                  .replace('{currency}', countryData.averageSalaries.currency)
+                  .replace('{country}', translatedCountryName)}
+              </span>
+            </div>
+
             {/* Profile pills */}
             <div className="flex flex-wrap items-center justify-center gap-2">
               {wizardData.doctorType && (
@@ -229,7 +240,7 @@ const HomologationResult = () => {
           </div>
         </motion.section>
 
-        <div className="container mx-auto px-4 max-w-3xl space-y-8 pb-16">
+        <div className="container mx-auto px-4 max-w-3xl space-y-6 pb-16">
 
           {/* ===== SECTION 2: DIAGNOSIS CARDS — At-a-glance gaps ===== */}
           <motion.section
@@ -295,22 +306,6 @@ const HomologationResult = () => {
               </div>
             </div>
           </motion.section>
-
-          {/* Salary urgency — subtle but present */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.15 }}
-            className="flex items-center justify-center gap-2 text-sm text-amber-700 dark:text-amber-400"
-          >
-            <AlertTriangle className="h-3.5 w-3.5 shrink-0" />
-            <span>
-              {(t.homologationResult.urgency?.salaryLoss || "You are losing approximately {salary} {currency}/month by not working in {country}.")
-                .replace('{salary}', monthlySalary.toLocaleString())
-                .replace('{currency}', countryData.averageSalaries.currency)
-                .replace('{country}', translatedCountryName)}
-            </span>
-          </motion.div>
 
           {/* ===== SECTION 3: ROADMAP — The key conversion element ===== */}
           <motion.section
@@ -381,18 +376,18 @@ const HomologationResult = () => {
             </div>
           </motion.section>
 
-          {/* ===== SECTION 4: PRICE ANCHOR — Make €49 feel tiny ===== */}
+          {/* ===== SECTION 4: PRICE CARD — Consolidated with trust + CTAs + guarantee ===== */}
           <motion.section
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="mt-12"
+            className="mt-6"
           >
             <h2 className="text-xl md:text-2xl font-bold text-center mb-6">
               {t.homologationResult.value?.title || 'The smartest investment in your career'}
             </h2>
 
-            <div className="bg-card border rounded-2xl p-6 md:p-8">
+            <div className="bg-card border rounded-2xl p-6 md:p-8 space-y-5">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
                 {/* Left: What you'll earn */}
                 <div className="text-center md:text-left space-y-1">
@@ -418,80 +413,60 @@ const HomologationResult = () => {
                 </div>
               </div>
 
-              <Separator className="my-5" />
+              <Separator />
 
-              <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-                <div className="flex items-center gap-2 text-sm">
-                  <TrendingUp className="h-4 w-4 text-green-500" />
-                  <span className="text-muted-foreground">
-                    {(t.homologationResult.value?.returnNote || "That's less than {percent}% of your first month's salary")
-                      .replace('{percent}', investmentPercent)}
-                  </span>
+              <div className="flex items-center gap-2 text-sm justify-center">
+                <TrendingUp className="h-4 w-4 text-green-500" />
+                <span className="text-muted-foreground">
+                  {(t.homologationResult.value?.returnNote || "That's less than {percent}% of your first month's salary")
+                    .replace('{percent}', investmentPercent)}
+                </span>
+              </div>
+
+              {/* Trust signals row */}
+              <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs text-muted-foreground">
+                <div className="flex items-center gap-1.5">
+                  <Shield className="h-3.5 w-3.5 text-primary" />
+                  <span>{t.homologationResult.cta?.benefit1 || "Medical homologation experts"}</span>
                 </div>
-                <div className="flex items-center gap-2 text-sm">
-                  <Shield className="h-4 w-4 text-primary" />
-                  <span className="font-medium text-foreground">
-                    {t.homologationResult.value?.guarantee || '100% Money-Back Guarantee'}
-                  </span>
+                <span className="hidden md:inline text-border">•</span>
+                <div className="flex items-center gap-1.5">
+                  <CheckCircle2 className="h-3.5 w-3.5 text-green-500" />
+                  <span>{t.homologationResult.cta?.benefit2 || "98% success rate"}</span>
+                </div>
+                <span className="hidden md:inline text-border">•</span>
+                <div className="flex items-center gap-1.5">
+                  <Users className="h-3.5 w-3.5 text-blue-500" />
+                  <span>{t.homologationResult.cta?.benefit3 || "24/7 support"}</span>
+                </div>
+                <span className="hidden md:inline text-border">•</span>
+                <div className="flex items-center gap-1.5">
+                  <HeartHandshake className="h-3.5 w-3.5 text-amber-500" />
+                  <span>{t.homologationResult.cta?.benefit4 || "No hidden costs"}</span>
                 </div>
               </div>
-            </div>
-          </motion.section>
 
-          {/* ===== SECTION 5: TRUST BAR ===== */}
-          <motion.section
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.35 }}
-          >
-            <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs text-muted-foreground py-4">
-              <div className="flex items-center gap-1.5">
-                <Shield className="h-3.5 w-3.5 text-primary" />
-                <span>{t.homologationResult.cta?.benefit1 || "Medical homologation experts"}</span>
-              </div>
-              <span className="hidden md:inline text-border">•</span>
-              <div className="flex items-center gap-1.5">
-                <CheckCircle2 className="h-3.5 w-3.5 text-green-500" />
-                <span>{t.homologationResult.cta?.benefit2 || "98% success rate"}</span>
-              </div>
-              <span className="hidden md:inline text-border">•</span>
-              <div className="flex items-center gap-1.5">
-                <Users className="h-3.5 w-3.5 text-blue-500" />
-                <span>{t.homologationResult.cta?.benefit3 || "24/7 support"}</span>
-              </div>
-              <span className="hidden md:inline text-border">•</span>
-              <div className="flex items-center gap-1.5">
-                <HeartHandshake className="h-3.5 w-3.5 text-amber-500" />
-                <span>{t.homologationResult.cta?.benefit4 || "No hidden costs"}</span>
-              </div>
-            </div>
-          </motion.section>
+              <Separator />
 
-          {/* ===== SECTION 6: FINAL CTA ===== */}
-          <motion.section
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
-            className="text-center space-y-4 pt-4"
-          >
-            <h3 className="text-2xl md:text-3xl font-bold">{t.homologationResult.cta.readyTitle}</h3>
-            <p className="text-muted-foreground max-w-lg mx-auto text-sm">
-              {t.homologationResult.cta.readyDescription}
-            </p>
-            <div className="flex flex-col sm:flex-row gap-3 justify-center max-w-sm mx-auto pt-2">
-              <Button size="lg" onClick={handleStartProcess} className="gap-2 flex-1">
-                {t.homologationResult.cta.startProcess} <ArrowRight className="h-4 w-4" />
-              </Button>
-              <Button size="lg" variant="outline" onClick={handleBookConsultation} className="gap-2 flex-1">
-                <Calendar className="h-4 w-4" /> {t.homologationResult.cta.bookConsultation}
-              </Button>
-            </div>
+              {/* Action buttons */}
+              <div className="flex flex-col items-center gap-3 pt-1">
+                <Button size="lg" onClick={handleStartProcess} className="gap-2 w-full max-w-xs">
+                  {t.homologationResult.cta.startProcess} <ArrowRight className="h-4 w-4" />
+                </Button>
+                <button
+                  onClick={handleBookConsultation}
+                  className="text-sm text-muted-foreground hover:text-foreground underline underline-offset-2 transition-colors"
+                >
+                  {t.homologationResult.cta.bookConsultation}
+                </button>
+              </div>
 
-            {/* Guarantee reminder */}
-            <p className="text-xs text-muted-foreground pt-2">
-              <Shield className="h-3 w-3 inline mr-1" />
-              {t.homologationResult.value?.guaranteeDesc || "If you're not satisfied within 30 days, we'll refund your payment. No questions asked."}
-            </p>
+              {/* Guarantee */}
+              <p className="text-xs text-muted-foreground text-center">
+                <Shield className="h-3 w-3 inline mr-1" />
+                {t.homologationResult.value?.guaranteeDesc || "If you're not satisfied within 30 days, we'll refund your payment. No questions asked."}
+              </p>
+            </div>
           </motion.section>
 
           {/* Email reminder */}
@@ -499,7 +474,7 @@ const HomologationResult = () => {
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 0.5 }}
+              transition={{ delay: 0.4 }}
               className="text-center text-sm text-muted-foreground"
             >
               <p>{t.homologationResult.emailSent} <strong>{wizardData.email}</strong></p>
