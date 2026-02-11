@@ -15,6 +15,12 @@ interface LanguageSectionProps {
   languageLevels: string[];
 }
 
+const LANGUAGE_OPTIONS = [
+  'German', 'French', 'Spanish', 'Italian', 'English', 'Portuguese', 
+  'Arabic', 'Russian', 'Turkish', 'Polish', 'Romanian', 'Ukrainian',
+  'Dutch', 'Greek', 'Chinese', 'Japanese', 'Korean', 'Hindi', 'Other'
+];
+
 const LanguageSection: React.FC<LanguageSectionProps> = ({ form, handleLanguageCertificateChange, languageLevels }) => {
   const { t } = useLanguage();
   
@@ -22,6 +28,12 @@ const LanguageSection: React.FC<LanguageSectionProps> = ({ form, handleLanguageC
     control: form.control,
     name: "languages"
   });
+
+  // Get localized language name for display
+  const getLocalizedLanguageName = (langKey: string) => {
+    const langNames = (t as any)?.dashboard?.profile?.languageOptions;
+    return langNames?.[langKey.toLowerCase()] || langKey;
+  };
 
   return (
     <div className="space-y-4">
@@ -61,9 +73,20 @@ const LanguageSection: React.FC<LanguageSectionProps> = ({ form, handleLanguageC
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>{t?.dashboard?.profile?.languageName || "Language"}</FormLabel>
-                  <FormControl>
-                    <Input placeholder={t?.dashboard?.profile?.languageNamePlaceholder || "English"} {...field} />
-                  </FormControl>
+                  <Select onValueChange={field.onChange} value={field.value || ''}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder={t?.dashboard?.profile?.selectLanguage || "Select language"} />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {LANGUAGE_OPTIONS.map((lang) => (
+                        <SelectItem key={lang} value={lang}>
+                          {getLocalizedLanguageName(lang)}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                   <FormMessage />
                 </FormItem>
               )}
