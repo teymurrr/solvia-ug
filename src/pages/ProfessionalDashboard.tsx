@@ -17,9 +17,7 @@ import LanguagesCard from '@/components/professional-dashboard/LanguagesCard';
 import SavedAndApplied from '@/components/professional-dashboard/SavedAndApplied';
 import WelcomeSection from '@/components/professional-dashboard/WelcomeSection';
 import RecommendedVacancies from '@/components/professional-dashboard/RecommendedVacancies';
-import DashboardSidebar from '@/components/professional-dashboard/DashboardSidebar';
 import MyJourneyTab from '@/components/professional-dashboard/MyJourneyTab';
-import OnboardingChecklist from '@/components/professional-dashboard/OnboardingChecklist';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/hooks/useLanguage';
@@ -224,10 +222,8 @@ const ProfessionalDashboard: React.FC = () => {
           onTabChange={setActiveTab}
         />
 
-        {/* 2. ACTION ZONE: 2-column grid */}
-        <div className="flex flex-col lg:flex-row gap-6">
-          {/* LEFT: Tabs (2/3 width) */}
-          <div className="flex-1 min-w-0">
+        {/* 2. ACTION ZONE: Full-width tabs */}
+        <div>
             <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
               <TabsList className="grid w-full grid-cols-4 gap-1 h-auto p-1">
                 <TabsTrigger value="journey" className="text-xs sm:text-sm px-2 py-2">
@@ -402,15 +398,6 @@ const ProfessionalDashboard: React.FC = () => {
               </TabsContent>
 
               <TabsContent value="profile" className="space-y-6">
-                {/* Onboarding Checklist for incomplete profiles */}
-                <OnboardingChecklist
-                  profileData={profileData}
-                  onEditProfile={() => setIsEditProfileOpen(true)}
-                  savedVacanciesCount={savedVacancies.length}
-                  appliedVacanciesCount={appliedVacancies.length}
-                  onTabChange={setActiveTab}
-                />
-
                 <Card>
                   <CardHeader>
                     <CardTitle>{t?.dashboard?.profile?.title || "Your Profile"}</CardTitle>
@@ -446,15 +433,6 @@ const ProfessionalDashboard: React.FC = () => {
                 />
               </TabsContent>
             </Tabs>
-          </div>
-
-          {/* RIGHT: Sticky Sidebar (1/3 width) */}
-          <div className="w-full lg:w-80 xl:w-96 flex-shrink-0">
-            <DashboardSidebar
-              profileData={profileData}
-              showHomologationPreview={true}
-            />
-          </div>
         </div>
       </div>
 
