@@ -334,7 +334,7 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
         {packages.map((pkg) => (
           <Card
             key={pkg.id}
-            className={`relative cursor-pointer transition-all duration-300 hover:shadow-lg ${
+            className={`relative cursor-pointer transition-all duration-300 hover:shadow-lg flex flex-col ${
               selectedPackage === pkg.id
                 ? 'border-primary ring-2 ring-primary/20 shadow-lg'
                 : 'border-border hover:border-primary/50'
@@ -367,7 +367,7 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
               </p>
             </CardHeader>
             
-            <CardContent className="text-center pb-6">
+            <CardContent className="text-center pb-6 flex-1 flex flex-col">
               <div className="mb-6">
                 <span className="text-4xl font-bold text-primary">{formatPrice(pkg.price)}</span>
                 <span className="text-sm text-muted-foreground ml-2">{t?.payments?.oneTime || 'one-time'}</span>
@@ -386,7 +386,7 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
               
               <Button
                 variant={selectedPackage === pkg.id ? 'default' : 'outline'}
-                className="w-full mt-6"
+                className="w-full mt-auto pt-6"
                 onClick={(e) => {
                   e.stopPropagation();
                   setSelectedPackage(pkg.id);
