@@ -67,33 +67,51 @@ serve(async (req) => {
 
     console.log("Fetching users with search:", searchQuery, "page:", page);
 
-    // Get users from auth.users using admin client
-    const { data: authUsers, error: usersError } = await supabaseAdmin.auth.admin.listUsers({
-      page: page,
-      perPage: limit,
-    });
+    // Get ALL users from auth.users (paginate through all pages)
+    let allUsers: any[] = [];
+    let currentPage = 1;
+    const fetchPerPage = 1000;
+    
+    while (true) {
+      const { data: authUsers, error: usersError } = await supabaseAdmin.auth.admin.listUsers({
+        page: currentPage,
+        perPage: fetchPerPage,
+      });
 
-    if (usersError) {
-      console.error("Error fetching users:", usersError);
-      return new Response(
-        JSON.stringify({ error: "Failed to fetch users" }),
-        { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 500 }
-      );
+      if (usersError) {
+        console.error("Error fetching users:", usersError);
+        return new Response(
+          JSON.stringify({ error: "Failed to fetch users" }),
+          { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 500 }
+        );
+      }
+
+      allUsers = allUsers.concat(authUsers.users);
+      
+      // If we got fewer than requested, we've reached the end
+      if (authUsers.users.length < fetchPerPage) break;
+      currentPage++;
     }
 
+    console.log("Total auth users fetched:", allUsers.length);
+
     // Filter users if search query provided
-    let filteredUsers = authUsers.users;
+    let filteredUsers = allUsers;
     if (searchQuery) {
       const searchLower = searchQuery.toLowerCase();
-      filteredUsers = authUsers.users.filter(u => 
+      filteredUsers = allUsers.filter(u => 
         u.email?.toLowerCase().includes(searchLower) ||
         u.user_metadata?.first_name?.toLowerCase().includes(searchLower) ||
         u.user_metadata?.last_name?.toLowerCase().includes(searchLower)
       );
     }
 
+    // Apply pagination to filtered results
+    const total = filteredUsers.length;
+    const paginatedUsers = filteredUsers.slice(offset, offset + limit);
+
     // Get professional profiles for additional info
-    const userIds = filteredUsers.map(u => u.id);
+    const userIds = paginatedUsers.map(u => u.id);
     const { data: profiles } = await supabaseAdmin
       .from('professional_profiles')
       .select('id, first_name, last_name, target_country')
@@ -116,7 +134,7 @@ serve(async (req) => {
     });
 
     // Build response
-    const usersWithDetails = filteredUsers.map(u => ({
+    const usersWithDetails = paginatedUsers.map(u => ({
       id: u.id,
       email: u.email,
       created_at: u.created_at,
@@ -130,7 +148,7 @@ serve(async (req) => {
     return new Response(
       JSON.stringify({ 
         users: usersWithDetails,
-        total: authUsers.users.length,
+        total,
         page,
         limit
       }),
