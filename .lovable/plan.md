@@ -1,89 +1,121 @@
 
 
-# Redesign Professional Dashboard to Match User Priorities
+# Professional Dashboard Redesign: Declutter and Focus on User Goals
 
-## The Problem
+## User Analysis
 
-Two issues:
+**Who is the user?** An international medical professional (doctor, nurse) who wants to work in a European country (Germany, Austria, France, etc.).
 
-1. **HomologationPreview teaser is invisible** -- It only renders when `profileData` exists AND `profileData.targetCountry` maps to a valid country in `homologationDataByCountry`. If the user hasn't set a target country in their profile, the component returns `null` silently.
+**Their priorities, in order:**
+1. "How do I learn the language I need?" (Language learning)
+2. "What is the process to get my diploma recognized?" (Homologation understanding)
+3. "What jobs are available for me?" (Career opportunities)
 
-2. **Dashboard doesn't reflect what users actually care about** -- The current dashboard leads with job vacancies, but your clients' real priorities are:
-   - Language learning (how do I prepare for B2/FSP?)
-   - Understanding the homologation process (what steps do I need?)
-   - How can I work in my target country? (what's the path?)
+**Their concerns:**
+- Overwhelmed by bureaucracy -- they need clarity, not more complexity
+- Financial pressure -- they're not earning their full potential yet
+- Uncertainty -- "Am I on the right track?"
 
-The dashboard should guide users through these priorities, not just show job listings.
+## Current Problems
+
+The dashboard currently shows **too many things at once**, creating decision fatigue:
+
+1. **Welcome hero** with progress ring + onboarding checklist (duplicated)
+2. **4 tabs** (My Journey, Vacancies, Saved & Applied, Profile)
+3. **Sidebar** with LanguagePathCard + HomologationPreview + CommunityWidget
+4. **Inside My Journey tab**: LanguagePathCard AGAIN (duplicated) + full HomologationTab + Find Work buttons
+5. **Inside Profile tab**: OnboardingChecklist (a 3rd place with checklist logic) + ProfileCard + LanguagesCard
+6. **Inside Vacancies tab**: RecommendedVacancies + full vacancy list with search/filters/pagination
+
+**Key duplications:**
+- LanguagePathCard appears in sidebar AND inside My Journey tab
+- Checklist logic appears in WelcomeSection AND OnboardingChecklist (nearly identical code)
+- Language info appears in LanguagePathCard, LanguagesCard, and profile
 
 ## Proposed Redesign
 
-### New Sidebar Structure (right column)
+### Guiding Principle
+One screen, one clear next action. Reduce cognitive load by showing only what matters for the user's current stage.
 
-Replace the current sidebar (HomologationPreview + CommunityWidget) with three priority-ordered action cards:
+### New Layout: Remove sidebar, use full-width single column
 
-**Card 1: "Your Language Path"** (always visible)
-- Shows the user's current language level (from profile) vs. required level (B2/C1 depending on country)
-- Visual progress indicator (e.g., A1 -> A2 -> B1 -> B2)
-- CTA: "Start your Starter Kit (from EUR 29)" linking to `/learning/starter-kit`
-- If user has no target country set, show a prompt to set one
+**Why remove the sidebar?** It duplicates content from the tabs (LanguagePathCard, HomologationPreview) and the CommunityWidget is secondary to the user's core goals. On mobile it stacks below anyway, making it invisible.
 
-**Card 2: "Your Homologation Roadmap"** (the current HomologationPreview, fixed)
-- Fix the rendering bug: show even without `targetCountry` by defaulting to Germany and prompting "Set your target country" instead of returning null
-- Keep the salary loss counter and document preview as-is
-- For users who HAVE paid: replace teaser with the `HomologationProgressCard` inline (from HomologationTab)
+### New Structure
 
-**Card 3: Community Widget** (keep as-is, already working)
+```text
++----------------------------------------------------------+
+|  Compact Welcome Bar (greeting + progress ring + CTA)    |
++----------------------------------------------------------+
+|  [My Journey]  [Vacancies]  [Saved]  [Profile]           |
++----------------------------------------------------------+
+|                                                          |
+|  Tab Content (full width)                                |
+|                                                          |
++----------------------------------------------------------+
+```
 
-### Fix HomologationPreview Visibility
+### Changes by Component
 
-The component currently returns `null` when `countryData` is undefined. Instead:
-- If no `targetCountry` in profile, show a simplified card asking the user to set their target country via the free assessment
-- This ensures the teaser is always visible for non-paying users
+**1. WelcomeSection -- KEEP, simplify**
+- Already compact and good. Remove the emoji. Keep progress ring + greeting + single CTA.
 
-### Add "My Journey" Tab (4th tab)
+**2. Sidebar (DashboardSidebar) -- REMOVE entirely**
+- LanguagePathCard is already in My Journey tab
+- HomologationPreview content is already in My Journey tab (HomologationTab)
+- CommunityWidget moves to a small link/banner at the bottom of the My Journey tab
 
-Add a new tab alongside Vacancies / Saved & Applied / Profile called **"My Journey"** that consolidates:
-- Language learning status and next steps
-- Homologation process status (uses existing `HomologationTab` component)
-- Country-specific requirements summary
+**3. My Journey Tab -- SIMPLIFY**
+- Remove the LanguagePathCard embedded inside a Card-within-a-Card (currently a card inside Step 1's card). Instead, make the language progress bar a direct, clean section.
+- Replace the heavy HomologationTab embed in Step 2 with the HomologationPreview teaser (salary loss + timeline + CTA). This is what creates urgency and value without overwhelming.
+- Step 3 (Find Work): Keep the button, add a count of matching vacancies as a hook.
+- Add a small "Join the Community" link at the bottom (replaces CommunityWidget in sidebar).
 
-This gives users a single place to understand "where am I in the process?"
+**4. Vacancies Tab -- KEEP, minor cleanup**
+- RecommendedVacancies at top is good, keep it.
+- The search/filter/pagination is fine as-is.
 
-### Updated Tab Order
+**5. Saved & Applied Tab -- KEEP as-is**
+- No changes needed, it's straightforward.
 
-Reorder tabs to match user priorities:
-1. **My Journey** (new, default tab for new users) -- language + homologation + country info
-2. **Vacancies** (current default, becomes default only after profile is complete)
-3. **Saved & Applied**
-4. **Profile**
+**6. Profile Tab -- SIMPLIFY**
+- Remove OnboardingChecklist from inside the Profile tab (it's redundant with WelcomeSection).
+- Keep ProfileCard + LanguagesCard.
 
-The default tab logic: if user has no paid countries and profile is less than 50% complete, default to "My Journey". Otherwise default to "Vacancies".
+**7. OnboardingChecklist component -- DELETE**
+- Redundant with WelcomeSection which already shows the same checklist items as a progress ring + CTA.
 
-## Technical Changes
+### Result: What the user sees
 
-### 1. New component: `LanguagePathCard.tsx`
-- Reads `profileData.languages` to find German/target language level
-- Reads `profileData.targetCountry` to determine required level
-- Shows visual progress bar from current to required level
-- CTA to Starter Kit page
+When they land on "My Journey" (default for new users):
+1. A greeting bar telling them where they stand (3/5 steps done)
+2. Three clear, sequential steps -- Language, Homologation, Work -- each with a concise status indicator and one action button
+3. No sidebar competing for attention
+4. Full-width layout that breathes
 
-### 2. New component: `MyJourneyTab.tsx`
-- Combines `LanguagePathCard`, `HomologationTab`, and a brief country requirements summary
-- Guides users through the three priorities in order
+## Technical Changes Summary
 
-### 3. Fix `HomologationPreview.tsx`
-- Remove the early `return null` when `countryData` is missing
-- Show a fallback card prompting users to take the free assessment
+| File | Action | What |
+|------|--------|------|
+| `ProfessionalDashboard.tsx` | Edit | Remove sidebar column, make tabs full-width. Remove OnboardingChecklist from Profile tab. Remove DashboardSidebar import/usage. |
+| `DashboardSidebar.tsx` | Delete | No longer needed |
+| `OnboardingChecklist.tsx` | Delete | Redundant with WelcomeSection |
+| `MyJourneyTab.tsx` | Edit | Replace Card-in-Card LanguagePathCard with inline progress. Replace HomologationTab embed with HomologationPreview (the teaser). Add community link at bottom. |
+| `LanguagePathCard.tsx` | Edit | Remove outer Card wrapper when used inside MyJourneyTab (add a `compact` prop). Keep card style for standalone use if needed. |
+| `HomologationPreview.tsx` | Keep | Already works well as a teaser -- this is what goes in My Journey Step 2 |
 
-### 4. Update `DashboardSidebar.tsx`
-- Add `LanguagePathCard` above `HomologationPreview`
-- Always show `HomologationPreview` (remove the conditional `showHomologationPreview` for non-paid users)
+### What gets removed
+- Sidebar (3 widgets stacked vertically, duplicating tab content)
+- OnboardingChecklist (duplicate of WelcomeSection logic)
+- Card-inside-Card nesting in My Journey (LanguagePathCard inside Step 1 Card)
+- HomologationTab inside My Journey (too heavy; replaced with the lighter HomologationPreview teaser)
 
-### 5. Update `ProfessionalDashboard.tsx`
-- Add 4th tab "My Journey"
-- Update default tab logic based on user state
-- Update `TabsList` from `grid-cols-3` to `grid-cols-4`
-
-### 6. i18n updates
-- Add keys for "My Journey", "Your Language Path", language level labels, and the target country prompt across all 5 languages
+### What stays
+- WelcomeSection (compact hero)
+- 4 tabs with same names
+- LanguagePathCard (inline in Step 1, no double-card)
+- HomologationPreview (in Step 2 as the teaser)
+- CommunityWidget (small link at bottom of My Journey, not a full widget)
+- All vacancy functionality unchanged
+- Profile tab with ProfileCard + LanguagesCard
 
