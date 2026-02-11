@@ -100,7 +100,7 @@ const WelcomeSection: React.FC<WelcomeSectionProps> = ({
       {
         id: 'homologation',
         label: hasHomologation
-          ? ((t as any)?.dashboard?.welcome?.checklistUploadDocs || 'Upload your documents')
+          ? ((t as any)?.dashboard?.welcome?.checklistUploadDocs || 'Continue your homologation')
           : (t?.dashboard?.welcome?.checklistHomologation || 'Start your homologation process'),
         completed: hasHomologation && hasExplored,
         action: hasHomologation

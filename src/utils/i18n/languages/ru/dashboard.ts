@@ -238,7 +238,7 @@ export const dashboard = {
     checklistExperience: "Добавьте опыт работы и образование",
     checklistLanguages: "Добавьте ваши языковые навыки",
     checklistHomologation: "Начните процесс гомологации",
-    checklistUploadDocs: "Загрузите ваши документы",
+    checklistUploadDocs: "Продолжить гомологацию",
     checklistVacancies: "Изучите вакансии",
   },
   homologationPreview: {
