@@ -10,7 +10,8 @@ import {
   Briefcase, 
   GraduationCap,
   ArrowRight,
-  Sparkles
+  Sparkles,
+  Globe
 } from 'lucide-react';
 import { ProfileFormValues } from '@/components/professional-profile/types';
 import { useLanguage } from '@/hooks/useLanguage';
@@ -56,11 +57,12 @@ const WelcomeSection: React.FC<WelcomeSectionProps> = ({
       profileData?.profileImage
     );
 
+    const hasTargetCountry = !!profileData?.targetCountry;
     const hasExperience = (profileData?.experiences?.length || 0) > 0;
     const hasEducation = (profileData?.education?.length || 0) > 0;
     const hasLanguages = (profileData?.languages?.length || 0) > 0;
-    const hasExplored = savedVacanciesCount > 0 || appliedVacanciesCount > 0;
     const hasHomologation = paidCountries.length > 0;
+    const hasExplored = savedVacanciesCount > 0 || appliedVacanciesCount > 0;
 
     return [
       {
@@ -88,12 +90,24 @@ const WelcomeSection: React.FC<WelcomeSectionProps> = ({
         priority: 3,
       },
       {
-        id: 'homologation',
-        label: t?.dashboard?.welcome?.checklistHomologation || 'Start your homologation process',
-        completed: hasHomologation,
+        id: 'country',
+        label: (t as any)?.dashboard?.welcome?.checklistCountry || 'Set your target country',
+        completed: hasTargetCountry,
         action: () => navigate('/homologation-wizard'),
-        icon: <FileText className="w-4 h-4" />,
+        icon: <Globe className="w-4 h-4" />,
         priority: 4,
+      },
+      {
+        id: 'homologation',
+        label: hasHomologation
+          ? ((t as any)?.dashboard?.welcome?.checklistUploadDocs || 'Upload your documents')
+          : (t?.dashboard?.welcome?.checklistHomologation || 'Start your homologation process'),
+        completed: hasHomologation && hasExplored, // simplified: paid + engaged
+        action: hasHomologation
+          ? () => navigate('/documents')
+          : () => navigate('/homologation-wizard'),
+        icon: <FileText className="w-4 h-4" />,
+        priority: 5,
       },
       {
         id: 'vacancies',
@@ -101,7 +115,7 @@ const WelcomeSection: React.FC<WelcomeSectionProps> = ({
         completed: hasExplored,
         action: () => onTabChange('vacancies'),
         icon: <Briefcase className="w-4 h-4" />,
-        priority: 5,
+        priority: 6,
       },
     ];
   }, [profileData, savedVacanciesCount, appliedVacanciesCount, paidCountries, t, onEditProfile, onTabChange, navigate]);
