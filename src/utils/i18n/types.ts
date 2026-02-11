@@ -239,6 +239,7 @@ export interface DashboardTranslations {
     documentsReady?: string;
     selectDocumentsStatus?: string;
     selectLanguageLevel?: string;
+    languageOptions?: Record<string, string>;
   };
   saved?: {
     title: string;

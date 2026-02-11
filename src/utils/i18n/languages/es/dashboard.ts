@@ -184,7 +184,28 @@ export const dashboard: DashboardTranslations = {
     selectDoctorType: "Selecciona tipo",
     documentsReady: "Documentos Listos",
     selectDocumentsStatus: "Selecciona estado",
-    selectLanguageLevel: "Selecciona nivel"
+    selectLanguageLevel: "Selecciona nivel",
+    languageOptions: {
+      english: "Inglés",
+      german: "Alemán",
+      french: "Francés",
+      spanish: "Español",
+      italian: "Italiano",
+      portuguese: "Portugués",
+      dutch: "Neerlandés",
+      polish: "Polaco",
+      romanian: "Rumano",
+      greek: "Griego",
+      swedish: "Sueco",
+      norwegian: "Noruego",
+      danish: "Danés",
+      finnish: "Finlandés",
+      czech: "Checo",
+      hungarian: "Húngaro",
+      russian: "Ruso",
+      ukrainian: "Ucraniano",
+      other: "Otro"
+    }
   },
   saved: {
     title: "Vacantes Guardadas y Aplicadas",

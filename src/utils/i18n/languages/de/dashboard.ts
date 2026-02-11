@@ -197,7 +197,28 @@ export const dashboard = {
     selectDoctorType: 'Typ auswählen',
     documentsReady: 'Dokumente bereit',
     selectDocumentsStatus: 'Status auswählen',
-    selectLanguageLevel: 'Niveau auswählen'
+    selectLanguageLevel: 'Niveau auswählen',
+    languageOptions: {
+      english: 'Englisch',
+      german: 'Deutsch',
+      french: 'Französisch',
+      spanish: 'Spanisch',
+      italian: 'Italienisch',
+      portuguese: 'Portugiesisch',
+      dutch: 'Niederländisch',
+      polish: 'Polnisch',
+      romanian: 'Rumänisch',
+      greek: 'Griechisch',
+      swedish: 'Schwedisch',
+      norwegian: 'Norwegisch',
+      danish: 'Dänisch',
+      finnish: 'Finnisch',
+      czech: 'Tschechisch',
+      hungarian: 'Ungarisch',
+      russian: 'Russisch',
+      ukrainian: 'Ukrainisch',
+      other: 'Andere'
+    }
   },
 
   // Vacancies-related properties for FilterBar component

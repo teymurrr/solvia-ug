@@ -113,7 +113,28 @@ export const dashboard: DashboardTranslations = {
     selectDoctorType: "Sélectionner le type",
     documentsReady: "Documents Prêts",
     selectDocumentsStatus: "Sélectionner le statut",
-    selectLanguageLevel: "Sélectionner le niveau"
+    selectLanguageLevel: "Sélectionner le niveau",
+    languageOptions: {
+      english: "Anglais",
+      german: "Allemand",
+      french: "Français",
+      spanish: "Espagnol",
+      italian: "Italien",
+      portuguese: "Portugais",
+      dutch: "Néerlandais",
+      polish: "Polonais",
+      romanian: "Roumain",
+      greek: "Grec",
+      swedish: "Suédois",
+      norwegian: "Norvégien",
+      danish: "Danois",
+      finnish: "Finnois",
+      czech: "Tchèque",
+      hungarian: "Hongrois",
+      russian: "Russe",
+      ukrainian: "Ukrainien",
+      other: "Autre"
+    }
   },
   professionals: {
     title: "Professionnels médicaux",

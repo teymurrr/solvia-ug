@@ -51,7 +51,28 @@ export const dashboard = {
     documentsReady: "Documents Ready",
     selectDocumentsStatus: "Select status",
     languageLevel: "German Language Level",
-    selectLanguageLevel: "Select level"
+    selectLanguageLevel: "Select level",
+    languageOptions: {
+      english: "English",
+      german: "German",
+      french: "French",
+      spanish: "Spanish",
+      italian: "Italian",
+      portuguese: "Portuguese",
+      dutch: "Dutch",
+      polish: "Polish",
+      romanian: "Romanian",
+      greek: "Greek",
+      swedish: "Swedish",
+      norwegian: "Norwegian",
+      danish: "Danish",
+      finnish: "Finnish",
+      czech: "Czech",
+      hungarian: "Hungarian",
+      russian: "Russian",
+      ukrainian: "Ukrainian",
+      other: "Other"
+    }
   },
   saved: {
     title: "Saved Items",
