@@ -94,7 +94,7 @@ const getEmailContent = (data: HomologationPlanRequest) => {
 </head>
 <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
   <div style="text-align: center; margin-bottom: 30px;">
-    <img src="https://thesolvia.com/lovable-uploads/Solvia_Logo-6.png" alt="Solvia" style="height: 50px;">
+    <img src="https://thesolvia.com/lovable-uploads/Solvia_Logo-6.png" alt="Solvia" style="height: 40px; max-width: 150px; width: auto;">
   </div>
   
   <div style="background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%); color: white; padding: 30px; border-radius: 12px; text-align: center; margin-bottom: 30px;">
