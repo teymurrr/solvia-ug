@@ -219,7 +219,7 @@ const HomologationResult = () => {
             transition={{ delay: 0.05 }}
             className="mb-6"
           >
-            <div className="bg-gradient-to-r from-amber-500/20 via-orange-500/20 to-red-500/20 border border-amber-500/30 rounded-xl p-4 flex items-center gap-4">
+            <div className="bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 rounded-xl p-4 flex items-center gap-4">
               <div className="p-2 bg-amber-500/30 rounded-full">
                 <AlertTriangle className="h-5 w-5 text-amber-600 dark:text-amber-400" />
               </div>
