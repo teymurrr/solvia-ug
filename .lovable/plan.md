@@ -1,121 +1,47 @@
 
 
-# Professional Dashboard Redesign: Declutter and Focus on User Goals
+# Smart Dashboard: Payment-Aware Journey + Better Welcome CTA
 
-## User Analysis
+## Problems Identified
 
-**Who is the user?** An international medical professional (doctor, nurse) who wants to work in a European country (Germany, Austria, France, etc.).
+1. **WelcomeSection CTA is redundant** -- It shows "Explora oportunidades laborales" which just duplicates the Vacancies tab that's already visible. The CTA should point to the most impactful *next action* within the user's journey, not repeat tab navigation.
 
-**Their priorities, in order:**
-1. "How do I learn the language I need?" (Language learning)
-2. "What is the process to get my diploma recognized?" (Homologation understanding)
-3. "What jobs are available for me?" (Career opportunities)
+2. **Paying customers see a sales teaser instead of their progress** -- The HomologationPreview in Step 2 of "My Journey" always shows the "Free Preview" with "Unlock Your Full Roadmap" CTA, even for users who already paid. It should show their actual document upload progress instead.
 
-**Their concerns:**
-- Overwhelmed by bureaucracy -- they need clarity, not more complexity
-- Financial pressure -- they're not earning their full potential yet
-- Uncertainty -- "Am I on the right track?"
+## Solution
 
-## Current Problems
+### 1. Make Step 2 (Homologation) payment-aware in MyJourneyTab
 
-The dashboard currently shows **too many things at once**, creating decision fatigue:
+Pass payment status into the HomologationPreview component. When the user has paid for a country:
+- Show a compact version of the HomologationProgressCard (progress bar, document status counts, "Continue Upload" / "View Status" buttons)
+- Remove the salary loss urgency block, locked documents, and "Unlock Roadmap" CTA since they already purchased
 
-1. **Welcome hero** with progress ring + onboarding checklist (duplicated)
-2. **4 tabs** (My Journey, Vacancies, Saved & Applied, Profile)
-3. **Sidebar** with LanguagePathCard + HomologationPreview + CommunityWidget
-4. **Inside My Journey tab**: LanguagePathCard AGAIN (duplicated) + full HomologationTab + Find Work buttons
-5. **Inside Profile tab**: OnboardingChecklist (a 3rd place with checklist logic) + ProfileCard + LanguagesCard
-6. **Inside Vacancies tab**: RecommendedVacancies + full vacancy list with search/filters/pagination
+When the user has NOT paid:
+- Keep the current teaser exactly as-is (salary loss, timeline, locked docs, purchase CTA)
 
-**Key duplications:**
-- LanguagePathCard appears in sidebar AND inside My Journey tab
-- Checklist logic appears in WelcomeSection AND OnboardingChecklist (nearly identical code)
-- Language info appears in LanguagePathCard, LanguagesCard, and profile
+### 2. Improve the WelcomeSection CTA
 
-## Proposed Redesign
+Replace the generic checklist-based CTA with a smarter one that reflects the user's actual next step in their journey:
 
-### Guiding Principle
-One screen, one clear next action. Reduce cognitive load by showing only what matters for the user's current stage.
+- If profile is incomplete: "Complete your profile"
+- If they haven't set a target country: "Set your target country"
+- If they have a target country but no payment: "Start homologation process"
+- If they've paid but documents are incomplete: "Upload documents"
+- If everything is progressing: "Browse vacancies"
 
-### New Layout: Remove sidebar, use full-width single column
+This makes the CTA contextually valuable rather than duplicating the tabs.
 
-**Why remove the sidebar?** It duplicates content from the tabs (LanguagePathCard, HomologationPreview) and the CommunityWidget is secondary to the user's core goals. On mobile it stacks below anyway, making it invisible.
-
-### New Structure
-
-```text
-+----------------------------------------------------------+
-|  Compact Welcome Bar (greeting + progress ring + CTA)    |
-+----------------------------------------------------------+
-|  [My Journey]  [Vacancies]  [Saved]  [Profile]           |
-+----------------------------------------------------------+
-|                                                          |
-|  Tab Content (full width)                                |
-|                                                          |
-+----------------------------------------------------------+
-```
-
-### Changes by Component
-
-**1. WelcomeSection -- KEEP, simplify**
-- Already compact and good. Remove the emoji. Keep progress ring + greeting + single CTA.
-
-**2. Sidebar (DashboardSidebar) -- REMOVE entirely**
-- LanguagePathCard is already in My Journey tab
-- HomologationPreview content is already in My Journey tab (HomologationTab)
-- CommunityWidget moves to a small link/banner at the bottom of the My Journey tab
-
-**3. My Journey Tab -- SIMPLIFY**
-- Remove the LanguagePathCard embedded inside a Card-within-a-Card (currently a card inside Step 1's card). Instead, make the language progress bar a direct, clean section.
-- Replace the heavy HomologationTab embed in Step 2 with the HomologationPreview teaser (salary loss + timeline + CTA). This is what creates urgency and value without overwhelming.
-- Step 3 (Find Work): Keep the button, add a count of matching vacancies as a hook.
-- Add a small "Join the Community" link at the bottom (replaces CommunityWidget in sidebar).
-
-**4. Vacancies Tab -- KEEP, minor cleanup**
-- RecommendedVacancies at top is good, keep it.
-- The search/filter/pagination is fine as-is.
-
-**5. Saved & Applied Tab -- KEEP as-is**
-- No changes needed, it's straightforward.
-
-**6. Profile Tab -- SIMPLIFY**
-- Remove OnboardingChecklist from inside the Profile tab (it's redundant with WelcomeSection).
-- Keep ProfileCard + LanguagesCard.
-
-**7. OnboardingChecklist component -- DELETE**
-- Redundant with WelcomeSection which already shows the same checklist items as a progress ring + CTA.
-
-### Result: What the user sees
-
-When they land on "My Journey" (default for new users):
-1. A greeting bar telling them where they stand (3/5 steps done)
-2. Three clear, sequential steps -- Language, Homologation, Work -- each with a concise status indicator and one action button
-3. No sidebar competing for attention
-4. Full-width layout that breathes
-
-## Technical Changes Summary
+## Technical Changes
 
 | File | Action | What |
 |------|--------|------|
-| `ProfessionalDashboard.tsx` | Edit | Remove sidebar column, make tabs full-width. Remove OnboardingChecklist from Profile tab. Remove DashboardSidebar import/usage. |
-| `DashboardSidebar.tsx` | Delete | No longer needed |
-| `OnboardingChecklist.tsx` | Delete | Redundant with WelcomeSection |
-| `MyJourneyTab.tsx` | Edit | Replace Card-in-Card LanguagePathCard with inline progress. Replace HomologationTab embed with HomologationPreview (the teaser). Add community link at bottom. |
-| `LanguagePathCard.tsx` | Edit | Remove outer Card wrapper when used inside MyJourneyTab (add a `compact` prop). Keep card style for standalone use if needed. |
-| `HomologationPreview.tsx` | Keep | Already works well as a teaser -- this is what goes in My Journey Step 2 |
+| `MyJourneyTab.tsx` | Edit | Import `usePaymentAccess`, check if user has paid for their target country. If paid, render a compact progress view (reusing HomologationProgressCard logic inline) instead of HomologationPreview. If not paid, keep HomologationPreview as-is. |
+| `HomologationPreview.tsx` | No change | Stays as the sales teaser for non-paying users |
+| `WelcomeSection.tsx` | Edit | Replace the generic "first incomplete checklist item" CTA with journey-stage-aware logic that surfaces the most impactful next action |
 
-### What gets removed
-- Sidebar (3 widgets stacked vertically, duplicating tab content)
-- OnboardingChecklist (duplicate of WelcomeSection logic)
-- Card-inside-Card nesting in My Journey (LanguagePathCard inside Step 1 Card)
-- HomologationTab inside My Journey (too heavy; replaced with the lighter HomologationPreview teaser)
-
-### What stays
-- WelcomeSection (compact hero)
-- 4 tabs with same names
-- LanguagePathCard (inline in Step 1, no double-card)
-- HomologationPreview (in Step 2 as the teaser)
-- CommunityWidget (small link at bottom of My Journey, not a full widget)
-- All vacancy functionality unchanged
-- Profile tab with ProfileCard + LanguagesCard
+### What stays the same
+- HomologationPreview component (untouched, still used for non-paying users)
+- HomologationTab (separate tab, untouched)
+- All vacancy and profile functionality
+- Progress ring and greeting in WelcomeSection
 
