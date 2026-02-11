@@ -135,12 +135,12 @@ const getEmailContent = (data: HomologationPlanRequest) => {
   </div>
 
   <div style="background: #fff3cd; border: 1px solid #ffc107; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
-    <h3 style="margin-top: 0; color: #856404;">🚀 ${lang === 'es' ? 'Ofrece especial: €99 por tiempo limitado' : lang === 'de' ? 'Spezialangebot: €99 begrenzte Zeit' : lang === 'fr' ? 'Offre Spéciale: €99 Durée Limitée' : 'Limited Time: €99 Launch Offer'}</h3>
+    <h3 style="margin-top: 0; color: #856404;">🚀 ${lang === 'es' ? 'Ofrece especial: €49 por tiempo limitado' : lang === 'de' ? 'Spezialangebot: €49 begrenzte Zeit' : lang === 'fr' ? 'Offre Spéciale: €49 Durée Limitée' : 'Limited Time: €49 Launch Offer'}</h3>
     <p style="margin-bottom: 15px; color: #856404;">
       ${lang === 'es' ? 'Desbloquea tu plan completo con documentos, videos tutoriales y lista de verificación paso a paso. Solo 50 spots disponibles a este precio de lanzamiento.' : lang === 'de' ? 'Schalten Sie Ihren vollständigen Plan mit Dokumenten, Tutorials und Schritt-für-Schritt-Checkliste frei. Nur 50 Plätze zu diesem Startpreis verfügbar.' : lang === 'fr' ? 'Déverrouillez votre plan complet avec documents, tutoriels et liste de contrôle étape par étape. Seulement 50 places disponibles à ce prix de lancement.' : 'Unlock your complete plan with documents, tutorial videos, and step-by-step checklist. Only 50 spots available at this launch price.'}
     </p>
     <a href="${planUrl}" style="display: inline-block; background: #FF6B35; color: white; padding: 14px 28px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 16px;">
-      ${lang === 'es' ? 'Desbloquear Plan - €99' : lang === 'de' ? 'Plan Freischalten - €99' : lang === 'fr' ? 'Débloquer Plan - €99' : 'Unlock Full Plan - €99'} →
+      ${lang === 'es' ? 'Desbloquear Plan - €49' : lang === 'de' ? 'Plan Freischalten - €49' : lang === 'fr' ? 'Débloquer Plan - €49' : 'Unlock Full Plan - €49'} →
     </a>
   </div>
 
