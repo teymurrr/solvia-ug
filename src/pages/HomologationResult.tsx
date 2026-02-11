@@ -449,17 +449,14 @@ const HomologationResult = () => {
               <Separator />
 
               {/* Action buttons */}
-              <div className="flex flex-col items-center gap-3 pt-1">
-                <Button size="lg" onClick={handleStartProcess} className="gap-2 w-full max-w-xs">
+              <div className="flex flex-col sm:flex-row items-center gap-3 pt-1 w-full">
+                <Button size="lg" onClick={handleStartProcess} className="gap-2 w-full sm:flex-1">
                   {t.homologationResult.cta.startProcess} <ArrowRight className="h-4 w-4" />
                 </Button>
-              <button
-                  onClick={handleBookConsultation}
-                  className="text-sm text-muted-foreground hover:text-foreground underline underline-offset-2 transition-colors flex items-center gap-1.5"
-                >
-                  <Calendar className="h-3.5 w-3.5" />
+                <Button size="lg" variant="outline" onClick={handleBookConsultation} className="gap-2 w-full sm:flex-1">
+                  <Calendar className="h-4 w-4" />
                   {t.homologationResult.cta.bookConsultation}
-                </button>
+                </Button>
               </div>
 
               {/* Guarantee */}
