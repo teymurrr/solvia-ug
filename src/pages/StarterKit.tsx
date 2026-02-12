@@ -58,7 +58,7 @@ const StarterKit = () => {
 
       if (error) throw new Error(error.message);
       if (data?.url) {
-        window.open(data.url, '_blank');
+        window.location.href = data.url;
       }
     } catch (err: any) {
       toast.error(err.message || 'Payment failed');
