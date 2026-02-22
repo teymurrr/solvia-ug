@@ -105,7 +105,6 @@ const AppRoutes = () => {
     <Suspense fallback={<LoadingFallback />}>
       <Routes>
         <Route path="/" element={renderHomePage()} />
-        <Route path="/home" element={<Index />} />
         <Route path="/visa-info" element={<VisaInfo />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
