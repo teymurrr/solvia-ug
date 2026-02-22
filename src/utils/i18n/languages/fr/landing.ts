@@ -164,6 +164,15 @@ export const landing = {
         highlight: "Excellente qualité de vie",
         salary: "4 000–10 000",
         includes: ["Préparation des documents", "Support PAE", "Placement professionnel"]
+      },
+      italy: {
+        name: "Italie",
+        flag: "🇮🇹",
+        processDuration: "3–8 mois",
+        price: "€750",
+        highlight: "Demande croissante",
+        salary: "3 500–9 000",
+        includes: ["Préparation des documents", "Support de reconnaissance", "Placement professionnel"]
       }
     }
   },
