@@ -1,7 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { MapPin, GraduationCap, Mail, Plane, ArrowRight } from 'lucide-react';
+import { MapPin, GraduationCap, Mail, Plane, ArrowRight, Clock, Globe } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
 import { useLanguage } from '@/hooks/useLanguage';
 
 const PathToSuccessSection = () => {
@@ -14,9 +15,19 @@ const PathToSuccessSection = () => {
     { titleKey: 'step4.title', descriptionKey: 'step4.description', Icon: Plane },
   ] as const;
 
+  const comparison = t?.landing?.countryComparison;
+
+  const countries = [
+    { key: 'germany', name: 'Germany', flag: '🇩🇪', duration: '6–12 months', highlight: 'Best salaries', accent: 'border-l-emerald-500' },
+    { key: 'austria', name: 'Austria', flag: '🇦🇹', duration: '4–8 months', highlight: 'Simplest process', accent: 'border-l-blue-500' },
+    { key: 'spain', name: 'Spain', flag: '🇪🇸', duration: '2–6 months', highlight: 'Fast homologation', accent: 'border-l-amber-500' },
+    { key: 'france', name: 'France', flag: '🇫🇷', duration: '4–10 months', highlight: 'Great quality of life', accent: 'border-l-violet-500' },
+  ];
+
   return (
-    <section id="path-to-success" className="py-16 bg-background">
+    <section id="path-to-success" className="pt-16 pb-20 bg-background">
       <div className="container mx-auto px-4">
+        {/* Header */}
         <header className="max-w-2xl mx-auto text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
             {t?.pathToSuccess?.title || 'How It Works'}
@@ -35,24 +46,18 @@ const PathToSuccessSection = () => {
 
             return (
               <div key={titleKey} className="relative flex flex-col items-center text-center">
-                {/* Connecting line (desktop only, not on last) */}
                 {!isLast && (
                   <div
                     className="hidden md:block absolute top-5 left-[calc(50%+28px)] right-[calc(-50%+28px)] h-px bg-border"
                     aria-hidden
                   />
                 )}
-
-                {/* Icon circle */}
                 <div className="relative z-10 flex h-10 w-10 items-center justify-center rounded-full border bg-card text-primary shadow-sm mb-3">
                   <Icon className="h-5 w-5" aria-hidden />
                 </div>
-
-                {/* Step label */}
                 <div className="text-xs font-medium text-primary mb-1">
                   {t?.pathToSuccess?.stepLabel || 'Step'} {idx + 1}
                 </div>
-
                 <h3 className="text-base font-semibold leading-snug mb-1">{title}</h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">{description}</p>
               </div>
@@ -60,12 +65,82 @@ const PathToSuccessSection = () => {
           })}
         </div>
 
-        <div className="mt-10 flex justify-center">
-          <Button asChild size="lg" className="hover-scale">
-            <Link to="/homologation-wizard" aria-label={t?.pathToSuccess?.ctaLabel || 'Start My Free Assessment with Solvia'}>
-              {t?.pathToSuccess?.cta || 'Start My Free Assessment'}
+        {/* Divider + Country sub-heading */}
+        <div className="max-w-5xl mx-auto mt-14 mb-8 text-center">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 rounded-full mb-4">
+            <Globe className="h-4 w-4 text-primary" />
+            <span className="text-sm font-medium text-primary">
+              {comparison?.badge || 'Compare Destinations'}
+            </span>
+          </div>
+          <h3 className="text-2xl md:text-3xl font-bold text-foreground">
+            {comparison?.title || 'Choose Your Destination'}
+          </h3>
+        </div>
+
+        {/* Country Cards */}
+        <div className="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-12">
+          {countries.map((c) => {
+            const translated = comparison?.countries?.[c.key];
+            const name = translated?.name || c.name;
+            const highlight = translated?.highlight || c.highlight;
+            const duration = translated?.processDuration || c.duration;
+
+            return (
+              <Card
+                key={c.key}
+                className={`p-5 border-l-4 ${c.accent} hover:shadow-lg hover:scale-[1.02] transition-all duration-300 bg-card`}
+              >
+                <div className="space-y-3">
+                  {/* Flag + name */}
+                  <div className="text-center">
+                    <span className="text-5xl block mb-1">{c.flag}</span>
+                    <h4 className="font-bold text-lg text-foreground">{name}</h4>
+                    <span className="text-xs font-medium text-primary">{highlight}</span>
+                  </div>
+
+                  {/* Price + Duration row */}
+                  <div className="flex items-center justify-between gap-2 bg-muted/40 rounded-lg px-3 py-2.5">
+                    <div className="text-center flex-1">
+                      <p className="text-xs text-muted-foreground">{comparison?.startingFrom || 'From'}</p>
+                      <p className="text-lg font-bold text-primary">€49</p>
+                    </div>
+                    <div className="w-px h-8 bg-border" />
+                    <div className="text-center flex-1">
+                      <p className="text-xs text-muted-foreground flex items-center justify-center gap-1">
+                        <Clock className="h-3 w-3" />
+                        {comparison?.estimatedTime || 'Timeline'}
+                      </p>
+                      <p className="text-sm font-semibold text-foreground">{duration}</p>
+                    </div>
+                  </div>
+
+                  {/* Card link */}
+                  <Link
+                    to="/homologation-wizard"
+                    onClick={() => window.scrollTo(0, 0)}
+                    className="flex items-center justify-center gap-1 text-sm font-medium text-primary hover:underline"
+                  >
+                    {comparison?.learnMore || 'Learn more'}
+                    <ArrowRight className="h-3.5 w-3.5" />
+                  </Link>
+                </div>
+              </Card>
+            );
+          })}
+        </div>
+
+        {/* Single CTA */}
+        <div className="flex flex-col items-center gap-3">
+          <Button asChild size="lg" className="group">
+            <Link to="/homologation-wizard" onClick={() => window.scrollTo(0, 0)} className="flex items-center gap-2">
+              {comparison?.cta || t?.pathToSuccess?.cta || 'Get my personalized plan'}
+              <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
             </Link>
           </Button>
+          <p className="text-sm text-muted-foreground">
+            {comparison?.ctaSubtext || 'Free assessment • No commitment required'}
+          </p>
         </div>
       </div>
     </section>

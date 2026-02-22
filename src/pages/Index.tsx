@@ -2,7 +2,6 @@ import React, { Suspense } from 'react';
 import MainLayout from '@/components/MainLayout';
 import HeroSectionWithSearch from '@/components/landing/HeroSectionWithSearch';
 import PathToSuccessSection from '@/components/landing/PathToSuccessSection';
-import CountryComparisonSection from '@/components/landing/CountryComparisonSection';
 
 // Lazy load sections below the fold
 const JobExplorerSection = React.lazy(() => import('@/components/landing/JobExplorerSection'));
@@ -28,9 +27,7 @@ const Index = () => {
         <PathToSuccessSection />
       </div>
 
-      {/* 3. CHOOSE — Country comparison with price + duration */}
-      <CountryComparisonSection />
-      
+
       {/* 4. PROOF — Real jobs waiting */}
       <Suspense fallback={<LoadingFallback height="h-96" />}>
         <JobExplorerSection />
