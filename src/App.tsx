@@ -6,6 +6,7 @@ import { LanguageProvider } from '@/hooks/useLanguage';
 import { AuthProvider } from '@/contexts/AuthContext'; 
 import AppRoutes from '@/routes';
 import ErrorBoundary from '@/components/ErrorBoundary';
+import ScrollToTop from '@/components/ScrollToTop';
 
 const queryClient = new QueryClient();
 
@@ -17,6 +18,7 @@ function App() {
           <LanguageProvider>
             <TooltipProvider>
               <BrowserRouter>
+                <ScrollToTop />
                 <AppRoutes />
                 <Toaster />
               </BrowserRouter>
