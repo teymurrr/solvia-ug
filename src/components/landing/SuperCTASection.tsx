@@ -55,7 +55,7 @@ const SuperCTASection = () => {
               asChild 
               size="lg" 
               variant="outline"
-              className="group text-base px-8 py-6 border-white/30 text-white hover:bg-white/10 hover:text-white"
+              className="group text-base px-8 py-6 border-white/50 bg-white/20 text-white hover:bg-white/30 hover:text-white backdrop-blur-sm"
             >
               <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
                 <Calendar className="h-5 w-5" />
