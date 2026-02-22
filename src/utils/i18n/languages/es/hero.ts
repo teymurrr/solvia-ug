@@ -25,8 +25,8 @@ export const hero = {
     cta: 'Más información'
   },
   trustItems: {
-    digital: 'Proceso digital',
-    countries: 'Varios países en Europa',
+    digital: 'Proceso 100% digital',
+    countries: '5 países europeos disponibles',
     support: 'Acompañamiento paso a paso'
   },
   stats: {

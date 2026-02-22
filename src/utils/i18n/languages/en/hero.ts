@@ -3,7 +3,7 @@ export const hero = {
   title: 'Your medical career in Europe starts here.',
   subtitle: 'We handle your license recognition, find you a job, and guide you every step of the way.',
   cta: 'Start my free assessment',
-  secondaryCta: 'Explore open positions',
+  secondaryCta: 'Find a job',
   learnMore: 'Learn More',
   searchPlaceholder: 'Job title, specialty, or keyword...',
   locationPlaceholder: 'Location...',
@@ -26,7 +26,7 @@ export const hero = {
   },
   trustItems: {
     digital: '100% digital process',
-    countries: 'Multiple European countries available',
+    countries: '5 European countries available',
     support: 'Step-by-step guidance'
   },
   stats: {

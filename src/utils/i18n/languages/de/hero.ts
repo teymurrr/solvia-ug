@@ -2,8 +2,8 @@
 export const hero = {
   title: 'Ihre medizinische Karriere in Europa beginnt hier.',
   subtitle: 'Wir kümmern uns um die Anerkennung Ihres Titels, finden Ihnen einen Job und begleiten Sie bei jedem Schritt.',
-  cta: 'Meine kostenlose Bewertung starten',
-  secondaryCta: 'Offene Stellen ansehen',
+  cta: 'Meine Anerkennung starten',
+  secondaryCta: 'Job finden',
   learnMore: 'Mehr erfahren',
   searchPlaceholder: 'Stellentitel, Fachrichtung oder Stichwort...',
   locationPlaceholder: 'Standort...',
@@ -17,16 +17,16 @@ export const hero = {
     pharmacist: 'Apotheker/in'
   },
   socialProof: {
-    professionalsHelped: '230+ Fachkräfte geholfen',
+    professionalsHelped: '230+ Fachkräfte unterstützt',
     successRate: '95% Erfolgsquote'
   },
   homologationBanner: {
-    text: 'Benötigen Sie Anerkennung? Unser Homologationsservice übernimmt alle Formalitäten für Sie.',
+    text: 'Benötigen Sie Anerkennung? Unser Service übernimmt alle Formalitäten für Sie.',
     cta: 'Mehr erfahren'
   },
   trustItems: {
     digital: '100% digitaler Prozess',
-    countries: 'Mehrere europäische Länder verfügbar',
+    countries: '5 europäische Länder verfügbar',
     support: 'Schritt-für-Schritt-Begleitung'
   },
   stats: {
