@@ -2,8 +2,8 @@
 export const hero = {
   title: 'Tu carrera médica en Europa empieza aquí.',
   subtitle: 'Nos encargamos del reconocimiento de tu título, te encontramos trabajo y te guiamos en cada paso.',
-  cta: 'Comenzar mi evaluación gratuita',
-  secondaryCta: 'Explorar posiciones abiertas',
+  cta: 'Empezar mi homologación',
+  secondaryCta: 'Encontrar un trabajo',
   learnMore: 'Más información',
   searchPlaceholder: 'Puesto de trabajo',
   locationPlaceholder: 'Ubicación...',
@@ -25,8 +25,8 @@ export const hero = {
     cta: 'Más información'
   },
   trustItems: {
-    digital: 'Proceso 100% digital',
-    countries: 'Varios países disponibles en Europa',
+    digital: 'Proceso digital',
+    countries: 'Varios países en Europa',
     support: 'Acompañamiento paso a paso'
   },
   stats: {
