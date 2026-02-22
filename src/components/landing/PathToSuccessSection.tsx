@@ -22,6 +22,7 @@ const PathToSuccessSection = () => {
     { key: 'austria', name: 'Austria', flag: '🇦🇹', duration: '4–8 months', highlight: 'Simplest process', accent: 'border-l-blue-500' },
     { key: 'spain', name: 'Spain', flag: '🇪🇸', duration: '2–6 months', highlight: 'Fast homologation', accent: 'border-l-amber-500' },
     { key: 'france', name: 'France', flag: '🇫🇷', duration: '4–10 months', highlight: 'Great quality of life', accent: 'border-l-violet-500' },
+    { key: 'italy', name: 'Italy', flag: '🇮🇹', duration: '3–8 months', highlight: 'Growing demand', accent: 'border-l-red-500' },
   ];
 
   return (
