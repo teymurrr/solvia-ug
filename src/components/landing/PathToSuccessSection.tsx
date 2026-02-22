@@ -135,7 +135,7 @@ const PathToSuccessSection = () => {
         <div className="flex flex-col items-center gap-3">
           <Button asChild size="lg" className="group">
             <Link to="/homologation-wizard" onClick={() => window.scrollTo(0, 0)} className="flex items-center gap-2">
-              {comparison?.cta || t?.pathToSuccess?.cta || 'Get my personalized plan'}
+              {t?.hero?.cta || 'Start my homologation'}
               <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
             </Link>
           </Button>
