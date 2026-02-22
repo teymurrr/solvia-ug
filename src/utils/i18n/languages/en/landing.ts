@@ -126,6 +126,8 @@ export const landing = {
     expectedSalary: "Expected salary",
     perMonth: "month",
     estimatedTime: "Estimated time",
+    startingFrom: "Starting from",
+    learnMore: "Learn more",
     countries: {
       germany: {
         name: "Germany",

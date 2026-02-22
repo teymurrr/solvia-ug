@@ -2,6 +2,7 @@ import React, { Suspense } from 'react';
 import MainLayout from '@/components/MainLayout';
 import HeroSectionWithSearch from '@/components/landing/HeroSectionWithSearch';
 import PathToSuccessSection from '@/components/landing/PathToSuccessSection';
+import CountryComparisonSection from '@/components/landing/CountryComparisonSection';
 
 // Lazy load sections below the fold
 const JobExplorerSection = React.lazy(() => import('@/components/landing/JobExplorerSection'));
@@ -22,27 +23,30 @@ const Index = () => {
       {/* 1. PROMISE — Hero + Stats */}
       <HeroSectionWithSearch />
       
-      {/* 2. HOW — Path to Success (4 steps) */}
+      {/* 2. HOW — Path to Success (4 steps, horizontal) */}
       <div id="path-to-success">
         <PathToSuccessSection />
       </div>
+
+      {/* 3. CHOOSE — Country comparison with price + duration */}
+      <CountryComparisonSection />
       
-      {/* 3. PROOF — Real jobs waiting */}
+      {/* 4. PROOF — Real jobs waiting */}
       <Suspense fallback={<LoadingFallback height="h-96" />}>
         <JobExplorerSection />
       </Suspense>
       
-      {/* 4. TRUST — Success stories */}
+      {/* 5. TRUST — Success stories */}
       <Suspense fallback={<LoadingFallback height="h-96" />}>
         <SuccessStoriesSection />
       </Suspense>
       
-      {/* 5. OBJECTIONS — FAQ */}
+      {/* 6. OBJECTIONS — FAQ */}
       <Suspense fallback={<LoadingFallback height="h-96" />}>
         <ConversionFAQSection />
       </Suspense>
       
-      {/* 6. ACTION — Final CTA */}
+      {/* 7. ACTION — Final CTA */}
       <Suspense fallback={<LoadingFallback height="h-64" />}>
         <SuperCTASection />
       </Suspense>
