@@ -15,7 +15,7 @@ const PaymentSuccess = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const { t, currentLanguage } = useLanguage();
-  const { user, isLoggedIn } = useAuth();
+  const { user, isLoggedIn, userType } = useAuth();
   const [verificationStatus, setVerificationStatus] = useState<'loading' | 'success' | 'error'>('loading');
   const [isVerifying, setIsVerifying] = useState(true);
   const [phoneNumber, setPhoneNumber] = useState('');
@@ -355,7 +355,7 @@ const PaymentSuccess = () => {
               </Button>
               {isLoggedIn && (
                 <Button 
-                  onClick={() => navigate('/dashboard')} 
+                  onClick={() => navigate(userType === 'institution' ? '/dashboard/institution' : '/dashboard/professional')} 
                   size="lg"
                   className="flex items-center gap-2"
                 >
