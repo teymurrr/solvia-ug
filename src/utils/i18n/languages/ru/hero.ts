@@ -31,8 +31,10 @@ export const hero = {
   },
   stats: {
     professionals: 'Зарегистрированных специалистов',
-    homologations: 'Признаний в процессе',
+    homologations: 'Открытых позиций',
     countries: 'Доступных стран',
-    satisfaction: 'Удовлетворенность пользователей'
+    satisfaction: 'Удовлетворенность пользователей',
+    accelerators: 'Партнёров-акселераторов',
+    digital: 'Цифровой процесс'
   }
 };
