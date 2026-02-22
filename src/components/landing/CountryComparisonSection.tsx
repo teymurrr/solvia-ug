@@ -3,22 +3,20 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Clock, ArrowRight, Globe, Banknote } from 'lucide-react';
+import { Clock, ArrowRight, Globe } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
 
 const CountryComparisonSection = () => {
   const { t } = useLanguage();
-  
+
   const landing = t?.landing;
   const comparison = landing?.countryComparison;
-  
+
   const defaultCountries = {
     germany: {
       name: "Germany",
       flag: "🇩🇪",
       processDuration: "6–12 months",
-      positions: 85,
-      salary: "5,500–12,000",
       highlight: "Best salaries",
       badgeColor: "bg-emerald-500"
     },
@@ -26,8 +24,6 @@ const CountryComparisonSection = () => {
       name: "Austria",
       flag: "🇦🇹",
       processDuration: "4–8 months",
-      positions: 42,
-      salary: "5,000–13,000",
       highlight: "Simplest process",
       badgeColor: "bg-blue-500"
     },
@@ -35,8 +31,6 @@ const CountryComparisonSection = () => {
       name: "Spain",
       flag: "🇪🇸",
       processDuration: "2–6 months",
-      positions: 38,
-      salary: "3,000–8,000",
       highlight: "Fast homologation",
       badgeColor: "bg-amber-500"
     },
@@ -44,15 +38,13 @@ const CountryComparisonSection = () => {
       name: "France",
       flag: "🇫🇷",
       processDuration: "4–10 months",
-      positions: 25,
-      salary: "4,000–10,000",
       highlight: "Great quality of life",
       badgeColor: "bg-violet-500"
     }
   };
 
-  const countries = comparison?.countries || defaultCountries;
   const countryKeys = ['germany', 'austria', 'spain', 'france'] as const;
+  const countries = comparison?.countries || defaultCountries;
 
   return (
     <section className="py-16 bg-muted/30">
@@ -70,47 +62,42 @@ const CountryComparisonSection = () => {
               {comparison?.title || "Choose Your Destination"}
             </h2>
             <p className="text-lg text-muted-foreground">
-              {comparison?.subtitle || "See expected earnings and timeline for each country"}
+              {comparison?.subtitle || "See expected timeline and starting price for each country"}
             </p>
           </div>
 
-          {/* Country Cards - Redesigned */}
+          {/* Country Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-10">
             {countryKeys.map((key) => {
               const country = countries[key] || defaultCountries[key];
               const defaultData = defaultCountries[key];
-              
+
               return (
-                <Card 
-                  key={key} 
+                <Card
+                  key={key}
                   className="p-5 border-border/50 hover:border-primary/50 hover:shadow-lg transition-all duration-300 bg-card relative"
                 >
                   {/* Highlight Badge */}
                   <Badge className={`absolute -top-3 left-1/2 -translate-x-1/2 ${defaultData.badgeColor} text-white text-xs px-3 py-1 whitespace-nowrap`}>
                     {country.highlight || defaultData.highlight}
                   </Badge>
-                  
+
                   <div className="space-y-4 pt-2">
                     {/* Country header */}
                     <div className="text-center">
                       <span className="text-4xl block mb-2">{country.flag || defaultData.flag}</span>
                       <h4 className="font-bold text-lg text-foreground">{country.name || defaultData.name}</h4>
-                      <p className="text-sm text-muted-foreground">
-                        {defaultData.positions} {comparison?.positionsAvailable || "positions available"}
-                      </p>
                     </div>
-                    
-                    {/* Main highlight: Expected Earnings */}
+
+                    {/* Starting price */}
                     <div className="bg-primary/5 rounded-lg p-3 text-center">
-                      <div className="flex items-center justify-center gap-1.5 text-muted-foreground text-xs mb-1">
-                        <Banknote className="h-3.5 w-3.5" />
-                        <span>{comparison?.expectedSalary || "Expected salary"}</span>
-                      </div>
-                      <p className="text-xl font-bold text-primary">€{country.salary || defaultData.salary}</p>
-                      <p className="text-xs text-muted-foreground">/{comparison?.perMonth || "month"}</p>
+                      <p className="text-xs text-muted-foreground mb-1">
+                        {comparison?.startingFrom || "Starting from"}
+                      </p>
+                      <p className="text-2xl font-bold text-primary">€49</p>
                     </div>
-                    
-                    {/* Duration highlight */}
+
+                    {/* Duration */}
                     <div className="flex items-center justify-center gap-2 py-2 border-t border-border/50">
                       <Clock className="h-4 w-4 text-muted-foreground" />
                       <div className="text-center">
@@ -118,6 +105,16 @@ const CountryComparisonSection = () => {
                         <p className="text-xs text-muted-foreground">{comparison?.estimatedTime || "Estimated time"}</p>
                       </div>
                     </div>
+
+                    {/* Card CTA */}
+                    <Link
+                      to="/homologation-wizard"
+                      onClick={() => window.scrollTo(0, 0)}
+                      className="flex items-center justify-center gap-1 text-sm font-medium text-primary hover:underline pt-1"
+                    >
+                      {comparison?.learnMore || "Learn more"}
+                      <ArrowRight className="h-3.5 w-3.5" />
+                    </Link>
                   </div>
                 </Card>
               );
