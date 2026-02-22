@@ -45,8 +45,13 @@ const HeroSectionWithSearch = React.memo(() => {
               {t.hero.subtitle}
             </p>
             
+            {/* Trust line */}
+            <p className="text-sm text-foreground/70 font-medium">
+              {trustItems.join(' • ')}
+            </p>
+            
             {/* CTA Buttons */}
-            <div className="flex items-center justify-center pt-6">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-6">
               <Button 
                 size="lg" 
                 className="h-14 px-10 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
@@ -54,12 +59,15 @@ const HeroSectionWithSearch = React.memo(() => {
               >
                 {t.hero.cta} →
               </Button>
+              <Button 
+                size="lg" 
+                variant="outline"
+                className="h-14 px-10 text-lg font-semibold"
+                onClick={() => navigate('/vacancies')}
+              >
+                {t.hero.secondaryCta}
+              </Button>
             </div>
-            
-            {/* Subtle trust line */}
-            <p className="text-sm text-muted-foreground pt-4">
-              {trustItems.join(' • ')}
-            </p>
           </div>
         </div>
       </section>
