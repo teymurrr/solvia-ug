@@ -7,7 +7,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { useLanguage } from '@/hooks/useLanguage';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import { Check, Shield, Clock, BookOpen, Users, Star, ExternalLink } from 'lucide-react';
+import { Check, Shield, Clock, BookOpen, Users, Star, ExternalLink, Zap } from 'lucide-react';
 import { preOpenPaymentWindow, redirectPaymentWindow, isSafari } from '@/utils/browserDetection';
 import Analytics from '@/utils/analyticsTracking';
 
@@ -31,16 +31,17 @@ interface PackageConfig {
   id: ProductType;
   icon: React.ReactNode;
   price: number;
+  introPrice: number;
   popular?: boolean;
   features: string[];
 }
 
 // Package pricing configuration
-const getPricingByCountry = (country: string | null): Record<ProductType, { price: number }> => {
+const getPricingByCountry = (country: string | null): Record<ProductType, { price: number; introPrice: number }> => {
   return {
-    digital_starter: { price: 4900 },       // €49
-    complete: { price: 19900 },              // €199
-    personal_mentorship: { price: 49900 },   // €499
+    digital_starter: { price: 7900, introPrice: 3900 },       // €79 → €39
+    complete: { price: 37900, introPrice: 18900 },              // €379 → €189
+    personal_mentorship: { price: 89900, introPrice: 49900 },   // €899 → €499
   };
 };
 
@@ -130,11 +131,13 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
       id: 'digital_starter',
       icon: <Shield className="w-8 h-8" />,
       price: pricing.digital_starter.price,
+      introPrice: pricing.digital_starter.introPrice,
       features: t?.payments?.packages?.digitalStarter?.features || [
+        'AI-powered document analysis & validation',
         'Country-specific document checklist & templates',
-        'Step-by-step video guides for each document',
+        'Step-by-step explanation videos for each document',
         'Apostille & translation instructions',
-        'CV template adapted for medical applications',
+        'Medical CV template',
         'Email support (response within 72h)'
       ]
     },
@@ -142,27 +145,32 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
       id: 'complete',
       icon: <BookOpen className="w-8 h-8" />,
       price: pricing.complete.price,
+      introPrice: pricing.complete.introPrice,
       popular: true,
       features: t?.payments?.packages?.complete?.features || [
-        'Everything in Digital Starter',
-        'Expert review of every document before submission',
-        'AI-powered document validation with instant feedback',
-        '6-month medical language course access',
-        'FSP exam prep: study plan, practice questions & mock exams',
-        'Priority support (response within 24h)'
+        'Everything in Digital Guide',
+        'Personal expert review of every document before submission',
+        'Direct communication with authorities on your behalf',
+        'Application submission support',
+        'FSP/equivalence exam preparation material',
+        'Priority support (response within 24h)',
+        'Progress tracking dashboard'
       ]
     },
     {
       id: 'personal_mentorship',
       icon: <Users className="w-8 h-8" />,
       price: pricing.personal_mentorship.price,
+      introPrice: pricing.personal_mentorship.introPrice,
       features: t?.payments?.packages?.personalMentorship?.features || [
-        'Everything in Complete Package',
+        'Everything in Full Support',
+        '12-month medical language course access',
+        '4× live 1:1 sessions (60 min): document review, exam prep & interview coaching',
         'Dedicated case manager from start to finish',
-        '4× live 1:1 sessions (60 min): documents, exam prep & interview practice',
-        'We submit your application on your behalf',
+        'In-person support for key appointments (where available)',
+        'We handle all authority communication & paperwork',
         'Job matching with open positions on our platform',
-        'Direct WhatsApp & phone support with your case manager'
+        'Direct WhatsApp & phone support'
       ]
     }
   ];
@@ -203,7 +211,7 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
   };
 
   const selectedConfig = packages.find(p => p.id === selectedPackage);
-  const baseAmount = selectedConfig?.price || 0;
+  const baseAmount = selectedConfig?.introPrice || 0;
   const finalAmount = appliedDiscount ? appliedDiscount.finalAmount : baseAmount;
 
   const validateDiscountCode = async () => {
@@ -369,8 +377,15 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
             
             <CardContent className="text-center pb-6 flex-1 flex flex-col">
               <div className="mb-6">
-                <span className="text-4xl font-bold text-primary">{formatPrice(pkg.price)}</span>
-                <span className="text-sm text-muted-foreground ml-2">{t?.payments?.oneTime || 'one-time'}</span>
+                <Badge variant="outline" className="mb-2 text-xs border-primary/30 text-primary">
+                  <Zap className="w-3 h-3 mr-1" />
+                  {t?.payments?.limitedOffer || 'Limited introductory offer'}
+                </Badge>
+                <div className="flex items-center justify-center gap-2">
+                  <span className="text-lg text-muted-foreground line-through">{formatPrice(pkg.price)}</span>
+                  <span className="text-4xl font-bold text-primary">{formatPrice(pkg.introPrice)}</span>
+                </div>
+                <span className="text-sm text-muted-foreground">{t?.payments?.oneTime || 'one-time'}</span>
               </div>
               
               <div className="space-y-3 text-left">

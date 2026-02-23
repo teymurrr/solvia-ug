@@ -19,6 +19,8 @@ export const payments = {
   emailLabel: 'Adresse E-mail',
   emailPlaceholder: 'votre.email@exemple.fr',
   emailHint: 'Nous enverrons votre reçu et vos informations d\'accès à cet e-mail',
+  limitedOffer: 'Offre de lancement limitée',
+  introEnds: 'Prix régulier',
   languageNames: {
     german: 'Allemand',
     spanish: 'Espagnol',
@@ -27,40 +29,44 @@ export const payments = {
   },
   packages: {
     digitalStarter: {
-      title: 'Digital Starter',
-      description: 'Préparez vos documents de manière autonome avec notre kit numérique',
+      title: 'Guide Digital',
+      description: 'Naviguez votre homologation de manière autonome avec notre kit numérique propulsé par l\'IA',
       features: [
+        'Analyse et validation de documents par IA',
         'Checklist de documents spécifique au pays et modèles',
-        'Guides vidéo étape par étape pour chaque document',
+        'Vidéos explicatives étape par étape pour chaque document',
         'Instructions pour apostille et traduction',
-        'Modèle de CV adapté aux candidatures médicales',
+        'Modèle de CV médical',
         'Support par email (réponse en 72h)'
       ]
     },
     complete: {
-      titleBase: 'Forfait Complet +',
-      descriptionBase: 'Homologation guidée par des experts +',
-      descriptionEnd: 'préparation linguistique',
+      titleBase: 'Accompagnement Complet',
+      descriptionBase: 'Homologation guidée par des experts avec révision personnelle des documents et',
+      descriptionEnd: 'communication avec les autorités',
       features: [
-        'Tout du Digital Starter',
-        'Révision experte de chaque document avant soumission',
-        'Validation de documents par IA avec feedback instantané',
-        'Accès au cours de langue médicale pendant 6 mois',
-        'Préparation FSP : plan d\'étude, questions pratiques et examens blancs',
-        'Support prioritaire (réponse en 24h)'
+        'Tout du Guide Digital',
+        'Révision experte personnelle de chaque document avant soumission',
+        'Communication directe avec les autorités en votre nom',
+        'Support pour la soumission des candidatures',
+        'Matériel de préparation FSP/examen d\'équivalence',
+        'Support prioritaire (réponse en 24h)',
+        'Tableau de bord de suivi de progression'
       ]
     },
     personalMentorship: {
-      title: 'Mentorat Personnel',
-      descriptionBase: 'Service premium avec gestionnaire de cas dédié et coaching 1:1 en',
-      descriptionEnd: '',
+      title: 'Accompagnement Complet +',
+      descriptionBase: 'Homologation complète + formation linguistique avec gestionnaire de cas dédié et',
+      descriptionEnd: 'accompagnement en personne',
       features: [
-        'Tout du Forfait Complet',
+        'Tout de l\'Accompagnement Complet',
+        'Accès au cours de langue médicale pendant 12 mois',
+        '4 sessions en direct 1:1 (60 min) : révision de documents, préparation d\'examen et coaching d\'entretien',
         'Gestionnaire de cas dédié du début à la fin',
-        '4 sessions en direct 1:1 (60 min) : documents, préparation d\'examen et entretien',
-        'Nous soumettons votre candidature en votre nom',
+        'Accompagnement en personne pour les rendez-vous clés (si disponible)',
+        'Nous gérons toute la communication avec les autorités et la paperasse',
         'Mise en relation avec les postes ouverts sur notre plateforme',
-        'Support direct WhatsApp et téléphone avec votre gestionnaire de cas'
+        'Support direct WhatsApp et téléphone'
       ]
     }
   },

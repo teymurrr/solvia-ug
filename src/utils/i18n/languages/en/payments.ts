@@ -19,6 +19,8 @@ export const payments = {
   emailLabel: 'Email Address',
   emailPlaceholder: 'your.email@example.com',
   emailHint: 'We will send your receipt and access details to this email',
+  limitedOffer: 'Limited introductory offer',
+  introEnds: 'Regular price',
   languageNames: {
     german: 'German',
     spanish: 'Spanish',
@@ -27,40 +29,44 @@ export const payments = {
   },
   packages: {
     digitalStarter: {
-      title: 'Digital Starter',
-      description: 'Prepare your documents independently with our digital toolkit',
+      title: 'Digital Guide',
+      description: 'Navigate your homologation independently with our AI-powered digital toolkit',
       features: [
+        'AI-powered document analysis & validation',
         'Country-specific document checklist & templates',
-        'Step-by-step video guides for each document',
+        'Step-by-step explanation videos for each document',
         'Apostille & translation instructions',
-        'CV template adapted for medical applications',
+        'Medical CV template',
         'Email support (response within 72h)'
       ]
     },
     complete: {
-      titleBase: 'Complete Package +',
-      descriptionBase: 'Expert-guided homologation +',
-      descriptionEnd: 'language preparation',
+      titleBase: 'Full Support',
+      descriptionBase: 'Expert-guided homologation with personal document review &',
+      descriptionEnd: 'authority communication',
       features: [
-        'Everything in Digital Starter',
-        'Expert review of every document before submission',
-        'AI-powered document validation with instant feedback',
-        '6-month medical language course access',
-        'FSP exam prep: study plan, practice questions & mock exams',
-        'Priority support (response within 24h)'
+        'Everything in Digital Guide',
+        'Personal expert review of every document before submission',
+        'Direct communication with authorities on your behalf',
+        'Application submission support',
+        'FSP/equivalence exam preparation material',
+        'Priority support (response within 24h)',
+        'Progress tracking dashboard'
       ]
     },
     personalMentorship: {
-      title: 'Personal Mentorship',
-      descriptionBase: 'White-glove service with dedicated case manager & 1:1',
-      descriptionEnd: 'coaching',
+      title: 'Full Support +',
+      descriptionBase: 'Complete homologation + language training with dedicated case manager &',
+      descriptionEnd: 'in-person support',
       features: [
-        'Everything in Complete Package',
+        'Everything in Full Support',
+        '12-month medical language course access',
+        '4× live 1:1 sessions (60 min): document review, exam prep & interview coaching',
         'Dedicated case manager from start to finish',
-        '4× live 1:1 sessions (60 min): documents, exam prep & interview practice',
-        'We submit your application on your behalf',
+        'In-person support for key appointments (where available)',
+        'We handle all authority communication & paperwork',
         'Job matching with open positions on our platform',
-        'Direct WhatsApp & phone support with your case manager'
+        'Direct WhatsApp & phone support'
       ]
     }
   },
