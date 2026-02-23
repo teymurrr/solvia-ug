@@ -678,19 +678,21 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
             </Button>
 
             {/* 6. Alternative CTA */}
-            <div className="text-center">
-              <a
-                href="https://calendly.com/david-rehrl-thesolvia/30min"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary transition-colors"
-              >
-                <span>{t?.payments?.notSure || 'Not sure yet?'}</span>
-                <Calendar className="w-4 h-4" />
-                <span className="underline underline-offset-2">
-                  {t?.payments?.bookConsultation || 'Book a free 15-min consultation'}
-                </span>
-              </a>
+            <div className="mt-4 pt-4 border-t border-border/50">
+              <div className="bg-muted/50 rounded-lg p-4 border border-border/50 text-center">
+                <a
+                  href="https://calendly.com/david-rehrl-thesolvia/30min"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 text-sm transition-colors group"
+                >
+                  <span className="font-medium text-foreground">{t?.payments?.notSure || 'Not sure yet?'}</span>
+                  <Calendar className="w-5 h-5 text-primary" />
+                  <span className="text-primary font-medium underline underline-offset-2 group-hover:no-underline">
+                    {t?.payments?.bookConsultation || 'Book a free 15-min consultation'}
+                  </span>
+                </a>
+              </div>
             </div>
           </CardContent>
         </Card>
