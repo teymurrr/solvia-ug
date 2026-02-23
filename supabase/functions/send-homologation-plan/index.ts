@@ -135,12 +135,12 @@ const getEmailContent = (data: HomologationPlanRequest) => {
   </div>
 
   <div style="background: #fff3cd; border: 1px solid #ffc107; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
-    <h3 style="margin-top: 0; color: #856404;">🚀 ${lang === 'es' ? 'Ofrece especial: €49 por tiempo limitado' : lang === 'de' ? 'Spezialangebot: €49 begrenzte Zeit' : lang === 'fr' ? 'Offre Spéciale: €49 Durée Limitée' : 'Limited Time: €49 Launch Offer'}</h3>
+    <h3 style="margin-top: 0; color: #856404;">🚀 ${lang === 'es' ? 'Oferta especial: €39 por tiempo limitado' : lang === 'de' ? 'Einführungsangebot: €39 begrenzte Zeit' : lang === 'fr' ? 'Offre de Lancement: €39 Durée Limitée' : lang === 'ru' ? 'Вводное предложение: €39 ограниченное время' : 'Limited Time: €39 Introductory Offer'}</h3>
     <p style="margin-bottom: 15px; color: #856404;">
-      ${lang === 'es' ? 'Desbloquea tu plan completo con documentos, videos tutoriales y lista de verificación paso a paso. Solo 50 spots disponibles a este precio de lanzamiento.' : lang === 'de' ? 'Schalten Sie Ihren vollständigen Plan mit Dokumenten, Tutorials und Schritt-für-Schritt-Checkliste frei. Nur 50 Plätze zu diesem Startpreis verfügbar.' : lang === 'fr' ? 'Déverrouillez votre plan complet avec documents, tutoriels et liste de contrôle étape par étape. Seulement 50 places disponibles à ce prix de lancement.' : 'Unlock your complete plan with documents, tutorial videos, and step-by-step checklist. Only 50 spots available at this launch price.'}
+      ${lang === 'es' ? 'Desbloquea tu guía digital completa con análisis de documentos por IA, videos explicativos y lista de verificación paso a paso.' : lang === 'de' ? 'Schalten Sie Ihren vollständigen Digital Guide mit KI-Dokumentenanalyse, Erklärungsvideos und Schritt-für-Schritt-Checkliste frei.' : lang === 'fr' ? 'Déverrouillez votre Guide Digital complet avec analyse de documents par IA, vidéos explicatives et liste de contrôle étape par étape.' : lang === 'ru' ? 'Откройте свой полный Цифровой Гид с ИИ-анализом документов, обучающими видео и пошаговым чек-листом.' : 'Unlock your complete Digital Guide with AI document analysis, explanation videos, and step-by-step checklist.'}
     </p>
     <a href="${planUrl}" style="display: inline-block; background: #FF6B35; color: white; padding: 14px 28px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 16px;">
-      ${lang === 'es' ? 'Desbloquear Plan - €49' : lang === 'de' ? 'Plan Freischalten - €49' : lang === 'fr' ? 'Débloquer Plan - €49' : 'Unlock Full Plan - €49'} →
+      ${lang === 'es' ? 'Desbloquear Guía - €39' : lang === 'de' ? 'Guide Freischalten - €39' : lang === 'fr' ? 'Débloquer Guide - €39' : lang === 'ru' ? 'Открыть Гид - €39' : 'Unlock Digital Guide - €39'} →
     </a>
   </div>
 

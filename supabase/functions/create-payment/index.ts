@@ -15,27 +15,26 @@ interface PaymentRequest {
   locale?: 'en' | 'es' | 'de' | 'fr' | 'ru';
 }
 
-// Country-specific pricing configuration - CONVERSION WEEK PRICING (amounts in cents)
+// Pricing configuration - Introductory pricing (amounts in cents)
 const getProductConfig = (productType: string, targetCountry: string | undefined) => {
-  // CONVERSION WEEK: Aggressive pricing €49 / €199 / €499
   const configs: Record<string, { name: string; description: string; amount: number; regularPrice: number }> = {
     digital_starter: {
-      name: 'Digital Starter',
-      description: 'Self-service document preparation kit with templates & videos',
-      amount: 4900, // €49 CONVERSION WEEK
-      regularPrice: 9900, // Regular €99
+      name: 'Digital Guide',
+      description: 'AI-powered document analysis, checklists, templates & explanation videos',
+      amount: 3900, // €39 introductory price
+      regularPrice: 7900, // Regular €79
     },
     complete: {
-      name: 'Complete Package',
-      description: 'Full homologation support + German language preparation',
-      amount: 19900, // €199 CONVERSION WEEK
-      regularPrice: 39900, // Regular €399
+      name: 'Full Support',
+      description: 'Expert-guided homologation with personal document review & authority communication',
+      amount: 18900, // €189 introductory price
+      regularPrice: 37900, // Regular €379
     },
     personal_mentorship: {
-      name: 'Personal Mentorship',
-      description: 'Dedicated team with 1:1 lessons and full support',
-      amount: 49900, // €499 CONVERSION WEEK
-      regularPrice: 99900, // Regular €999
+      name: 'Full Support + Language',
+      description: 'Complete homologation + language training with dedicated case manager & in-person support',
+      amount: 49900, // €499 introductory price
+      regularPrice: 89900, // Regular €899
     }
   };
   

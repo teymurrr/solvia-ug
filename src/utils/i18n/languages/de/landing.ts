@@ -218,7 +218,7 @@ export const landing = {
     text: "Müssen Sie die medizinische Fachsprache für Europa lernen?",
     cta: "Mehr erfahren"
   },
-  pricingTeaser: "Pläne ab €49",
+  pricingTeaser: "Pläne ab €39",
   whatYouGet: {
     title: "Was Solvia für Sie übernimmt",
     subtitle: "Wir kümmern uns um den komplexen Papierkram, damit Sie sich auf Ihre Karriere konzentrieren können",
