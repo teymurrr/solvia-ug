@@ -451,7 +451,7 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
       <SocialProofStrip quotes={socialProofQuotes} />
 
       {/* Package Selection */}
-      <div className="grid md:grid-cols-3 gap-6">
+      <div className="grid md:grid-cols-3 gap-6 items-stretch">
         {packages.map((pkg) => (
           <Card
             key={pkg.id}
@@ -459,7 +459,7 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
               selectedPackage === pkg.id
                 ? 'border-primary ring-2 ring-primary/20 shadow-lg'
                 : 'border-border hover:border-primary/50'
-            } ${pkg.popular ? 'md:-mt-4 md:mb-4' : ''}`}
+            } ${pkg.popular ? 'md:scale-[1.03] z-10' : ''}`}
             onClick={() => {
               setSelectedPackage(pkg.id);
               setAppliedDiscount(null);
