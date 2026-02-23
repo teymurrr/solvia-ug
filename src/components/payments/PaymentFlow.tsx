@@ -7,7 +7,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { useLanguage } from '@/hooks/useLanguage';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import { Check, Shield, Clock, BookOpen, Users, Star, ExternalLink, Zap, Timer } from 'lucide-react';
+import { Check, Shield, Clock, BookOpen, Users, Star, ExternalLink, Zap, Timer, ShieldCheck, CreditCard, Inbox, Headphones, Calendar } from 'lucide-react';
 import { preOpenPaymentWindow, redirectPaymentWindow, isSafari } from '@/utils/browserDetection';
 import Analytics from '@/utils/analyticsTracking';
 
@@ -36,13 +36,36 @@ interface PackageConfig {
   features: string[];
 }
 
-// Package pricing configuration
+interface Pricing {
+  price: number;
+  introPrice: number;
+}
+
 const getPricingByCountry = (country: string | null): Record<ProductType, { price: number; introPrice: number }> => {
-  return {
-    digital_starter: { price: 7900, introPrice: 3900 },       // €79 → €39
-    complete: { price: 37900, introPrice: 18900 },              // €379 → €189
-    personal_mentorship: { price: 89900, introPrice: 44900 },   // €899 → €449
+  const defaultPricing = {
+    digital_starter: { price: 7900, introPrice: 3900 },
+    complete: { price: 37900, introPrice: 18900 },
+    personal_mentorship: { price: 89900, introPrice: 44900 },
   };
+
+  if (!country) {
+    return defaultPricing;
+  }
+
+  switch (country.toLowerCase()) {
+    case 'germany':
+      return defaultPricing;
+    case 'austria':
+      return defaultPricing;
+    case 'spain':
+      return defaultPricing;
+    case 'italy':
+      return defaultPricing;
+    case 'france':
+      return defaultPricing;
+    default:
+      return defaultPricing;
+  }
 };
 
 const CountdownTimer: React.FC = () => {
@@ -68,18 +91,61 @@ const CountdownTimer: React.FC = () => {
   if (timeLeft.days <= 0 && timeLeft.hours <= 0 && timeLeft.minutes <= 0 && timeLeft.seconds <= 0) return null;
 
   return (
-    <div className="flex items-center justify-center gap-1 my-2 text-xs text-destructive font-medium">
-      <Timer className="h-3.5 w-3.5" />
-      <span>
-        {timeLeft.days}d {String(timeLeft.hours).padStart(2, '0')}h {String(timeLeft.minutes).padStart(2, '0')}m {String(timeLeft.seconds).padStart(2, '0')}s
+    <span className="font-mono font-semibold">
+      {timeLeft.days}d {String(timeLeft.hours).padStart(2, '0')}h {String(timeLeft.minutes).padStart(2, '0')}m {String(timeLeft.seconds).padStart(2, '0')}s
+    </span>
+  );
+};
+
+// Social proof rotating quote component
+const SocialProofStrip: React.FC<{ quotes: any[] }> = ({ quotes }) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    if (!quotes || quotes.length <= 1) return;
+    const id = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % quotes.length);
+    }, 5000);
+    return () => clearInterval(id);
+  }, [quotes]);
+
+  if (!quotes || quotes.length === 0) return null;
+  const quote = quotes[currentIndex];
+
+  return (
+    <div className="flex items-center justify-center gap-3 py-3 px-4 bg-muted/50 rounded-lg text-sm">
+      <div className="flex gap-0.5 flex-shrink-0">
+        {[...Array(5)].map((_, i) => (
+          <Star key={i} className="w-3.5 h-3.5 fill-yellow-400 text-yellow-400" />
+        ))}
+      </div>
+      <p className="text-muted-foreground italic truncate">
+        "{quote.text}"
+      </p>
+      <span className="text-xs text-muted-foreground flex-shrink-0 font-medium">
+        — {quote.author}, {quote.country}
       </span>
     </div>
   );
 };
 
-const getCountryDisplayName = (country: string | null, t: any): string => {
+interface CountryNames {
+  germany: string;
+  austria: string;
+  spain: string;
+  italy: string;
+  france: string;
+}
+
+interface LanguageNames {
+  german: string;
+  spanish: string;
+  italian: string;
+  french: string;
+}
+
+const getCountryDisplayName = (country: string | null, t: { wizard?: { countries?: CountryNames }, payments?: { languageNames?: LanguageNames } }): string => {
   if (!country) return '';
-  
   const countryNames: Record<string, string> = {
     germany: t?.wizard?.countries?.germany || 'Germany',
     austria: t?.wizard?.countries?.austria || 'Austria',
@@ -87,7 +153,6 @@ const getCountryDisplayName = (country: string | null, t: any): string => {
     italy: t?.wizard?.countries?.italy || 'Italy',
     france: t?.wizard?.countries?.france || 'France',
   };
-  
   return countryNames[country] || country;
 };
 
@@ -99,12 +164,10 @@ const getCountryFlag = (country: string | null): string => {
     italy: '🇮🇹',
     france: '🇫🇷',
   };
-  
   return flags[country || ''] || '🌍';
 };
 
-// Get the language name based on target country
-const getLanguageForCountry = (country: string | null, t: any): string => {
+const getLanguageForCountry = (country: string | null, t: { wizard?: { countries?: CountryNames }, payments?: { languageNames?: LanguageNames } }): string => {
   const languages: Record<string, string> = {
     germany: t?.payments?.languageNames?.german || 'German',
     austria: t?.payments?.languageNames?.german || 'German',
@@ -112,7 +175,6 @@ const getLanguageForCountry = (country: string | null, t: any): string => {
     italy: t?.payments?.languageNames?.italian || 'Italian',
     france: t?.payments?.languageNames?.french || 'French',
   };
-  
   return languages[country || ''] || (t?.payments?.languageNames?.german || 'German');
 };
 
@@ -129,14 +191,25 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
   const [showFallbackDialog, setShowFallbackDialog] = useState(false);
   const paymentSummaryRef = useRef<HTMLDivElement>(null);
 
-  // Read wizard data from localStorage on mount
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        onClose?.();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [onClose]);
+
   useEffect(() => {
     const wizardDataStr = localStorage.getItem('wizardData');
     if (wizardDataStr) {
       try {
         const wizardData = JSON.parse(wizardDataStr);
         setTargetCountry(wizardData.targetCountry || null);
-        // Pre-fill email if available from wizard
         if (wizardData.email) {
           setGuestEmail(wizardData.email);
         }
@@ -146,7 +219,6 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
     }
   }, []);
 
-  // Auto-scroll to payment summary when a package is selected
   useEffect(() => {
     if (selectedPackage && paymentSummaryRef.current) {
       setTimeout(() => {
@@ -155,7 +227,6 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
     }
   }, [selectedPackage]);
 
-  // Get pricing based on selected country
   const pricing = getPricingByCountry(targetCountry);
 
   const packages: PackageConfig[] = [
@@ -225,7 +296,6 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
       case 'digital_starter':
         return t?.payments?.packages?.digitalStarter?.description || 'Prepare your documents independently with our digital guides';
       case 'complete':
-        // Dynamic language name in description
         const descBase = t?.payments?.packages?.complete?.descriptionBase || 'Full homologation support +';
         const descEnd = t?.payments?.packages?.complete?.descriptionEnd || 'language preparation';
         return `${descBase} ${languageName} ${descEnd}`;
@@ -246,15 +316,12 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
 
   const validateDiscountCode = async () => {
     if (!discountCode.trim() || !selectedPackage) return;
-
     setIsValidatingDiscount(true);
     try {
       const { data, error } = await supabase.functions.invoke('validate-discount', {
         body: { code: discountCode.trim(), productType: selectedPackage, targetCountry }
       });
-
       if (error) throw error;
-
       if (data.valid) {
         setAppliedDiscount(data.discount);
         toast.success(t?.payments?.discountCode?.applied || 'Discount applied successfully!');
@@ -277,59 +344,44 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
   };
 
   const isValidEmail = (email: string) => {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    return /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email);
   };
 
-   const handlePayment = async () => {
-     if (!selectedPackage) {
-       toast.error(t?.payments?.errors?.selectPackage || 'Please select a package');
-       return;
-     }
-
-     if (!guestEmail || !isValidEmail(guestEmail)) {
-       toast.error(t?.payments?.errors?.invalidEmail || 'Please enter a valid email address');
-       return;
-     }
-
-     // Track payment start
-     const baseAmount = selectedConfig?.price || 0;
-     const finalAmount = appliedDiscount ? appliedDiscount.finalAmount : baseAmount;
-     Analytics.paymentStarted(selectedPackage, finalAmount);
-
-     // Pre-open window for Safari BEFORE the async call
-     const preOpenedWindow = preOpenPaymentWindow();
-
-     setIsProcessingPayment(true);
-     try {
-       const { data, error } = await supabase.functions.invoke('create-payment', {
-         body: {
-           productType: selectedPackage,
-           targetCountry: targetCountry,
-           customerEmail: guestEmail,
-           discountCode: appliedDiscount?.code,
-           locale: currentLanguage as 'en' | 'es' | 'de' | 'fr' | 'ru'
-         }
-       });
-
+  const handlePayment = async () => {
+    if (!selectedPackage) {
+      toast.error(t?.payments?.errors?.selectPackage || 'Please select a package');
+      return;
+    }
+    if (!guestEmail || !isValidEmail(guestEmail)) {
+      toast.error(t?.payments?.errors?.invalidEmail || 'Please enter a valid email address');
+      return;
+    }
+    const baseAmount = selectedConfig?.price || 0;
+    const finalAmount = appliedDiscount ? appliedDiscount.finalAmount : baseAmount;
+    Analytics.paymentStarted(selectedPackage, finalAmount);
+    const preOpenedWindow = preOpenPaymentWindow();
+    setIsProcessingPayment(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('create-payment', {
+        body: {
+          productType: selectedPackage,
+          targetCountry: targetCountry,
+          customerEmail: guestEmail,
+          discountCode: appliedDiscount?.code,
+          locale: currentLanguage as 'en' | 'es' | 'de' | 'fr' | 'ru'
+        }
+      });
       if (error) throw error;
-
       if (data.url) {
-        // For Safari: redirect the pre-opened window
         if (preOpenedWindow) {
           const success = redirectPaymentWindow(preOpenedWindow, data.url);
-          if (success) {
-            onClose?.();
-            return;
-          }
-          // If redirect failed (window closed), show fallback
+          if (success) { onClose?.(); return; }
           setFallbackUrl(data.url);
           setShowFallbackDialog(true);
         } else if (isSafari()) {
-          // Safari but window was blocked, show fallback dialog
           setFallbackUrl(data.url);
           setShowFallbackDialog(true);
         } else {
-          // Non-Safari browsers: use regular window.open
           window.open(data.url, '_blank');
           onClose?.();
         }
@@ -338,10 +390,7 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
       }
     } catch (error: any) {
       console.error('Payment error:', error);
-      // Close the pre-opened window if there was an error
-      if (preOpenedWindow && !preOpenedWindow.closed) {
-        preOpenedWindow.close();
-      }
+      if (preOpenedWindow && !preOpenedWindow.closed) { preOpenedWindow.close(); }
       toast.error(error.message || t?.payments?.errors?.general || 'Payment processing failed');
     } finally {
       setIsProcessingPayment(false);
@@ -349,15 +398,29 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
   };
 
   const handleFallbackClick = () => {
-    if (fallbackUrl) {
-      window.location.href = fallbackUrl;
-    }
+    if (fallbackUrl) { window.location.href = fallbackUrl; }
   };
 
+  const socialProofQuotes = t?.payments?.socialProofQuotes || [
+    { text: 'Solvia made the whole process effortless — I got my Approbation in 7 months!', author: 'Dr. María L.', country: 'Spain' },
+    { text: 'They handled everything with the authorities. I just focused on my German.', author: 'Dr. Luis F.', country: 'Mexico' },
+    { text: 'The best investment I made for my medical career in Germany.', author: 'Dr. Ana R.', country: 'Colombia' },
+  ];
+
+  const whatHappensNextSteps = t?.payments?.whatHappensNext?.steps || [
+    'Complete payment securely via Stripe',
+    'Receive instant access to your dashboard',
+    'Your dedicated team contacts you within 24h',
+  ];
+
+  const stepIcons = [
+    <CreditCard className="w-4 h-4 text-primary flex-shrink-0" />,
+    <Inbox className="w-4 h-4 text-primary flex-shrink-0" />,
+    <Headphones className="w-4 h-4 text-primary flex-shrink-0" />,
+  ];
+
   return (
-    <div className="max-w-5xl mx-auto space-y-8">
-      {/* Country Indicator */}
-      
+    <div className="max-w-5xl mx-auto space-y-6">
       {/* Country Indicator */}
       {targetCountry && (
         <div className="text-center">
@@ -366,6 +429,26 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
           </Badge>
         </div>
       )}
+
+      {/* 1. Single Urgency Banner */}
+      <div className="flex flex-col sm:flex-row items-center justify-center gap-3 bg-primary/10 border border-primary/20 rounded-lg p-4">
+        <div className="flex items-center gap-2">
+          <Zap className="w-5 h-5 text-primary" />
+          <span className="font-semibold text-primary">
+            {t?.payments?.limitedOffer || 'Limited introductory offer'}
+          </span>
+          <span className="text-sm font-medium">—</span>
+          <span className="font-semibold text-primary">
+            {t?.payments?.saveUpTo || 'Save up to 50%'}
+          </span>
+        </div>
+        <div className="text-destructive">
+          <CountdownTimer />
+        </div>
+      </div>
+
+      {/* 4. Social Proof Row */}
+      <SocialProofStrip quotes={socialProofQuotes} />
 
       {/* Package Selection */}
       <div className="grid md:grid-cols-3 gap-6">
@@ -406,17 +489,18 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
             </CardHeader>
             
             <CardContent className="text-center pb-6 flex-1 flex flex-col">
+              {/* 2. Savings Badge replaces per-card timer */}
               <div className="mb-6">
-                <Badge variant="outline" className="mb-2 text-xs border-primary/30 text-primary">
-                  <Zap className="w-3 h-3 mr-1" />
-                  {t?.payments?.limitedOffer || 'Limited introductory offer'}
-                </Badge>
-                <CountdownTimer />
                 <div className="flex items-center justify-center gap-2">
                   <span className="text-lg text-muted-foreground line-through">{formatPrice(pkg.price)}</span>
                   <span className="text-4xl font-bold text-primary">{formatPrice(pkg.introPrice)}</span>
                 </div>
-                <span className="text-sm text-muted-foreground">{t?.payments?.oneTime || 'one-time'}</span>
+                <div className="flex items-center justify-center gap-2 mt-2">
+                  <Badge variant="secondary" className="bg-green-100 text-green-700 hover:bg-green-100 border-none dark:bg-green-900/40 dark:text-green-400">
+                    {t?.payments?.youSave || 'Save'} €{((pkg.price - pkg.introPrice) / 100).toFixed(0)}
+                  </Badge>
+                </div>
+                <span className="text-sm text-muted-foreground mt-1 block">{t?.payments?.oneTime || 'one-time'}</span>
               </div>
               
               <div className="space-y-3 text-left">
@@ -431,23 +515,47 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
               </div>
               
               <div className="mt-auto pt-8">
-              <Button
-                variant={selectedPackage === pkg.id ? 'default' : 'outline'}
-                className="w-full"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setSelectedPackage(pkg.id);
-                }}
-              >
-                {selectedPackage === pkg.id 
-                  ? (t?.payments?.selected || 'Selected')
-                  : (t?.payments?.select || 'Select Package')
-                }
-              </Button>
+                <Button
+                  variant={selectedPackage === pkg.id ? 'default' : 'outline'}
+                  className="w-full"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setSelectedPackage(pkg.id);
+                  }}
+                >
+                  {selectedPackage === pkg.id 
+                    ? (t?.payments?.selected || 'Selected')
+                    : (t?.payments?.select || 'Select Package')
+                  }
+                </Button>
               </div>
             </CardContent>
           </Card>
         ))}
+      </div>
+
+      {/* 3. Money-Back Guarantee Strip */}
+      <div className="flex items-center justify-center gap-2 py-3 px-4 bg-green-50 border border-green-200 rounded-lg dark:bg-green-950/20 dark:border-green-900">
+        <ShieldCheck className="w-5 h-5 text-green-600 dark:text-green-400 flex-shrink-0" />
+        <span className="text-sm font-medium text-green-800 dark:text-green-400">
+          {t?.payments?.guarantee || '30-day money-back guarantee — no questions asked'}
+        </span>
+      </div>
+
+      {/* 7. Trust Indicators (always visible) */}
+      <div className="flex items-center justify-center gap-6 text-sm text-muted-foreground">
+        <div className="flex items-center gap-1.5">
+          <Shield className="w-4 h-4" />
+          <span>{t?.payments?.secure || 'Secure Payment'}</span>
+        </div>
+        <div className="flex items-center gap-1.5">
+          <Clock className="w-4 h-4" />
+          <span>{t?.payments?.support || '24h Support'}</span>
+        </div>
+        <div className="flex items-center gap-1.5">
+          <Users className="w-4 h-4" />
+          <span>{t?.payments?.trusted || 'Trusted by 500+'}</span>
+        </div>
       </div>
 
       {/* Discount Code & Payment Section */}
@@ -473,6 +581,24 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
               <p className="text-xs text-muted-foreground">
                 {t?.payments?.emailHint || 'We will send your receipt and access details to this email'}
               </p>
+            </div>
+
+            {/* 5. What Happens Next */}
+            <div className="bg-muted/30 rounded-lg p-4 space-y-3">
+              <h4 className="text-sm font-semibold">
+                {t?.payments?.whatHappensNext?.title || 'What happens next'}
+              </h4>
+              <div className="space-y-2.5">
+                {whatHappensNextSteps.map((step: string, index: number) => (
+                  <div key={index} className="flex items-center gap-3">
+                    <div className="flex items-center justify-center w-6 h-6 rounded-full bg-primary/10 text-xs font-bold text-primary">
+                      {index + 1}
+                    </div>
+                    {stepIcons[index]}
+                    <span className="text-sm text-muted-foreground">{step}</span>
+                  </div>
+                ))}
+              </div>
             </div>
 
             {/* Discount Input */}
@@ -552,20 +678,20 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
               }
             </Button>
 
-            {/* Trust Indicators */}
-            <div className="flex items-center justify-center gap-6 text-xs text-muted-foreground">
-              <div className="flex items-center gap-1">
-                <Shield className="w-4 h-4" />
-                <span>{t?.payments?.secure || 'Secure Payment'}</span>
-              </div>
-              <div className="flex items-center gap-1">
-                <Clock className="w-4 h-4" />
-                <span>{t?.payments?.support || '24h Support'}</span>
-              </div>
-              <div className="flex items-center gap-1">
-                <Users className="w-4 h-4" />
-                <span>{t?.payments?.trusted || 'Trusted by 1000+'}</span>
-              </div>
+            {/* 6. Alternative CTA */}
+            <div className="text-center">
+              <a
+                href="https://calendly.com/david-rehrl-thesolvia/30min"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary transition-colors"
+              >
+                <span>{t?.payments?.notSure || 'Not sure yet?'}</span>
+                <Calendar className="w-4 h-4" />
+                <span className="underline underline-offset-2">
+                  {t?.payments?.bookConsultation || 'Book a free 15-min consultation'}
+                </span>
+              </a>
             </div>
           </CardContent>
         </Card>

@@ -139,5 +139,23 @@ export const payments = {
     description: 'Votre navigateur a bloqué l\'ouverture automatique de la page de paiement. Cliquez sur le bouton ci-dessous pour continuer.',
     openPayment: 'Ouvrir la Page de Paiement',
     cancel: 'Annuler'
+  },
+  guarantee: 'Garantie de remboursement de 30 jours — sans condition',
+  youSave: 'Économisez',
+  saveUpTo: 'Économisez jusqu\'à 50%',
+  notSure: 'Pas encore sûr(e) ?',
+  bookConsultation: 'Réservez une consultation gratuite de 15 min',
+  socialProofQuotes: [
+    { text: 'Solvia a rendu tout le processus facile — j\'ai obtenu mon Approbation en 7 mois !', author: 'Dr. María L.', country: 'Espagne' },
+    { text: 'Ils ont tout géré avec les autorités. Je me suis juste concentré sur mon allemand.', author: 'Dr. Luis F.', country: 'Mexique' },
+    { text: 'Le meilleur investissement pour ma carrière médicale en Allemagne.', author: 'Dr. Ana R.', country: 'Colombie' },
+  ],
+  whatHappensNext: {
+    title: 'Que se passe-t-il ensuite',
+    steps: [
+      'Effectuez le paiement en toute sécurité via Stripe',
+      'Recevez un accès instantané à votre tableau de bord',
+      'Votre équipe dédiée vous contacte sous 24h',
+    ]
   }
 };
