@@ -195,13 +195,12 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
       price: pricing.personal_mentorship.price,
       introPrice: pricing.personal_mentorship.introPrice,
       features: t?.payments?.packages?.personalMentorship?.features || [
-        'Everything in Full Support',
+        'Everything in Full Personal Homologation',
         '12-month medical language course access',
         '4× live 1:1 sessions (60 min): document review, exam prep & interview coaching',
         'Dedicated case manager from start to finish',
         'In-person support for key appointments (where available)',
         'We handle all authority communication & paperwork',
-        'Job matching with open positions on our platform',
         'Direct WhatsApp & phone support'
       ]
     }
@@ -215,7 +214,8 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
       case 'complete':
         return t?.payments?.packages?.complete?.titleBase || 'Full Personal Homologation';
       case 'personal_mentorship':
-        return t?.payments?.packages?.personalMentorship?.title || 'Personal Mentorship';
+        const mentorBase = t?.payments?.packages?.personalMentorship?.titleBase || 'Full Homologation +';
+        return `${mentorBase} ${languageName}`;
     }
   };
 
