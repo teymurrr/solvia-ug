@@ -13,12 +13,12 @@ import { useLanguage } from '@/hooks/useLanguage';
 
 // Mock blurred job data — specialty keys reference translations
 const mockBlurredJobs = [
-  { hospital: 'Hospital Universitario de Hamburgo', specialtyKey: 'pediatrics', city: 'Hamburgo', country: 'germany', profession: 'doctor', salaryRange: '52.000 - 60.000 €/año' },
-  { hospital: 'Charité Berlin', specialtyKey: 'cardiology', city: 'Berlín', country: 'germany', profession: 'doctor', salaryRange: '58.000 - 72.000 €/año' },
-  { hospital: 'Klinikum München', specialtyKey: 'generalSurgery', city: 'Múnich', country: 'germany', profession: 'doctor', salaryRange: '55.000 - 68.000 €/año' },
-  { hospital: 'AKH Wien', specialtyKey: 'neurology', city: 'Viena', country: 'austria', profession: 'doctor', salaryRange: '60.000 - 75.000 €/año' },
-  { hospital: 'Hospital Clínic Barcelona', specialtyKey: 'generalNursing', city: 'Barcelona', country: 'spain', profession: 'nurse', salaryRange: '32.000 - 42.000 €/año' },
-  { hospital: 'Hôpital Universitaire Lyon', specialtyKey: 'anesthesiology', city: 'Lyon', country: 'france', profession: 'doctor', salaryRange: '54.000 - 65.000 €/año' },
+  { hospital: 'Hospital Universitario de Hamburgo', specialtyKey: 'pediatrics', city: 'Hamburgo', country: 'germany', profession: 'doctor', salaryRange: '68.000 - 78.000 €/año' },
+  { hospital: 'Charité Berlin', specialtyKey: 'cardiology', city: 'Berlín', country: 'germany', profession: 'doctor', salaryRange: '75.000 - 94.000 €/año' },
+  { hospital: 'Klinikum München', specialtyKey: 'generalSurgery', city: 'Múnich', country: 'germany', profession: 'doctor', salaryRange: '72.000 - 88.000 €/año' },
+  { hospital: 'AKH Wien', specialtyKey: 'neurology', city: 'Viena', country: 'austria', profession: 'doctor', salaryRange: '78.000 - 98.000 €/año' },
+  { hospital: 'Hospital Clínic Barcelona', specialtyKey: 'generalNursing', city: 'Barcelona', country: 'spain', profession: 'nurse', salaryRange: '42.000 - 55.000 €/año' },
+  { hospital: 'Hôpital Universitaire Lyon', specialtyKey: 'anesthesiology', city: 'Lyon', country: 'france', profession: 'doctor', salaryRange: '70.000 - 85.000 €/año' },
 ];
 
 const VacanciesConversion = () => {
