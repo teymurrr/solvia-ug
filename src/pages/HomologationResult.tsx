@@ -256,9 +256,6 @@ const HomologationResult = () => {
                   {t.homologationResult.diagnosis?.timeLabel || 'Process Duration'}
                 </p>
                 <p className="text-2xl font-bold text-foreground">{countryData.processTime.med}</p>
-                <p className="text-xs text-muted-foreground">
-                  {t.homologationResult.timeline.bestCase}: {countryData.processTime.min}
-                </p>
               </div>
 
               {/* Language gap card */}
