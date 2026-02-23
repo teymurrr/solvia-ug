@@ -29,12 +29,12 @@ export const payments = {
   },
   packages: {
     digitalStarter: {
-      title: 'Guide Digital',
+      title: 'Homologation Digitale',
       description: 'Naviguez votre homologation de manière autonome avec notre kit numérique propulsé par l\'IA',
       features: [
+        'Guide étape par étape pour chaque document',
         'Analyse et validation de documents par IA',
         'Checklist de documents spécifique au pays et modèles',
-        'Vidéos explicatives étape par étape pour chaque document',
         'Instructions pour apostille et traduction',
         'Modèle de CV médical',
         'Support par email (réponse en 72h)'
@@ -45,7 +45,7 @@ export const payments = {
       descriptionBase: 'Homologation guidée par des experts avec révision personnelle des documents et',
       descriptionEnd: 'communication avec les autorités',
       features: [
-        'Tout du Guide Digital',
+        'Tout de l\'Homologation Digitale',
         'Révision experte personnelle de chaque document avant soumission',
         'Communication directe avec les autorités en votre nom',
         'Support pour la soumission des candidatures',

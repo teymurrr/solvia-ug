@@ -29,12 +29,12 @@ export const payments = {
   },
   packages: {
     digitalStarter: {
-      title: 'Guía Digital',
+      title: 'Homologación Digital',
       description: 'Navega tu homologación de forma independiente con nuestro kit digital con IA',
       features: [
+        'Guía paso a paso para cada documento',
         'Análisis y validación de documentos con IA',
         'Checklist de documentos específica por país y plantillas',
-        'Videos explicativos paso a paso para cada documento',
         'Instrucciones de apostilla y traducción',
         'Plantilla de CV médico',
         'Soporte por email (respuesta en 72h)'
@@ -45,7 +45,7 @@ export const payments = {
       descriptionBase: 'Homologación guiada por expertos con revisión personal de documentos y',
       descriptionEnd: 'comunicación con autoridades',
       features: [
-        'Todo lo de Guía Digital',
+        'Todo lo de Homologación Digital',
         'Revisión experta personal de cada documento antes del envío',
         'Comunicación directa con las autoridades en tu nombre',
         'Soporte en la presentación de solicitudes',
