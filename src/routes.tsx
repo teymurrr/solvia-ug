@@ -113,8 +113,16 @@ const AppRoutes = () => {
         <Route path="/impressum" element={<Impressum />} />
         <Route path="/employers" element={<EmployersLanding />} />
         <Route path="/blog" element={<Blog />} />
-        <Route path="/community" element={<Community />} />
-        <Route path="/community/:id" element={<CommunityPost />} />
+        <Route path="/community" element={
+          <ProtectedRoute>
+            <Community />
+          </ProtectedRoute>
+        } />
+        <Route path="/community/:id" element={
+          <ProtectedRoute>
+            <CommunityPost />
+          </ProtectedRoute>
+        } />
         
         {/* Auth routes */}
         <Route path="/signup" element={<Signup />} />
