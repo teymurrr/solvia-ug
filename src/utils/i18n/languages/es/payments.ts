@@ -139,5 +139,23 @@ export const payments = {
     description: 'Tu navegador bloqueó la apertura automática de la página de pago. Haz clic en el botón de abajo para continuar.',
     openPayment: 'Abrir Página de Pago',
     cancel: 'Cancelar'
+  },
+  guarantee: 'Garantía de devolución de 30 días — sin preguntas',
+  youSave: 'Ahorras',
+  saveUpTo: 'Ahorra hasta un 50%',
+  notSure: '¿No estás seguro/a?',
+  bookConsultation: 'Reserva una consulta gratuita de 15 min',
+  socialProofQuotes: [
+    { text: 'Solvia hizo todo el proceso muy fácil — ¡obtuve mi Approbation en 7 meses!', author: 'Dra. María L.', country: 'España' },
+    { text: 'Se encargaron de todo con las autoridades. Yo solo me concentré en mi alemán.', author: 'Dr. Luis F.', country: 'México' },
+    { text: 'La mejor inversión que hice para mi carrera médica en Alemania.', author: 'Dra. Ana R.', country: 'Colombia' },
+  ],
+  whatHappensNext: {
+    title: 'Qué sucede después',
+    steps: [
+      'Completa el pago de forma segura con Stripe',
+      'Recibe acceso instantáneo a tu panel',
+      'Tu equipo dedicado te contacta en 24h',
+    ]
   }
 };
