@@ -37,7 +37,8 @@ export const payments = {
         'Länderspezifische Dokumenten-Checkliste & Vorlagen',
         'Apostille- & Übersetzungsanleitungen',
         'Medizinische Lebenslaufvorlage',
-        'E-Mail-Support (Antwort innerhalb von 72h)'
+        'E-Mail-Support (Antwort innerhalb von 72h)',
+        'Fortschritts-Dashboard'
       ]
     },
     complete: {
@@ -50,8 +51,7 @@ export const payments = {
         'Direkte Kommunikation mit Behörden in Ihrem Namen',
         'Unterstützung bei der Antragstellung',
         'FSP-/Gleichwertigkeitsprüfung Vorbereitungsmaterial',
-        'Prioritäts-Support (Antwort innerhalb von 24h)',
-        'Fortschritts-Dashboard'
+        'Prioritäts-Support (Antwort innerhalb von 24h)'
       ]
     },
     personalMentorship: {
