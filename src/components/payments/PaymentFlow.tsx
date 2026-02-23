@@ -7,7 +7,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { useLanguage } from '@/hooks/useLanguage';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import { Check, Shield, Clock, BookOpen, Users, Star, ExternalLink, Zap } from 'lucide-react';
+import { Check, Shield, Clock, BookOpen, Users, Star, ExternalLink, Zap, Timer } from 'lucide-react';
 import { preOpenPaymentWindow, redirectPaymentWindow, isSafari } from '@/utils/browserDetection';
 import Analytics from '@/utils/analyticsTracking';
 
@@ -43,6 +43,38 @@ const getPricingByCountry = (country: string | null): Record<ProductType, { pric
     complete: { price: 37900, introPrice: 18900 },              // €379 → €189
     personal_mentorship: { price: 89900, introPrice: 49900 },   // €899 → €499
   };
+};
+
+const CountdownTimer: React.FC = () => {
+  const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+
+  useEffect(() => {
+    const target = new Date('2025-02-28T23:59:59').getTime();
+    const update = () => {
+      const now = Date.now();
+      const diff = Math.max(0, target - now);
+      setTimeLeft({
+        days: Math.floor(diff / 86400000),
+        hours: Math.floor((diff % 86400000) / 3600000),
+        minutes: Math.floor((diff % 3600000) / 60000),
+        seconds: Math.floor((diff % 60000) / 1000),
+      });
+    };
+    update();
+    const id = setInterval(update, 1000);
+    return () => clearInterval(id);
+  }, []);
+
+  if (timeLeft.days <= 0 && timeLeft.hours <= 0 && timeLeft.minutes <= 0 && timeLeft.seconds <= 0) return null;
+
+  return (
+    <div className="flex items-center justify-center gap-1 my-2 text-xs text-destructive font-medium">
+      <Timer className="h-3.5 w-3.5" />
+      <span>
+        {timeLeft.days}d {String(timeLeft.hours).padStart(2, '0')}h {String(timeLeft.minutes).padStart(2, '0')}m {String(timeLeft.seconds).padStart(2, '0')}s
+      </span>
+    </div>
+  );
 };
 
 const getCountryDisplayName = (country: string | null, t: any): string => {
@@ -381,6 +413,7 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
                   <Zap className="w-3 h-3 mr-1" />
                   {t?.payments?.limitedOffer || 'Limited introductory offer'}
                 </Badge>
+                <CountdownTimer />
                 <div className="flex items-center justify-center gap-2">
                   <span className="text-lg text-muted-foreground line-through">{formatPrice(pkg.price)}</span>
                   <span className="text-4xl font-bold text-primary">{formatPrice(pkg.introPrice)}</span>
