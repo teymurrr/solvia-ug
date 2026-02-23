@@ -1,81 +1,32 @@
 
-# Redesign Payment Packages: New 3-Tier Structure with Introduction Pricing
 
-## New Package Structure
+## Move Countdown Timer to a Single Banner
 
-### Tier 1: Digital Guide (was "Digital Starter")
-- **Regular price**: 79 EUR | **Intro price**: 39 EUR (limited 2-month offer)
-- **Positioning**: Self-service digital toolkit
-- **Features**:
-  - AI-powered document analysis and validation
-  - Country-specific document checklist and templates
-  - Step-by-step explanation videos for each document
-  - Apostille and translation instructions
-  - Medical CV template
-  - Email support (response within 72h)
+### Problem
+The countdown timer is currently rendered inside each of the three pricing cards, which is redundant and clutters the design.
 
-### Tier 2: Full Support (was "Complete Package")
-- **Regular price**: 379 EUR | **Intro price**: 189 EUR
-- **Positioning**: Expert-guided homologation (most popular)
-- **Features**:
-  - Everything in Digital Guide
-  - Personal expert review of every document before submission
-  - Direct communication with authorities on your behalf
-  - Application submission support
-  - FSP/equivalence exam preparation material
-  - Priority support (response within 24h)
-  - Progress tracking dashboard
+### Solution
+Remove the `<CountdownTimer />` from inside each card and place a single, prominent banner above the package grid. This banner will combine the "Limited introductory offer" message with the countdown timer.
 
-### Tier 3: Full Support + Language (was "Personal Mentorship")
-- **Regular price**: 899 EUR | **Intro price**: 499 EUR
-- **Positioning**: Complete package with language training and in-person support
-- **Features**:
-  - Everything in Full Support
-  - 12-month medical language course access (target country language)
-  - 4x live 1:1 sessions (60 min): document review, exam prep, interview coaching
-  - Dedicated case manager from start to finish
-  - In-person support for key appointments (where available)
-  - We handle all authority communication and paperwork
-  - Job matching with open positions on our platform
-  - Direct WhatsApp and phone support
+### Changes (single file)
 
----
+**`src/components/payments/PaymentFlow.tsx`**
 
-## Technical Changes
+1. Remove `<CountdownTimer />` from inside each card's pricing section (currently rendered per-card in the `CardContent`).
+2. Remove the per-card "Limited introductory offer" badge as well, since the banner will convey this.
+3. Add a single banner between the country indicator and the package grid:
+   - Styled as a highlighted bar (e.g., `bg-primary/10 border border-primary/20 rounded-lg`) centered with the Zap icon, "Limited introductory offer" text, a separator, and the countdown timer.
+   - Uses existing translations (`t?.payments?.limitedOffer`).
+4. The `CountdownTimer` component stays unchanged internally, just used once instead of three times.
 
-### 1. Pricing config in `PaymentFlow.tsx`
-Update `getPricingByCountry()` to return both regular and intro prices:
-- digital_starter: 7900 (intro: 3900)
-- complete: 37900 (intro: 18900)
-- personal_mentorship: 89900 (intro: 49900)
+### Visual Result
+```text
+  [Country Badge]
 
-Add `introPrice` field to `PackageConfig` interface and render both prices (strikethrough on regular, highlighted intro price with a "Limited offer" badge).
+  [--- Zap Limited introductory offer  |  Timer: 5d 04h 30m 12s ---]
 
-### 2. Translation files (all 5 languages: en, es, de, fr, ru)
-Update `payments.ts` in each language folder:
-- Rename package titles: "Digital Guide", "Full Support", "Full Support + [Language]"
-- Update descriptions to match new positioning
-- Update feature lists per tier
-- Add new translation keys: `introPrice`, `limitedOffer`, `regularPrice`, `introEnds`
+  [Card 1]          [Card 2]          [Card 3]
+  €79 → €39         €379 → €189       €899 → €449
+  features...        features...        features...
+```
 
-### 3. Price display in `PaymentFlow.tsx`
-- Show regular price with strikethrough
-- Show intro price as the main bold price
-- Add a small "Limited introductory offer" badge
-- Keep the `oneTime` label
-
-### 4. Results page price reference (`HomologationResult.tsx`)
-- Update the "Starting from 49EUR" text on line 400 to "Starting from 39EUR"
-- Update investment percentage calculation to use 39 instead of 49
-
-### 5. Edge function pricing (if hardcoded)
-- The `create-payment` edge function receives `productType` and should map to Stripe prices server-side -- these Stripe prices will need updating separately (not in frontend code)
-
-### Files to modify:
-- `src/components/payments/PaymentFlow.tsx` -- pricing, UI, intro price display
-- `src/utils/i18n/languages/en/payments.ts` -- English translations
-- `src/utils/i18n/languages/es/payments.ts` -- Spanish translations
-- `src/utils/i18n/languages/de/payments.ts` -- German translations
-- `src/utils/i18n/languages/fr/payments.ts` -- French translations
-- `src/utils/i18n/languages/ru/payments.ts` -- Russian translations
-- `src/pages/HomologationResult.tsx` -- update "Starting from" price reference
