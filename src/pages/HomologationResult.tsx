@@ -426,7 +426,7 @@ const HomologationResult = () => {
                 <span className="hidden md:inline text-border">•</span>
                 <div className="flex items-center gap-1.5">
                   <Users className="h-3.5 w-3.5 text-blue-500" />
-                  <span>{t.homologationResult.cta?.benefit3 || "24/7 support"}</span>
+                  
                 </div>
                 <span className="hidden md:inline text-border">•</span>
                 <div className="flex items-center gap-1.5">
