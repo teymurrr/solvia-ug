@@ -218,7 +218,7 @@ export const landing = {
     text: "¿Necesitas aprender el idioma médico para Europa?",
     cta: "Aprende más"
   },
-  pricingTeaser: "Planes desde €49",
+  pricingTeaser: "Planes desde €39",
   whatYouGet: {
     title: "Lo que Solvia hace por ti",
     subtitle: "Nos encargamos del papeleo complejo para que tú te concentres en tu carrera",

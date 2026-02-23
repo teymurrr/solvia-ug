@@ -6,14 +6,12 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
-// Country-specific pricing configuration (amounts in cents) - must match frontend and create-payment
+// Pricing configuration (amounts in cents) - must match frontend and create-payment
 const getPricingByCountry = (country: string | null): Record<string, number> => {
-  const isSpain = country === 'spain';
-  
   return {
-    homologation: isSpain ? 25000 : 75000,      // €250 or €750
-    language_prep: isSpain ? 50000 : 99000,     // €500 or €990
-    premium_support: isSpain ? 129900 : 269900, // €1,299 or €2,699
+    digital_starter: 3900,       // €39 introductory price
+    complete: 18900,              // €189 introductory price
+    personal_mentorship: 49900,   // €499 introductory price
   };
 };
 

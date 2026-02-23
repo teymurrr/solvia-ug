@@ -104,7 +104,7 @@ const PathToSuccessSection = () => {
                   <div className="flex items-center justify-between gap-2 bg-muted/40 rounded-lg px-3 py-2.5">
                     <div className="text-center flex-1">
                       <p className="text-xs text-muted-foreground">{comparison?.startingFrom || 'From'}</p>
-                      <p className="text-lg font-bold text-primary">€49</p>
+                      <p className="text-lg font-bold text-primary">€39</p>
                     </div>
                     <div className="w-px h-8 bg-border" />
                     <div className="text-center flex-1">

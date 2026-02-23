@@ -94,7 +94,7 @@ const CountryComparisonSection = () => {
                       <p className="text-xs text-muted-foreground mb-1">
                         {comparison?.startingFrom || "Starting from"}
                       </p>
-                      <p className="text-2xl font-bold text-primary">€49</p>
+                      <p className="text-2xl font-bold text-primary">€39</p>
                     </div>
 
                     {/* Duration */}
