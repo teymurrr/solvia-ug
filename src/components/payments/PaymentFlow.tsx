@@ -497,10 +497,9 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
                 </div>
                 <div className="flex items-center justify-center gap-2 mt-2">
                   <Badge variant="secondary" className="bg-green-100 text-green-700 hover:bg-green-100 border-none dark:bg-green-900/40 dark:text-green-400">
-                    {t?.payments?.youSave || 'Save'} €{((pkg.price - pkg.introPrice) / 100).toFixed(0)}
+                    {t?.payments?.youSave || 'Save'} {Math.round(((pkg.price - pkg.introPrice) / pkg.price) * 100)}%
                   </Badge>
                 </div>
-                <span className="text-sm text-muted-foreground mt-1 block">{t?.payments?.oneTime || 'one-time'}</span>
               </div>
               
               <div className="space-y-3 text-left">
