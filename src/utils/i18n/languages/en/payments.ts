@@ -55,17 +55,16 @@ export const payments = {
       ]
     },
     personalMentorship: {
-      title: 'Full Support +',
+      titleBase: 'Full Homologation +',
       descriptionBase: 'Complete homologation + language training with dedicated case manager &',
       descriptionEnd: 'in-person support',
       features: [
-        'Everything in Full Support',
+        'Everything in Full Personal Homologation',
         '12-month medical language course access',
         '4× live 1:1 sessions (60 min): document review, exam prep & interview coaching',
         'Dedicated case manager from start to finish',
         'In-person support for key appointments (where available)',
         'We handle all authority communication & paperwork',
-        'Job matching with open positions on our platform',
         'Direct WhatsApp & phone support'
       ]
     }

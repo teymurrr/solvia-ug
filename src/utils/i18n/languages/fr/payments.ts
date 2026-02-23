@@ -55,17 +55,16 @@ export const payments = {
       ]
     },
     personalMentorship: {
-      title: 'Accompagnement Complet +',
+      titleBase: 'Homologation Complète +',
       descriptionBase: 'Homologation complète + formation linguistique avec gestionnaire de cas dédié et',
       descriptionEnd: 'accompagnement en personne',
       features: [
-        'Tout de l\'Accompagnement Complet',
+        'Tout de l\'Homologation Personnelle Complète',
         'Accès au cours de langue médicale pendant 12 mois',
         '4 sessions en direct 1:1 (60 min) : révision de documents, préparation d\'examen et coaching d\'entretien',
         'Gestionnaire de cas dédié du début à la fin',
         'Accompagnement en personne pour les rendez-vous clés (si disponible)',
         'Nous gérons toute la communication avec les autorités et la paperasse',
-        'Mise en relation avec les postes ouverts sur notre plateforme',
         'Support direct WhatsApp et téléphone'
       ]
     }

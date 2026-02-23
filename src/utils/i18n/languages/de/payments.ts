@@ -55,17 +55,16 @@ export const payments = {
       ]
     },
     personalMentorship: {
-      title: 'Rundum-Betreuung +',
+      titleBase: 'Komplette Homologation +',
       descriptionBase: 'Komplette Approbation + Sprachtraining mit persönlichem Fallmanager &',
       descriptionEnd: 'Vor-Ort-Unterstützung',
       features: [
-        'Alles aus Rundum-Betreuung',
+        'Alles aus Persönliche Rundum-Homologation',
         '12 Monate Zugang zum medizinischen Sprachkurs',
         '4× Live-1:1-Sitzungen (60 Min): Dokumentenprüfung, Prüfungsvorbereitung & Interviewcoaching',
         'Persönlicher Fallmanager von Anfang bis Ende',
         'Vor-Ort-Unterstützung bei wichtigen Terminen (wo verfügbar)',
         'Wir übernehmen die gesamte Behördenkommunikation & Papierkram',
-        'Job-Matching mit offenen Stellen auf unserer Plattform',
         'Direkter WhatsApp- & Telefon-Support'
       ]
     }

@@ -55,17 +55,16 @@ export const payments = {
       ]
     },
     personalMentorship: {
-      title: 'Soporte Completo +',
+      titleBase: 'Homologación Completa +',
       descriptionBase: 'Homologación completa + formación lingüística con gestor de caso dedicado y',
       descriptionEnd: 'soporte presencial',
       features: [
-        'Todo lo de Soporte Completo',
+        'Todo lo de Homologación Personal Completa',
         'Acceso a curso de idioma médico por 12 meses',
         '4 sesiones en vivo 1:1 (60 min): revisión de documentos, preparación de examen y coaching de entrevista',
         'Gestor de caso dedicado de principio a fin',
         'Soporte presencial para citas clave (donde esté disponible)',
         'Gestionamos toda la comunicación con autoridades y trámites',
-        'Emparejamiento laboral con posiciones abiertas en nuestra plataforma',
         'Soporte directo por WhatsApp y teléfono'
       ]
     }
