@@ -397,7 +397,7 @@ const HomologationResult = () => {
                   </p>
                   <p className="text-3xl md:text-4xl font-bold text-foreground">
                     <span className="text-base font-normal text-muted-foreground">{t.homologationResult.value?.startingFrom || 'Starting from'} </span>
-                    49€
+                    39€
                   </p>
                 </div>
               </div>

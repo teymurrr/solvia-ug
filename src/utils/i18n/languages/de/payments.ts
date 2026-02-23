@@ -19,6 +19,8 @@ export const payments = {
   emailLabel: 'E-Mail-Adresse',
   emailPlaceholder: 'ihre.email@beispiel.de',
   emailHint: 'Wir senden Ihre Quittung und Zugangsdaten an diese E-Mail',
+  limitedOffer: 'Begrenztes Einführungsangebot',
+  introEnds: 'Regulärer Preis',
   languageNames: {
     german: 'Deutsch',
     spanish: 'Spanisch',
@@ -27,40 +29,44 @@ export const payments = {
   },
   packages: {
     digitalStarter: {
-      title: 'Digital Starter',
-      description: 'Bereiten Sie Ihre Dokumente eigenständig mit unserem digitalen Toolkit vor',
+      title: 'Digital Guide',
+      description: 'Navigieren Sie Ihre Approbation eigenständig mit unserem KI-gestützten digitalen Toolkit',
       features: [
+        'KI-gestützte Dokumentenanalyse & Validierung',
         'Länderspezifische Dokumenten-Checkliste & Vorlagen',
-        'Schritt-für-Schritt-Videoanleitungen für jedes Dokument',
+        'Schritt-für-Schritt-Erklärungsvideos für jedes Dokument',
         'Apostille- & Übersetzungsanleitungen',
-        'Lebenslaufvorlage für medizinische Bewerbungen',
+        'Medizinische Lebenslaufvorlage',
         'E-Mail-Support (Antwort innerhalb von 72h)'
       ]
     },
     complete: {
-      titleBase: 'Komplett-Paket +',
-      descriptionBase: 'Expertenbegleitete Approbation +',
-      descriptionEnd: 'Sprachvorbereitung',
+      titleBase: 'Rundum-Betreuung',
+      descriptionBase: 'Expertenbegleitete Approbation mit persönlicher Dokumentenprüfung &',
+      descriptionEnd: 'Behördenkommunikation',
       features: [
-        'Alles aus Digital Starter',
-        'Expertenprüfung jedes Dokuments vor Einreichung',
-        'KI-gestützte Dokumentenvalidierung mit sofortigem Feedback',
-        '6 Monate Zugang zum medizinischen Sprachkurs',
-        'FSP-Vorbereitung: Lernplan, Übungsfragen & Probeprüfungen',
-        'Prioritäts-Support (Antwort innerhalb von 24h)'
+        'Alles aus Digital Guide',
+        'Persönliche Expertenprüfung jedes Dokuments vor Einreichung',
+        'Direkte Kommunikation mit Behörden in Ihrem Namen',
+        'Unterstützung bei der Antragstellung',
+        'FSP-/Gleichwertigkeitsprüfung Vorbereitungsmaterial',
+        'Prioritäts-Support (Antwort innerhalb von 24h)',
+        'Fortschritts-Dashboard'
       ]
     },
     personalMentorship: {
-      title: 'Persönliche Mentorenschaft',
-      descriptionBase: 'Premium-Service mit persönlichem Fallmanager & 1:1',
-      descriptionEnd: 'Coaching',
+      title: 'Rundum-Betreuung +',
+      descriptionBase: 'Komplette Approbation + Sprachtraining mit persönlichem Fallmanager &',
+      descriptionEnd: 'Vor-Ort-Unterstützung',
       features: [
-        'Alles aus dem Komplett-Paket',
+        'Alles aus Rundum-Betreuung',
+        '12 Monate Zugang zum medizinischen Sprachkurs',
+        '4× Live-1:1-Sitzungen (60 Min): Dokumentenprüfung, Prüfungsvorbereitung & Interviewcoaching',
         'Persönlicher Fallmanager von Anfang bis Ende',
-        '4× Live-1:1-Sitzungen (60 Min): Dokumente, Prüfungsvorbereitung & Interviewtraining',
-        'Wir reichen Ihren Antrag in Ihrem Namen ein',
+        'Vor-Ort-Unterstützung bei wichtigen Terminen (wo verfügbar)',
+        'Wir übernehmen die gesamte Behördenkommunikation & Papierkram',
         'Job-Matching mit offenen Stellen auf unserer Plattform',
-        'Direkter WhatsApp- & Telefon-Support mit Ihrem Fallmanager'
+        'Direkter WhatsApp- & Telefon-Support'
       ]
     }
   },
