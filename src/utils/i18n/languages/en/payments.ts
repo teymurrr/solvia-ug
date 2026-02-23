@@ -29,12 +29,12 @@ export const payments = {
   },
   packages: {
     digitalStarter: {
-      title: 'Digital Guide',
+      title: 'Digital Homologation',
       description: 'Navigate your homologation independently with our AI-powered digital toolkit',
       features: [
+        'Step-by-step guidance for each document',
         'AI-powered document analysis & validation',
         'Country-specific document checklist & templates',
-        'Step-by-step explanation videos for each document',
         'Apostille & translation instructions',
         'Medical CV template',
         'Email support (response within 72h)'
@@ -45,7 +45,7 @@ export const payments = {
       descriptionBase: 'Expert-guided homologation with personal document review &',
       descriptionEnd: 'authority communication',
       features: [
-        'Everything in Digital Guide',
+        'Everything in Digital Homologation',
         'Personal expert review of every document before submission',
         'Direct communication with authorities on your behalf',
         'Application submission support',

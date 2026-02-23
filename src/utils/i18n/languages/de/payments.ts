@@ -29,12 +29,12 @@ export const payments = {
   },
   packages: {
     digitalStarter: {
-      title: 'Digital Guide',
+      title: 'Digitale Homologation',
       description: 'Navigieren Sie Ihre Approbation eigenständig mit unserem KI-gestützten digitalen Toolkit',
       features: [
+        'Schritt-für-Schritt-Anleitung für jedes Dokument',
         'KI-gestützte Dokumentenanalyse & Validierung',
         'Länderspezifische Dokumenten-Checkliste & Vorlagen',
-        'Schritt-für-Schritt-Erklärungsvideos für jedes Dokument',
         'Apostille- & Übersetzungsanleitungen',
         'Medizinische Lebenslaufvorlage',
         'E-Mail-Support (Antwort innerhalb von 72h)'
@@ -45,7 +45,7 @@ export const payments = {
       descriptionBase: 'Expertenbegleitete Approbation mit persönlicher Dokumentenprüfung &',
       descriptionEnd: 'Behördenkommunikation',
       features: [
-        'Alles aus Digital Guide',
+        'Alles aus Digitale Homologation',
         'Persönliche Expertenprüfung jedes Dokuments vor Einreichung',
         'Direkte Kommunikation mit Behörden in Ihrem Namen',
         'Unterstützung bei der Antragstellung',

@@ -165,9 +165,9 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
       price: pricing.digital_starter.price,
       introPrice: pricing.digital_starter.introPrice,
       features: t?.payments?.packages?.digitalStarter?.features || [
+        'Step-by-step guidance for each document',
         'AI-powered document analysis & validation',
         'Country-specific document checklist & templates',
-        'Step-by-step explanation videos for each document',
         'Apostille & translation instructions',
         'Medical CV template',
         'Email support (response within 72h)'
@@ -180,7 +180,7 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
       introPrice: pricing.complete.introPrice,
       popular: true,
       features: t?.payments?.packages?.complete?.features || [
-        'Everything in Digital Guide',
+        'Everything in Digital Homologation',
         'Personal expert review of every document before submission',
         'Direct communication with authorities on your behalf',
         'Application submission support',
@@ -211,7 +211,7 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
     const languageName = getLanguageForCountry(targetCountry, t);
     switch (id) {
       case 'digital_starter':
-        return t?.payments?.packages?.digitalStarter?.title || 'Digital Starter';
+        return t?.payments?.packages?.digitalStarter?.title || 'Digital Homologation';
       case 'complete':
         // Dynamic language name based on country
         const completeBase = t?.payments?.packages?.complete?.titleBase || 'Complete Package +';
