@@ -4,23 +4,23 @@ import MainLayout from '@/components/MainLayout';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
-import { 
-  Clock, 
-  Languages, 
-  CheckCircle2, 
+import {
+  Clock,
+  Languages,
+  CheckCircle2,
   ArrowRight,
   Calendar,
   Sparkles,
   Shield,
   Users,
-  HeartHandshake,
+
   AlertTriangle,
   FileText,
   GraduationCap,
   Lock,
   BadgeCheck,
-  TrendingUp,
-} from 'lucide-react';
+  TrendingUp } from
+'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
 import { homologationDataByCountry } from '@/data/homologationData';
 import { homologationTranslations, HomologationLanguage } from '@/data/homologationDataTranslations';
@@ -40,7 +40,7 @@ const HomologationResult = () => {
   const [searchParams] = useSearchParams();
   const [wizardData, setWizardData] = useState<WizardData | null>(null);
 
-  const lang = (currentLanguage as HomologationLanguage) || 'en';
+  const lang = currentLanguage as HomologationLanguage || 'en';
   const dataTranslations = homologationTranslations[lang] || homologationTranslations.en;
 
   useEffect(() => {
@@ -56,7 +56,7 @@ const HomologationResult = () => {
         doctorType: doctorType || undefined,
         studyCountry: studyCountry || undefined,
         languageLevel: languageLevel || undefined,
-        email: email || undefined,
+        email: email || undefined
       });
     } else {
       const stored = localStorage.getItem('wizardData');
@@ -77,8 +77,8 @@ const HomologationResult = () => {
             </CardContent>
           </Card>
         </div>
-      </MainLayout>
-    );
+      </MainLayout>);
+
   }
 
   const countryData = homologationDataByCountry[wizardData.targetCountry];
@@ -94,13 +94,13 @@ const HomologationResult = () => {
             </CardContent>
           </Card>
         </div>
-      </MainLayout>
-    );
+      </MainLayout>);
+
   }
 
   const getCountryFlag = (countryId: string) => {
     const flags: Record<string, string> = {
-      germany: '🇩🇪', austria: '🇦🇹', spain: '🇪🇸', italy: '🇮🇹', france: '🇫🇷',
+      germany: '🇩🇪', austria: '🇦🇹', spain: '🇪🇸', italy: '🇮🇹', france: '🇫🇷'
     };
     return flags[countryId] || '🌍';
   };
@@ -116,7 +116,7 @@ const HomologationResult = () => {
       'specialist': t.wizard?.doctorType?.specialist || 'Specialist',
       'nurse': t.wizard?.doctorType?.nurse || 'Nurse',
       'dentist': t.wizard?.doctorType?.dentist || 'Dentist',
-      'other': t.wizard?.doctorType?.other || 'Other',
+      'other': t.wizard?.doctorType?.other || 'Other'
     };
     return mapping[type] || type;
   };
@@ -129,7 +129,7 @@ const HomologationResult = () => {
     const italianSpeakingCountries = ['italy'];
     const germanSpeakingCountries = ['germany', 'austria', 'switzerland'];
     if (target === 'spain' && spanishSpeakingCountries.includes(origin)) return false;
-    if ((target === 'france') && frenchSpeakingCountries.includes(origin)) return false;
+    if (target === 'france' && frenchSpeakingCountries.includes(origin)) return false;
     if (target === 'italy' && italianSpeakingCountries.includes(origin)) return false;
     if ((target === 'germany' || target === 'austria') && germanSpeakingCountries.includes(origin)) return false;
     return true;
@@ -175,19 +175,19 @@ const HomologationResult = () => {
   const requiredIdx = languageLevels.indexOf(requiredLevelClean);
   const isMotherTongue = userLevel === 'MOTHER TONGUE' || wizardData.languageLevel?.toLowerCase() === 'mother tongue';
   const userIdx = languageLevels.indexOf(userLevel);
-  const levelGap = isMotherTongue ? 0 : (requiredIdx - userIdx);
+  const levelGap = isMotherTongue ? 0 : requiredIdx - userIdx;
 
   const monthlySalary = getMonthlySalaryLoss();
-  const investmentPercent = ((49 / Number(monthlySalary)) * 100).toFixed(1);
+  const investmentPercent = (49 / Number(monthlySalary) * 100).toFixed(1);
 
   // Roadmap steps — skip language step when user already speaks the target language
   const roadmapSteps = [
-    { icon: FileText, label: t.homologationResult.roadmap?.step1 || 'Document Collection & Verification', desc: t.homologationResult.roadmap?.step1desc || '', locked: false },
-    ...(showLanguageCard ? [{ icon: Languages, label: t.homologationResult.roadmap?.step2 || 'Language Preparation', desc: (t.homologationResult.roadmap?.step2desc || '').replace('{level}', requiredLevel), locked: false }] : []),
-    { icon: FileText, label: t.homologationResult.roadmap?.step3 || 'Application Submission', desc: t.homologationResult.roadmap?.step3desc || '', locked: true },
-    { icon: GraduationCap, label: t.homologationResult.roadmap?.step4 || 'Exam Preparation', desc: t.homologationResult.roadmap?.step4desc || '', locked: true },
-    { icon: BadgeCheck, label: t.homologationResult.roadmap?.step5 || 'Final Approval & Registration', desc: t.homologationResult.roadmap?.step5desc || '', locked: true },
-  ];
+  { icon: FileText, label: t.homologationResult.roadmap?.step1 || 'Document Collection & Verification', desc: t.homologationResult.roadmap?.step1desc || '', locked: false },
+  ...(showLanguageCard ? [{ icon: Languages, label: t.homologationResult.roadmap?.step2 || 'Language Preparation', desc: (t.homologationResult.roadmap?.step2desc || '').replace('{level}', requiredLevel), locked: false }] : []),
+  { icon: FileText, label: t.homologationResult.roadmap?.step3 || 'Application Submission', desc: t.homologationResult.roadmap?.step3desc || '', locked: true },
+  { icon: GraduationCap, label: t.homologationResult.roadmap?.step4 || 'Exam Preparation', desc: t.homologationResult.roadmap?.step4desc || '', locked: true },
+  { icon: BadgeCheck, label: t.homologationResult.roadmap?.step5 || 'Final Approval & Registration', desc: t.homologationResult.roadmap?.step5desc || '', locked: true }];
+
 
   return (
     <MainLayout>
@@ -197,8 +197,8 @@ const HomologationResult = () => {
         <motion.section
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="pt-8 pb-3 md:pt-12 md:pb-6"
-        >
+          className="pt-8 pb-3 md:pt-12 md:pb-6">
+
           <div className="container mx-auto px-4 max-w-3xl text-center">
             <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-1.5 rounded-full mb-6 text-sm font-medium">
               <Sparkles className="h-4 w-4" />
@@ -210,33 +210,33 @@ const HomologationResult = () => {
             </h1>
 
             <p className="text-muted-foreground text-base md:text-lg mb-6 max-w-xl mx-auto">
-              {(t.homologationResult.diagnosis?.subtitle || "Here's what stands between you and practicing medicine in {country}")
-                .replace('{country}', translatedCountryName)}
+              {(t.homologationResult.diagnosis?.subtitle || "Here's what stands between you and practicing medicine in {country}").
+              replace('{country}', translatedCountryName)}
             </p>
 
             {/* Salary urgency inline */}
             <div className="flex items-center justify-center gap-2 text-sm text-amber-700 dark:text-amber-400 mb-6">
               <AlertTriangle className="h-3.5 w-3.5 shrink-0" />
               <span>
-                {(t.homologationResult.urgency?.salaryLoss || "You are losing approximately {salary} {currency}/month by not working in {country}.")
-                  .replace('{salary}', monthlySalary.toLocaleString())
-                  .replace('{currency}', countryData.averageSalaries.currency)
-                  .replace('{country}', translatedCountryName)}
+                {(t.homologationResult.urgency?.salaryLoss || "You are losing approximately {salary} {currency}/month by not working in {country}.").
+                replace('{salary}', monthlySalary.toLocaleString()).
+                replace('{currency}', countryData.averageSalaries.currency).
+                replace('{country}', translatedCountryName)}
               </span>
             </div>
 
             {/* Profile pills */}
             <div className="flex flex-wrap items-center justify-center gap-2">
-              {wizardData.doctorType && (
-                <span className="bg-secondary text-secondary-foreground px-3 py-1 rounded-full text-sm font-medium">
+              {wizardData.doctorType &&
+              <span className="bg-secondary text-secondary-foreground px-3 py-1 rounded-full text-sm font-medium">
                   {getDoctorTypeLabel(wizardData.doctorType)}
                 </span>
-              )}
-              {wizardData.studyCountry && (
-                <span className="bg-secondary text-secondary-foreground px-3 py-1 rounded-full text-sm">
+              }
+              {wizardData.studyCountry &&
+              <span className="bg-secondary text-secondary-foreground px-3 py-1 rounded-full text-sm">
                   {t.homologationResult.from} {wizardData.studyCountry}
                 </span>
-              )}
+              }
             </div>
           </div>
         </motion.section>
@@ -247,8 +247,8 @@ const HomologationResult = () => {
           <motion.section
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-          >
+            transition={{ delay: 0.1 }}>
+
             <div className={`grid grid-cols-1 ${showLanguageCard ? 'md:grid-cols-3' : 'md:grid-cols-2'} gap-4`}>
               {/* Timeline card */}
               <div className="bg-card border rounded-2xl p-5 text-center space-y-2">
@@ -260,30 +260,30 @@ const HomologationResult = () => {
               </div>
 
               {/* Language gap card */}
-              {showLanguageCard && (
-                <div className="bg-card border rounded-2xl p-5 text-center space-y-2">
+              {showLanguageCard &&
+              <div className="bg-card border rounded-2xl p-5 text-center space-y-2">
                   <Languages className="h-5 w-5 text-primary mx-auto" />
                   <p className="text-xs text-muted-foreground uppercase tracking-wide font-medium">
                     {t.homologationResult.diagnosis?.languageLabel || 'Language Gap'}
                   </p>
-                  {levelGap > 0 ? (
-                    <>
+                  {levelGap > 0 ?
+                <>
                       <div className="flex items-center justify-center gap-2">
                         <span className="text-lg font-bold text-amber-600 dark:text-amber-400">{userLevel || '?'}</span>
                         <ArrowRight className="h-4 w-4 text-muted-foreground" />
                         <span className="text-lg font-bold text-primary">{requiredLevel}</span>
                       </div>
-                    </>
-                  ) : (
-                    <>
+                    </> :
+
+                <>
                       <p className="text-lg font-bold text-green-600">✓ {requiredLevel}</p>
                       <p className="text-xs text-green-600">
                         {t.homologationResult.diagnosis?.languageReady || 'You meet the requirement!'}
                       </p>
                     </>
-                  )}
+                }
                 </div>
-              )}
+              }
 
               {/* Documents card */}
               <div className="bg-card border rounded-2xl p-5 text-center space-y-2">
@@ -300,8 +300,8 @@ const HomologationResult = () => {
           <motion.section
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-          >
+            transition={{ delay: 0.2 }}>
+
             <div className="text-center mb-3">
               <h2 className="text-2xl font-bold mb-1">
                 {t.homologationResult.roadmap?.title || 'Your Step-by-Step Roadmap'}
@@ -319,19 +319,19 @@ const HomologationResult = () => {
                   return (
                     <div key={i} className="relative">
                       {/* Connector line */}
-                      {i < roadmapSteps.length - 1 && (
-                        <div className={`absolute left-6 top-12 w-0.5 h-full ${step.locked ? 'bg-border' : 'bg-primary/30'}`} />
-                      )}
+                      {i < roadmapSteps.length - 1 &&
+                      <div className={`absolute left-6 top-12 w-0.5 h-full ${step.locked ? 'bg-border' : 'bg-primary/30'}`} />
+                      }
                       <div className={`flex items-start gap-4 p-4 rounded-xl transition-all ${
-                        step.locked 
-                          ? 'opacity-40 blur-[1px]' 
-                          : 'bg-card border'
-                      }`}>
+                      step.locked ?
+                      'opacity-40 blur-[1px]' :
+                      'bg-card border'}`
+                      }>
                         <div className={`w-12 h-12 rounded-full flex items-center justify-center shrink-0 ${
-                          step.locked 
-                            ? 'bg-muted text-muted-foreground' 
-                            : 'bg-primary/10 text-primary'
-                        }`}>
+                        step.locked ?
+                        'bg-muted text-muted-foreground' :
+                        'bg-primary/10 text-primary'}`
+                        }>
                           {step.locked ? <Lock className="h-5 w-5" /> : <Icon className="h-5 w-5" />}
                         </div>
                         <div className="min-w-0">
@@ -344,8 +344,8 @@ const HomologationResult = () => {
                           <p className="text-xs text-muted-foreground mt-0.5">{step.desc}</p>
                         </div>
                       </div>
-                    </div>
-                  );
+                    </div>);
+
                 })}
               </div>
 
@@ -370,8 +370,8 @@ const HomologationResult = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="mt-2"
-          >
+            className="mt-2">
+
             <h2 className="text-xl md:text-2xl font-bold text-center mb-3">
               {t.homologationResult.value?.title || 'The smartest investment in your career'}
             </h2>
@@ -381,8 +381,8 @@ const HomologationResult = () => {
                 {/* Left: What you'll earn */}
                 <div className="text-center md:text-left space-y-1">
                   <p className="text-xs text-muted-foreground uppercase tracking-wide">
-                    {(t.homologationResult.value?.monthlyEarning || 'Your potential monthly salary in {country}')
-                      .replace('{country}', translatedCountryName)}
+                    {(t.homologationResult.value?.monthlyEarning || 'Your potential monthly salary in {country}').
+                    replace('{country}', translatedCountryName)}
                   </p>
                   <p className="text-3xl md:text-4xl font-bold text-primary">
                     {monthlySalary.toLocaleString()} {countryData.averageSalaries.currency}
@@ -407,8 +407,8 @@ const HomologationResult = () => {
               <div className="flex items-center gap-2 text-sm justify-center">
                 <TrendingUp className="h-4 w-4 text-green-500" />
                 <span className="text-muted-foreground">
-                  {(t.homologationResult.value?.returnNote || "That's less than {percent}% of your first month's salary")
-                    .replace('{percent}', investmentPercent)}
+                  {(t.homologationResult.value?.returnNote || "That's less than {percent}% of your first month's salary").
+                  replace('{percent}', investmentPercent)}
                 </span>
               </div>
 
@@ -430,7 +430,7 @@ const HomologationResult = () => {
                 </div>
                 <span className="hidden md:inline text-border">•</span>
                 <div className="flex items-center gap-1.5">
-                  <HeartHandshake className="h-3.5 w-3.5 text-amber-500" />
+                  
                   <span>{t.homologationResult.cta?.benefit4 || "No hidden costs"}</span>
                 </div>
               </div>
@@ -457,20 +457,20 @@ const HomologationResult = () => {
           </motion.section>
 
           {/* Email reminder */}
-          {wizardData.email && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.4 }}
-              className="text-center text-sm text-muted-foreground"
-            >
+          {wizardData.email &&
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.4 }}
+            className="text-center text-sm text-muted-foreground">
+
               <p>{t.homologationResult.emailSent} <strong>{wizardData.email}</strong></p>
             </motion.div>
-          )}
+          }
         </div>
       </div>
-    </MainLayout>
-  );
+    </MainLayout>);
+
 };
 
 export default HomologationResult;
