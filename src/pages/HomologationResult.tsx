@@ -431,7 +431,7 @@ const HomologationResult = () => {
                 <span className="hidden md:inline text-border">•</span>
                 <div className="flex items-center gap-1.5">
                   
-                  <span>{t.homologationResult.cta?.benefit4 || "No hidden costs"}</span>
+                  
                 </div>
               </div>
 
