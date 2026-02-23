@@ -402,8 +402,6 @@ const HomologationResult = () => {
                 </div>
               </div>
 
-              <Separator />
-
               <div className="flex items-center gap-2 text-sm justify-center">
                 <TrendingUp className="h-4 w-4 text-green-500" />
                 <span className="text-muted-foreground">
@@ -411,6 +409,8 @@ const HomologationResult = () => {
                   replace('{percent}', investmentPercent)}
                 </span>
               </div>
+
+              <Separator />
 
               {/* Action buttons */}
               <div className="flex flex-col sm:flex-row items-center gap-3 pt-1 w-full">
