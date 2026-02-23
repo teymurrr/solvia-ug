@@ -344,7 +344,7 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
   };
 
   const isValidEmail = (email: string) => {
-    return /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email);
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   };
 
   const handlePayment = async () => {
