@@ -37,7 +37,8 @@ export const payments = {
         'Checklist de documentos específica por país y plantillas',
         'Instrucciones de apostilla y traducción',
         'Plantilla de CV médico',
-        'Soporte por email (respuesta en 72h)'
+        'Soporte por email (respuesta en 72h)',
+        'Panel de seguimiento de progreso'
       ]
     },
     complete: {
@@ -50,8 +51,7 @@ export const payments = {
         'Comunicación directa con las autoridades en tu nombre',
         'Soporte en la presentación de solicitudes',
         'Material de preparación para FSP/examen de equivalencia',
-        'Soporte prioritario (respuesta en 24h)',
-        'Panel de seguimiento de progreso'
+        'Soporte prioritario (respuesta en 24h)'
       ]
     },
     personalMentorship: {

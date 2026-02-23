@@ -37,7 +37,8 @@ export const payments = {
         'Country-specific document checklist & templates',
         'Apostille & translation instructions',
         'Medical CV template',
-        'Email support (response within 72h)'
+        'Email support (response within 72h)',
+        'Progress tracking dashboard'
       ]
     },
     complete: {
@@ -50,8 +51,7 @@ export const payments = {
         'Direct communication with authorities on your behalf',
         'Application submission support',
         'FSP/equivalence exam preparation material',
-        'Priority support (response within 24h)',
-        'Progress tracking dashboard'
+        'Priority support (response within 24h)'
       ]
     },
     personalMentorship: {
