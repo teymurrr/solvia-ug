@@ -179,10 +179,10 @@ const HomologationResult = () => {
   const monthlySalary = getMonthlySalaryLoss();
   const investmentPercent = ((49 / Number(monthlySalary)) * 100).toFixed(1);
 
-  // Roadmap steps
+  // Roadmap steps — skip language step when user already speaks the target language
   const roadmapSteps = [
     { icon: FileText, label: t.homologationResult.roadmap?.step1 || 'Document Collection & Verification', desc: t.homologationResult.roadmap?.step1desc || '', locked: false },
-    { icon: Languages, label: t.homologationResult.roadmap?.step2 || 'Language Preparation', desc: (t.homologationResult.roadmap?.step2desc || '').replace('{level}', requiredLevel), locked: false },
+    ...(showLanguageCard ? [{ icon: Languages, label: t.homologationResult.roadmap?.step2 || 'Language Preparation', desc: (t.homologationResult.roadmap?.step2desc || '').replace('{level}', requiredLevel), locked: false }] : []),
     { icon: FileText, label: t.homologationResult.roadmap?.step3 || 'Application Submission', desc: t.homologationResult.roadmap?.step3desc || '', locked: true },
     { icon: GraduationCap, label: t.homologationResult.roadmap?.step4 || 'Exam Preparation', desc: t.homologationResult.roadmap?.step4desc || '', locked: true },
     { icon: BadgeCheck, label: t.homologationResult.roadmap?.step5 || 'Final Approval & Registration', desc: t.homologationResult.roadmap?.step5desc || '', locked: true },
@@ -196,7 +196,7 @@ const HomologationResult = () => {
         <motion.section
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="pt-10 pb-6 md:pt-16 md:pb-10"
+          className="pt-8 pb-3 md:pt-12 md:pb-6"
         >
           <div className="container mx-auto px-4 max-w-3xl text-center">
             <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-1.5 rounded-full mb-6 text-sm font-medium">
@@ -240,7 +240,7 @@ const HomologationResult = () => {
           </div>
         </motion.section>
 
-        <div className="container mx-auto px-4 max-w-3xl space-y-6 pb-16">
+        <div className="container mx-auto px-4 max-w-3xl space-y-4 pb-10">
 
           {/* ===== SECTION 2: DIAGNOSIS CARDS — At-a-glance gaps ===== */}
           <motion.section
@@ -248,7 +248,7 @@ const HomologationResult = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
           >
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className={`grid grid-cols-1 ${showLanguageCard ? 'md:grid-cols-3' : 'md:grid-cols-2'} gap-4`}>
               {/* Timeline card */}
               <div className="bg-card border rounded-2xl p-5 text-center space-y-2">
                 <Clock className="h-5 w-5 text-primary mx-auto" />
@@ -313,7 +313,7 @@ const HomologationResult = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
           >
-            <div className="text-center mb-6">
+            <div className="text-center mb-3">
               <h2 className="text-2xl font-bold mb-1">
                 {t.homologationResult.roadmap?.title || 'Your Step-by-Step Roadmap'}
               </h2>
@@ -381,9 +381,9 @@ const HomologationResult = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="mt-6"
+            className="mt-2"
           >
-            <h2 className="text-xl md:text-2xl font-bold text-center mb-6">
+            <h2 className="text-xl md:text-2xl font-bold text-center mb-3">
               {t.homologationResult.value?.title || 'The smartest investment in your career'}
             </h2>
 
