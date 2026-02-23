@@ -41,7 +41,7 @@ const getPricingByCountry = (country: string | null): Record<ProductType, { pric
   return {
     digital_starter: { price: 7900, introPrice: 3900 },       // €79 → €39
     complete: { price: 37900, introPrice: 18900 },              // €379 → €189
-    personal_mentorship: { price: 89900, introPrice: 49900 },   // €899 → €499
+    personal_mentorship: { price: 89900, introPrice: 44900 },   // €899 → €449
   };
 };
 
@@ -49,7 +49,7 @@ const CountdownTimer: React.FC = () => {
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
 
   useEffect(() => {
-    const target = new Date('2025-02-28T23:59:59').getTime();
+    const target = new Date('2026-02-28T23:59:59').getTime();
     const update = () => {
       const now = Date.now();
       const diff = Math.max(0, target - now);
@@ -430,9 +430,10 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
                 ))}
               </div>
               
+              <div className="mt-auto pt-8">
               <Button
                 variant={selectedPackage === pkg.id ? 'default' : 'outline'}
-                className="w-full mt-auto pt-6"
+                className="w-full"
                 onClick={(e) => {
                   e.stopPropagation();
                   setSelectedPackage(pkg.id);
@@ -443,6 +444,7 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
                   : (t?.payments?.select || 'Select Package')
                 }
               </Button>
+              </div>
             </CardContent>
           </Card>
         ))}
