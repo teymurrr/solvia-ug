@@ -42,16 +42,16 @@ export const payments = {
       ]
     },
     complete: {
-      titleBase: 'Accompagnement Complet',
+      titleBase: 'Homologation Personnelle Complète',
       descriptionBase: 'Homologation guidée par des experts avec révision personnelle des documents et',
       descriptionEnd: 'communication avec les autorités',
       features: [
         'Tout de l\'Homologation Digitale',
         'Révision experte personnelle de chaque document avant soumission',
         'Communication directe avec les autorités en votre nom',
-        'Support pour la soumission des candidatures',
-        'Matériel de préparation FSP/examen d\'équivalence',
-        'Support prioritaire (réponse en 24h)'
+        'Soumission de candidature pour vous',
+        'Support prioritaire (réponse en 24h)',
+        'Tableau de bord de suivi de progression'
       ]
     },
     personalMentorship: {

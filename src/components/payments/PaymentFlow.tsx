@@ -184,9 +184,9 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
         'Everything in Digital Homologation',
         'Personal expert review of every document before submission',
         'Direct communication with authorities on your behalf',
-        'Application submission support',
-        'FSP/equivalence exam preparation material',
-        'Priority support (response within 24h)'
+        'Application submission for you',
+        'Priority support (response within 24h)',
+        'Progress tracking dashboard'
       ]
     },
     {
@@ -213,9 +213,7 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
       case 'digital_starter':
         return t?.payments?.packages?.digitalStarter?.title || 'Digital Homologation';
       case 'complete':
-        // Dynamic language name based on country
-        const completeBase = t?.payments?.packages?.complete?.titleBase || 'Complete Package +';
-        return `${completeBase} ${languageName}`;
+        return t?.payments?.packages?.complete?.titleBase || 'Full Personal Homologation';
       case 'personal_mentorship':
         return t?.payments?.packages?.personalMentorship?.title || 'Personal Mentorship';
     }

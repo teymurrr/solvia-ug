@@ -42,16 +42,16 @@ export const payments = {
       ]
     },
     complete: {
-      titleBase: 'Rundum-Betreuung',
+      titleBase: 'Persönliche Rundum-Homologation',
       descriptionBase: 'Expertenbegleitete Approbation mit persönlicher Dokumentenprüfung &',
       descriptionEnd: 'Behördenkommunikation',
       features: [
         'Alles aus Digitale Homologation',
         'Persönliche Expertenprüfung jedes Dokuments vor Einreichung',
         'Direkte Kommunikation mit Behörden in Ihrem Namen',
-        'Unterstützung bei der Antragstellung',
-        'FSP-/Gleichwertigkeitsprüfung Vorbereitungsmaterial',
-        'Prioritäts-Support (Antwort innerhalb von 24h)'
+        'Antragstellung für Sie',
+        'Prioritäts-Support (Antwort innerhalb von 24h)',
+        'Fortschritts-Dashboard'
       ]
     },
     personalMentorship: {

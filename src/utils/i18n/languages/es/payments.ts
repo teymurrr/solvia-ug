@@ -42,16 +42,16 @@ export const payments = {
       ]
     },
     complete: {
-      titleBase: 'Soporte Completo',
+      titleBase: 'Homologación Personal Completa',
       descriptionBase: 'Homologación guiada por expertos con revisión personal de documentos y',
       descriptionEnd: 'comunicación con autoridades',
       features: [
         'Todo lo de Homologación Digital',
         'Revisión experta personal de cada documento antes del envío',
         'Comunicación directa con las autoridades en tu nombre',
-        'Soporte en la presentación de solicitudes',
-        'Material de preparación para FSP/examen de equivalencia',
-        'Soporte prioritario (respuesta en 24h)'
+        'Presentación de solicitud por ti',
+        'Soporte prioritario (respuesta en 24h)',
+        'Panel de seguimiento de progreso'
       ]
     },
     personalMentorship: {
