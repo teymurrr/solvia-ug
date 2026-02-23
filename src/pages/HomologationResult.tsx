@@ -173,8 +173,9 @@ const HomologationResult = () => {
   const userLevel = wizardData.languageLevel?.toUpperCase() || '';
   const requiredLevelClean = requiredLevel.split('-')[0]; // handle "B2-C1" -> B2
   const requiredIdx = languageLevels.indexOf(requiredLevelClean);
+  const isMotherTongue = userLevel === 'MOTHER TONGUE' || wizardData.languageLevel?.toLowerCase() === 'mother tongue';
   const userIdx = languageLevels.indexOf(userLevel);
-  const levelGap = requiredIdx - userIdx;
+  const levelGap = isMotherTongue ? 0 : (requiredIdx - userIdx);
 
   const monthlySalary = getMonthlySalaryLoss();
   const investmentPercent = ((49 / Number(monthlySalary)) * 100).toFixed(1);
@@ -272,11 +273,6 @@ const HomologationResult = () => {
                         <ArrowRight className="h-4 w-4 text-muted-foreground" />
                         <span className="text-lg font-bold text-primary">{requiredLevel}</span>
                       </div>
-                      <p className="text-xs text-muted-foreground">
-                        {(t.homologationResult.diagnosis?.levelsToGo || '{count} levels to reach {target}')
-                          .replace('{count}', String(levelGap))
-                          .replace('{target}', requiredLevel)}
-                      </p>
                     </>
                   ) : (
                     <>
@@ -296,10 +292,6 @@ const HomologationResult = () => {
                   {t.homologationResult.diagnosis?.documentsLabel || 'Documents Needed'}
                 </p>
                 <p className="text-2xl font-bold text-foreground">{countryData.documents.length}</p>
-                <p className="text-xs text-muted-foreground">
-                  {(t.homologationResult.diagnosis?.documentsCount || '{count} documents to prepare')
-                    .replace('{count}', String(countryData.documents.length))}
-                </p>
               </div>
             </div>
           </motion.section>
