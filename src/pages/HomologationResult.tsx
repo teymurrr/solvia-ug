@@ -412,31 +412,6 @@ const HomologationResult = () => {
                 </span>
               </div>
 
-              {/* Trust signals row */}
-              <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs text-muted-foreground">
-                <div className="flex items-center gap-1.5">
-                  <Shield className="h-3.5 w-3.5 text-primary" />
-                  <span>{t.homologationResult.cta?.benefit1 || "Medical homologation experts"}</span>
-                </div>
-                <span className="hidden md:inline text-border">•</span>
-                <div className="flex items-center gap-1.5">
-                  <CheckCircle2 className="h-3.5 w-3.5 text-green-500" />
-                  <span>{t.homologationResult.cta?.benefit2 || "98% success rate"}</span>
-                </div>
-                <span className="hidden md:inline text-border">•</span>
-                <div className="flex items-center gap-1.5">
-                  
-                  
-                </div>
-                <span className="hidden md:inline text-border">•</span>
-                <div className="flex items-center gap-1.5">
-                  
-                  
-                </div>
-              </div>
-
-              <Separator />
-
               {/* Action buttons */}
               <div className="flex flex-col sm:flex-row items-center gap-3 pt-1 w-full">
                 <Button size="lg" onClick={handleStartProcess} className="gap-2 w-full sm:flex-1">
@@ -453,6 +428,26 @@ const HomologationResult = () => {
                 <Shield className="h-3 w-3 inline mr-1" />
                 {t.homologationResult.value?.guaranteeDesc || "If you're not satisfied within 30 days, we'll refund your payment. No questions asked."}
               </p>
+
+              <Separator />
+
+              {/* Trust signals row — below CTAs */}
+              <div className="flex items-center justify-center gap-x-6 gap-y-2 text-xs text-muted-foreground">
+                <div className="flex items-center gap-1.5">
+                  <Shield className="h-3.5 w-3.5 text-primary" />
+                  <span>{t.homologationResult.cta?.benefit1 || "Medical homologation experts"}</span>
+                </div>
+                <span className="text-border">•</span>
+                <div className="flex items-center gap-1.5">
+                  <CheckCircle2 className="h-3.5 w-3.5 text-green-500" />
+                  <span>{t.homologationResult.cta?.benefit2 || "98% success rate"}</span>
+                </div>
+                <span className="text-border">•</span>
+                <div className="flex items-center gap-1.5">
+                  <Clock className="h-3.5 w-3.5 text-primary" />
+                  <span>{t.homologationResult.cta?.benefit3 || "24/7 support"}</span>
+                </div>
+              </div>
             </div>
           </motion.section>
 
