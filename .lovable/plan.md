@@ -1,141 +1,65 @@
 
 
-## High-Conversion Payment Page Overhaul
+## High-Conversion Payment Page Overhaul — Implementation Plan
 
 ### Overview
-Seven targeted changes to the PaymentFlow component, each backed by proven conversion principles. All changes go into `src/components/payments/PaymentFlow.tsx` and `src/utils/i18n/languages/*/payments.ts` (EN, ES, DE, FR, RU).
+Seven changes across 6 files to maximize conversion on the payment page.
 
 ---
 
-### 1. Single Urgency Banner (replace per-card clutter)
+### Files to Modify
 
-Remove the `<Badge>` + `<CountdownTimer />` from inside each card. Add one prominent banner between the country badge and the grid:
+**1. `src/components/payments/PaymentFlow.tsx`** — All UI changes:
 
-```text
-[Zap icon] Limited introductory offer -- Save up to 50% | 5d 04h 30m 12s
-```
+- **Line 10**: Add imports for `ShieldCheck`, `CreditCard`, `Inbox`, `Headphones`, `Calendar` from lucide-react
+- **Lines 368-369**: After country badge, insert:
+  - Urgency banner (`bg-primary/10` with Zap icon + "Limited introductory offer — Save up to 50%" + single `<CountdownTimer />`)
+  - Social proof strip (rotating quote with 5 stars, author, country)
+- **Lines 408-420**: In each card's pricing section:
+  - Remove the `<Badge>` with "Limited introductory offer" (lines 410-413)
+  - Remove `<CountdownTimer />` (line 414)
+  - Add a "Save €X" badge next to the price display
+- **After line 451** (after the grid closes): Insert:
+  - Money-back guarantee strip (`bg-green-50 border-green-200` with ShieldCheck icon)
+  - Trust indicators moved here (currently lines 556-568, inside the payment summary card)
+- **Lines 461-476**: Inside payment summary, after email input, add "What happens next" 3-step visual with CreditCard/Inbox/Headphones icons
+- **After line 553** (after payment button): Add "Not sure? Book a free consultation" secondary link
+- **Lines 555-569**: Remove trust indicators from inside the summary card (moved to always-visible position)
 
-- Styled as `bg-primary/10 border border-primary/20 rounded-lg p-3`
-- Shows the savings percentage to anchor value
-- Keeps cards cleaner so features and price stand out
+**2-6. i18n files** (EN, ES, DE, FR, RU `payments.ts`):
 
----
+Add these new keys after `popupBlocked`:
+- `guarantee` — money-back guarantee text
+- `youSave` — "Save" prefix for per-card badge
+- `saveUpTo` — "Save up to 50%" for banner
+- `notSure` — "Not sure yet?"
+- `bookConsultation` — "Book a free 15-min consultation"
+- `socialProofQuotes` — array of 3 objects with `text`, `author`, `country`
+- `whatHappensNext` — object with `title` and `steps` array (3 items)
 
-### 2. Savings Badge on Each Card
-
-Replace the removed offer badge with a small per-card "You save X" badge next to the strikethrough price:
-
-```text
-€899  €449   [Save €450]
-```
-
-This makes the deal concrete on every card without repeating the timer.
-
----
-
-### 3. Money-Back Guarantee Strip
-
-Add a guarantee bar directly below the pricing grid (always visible, not gated behind package selection):
-
-```text
-[ShieldCheck icon] 30-day money-back guarantee -- no questions asked
-```
-
-- Styled as `bg-green-50 border-green-200` (light) / dark mode equivalent
-- New i18n key: `payments.guarantee` in all 5 languages
-- This is the single highest-impact trust element missing from the page
-
----
-
-### 4. Social Proof Row (above the grid)
-
-Add a compact social proof strip between the urgency banner and the cards:
-
-```text
-[Star Star Star Star Star]  "Solvia made the whole process effortless" -- Dr. Maria L., Spain
-```
-
-- 2-3 rotating short quotes (one-liners) with name + country
-- Uses existing `successStories` data pattern
-- New i18n key: `payments.socialProof` with quotes array
-- Keeps it minimal -- one line, not a carousel
-
----
-
-### 5. "What Happens Next" Steps (in Payment Summary)
-
-Inside the checkout card, add a 3-step visual below the email input and above the discount code:
-
-```text
-1. Complete payment securely via Stripe
-2. Receive instant access to your dashboard
-3. Your dedicated team contacts you within 24h
-```
-
-- Simple numbered list with small icons (CreditCard, Inbox, Headphones)
-- Reduces "what am I buying?" anxiety
-- New i18n key: `payments.nextSteps`
-
----
-
-### 6. Alternative CTA -- "Book a Free Consultation"
-
-Below the "Proceed to Payment" button, add a secondary link:
-
-```text
-Not sure yet?  [Calendar icon] Book a free 15-min consultation
-```
-
-- Links to existing Calendly URL (`https://calendly.com/david-rehrl-thesolvia/30min`)
-- Captures users who aren't ready to pay but are high-intent
-- Styled as a text link, not a competing button
-- New i18n key: `payments.notSure`, `payments.bookConsultation`
-
----
-
-### 7. Move Trust Indicators Above the Fold
-
-The current trust badges (Secure Payment, 24h Support, Trusted by 500+) only appear after selecting a package. Move them to always-visible position right below the guarantee strip, so every visitor sees them immediately.
-
----
-
-### File Changes Summary
-
-| File | Changes |
-|------|---------|
-| `src/components/payments/PaymentFlow.tsx` | All 7 UI changes above |
-| `src/utils/i18n/languages/en/payments.ts` | Add `guarantee`, `socialProof`, `nextSteps`, `notSure`, `bookConsultation`, `youSave` keys |
-| `src/utils/i18n/languages/es/payments.ts` | Same new keys (Spanish) |
-| `src/utils/i18n/languages/de/payments.ts` | Same new keys (German) |
-| `src/utils/i18n/languages/fr/payments.ts` | Same new keys (French) |
-| `src/utils/i18n/languages/ru/payments.ts` | Same new keys (Russian) |
-
-### New Imports Needed
-- `ShieldCheck`, `CreditCard`, `Inbox`, `Headphones`, `Calendar` from `lucide-react`
-
-### Page Structure After Changes
+### Final Page Structure
 
 ```text
 [Country Badge]
-[Urgency Banner: Limited offer + Countdown]
-[Social Proof: one-liner quote + stars]
+[Urgency Banner: Zap + Limited offer + Save up to 50% | Countdown]
+[Social Proof: stars + rotating quote]
 
 [Card 1]           [Card 2 - Popular]    [Card 3]
 €79 → €39          €379 → €189           €899 → €449
-Save €40            Save €190              Save €450
+[Save €40]          [Save €190]            [Save €450]
 features...         features...            features...
 [Choose Plan]       [Choose Plan]          [Choose Plan]
 
-[Guarantee: 30-day money-back, no questions asked]
-[Trust: Secure Payment | 24h Support | Trusted by 500+]
+[ShieldCheck: 30-day money-back guarantee]
+[Shield: Secure | Clock: 24h Support | Users: Trusted by 500+]
 
 --- (if package selected) ---
-[Payment Summary Card]
+[Payment Summary]
   Email input
-  What happens next (3 steps)
+  What happens next (3 steps with icons)
   Discount code
   Price breakdown
   [Start My Journey Now]
-  Not sure? Book a free consultation
+  Not sure? Book a free 15-min consultation
 ```
 
