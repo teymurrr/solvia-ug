@@ -28,6 +28,7 @@ import { homologationResult } from './homologationResult';
 import { landing } from './landing';
 import { chat } from './chat';
 import { community } from './community';
+import { seo } from './seo';
 
 export const fr = {
   hero,
@@ -61,5 +62,6 @@ export const fr = {
   homologationResult,
   landing,
   chat,
-  community
+  community,
+  seo
 };

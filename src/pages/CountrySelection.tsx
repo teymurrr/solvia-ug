@@ -5,6 +5,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Calendar } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
+import SEO from '@/components/SEO';
 
 interface CountryOption {
   code: string;
@@ -58,8 +59,15 @@ const CountrySelection = () => {
     navigate('/contact');
   };
 
+  const seoData = (t as any)?.seo?.countrySelection;
+
   return (
     <MainLayout>
+      <SEO
+        title={seoData?.title || 'Choose Your Destination Country – Medical Career in Europe'}
+        description={seoData?.description || 'Select Germany, Austria, Spain, France or Italy to start your medical license recognition process.'}
+        path="/homologation-payment"
+      />
       <div className="min-h-screen bg-gradient-to-br from-primary/5 via-background to-background">
         {/* Hero Section */}
         <section className="py-16 md:py-24">

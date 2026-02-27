@@ -10,6 +10,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Badge } from '@/components/ui/badge';
 import { Briefcase, Lock, Sparkles, Filter } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
+import SEO from '@/components/SEO';
 
 // Mock blurred job data — specialty keys reference translations
 const mockBlurredJobs = [
@@ -74,9 +75,15 @@ const VacanciesConversion = () => {
 
   const hasActiveFilters = filters.profession || filters.targetCountry;
 
+  const seoData = (t as any)?.seo?.vacancies;
+
   return (
     <MainLayout>
-      {/* Hero Section */}
+      <SEO
+        title={seoData?.title || 'Medical Jobs in Europe – Doctor & Nurse Positions'}
+        description={seoData?.description || 'Browse verified medical job openings across Germany, Austria, Spain, France and Italy.'}
+        path="/vacancies"
+      />
       <section className="bg-gradient-to-b from-primary/10 to-background py-12">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center space-y-4">

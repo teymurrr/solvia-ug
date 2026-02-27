@@ -2,12 +2,21 @@
 import React from 'react';
 import MainLayout from '@/components/MainLayout';
 import { useLanguage } from '@/hooks/useLanguage';
+import SEO from '@/components/SEO';
 
 const Terms = () => {
   const { t } = useLanguage();
   
+  const seoData = (t as any)?.seo?.terms;
+  
   return (
     <MainLayout>
+      <SEO
+        title={seoData?.title || 'Terms of Service'}
+        description={seoData?.description || 'Read the terms and conditions for using the Solvia platform.'}
+        path="/terms"
+        noindex
+      />
       <div className="container mx-auto px-4 py-12">
         <div className="max-w-4xl mx-auto">
           <h1 className="text-3xl font-bold mb-6">{t?.terms?.title || t?.footer?.termsOfService || "Terms of Service"}</h1>

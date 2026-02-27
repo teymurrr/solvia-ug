@@ -1,13 +1,20 @@
 import MainLayout from "@/components/MainLayout";
 import { useLanguage } from "@/hooks/useLanguage";
+import SEO from '@/components/SEO';
 
 const Impressum = () => {
   const { t } = useLanguage();
 
+  const seoData = (t as any)?.seo?.impressum;
+
   return (
     <MainLayout>
+      <SEO
+        title={seoData?.title || 'Impressum – Legal Information'}
+        description={seoData?.description || 'Legal information about Solvia FlexKapG.'}
+        path="/impressum"
+      />
       <div className="container mx-auto px-4 py-16 max-w-4xl">
-        <h1 className="text-4xl font-bold mb-4">{t?.impressum?.title || "Impressum"}</h1>
         <p className="text-muted-foreground mb-8">{t?.impressum?.subtitle || "Legal Information"}</p>
         
         <div className="space-y-8">
