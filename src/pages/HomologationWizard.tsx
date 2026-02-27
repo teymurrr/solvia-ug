@@ -139,7 +139,8 @@ const HomologationWizard = () => {
           doctorType: updatedData.doctorType,
           languageLevel: updatedData.languageLevel,
           source: 'wizard',
-          browserLanguage: navigator.language || 'en', // Capture browser language
+          uiLanguage: localStorage.getItem('language') || 'en',
+          browserLanguage: navigator.language || 'en',
         }
       });
       console.log('Lead captured successfully with browser language:', navigator.language);
@@ -206,6 +207,7 @@ const HomologationWizard = () => {
         doctor_type: completedData.doctorType,
         documents_ready: completedData.documentsReady,
         language_level: completedData.languageLevel,
+        preferred_language: localStorage.getItem('language') || 'en',
       });
 
       // Store email for confirmation page
