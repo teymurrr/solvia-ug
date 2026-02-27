@@ -1,121 +1,123 @@
 
-# SEO Domination Plan for Solvia
 
-## Current State Assessment
+# Conversion Maximization Plan
 
-**What's missing (critical gaps):**
-- No per-page meta tags (title, description, OG tags) -- every page uses the same generic `index.html` title "Solvia"
-- No `react-helmet-async` or equivalent for dynamic `<head>` management
-- No JSON-LD structured data (Schema.org) on any page
-- No canonical URLs
-- No `hreflang` tags for multi-language pages (you support EN, DE, FR, ES, RU)
-- Blog posts have no individual SEO metadata
-- Sitemap is static and doesn't include blog post URLs or starter kit country pages
-- No Open Graph tags per page (only one generic set in `index.html`)
+## Current Funnel Reality
 
-**What's already good:**
-- `robots.txt` properly configured
-- Static `sitemap.xml` exists with main routes
-- Google Analytics integrated
-- Multi-language content available
-- Fast loading with lazy-loaded components
+Your numbers tell a clear story:
 
----
+| Stage | Count | Conversion |
+|-------|-------|------------|
+| Leads (wizard + signup) | 147 | -- |
+| Signed-up users | 60 | 41% of leads |
+| Paying customers | 0 (organic) | 0% |
+
+The 3 "completed" payments are manual grants (amount = 0). No one has organically purchased yet. This means the problem is not traffic — it's converting existing interest into sales.
+
+## Root Causes Identified
+
+1. **Broken email sequence**: 103 people received the "feedbackAsk" email, but the "valueInsight" follow-up was never sent. 44 leads have received nothing at all. The sequence stops at step 1.
+2. **No sales-oriented emails**: Both existing templates are soft/conversational. Neither contains a direct link to the payment page or a clear CTA to buy.
+3. **No automated triggers**: Email campaigns must be manually invoked — there's no automation that fires after signup or wizard completion.
+4. **Wizard ends at a dead end**: After the homologation wizard, users land on a results page but there's no urgency-driven push to the payment page.
+5. **Signed-up users have empty profiles**: 42 of 57 profiles have no target country, doctor type, or language level — meaning they signed up but never completed the wizard, so the system can't personalize outreach.
 
 ## Implementation Plan
 
-### 1. Install `react-helmet-async` and create an SEO component
+### Phase 1: Fix the Email Sequence (Edge Functions)
 
-Create a reusable `<SEO />` component that sets:
-- `<title>` with brand suffix (e.g., "Medical License Recognition in Germany | Solvia")
-- `<meta name="description">`
-- `<link rel="canonical">`
-- `<meta property="og:*">` (title, description, image, url, type)
-- `<meta name="twitter:*">`
-- `<html lang="">` attribute based on current language
-- `<link rel="alternate" hreflang="x">` for all supported languages
+**A. Create 3 new sales-focused email templates** in `send-nurture-campaign`
 
-### 2. Add per-page SEO metadata to every public page
+Add these templates to the existing edge function:
 
-Each page gets keyword-optimized title and description targeting high-intent searches:
+| Template | Timing | Purpose |
+|----------|--------|---------|
+| `personalDiagnosis` (new) | Day 3 after signup | "I looked at your case — here's what you need" with personalized steps based on their wizard data + link to results page |
+| `socialProof` (new) | Day 5 | Success story + "Dr. Maria got her Approbation in 7 months" + direct link to payment page |
+| `urgencyOffer` (new) | Day 7 | "Introductory pricing ends soon" + savings calculation + direct payment link |
 
-| Page | Target Keywords | Title Pattern |
-|------|----------------|---------------|
-| `/` (Home) | medical license recognition Europe, work as doctor in Germany | "Medical License Recognition in Europe - Work as a Doctor Abroad \| Solvia" |
-| `/homologation` | homologation medical degree, Approbation Germany | "Medical Degree Homologation in Europe - Germany, Austria, Spain \| Solvia" |
-| `/vacancies` | medical jobs Europe, doctor jobs Germany | "Medical Jobs in Europe - Doctor & Nurse Positions \| Solvia" |
-| `/learning` | medical German course, FSP preparation | "Medical Language Courses for Doctors - German, French, Spanish \| Solvia" |
-| `/learning/starter-kit` | starter kit medical career Germany | "Medical Career Starter Kit - Begin Your Journey to Europe \| Solvia" |
-| `/visa-info` | work visa doctors Germany, Blue Card medical | "Work Visa Guide for Medical Professionals in Europe \| Solvia" |
-| `/employers` | hire international doctors, recruit medical staff | "Hire International Medical Professionals \| Solvia for Employers" |
-| `/blog` | medical career abroad blog | "Blog - Medical Career in Europe Tips & Guides \| Solvia" |
-| `/about` | about Solvia, medical recruitment agency | "About Solvia - Medical Career Services for Europe" |
-| `/contact` | contact medical recruitment | "Contact Us \| Solvia" |
-| `/professionals` | international doctors database | "Find Medical Professionals \| Solvia" |
+Each email keeps the personal "David" tone but includes a clear, single CTA link to the payment page.
 
-Titles and descriptions will be translated per language using the existing i18n system.
+**B. Create an automated drip function** — `auto-nurture-sequence`
 
-### 3. Add JSON-LD structured data
+A new edge function that:
+- Runs on a schedule (or is triggered after wizard completion / signup)
+- Checks each lead's `email_sequence_day` and `last_email_sent` timestamp
+- Automatically sends the next email in sequence if enough days have passed
+- Sequence: Day 0 (feedbackAsk) -> Day 3 (personalDiagnosis) -> Day 5 (socialProof) -> Day 7 (urgencyOffer) -> Day 14 (valueInsight, final)
 
-Add Schema.org markup to key pages:
+**C. Send the valueInsight email** to the 103 leads stuck at step 1 immediately.
 
-- **Home page**: `Organization` schema (name, logo, url, contact, sameAs)
-- **Home page**: `WebSite` schema with `SearchAction`
-- **Vacancies page**: `JobPosting` schema for each listed vacancy
-- **Blog posts**: `Article` schema (headline, author, datePublished, image)
-- **FAQ section**: `FAQPage` schema (already have FAQ content, just need the markup)
-- **Learning page**: `Course` schema for language courses
-- **Home page**: `Service` schema for homologation services
+### Phase 2: Post-Wizard Conversion Push (Frontend)
 
-### 4. Add `hreflang` tags for multilingual support
+**A. Wizard completion redirect**
 
-Since the site supports 5 languages (en, de, fr, es, ru), each public page needs alternate links:
-```
-<link rel="alternate" hreflang="en" href="https://solvia-flexkapg.lovable.app/" />
-<link rel="alternate" hreflang="de" href="https://solvia-flexkapg.lovable.app/?lang=de" />
-...
-<link rel="alternate" hreflang="x-default" href="https://solvia-flexkapg.lovable.app/" />
-```
+After the homologation wizard completes, instead of just showing results, add:
+- A personalized "diagnosis card" showing their specific situation (country, doctor type, language gap)
+- A calculated cost-of-delay message: "Every month you wait costs you ~€X,XXX in potential German salary"
+- A direct "Start for €39" CTA to the Digital Homologation package (lowest barrier entry)
 
-### 5. Enhance the sitemap
+**B. Dashboard nudges for signed-up users**
 
-- Add `<lastmod>` dates to all URLs
-- Add blog post URLs dynamically (or as a separate blog sitemap)
-- Add `hreflang` annotations in sitemap for multi-language
-- Add starter kit country-specific URLs if they exist
+For users who signed up but haven't paid:
+- Add a persistent banner in the dashboard: "Your homologation roadmap is ready — unlock it now"
+- Show a progress bar at 0% with "Step 1: Choose your package" highlighted
+- Add an in-app notification on login with a link to the payment page
 
-### 6. Add SEO translations to i18n files
+### Phase 3: Re-engagement of Cold Leads (Edge Function)
 
-Add an `seo` section to each language file containing page-specific titles and descriptions, properly localized and keyword-optimized for each market.
+**A. Create `win-back-campaign`** edge function for the 44 leads who never received any email:
+
+A single compelling email:
+- Subject: "[Name], your medical career plan is still waiting"
+- Body: Personalized based on their wizard data (country + doctor type)
+- Contains a direct link to their results page with pre-filled data
+- Includes the "€39 to start" entry point
+
+**B. Profile completion push**
+
+For the 42 signed-up users with empty profiles:
+- The existing `send-reengagement-email` function targets incomplete profiles but only checks `about`, `location`, `specialty`
+- Update it to also nudge users who haven't completed the wizard (no `target_country`)
+- Add a CTA linking to the wizard, not just profile completion
+
+### Phase 4: Conversion Tracking
+
+**A. Add lead status updates** 
+
+Update the `leads` table when key events happen:
+- Mark as `engaged` when they open/click an email
+- Mark as `converted` when a payment is completed (link via email match)
+- Add a `payment_started` status for abandoned checkouts
+
+**B. Add a `conversion_source` field to payments**
+
+Track which email/touchpoint drove the purchase (UTM params or referral tracking on the payment page).
 
 ---
 
 ## Technical Details
 
 ### Files to create:
-- `src/components/SEO.tsx` -- reusable Helmet component
-- `src/components/StructuredData.tsx` -- JSON-LD injection component
-- `src/utils/seo/metadata.ts` -- centralized page metadata config
-- `src/utils/i18n/languages/en/seo.ts` (and de, fr, es, ru) -- SEO translations
+- `supabase/functions/auto-nurture-sequence/index.ts` — automated drip logic
+- `supabase/functions/win-back-campaign/index.ts` — cold lead re-engagement
 
 ### Files to modify:
-- `src/App.tsx` -- wrap with `HelmetProvider`
-- `src/pages/Index.tsx` -- add `<SEO />` + Organization/FAQPage structured data
-- `src/pages/Blog.tsx` -- add `<SEO />` + Article structured data
-- `src/pages/VacanciesConversion.tsx` -- add `<SEO />` + JobPosting structured data
-- `src/pages/SolviaLearning.tsx` -- add `<SEO />` + Course structured data
-- `src/pages/VisaInfo.tsx` -- add `<SEO />`
-- `src/pages/EmployersLanding.tsx` -- add `<SEO />`
-- `src/pages/About.tsx` -- add `<SEO />`
-- `src/pages/Contact.tsx` -- add `<SEO />`
-- `src/pages/StarterKit.tsx` -- add `<SEO />`
-- `src/pages/HomologationWizard.tsx` -- add `<SEO />`
-- `src/pages/CountrySelection.tsx` -- add `<SEO />`
-- All other public pages -- add `<SEO />`
-- `public/sitemap.xml` -- enhanced with lastmod and hreflang
-- `index.html` -- clean up duplicate meta, add `HelmetProvider`-compatible defaults
+- `supabase/functions/send-nurture-campaign/index.ts` — add 3 new templates (personalDiagnosis, socialProof, urgencyOffer) with localized content in all 5 languages
+- `supabase/functions/send-reengagement-email/index.ts` — expand targeting to include users missing wizard data, add payment CTA
+- `src/pages/HomologationResult.tsx` — add urgency messaging and direct payment CTA after wizard results
+- `src/components/dashboard/ProfessionalDashboard.tsx` (or equivalent) — add conversion banner for non-paying users
+- Payment page URL in emails will include UTM parameters for tracking
 
-### Dependencies to add:
-- `react-helmet-async`
+### Database changes:
+- Add `conversion_source` column to `payments` table (text, nullable)
+- No other schema changes needed — the existing `leads.email_sequence_day` and `email_sends` table handle sequencing
 
-This plan covers on-page SEO fundamentals. Off-page SEO (backlinks, content marketing strategy, Google Search Console submission) should be handled outside the codebase.
+### Priority order:
+1. Send valueInsight to the 103 stuck leads (immediate win, no code changes)
+2. Add 3 new email templates to nurture campaign
+3. Create auto-nurture-sequence function
+4. Add conversion CTAs to wizard results page
+5. Create win-back campaign for cold leads
+6. Add dashboard nudges and conversion tracking
+
