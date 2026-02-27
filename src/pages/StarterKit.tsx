@@ -10,6 +10,7 @@ import { useLanguage } from '@/hooks/useLanguage';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { toast } from 'sonner';
+import SEO from '@/components/SEO';
 
 // Country-specific Stripe price IDs — one per country kit
 const PRICE_IDS: Record<string, string> = {
@@ -94,8 +95,15 @@ const StarterKit = () => {
     },
   ];
 
+  const seoData = (t as any)?.seo?.starterKit;
+
   return (
     <MainLayout>
+      <SEO
+        title={seoData?.title || 'Medical Career Starter Kit – Begin Your Journey to Europe'}
+        description={seoData?.description || 'Get everything you need to start your medical career abroad for just €29.'}
+        path="/learning/starter-kit"
+      />
       {/* Hero */}
       <section className="bg-gradient-to-br from-primary/10 via-background to-primary/5 py-16 md:py-24">
         <div className="container mx-auto px-4">

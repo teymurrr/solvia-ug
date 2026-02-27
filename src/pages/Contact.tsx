@@ -19,6 +19,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { useLanguage } from '@/hooks/useLanguage';
+import SEO from '@/components/SEO';
 
 const Contact = () => {
   const { toast } = useToast();
@@ -67,8 +68,15 @@ const Contact = () => {
     }
   };
 
+  const seoData = (t as any)?.seo?.contact;
+
   return (
     <MainLayout>
+      <SEO
+        title={seoData?.title || 'Contact Solvia – Get Help with Your Medical Career'}
+        description={seoData?.description || 'Have questions about medical license recognition or job opportunities? Contact our team.'}
+        path="/contact"
+      />
       <div className="container max-w-2xl mx-auto py-12 px-4">
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold mb-4">{t.contact.title}</h1>

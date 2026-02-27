@@ -8,6 +8,7 @@ import TeamSection from '@/components/about/TeamSection';
 import ValuesSection from '@/components/about/ValuesSection';
 import CTASection from '@/components/about/CTASection';
 import { useLanguage } from '@/hooks/useLanguage';
+import SEO from '@/components/SEO';
 
 // List of critical images to preload
 const criticalImages = [
@@ -18,6 +19,7 @@ const criticalImages = [
 
 const About = () => {
   const { t } = useLanguage();
+  const seo = (t as any)?.seo?.about;
 
   // Preload critical images
   useEffect(() => {
@@ -29,6 +31,11 @@ const About = () => {
 
   return (
     <MainLayout>
+      <SEO
+        title={seo?.title || 'About Solvia – Medical Career Services for Europe'}
+        description={seo?.description || 'Solvia connects international healthcare professionals with European employers.'}
+        path="/about"
+      />
       {/* Add preload links for critical images */}
       {criticalImages.map((src, index) => (
         <link key={index} rel="preload" href={src} as="image" />

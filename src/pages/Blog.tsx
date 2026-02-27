@@ -12,40 +12,27 @@ import BlogLanguageSelector from '@/components/blog/BlogLanguageSelector';
 import { useLanguage } from '@/hooks/useLanguage';
 import BlogListSkeleton from '@/components/ui/blog-list-skeleton';
 import { OptimizedImage } from '@/components/ui/optimized-image';
+import SEO from '@/components/SEO';
 
 const Blog = React.memo(() => {
   const { currentLanguage, t } = useLanguage();
   const { isAdmin } = useAuthOptimized();
   const { posts, loading } = useBlogPostsOptimized(isAdmin, currentLanguage);
+  const seo = (t as any)?.seo?.blog;
 
   const filteredPosts = posts.filter(post => {
     const languageMatch = post.language === currentLanguage;
-    
-    if (isAdmin) {
-      return languageMatch;
-    } else {
-      return languageMatch && post.status === 'published';
-    }
+    if (isAdmin) return languageMatch;
+    return languageMatch && post.status === 'published';
   });
-
-  if (loading) {
-    return (
-      <MainLayout>
-        <div className="container mx-auto px-4 py-12">
-          <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold mb-4"><span className="text-primary">Solvia</span> Blog</h1>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              {t.blog.subtitle}
-            </p>
-          </div>
-          <BlogListSkeleton />
-        </div>
-      </MainLayout>
-    );
-  }
 
   return (
     <MainLayout>
+      <SEO
+        title={seo?.title || 'Medical Career in Europe – Tips, Guides & Success Stories'}
+        description={seo?.description || 'Expert articles on medical license recognition, language learning, visa processes, and life as a healthcare professional in Europe.'}
+        path="/blog"
+      />
       <div className="container mx-auto px-4 py-12">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold mb-4"><span className="text-primary">Solvia</span> Blog</h1>
@@ -56,7 +43,6 @@ const Blog = React.memo(() => {
 
         <div className="flex justify-between items-center mb-8">
           <BlogLanguageSelector />
-          
           {isAdmin && (
             <Button variant="outline" asChild>
               <Link to="/admin/blog" className="flex items-center">
@@ -67,7 +53,9 @@ const Blog = React.memo(() => {
           )}
         </div>
 
-        {filteredPosts.length > 0 ? (
+        {loading ? (
+          <BlogListSkeleton />
+        ) : filteredPosts.length > 0 ? (
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
             {filteredPosts.map((post) => (
               <Link key={post.id} to={`/blog/${post.id}`} className="block">
@@ -82,28 +70,21 @@ const Blog = React.memo(() => {
                       />
                     </div>
                   )}
-                  
                   <CardHeader>
                     <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center gap-2">
                         {post.category && (
-                          <Badge variant="secondary" className="text-xs">
-                            {post.category}
-                          </Badge>
+                          <Badge variant="secondary" className="text-xs">{post.category}</Badge>
                         )}
                         {isAdmin && post.status === 'draft' && (
-                          <Badge variant="outline" className="text-xs bg-gray-100">
-                            Draft
-                          </Badge>
+                          <Badge variant="outline" className="text-xs bg-gray-100">Draft</Badge>
                         )}
                       </div>
                     </div>
-                    
                     <h2 className="text-xl font-semibold group-hover:text-primary transition-colors line-clamp-2 blog-title">
                       {post.title}
                     </h2>
                   </CardHeader>
-                  
                   <CardContent>
                     <div className="flex items-center text-sm text-muted-foreground">
                       <Calendar className="h-3 w-3 mr-1" />

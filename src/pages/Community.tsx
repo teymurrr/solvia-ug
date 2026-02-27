@@ -1,5 +1,6 @@
 
 import React, { useState } from 'react';
+import SEO from '@/components/SEO';
 import { Link, useNavigate } from 'react-router-dom';
 import { MessageSquare, ThumbsUp, Pin, Plus, Search, Users, Heart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -69,8 +70,15 @@ const Community = () => {
     return labels[cat] || cat;
   };
 
+  const seoData = (t as any)?.seo?.community;
+
   return (
     <MainLayout>
+      <SEO
+        title={seoData?.title || 'Medical Professional Community – Forum & Mentorship'}
+        description={seoData?.description || 'Join the Solvia community of healthcare professionals.'}
+        path="/community"
+      />
       <div className="max-w-6xl mx-auto px-4 py-8">
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">

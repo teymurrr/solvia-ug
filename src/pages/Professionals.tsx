@@ -16,6 +16,7 @@ import { Slider } from '@/components/ui/slider';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useProfessionals } from '@/hooks/useProfessionals';
 import { useLanguage } from '@/hooks/useLanguage';
+import SEO from '@/components/SEO';
 
 const Professionals = () => {
   const { professionals, loading, error } = useProfessionals();
@@ -127,8 +128,15 @@ const Professionals = () => {
 
   const p = (t as any)?.professionals;
 
+  const seoData = (t as any)?.seo?.professionals;
+
   return (
     <MainLayout>
+      <SEO
+        title={seoData?.title || 'Find Medical Professionals – International Doctors & Nurses'}
+        description={seoData?.description || 'Browse our database of qualified international healthcare professionals.'}
+        path="/professionals"
+      />
       <section className="bg-muted/50 py-12">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center space-y-4">

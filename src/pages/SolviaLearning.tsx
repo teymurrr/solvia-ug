@@ -10,6 +10,8 @@ import { ArrowRight, MessageCircle } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
+import SEO from '@/components/SEO';
+import StructuredData, { createCourseSchema } from '@/components/StructuredData';
 import {
   LearningWizard,
   LearningPlanResult,
@@ -169,8 +171,19 @@ const SolviaLearning = () => {
     return subtitles[language] || subtitles.en;
   };
 
+  const seoData = (t as any)?.seo?.learning;
+
   return (
     <MainLayout>
+      <SEO
+        title={seoData?.title || 'Medical Language Courses – German, French, Spanish for Doctors'}
+        description={seoData?.description || 'Specialized medical language courses and FSP exam preparation for healthcare professionals.'}
+        path="/learning"
+      />
+      <StructuredData data={createCourseSchema({
+        name: 'Medical Language Courses for Healthcare Professionals',
+        description: 'Specialized German, French, Italian and Spanish medical courses designed for international healthcare professionals.',
+      })} />
       {/* Hero Section */}
       <section className="relative bg-gradient-to-br from-primary/10 via-blue-50 to-background py-20 md:py-28">
         <div className="container mx-auto px-4">

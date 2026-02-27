@@ -2,6 +2,9 @@ import React, { Suspense } from 'react';
 import MainLayout from '@/components/MainLayout';
 import HeroSectionWithSearch from '@/components/landing/HeroSectionWithSearch';
 import PathToSuccessSection from '@/components/landing/PathToSuccessSection';
+import SEO from '@/components/SEO';
+import StructuredData, { organizationSchema, websiteSchema } from '@/components/StructuredData';
+import { useLanguage } from '@/hooks/useLanguage';
 
 // Lazy load sections below the fold
 const JobExplorerSection = React.lazy(() => import('@/components/landing/JobExplorerSection'));
@@ -17,8 +20,18 @@ const LoadingFallback = ({ height }: { height: string }) => (
 );
 
 const Index = () => {
+  const { t } = useLanguage();
+  const seo = (t as any)?.seo?.home;
+
   return (
     <MainLayout>
+      <SEO
+        title={seo?.title || 'Medical License Recognition in Europe – Work as a Doctor Abroad'}
+        description={seo?.description || 'Solvia helps doctors, nurses and healthcare professionals get their medical license recognized in Germany, Austria, Spain, France and Italy.'}
+        path="/"
+      />
+      <StructuredData data={[organizationSchema, websiteSchema]} />
+
       {/* 1. PROMISE — Hero + Stats */}
       <HeroSectionWithSearch />
       
@@ -26,7 +39,6 @@ const Index = () => {
       <div id="path-to-success">
         <PathToSuccessSection />
       </div>
-
 
       {/* 4. PROOF — Real jobs waiting */}
       <Suspense fallback={<LoadingFallback height="h-96" />}>

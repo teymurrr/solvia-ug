@@ -2,6 +2,7 @@
 import React from 'react';
 import MainLayout from '@/components/MainLayout';
 import { useLanguage } from '@/hooks/useLanguage';
+import SEO from '@/components/SEO';
 
 const Privacy = () => {
   const { t, currentLanguage } = useLanguage();
@@ -254,8 +255,16 @@ const Privacy = () => {
 
   const content = currentLanguage === 'es' ? spanishContent : englishContent;
   
+  const seoData = (t as any)?.seo?.privacy;
+  
   return (
     <MainLayout>
+      <SEO
+        title={seoData?.title || 'Privacy Policy'}
+        description={seoData?.description || 'Learn how Solvia collects, uses, and protects your personal data.'}
+        path="/privacy"
+        noindex
+      />
       <div className="container mx-auto px-4 py-12">
         <div className="max-w-4xl mx-auto">
           <h1 className="text-3xl font-bold mb-6">{content.title}</h1>

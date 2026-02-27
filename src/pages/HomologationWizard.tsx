@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { GraduationCap, Globe, Stethoscope, FileCheck, Languages, ArrowLeft, CheckCircle2 } from 'lucide-react';
+import SEO from '@/components/SEO';
 import { useLanguage } from '@/hooks/useLanguage';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
@@ -250,8 +251,15 @@ const HomologationWizard = () => {
     }
   };
 
+  const seoData = (t as any)?.seo?.homologation;
+
   return (
     <MainLayout>
+      <SEO
+        title={seoData?.title || 'Medical Degree Homologation in Europe – Approbation & Recognition'}
+        description={seoData?.description || 'Step-by-step guide to getting your medical degree recognized in Europe.'}
+        path="/homologation"
+      />
       <div className="min-h-screen bg-gradient-to-br from-primary/5 via-accent/5 to-background py-12 md:py-20">
         <div className="container mx-auto px-4 max-w-4xl">
           {/* Country Selection - Target country only */}

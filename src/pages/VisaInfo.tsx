@@ -6,6 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { CheckCircle2, Globe, GraduationCap, Briefcase, BookOpen, Users, ArrowRight, Sparkles } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import SEO from '@/components/SEO';
 
 const VisaInfo = () => {
   const { t } = useLanguage();
@@ -50,8 +51,15 @@ const VisaInfo = () => {
     }
   ];
 
+  const seoData = (t as any)?.seo?.visaInfo;
+
   return (
     <MainLayout>
+      <SEO
+        title={seoData?.title || 'Work Visa Guide for Doctors in Europe – Blue Card & Chancenkarte'}
+        description={seoData?.description || 'Complete guide to work visas for medical professionals in Germany and Europe.'}
+        path="/visa-info"
+      />
       <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20">
         {/* Hero Section */}
         <section className="relative py-16 px-4 sm:px-6 lg:px-8 overflow-hidden">
