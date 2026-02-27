@@ -7,7 +7,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { useLanguage } from '@/hooks/useLanguage';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import { Check, Shield, Clock, BookOpen, Users, Star, ExternalLink, Zap, Timer, ShieldCheck, CreditCard, Inbox, Headphones, Calendar } from 'lucide-react';
+import { Check, Shield, Clock, BookOpen, Users, Star, ExternalLink, Zap, Timer, ShieldCheck, CreditCard, Inbox, Headphones, Calendar, Phone, MessageCircle } from 'lucide-react';
 import { preOpenPaymentWindow, redirectPaymentWindow, isSafari } from '@/utils/browserDetection';
 import Analytics from '@/utils/analyticsTracking';
 
@@ -556,6 +556,65 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
           <span>{t?.payments?.trusted || 'Trusted by 500+'}</span>
         </div>
       </div>
+
+      {/* Prominent Call CTA — Always visible */}
+      <div className="relative">
+        <div className="absolute inset-0 flex items-center">
+          <div className="w-full border-t border-border" />
+        </div>
+        <div className="relative flex justify-center text-sm">
+          <span className="bg-background px-4 text-muted-foreground font-medium">
+            {t?.payments?.callCta?.or || 'or'}
+          </span>
+        </div>
+      </div>
+
+      <Card className="border-primary/30 bg-gradient-to-br from-primary/5 via-background to-primary/5">
+        <CardContent className="py-6 px-6 md:px-8">
+          <div className="flex flex-col md:flex-row items-center gap-6">
+            <div className="flex-shrink-0">
+              <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center">
+                <Phone className="w-7 h-7 text-primary" />
+              </div>
+            </div>
+            <div className="flex-1 text-center md:text-left">
+              <h3 className="text-lg font-bold mb-1">
+                {t?.payments?.callCta?.title || 'Prefer to talk to a real person?'}
+              </h3>
+              <p className="text-sm text-muted-foreground mb-3">
+                {t?.payments?.callCta?.subtitle || 'Our medical homologation experts will answer all your questions and help you choose the right plan.'}
+              </p>
+              <div className="flex flex-wrap items-center justify-center md:justify-start gap-3 text-xs text-muted-foreground">
+                <span className="flex items-center gap-1">
+                  <Check className="w-3.5 h-3.5 text-primary" />
+                  {t?.payments?.callCta?.benefit1 || 'No commitment required'}
+                </span>
+                <span className="flex items-center gap-1">
+                  <Check className="w-3.5 h-3.5 text-primary" />
+                  {t?.payments?.callCta?.benefit2 || 'Get personalized advice'}
+                </span>
+                <span className="flex items-center gap-1">
+                  <MessageCircle className="w-3.5 h-3.5 text-primary" />
+                  {t?.payments?.callCta?.benefit3 || 'Available in your language'}
+                </span>
+              </div>
+            </div>
+            <div className="flex-shrink-0">
+              <Button
+                size="lg"
+                variant="outline"
+                className="gap-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-colors"
+                asChild
+              >
+                <a href="https://calendly.com/david-rehrl-thesolvia/30min" target="_blank" rel="noopener noreferrer">
+                  <Calendar className="w-5 h-5" />
+                  {t?.payments?.callCta?.button || 'Schedule a Free Call'}
+                </a>
+              </Button>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
       {/* Discount Code & Payment Section */}
       {selectedPackage && (

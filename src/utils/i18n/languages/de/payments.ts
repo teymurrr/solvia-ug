@@ -145,6 +145,15 @@ export const payments = {
   saveUpTo: 'Bis zu 50% sparen',
   notSure: 'Noch unsicher?',
   bookConsultation: 'Kostenlose 15-Min-Beratung buchen',
+  callCta: {
+    title: 'Lieber mit einem echten Menschen sprechen?',
+    subtitle: 'Unsere Experten für medizinische Homologation beantworten alle Ihre Fragen und helfen Ihnen, den richtigen Plan zu wählen.',
+    button: 'Kostenloses Gespräch Vereinbaren',
+    benefit1: 'Unverbindlich',
+    benefit2: 'Persönliche Beratung',
+    benefit3: 'In Ihrer Sprache verfügbar',
+    or: 'oder',
+  },
   socialProofQuotes: [
     { text: 'Solvia hat den gesamten Prozess mühelos gemacht — ich habe meine Approbation in 7 Monaten erhalten!', author: 'Dr. María L.', country: 'Spanien' },
     { text: 'Sie haben alles mit den Behörden erledigt. Ich habe mich nur auf mein Deutsch konzentriert.', author: 'Dr. Luis F.', country: 'Mexiko' },
