@@ -17,6 +17,20 @@ const corsHeaders = {
 type Language = 'es' | 'en' | 'de' | 'fr' | 'ru';
 type TemplateId = 'feedbackAsk' | 'valueInsight' | 'personalDiagnosis' | 'socialProof' | 'urgencyOffer';
 
+// Country name translations for dynamic templates
+const countryNames: Record<string, Record<Language, string>> = {
+  germany: { en: 'Germany', es: 'Alemania', de: 'Deutschland', fr: 'Allemagne', ru: 'Германия' },
+  austria: { en: 'Austria', es: 'Austria', de: 'Österreich', fr: 'Autriche', ru: 'Австрия' },
+  switzerland: { en: 'Switzerland', es: 'Suiza', de: 'Schweiz', fr: 'Suisse', ru: 'Швейцария' },
+  spain: { en: 'Spain', es: 'España', de: 'Spanien', fr: 'Espagne', ru: 'Испания' },
+  france: { en: 'France', es: 'Francia', de: 'Frankreich', fr: 'France', ru: 'Франция' },
+};
+
+const getCountryName = (country: string, lang: Language): string => {
+  const key = country.toLowerCase().trim();
+  return countryNames[key]?.[lang] || countryNames['germany'][lang];
+};
+
 interface CampaignRequest {
   templateId?: TemplateId;
   testMode?: boolean;
@@ -116,11 +130,11 @@ Une courte phrase suffit amplement.`,
 
   valueInsight: {
     subject: {
-      es: 'Lo que muchos médicos subestiman al mudarse a Alemania',
-      en: 'What most doctors underestimate about moving to Germany',
-      de: 'Was die meisten Ärzte beim Umzug nach Deutschland unterschätzen',
-      fr: 'Ce que la plupart des médecins sous-estiment en déménageant en Allemagne',
-      ru: 'Что большинство врачей недооценивают при переезде в Германию'
+      es: 'Lo que muchos médicos subestiman al mudarse a {{TARGET_COUNTRY}}',
+      en: 'What most doctors underestimate about moving to {{TARGET_COUNTRY}}',
+      de: 'Was die meisten Ärzte beim Umzug nach {{TARGET_COUNTRY}} unterschätzen',
+      fr: 'Ce que la plupart des médecins sous-estiment en déménageant en {{TARGET_COUNTRY}}',
+      ru: 'Что большинство врачей недооценивают при переезде в {{TARGET_COUNTRY}}'
     },
     greeting: {
       es: 'Hola,',
@@ -136,35 +150,35 @@ Los mayores retrasos no vienen del idioma — vienen del proceso de reconocimien
 
 Hemos visto a personas perder 6-12 meses solo por este paso.
 
-Si todavía estás considerando Alemania/Austria y quieres evitar eso, con gusto te explico tus opciones.`,
+Si todavía estás considerando {{TARGET_COUNTRY}} y quieres evitar eso, con gusto te explico tus opciones.`,
       en: `A quick insight from working with international doctors:
 
 The biggest delays don't come from language — they come from the document recognition process.
 
 We've seen people lose 6-12 months just because of this step.
 
-If you're still considering Germany/Austria and want to avoid that, I'm happy to explain your options.`,
+If you're still considering {{TARGET_COUNTRY}} and want to avoid that, I'm happy to explain your options.`,
       de: `Ein kurzer Einblick aus der Arbeit mit internationalen Ärzten:
 
 Die größten Verzögerungen kommen nicht von der Sprache — sie kommen vom Anerkennungsprozess der Dokumente.
 
 Wir haben gesehen, wie Menschen 6-12 Monate nur wegen dieses Schrittes verloren haben.
 
-Wenn du immer noch Deutschland/Österreich in Betracht ziehst und das vermeiden möchtest, erkläre ich dir gerne deine Optionen.`,
+Wenn du immer noch {{TARGET_COUNTRY}} in Betracht ziehst und das vermeiden möchtest, erkläre ich dir gerne deine Optionen.`,
       fr: `Un aperçu rapide de mon travail avec des médecins internationaux:
 
 Les plus grands retards ne viennent pas de la langue — ils viennent du processus de reconnaissance des documents.
 
 Nous avons vu des gens perdre 6-12 mois juste à cause de cette étape.
 
-Si tu considères toujours l'Allemagne/Autriche et que tu veux éviter ça, je t'explique volontiers tes options.`,
+Si tu considères toujours {{TARGET_COUNTRY}} et que tu veux éviter ça, je t'explique volontiers tes options.`,
       ru: `Быстрый инсайт из работы с международными врачами:
 
 Самые большие задержки происходят не из-за языка — они из-за процесса признания документов.
 
 Мы видели, как люди теряли 6-12 месяцев только из-за этого шага.
 
-Если ты все еще рассматриваешь Германию/Австрию и хочешь этого избежать, я с удовольствием объясню твои варианты.`
+Если ты все еще рассматриваешь {{TARGET_COUNTRY}} и хочешь этого избежать, я с удовольствием объясню твои варианты.`
     },
     signature: {
       es: 'Saludos,\n\nDavid',
@@ -261,7 +275,7 @@ Si tu as des questions sur une étape, réponds simplement à cet email.`,
     body: {
       es: `Quería compartir algo que puede interesarte.
 
-La Dra. María se registró en Solvia en una situación similar a la tuya: médica internacional que quería ejercer en Alemania pero no sabía cómo navegar el proceso de reconocimiento.
+La Dra. María se registró en Solvia en una situación similar a la tuya: médica internacional que quería ejercer en {{TARGET_COUNTRY}} pero no sabía cómo navegar el proceso de reconocimiento.
 
 Con un plan paso a paso y acompañamiento personalizado, completó todo el proceso en 7 meses — desde la preparación de documentos hasta la Approbation final.
 
@@ -273,7 +287,7 @@ Tú puedes empezar hoy desde €39 con nuestro paquete Digital:
 Incluye tu hoja de ruta personalizada, análisis de documentos con IA, y soporte por email.`,
       en: `I wanted to share something that might interest you.
 
-Dr. Maria signed up on Solvia in a situation similar to yours: an international doctor wanting to practice in Germany but unsure how to navigate the recognition process.
+Dr. Maria signed up on Solvia in a situation similar to yours: an international doctor wanting to practice in {{TARGET_COUNTRY}} but unsure how to navigate the recognition process.
 
 With a step-by-step plan and personalized guidance, she completed the entire process in 7 months — from document preparation to final Approbation.
 
@@ -285,7 +299,7 @@ You can start today from €39 with our Digital package:
 It includes your personalized roadmap, AI document analysis, and email support.`,
       de: `Ich wollte etwas teilen, das dich interessieren könnte.
 
-Dr. Maria hat sich bei Solvia in einer ähnlichen Situation wie du angemeldet: internationale Ärztin, die in Deutschland arbeiten wollte, aber nicht wusste, wie sie den Anerkennungsprozess navigieren sollte.
+Dr. Maria hat sich bei Solvia in einer ähnlichen Situation wie du angemeldet: internationale Ärztin, die in {{TARGET_COUNTRY}} arbeiten wollte, aber nicht wusste, wie sie den Anerkennungsprozess navigieren sollte.
 
 Mit einem Schritt-für-Schritt-Plan und persönlicher Begleitung hat sie den gesamten Prozess in 7 Monaten abgeschlossen — von der Dokumentenvorbereitung bis zur finalen Approbation.
 
@@ -297,7 +311,7 @@ Du kannst heute ab €39 mit unserem Digital-Paket starten:
 Es enthält deinen personalisierten Fahrplan, KI-Dokumentenanalyse und E-Mail-Support.`,
       fr: `Je voulais partager quelque chose qui pourrait t'intéresser.
 
-La Dr. Maria s'est inscrite sur Solvia dans une situation similaire à la tienne : médecin internationale voulant exercer en Allemagne mais ne sachant pas comment naviguer le processus de reconnaissance.
+La Dr. Maria s'est inscrite sur Solvia dans une situation similaire à la tienne : médecin internationale voulant exercer en {{TARGET_COUNTRY}} mais ne sachant pas comment naviguer le processus de reconnaissance.
 
 Avec un plan étape par étape et un accompagnement personnalisé, elle a complété tout le processus en 7 mois — de la préparation des documents à l'Approbation finale.
 
@@ -309,7 +323,7 @@ Tu peux commencer aujourd'hui à partir de €39 avec notre forfait Digital :
 Il inclut ta feuille de route personnalisée, l'analyse de documents par IA et le support par email.`,
       ru: `Хотел поделиться кое-чем, что может тебя заинтересовать.
 
-Доктор Мария зарегистрировалась на Solvia в ситуации, похожей на твою: международный врач, которая хотела практиковать в Германии, но не знала, как пройти процесс признания.
+Доктор Мария зарегистрировалась на Solvia в ситуации, похожей на твою: международный врач, которая хотела практиковать в {{TARGET_COUNTRY}}, но не знала, как пройти процесс признания.
 
 С пошаговым планом и персональным сопровождением она завершила весь процесс за 7 месяцев — от подготовки документов до финальной Approbation.
 
@@ -343,7 +357,7 @@ Estamos ofreciendo precios de lanzamiento en nuestros paquetes de homologación.
 
 Esto incluye tu hoja de ruta completa paso a paso, análisis de documentos con IA, plantillas, instrucciones de apostilla y traducciones, y soporte por email en 72h.
 
-Para ponerlo en perspectiva: un médico en Alemania gana entre €5.000 y €7.000 al mes. Cada mes que esperas es un mes de ese salario que pierdes. Los €39 son literalmente menos del 1% de tu primer sueldo.
+Para ponerlo en perspectiva: un médico en {{TARGET_COUNTRY}} gana entre €5.000 y €7.000 al mes. Cada mes que esperas es un mes de ese salario que pierdes. Los €39 son literalmente menos del 1% de tu primer sueldo.
 
 Puedes empezar aquí:
 {{PAYMENT_LINK}}
@@ -355,7 +369,7 @@ We're offering introductory pricing on our homologation packages. The Digital pa
 
 This includes your complete step-by-step roadmap, AI document analysis, templates, apostille & translation instructions, and 72h email support.
 
-To put it in perspective: a doctor in Germany earns between €5,000 and €7,000 per month. Every month you wait is a month of that salary you're missing. The €39 is literally less than 1% of your first paycheck.
+To put it in perspective: a doctor in {{TARGET_COUNTRY}} earns between €5,000 and €7,000 per month. Every month you wait is a month of that salary you're missing. The €39 is literally less than 1% of your first paycheck.
 
 You can get started here:
 {{PAYMENT_LINK}}
@@ -367,7 +381,7 @@ Wir bieten gerade Einführungspreise auf unsere Anerkennungspakete. Das Digital-
 
 Das beinhaltet deinen vollständigen Schritt-für-Schritt-Fahrplan, KI-Dokumentenanalyse, Vorlagen, Apostille- & Übersetzungsanweisungen und E-Mail-Support innerhalb von 72h.
 
-Um es in Perspektive zu setzen: Ein Arzt in Deutschland verdient zwischen €5.000 und €7.000 pro Monat. Jeder Monat, den du wartest, ist ein Monat dieses Gehalts, den du verlierst. Die €39 sind buchstäblich weniger als 1% deines ersten Gehalts.
+Um es in Perspektive zu setzen: Ein Arzt in {{TARGET_COUNTRY}} verdient zwischen €5.000 und €7.000 pro Monat. Jeder Monat, den du wartest, ist ein Monat dieses Gehalts, den du verlierst. Die €39 sind buchstäblich weniger als 1% deines ersten Gehalts.
 
 Du kannst hier starten:
 {{PAYMENT_LINK}}
@@ -379,7 +393,7 @@ Nous proposons des prix de lancement sur nos forfaits d'homologation. Le forfait
 
 Cela inclut ta feuille de route complète étape par étape, l'analyse de documents par IA, des modèles, les instructions pour l'apostille et les traductions, et un support par email sous 72h.
 
-Pour mettre les choses en perspective : un médecin en Allemagne gagne entre 5 000 et 7 000 € par mois. Chaque mois que tu attends, c'est un mois de ce salaire que tu perds. Les 39 € représentent littéralement moins de 1% de ton premier salaire.
+Pour mettre les choses en perspective : un médecin en {{TARGET_COUNTRY}} gagne entre 5 000 et 7 000 € par mois. Chaque mois que tu attends, c'est un mois de ce salaire que tu perds. Les 39 € représentent littéralement moins de 1% de ton premier salaire.
 
 Tu peux commencer ici :
 {{PAYMENT_LINK}}
@@ -391,7 +405,7 @@ Ce prix ne sera pas disponible encore longtemps.`,
 
 Это включает полный пошаговый план, анализ документов ИИ, шаблоны, инструкции по апостилю и переводам, и поддержку по email в течение 72 часов.
 
-Для перспективы: врач в Германии зарабатывает от €5.000 до €7.000 в месяц. Каждый месяц ожидания — это месяц этой зарплаты, который ты теряешь. €39 — это буквально меньше 1% твоей первой зарплаты.
+Для перспективы: врач в {{TARGET_COUNTRY}} зарабатывает от €5.000 до €7.000 в месяц. Каждый месяц ожидания — это месяц этой зарплаты, который ты теряешь. €39 — это буквально меньше 1% твоей первой зарплаты.
 
 Ты можешь начать здесь:
 {{PAYMENT_LINK}}
@@ -663,10 +677,15 @@ const handler = async (req: Request): Promise<Response> => {
         // Replace dynamic links in sales templates
         const baseUrl = 'https://solvia-flexkapg.lovable.app';
         const targetCountry = recipient.target_country || 'germany';
+        const translatedCountry = getCountryName(targetCountry, lang);
         const utmSource = `email_${templateId}`;
         let emailBody = template.body[lang]
+          .replace(/\{\{TARGET_COUNTRY\}\}/g, translatedCountry)
           .replace(/\{\{RESULTS_LINK\}\}/g, `${baseUrl}/homologation-result?country=${encodeURIComponent(targetCountry)}&utm_source=${utmSource}`)
           .replace(/\{\{PAYMENT_LINK\}\}/g, `${baseUrl}/payment?country=${encodeURIComponent(targetCountry)}&utm_source=${utmSource}`);
+
+        // Also replace country in subject line
+        const emailSubject = template.subject[lang].replace(/\{\{TARGET_COUNTRY\}\}/g, translatedCountry);
 
         const html = generatePlainEmail(
           template.greeting[lang],
@@ -674,12 +693,12 @@ const handler = async (req: Request): Promise<Response> => {
           template.signature[lang]
         );
 
-        console.log(`[send-nurture-campaign] Sending ${templateId} to ${recipient.email} in ${lang}`);
+        console.log(`[send-nurture-campaign] Sending ${templateId} to ${recipient.email} in ${lang} for country ${translatedCountry}`);
 
         const emailResponse = await resend.emails.send({
           from: "David from Solvia <david@thesolvia.com>",
           to: [recipient.email],
-          subject: template.subject[lang],
+          subject: emailSubject,
           html,
           reply_to: "David.rehrl@thesolvia.com"
         });
