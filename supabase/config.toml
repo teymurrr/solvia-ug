@@ -47,3 +47,9 @@ verify_jwt = false
 
 [functions.translate-community]
 verify_jwt = false
+
+[functions.auto-nurture-sequence]
+verify_jwt = false
+
+[functions.win-back-campaign]
+verify_jwt = false

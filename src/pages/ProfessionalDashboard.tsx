@@ -4,6 +4,7 @@ import MainLayout from '@/components/MainLayout';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Briefcase, GraduationCap, Heart, Compass } from 'lucide-react';
+import ConversionBanner from '@/components/dashboard/ConversionBanner';
 import { ProfessionalProfileEditForm } from '@/components/professional-profile';
 import VacancyCard from '@/components/VacancyCard';
 import {
@@ -204,6 +205,11 @@ const ProfessionalDashboard: React.FC = () => {
   return (
     <MainLayout hideEditProfile={true}>
       <div className="container py-8 space-y-6">
+        {/* Conversion banner for non-paying users */}
+        {paidCountries.length === 0 && (
+          <ConversionBanner targetCountry={profileData?.targetCountry} />
+        )}
+
         {/* 1. HERO ZONE: Compact WelcomeSection */}
         <WelcomeSection
           profileData={profileData}

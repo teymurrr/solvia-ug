@@ -1224,6 +1224,7 @@ export type Database = {
         Row: {
           admin_notes: string | null
           amount: number
+          conversion_source: string | null
           created_at: string
           currency: string
           discount_amount: number | null
@@ -1245,6 +1246,7 @@ export type Database = {
         Insert: {
           admin_notes?: string | null
           amount: number
+          conversion_source?: string | null
           created_at?: string
           currency?: string
           discount_amount?: number | null
@@ -1266,6 +1268,7 @@ export type Database = {
         Update: {
           admin_notes?: string | null
           amount?: number
+          conversion_source?: string | null
           created_at?: string
           currency?: string
           discount_amount?: number | null
