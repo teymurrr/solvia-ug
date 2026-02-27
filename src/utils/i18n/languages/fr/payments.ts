@@ -145,6 +145,15 @@ export const payments = {
   saveUpTo: 'Économisez jusqu\'à 50%',
   notSure: 'Pas encore sûr(e) ?',
   bookConsultation: 'Réservez une consultation gratuite de 15 min',
+  callCta: {
+    title: 'Vous préférez parler à une vraie personne ?',
+    subtitle: 'Nos experts en homologation médicale répondront à toutes vos questions et vous aideront à choisir le bon plan.',
+    button: 'Planifier un Appel Gratuit',
+    benefit1: 'Sans engagement',
+    benefit2: 'Conseils personnalisés',
+    benefit3: 'Disponible dans votre langue',
+    or: 'ou',
+  },
   socialProofQuotes: [
     { text: 'Solvia a rendu tout le processus facile — j\'ai obtenu mon Approbation en 7 mois !', author: 'Dr. María L.', country: 'Espagne' },
     { text: 'Ils ont tout géré avec les autorités. Je me suis juste concentré sur mon allemand.', author: 'Dr. Luis F.', country: 'Mexique' },
