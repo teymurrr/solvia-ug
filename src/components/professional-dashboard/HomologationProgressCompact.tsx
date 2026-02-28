@@ -64,7 +64,7 @@ const HomologationProgressCompact: React.FC<HomologationProgressCompactProps> = 
       {/* Actions */}
       <div className="flex gap-2">
         <Button
-          onClick={() => navigate('/documents')}
+          onClick={() => navigate('/documents-upload')}
           className="flex-1 gap-2"
           size="sm"
         >
