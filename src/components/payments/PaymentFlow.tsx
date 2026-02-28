@@ -450,6 +450,22 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
       {/* 4. Social Proof Row */}
       <SocialProofStrip quotes={socialProofQuotes} />
 
+      {/* Pre-selection consultation CTA */}
+      <div className="text-center py-3">
+        <span className="text-muted-foreground text-sm">
+          {t?.payments?.notSure || 'Not sure yet?'}{' '}
+        </span>
+        <a
+          href="https://calendly.com/david-rehrl-thesolvia/30min"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:text-primary/80 underline underline-offset-2 transition-colors"
+        >
+          <Calendar className="w-4 h-4" />
+          {t?.payments?.bookConsultation || 'Book a free 15-min consultation'}
+        </a>
+      </div>
+
       {/* Package Selection */}
       <div className="grid md:grid-cols-3 gap-6 items-stretch">
         {packages.map((pkg) => (
