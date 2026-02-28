@@ -423,11 +423,6 @@ const HomologationResult = () => {
                 </Button>
               </div>
 
-              {/* Guarantee */}
-              <p className="text-xs text-muted-foreground text-center">
-                <Shield className="h-3 w-3 inline mr-1" />
-                {t.homologationResult.value?.guaranteeDesc || "If you're not satisfied within 30 days, we'll refund your payment. No questions asked."}
-              </p>
 
               <Separator />
 

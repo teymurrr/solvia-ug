@@ -63,9 +63,6 @@ const StarterKitOffer = () => {
               {sk?.cta || 'Get Starter Kit'}
               <ArrowRight className="w-4 h-4" />
             </Button>
-            <p className="text-xs text-muted-foreground text-center">
-              {sk?.guarantee || '30-day money-back guarantee'}
-            </p>
           </div>
         </div>
       </CardContent>

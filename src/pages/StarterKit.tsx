@@ -171,9 +171,6 @@ const StarterKit = () => {
                   <span className="flex items-center gap-1"><Shield className="w-3 h-3" /> {sk?.secure || 'Secure payment'}</span>
                   <span className="flex items-center gap-1"><Clock className="w-3 h-3" /> {sk?.instant || 'Instant delivery'}</span>
                 </div>
-                <p className="text-xs text-center text-muted-foreground">
-                  {sk?.guarantee || '30-day money-back guarantee'}
-                </p>
               </CardContent>
             </Card>
           </div>

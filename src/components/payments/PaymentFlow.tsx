@@ -549,13 +549,6 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
         ))}
       </div>
 
-      {/* 3. Money-Back Guarantee Strip */}
-      <div className="flex items-center justify-center gap-2 py-3 px-4 bg-green-50 border border-green-200 rounded-lg dark:bg-green-950/20 dark:border-green-900">
-        <ShieldCheck className="w-5 h-5 text-green-600 dark:text-green-400 flex-shrink-0" />
-        <span className="text-sm font-medium text-green-800 dark:text-green-400">
-          {t?.payments?.guarantee || '30-day money-back guarantee — no questions asked'}
-        </span>
-      </div>
 
       {/* 7. Trust Indicators (always visible) */}
       <div className="flex items-center justify-center gap-6 text-sm text-muted-foreground">
