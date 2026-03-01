@@ -203,10 +203,17 @@ const HomologationResult = () => {
               </p>
             </motion.div>
 
-            {/* Inline summary line */}
-            <p className="text-xs text-muted-foreground tracking-wide">
-              {summaryParts.join(' · ')}
-            </p>
+            {/* Summary badges */}
+            <div className="flex items-center justify-center gap-2 flex-wrap mt-2">
+              {summaryParts.map((part, i) => (
+                <span
+                  key={i}
+                  className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary"
+                >
+                  {part}
+                </span>
+              ))}
+            </div>
           </div>
         </motion.section>
 
