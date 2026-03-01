@@ -2,7 +2,7 @@
 export const hero = {
   title: 'Votre carrière médicale en Europe commence ici.',
   subtitle: 'Nous gérons la reconnaissance de votre diplôme, trouvons un emploi et vous guidons à chaque étape.',
-  cta: 'Commencer mon évaluation',
+  cta: 'Commencer mon évaluation gratuite',
   secondaryCta: 'Trouver un emploi',
   learnMore: 'En savoir plus',
   searchPlaceholder: 'Titre du poste, spécialité ou mot-clé...',
