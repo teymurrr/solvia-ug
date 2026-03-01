@@ -47,6 +47,7 @@ export const homologationResult = {
     limitedSpots: 'Ограниченное количество мест!',
     spotsLeft: 'Осталось только {count} мест в этом месяце',
     savingsMessage: 'Столько вы сэкономите, не теряя 3 месяца в одиночку',
+    socialProof: '500+ врачей уже начали свой путь с нами',
   },
   emailSent: 'Копия этого плана была отправлена на',
   noData: 'Данные не найдены. Пожалуйста, сначала пройдите мастер.',
@@ -68,6 +69,8 @@ export const homologationResult = {
     languageReady: 'Вы соответствуете требованиям!',
     documentsLabel: 'Необходимые Документы',
     documentsCount: '{count} документов к подготовке',
+    summaryLine: '~{duration} мес. · {docs} документов',
+    summaryLineWithLang: '~{duration} мес. · {docs} документов · {lang} требуется',
   },
   roadmap: {
     title: 'Ваш Пошаговый План',
