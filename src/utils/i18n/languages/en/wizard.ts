@@ -33,9 +33,10 @@ export const wizard = {
     unsure: 'I have no idea'
   },
   language: {
-    title: 'What is your current language level?',
-    subtitle: 'For the country you want to work in',
-    motherTongue: 'Mother tongue',
+    title: 'What is your {language} level?',
+    subtitle: 'Select your current proficiency in the language of your target country',
+    nativeSpeaker: 'Native speaker',
+    motherTongue: 'Native speaker',
     dontKnow: "I don't know"
   },
   email: {

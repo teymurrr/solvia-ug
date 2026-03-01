@@ -33,9 +33,10 @@ export const wizard = {
     unsure: 'Я понятия не имею'
   },
   language: {
-    title: 'Какой у вас текущий уровень языка?',
-    subtitle: 'Для страны, где вы хотите работать',
-    motherTongue: 'Родной язык',
+    title: 'Какой у вас уровень {language}?',
+    subtitle: 'Выберите ваш текущий уровень владения языком страны назначения',
+    nativeSpeaker: 'Носитель языка',
+    motherTongue: 'Носитель языка',
     dontKnow: 'Я не знаю'
   },
   email: {
