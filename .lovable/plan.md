@@ -1,37 +1,61 @@
 
-# Add Pre-Selection Consultation CTA on Payment Page
 
-## Problem
-Users who arrive at the payment page after the wizard but don't know which package suits them have no clear path to get help *before* scrolling through and comparing all three options. The existing "Schedule a Free Call" card only appears after the packages and trust indicators.
+## Condense Roadmap + Price Card into One Conversion Section
 
-## Solution
-Add a subtle but visible consultation link between the social proof strip and the package grid. This is NOT a popup (popups are disruptive and annoying at this stage). Instead, it's a friendly, low-pressure inline prompt that catches the eye of undecided users without interrupting those who are ready to choose.
+### The Problem
+Currently, the results page has two separate sections after the diagnosis cards:
+1. **Roadmap** (step-by-step plan with locked steps + "Unlock" CTA)
+2. **Price Card** (salary vs. investment comparison + "Start Process" CTA)
 
-## Design
-A centered text line with a calendar icon and link, styled as a soft prompt:
+This splits the user's attention across two CTAs and creates unnecessary scroll distance. The value proposition (salary vs. investment) is disconnected from the action (unlocking the roadmap).
+
+### The Solution
+Merge both into a single "Roadmap + Value" card that tells a tighter story:
+**"Here's your plan -> most steps are locked -> here's what it costs (almost nothing vs. your salary) -> unlock now"**
+
+### Design
 
 ```text
-"Not sure which plan is right for you? Book a free 15-min consultation"
++--------------------------------------------------+
+|  Your Step-by-Step Roadmap                        |
+|  Personalized action plan based on your profile   |
+|                                                   |
+|  01  Document Collection & Verification      [v]  |
+|  02  Language Preparation                    [v]  |
+|  03  Application Submission                  [x]  |
+|  04  Exam Preparation                        [x]  |
+|  05  Final Approval & Registration           [x]  |
+|      (gradient fade over locked steps)            |
+|                                                   |
+|  --- separator ---                                |
+|                                                   |
+|  Potential salary        Your investment          |
+|  8,500 EUR/mo            Starting from 39 EUR     |
+|                                                   |
+|  < That's less than X% of your first salary >     |
+|                                                   |
+|  [  Start My Process  ->  ] [Book Consultation]   |
+|                                                   |
+|  --- separator ---                                |
+|                                                   |
+|  Experts  *  98% success  *  24/7 support         |
++--------------------------------------------------+
 ```
 
-- Positioned directly above the package cards (after social proof, before the grid)
-- Uses a warm, non-aggressive style: muted text with an underlined link in primary color
-- Links to the same Calendly URL
-- Leverages existing translation keys (`notSure`, `bookConsultation`) already present in all 5 languages (EN, ES, DE, FR, RU)
+### Technical Changes
 
-## Technical Changes
+**File: `src/pages/HomologationResult.tsx`**
+- Remove Section 4 as a standalone `<motion.section>`
+- Move the salary/investment comparison, return note, CTAs, and trust signals **inside** the roadmap section card, below the locked-steps overlay
+- Keep the gradient fade + unlock overlay on the roadmap steps
+- Below the roadmap area, add a separator then the salary vs. investment grid, return note, action buttons, separator, and trust signals -- all within one `bg-card border rounded-2xl` container
+- Remove the standalone Section 4 title ("The smartest investment in your career") since the section header is now the roadmap title
 
-### 1. `src/components/payments/PaymentFlow.tsx`
-- Insert a new element between the `SocialProofStrip` (line 451) and the package grid (line 454)
-- Simple centered `div` with `Calendar` icon + translated text linking to Calendly
-- No new components needed
+**File: `src/utils/i18n/languages/en/homologationResult.ts`** (and es, de, fr, ru equivalents)
+- No new translation keys needed; existing keys from both `roadmap` and `value` namespaces are reused within the merged section
 
-### 2. Translation files -- NO changes needed
-The keys `notSure` and `bookConsultation` already exist in all 5 language files:
-- EN: "Not sure yet?" / "Book a free 15-min consultation"
-- ES: "No estas seguro/a?" / "Reserva una consulta gratuita de 15 min"
-- DE: "Noch unsicher?" / "Kostenlose 15-Min-Beratung buchen"
-- FR: (already present)
-- RU: (already present)
-
-No new dependencies, no new files. One small insertion in PaymentFlow.tsx.
+### Benefits
+- Single scroll-stopping card instead of two
+- One clear decision point instead of two competing CTAs
+- The "locked steps" create desire, immediately followed by the low-cost reveal -- tighter persuasion loop
+- Less page length = less drop-off
