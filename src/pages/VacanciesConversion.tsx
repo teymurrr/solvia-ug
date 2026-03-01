@@ -140,10 +140,6 @@ const VacanciesConversion = () => {
               specialty=""
             />
 
-            {/* Homologation CTA */}
-            <div className="max-w-md mx-auto">
-              <HomologationPlanPanel />
-            </div>
           </div>
         </div>
       </section>
