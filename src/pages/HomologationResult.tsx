@@ -196,22 +196,18 @@ const HomologationResult = () => {
           className="pt-8 pb-3 md:pt-12 md:pb-6">
 
           <div className="container mx-auto px-4 max-w-3xl text-center">
-            <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-1.5 rounded-full mb-6 text-sm font-medium">
-              <Sparkles className="h-4 w-4" />
-              {t.homologationResult.diagnosis?.title || 'We analyzed your profile'}
-            </div>
-
-            <h1 className="text-3xl md:text-4xl font-bold tracking-tight mb-3">
+            <h1 className="text-3xl md:text-4xl font-bold tracking-tight mb-2">
               {getCountryFlag(wizardData.targetCountry)} {t.homologationResult.pathTo} {translatedCountryName}
             </h1>
 
-            <p className="text-muted-foreground text-base md:text-lg mb-6 max-w-xl mx-auto">
-              {(t.homologationResult.diagnosis?.subtitle || "Here's what stands between you and practicing medicine in {country}").
-              replace('{country}', translatedCountryName)}
-            </p>
+            {(wizardData.doctorType || wizardData.studyCountry) &&
+              <p className="text-muted-foreground text-sm mb-4">
+                {[getDoctorTypeLabel(wizardData.doctorType), wizardData.studyCountry ? `${t.homologationResult.from} ${wizardData.studyCountry}` : ''].filter(Boolean).join(' · ')}
+              </p>
+            }
 
             {/* Salary urgency inline */}
-            <div className="flex items-center justify-center gap-2 text-sm text-amber-700 dark:text-amber-400 mb-6">
+            <div className="flex items-center justify-center gap-2 text-sm text-amber-700 dark:text-amber-400">
               <AlertTriangle className="h-3.5 w-3.5 shrink-0" />
               <span>
                 {(t.homologationResult.urgency?.salaryLoss || "You are losing approximately {salary} {currency}/month by not working in {country}.").
@@ -219,20 +215,6 @@ const HomologationResult = () => {
                 replace('{currency}', countryData.averageSalaries.currency).
                 replace('{country}', translatedCountryName)}
               </span>
-            </div>
-
-            {/* Profile pills */}
-            <div className="flex flex-wrap items-center justify-center gap-2">
-              {wizardData.doctorType &&
-              <span className="bg-secondary text-secondary-foreground px-3 py-1 rounded-full text-sm font-medium">
-                  {getDoctorTypeLabel(wizardData.doctorType)}
-                </span>
-              }
-              {wizardData.studyCountry &&
-              <span className="bg-secondary text-secondary-foreground px-3 py-1 rounded-full text-sm">
-                  {t.homologationResult.from} {wizardData.studyCountry}
-                </span>
-              }
             </div>
           </div>
         </motion.section>
