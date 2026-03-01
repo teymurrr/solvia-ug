@@ -1,0 +1,1 @@
+UPDATE vacancies SET salary = '105.000€ - 125.000€' WHERE id = '264aae34-c3df-424e-9fa3-a3029a880a40';
