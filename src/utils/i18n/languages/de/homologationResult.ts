@@ -46,6 +46,7 @@ export const homologationResult = {
     benefit4: 'Keine versteckten Kosten',
     limitedSpots: 'Begrenzte Plätze verfügbar!',
     spotsLeft: 'Nur noch {count} Plätze diesen Monat',
+    savingsMessage: 'So viel sparen Sie, wenn Sie nicht 3 Monate allein verlieren',
   },
   emailSent: 'Eine Kopie dieses Plans wurde gesendet an',
   noData: 'Keine Daten gefunden. Bitte füllen Sie zuerst den Assistenten aus.',
