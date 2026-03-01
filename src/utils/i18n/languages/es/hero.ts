@@ -2,7 +2,7 @@
 export const hero = {
   title: 'Tu carrera médica en Europa empieza aquí.',
   subtitle: 'Nos encargamos del reconocimiento de tu título, te encontramos trabajo y te guiamos en cada paso.',
-  cta: 'Empezar mi homologación',
+  cta: 'Empezar mi evaluación gratuita',
   secondaryCta: 'Encontrar un trabajo',
   learnMore: 'Más información',
   searchPlaceholder: 'Puesto de trabajo',

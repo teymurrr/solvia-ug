@@ -2,7 +2,7 @@
 export const hero = {
   title: 'Ihre medizinische Karriere in Europa beginnt hier.',
   subtitle: 'Wir kümmern uns um die Anerkennung Ihres Titels, finden Ihnen einen Job und begleiten Sie bei jedem Schritt.',
-  cta: 'Meine Anerkennung starten',
+  cta: 'Meine kostenlose Bewertung starten',
   secondaryCta: 'Job finden',
   learnMore: 'Mehr erfahren',
   searchPlaceholder: 'Stellentitel, Fachrichtung oder Stichwort...',
