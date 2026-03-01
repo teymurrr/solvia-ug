@@ -34,15 +34,6 @@ const NavLinks: React.FC<NavLinksProps> = ({ isLoggedIn, userType }) => {
           </div>
           <span className="text-sm text-muted-foreground group-hover:text-foreground">{(t as any)?.community?.title || "Community"}</span>
         </Link>
-        <Link
-          to="/employers"
-          className="flex flex-col items-center group"
-        >
-          <div className="p-2 rounded-full group-hover:bg-muted transition-colors">
-            <Users className="h-5 w-5 text-muted-foreground group-hover:text-foreground" />
-          </div>
-          <span className="text-sm text-muted-foreground group-hover:text-foreground">{t?.common?.forEmployers || "For Employers"}</span>
-        </Link>
       </div>
     );
   }
