@@ -47,6 +47,7 @@ export const homologationResult = {
     limitedSpots: 'Places limitées disponibles!',
     spotsLeft: 'Seulement {count} places restantes ce mois',
     savingsMessage: 'C\'est ce que vous économisez en ne perdant pas 3 mois seul',
+    socialProof: '500+ médecins ont déjà commencé leur parcours avec nous',
   },
   emailSent: 'Une copie de ce plan a été envoyée à',
   noData: 'Aucune donnée trouvée. Veuillez d\'abord compléter l\'assistant.',
@@ -68,6 +69,8 @@ export const homologationResult = {
     languageReady: 'Vous remplissez les conditions!',
     documentsLabel: 'Documents Nécessaires',
     documentsCount: '{count} documents à préparer',
+    summaryLine: '~{duration} mois · {docs} documents',
+    summaryLineWithLang: '~{duration} mois · {docs} documents · {lang} requis',
   },
   roadmap: {
     title: 'Votre Feuille de Route Étape par Étape',

@@ -47,6 +47,7 @@ export const homologationResult = {
     limitedSpots: '¡Plazas limitadas disponibles!',
     spotsLeft: 'Solo quedan {count} plazas este mes',
     savingsMessage: 'Eso es lo que ahorras al no perder 3 meses haciéndolo solo',
+    socialProof: '500+ médicos ya han comenzado su camino con nosotros',
   },
   emailSent: 'Una copia de este plan ha sido enviada a',
   noData: 'No se encontraron datos. Por favor completa el asistente primero.',
@@ -68,6 +69,8 @@ export const homologationResult = {
     languageReady: '¡Cumples con el requisito!',
     documentsLabel: 'Documentos Necesarios',
     documentsCount: '{count} documentos por preparar',
+    summaryLine: '~{duration} meses · {docs} documentos',
+    summaryLineWithLang: '~{duration} meses · {docs} documentos · {lang} requerido',
   },
   roadmap: {
     title: 'Tu Hoja de Ruta Paso a Paso',
