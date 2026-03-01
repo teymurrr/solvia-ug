@@ -41,7 +41,7 @@ export const wizard = {
   },
   email: {
     title: 'Quelle est votre adresse e-mail?',
-    subtitle: 'Nous l\'utiliserons pour créer votre compte et vous tenir informé',
+    subtitle: 'Nous l\'utiliserons pour vous envoyer votre plan personnalisé',
     placeholder: 'votre.email@exemple.fr',
     continue: 'Continuer',
     complete: 'Terminer',
