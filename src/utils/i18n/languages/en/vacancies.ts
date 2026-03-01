@@ -20,7 +20,7 @@ export const vacancies = {
   startHomologationToApply: 'Start homologation to apply',
   verifiedOffers: 'Verified Offers',
   heroTitle: 'Work in Europe: opportunities based on your specialty',
-  heroSubtitle: 'Filter by profession and country to see relevant offers',
+  heroSubtitle: 'Verified positions in hospitals and clinics across Europe',
   preview: 'Preview of available offers',
   showingOffers: 'Showing offers',
   in: 'in',

@@ -21,7 +21,7 @@ export const vacancies = {
   startHomologationToApply: 'Iniciar homologación para aplicar',
   verifiedOffers: 'Ofertas Verificadas',
   heroTitle: 'Trabaja en Europa: oportunidades según tu especialidad',
-  heroSubtitle: 'Filtra por profesión y país para ver ofertas relevantes',
+  heroSubtitle: 'Posiciones verificadas en hospitales y clínicas de toda Europa',
   preview: 'Vista previa de ofertas disponibles',
   showingOffers: 'Mostrando ofertas',
   in: 'en',
