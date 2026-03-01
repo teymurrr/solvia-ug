@@ -79,9 +79,9 @@ const PathToSuccessSection = () => {
           </h3>
         </div>
 
-        {/* Country Cards */}
-        <div className="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-12">
-          {countries.map((c) => {
+        {/* Featured Countries: Germany & Spain */}
+        <div className="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
+          {countries.filter(c => c.key === 'germany' || c.key === 'spain').map((c) => {
             const translated = comparison?.countries?.[c.key];
             const name = translated?.name || c.name;
             const highlight = translated?.highlight || c.highlight;
@@ -90,23 +90,67 @@ const PathToSuccessSection = () => {
             return (
               <Card
                 key={c.key}
-                className={`p-5 border-l-4 ${c.accent} hover:shadow-lg hover:scale-[1.02] transition-all duration-300 bg-card`}
+                className={`p-6 border-l-4 ${c.accent} hover:shadow-xl hover:scale-[1.02] transition-all duration-300 bg-card ring-1 ring-primary/10`}
               >
-                <div className="space-y-3">
-                  {/* Flag + name */}
+                <div className="space-y-4">
                   <div className="text-center">
-                    <span className="text-5xl block mb-1">{c.flag}</span>
-                    <h4 className="font-bold text-lg text-foreground">{name}</h4>
+                    <span className="text-6xl block mb-2">{c.flag}</span>
+                    <h4 className="font-bold text-xl text-foreground">{name}</h4>
+                    <span className="text-sm font-medium text-primary">{highlight}</span>
+                  </div>
+                  <div className="flex items-center justify-between gap-2 bg-muted/40 rounded-lg px-4 py-3">
+                    <div className="text-center flex-1">
+                      <p className="text-xs text-muted-foreground">{comparison?.startingFrom || 'From'}</p>
+                      <p className="text-xl font-bold text-primary">€39</p>
+                    </div>
+                    <div className="w-px h-8 bg-border" />
+                    <div className="text-center flex-1">
+                      <p className="text-xs text-muted-foreground flex items-center justify-center gap-1">
+                        <Clock className="h-3 w-3" />
+                        {comparison?.estimatedTime || 'Timeline'}
+                      </p>
+                      <p className="text-base font-semibold text-foreground">{duration}</p>
+                    </div>
+                  </div>
+                  <Link
+                    to="/homologation-wizard"
+                    onClick={() => window.scrollTo(0, 0)}
+                    className="flex items-center justify-center gap-1 text-sm font-medium text-primary hover:underline"
+                  >
+                    {comparison?.learnMore || 'Learn more'}
+                    <ArrowRight className="h-3.5 w-3.5" />
+                  </Link>
+                </div>
+              </Card>
+            );
+          })}
+        </div>
+
+        {/* Other Countries: Austria, France, Italy */}
+        <div className="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-3 gap-4 mb-12">
+          {countries.filter(c => c.key !== 'germany' && c.key !== 'spain').map((c) => {
+            const translated = comparison?.countries?.[c.key];
+            const name = translated?.name || c.name;
+            const highlight = translated?.highlight || c.highlight;
+            const duration = translated?.processDuration || c.duration;
+
+            return (
+              <Card
+                key={c.key}
+                className={`p-4 border-l-4 ${c.accent} hover:shadow-lg hover:scale-[1.02] transition-all duration-300 bg-card`}
+              >
+                <div className="space-y-2">
+                  <div className="text-center">
+                    <span className="text-3xl block mb-1">{c.flag}</span>
+                    <h4 className="font-bold text-base text-foreground">{name}</h4>
                     <span className="text-xs font-medium text-primary">{highlight}</span>
                   </div>
-
-                  {/* Price + Duration row */}
-                  <div className="flex items-center justify-between gap-2 bg-muted/40 rounded-lg px-3 py-2.5">
+                  <div className="flex items-center justify-between gap-2 bg-muted/40 rounded-lg px-3 py-2">
                     <div className="text-center flex-1">
                       <p className="text-xs text-muted-foreground">{comparison?.startingFrom || 'From'}</p>
                       <p className="text-lg font-bold text-primary">€39</p>
                     </div>
-                    <div className="w-px h-8 bg-border" />
+                    <div className="w-px h-6 bg-border" />
                     <div className="text-center flex-1">
                       <p className="text-xs text-muted-foreground flex items-center justify-center gap-1">
                         <Clock className="h-3 w-3" />
@@ -115,15 +159,13 @@ const PathToSuccessSection = () => {
                       <p className="text-sm font-semibold text-foreground">{duration}</p>
                     </div>
                   </div>
-
-                  {/* Card link */}
                   <Link
                     to="/homologation-wizard"
                     onClick={() => window.scrollTo(0, 0)}
-                    className="flex items-center justify-center gap-1 text-sm font-medium text-primary hover:underline"
+                    className="flex items-center justify-center gap-1 text-xs font-medium text-primary hover:underline"
                   >
                     {comparison?.learnMore || 'Learn more'}
-                    <ArrowRight className="h-3.5 w-3.5" />
+                    <ArrowRight className="h-3 w-3" />
                   </Link>
                 </div>
               </Card>
