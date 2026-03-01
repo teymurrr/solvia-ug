@@ -115,10 +115,10 @@ const PathToSuccessSection = () => {
                   <Link
                     to="/homologation-wizard"
                     onClick={() => window.scrollTo(0, 0)}
-                    className="flex items-center justify-center gap-1 text-sm font-medium text-primary hover:underline"
+                    className="inline-flex items-center justify-center gap-2 w-full px-4 py-2.5 rounded-lg bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary/90 transition-colors"
                   >
                     {comparison?.learnMore || 'Learn more'}
-                    <ArrowRight className="h-3.5 w-3.5" />
+                    <ArrowRight className="h-4 w-4" />
                   </Link>
                 </div>
               </Card>
@@ -162,10 +162,10 @@ const PathToSuccessSection = () => {
                   <Link
                     to="/homologation-wizard"
                     onClick={() => window.scrollTo(0, 0)}
-                    className="flex items-center justify-center gap-1 text-xs font-medium text-primary hover:underline"
+                    className="inline-flex items-center justify-center gap-2 w-full px-3 py-2 rounded-lg bg-primary text-primary-foreground text-xs font-semibold hover:bg-primary/90 transition-colors"
                   >
                     {comparison?.learnMore || 'Learn more'}
-                    <ArrowRight className="h-3 w-3" />
+                    <ArrowRight className="h-3.5 w-3.5" />
                   </Link>
                 </div>
               </Card>
