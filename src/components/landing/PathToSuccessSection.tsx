@@ -77,6 +77,9 @@ const PathToSuccessSection = () => {
           <h3 className="text-2xl md:text-3xl font-bold text-foreground">
             {comparison?.title || 'Choose Your Destination'}
           </h3>
+          <p className="mt-2 text-muted-foreground">
+            {comparison?.subtitle || 'Find the best country for your medical career'}
+          </p>
         </div>
 
         {/* Featured Countries: Germany & Spain */}
