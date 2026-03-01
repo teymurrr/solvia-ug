@@ -41,7 +41,7 @@ export const wizard = {
   },
   email: {
     title: '¿Cuál es tu dirección de correo electrónico?',
-    subtitle: 'La usaremos para crear tu cuenta y mantenerte informado',
+    subtitle: 'Lo usaremos para enviarte tu plan personalizado',
     placeholder: 'tu.correo@ejemplo.com',
     continue: 'Continuar',
     complete: 'Completar',

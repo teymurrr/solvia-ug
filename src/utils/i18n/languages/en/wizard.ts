@@ -41,7 +41,7 @@ export const wizard = {
   },
   email: {
     title: "What's your email address?",
-    subtitle: "We'll use this to create your account and keep you updated",
+    subtitle: "We'll use it to send you your personalized plan",
     placeholder: 'your.email@example.com',
     continue: 'Continue',
     complete: 'Complete',
