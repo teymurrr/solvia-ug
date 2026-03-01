@@ -421,14 +421,15 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
 
   return (
     <div className="max-w-5xl mx-auto space-y-6">
-      {/* Country Indicator */}
-      {targetCountry && (
-        <div className="text-center">
-          <Badge variant="secondary" className="text-base px-4 py-2">
-            {getCountryFlag(targetCountry)} {t?.payments?.packagesFor || 'Packages for'} {getCountryDisplayName(targetCountry, t)}
-          </Badge>
-        </div>
-      )}
+      {/* Dynamic Page Title */}
+      <div className="text-center mb-6">
+        <h1 className="text-4xl font-bold text-foreground mb-4">
+          {(t?.payments?.pageTitle || 'Start Your Medical Career in {country}').replace('{country}', getCountryDisplayName(targetCountry, t) || 'Europe')}
+        </h1>
+        <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          {t?.payments?.pageDescription || 'Choose the package that best fits your needs'}
+        </p>
+      </div>
 
       {/* 1. Single Urgency Banner */}
       <div className="flex flex-col sm:flex-row items-center justify-center gap-3 bg-primary/10 border border-primary/20 rounded-lg p-4">
