@@ -126,21 +126,21 @@ const HomologationPreview: React.FC<HomologationPreviewProps> = ({ profileData }
         <div className="grid grid-cols-3 gap-3">
           <div className="text-center p-3 bg-muted/50 rounded-lg">
             <Clock className="w-5 h-5 mx-auto text-primary mb-1" />
-            <p className="text-lg font-bold">{countryData.processTime.min}</p>
+            <p className="text-lg font-bold">{countryData.processTime.min} {t?.homologationResult?.diagnosis?.monthsUnit || 'months'}</p>
             <p className="text-xs text-muted-foreground">
               {t?.dashboard?.homologationPreview?.fastest || 'Fastest'}
             </p>
           </div>
           <div className="text-center p-3 bg-primary/10 rounded-lg border border-primary/20">
             <Clock className="w-5 h-5 mx-auto text-primary mb-1" />
-            <p className="text-lg font-bold text-primary">{countryData.processTime.med}</p>
+            <p className="text-lg font-bold text-primary">{countryData.processTime.med} {t?.homologationResult?.diagnosis?.monthsUnit || 'months'}</p>
             <p className="text-xs text-muted-foreground">
               {t?.dashboard?.homologationPreview?.average || 'Average'}
             </p>
           </div>
           <div className="text-center p-3 bg-muted/50 rounded-lg">
             <Clock className="w-5 h-5 mx-auto text-muted-foreground mb-1" />
-            <p className="text-lg font-bold text-muted-foreground">{countryData.processTime.max}</p>
+            <p className="text-lg font-bold text-muted-foreground">{countryData.processTime.max} {t?.homologationResult?.diagnosis?.monthsUnit || 'months'}</p>
             <p className="text-xs text-muted-foreground">
               {t?.dashboard?.homologationPreview?.longest || 'Longest'}
             </p>
