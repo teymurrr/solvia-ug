@@ -19,8 +19,7 @@ export const payments = {
   emailLabel: 'E-Mail-Adresse',
   emailPlaceholder: 'ihre.email@beispiel.de',
   emailHint: 'Wir senden Ihre Quittung und Zugangsdaten an diese E-Mail',
-  limitedOffer: 'Begrenztes Einführungsangebot',
-  introEnds: 'Regulärer Preis',
+  competitorAnchor: 'Wettbewerber verlangen €8.000–20.000',
   languageNames: {
     german: 'Deutsch',
     spanish: 'Spanisch',
@@ -29,43 +28,38 @@ export const payments = {
   },
   packages: {
     digitalStarter: {
-      title: 'Digitale Homologation',
-      description: 'Navigieren Sie Ihre Approbation eigenständig mit unserem KI-gestützten digitalen Toolkit',
+      title: 'Begleitete Homologation',
+      description: 'Expertenbegleitung bei jedem Schritt Ihrer Approbation',
       features: [
-        'Schritt-für-Schritt-Anleitung für jedes Dokument',
-        'KI-gestützte Dokumentenanalyse & Validierung',
-        'Länderspezifische Dokumenten-Checkliste & Vorlagen',
-        'Apostille- & Übersetzungsanleitungen',
-        'Medizinische Lebenslaufvorlage',
-        'E-Mail-Support (Antwort innerhalb von 72h)',
+        'Persönliche Dokumentenprüfung vor jeder Einreichung',
+        'Direkte Kommunikation mit Behörden in Ihrem Namen',
+        'Antragstellung wird für Sie übernommen',
+        'Prioritäts-Support (Antwort in 24h)',
         'Fortschritts-Dashboard'
       ]
     },
     complete: {
-      titleBase: 'Persönliche Rundum-Homologation',
-      descriptionBase: 'Expertenbegleitete Approbation mit persönlicher Dokumentenprüfung &',
-      descriptionEnd: 'Behördenkommunikation',
+      titleBase: 'Homologation +',
+      descriptionBase: 'Komplette Homologationsunterstützung mit medizinischem',
+      descriptionEnd: 'Sprachtraining',
       features: [
-        'Alles aus Digitale Homologation',
-        'Persönliche Expertenprüfung jedes Dokuments vor Einreichung',
-        'Direkte Kommunikation mit Behörden in Ihrem Namen',
-        'Antragstellung für Sie',
-        'Prioritäts-Support (Antwort innerhalb von 24h)',
-        'Fortschritts-Dashboard'
+        'Alles aus Begleitete Homologation',
+        '12 Monate medizinischer Sprachkurs',
+        '4× Live-1:1-Coaching-Sitzungen (60 Min)',
+        'Persönlicher Fallmanager',
+        'WhatsApp- und Telefon-Support'
       ]
     },
     personalMentorship: {
-      titleBase: 'Komplette Homologation +',
-      descriptionBase: 'Komplette Approbation + Sprachtraining mit persönlichem Fallmanager &',
-      descriptionEnd: 'Vor-Ort-Unterstützung',
+      titleBase: 'Komplett All-Inclusive',
+      descriptionBase: 'Wir kümmern uns um alles — Übersetzungen, Gebühren, Papierkram,',
+      descriptionEnd: 'alles inklusive',
       features: [
-        'Alles aus Persönliche Rundum-Homologation',
-        '12 Monate Zugang zum medizinischen Sprachkurs',
-        '4× Live-1:1-Sitzungen (60 Min): Dokumentenprüfung, Prüfungsvorbereitung & Interviewcoaching',
-        'Persönlicher Fallmanager von Anfang bis Ende',
-        'Vor-Ort-Unterstützung bei wichtigen Terminen (wo verfügbar)',
-        'Wir übernehmen die gesamte Behördenkommunikation & Papierkram',
-        'Direkter WhatsApp- & Telefon-Support'
+        'Alle Übersetzungs- und Apostillekosten inklusive',
+        'Alle offiziellen Gebühren und Abgaben abgedeckt',
+        'Komplette Behördenkommunikation und Anträge',
+        'Sprachkurs + persönlicher Fallmanager',
+        'Vor-Ort-Unterstützung bei Terminen'
       ]
     }
   },
@@ -142,7 +136,6 @@ export const payments = {
   },
   guarantee: '30 Tage Geld-zurück-Garantie — ohne Rückfragen',
   youSave: 'Sparen Sie',
-  saveUpTo: 'Bis zu 50% sparen',
   notSure: 'Noch unsicher?',
   bookConsultation: 'Kostenlose 15-Min-Beratung buchen',
   callCta: {

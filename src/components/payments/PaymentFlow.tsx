@@ -7,7 +7,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { useLanguage } from '@/hooks/useLanguage';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import { Check, Shield, Clock, BookOpen, Users, Star, ExternalLink, Zap, Timer, ShieldCheck, CreditCard, Inbox, Headphones, Calendar, Phone, MessageCircle } from 'lucide-react';
+import { Check, Shield, Clock, BookOpen, Users, Star, ExternalLink, Calendar } from 'lucide-react';
 import { preOpenPaymentWindow, redirectPaymentWindow, isSafari } from '@/utils/browserDetection';
 import Analytics from '@/utils/analyticsTracking';
 
@@ -31,102 +31,17 @@ interface PackageConfig {
   id: ProductType;
   icon: React.ReactNode;
   price: number;
-  introPrice: number;
   popular?: boolean;
   features: string[];
 }
 
-interface Pricing {
-  price: number;
-  introPrice: number;
-}
-
-const getPricingByCountry = (country: string | null): Record<ProductType, { price: number; introPrice: number }> => {
-  const defaultPricing = {
-    digital_starter: { price: 7900, introPrice: 3900 },
-    complete: { price: 37900, introPrice: 18900 },
-    personal_mentorship: { price: 89900, introPrice: 44900 },
+const getPricingByCountry = (country: string | null): Record<ProductType, number> => {
+  // All countries use the same pricing for now
+  return {
+    digital_starter: 29900,
+    complete: 89900,
+    personal_mentorship: 380000,
   };
-
-  if (!country) {
-    return defaultPricing;
-  }
-
-  switch (country.toLowerCase()) {
-    case 'germany':
-      return defaultPricing;
-    case 'austria':
-      return defaultPricing;
-    case 'spain':
-      return defaultPricing;
-    case 'italy':
-      return defaultPricing;
-    case 'france':
-      return defaultPricing;
-    default:
-      return defaultPricing;
-  }
-};
-
-const CountdownTimer: React.FC = () => {
-  const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
-
-  useEffect(() => {
-    const target = new Date('2026-02-28T23:59:59').getTime();
-    const update = () => {
-      const now = Date.now();
-      const diff = Math.max(0, target - now);
-      setTimeLeft({
-        days: Math.floor(diff / 86400000),
-        hours: Math.floor((diff % 86400000) / 3600000),
-        minutes: Math.floor((diff % 3600000) / 60000),
-        seconds: Math.floor((diff % 60000) / 1000),
-      });
-    };
-    update();
-    const id = setInterval(update, 1000);
-    return () => clearInterval(id);
-  }, []);
-
-  if (timeLeft.days <= 0 && timeLeft.hours <= 0 && timeLeft.minutes <= 0 && timeLeft.seconds <= 0) return null;
-
-  return (
-    <span className="font-mono font-semibold">
-      {timeLeft.days}d {String(timeLeft.hours).padStart(2, '0')}h {String(timeLeft.minutes).padStart(2, '0')}m {String(timeLeft.seconds).padStart(2, '0')}s
-    </span>
-  );
-};
-
-// Social proof rotating quote component
-const SocialProofStrip: React.FC<{ quotes: any[] }> = ({ quotes }) => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-
-  useEffect(() => {
-    if (!quotes || quotes.length <= 1) return;
-    const id = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % quotes.length);
-    }, 5000);
-    return () => clearInterval(id);
-  }, [quotes]);
-
-  if (!quotes || quotes.length === 0) return null;
-  const quote = quotes[currentIndex];
-
-  return (
-    <div className="flex items-center justify-center gap-3 py-3 px-4 bg-muted/50 rounded-lg text-sm">
-      <div className="flex gap-0.5 flex-shrink-0">
-        {[...Array(5)].map((_, i) => (
-          <Star key={i} className="w-3.5 h-3.5 fill-yellow-400 text-yellow-400" />
-        ))}
-      </div>
-      <p className="text-muted-foreground italic truncate">
-        "{quote.text}"
-      </p>
-      <span className="text-xs text-muted-foreground flex-shrink-0 font-medium">
-        — {quote.author}, {quote.country}
-      </span>
-    </div>
-  );
 };
 
 interface CountryNames {
@@ -154,17 +69,6 @@ const getCountryDisplayName = (country: string | null, t: { wizard?: { countries
     france: t?.wizard?.countries?.france || 'France',
   };
   return countryNames[country] || country;
-};
-
-const getCountryFlag = (country: string | null): string => {
-  const flags: Record<string, string> = {
-    germany: '🇩🇪',
-    austria: '🇦🇹',
-    spain: '🇪🇸',
-    italy: '🇮🇹',
-    france: '🇫🇷',
-  };
-  return flags[country || ''] || '🌍';
 };
 
 const getLanguageForCountry = (country: string | null, t: { wizard?: { countries?: CountryNames }, payments?: { languageNames?: LanguageNames } }): string => {
@@ -197,11 +101,8 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
         onClose?.();
       }
     };
-
     window.addEventListener("keydown", handleKeyDown);
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-    };
+    return () => window.removeEventListener("keydown", handleKeyDown);
   }, [onClose]);
 
   useEffect(() => {
@@ -233,46 +134,38 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
     {
       id: 'digital_starter',
       icon: <Shield className="w-8 h-8" />,
-      price: pricing.digital_starter.price,
-      introPrice: pricing.digital_starter.introPrice,
+      price: pricing.digital_starter,
       features: t?.payments?.packages?.digitalStarter?.features || [
-        'Step-by-step guidance for each document',
-        'AI-powered document analysis & validation',
-        'Country-specific document checklist & templates',
-        'Apostille & translation instructions',
-        'Medical CV template',
-        'Email support (response within 72h)',
+        'Personal document review before submission',
+        'Direct communication with authorities on your behalf',
+        'Application submission handled for you',
+        'Priority support (24h response)',
         'Progress tracking dashboard'
       ]
     },
     {
       id: 'complete',
       icon: <BookOpen className="w-8 h-8" />,
-      price: pricing.complete.price,
-      introPrice: pricing.complete.introPrice,
+      price: pricing.complete,
       popular: true,
       features: t?.payments?.packages?.complete?.features || [
-        'Everything in Digital Homologation',
-        'Personal expert review of every document before submission',
-        'Direct communication with authorities on your behalf',
-        'Application submission for you',
-        'Priority support (response within 24h)',
-        'Progress tracking dashboard'
+        'Everything in Guided Homologation',
+        '12-month medical language course',
+        '4× live 1:1 coaching sessions (60 min)',
+        'Dedicated case manager',
+        'WhatsApp and phone support'
       ]
     },
     {
       id: 'personal_mentorship',
       icon: <Users className="w-8 h-8" />,
-      price: pricing.personal_mentorship.price,
-      introPrice: pricing.personal_mentorship.introPrice,
+      price: pricing.personal_mentorship,
       features: t?.payments?.packages?.personalMentorship?.features || [
-        'Everything in Full Personal Homologation',
-        '12-month medical language course access',
-        '4× live 1:1 sessions (60 min): document review, exam prep & interview coaching',
-        'Dedicated case manager from start to finish',
-        'In-person support for key appointments (where available)',
-        'We handle all authority communication & paperwork',
-        'Direct WhatsApp & phone support'
+        'All translation and apostille costs included',
+        'All official fees and charges covered',
+        'Complete authority communication and submissions',
+        'Language course + dedicated case manager',
+        'In-person support for appointments'
       ]
     }
   ];
@@ -281,12 +174,12 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
     const languageName = getLanguageForCountry(targetCountry, t);
     switch (id) {
       case 'digital_starter':
-        return t?.payments?.packages?.digitalStarter?.title || 'Digital Homologation';
+        return t?.payments?.packages?.digitalStarter?.title || 'Guided Homologation';
       case 'complete':
-        return t?.payments?.packages?.complete?.titleBase || 'Full Personal Homologation';
+        const completeBase = t?.payments?.packages?.complete?.titleBase || 'Homologation +';
+        return `${completeBase} ${languageName}`;
       case 'personal_mentorship':
-        const mentorBase = t?.payments?.packages?.personalMentorship?.titleBase || 'Full Homologation +';
-        return `${mentorBase} ${languageName}`;
+        return t?.payments?.packages?.personalMentorship?.titleBase || 'Full All-Inclusive';
     }
   };
 
@@ -294,24 +187,25 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
     const languageName = getLanguageForCountry(targetCountry, t);
     switch (id) {
       case 'digital_starter':
-        return t?.payments?.packages?.digitalStarter?.description || 'Prepare your documents independently with our digital guides';
+        return t?.payments?.packages?.digitalStarter?.description || 'Expert guidance through every step of your homologation';
       case 'complete':
-        const descBase = t?.payments?.packages?.complete?.descriptionBase || 'Full homologation support +';
-        const descEnd = t?.payments?.packages?.complete?.descriptionEnd || 'language preparation';
+        const descBase = t?.payments?.packages?.complete?.descriptionBase || 'Complete homologation support with medical';
+        const descEnd = t?.payments?.packages?.complete?.descriptionEnd || 'language training';
         return `${descBase} ${languageName} ${descEnd}`;
       case 'personal_mentorship':
-        const premiumBase = t?.payments?.packages?.personalMentorship?.descriptionBase || 'Your dedicated team guiding you with 1:1';
-        const premiumEnd = t?.payments?.packages?.personalMentorship?.descriptionEnd || 'lessons';
-        return `${premiumBase} ${languageName} ${premiumEnd}`;
+        const premiumBase = t?.payments?.packages?.personalMentorship?.descriptionBase || 'We handle everything — translations, fees, paperwork,';
+        const premiumEnd = t?.payments?.packages?.personalMentorship?.descriptionEnd || 'all included';
+        return `${premiumBase} ${premiumEnd}`;
     }
   };
 
   const formatPrice = (amount: number) => {
-    return `€${(amount / 100).toFixed(0)}`;
+    const formatted = (amount / 100).toLocaleString('de-DE');
+    return `€${formatted}`;
   };
 
   const selectedConfig = packages.find(p => p.id === selectedPackage);
-  const baseAmount = selectedConfig?.introPrice || 0;
+  const baseAmount = selectedConfig?.price || 0;
   const finalAmount = appliedDiscount ? appliedDiscount.finalAmount : baseAmount;
 
   const validateDiscountCode = async () => {
@@ -356,8 +250,7 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
       toast.error(t?.payments?.errors?.invalidEmail || 'Please enter a valid email address');
       return;
     }
-    const baseAmount = selectedConfig?.price || 0;
-    const finalAmount = appliedDiscount ? appliedDiscount.finalAmount : baseAmount;
+    const finalAmount = appliedDiscount ? appliedDiscount.finalAmount : (selectedConfig?.price || 0);
     Analytics.paymentStarted(selectedPackage, finalAmount);
     const preOpenedWindow = preOpenPaymentWindow();
     setIsProcessingPayment(true);
@@ -401,28 +294,10 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
     if (fallbackUrl) { window.location.href = fallbackUrl; }
   };
 
-  const socialProofQuotes = t?.payments?.socialProofQuotes || [
-    { text: 'Solvia made the whole process effortless — I got my Approbation in 7 months!', author: 'Dr. María L.', country: 'Spain' },
-    { text: 'They handled everything with the authorities. I just focused on my German.', author: 'Dr. Luis F.', country: 'Mexico' },
-    { text: 'The best investment I made for my medical career in Germany.', author: 'Dr. Ana R.', country: 'Colombia' },
-  ];
-
-  const whatHappensNextSteps = t?.payments?.whatHappensNext?.steps || [
-    'Complete payment securely via Stripe',
-    'Receive instant access to your dashboard',
-    'Your dedicated team contacts you within 24h',
-  ];
-
-  const stepIcons = [
-    <CreditCard className="w-4 h-4 text-primary flex-shrink-0" />,
-    <Inbox className="w-4 h-4 text-primary flex-shrink-0" />,
-    <Headphones className="w-4 h-4 text-primary flex-shrink-0" />,
-  ];
-
   return (
-    <div className="max-w-5xl mx-auto space-y-6">
-      {/* Dynamic Page Title */}
-      <div className="text-center mb-6">
+    <div className="max-w-5xl mx-auto space-y-8">
+      {/* Page Title */}
+      <div className="text-center mb-2">
         <h1 className="text-4xl font-bold text-foreground mb-4">
           {(t?.payments?.pageTitle || 'Start Your Medical Career in {country}').replace('{country}', getCountryDisplayName(targetCountry, t) || 'Europe')}
         </h1>
@@ -431,40 +306,20 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
         </p>
       </div>
 
-      {/* 1. Single Urgency Banner */}
-      <div className="flex flex-col sm:flex-row items-center justify-center gap-3 bg-primary/10 border border-primary/20 rounded-lg p-4">
-        <div className="flex items-center gap-2">
-          <Zap className="w-5 h-5 text-primary" />
-          <span className="font-semibold text-primary">
-            {t?.payments?.limitedOffer || 'Limited introductory offer'}
-          </span>
-          <span className="text-sm font-medium">—</span>
-          <span className="font-semibold text-primary">
-            {t?.payments?.saveUpTo || 'Save up to 50%'}
-          </span>
+      {/* Trust Indicators */}
+      <div className="flex items-center justify-center gap-6 text-sm text-muted-foreground">
+        <div className="flex items-center gap-1.5">
+          <Shield className="w-4 h-4" />
+          <span>{t?.payments?.secure || 'Secure Payment'}</span>
         </div>
-        <div className="text-destructive">
-          <CountdownTimer />
+        <div className="flex items-center gap-1.5">
+          <Clock className="w-4 h-4" />
+          <span>{t?.payments?.support || '24h Support'}</span>
         </div>
-      </div>
-
-      {/* 4. Social Proof Row */}
-      <SocialProofStrip quotes={socialProofQuotes} />
-
-      {/* Pre-selection consultation CTA */}
-      <div className="text-center py-3">
-        <span className="text-muted-foreground text-sm">
-          {t?.payments?.notSure || 'Not sure yet?'}{' '}
-        </span>
-        <a
-          href="https://calendly.com/david-rehrl-thesolvia/30min"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:text-primary/80 underline underline-offset-2 transition-colors"
-        >
-          <Calendar className="w-4 h-4" />
-          {t?.payments?.bookConsultation || 'Book a free 15-min consultation'}
-        </a>
+        <div className="flex items-center gap-1.5">
+          <Users className="w-4 h-4" />
+          <span>{t?.payments?.trusted || 'Trusted by 500+'}</span>
+        </div>
       </div>
 
       {/* Package Selection */}
@@ -506,17 +361,16 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
             </CardHeader>
             
             <CardContent className="text-center pb-6 flex-1 flex flex-col">
-              {/* 2. Savings Badge replaces per-card timer */}
               <div className="mb-6">
-                <div className="flex items-center justify-center gap-2">
-                  <span className="text-lg text-muted-foreground line-through">{formatPrice(pkg.price)}</span>
-                  <span className="text-4xl font-bold text-primary">{formatPrice(pkg.introPrice)}</span>
-                </div>
-                <div className="flex items-center justify-center gap-2 mt-2">
-                  <Badge variant="secondary" className="bg-green-100 text-green-700 hover:bg-green-100 border-none dark:bg-green-900/40 dark:text-green-400">
-                    {t?.payments?.youSave || 'Save'} {Math.round(((pkg.price - pkg.introPrice) / pkg.price) * 100)}%
-                  </Badge>
-                </div>
+                <span className="text-4xl font-bold text-primary">{formatPrice(pkg.price)}</span>
+                {/* Competitor anchor on Tier 3 */}
+                {pkg.id === 'personal_mentorship' && (
+                  <div className="mt-2">
+                    <Badge variant="secondary" className="bg-green-100 text-green-700 hover:bg-green-100 border-none dark:bg-green-900/40 dark:text-green-400 text-xs">
+                      {t?.payments?.competitorAnchor || 'Competitors charge €8,000–20,000'}
+                    </Badge>
+                  </div>
+                )}
               </div>
               
               <div className="space-y-3 text-left">
@@ -550,83 +404,23 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
         ))}
       </div>
 
-
-      {/* 7. Trust Indicators (always visible) */}
-      <div className="flex items-center justify-center gap-6 text-sm text-muted-foreground">
-        <div className="flex items-center gap-1.5">
-          <Shield className="w-4 h-4" />
-          <span>{t?.payments?.secure || 'Secure Payment'}</span>
-        </div>
-        <div className="flex items-center gap-1.5">
-          <Clock className="w-4 h-4" />
-          <span>{t?.payments?.support || '24h Support'}</span>
-        </div>
-        <div className="flex items-center gap-1.5">
-          <Users className="w-4 h-4" />
-          <span>{t?.payments?.trusted || 'Trusted by 500+'}</span>
-        </div>
+      {/* Single consultation CTA below cards */}
+      <div className="text-center py-2">
+        <span className="text-muted-foreground text-sm">
+          {t?.payments?.notSure || 'Not sure yet?'}{' '}
+        </span>
+        <a
+          href="https://calendly.com/david-rehrl-thesolvia/30min"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:text-primary/80 underline underline-offset-2 transition-colors"
+        >
+          <Calendar className="w-4 h-4" />
+          {t?.payments?.bookConsultation || 'Book a free 15-min consultation'}
+        </a>
       </div>
 
-      {/* Prominent Call CTA — Always visible */}
-      <div className="relative">
-        <div className="absolute inset-0 flex items-center">
-          <div className="w-full border-t border-border" />
-        </div>
-        <div className="relative flex justify-center text-sm">
-          <span className="bg-background px-4 text-muted-foreground font-medium">
-            {t?.payments?.callCta?.or || 'or'}
-          </span>
-        </div>
-      </div>
-
-      <Card className="border-primary/30 bg-gradient-to-br from-primary/5 via-background to-primary/5">
-        <CardContent className="py-6 px-6 md:px-8">
-          <div className="flex flex-col md:flex-row items-center gap-6">
-            <div className="flex-shrink-0">
-              <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center">
-                <Phone className="w-7 h-7 text-primary" />
-              </div>
-            </div>
-            <div className="flex-1 text-center md:text-left">
-              <h3 className="text-lg font-bold mb-1">
-                {t?.payments?.callCta?.title || 'Prefer to talk to a real person?'}
-              </h3>
-              <p className="text-sm text-muted-foreground mb-3">
-                {t?.payments?.callCta?.subtitle || 'Our medical homologation experts will answer all your questions and help you choose the right plan.'}
-              </p>
-              <div className="flex flex-wrap items-center justify-center md:justify-start gap-3 text-xs text-muted-foreground">
-                <span className="flex items-center gap-1">
-                  <Check className="w-3.5 h-3.5 text-primary" />
-                  {t?.payments?.callCta?.benefit1 || 'No commitment required'}
-                </span>
-                <span className="flex items-center gap-1">
-                  <Check className="w-3.5 h-3.5 text-primary" />
-                  {t?.payments?.callCta?.benefit2 || 'Get personalized advice'}
-                </span>
-                <span className="flex items-center gap-1">
-                  <MessageCircle className="w-3.5 h-3.5 text-primary" />
-                  {t?.payments?.callCta?.benefit3 || 'Available in your language'}
-                </span>
-              </div>
-            </div>
-            <div className="flex-shrink-0">
-              <Button
-                size="lg"
-                variant="outline"
-                className="gap-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-colors"
-                asChild
-              >
-                <a href="https://calendly.com/david-rehrl-thesolvia/30min" target="_blank" rel="noopener noreferrer">
-                  <Calendar className="w-5 h-5" />
-                  {t?.payments?.callCta?.button || 'Schedule a Free Call'}
-                </a>
-              </Button>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Discount Code & Payment Section */}
+      {/* Payment Summary */}
       {selectedPackage && (
         <Card ref={paymentSummaryRef} className="animate-in fade-in-50 duration-300">
           <CardHeader>
@@ -635,7 +429,7 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
-            {/* Email Input for Guest Checkout */}
+            {/* Email Input */}
             <div className="space-y-2">
               <label className="text-sm font-medium">
                 {t?.payments?.emailLabel || 'Email Address'} *
@@ -649,24 +443,6 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
               <p className="text-xs text-muted-foreground">
                 {t?.payments?.emailHint || 'We will send your receipt and access details to this email'}
               </p>
-            </div>
-
-            {/* 5. What Happens Next */}
-            <div className="bg-muted/30 rounded-lg p-4 space-y-3">
-              <h4 className="text-sm font-semibold">
-                {t?.payments?.whatHappensNext?.title || 'What happens next'}
-              </h4>
-              <div className="space-y-2.5">
-                {whatHappensNextSteps.map((step: string, index: number) => (
-                  <div key={index} className="flex items-center gap-3">
-                    <div className="flex items-center justify-center w-6 h-6 rounded-full bg-primary/10 text-xs font-bold text-primary">
-                      {index + 1}
-                    </div>
-                    {stepIcons[index]}
-                    <span className="text-sm text-muted-foreground">{step}</span>
-                  </div>
-                ))}
-              </div>
             </div>
 
             {/* Discount Input */}
@@ -711,7 +487,7 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
               )}
             </div>
 
-            {/* Payment Summary */}
+            {/* Price Summary */}
             <div className="bg-muted/50 rounded-lg p-4 space-y-2">
               <div className="flex justify-between text-sm">
                 <span>{getPackageTitle(selectedPackage)}</span>
@@ -745,24 +521,6 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
                 : (t?.payments?.summary?.proceedToPayment || 'Proceed to Payment')
               }
             </Button>
-
-            {/* 6. Alternative CTA */}
-            <div className="mt-4 pt-4 border-t border-border/50">
-              <div className="bg-muted/50 rounded-lg p-4 border border-border/50 text-center">
-                <a
-                  href="https://calendly.com/david-rehrl-thesolvia/30min"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-sm transition-colors group"
-                >
-                  <span className="font-medium text-foreground">{t?.payments?.notSure || 'Not sure yet?'}</span>
-                  <Calendar className="w-5 h-5 text-primary" />
-                  <span className="text-primary font-medium underline underline-offset-2 group-hover:no-underline">
-                    {t?.payments?.bookConsultation || 'Book a free 15-min consultation'}
-                  </span>
-                </a>
-              </div>
-            </div>
           </CardContent>
         </Card>
       )}
