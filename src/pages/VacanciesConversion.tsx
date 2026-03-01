@@ -105,22 +105,6 @@ const VacanciesConversion = () => {
       <section className="py-8">
         <div className="container mx-auto px-4">
           <div className="space-y-8">
-            {/* Filter Form */}
-            <div className="max-w-2xl mx-auto">
-              <MiniOnboardingForm onFilter={handleFilter} />
-            </div>
-
-            {/* Active Filters Info */}
-            {hasActiveFilters && (
-              <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
-                <Filter className="h-4 w-4" />
-                <span>
-                  {t?.vacancies?.showingOffers || 'Showing offers'}
-                  {filters.targetCountry && ` ${t?.vacancies?.in || 'in'} ${getCountryDisplayName(filters.targetCountry)}`}
-                  {filters.profession && ` ${t?.vacancies?.for || 'for'} ${getProfessionLabel(filters.profession)}`}
-                </span>
-              </div>
-            )}
 
             {/* Job Cards Preview */}
             <div className="space-y-4">
