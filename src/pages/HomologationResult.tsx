@@ -329,42 +329,9 @@ const HomologationResult = () => {
 
               <Separator className="my-0" />
 
-              {/* Value + CTAs */}
+              {/* CTAs */}
               <div className="p-6 md:p-8 space-y-5">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
-                  <div className="text-center md:text-left space-y-1">
-                    <p className="text-xs text-muted-foreground uppercase tracking-wide">
-                      {(t.homologationResult.value?.monthlyEarning || 'Your potential monthly salary in {country}').
-                      replace('{country}', translatedCountryName)}
-                    </p>
-                    <p className="text-3xl md:text-4xl font-bold text-primary">
-                      {monthlySalary.toLocaleString()} {countryData.averageSalaries.currency}
-                      <span className="text-base font-normal text-muted-foreground">/mo</span>
-                    </p>
-                  </div>
-
-                  <div className="text-center md:text-right space-y-1">
-                    <p className="text-xs text-muted-foreground uppercase tracking-wide">
-                      {t.homologationResult.value?.investmentLabel || 'Your investment to get there'}
-                    </p>
-                    <p className="text-3xl md:text-4xl font-bold text-foreground">
-                      <span className="text-base font-normal text-muted-foreground">{t.homologationResult.value?.startingFrom || 'Starting from'} </span>
-                      39€
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-2 text-sm justify-center">
-                  <TrendingUp className="h-4 w-4 text-green-500" />
-                  <span className="text-muted-foreground">
-                    {(t.homologationResult.value?.returnNote || "That's less than {percent}% of your first month's salary").
-                    replace('{percent}', investmentPercent)}
-                  </span>
-                </div>
-
-                <Separator />
-
-                <div className="flex flex-col sm:flex-row items-center gap-3 pt-1 w-full">
+                <div className="flex flex-col sm:flex-row items-center gap-3 w-full">
                   <Button size="lg" onClick={handleStartProcess} className="gap-2 w-full sm:flex-1">
                     {t.homologationResult.cta.startProcess} <ArrowRight className="h-4 w-4" />
                   </Button>
@@ -374,9 +341,6 @@ const HomologationResult = () => {
                   </Button>
                 </div>
 
-                <Separator />
-
-                {/* Trust signals */}
                 <div className="flex items-center justify-center gap-x-6 gap-y-2 text-xs text-muted-foreground">
                   <div className="flex items-center gap-1.5">
                     <Shield className="h-3.5 w-3.5 text-primary" />
