@@ -181,9 +181,6 @@ const PathToSuccessSection = () => {
               <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
             </Link>
           </Button>
-          <p className="text-sm text-muted-foreground">
-            {comparison?.ctaSubtext || 'Free assessment • No commitment required'}
-          </p>
         </div>
       </div>
     </section>
