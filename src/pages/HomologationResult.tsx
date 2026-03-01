@@ -7,11 +7,8 @@ import { Separator } from '@/components/ui/separator';
 import {
   Clock,
   Languages,
-  CheckCircle2,
   ArrowRight,
   Calendar,
-  Sparkles,
-  Shield,
   AlertTriangle,
   FileText,
   GraduationCap,
@@ -289,34 +286,26 @@ const HomologationResult = () => {
 
               {/* Steps */}
               <div className="relative px-4 md:px-6">
-                <div className="space-y-0">
+                <div className="space-y-1.5">
                   {roadmapSteps.map((step, i) => {
                     const Icon = step.icon;
                     return (
                       <div key={i} className="relative">
-                        {i < roadmapSteps.length - 1 &&
-                        <div className={`absolute left-6 top-12 w-0.5 h-full ${step.locked ? 'bg-border' : 'bg-primary/30'}`} />
-                        }
-                        <div className={`flex items-start gap-4 p-4 rounded-xl transition-all ${
+                        <div className={`flex items-center gap-3 py-2.5 px-3 rounded-lg transition-all ${
                         step.locked ?
                         'opacity-40 blur-[1px]' :
                         'bg-background/50 border'}`
                         }>
-                          <div className={`w-12 h-12 rounded-full flex items-center justify-center shrink-0 ${
+                          <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${
                           step.locked ?
                           'bg-muted text-muted-foreground' :
                           'bg-primary/10 text-primary'}`
                           }>
-                            {step.locked ? <Lock className="h-5 w-5" /> : <Icon className="h-5 w-5" />}
+                            {step.locked ? <Lock className="h-3.5 w-3.5" /> : <Icon className="h-3.5 w-3.5" />}
                           </div>
                           <div className="min-w-0">
-                            <div className="flex items-center gap-2">
-                              <span className="text-xs font-medium text-muted-foreground">
-                                {String(i + 1).padStart(2, '0')}
-                              </span>
-                              <h3 className="font-semibold text-sm">{step.label}</h3>
-                            </div>
-                            <p className="text-xs text-muted-foreground mt-0.5">{step.desc}</p>
+                            <h3 className="font-medium text-sm leading-tight">{step.label}</h3>
+                            <p className="text-xs text-muted-foreground leading-tight">{step.desc}</p>
                           </div>
                         </div>
                       </div>);
@@ -374,25 +363,6 @@ const HomologationResult = () => {
                   </Button>
                 </div>
 
-                <Separator />
-
-                {/* Trust signals */}
-                <div className="flex items-center justify-center gap-x-6 gap-y-2 text-xs text-muted-foreground">
-                  <div className="flex items-center gap-1.5">
-                    <Shield className="h-3.5 w-3.5 text-primary" />
-                    <span>{t.homologationResult.cta?.benefit1 || "Medical homologation experts"}</span>
-                  </div>
-                  <span className="text-border">•</span>
-                  <div className="flex items-center gap-1.5">
-                    <CheckCircle2 className="h-3.5 w-3.5 text-green-500" />
-                    <span>{t.homologationResult.cta?.benefit2 || "98% success rate"}</span>
-                  </div>
-                  <span className="text-border">•</span>
-                  <div className="flex items-center gap-1.5">
-                    <Clock className="h-3.5 w-3.5 text-primary" />
-                    <span>{t.homologationResult.cta?.benefit3 || "24/7 support"}</span>
-                  </div>
-                </div>
               </div>
             </div>
           </motion.section>
