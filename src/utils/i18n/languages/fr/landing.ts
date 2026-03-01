@@ -1,7 +1,7 @@
 export const landing = {
   jobExplorer: {
     title: "200+ postes en attente de professionnels qualifiés",
-    subtitle: "De vrais hôpitaux et cliniques dans 4 pays recrutent maintenant.",
+    subtitle: "Trouvez votre futur emploi dans les meilleurs hôpitaux et cliniques d'Europe.",
     realJob: "Poste Réel",
     sampleJob: "Poste Exemple",
     sampleDisclaimer: "Exemple illustratif",

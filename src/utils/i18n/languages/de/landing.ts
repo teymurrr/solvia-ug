@@ -1,7 +1,7 @@
 export const landing = {
   jobExplorer: {
     title: "200+ Stellen warten auf qualifizierte Fachkräfte",
-    subtitle: "Echte Krankenhäuser und Kliniken in 4 Ländern stellen jetzt ein.",
+    subtitle: "Finden Sie Ihren zukünftigen Job in Europas führenden Krankenhäusern und Kliniken.",
     realJob: "Echte Stelle",
     sampleJob: "Beispielstelle",
     sampleDisclaimer: "Beispiel zur Veranschaulichung",
