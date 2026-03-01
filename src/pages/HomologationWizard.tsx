@@ -59,7 +59,20 @@ const HomologationWizard = () => {
     'United Kingdom', 'United States', 'Venezuela', 'Vietnam'
   ];
 
-  const getLanguageLevels = () => [t?.wizard?.language?.motherTongue || 'Mother tongue', 'A1', 'A2', 'B1', 'B2', 'C1', t.wizard.language.dontKnow];
+  const getLanguageLevels = () => [t?.wizard?.language?.nativeSpeaker || t?.wizard?.language?.motherTongue || 'Native speaker', 'A1', 'A2', 'B1', 'B2', 'C1', t.wizard.language.dontKnow];
+
+  const getTargetLanguageName = (): string => {
+    const countryToLanguage: Record<string, Record<string, string>> = {
+      germany: { en: 'German', es: 'alemán', de: 'Deutsch', fr: 'allemand', ru: 'немецкого' },
+      austria: { en: 'German', es: 'alemán', de: 'Deutsch', fr: 'allemand', ru: 'немецкого' },
+      spain: { en: 'Spanish', es: 'español', de: 'Spanisch', fr: 'espagnol', ru: 'испанского' },
+      france: { en: 'French', es: 'francés', de: 'Französisch', fr: 'français', ru: 'французского' },
+      italy: { en: 'Italian', es: 'italiano', de: 'Italienisch', fr: 'italien', ru: 'итальянского' },
+    };
+    const lang = localStorage.getItem('language') || 'en';
+    const country = wizardData.targetCountry || '';
+    return countryToLanguage[country]?.[lang] || countryToLanguage[country]?.['en'] || lang;
+  };
 
   const calculateEstimatedPrice = (targetCountry?: string): number => {
     if (targetCountry === 'spain') {
@@ -417,7 +430,7 @@ const HomologationWizard = () => {
                   <Languages className="h-8 w-8 text-primary" />
                 </div>
                 <CardTitle className="text-2xl md:text-3xl font-bold">
-                  {t.wizard.language.title}
+                  {(t.wizard.language.title || 'What is your {language} level?').replace('{language}', getTargetLanguageName())}
                 </CardTitle>
                 <CardDescription className="text-base md:text-lg">
                   {t.wizard.language.subtitle}
