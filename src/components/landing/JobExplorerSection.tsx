@@ -1,53 +1,42 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { MapPin, Briefcase, ArrowRight } from 'lucide-react';
+import { MapPin, Building2, ArrowRight } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
+import { useQuery } from '@tanstack/react-query';
+import { supabase } from '@/integrations/supabase/client';
 
 const JobExplorerSection = () => {
   const { t } = useLanguage();
-  
   const landing = t?.landing;
   const jobExplorer = landing?.jobExplorer;
+
+  const { data: vacancies } = useQuery({
+    queryKey: ['landing-vacancies'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('vacancies')
+        .select('id, title, institution, location, job_type, specialty, profession, salary')
+        .order('posted_date', { ascending: false })
+        .limit(4);
+      if (error) throw error;
+      return data;
+    },
+    staleTime: 5 * 60 * 1000,
+  });
+
+  // Fallback sample jobs if no DB data
   const jobs = jobExplorer?.jobs;
-  
-  // Sample jobs for display - using translations
-  const sampleJobs = [
-    {
-      title: jobs?.job1?.title || "Internal Medicine Specialist",
-      institution: jobs?.job1?.institution || "University Hospital Berlin",
-      location: jobs?.job1?.location || "Berlin, Germany",
-      type: jobs?.job1?.type || "Full-time",
-      country: 'germany',
-      isReal: true
-    },
-    {
-      title: jobs?.job2?.title || "Pediatric Nurse",
-      institution: jobs?.job2?.institution || "Regional Medical Center",
-      location: jobs?.job2?.location || "Madrid, Spain",
-      type: jobs?.job2?.type || "Full-time",
-      country: 'spain',
-      isReal: true
-    },
-    {
-      title: jobs?.job3?.title || "General Surgeon",
-      institution: jobs?.job3?.institution || "Vienna General Hospital",
-      location: jobs?.job3?.location || "Vienna, Austria",
-      type: jobs?.job3?.type || "Full-time",
-      country: 'austria',
-      isReal: true
-    },
-    {
-      title: jobs?.job4?.title || "Emergency Room Physician",
-      institution: jobs?.job4?.institution || "Lyon University Hospital",
-      location: jobs?.job4?.location || "Lyon, France",
-      type: jobs?.job4?.type || "Full-time",
-      country: 'france',
-      isReal: true
-    }
+  const fallbackJobs = [
+    { id: '1', title: jobs?.job1?.title || "Internal Medicine Specialist", institution: jobs?.job1?.institution || "University Hospital Berlin", location: jobs?.job1?.location || "Berlin, Germany", job_type: jobs?.job1?.type || "Full-time", specialty: null, profession: null, salary: null },
+    { id: '2', title: jobs?.job2?.title || "Pediatric Nurse", institution: jobs?.job2?.institution || "Regional Medical Center", location: jobs?.job2?.location || "Madrid, Spain", job_type: jobs?.job2?.type || "Full-time", specialty: null, profession: null, salary: null },
+    { id: '3', title: jobs?.job3?.title || "General Surgeon", institution: jobs?.job3?.institution || "Vienna General Hospital", location: jobs?.job3?.location || "Vienna, Austria", job_type: jobs?.job3?.type || "Full-time", specialty: null, profession: null, salary: null },
+    { id: '4', title: jobs?.job4?.title || "Emergency Room Physician", institution: jobs?.job4?.institution || "Lyon University Hospital", location: jobs?.job4?.location || "Lyon, France", job_type: jobs?.job4?.type || "Full-time", specialty: null, profession: null, salary: null },
   ];
+
+  const displayJobs = vacancies && vacancies.length > 0 ? vacancies : fallbackJobs;
 
   return (
     <section className="py-16 bg-muted/30">
@@ -63,27 +52,46 @@ const JobExplorerSection = () => {
             </p>
           </div>
 
-          {/* Job Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 mb-10">
-            {sampleJobs.slice(0, 4).map((job, index) => (
-              <Card key={index} className="p-6 hover:shadow-lg transition-shadow border-border/50">
-                <div className="flex justify-between items-start mb-4">
-                  <Badge variant="default" className="mb-2">
-                    {job.type}
-                  </Badge>
-                </div>
-                <h3 className="text-xl font-semibold text-foreground mb-2">{job.title}</h3>
-                <p className="text-muted-foreground mb-3">{job.institution}</p>
-                <div className="flex flex-wrap gap-3 text-sm text-muted-foreground">
-                  <span className="flex items-center gap-1">
-                    <MapPin className="h-4 w-4" />
-                    {job.location}
-                  </span>
-                  <span className="flex items-center gap-1">
-                    <Briefcase className="h-4 w-4" />
-                    {job.type}
-                  </span>
-                </div>
+          {/* Job Cards - matching VacancyCard style */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+            {displayJobs.slice(0, 4).map((job) => (
+              <Card key={job.id} className="h-full border hover:border-muted-foreground/30 transition-shadow">
+                <CardContent className="p-0">
+                  <div className="p-5">
+                    <div>
+                      <h3 className="text-lg font-semibold line-clamp-2">{job.title}</h3>
+                      <div className="flex items-center mt-1 text-sm text-muted-foreground">
+                        <Building2 className="mr-1 h-4 w-4" />
+                        <span>{job.institution}</span>
+                      </div>
+                      <div className="flex items-center mt-1 text-sm text-muted-foreground">
+                        <MapPin className="mr-1 h-4 w-4" />
+                        <span>{job.location}</span>
+                      </div>
+                    </div>
+
+                    <div className="flex flex-wrap gap-2 mt-3">
+                      {job.specialty && (
+                        <Badge variant="outline" className="bg-muted/50">
+                          {job.specialty}
+                        </Badge>
+                      )}
+                      <Badge variant="outline" className="bg-muted/50">
+                        {t?.vacancies?.jobTypes?.[job.job_type?.toLowerCase()?.replace(/[-\s]/g, '')] || job.job_type}
+                      </Badge>
+                      {job.salary && (
+                        <Badge variant="outline" className="bg-muted/50">
+                          {job.salary}
+                        </Badge>
+                      )}
+                      {job.profession && (
+                        <Badge variant="outline" className="bg-muted/50">
+                          {job.profession}
+                        </Badge>
+                      )}
+                    </div>
+                  </div>
+                </CardContent>
               </Card>
             ))}
           </div>
