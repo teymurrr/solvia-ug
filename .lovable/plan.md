@@ -1,61 +1,46 @@
 
 
-## Condense Roadmap + Price Card into One Conversion Section
+## Declutter the Results Page Hero Section
 
-### The Problem
-Currently, the results page has two separate sections after the diagnosis cards:
-1. **Roadmap** (step-by-step plan with locked steps + "Unlock" CTA)
-2. **Price Card** (salary vs. investment comparison + "Start Process" CTA)
+### What to remove or merge
 
-This splits the user's attention across two CTAs and creates unnecessary scroll distance. The value proposition (salary vs. investment) is disconnected from the action (unlocking the roadmap).
+1. **Remove the "Analizamos tu perfil" badge** -- It's decorative and adds no information. The user knows they just completed a wizard.
 
-### The Solution
-Merge both into a single "Roadmap + Value" card that tells a tighter story:
-**"Here's your plan -> most steps are locked -> here's what it costs (almost nothing vs. your salary) -> unlock now"**
+2. **Remove the subtitle** ("Esto es lo que te separa de ejercer medicina en Austria") -- It restates what the title already communicates. The title + flag already says "Your path to Austria."
 
-### Design
+3. **Fold the profile pills into a single line below the title** -- Instead of separate pills, combine into a natural sentence: "General Practitioner from Argentina" as simple muted text under the title (not pills/badges).
+
+4. **Keep the salary urgency line** -- This is the strongest emotional hook and should stay, but it moves up closer to the title now that the badge and subtitle are gone.
+
+### Result: Before vs After
 
 ```text
-+--------------------------------------------------+
-|  Your Step-by-Step Roadmap                        |
-|  Personalized action plan based on your profile   |
-|                                                   |
-|  01  Document Collection & Verification      [v]  |
-|  02  Language Preparation                    [v]  |
-|  03  Application Submission                  [x]  |
-|  04  Exam Preparation                        [x]  |
-|  05  Final Approval & Registration           [x]  |
-|      (gradient fade over locked steps)            |
-|                                                   |
-|  --- separator ---                                |
-|                                                   |
-|  Potential salary        Your investment          |
-|  8,500 EUR/mo            Starting from 39 EUR     |
-|                                                   |
-|  < That's less than X% of your first salary >     |
-|                                                   |
-|  [  Start My Process  ->  ] [Book Consultation]   |
-|                                                   |
-|  --- separator ---                                |
-|                                                   |
-|  Experts  *  98% success  *  24/7 support         |
-+--------------------------------------------------+
+BEFORE (6 layers):
+  [Analizamos tu perfil]           <-- delete
+  Flag + Title                     
+  Subtitle                         <-- delete
+  Salary warning                   
+  [Pill] [Pill]                    <-- simplify to text
+  [Card] [Card] [Card]
+
+AFTER (4 layers):
+  Flag + Title
+  "General Practitioner from Argentina"  (muted text)
+  Salary warning
+  [Card] [Card] [Card]
 ```
 
 ### Technical Changes
 
 **File: `src/pages/HomologationResult.tsx`**
-- Remove Section 4 as a standalone `<motion.section>`
-- Move the salary/investment comparison, return note, CTAs, and trust signals **inside** the roadmap section card, below the locked-steps overlay
-- Keep the gradient fade + unlock overlay on the roadmap steps
-- Below the roadmap area, add a separator then the salary vs. investment grid, return note, action buttons, separator, and trust signals -- all within one `bg-card border rounded-2xl` container
-- Remove the standalone Section 4 title ("The smartest investment in your career") since the section header is now the roadmap title
+- Remove the `inline-flex items-center gap-2 bg-primary/10` sparkle badge block (lines 199-202)
+- Remove the subtitle paragraph (lines 208-211)
+- Replace the profile pills `flex-wrap` block with a single `<p>` of muted text combining doctor type and origin country, e.g. `{getDoctorTypeLabel(...)} · {t.homologationResult.from} {studyCountry}`
+- Keep the salary urgency line as-is, it just moves up visually
 
-**File: `src/utils/i18n/languages/en/homologationResult.ts`** (and es, de, fr, ru equivalents)
-- No new translation keys needed; existing keys from both `roadmap` and `value` namespaces are reused within the merged section
+**Translation files**: No changes needed -- existing keys are reused or simply not rendered.
 
 ### Benefits
-- Single scroll-stopping card instead of two
-- One clear decision point instead of two competing CTAs
-- The "locked steps" create desire, immediately followed by the low-cost reveal -- tighter persuasion loop
-- Less page length = less drop-off
+- 2 fewer visual layers = faster scanning
+- The emotional hook (salary loss) appears closer to the title
+- Cleaner, more confident design -- less "explaining," more "showing"
