@@ -64,10 +64,6 @@ const HeroSectionWithSearch = React.memo(() => {
               </Button>
             </div>
 
-            {/* Trust line - below CTAs */}
-            <p className="text-sm text-muted-foreground font-medium pt-4">
-              {trustItems.join(' • ')}
-            </p>
           </div>
         </div>
       </section>
