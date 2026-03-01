@@ -222,25 +222,21 @@ const HomologationResult = () => {
             className="bg-card border rounded-2xl overflow-hidden"
           >
             {/* Diagnosis row */}
-            <div className={`grid ${showLanguageCard ? 'grid-cols-3' : 'grid-cols-2'} divide-x border-b`}>
-              <div className="p-4 text-center">
-                <div className="flex items-center justify-center gap-1.5 text-muted-foreground mb-1">
-                  <Clock className="h-3.5 w-3.5" />
-                  <span className="text-[11px] uppercase tracking-wider font-medium">
-                    {t.homologationResult.diagnosis?.timeLabel || 'Duration'}
-                  </span>
-                </div>
-                <p className="text-xl font-bold text-foreground">{countryData.processTime.med}</p>
+            <div className={`flex items-stretch ${showLanguageCard ? '' : ''} divide-x border-b`}>
+              <div className="flex-1 py-4 px-3 text-center">
+                <p className="text-[11px] uppercase tracking-wider font-medium text-muted-foreground mb-1">
+                  {t.homologationResult.diagnosis?.timeLabel || 'Duration'}
+                </p>
+                <p className="text-lg font-bold text-foreground">
+                  {countryData.processTime.med} {t.homologationResult.diagnosis?.monthsUnit || dataTranslations.processTime?.months || 'months'}
+                </p>
               </div>
 
               {showLanguageCard &&
-                <div className="p-4 text-center">
-                  <div className="flex items-center justify-center gap-1.5 text-muted-foreground mb-1">
-                    <Languages className="h-3.5 w-3.5" />
-                    <span className="text-[11px] uppercase tracking-wider font-medium">
-                      {t.homologationResult.diagnosis?.languageLabel || 'Language'}
-                    </span>
-                  </div>
+                <div className="flex-1 py-4 px-3 text-center">
+                  <p className="text-[11px] uppercase tracking-wider font-medium text-muted-foreground mb-1">
+                    {t.homologationResult.diagnosis?.languageLabel || 'Language'}
+                  </p>
                   {levelGap > 0 ? (
                     <div className="flex items-center justify-center gap-1.5">
                       <span className="text-base font-bold text-amber-600 dark:text-amber-400">{userLevel || '?'}</span>
@@ -253,14 +249,11 @@ const HomologationResult = () => {
                 </div>
               }
 
-              <div className="p-4 text-center">
-                <div className="flex items-center justify-center gap-1.5 text-muted-foreground mb-1">
-                  <FileText className="h-3.5 w-3.5" />
-                  <span className="text-[11px] uppercase tracking-wider font-medium">
-                    {t.homologationResult.diagnosis?.documentsLabel || 'Documents'}
-                  </span>
-                </div>
-                <p className="text-xl font-bold text-foreground">{countryData.documents.length}</p>
+              <div className="flex-1 py-4 px-3 text-center">
+                <p className="text-[11px] uppercase tracking-wider font-medium text-muted-foreground mb-1">
+                  {t.homologationResult.diagnosis?.documentsLabel || 'Documents'}
+                </p>
+                <p className="text-lg font-bold text-foreground">{countryData.documents.length}</p>
               </div>
             </div>
 
@@ -307,7 +300,7 @@ const HomologationResult = () => {
                 {t.homologationResult.cta.startProcess} <ArrowRight className="h-4 w-4" />
               </Button>
 
-              <Button size="lg" variant="ghost" onClick={handleBookConsultation} className="gap-2 w-full text-muted-foreground">
+              <Button size="lg" variant="outline" onClick={handleBookConsultation} className="gap-2 w-full">
                 <Calendar className="h-4 w-4" />
                 {t.homologationResult.cta.bookConsultation}
               </Button>

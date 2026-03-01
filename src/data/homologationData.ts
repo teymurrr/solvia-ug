@@ -42,9 +42,9 @@ export const homologationDataByCountry: Record<string, CountryHomologationData> 
   germany: {
     country: 'Germany',
     processTime: {
-      min: '6 months',
-      med: '9-12 months',
-      max: '18 months',
+      min: '6',
+      med: '9-12',
+      max: '18',
     },
     costEstimate: {
       min: 3000,
@@ -90,9 +90,9 @@ export const homologationDataByCountry: Record<string, CountryHomologationData> 
   austria: {
     country: 'Austria',
     processTime: {
-      min: '4 months',
-      med: '6-9 months',
-      max: '12 months',
+      min: '4',
+      med: '6-9',
+      max: '12',
     },
     costEstimate: {
       min: 2500,
@@ -135,9 +135,9 @@ export const homologationDataByCountry: Record<string, CountryHomologationData> 
   spain: {
     country: 'Spain',
     processTime: {
-      min: '8 months',
-      med: '12-18 months',
-      max: '24 months',
+      min: '8',
+      med: '12-18',
+      max: '24',
     },
     costEstimate: {
       min: 1500,
@@ -176,9 +176,9 @@ export const homologationDataByCountry: Record<string, CountryHomologationData> 
   italy: {
     country: 'Italy',
     processTime: {
-      min: '3 months',
-      med: '6-9 months',
-      max: '12 months',
+      min: '3',
+      med: '6-9',
+      max: '12',
     },
     costEstimate: {
       min: 2000,
@@ -217,9 +217,9 @@ export const homologationDataByCountry: Record<string, CountryHomologationData> 
   france: {
     country: 'France',
     processTime: {
-      min: '6 months',
-      med: '12-18 months',
-      max: '24 months',
+      min: '6',
+      med: '12-18',
+      max: '24',
     },
     costEstimate: {
       min: 2000,
