@@ -118,7 +118,7 @@ export const landing = {
   countryComparison: {
     badge: "Anerkennungsdienste",
     title: "Vergleichen Sie Ihre Optionen",
-    subtitle: "Finden Sie das beste Land für Ihre medizinische Karriere",
+    subtitle: "Ihr Pass zur ärztlichen Tätigkeit in Europa",
     oneTimePayment: "Einmalzahlung",
     cta: "Meinen personalisierten Plan erhalten",
     ctaSubtext: "Kostenlose Bewertung • Keine Verpflichtung",

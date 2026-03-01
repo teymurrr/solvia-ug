@@ -118,7 +118,7 @@ export const landing = {
   countryComparison: {
     badge: "Homologation Services",
     title: "Compare your options",
-    subtitle: "Find the best country for your medical career",
+    subtitle: "Your passport to practicing medicine across Europe",
     oneTimePayment: "One-time payment",
     cta: "Get my personalized plan",
     ctaSubtext: "Free assessment • No commitment required",
