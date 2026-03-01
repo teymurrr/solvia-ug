@@ -46,6 +46,7 @@ export const homologationResult = {
     benefit4: 'No hidden costs',
     limitedSpots: 'Limited spots available!',
     spotsLeft: 'Only {count} spots left this month',
+    savingsMessage: 'That\'s what you save by not losing 3 months doing it alone',
   },
   emailSent: 'A copy of this plan has been sent to',
   noData: 'No data found. Please complete the wizard first.',

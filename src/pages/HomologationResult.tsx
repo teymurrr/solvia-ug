@@ -292,9 +292,16 @@ const HomologationResult = () => {
 
             {/* CTA section */}
             <div className="px-5 pb-6 pt-2 space-y-3">
-              <p className="text-center text-sm text-muted-foreground">
-                {t.homologationResult.roadmap?.lockedDesc || 'Get detailed checklists, timelines, and expert guidance for each step'}
+            {/* Savings highlight */}
+            <div className="text-center space-y-1 pb-2">
+              <p className="text-2xl md:text-3xl font-bold text-foreground">
+                {(Number(monthlySalary) * 3).toLocaleString()} {countryData.averageSalaries.currency}
               </p>
+              <p className="text-sm text-muted-foreground max-w-sm mx-auto">
+                {t.homologationResult.cta?.savingsMessage
+                  || 'Average savings by not losing 3 months doing it alone'}
+              </p>
+            </div>
 
               <Button size="lg" onClick={handleStartProcess} className="gap-2 w-full text-base">
                 {t.homologationResult.cta.startProcess} <ArrowRight className="h-4 w-4" />
