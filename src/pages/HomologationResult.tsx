@@ -3,7 +3,6 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import MainLayout from '@/components/MainLayout';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Separator } from '@/components/ui/separator';
 import {
   Clock,
   Languages,
@@ -14,8 +13,7 @@ import {
   GraduationCap,
   Lock,
   BadgeCheck,
-  TrendingUp } from
-'lucide-react';
+} from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
 import { homologationDataByCountry } from '@/data/homologationData';
 import { homologationTranslations, HomologationLanguage } from '@/data/homologationDataTranslations';
@@ -171,7 +169,6 @@ const HomologationResult = () => {
   const levelGap = isMotherTongue ? 0 : requiredIdx - userIdx;
 
   const monthlySalary = getMonthlySalaryLoss();
-  const investmentPercent = (49 / Number(monthlySalary) * 100).toFixed(1);
 
   // Roadmap steps — skip language step when user already speaks the target language
   const roadmapSteps = [
@@ -186,200 +183,151 @@ const HomologationResult = () => {
     <MainLayout>
       <div className="min-h-screen bg-gradient-to-b from-primary/5 via-background to-background">
         
-        {/* ===== SECTION 1: HERO ===== */}
+        {/* ===== HERO: Title + profile ===== */}
         <motion.section
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="pt-8 pb-3 md:pt-12 md:pb-6">
+          className="pt-8 pb-4 md:pt-12 md:pb-6">
 
-          <div className="container mx-auto px-4 max-w-3xl text-center">
-            <h1 className="text-3xl md:text-4xl font-bold tracking-tight mb-2">
+          <div className="container mx-auto px-4 max-w-2xl text-center">
+            <h1 className="text-3xl md:text-4xl font-bold tracking-tight mb-1">
               {getCountryFlag(wizardData.targetCountry)} {t.homologationResult.pathTo} {translatedCountryName}
             </h1>
 
             {(wizardData.doctorType || wizardData.studyCountry) &&
-              <p className="text-muted-foreground text-sm mb-4">
+              <p className="text-muted-foreground text-sm mb-3">
                 {[getDoctorTypeLabel(wizardData.doctorType), wizardData.studyCountry ? `${t.homologationResult.from} ${wizardData.studyCountry}` : ''].filter(Boolean).join(' · ')}
               </p>
             }
 
-            {/* Salary urgency inline */}
-            <div className="flex items-center justify-center gap-2 text-sm text-amber-700 dark:text-amber-400">
+            {/* Salary urgency */}
+            <div className="inline-flex items-center gap-2 text-sm text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/30 px-4 py-2 rounded-full">
               <AlertTriangle className="h-3.5 w-3.5 shrink-0" />
               <span>
-                {(t.homologationResult.urgency?.salaryLoss || "You are losing approximately {salary} {currency}/month by not working in {country}.").
-                replace('{salary}', monthlySalary.toLocaleString()).
-                replace('{currency}', countryData.averageSalaries.currency).
-                replace('{country}', translatedCountryName)}
+                {(t.homologationResult.urgency?.salaryLoss || "You are losing approximately {salary} {currency}/month by not working in {country}.")
+                  .replace('{salary}', monthlySalary.toLocaleString())
+                  .replace('{currency}', countryData.averageSalaries.currency)
+                  .replace('{country}', translatedCountryName)}
               </span>
             </div>
           </div>
         </motion.section>
 
-        <div className="container mx-auto px-4 max-w-3xl space-y-4 pb-10">
-
-          {/* ===== SECTION 2: DIAGNOSIS CARDS ===== */}
-          <motion.section
+        {/* ===== SINGLE CARD: Diagnosis + Roadmap + CTA ===== */}
+        <div className="container mx-auto px-4 max-w-2xl pb-10">
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}>
-
-            <div className={`grid grid-cols-1 ${showLanguageCard ? 'md:grid-cols-3' : 'md:grid-cols-2'} gap-4`}>
-              <div className="bg-card border rounded-2xl p-5 text-center space-y-2">
-                <Clock className="h-5 w-5 text-primary mx-auto" />
-                <p className="text-xs text-muted-foreground uppercase tracking-wide font-medium">
-                  {t.homologationResult.diagnosis?.timeLabel || 'Process Duration'}
-                </p>
-                <p className="text-2xl font-bold text-foreground">{countryData.processTime.med}</p>
+            transition={{ delay: 0.1 }}
+            className="bg-card border rounded-2xl overflow-hidden"
+          >
+            {/* Diagnosis row */}
+            <div className={`grid ${showLanguageCard ? 'grid-cols-3' : 'grid-cols-2'} divide-x border-b`}>
+              <div className="p-4 text-center">
+                <div className="flex items-center justify-center gap-1.5 text-muted-foreground mb-1">
+                  <Clock className="h-3.5 w-3.5" />
+                  <span className="text-[11px] uppercase tracking-wider font-medium">
+                    {t.homologationResult.diagnosis?.timeLabel || 'Duration'}
+                  </span>
+                </div>
+                <p className="text-xl font-bold text-foreground">{countryData.processTime.med}</p>
               </div>
 
               {showLanguageCard &&
-              <div className="bg-card border rounded-2xl p-5 text-center space-y-2">
-                  <Languages className="h-5 w-5 text-primary mx-auto" />
-                  <p className="text-xs text-muted-foreground uppercase tracking-wide font-medium">
-                    {t.homologationResult.diagnosis?.languageLabel || 'Language Gap'}
-                  </p>
-                  {levelGap > 0 ?
-                <>
-                      <div className="flex items-center justify-center gap-2">
-                        <span className="text-lg font-bold text-amber-600 dark:text-amber-400">{userLevel || '?'}</span>
-                        <ArrowRight className="h-4 w-4 text-muted-foreground" />
-                        <span className="text-lg font-bold text-primary">{requiredLevel}</span>
-                      </div>
-                    </> :
-                <>
-                      <p className="text-lg font-bold text-green-600">✓ {requiredLevel}</p>
-                      <p className="text-xs text-green-600">
-                        {t.homologationResult.diagnosis?.languageReady || 'You meet the requirement!'}
-                      </p>
-                    </>
-                }
+                <div className="p-4 text-center">
+                  <div className="flex items-center justify-center gap-1.5 text-muted-foreground mb-1">
+                    <Languages className="h-3.5 w-3.5" />
+                    <span className="text-[11px] uppercase tracking-wider font-medium">
+                      {t.homologationResult.diagnosis?.languageLabel || 'Language'}
+                    </span>
+                  </div>
+                  {levelGap > 0 ? (
+                    <div className="flex items-center justify-center gap-1.5">
+                      <span className="text-base font-bold text-amber-600 dark:text-amber-400">{userLevel || '?'}</span>
+                      <ArrowRight className="h-3 w-3 text-muted-foreground" />
+                      <span className="text-base font-bold text-primary">{requiredLevel}</span>
+                    </div>
+                  ) : (
+                    <p className="text-base font-bold text-green-600">✓ {requiredLevel}</p>
+                  )}
                 </div>
               }
 
-              <div className="bg-card border rounded-2xl p-5 text-center space-y-2">
-                <FileText className="h-5 w-5 text-primary mx-auto" />
-                <p className="text-xs text-muted-foreground uppercase tracking-wide font-medium">
-                  {t.homologationResult.diagnosis?.documentsLabel || 'Documents Needed'}
-                </p>
-                <p className="text-2xl font-bold text-foreground">{countryData.documents.length}</p>
-              </div>
-            </div>
-          </motion.section>
-
-          {/* ===== SECTION 3: MERGED ROADMAP + VALUE CARD ===== */}
-          <motion.section
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}>
-
-            <div className="bg-card border rounded-2xl overflow-hidden">
-              {/* Header */}
-              <div className="text-center p-6 pb-3">
-                <h2 className="text-2xl font-bold mb-1">
-                  {t.homologationResult.roadmap?.title || 'Your Step-by-Step Roadmap'}
-                </h2>
-                <p className="text-sm text-muted-foreground">
-                  {t.homologationResult.roadmap?.subtitle || "We've created a personalized action plan based on your profile"}
-                </p>
-              </div>
-
-              {/* Steps */}
-              <div className="relative px-4 md:px-6">
-                <div className="space-y-1.5">
-                  {roadmapSteps.map((step, i) => {
-                    const Icon = step.icon;
-                    return (
-                      <div key={i} className="relative">
-                        <div className={`flex items-center gap-3 py-2.5 px-3 rounded-lg transition-all ${
-                        step.locked ?
-                        'opacity-40 blur-[1px]' :
-                        'bg-background/50 border'}`
-                        }>
-                          <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${
-                          step.locked ?
-                          'bg-muted text-muted-foreground' :
-                          'bg-primary/10 text-primary'}`
-                          }>
-                            {step.locked ? <Lock className="h-3.5 w-3.5" /> : <Icon className="h-3.5 w-3.5" />}
-                          </div>
-                          <div className="min-w-0">
-                            <h3 className="font-medium text-sm leading-tight">{step.label}</h3>
-                            <p className="text-xs text-muted-foreground leading-tight">{step.desc}</p>
-                          </div>
-                        </div>
-                      </div>);
-                  })}
-                </div>
-
-                {/* Gradient fade over locked steps */}
-                <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-card via-card/80 to-transparent pointer-events-none" />
-              </div>
-
-              <Separator className="my-0" />
-
-              {/* Value + CTAs */}
-              <div className="p-6 md:p-8 space-y-5">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
-                  <div className="text-center md:text-left space-y-1">
-                    <p className="text-xs text-muted-foreground uppercase tracking-wide">
-                      {(t.homologationResult.value?.monthlyEarning || 'Your potential monthly salary in {country}').
-                      replace('{country}', translatedCountryName)}
-                    </p>
-                    <p className="text-3xl md:text-4xl font-bold text-primary">
-                      {monthlySalary.toLocaleString()} {countryData.averageSalaries.currency}
-                      <span className="text-base font-normal text-muted-foreground">/mo</span>
-                    </p>
-                  </div>
-
-                  <div className="text-center md:text-right space-y-1">
-                    <p className="text-xs text-muted-foreground uppercase tracking-wide">
-                      {t.homologationResult.value?.investmentLabel || 'Your investment to get there'}
-                    </p>
-                    <p className="text-3xl md:text-4xl font-bold text-foreground">
-                      <span className="text-base font-normal text-muted-foreground">{t.homologationResult.value?.startingFrom || 'Starting from'} </span>
-                      39€
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-2 text-sm justify-center">
-                  <TrendingUp className="h-4 w-4 text-green-500" />
-                  <span className="text-muted-foreground">
-                    {(t.homologationResult.value?.returnNote || "That's less than {percent}% of your first month's salary").
-                    replace('{percent}', investmentPercent)}
+              <div className="p-4 text-center">
+                <div className="flex items-center justify-center gap-1.5 text-muted-foreground mb-1">
+                  <FileText className="h-3.5 w-3.5" />
+                  <span className="text-[11px] uppercase tracking-wider font-medium">
+                    {t.homologationResult.diagnosis?.documentsLabel || 'Documents'}
                   </span>
                 </div>
-
-                <Separator />
-
-                <div className="flex flex-col sm:flex-row items-center gap-3 pt-1 w-full">
-                  <Button size="lg" onClick={handleStartProcess} className="gap-2 w-full sm:flex-1">
-                    {t.homologationResult.cta.startProcess} <ArrowRight className="h-4 w-4" />
-                  </Button>
-                  <Button size="lg" variant="outline" onClick={handleBookConsultation} className="gap-2 w-full sm:flex-1">
-                    <Calendar className="h-4 w-4" />
-                    {t.homologationResult.cta.bookConsultation}
-                  </Button>
-                </div>
-
+                <p className="text-xl font-bold text-foreground">{countryData.documents.length}</p>
               </div>
             </div>
-          </motion.section>
+
+            {/* Roadmap steps */}
+            <div className="relative px-4 py-3">
+              <div className="space-y-1">
+                {roadmapSteps.map((step, i) => {
+                  const Icon = step.icon;
+                  return (
+                    <div key={i} className={`flex items-center gap-3 py-2 px-3 rounded-lg ${
+                      step.locked
+                        ? 'opacity-30 blur-[1.5px]'
+                        : 'bg-background/50 border'
+                    }`}>
+                      <div className={`w-7 h-7 rounded-full flex items-center justify-center shrink-0 ${
+                        step.locked
+                          ? 'bg-muted text-muted-foreground'
+                          : 'bg-primary/10 text-primary'
+                      }`}>
+                        {step.locked ? <Lock className="h-3 w-3" /> : <Icon className="h-3 w-3" />}
+                      </div>
+                      <div className="min-w-0">
+                        <h3 className="font-medium text-[13px] leading-tight">{step.label}</h3>
+                        {!step.locked && (
+                          <p className="text-xs text-muted-foreground leading-tight">{step.desc}</p>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+
+              {/* Gradient fade over locked steps */}
+              <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-card via-card/80 to-transparent pointer-events-none" />
+            </div>
+
+            {/* CTA section */}
+            <div className="px-5 pb-6 pt-2 space-y-3">
+              <p className="text-center text-sm text-muted-foreground">
+                {t.homologationResult.roadmap?.lockedDesc || 'Get detailed checklists, timelines, and expert guidance for each step'}
+              </p>
+
+              <Button size="lg" onClick={handleStartProcess} className="gap-2 w-full text-base">
+                {t.homologationResult.cta.startProcess} <ArrowRight className="h-4 w-4" />
+              </Button>
+
+              <Button size="lg" variant="ghost" onClick={handleBookConsultation} className="gap-2 w-full text-muted-foreground">
+                <Calendar className="h-4 w-4" />
+                {t.homologationResult.cta.bookConsultation}
+              </Button>
+            </div>
+          </motion.div>
 
           {/* Email reminder */}
           {wizardData.email &&
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.3 }}
-            className="text-center text-sm text-muted-foreground">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.2 }}
+              className="text-center text-sm text-muted-foreground mt-4">
               <p>{t.homologationResult.emailSent} <strong>{wizardData.email}</strong></p>
             </motion.div>
           }
         </div>
       </div>
-    </MainLayout>);
+    </MainLayout>
+  );
 };
 
 export default HomologationResult;
