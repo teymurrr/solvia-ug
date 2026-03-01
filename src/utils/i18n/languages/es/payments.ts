@@ -19,8 +19,7 @@ export const payments = {
   emailLabel: 'Correo Electrónico',
   emailPlaceholder: 'tu.correo@ejemplo.com',
   emailHint: 'Enviaremos tu recibo y detalles de acceso a este correo',
-  limitedOffer: 'Oferta de lanzamiento limitada',
-  introEnds: 'Precio regular',
+  competitorAnchor: 'La competencia cobra €8.000–20.000',
   languageNames: {
     german: 'Alemán',
     spanish: 'Español',
@@ -29,43 +28,38 @@ export const payments = {
   },
   packages: {
     digitalStarter: {
-      title: 'Homologación Digital',
-      description: 'Navega tu homologación de forma independiente con nuestro kit digital con IA',
+      title: 'Homologación Guiada',
+      description: 'Guía experta en cada paso de tu homologación',
       features: [
-        'Guía paso a paso para cada documento',
-        'Análisis y validación de documentos con IA',
-        'Checklist de documentos específica por país y plantillas',
-        'Instrucciones de apostilla y traducción',
-        'Plantilla de CV médico',
-        'Soporte por email (respuesta en 72h)',
-        'Panel de seguimiento de progreso'
-      ]
-    },
-    complete: {
-      titleBase: 'Homologación Personal Completa',
-      descriptionBase: 'Homologación guiada por expertos con revisión personal de documentos y',
-      descriptionEnd: 'comunicación con autoridades',
-      features: [
-        'Todo lo de Homologación Digital',
-        'Revisión experta personal de cada documento antes del envío',
-        'Comunicación directa con las autoridades en tu nombre',
-        'Presentación de solicitud por ti',
+        'Revisión personal de documentos antes del envío',
+        'Comunicación directa con autoridades en tu nombre',
+        'Presentación de solicitud gestionada por nosotros',
         'Soporte prioritario (respuesta en 24h)',
         'Panel de seguimiento de progreso'
       ]
     },
-    personalMentorship: {
-      titleBase: 'Homologación Completa +',
-      descriptionBase: 'Homologación completa + formación lingüística con gestor de caso dedicado y',
-      descriptionEnd: 'soporte presencial',
+    complete: {
+      titleBase: 'Homologación +',
+      descriptionBase: 'Homologación completa con formación en',
+      descriptionEnd: 'idioma médico',
       features: [
-        'Todo lo de Homologación Personal Completa',
-        'Acceso a curso de idioma médico por 12 meses',
-        '4 sesiones en vivo 1:1 (60 min): revisión de documentos, preparación de examen y coaching de entrevista',
-        'Gestor de caso dedicado de principio a fin',
-        'Soporte presencial para citas clave (donde esté disponible)',
-        'Gestionamos toda la comunicación con autoridades y trámites',
-        'Soporte directo por WhatsApp y teléfono'
+        'Todo lo de Homologación Guiada',
+        'Curso de idioma médico por 12 meses',
+        '4 sesiones en vivo 1:1 de coaching (60 min)',
+        'Gestor de caso dedicado',
+        'Soporte por WhatsApp y teléfono'
+      ]
+    },
+    personalMentorship: {
+      titleBase: 'Todo Incluido',
+      descriptionBase: 'Nos encargamos de todo — traducciones, tasas, trámites,',
+      descriptionEnd: 'todo incluido',
+      features: [
+        'Todos los costes de traducción y apostilla incluidos',
+        'Todas las tasas y cargos oficiales cubiertos',
+        'Comunicación y presentaciones ante autoridades completas',
+        'Curso de idioma + gestor de caso dedicado',
+        'Soporte presencial para citas'
       ]
     }
   },
@@ -142,7 +136,6 @@ export const payments = {
   },
   guarantee: 'Garantía de devolución de 30 días — sin preguntas',
   youSave: 'Ahorras',
-  saveUpTo: 'Ahorra hasta un 50%',
   notSure: '¿No estás seguro/a?',
   bookConsultation: 'Reserva una consulta gratuita de 15 min',
   callCta: {
