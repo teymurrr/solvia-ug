@@ -85,9 +85,11 @@ const PathToSuccessSection = () => {
             const duration = translated?.processDuration || c.duration;
 
             return (
-              <Card
+              <Link
                 key={c.key}
-                className={`p-6 border-l-4 ${c.accent} hover:shadow-xl hover:scale-[1.02] transition-all duration-300 bg-card ring-1 ring-primary/10`}
+                to="/homologation-wizard"
+                onClick={() => window.scrollTo(0, 0)}
+                className={`block p-6 border-l-4 ${c.accent} hover:shadow-xl hover:scale-[1.02] transition-all duration-300 bg-card ring-1 ring-primary/10 rounded-xl cursor-pointer`}
               >
                 <div className="space-y-4">
                   <div className="text-center">
@@ -109,16 +111,12 @@ const PathToSuccessSection = () => {
                       <p className="text-base font-semibold text-foreground">{duration}</p>
                     </div>
                   </div>
-                  <Link
-                    to="/homologation-wizard"
-                    onClick={() => window.scrollTo(0, 0)}
-                    className="inline-flex items-center justify-center gap-2 w-full px-4 py-2.5 rounded-lg bg-primary text-primary-foreground text-sm font-semibold hover:bg-primary/90 transition-colors"
-                  >
+                  <p className="text-center text-sm font-medium text-primary flex items-center justify-center gap-1">
                     {comparison?.learnMore || 'Learn more'}
-                    <ArrowRight className="h-4 w-4" />
-                  </Link>
+                    <ArrowRight className="h-3.5 w-3.5" />
+                  </p>
                 </div>
-              </Card>
+              </Link>
             );
           })}
         </div>
@@ -132,9 +130,11 @@ const PathToSuccessSection = () => {
             const duration = translated?.processDuration || c.duration;
 
             return (
-              <Card
+              <Link
                 key={c.key}
-                className={`p-4 border-l-4 ${c.accent} hover:shadow-lg hover:scale-[1.02] transition-all duration-300 bg-card`}
+                to="/homologation-wizard"
+                onClick={() => window.scrollTo(0, 0)}
+                className={`block p-4 border-l-4 ${c.accent} hover:shadow-lg hover:scale-[1.02] transition-all duration-300 bg-card rounded-xl cursor-pointer`}
               >
                 <div className="space-y-2">
                   <div className="text-center">
@@ -156,16 +156,12 @@ const PathToSuccessSection = () => {
                       <p className="text-sm font-semibold text-foreground">{duration}</p>
                     </div>
                   </div>
-                  <Link
-                    to="/homologation-wizard"
-                    onClick={() => window.scrollTo(0, 0)}
-                    className="inline-flex items-center justify-center gap-2 w-full px-3 py-2 rounded-lg bg-primary text-primary-foreground text-xs font-semibold hover:bg-primary/90 transition-colors"
-                  >
+                  <p className="text-center text-xs font-medium text-primary flex items-center justify-center gap-1">
                     {comparison?.learnMore || 'Learn more'}
-                    <ArrowRight className="h-3.5 w-3.5" />
-                  </Link>
+                    <ArrowRight className="h-3 w-3" />
+                  </p>
                 </div>
-              </Card>
+              </Link>
             );
           })}
         </div>
