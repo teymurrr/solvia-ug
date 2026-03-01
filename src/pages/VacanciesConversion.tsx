@@ -95,7 +95,7 @@ const VacanciesConversion = () => {
               {t?.vacancies?.heroTitle || 'Work in Europe: opportunities based on your specialty'}
             </h1>
             <p className="text-lg text-muted-foreground">
-              {t?.vacancies?.heroSubtitle || 'Filter by profession and country to see relevant offers'}
+              {t?.vacancies?.heroSubtitle || 'Verified positions in hospitals and clinics across Europe'}
             </p>
           </div>
         </div>
@@ -107,11 +107,7 @@ const VacanciesConversion = () => {
           <div className="space-y-8">
 
             {/* Job Cards Preview */}
-            <div className="space-y-4">
-              <div className="flex items-center justify-center gap-2 text-muted-foreground">
-                <Lock className="h-4 w-4" />
-                <span className="text-sm">{t?.vacancies?.preview || 'Preview of available offers'} ({filteredBlurredJobs.length})</span>
-              </div>
+            <div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {filteredBlurredJobs.length > 0 ? (
