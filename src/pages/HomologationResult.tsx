@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import MainLayout from '@/components/MainLayout';
+import Analytics from '@/utils/analyticsTracking';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import {
@@ -139,6 +140,7 @@ const HomologationResult = () => {
   };
 
   const handleBookConsultation = () => {
+    Analytics.callBooked('result_page');
     window.open('https://calendly.com/david-rehrl-thesolvia/30min', '_blank');
   };
 

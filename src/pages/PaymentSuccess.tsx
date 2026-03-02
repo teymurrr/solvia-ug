@@ -10,6 +10,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { CheckCircle, Home, User, Mail, Clock, ArrowRight, Phone, Star, Shield, Heart, FileText } from 'lucide-react';
 import { toast } from 'sonner';
+import Analytics from '@/utils/analyticsTracking';
 
 const PaymentSuccess = () => {
   const [searchParams] = useSearchParams();
@@ -62,6 +63,12 @@ const PaymentSuccess = () => {
         }
 
         setVerificationStatus('success');
+        // Track successful payment
+        Analytics.paymentCompleted(
+          data.payment?.productType || 'homologation',
+          data.payment?.amount || 0,
+          data.payment?.currency || 'EUR'
+        );
         toast.success(t?.payments?.success?.message || 'Payment verified successfully!');
       } catch (error: any) {
         console.error('Payment verification error:', error);

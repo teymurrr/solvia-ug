@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import MainLayout from '@/components/MainLayout';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -37,6 +37,10 @@ const HomologationWizard = () => {
   const [isSaving, setIsSaving] = useState(false);
   const [isSubmittingEmail, setIsSubmittingEmail] = useState(false);
   const [privacyConsent, setPrivacyConsent] = useState(false);
+
+  useEffect(() => {
+    Analytics.wizardStarted();
+  }, []);
 
   const [selectedTargetCountry, setSelectedTargetCountry] = useState<string | null>(null);
 
@@ -179,6 +183,9 @@ const HomologationWizard = () => {
       console.error('Email send error:', error);
     }
     
+    // Track wizard completion
+    Analytics.wizardCompleted(updatedData.targetCountry, updatedData.doctorType);
+
     // Store data and redirect to result page
     localStorage.setItem('wizardData', JSON.stringify(updatedData));
     navigate(`/homologation-result?country=${updatedData.targetCountry}&doctorType=${updatedData.doctorType}&studyCountry=${encodeURIComponent(updatedData.studyCountry || '')}&languageLevel=${encodeURIComponent(updatedData.languageLevel || '')}&email=${encodeURIComponent(email)}`);
@@ -190,6 +197,7 @@ const HomologationWizard = () => {
   };
 
   const handleBookConsultation = () => {
+    Analytics.callBooked('wizard');
     window.open('https://calendly.com/david-rehrl-thesolvia/30min', '_blank');
   };
 

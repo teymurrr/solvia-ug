@@ -24,7 +24,11 @@ export type GA4EventName =
   | 'starter_kit_purchased'
   | 'document_uploaded'
   | 'vacancy_saved'
-  | 'vacancy_applied';
+  | 'vacancy_applied'
+  | 'wizard_started'
+  | 'wizard_completed'
+  | 'payment_page_viewed'
+  | 'call_booked';
 
 interface GA4EventParams {
   [key: string]: string | number | boolean | undefined;
@@ -141,6 +145,22 @@ export const Analytics = {
       vacancy_id: vacancyId,
       country,
     }),
+
+  // Funnel events
+  wizardStarted: () =>
+    trackEvent('wizard_started'),
+
+  wizardCompleted: (targetCountry?: string, doctorType?: string) =>
+    trackEvent('wizard_completed', {
+      target_country: targetCountry,
+      doctor_type: doctorType,
+    }),
+
+  paymentPageViewed: (productType?: string) =>
+    trackEvent('payment_page_viewed', { product_type: productType }),
+
+  callBooked: (source?: string) =>
+    trackEvent('call_booked', { source }),
 };
 
 export default Analytics;
