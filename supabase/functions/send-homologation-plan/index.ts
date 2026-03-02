@@ -8,6 +8,10 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
+// Shared booking CTA constants
+const CALENDLY_URL = 'https://calendly.com/david-rehrl-thesolvia/30min';
+const WHATSAPP_URL = 'https://wa.me/4915259018297';
+
 interface HomologationPlanRequest {
   email: string;
   targetCountry: string;
@@ -34,7 +38,6 @@ const doctorTypeNames: Record<string, Record<string, string>> = {
   other: { en: 'Medical Professional', es: 'Profesional Médico', de: 'Medizinischer Fachmann', fr: 'Professionnel Médical', ru: 'Медицинский специалист' },
 };
 
-// Country-based language detection
 const spanishSpeakingCountries = [
   'mexico', 'méxico', 'colombia', 'chile', 'peru', 'perú', 'bolivia',
   'venezuela', 'cuba', 'argentina', 'ecuador', 'uruguay', 'paraguay',
@@ -56,8 +59,15 @@ const detectLanguageFromCountry = (country: string | undefined): string | null =
   return null;
 };
 
+const bookingCTALabels: Record<string, { call: string; whatsapp: string }> = {
+  en: { call: 'Want to talk to someone? Book a free 15-min call', whatsapp: 'Or message us directly on WhatsApp' },
+  es: { call: '¿Quieres hablar con alguien? Reserva una llamada gratuita de 15 minutos', whatsapp: 'O escríbenos directamente por WhatsApp' },
+  de: { call: 'Möchtest du mit jemandem sprechen? Buche ein kostenloses 15-Min-Gespräch', whatsapp: 'Oder schreib uns direkt auf WhatsApp' },
+  fr: { call: 'Tu veux parler à quelqu\'un ? Réserve un appel gratuit de 15 min', whatsapp: 'Ou écris-nous directement sur WhatsApp' },
+  ru: { call: 'Хочешь поговорить? Запиши на бесплатный 15-мин звонок', whatsapp: 'Или напиши нам в WhatsApp' },
+};
+
 const getEmailContent = (data: HomologationPlanRequest) => {
-  // Priority: explicit non-default language > study country detection > browser language > 'en'
   let lang = data.language || 'en';
   if (lang === 'en') {
     const detected = detectLanguageFromCountry(data.studyCountry);
@@ -74,7 +84,8 @@ const getEmailContent = (data: HomologationPlanRequest) => {
   
   const baseUrl = Deno.env.get("SITE_URL") || "https://thesolvia.com";
   const planUrl = `${baseUrl}/homologation-result?country=${data.targetCountry}&doctorType=${data.doctorType}&studyCountry=${encodeURIComponent(data.studyCountry || '')}&languageLevel=${encodeURIComponent(data.languageLevel || '')}`;
-  const consultationUrl = "https://calendly.com/david-rehrl-thesolvia/30min";
+
+  const ctaLabels = bookingCTALabels[lang] || bookingCTALabels.en;
 
   const subjects: Record<string, string> = {
     en: `Your Personalized Homologation Plan for ${countryName}`,
@@ -82,6 +93,22 @@ const getEmailContent = (data: HomologationPlanRequest) => {
     de: `Ihr Personalisierter Homologationsplan für ${countryName}`,
     fr: `Votre Plan d'Homologation Personnalisé pour ${countryName}`,
     ru: `Ваш Персональный План Гомологации для ${countryName}`,
+  };
+
+  const guidedHomologationLabel: Record<string, string> = {
+    en: 'Start your Guided Homologation — €299',
+    es: 'Comienza tu Guided Homologation — €299',
+    de: 'Starte deine Guided Homologation — €299',
+    fr: 'Commence ta Guided Homologation — 299 €',
+    ru: 'Начни Guided Homologation — €299',
+  };
+
+  const guidedHomologationDesc: Record<string, string> = {
+    en: 'Get step-by-step expert guidance, personal document review, and priority support to navigate your homologation with confidence.',
+    es: 'Obtén guía experta paso a paso, revisión personal de documentos y soporte prioritario para navegar tu homologación con confianza.',
+    de: 'Erhalte Schritt-für-Schritt Expertenbegleitung, persönliche Dokumentenprüfung und Priority-Support für deine Anerkennung.',
+    fr: 'Bénéficie d\'un accompagnement expert étape par étape, d\'une révision personnelle des documents et d\'un support prioritaire.',
+    ru: 'Получи пошаговое экспертное сопровождение, персональную проверку документов и приоритетную поддержку.',
   };
 
   const htmlContent = `
@@ -98,12 +125,12 @@ const getEmailContent = (data: HomologationPlanRequest) => {
   </div>
   
   <div style="background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%); color: white; padding: 30px; border-radius: 12px; text-align: center; margin-bottom: 30px;">
-    <h1 style="margin: 0 0 10px 0; font-size: 24px;">🎉 ${lang === 'es' ? '¡Tu plan está listo!' : lang === 'de' ? 'Ihr Plan ist fertig!' : lang === 'fr' ? 'Votre plan est prêt!' : 'Your Plan is Ready!'}</h1>
+    <h1 style="margin: 0 0 10px 0; font-size: 24px;">🎉 ${lang === 'es' ? '¡Tu plan está listo!' : lang === 'de' ? 'Dein Plan ist fertig!' : lang === 'fr' ? 'Ton plan est prêt!' : 'Your Plan is Ready!'}</h1>
     <p style="margin: 0; opacity: 0.9;">${professionName} → ${countryName}</p>
   </div>
 
   <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
-    <h2 style="margin-top: 0; color: #4F46E5;">${lang === 'es' ? 'Tu Perfil' : lang === 'de' ? 'Ihr Profil' : lang === 'fr' ? 'Votre Profil' : 'Your Profile'}</h2>
+    <h2 style="margin-top: 0; color: #4F46E5;">${lang === 'es' ? 'Tu Perfil' : lang === 'de' ? 'Dein Profil' : lang === 'fr' ? 'Ton Profil' : 'Your Profile'}</h2>
     <table style="width: 100%; border-collapse: collapse;">
       <tr>
         <td style="padding: 8px 0; border-bottom: 1px solid #eee;"><strong>${lang === 'es' ? 'País Destino' : lang === 'de' ? 'Zielland' : lang === 'fr' ? 'Pays Cible' : 'Target Country'}</strong></td>
@@ -134,20 +161,27 @@ const getEmailContent = (data: HomologationPlanRequest) => {
     </a>
   </div>
 
-  <div style="background: #fff3cd; border: 1px solid #ffc107; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
-    <h3 style="margin-top: 0; color: #856404;">🚀 ${lang === 'es' ? 'Oferta especial: €39 por tiempo limitado' : lang === 'de' ? 'Einführungsangebot: €39 begrenzte Zeit' : lang === 'fr' ? 'Offre de Lancement: €39 Durée Limitée' : lang === 'ru' ? 'Вводное предложение: €39 ограниченное время' : 'Limited Time: €39 Introductory Offer'}</h3>
-    <p style="margin-bottom: 15px; color: #856404;">
-      ${lang === 'es' ? 'Desbloquea tu guía digital completa con análisis de documentos por IA, videos explicativos y lista de verificación paso a paso.' : lang === 'de' ? 'Schalten Sie Ihren vollständigen Digital Guide mit KI-Dokumentenanalyse, Erklärungsvideos und Schritt-für-Schritt-Checkliste frei.' : lang === 'fr' ? 'Déverrouillez votre Guide Digital complet avec analyse de documents par IA, vidéos explicatives et liste de contrôle étape par étape.' : lang === 'ru' ? 'Откройте свой полный Цифровой Гид с ИИ-анализом документов, обучающими видео и пошаговым чек-листом.' : 'Unlock your complete Digital Guide with AI document analysis, explanation videos, and step-by-step checklist.'}
+  <div style="background: #f0f9ff; border: 1px solid #bae6fd; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+    <h3 style="margin-top: 0; color: #0369a1;">🚀 ${guidedHomologationLabel[lang] || guidedHomologationLabel.en}</h3>
+    <p style="margin-bottom: 15px; color: #0c4a6e;">
+      ${guidedHomologationDesc[lang] || guidedHomologationDesc.en}
     </p>
-    <a href="${planUrl}" style="display: inline-block; background: #FF6B35; color: white; padding: 14px 28px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 16px;">
-      ${lang === 'es' ? 'Desbloquear Guía - €39' : lang === 'de' ? 'Guide Freischalten - €39' : lang === 'fr' ? 'Débloquer Guide - €39' : lang === 'ru' ? 'Открыть Гид - €39' : 'Unlock Digital Guide - €39'} →
+    <a href="${planUrl}" style="display: inline-block; background: #4F46E5; color: white; padding: 14px 28px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 16px;">
+      ${guidedHomologationLabel[lang] || guidedHomologationLabel.en} →
     </a>
+  </div>
+
+  <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+    <p style="margin: 0 0 12px 0; font-weight: bold;">${ctaLabels.call}:</p>
+    <p style="margin: 0 0 16px 0;"><a href="${CALENDLY_URL}" style="color: #4F46E5;">${CALENDLY_URL}</a></p>
+    <p style="margin: 0 0 12px 0; font-weight: bold;">${ctaLabels.whatsapp}:</p>
+    <p style="margin: 0;"><a href="${WHATSAPP_URL}" style="color: #4F46E5;">${WHATSAPP_URL}</a></p>
   </div>
 
   <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;">
 
   <div style="text-align: center; color: #666; font-size: 14px;">
-    <p>Solvia - ${lang === 'es' ? 'Tu socio en la homologación médica' : lang === 'de' ? 'Ihr Partner für medizinische Homologation' : lang === 'fr' ? 'Votre partenaire en homologation médicale' : 'Your Partner in Medical Homologation'}</p>
+    <p>Solvia - ${lang === 'es' ? 'Tu socio en la homologación médica' : lang === 'de' ? 'Dein Partner für medizinische Anerkennung' : lang === 'fr' ? 'Ton partenaire en homologation médicale' : 'Your Partner in Medical Homologation'}</p>
     <p style="margin-top: 10px;">
       <a href="https://thesolvia.com" style="color: #4F46E5; text-decoration: none;">thesolvia.com</a>
     </p>
