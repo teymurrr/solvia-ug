@@ -306,21 +306,6 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
         </p>
       </div>
 
-      {/* Trust Indicators */}
-      <div className="flex items-center justify-center gap-6 text-sm text-muted-foreground">
-        <div className="flex items-center gap-1.5">
-          <Shield className="w-4 h-4" />
-          <span>{t?.payments?.secure || 'Secure Payment'}</span>
-        </div>
-        <div className="flex items-center gap-1.5">
-          <Clock className="w-4 h-4" />
-          <span>{t?.payments?.support || '24h Support'}</span>
-        </div>
-        <div className="flex items-center gap-1.5">
-          <Users className="w-4 h-4" />
-          <span>{t?.payments?.trusted || 'Trusted by 500+'}</span>
-        </div>
-      </div>
 
       {/* Package Selection */}
       <div className="grid md:grid-cols-3 gap-6 items-stretch">
