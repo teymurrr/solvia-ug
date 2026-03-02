@@ -96,11 +96,11 @@ const getEmailContent = (data: HomologationPlanRequest) => {
   };
 
   const guidedHomologationLabel: Record<string, string> = {
-    en: 'Start your Guided Homologation — €299',
-    es: 'Comienza tu Guided Homologation — €299',
-    de: 'Starte deine Guided Homologation — €299',
-    fr: 'Commence ta Guided Homologation — 299 €',
-    ru: 'Начни Guided Homologation — €299',
+    en: 'Start your Guided Homologation — €379',
+    es: 'Comienza tu Homologación Guiada — €379',
+    de: 'Starte deine Begleitete Homologation — €379',
+    fr: 'Commence ton Homologation Guidée — 379 €',
+    ru: 'Начни Сопровождаемую Гомологацию — €379',
   };
 
   const guidedHomologationDesc: Record<string, string> = {

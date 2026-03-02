@@ -72,7 +72,7 @@ Tu situación no ha cambiado — pero cada mes que pasa es un mes de salario com
 He preparado un plan personalizado basado en tu perfil. Puedes verlo aquí:
 {{RESULTS_LINK}}
 
-Si estás listo para dar el primer paso, puedes empezar desde €299 con nuestro paquete Guided Homologation:
+Si estás listo para dar el primer paso, puedes empezar desde €379 con nuestro paquete de Homologación Guiada:
 {{PAYMENT_LINK}}
 
 Incluye guía experta paso a paso, revisión personal de documentos y soporte prioritario.
@@ -85,7 +85,7 @@ Your situation hasn't changed — but every month that passes is a month of doct
 I've prepared a personalized plan based on your profile. You can see it here:
 {{RESULTS_LINK}}
 
-If you're ready to take the first step, you can start from €299 with our Guided Homologation package:
+If you're ready to take the first step, you can start from €379 with our Guided Homologation package:
 {{PAYMENT_LINK}}
 
 It includes step-by-step expert guidance, personal document review, and priority support.
@@ -98,7 +98,7 @@ Deine Situation hat sich nicht geändert — aber jeder Monat, der vergeht, ist 
 Ich habe einen personalisierten Plan basierend auf deinem Profil erstellt. Du kannst ihn hier sehen:
 {{RESULTS_LINK}}
 
-Wenn du bereit bist, den ersten Schritt zu machen, kannst du ab €299 mit unserem Guided Homologation-Paket starten:
+Wenn du bereit bist, den ersten Schritt zu machen, kannst du ab €379 mit unserem Paket Begleitete Homologation starten:
 {{PAYMENT_LINK}}
 
 Es enthält Schritt-für-Schritt Expertenbegleitung, persönliche Dokumentenprüfung und Priority-Support.
@@ -111,7 +111,7 @@ Ta situation n'a pas changé — mais chaque mois qui passe est un mois de salai
 J'ai préparé un plan personnalisé basé sur ton profil. Tu peux le voir ici :
 {{RESULTS_LINK}}
 
-Si tu es prêt(e) à faire le premier pas, tu peux commencer à partir de €299 avec notre forfait Guided Homologation :
+Si tu es prêt(e) à faire le premier pas, tu peux commencer à partir de 379 € avec notre forfait Homologation Guidée :
 {{PAYMENT_LINK}}
 
 Il inclut un accompagnement expert étape par étape, une révision personnelle des documents et un support prioritaire.
@@ -124,7 +124,7 @@ Si tu as des questions, réponds simplement à cet email.`,
 Я подготовил персонализированный план на основе твоего профиля. Ты можешь увидеть его здесь:
 {{RESULTS_LINK}}
 
-Если ты готов сделать первый шаг, можешь начать от €299 с нашим пакетом Guided Homologation:
+Если ты готов сделать первый шаг, можешь начать от €379 с нашим пакетом Сопровождаемая Гомологация:
 {{PAYMENT_LINK}}
 
 Он включает пошаговое экспертное сопровождение, персональную проверку документов и приоритетную поддержку.
