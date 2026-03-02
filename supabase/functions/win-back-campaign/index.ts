@@ -7,12 +7,17 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
-/**
- * Win-Back Campaign
- * 
- * Targets leads who never received ANY email (email_sequence_day = 0, no records in email_sends).
- * Sends a single compelling personalized email based on their wizard data.
- */
+// Shared booking CTA constants
+const CALENDLY_URL = 'https://calendly.com/david-rehrl-thesolvia/30min';
+const WHATSAPP_URL = 'https://wa.me/4915259018297';
+
+const bookingCTA: Record<string, string> = {
+  es: `---\n¿Quieres hablar con alguien? Reserva una llamada gratuita de 15 minutos:\n${CALENDLY_URL}\n\nO escríbenos directamente por WhatsApp:\n${WHATSAPP_URL}`,
+  en: `---\nWant to talk to someone? Book a free 15-min call:\n${CALENDLY_URL}\n\nOr message us directly on WhatsApp:\n${WHATSAPP_URL}`,
+  de: `---\nMöchtest du mit jemandem sprechen? Buche ein kostenloses 15-Min-Gespräch:\n${CALENDLY_URL}\n\nOder schreib uns direkt auf WhatsApp:\n${WHATSAPP_URL}`,
+  fr: `---\nTu veux parler à quelqu'un ? Réserve un appel gratuit de 15 min :\n${CALENDLY_URL}\n\nOu écris-nous directement sur WhatsApp :\n${WHATSAPP_URL}`,
+  ru: `---\nХочешь поговорить? Запиши на бесплатный 15-мин звонок:\n${CALENDLY_URL}\n\nИли напиши нам в WhatsApp:\n${WHATSAPP_URL}`,
+};
 
 type Language = 'es' | 'en' | 'de' | 'fr' | 'ru';
 
@@ -67,10 +72,10 @@ Tu situación no ha cambiado — pero cada mes que pasa es un mes de salario com
 He preparado un plan personalizado basado en tu perfil. Puedes verlo aquí:
 {{RESULTS_LINK}}
 
-Si estás listo para dar el primer paso, puedes empezar desde €39 con nuestro paquete Digital:
+Si estás listo para dar el primer paso, puedes empezar desde €299 con nuestro paquete Guided Homologation:
 {{PAYMENT_LINK}}
 
-Incluye tu hoja de ruta completa, análisis de documentos con IA y soporte por email.
+Incluye guía experta paso a paso, revisión personal de documentos y soporte prioritario.
 
 Si tienes alguna duda, simplemente responde a este email.`,
     en: `A while ago you completed our homologation assessment and I wanted to follow up.
@@ -80,10 +85,10 @@ Your situation hasn't changed — but every month that passes is a month of doct
 I've prepared a personalized plan based on your profile. You can see it here:
 {{RESULTS_LINK}}
 
-If you're ready to take the first step, you can start from €39 with our Digital package:
+If you're ready to take the first step, you can start from €299 with our Guided Homologation package:
 {{PAYMENT_LINK}}
 
-It includes your complete roadmap, AI document analysis, and email support.
+It includes step-by-step expert guidance, personal document review, and priority support.
 
 If you have any questions, just reply to this email.`,
     de: `Vor einiger Zeit hast du unsere Anerkennungsanalyse abgeschlossen und ich wollte nachfragen.
@@ -93,10 +98,10 @@ Deine Situation hat sich nicht geändert — aber jeder Monat, der vergeht, ist 
 Ich habe einen personalisierten Plan basierend auf deinem Profil erstellt. Du kannst ihn hier sehen:
 {{RESULTS_LINK}}
 
-Wenn du bereit bist, den ersten Schritt zu machen, kannst du ab €39 mit unserem Digital-Paket starten:
+Wenn du bereit bist, den ersten Schritt zu machen, kannst du ab €299 mit unserem Guided Homologation-Paket starten:
 {{PAYMENT_LINK}}
 
-Es enthält deinen vollständigen Fahrplan, KI-Dokumentenanalyse und E-Mail-Support.
+Es enthält Schritt-für-Schritt Expertenbegleitung, persönliche Dokumentenprüfung und Priority-Support.
 
 Bei Fragen antworte einfach auf diese E-Mail.`,
     fr: `Il y a quelque temps, tu as complété notre analyse d'homologation et je voulais faire un suivi.
@@ -106,10 +111,10 @@ Ta situation n'a pas changé — mais chaque mois qui passe est un mois de salai
 J'ai préparé un plan personnalisé basé sur ton profil. Tu peux le voir ici :
 {{RESULTS_LINK}}
 
-Si tu es prêt(e) à faire le premier pas, tu peux commencer à partir de €39 avec notre forfait Digital :
+Si tu es prêt(e) à faire le premier pas, tu peux commencer à partir de €299 avec notre forfait Guided Homologation :
 {{PAYMENT_LINK}}
 
-Il inclut ta feuille de route complète, l'analyse de documents par IA et le support par email.
+Il inclut un accompagnement expert étape par étape, une révision personnelle des documents et un support prioritaire.
 
 Si tu as des questions, réponds simplement à cet email.`,
     ru: `Некоторое время назад ты прошёл наш анализ гомологации, и я хотел узнать, как дела.
@@ -119,10 +124,10 @@ Si tu as des questions, réponds simplement à cet email.`,
 Я подготовил персонализированный план на основе твоего профиля. Ты можешь увидеть его здесь:
 {{RESULTS_LINK}}
 
-Если ты готов сделать первый шаг, можешь начать от €39 с нашим Digital пакетом:
+Если ты готов сделать первый шаг, можешь начать от €299 с нашим пакетом Guided Homologation:
 {{PAYMENT_LINK}}
 
-Он включает полный план, анализ документов ИИ и поддержку по email.
+Он включает пошаговое экспертное сопровождение, персональную проверку документов и приоритетную поддержку.
 
 Если есть вопросы, просто ответь на это письмо.`,
   },
@@ -134,8 +139,10 @@ Si tu as des questions, réponds simplement à cet email.`,
   },
 };
 
-function generatePlainEmail(greeting: string, body: string, signature: string): string {
-  const bodyHtml = body
+function generatePlainEmail(greeting: string, body: string, signature: string, lang: Language): string {
+  const bodyWithCTA = body + '\n\n' + bookingCTA[lang];
+  
+  const bodyHtml = bodyWithCTA
     .split('\n\n')
     .map(p => `<p style="margin: 0 0 16px 0;">${p.replace(/\n/g, '<br>')}</p>`)
     .join('');
@@ -161,7 +168,6 @@ serve(async (req: Request) => {
 
     console.log(`[win-back] Starting${testMode ? ' (TEST)' : ''}...`);
 
-    // Find leads who never received any email
     const { data: coldLeads, error } = await supabase
       .from('leads')
       .select('id, email, first_name, last_name, study_country, target_country, doctor_type, language_level, preferred_language')
@@ -177,7 +183,6 @@ serve(async (req: Request) => {
     const baseUrl = 'https://solvia-flexkapg.lovable.app';
 
     for (const lead of coldLeads || []) {
-      // Dedup check
       const { data: existing } = await supabase
         .from('email_sends')
         .select('id')
@@ -206,7 +211,8 @@ serve(async (req: Request) => {
       const html = generatePlainEmail(
         winBackTemplate.greeting[lang],
         emailBody,
-        winBackTemplate.signature[lang]
+        winBackTemplate.signature[lang],
+        lang
       );
 
       try {

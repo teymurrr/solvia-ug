@@ -12,6 +12,8 @@ const corsHeaders = {
  * Runs on a schedule (or manual trigger). Checks each lead's email_sequence_day
  * and last_email_sent timestamp, and sends the next email if enough days have passed.
  * 
+ * Processes ALL eligible leads individually (no more batch-break bug).
+ * 
  * Sequence:
  *   Day 0 → feedbackAsk (immediate / Day 0)
  *   Day 1 → personalDiagnosis (3 days after feedbackAsk)
@@ -65,7 +67,6 @@ serve(async (req: Request) => {
       // Find the next step in the sequence
       const nextStepIndex = SEQUENCE.findIndex(s => s.day === currentDay);
       if (nextStepIndex === -1 || nextStepIndex >= SEQUENCE.length - 1) {
-        // Already at final step or unknown state
         results.completed++;
         continue;
       }
@@ -82,8 +83,7 @@ serve(async (req: Request) => {
           continue;
         }
       } else if (currentDay === 0) {
-        // Never received any email — check if lead is old enough (created > 0 days ago for first email)
-        // First email can be sent immediately
+        // Never received any email — first email can be sent immediately
       }
 
       if (dryRun) {
@@ -92,8 +92,7 @@ serve(async (req: Request) => {
         continue;
       }
 
-      // Call send-nurture-campaign for this specific lead
-      // Instead of calling the function, we invoke it directly via fetch
+      // Call send-nurture-campaign for this specific lead (per-lead mode)
       const campaignUrl = `${supabaseUrl}/functions/v1/send-nurture-campaign`;
       
       try {
@@ -106,29 +105,28 @@ serve(async (req: Request) => {
           body: JSON.stringify({
             templateId: nextStep.templateId,
             testMode: false,
+            leadId: lead.id, // Send to this specific lead only
           }),
         });
 
         if (response.ok) {
-          results.sent++;
-          console.log(`[auto-nurture] Triggered ${nextStep.templateId} for batch (includes ${lead.email})`);
-          
-          // The send-nurture-campaign function handles dedup and updating email_sequence_day,
-          // so we only need to trigger it once per template per batch.
-          // Break after first trigger since the campaign function processes all eligible leads.
-          break;
+          const result = await response.json();
+          if (result.sent > 0) {
+            results.sent++;
+            console.log(`[auto-nurture] Sent ${nextStep.templateId} to ${lead.email} (day ${currentDay} → ${nextStep.day})`);
+          } else {
+            results.waiting++;
+            console.log(`[auto-nurture] Skipped ${lead.email} for ${nextStep.templateId}: ${result.message || 'dedup/validation'}`);
+          }
         } else {
           const errText = await response.text();
-          console.error(`[auto-nurture] Campaign trigger failed:`, errText);
+          console.error(`[auto-nurture] Campaign trigger failed for ${lead.email}:`, errText);
           results.errors++;
         }
       } catch (fetchErr) {
-        console.error(`[auto-nurture] Error calling campaign:`, fetchErr);
+        console.error(`[auto-nurture] Error calling campaign for ${lead.email}:`, fetchErr);
         results.errors++;
       }
-      
-      // Only trigger once per template batch
-      break;
     }
 
     console.log(`[auto-nurture] Complete:`, results);

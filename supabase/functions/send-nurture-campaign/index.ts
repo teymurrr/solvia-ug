@@ -11,11 +11,25 @@ const corsHeaders = {
 
 // =============================================================================
 // EMAIL SYSTEM: Personal, Reply-Focused Approach
-// No sales funnels. No CTA buttons. Just genuine conversations.
 // =============================================================================
 
 type Language = 'es' | 'en' | 'de' | 'fr' | 'ru';
 type TemplateId = 'feedbackAsk' | 'valueInsight' | 'personalDiagnosis' | 'socialProof' | 'urgencyOffer';
+
+// Shared booking CTA constants
+const CALENDLY_URL = 'https://calendly.com/david-rehrl-thesolvia/30min';
+const WHATSAPP_URL = 'https://wa.me/4915259018297';
+
+const bookingCTA: Record<Language, string> = {
+  es: `---\n¿Quieres hablar con alguien? Reserva una llamada gratuita de 15 minutos:\n${CALENDLY_URL}\n\nO escríbenos directamente por WhatsApp:\n${WHATSAPP_URL}`,
+  en: `---\nWant to talk to someone? Book a free 15-min call:\n${CALENDLY_URL}\n\nOr message us directly on WhatsApp:\n${WHATSAPP_URL}`,
+  de: `---\nMöchtest du mit jemandem sprechen? Buche ein kostenloses 15-Min-Gespräch:\n${CALENDLY_URL}\n\nOder schreib uns direkt auf WhatsApp:\n${WHATSAPP_URL}`,
+  fr: `---\nTu veux parler à quelqu'un ? Réserve un appel gratuit de 15 min :\n${CALENDLY_URL}\n\nOu écris-nous directement sur WhatsApp :\n${WHATSAPP_URL}`,
+  ru: `---\nХочешь поговорить? Запиши на бесплатный 15-мин звонок:\n${CALENDLY_URL}\n\nИли напиши нам в WhatsApp:\n${WHATSAPP_URL}`,
+};
+
+// Sequence order for validation
+const SEQUENCE_ORDER: TemplateId[] = ['feedbackAsk', 'personalDiagnosis', 'socialProof', 'urgencyOffer', 'valueInsight'];
 
 // Country name translations for dynamic templates
 const countryNames: Record<string, Record<Language, string>> = {
@@ -36,7 +50,8 @@ interface CampaignRequest {
   testMode?: boolean;
   testEmail?: string;
   language?: Language;
-  includeAllSources?: boolean; // Query all tables, not just leads
+  includeAllSources?: boolean;
+  leadId?: string; // For per-lead sends from auto-nurture
 }
 
 interface EmailRecipient {
@@ -66,11 +81,7 @@ const emailTemplates = {
       ru: 'Короткий вопрос о твоей регистрации'
     },
     greeting: {
-      es: 'Hola,',
-      en: 'Hi,',
-      de: 'Hallo,',
-      fr: 'Salut,',
-      ru: 'Привет,'
+      es: 'Hola,', en: 'Hi,', de: 'Hallo,', fr: 'Salut,', ru: 'Привет,'
     },
     body: {
       es: `te registraste en Solvia hace poco y quería hacer un breve check-in.
@@ -120,11 +131,7 @@ Une courte phrase suffit amplement.`,
 Одного короткого предложения вполне достаточно.`
     },
     signature: {
-      es: 'Gracias,\n\nDavid',
-      en: 'Thanks,\n\nDavid',
-      de: 'Danke,\n\nDavid',
-      fr: 'Merci,\n\nDavid',
-      ru: 'Спасибо,\n\nDavid'
+      es: 'Gracias,\n\nDavid', en: 'Thanks,\n\nDavid', de: 'Danke,\n\nDavid', fr: 'Merci,\n\nDavid', ru: 'Спасибо,\n\nDavid'
     }
   },
 
@@ -137,11 +144,7 @@ Une courte phrase suffit amplement.`,
       ru: 'Что большинство врачей недооценивают при переезде в {{TARGET_COUNTRY}}'
     },
     greeting: {
-      es: 'Hola,',
-      en: 'Hi,',
-      de: 'Hallo,',
-      fr: 'Salut,',
-      ru: 'Привет,'
+      es: 'Hola,', en: 'Hi,', de: 'Hallo,', fr: 'Salut,', ru: 'Привет,'
     },
     body: {
       es: `Un dato rápido de trabajar con médicos internacionales:
@@ -181,17 +184,9 @@ Si tu considères toujours {{TARGET_COUNTRY}} et que tu veux éviter ça, je t'e
 Если ты все еще рассматриваешь {{TARGET_COUNTRY}} и хочешь этого избежать, я с удовольствием объясню твои варианты.`
     },
     signature: {
-      es: 'Saludos,\n\nDavid',
-      en: 'Best,\n\nDavid',
-      de: 'Beste Grüße,\n\nDavid',
-      fr: 'Cordialement,\n\nDavid',
-      ru: 'С уважением,\n\nDavid'
+      es: 'Saludos,\n\nDavid', en: 'Best,\n\nDavid', de: 'Beste Grüße,\n\nDavid', fr: 'Cordialement,\n\nDavid', ru: 'С уважением,\n\nDavid'
     }
   },
-
-  // =============================================================================
-  // SALES-FOCUSED TEMPLATES (with CTA links)
-  // =============================================================================
 
   personalDiagnosis: {
     subject: {
@@ -281,10 +276,10 @@ Con un plan paso a paso y acompañamiento personalizado, completó todo el proce
 
 ¿La diferencia? No intentó hacerlo sola. Siguió un plan estructurado que le evitó los errores típicos que retrasan el proceso 6-12 meses.
 
-Tú puedes empezar hoy desde €39 con nuestro paquete Digital:
+Tú puedes empezar hoy desde €299 con nuestro paquete Guided Homologation:
 {{PAYMENT_LINK}}
 
-Incluye tu hoja de ruta personalizada, análisis de documentos con IA, y soporte por email.`,
+Incluye guía experta paso a paso, revisión personal de documentos y soporte prioritario.`,
       en: `I wanted to share something that might interest you.
 
 Dr. Maria signed up on Solvia in a situation similar to yours: an international doctor wanting to practice in {{TARGET_COUNTRY}} but unsure how to navigate the recognition process.
@@ -293,10 +288,10 @@ With a step-by-step plan and personalized guidance, she completed the entire pro
 
 The difference? She didn't try to do it alone. She followed a structured plan that helped her avoid the typical mistakes that delay the process by 6-12 months.
 
-You can start today from €39 with our Digital package:
+You can start today from €299 with our Guided Homologation package:
 {{PAYMENT_LINK}}
 
-It includes your personalized roadmap, AI document analysis, and email support.`,
+It includes step-by-step expert guidance, personal document review, and priority support.`,
       de: `Ich wollte etwas teilen, das dich interessieren könnte.
 
 Dr. Maria hat sich bei Solvia in einer ähnlichen Situation wie du angemeldet: internationale Ärztin, die in {{TARGET_COUNTRY}} arbeiten wollte, aber nicht wusste, wie sie den Anerkennungsprozess navigieren sollte.
@@ -305,10 +300,10 @@ Mit einem Schritt-für-Schritt-Plan und persönlicher Begleitung hat sie den ges
 
 Der Unterschied? Sie hat es nicht alleine versucht. Sie ist einem strukturierten Plan gefolgt, der ihr die typischen Fehler erspart hat, die den Prozess um 6-12 Monate verzögern.
 
-Du kannst heute ab €39 mit unserem Digital-Paket starten:
+Du kannst heute ab €299 mit unserem Guided Homologation-Paket starten:
 {{PAYMENT_LINK}}
 
-Es enthält deinen personalisierten Fahrplan, KI-Dokumentenanalyse und E-Mail-Support.`,
+Es enthält Schritt-für-Schritt Expertenbegleitung, persönliche Dokumentenprüfung und Priority-Support.`,
       fr: `Je voulais partager quelque chose qui pourrait t'intéresser.
 
 La Dr. Maria s'est inscrite sur Solvia dans une situation similaire à la tienne : médecin internationale voulant exercer en {{TARGET_COUNTRY}} mais ne sachant pas comment naviguer le processus de reconnaissance.
@@ -317,10 +312,10 @@ Avec un plan étape par étape et un accompagnement personnalisé, elle a compl�
 
 La différence ? Elle n'a pas essayé de le faire seule. Elle a suivi un plan structuré qui lui a évité les erreurs typiques qui retardent le processus de 6 à 12 mois.
 
-Tu peux commencer aujourd'hui à partir de €39 avec notre forfait Digital :
+Tu peux commencer aujourd'hui à partir de €299 avec notre forfait Guided Homologation :
 {{PAYMENT_LINK}}
 
-Il inclut ta feuille de route personnalisée, l'analyse de documents par IA et le support par email.`,
+Il inclut un accompagnement expert étape par étape, une révision personnelle des documents et un support prioritaire.`,
       ru: `Хотел поделиться кое-чем, что может тебя заинтересовать.
 
 Доктор Мария зарегистрировалась на Solvia в ситуации, похожей на твою: международный врач, которая хотела практиковать в {{TARGET_COUNTRY}}, но не знала, как пройти процесс признания.
@@ -329,10 +324,10 @@ Il inclut ta feuille de route personnalisée, l'analyse de documents par IA et l
 
 В чём разница? Она не пыталась сделать это в одиночку. Она следовала структурированному плану, который помог избежать типичных ошибок, задерживающих процесс на 6-12 месяцев.
 
-Ты можешь начать сегодня от €39 с нашим Digital пакетом:
+Ты можешь начать сегодня от €299 с нашим пакетом Guided Homologation:
 {{PAYMENT_LINK}}
 
-Он включает персонализированный план, анализ документов ИИ и поддержку по email.`
+Он включает пошаговое экспертное сопровождение, персональную проверку документов и приоритетную поддержку.`
     },
     signature: {
       es: 'Saludos,\n\nDavid', en: 'Best,\n\nDavid', de: 'Beste Grüße,\n\nDavid', fr: 'Cordialement,\n\nDavid', ru: 'С уважением,\n\nDavid'
@@ -341,76 +336,96 @@ Il inclut ta feuille de route personnalisée, l'analyse de documents par IA et l
 
   urgencyOffer: {
     subject: {
-      es: 'Precio introductorio termina pronto — tu plan te espera',
-      en: 'Introductory pricing ends soon — your plan is waiting',
-      de: 'Einführungspreis endet bald — dein Plan wartet',
-      fr: 'Prix de lancement bientôt terminé — ton plan t\'attend',
-      ru: 'Вводная цена скоро закончится — твой план ждёт'
+      es: 'Cada mes que esperas es un mes de salario perdido',
+      en: 'Every month you wait is a month of salary lost',
+      de: 'Jeder Monat, den du wartest, ist ein verlorenes Monatsgehalt',
+      fr: 'Chaque mois d\'attente est un mois de salaire perdu',
+      ru: 'Каждый месяц ожидания — потерянный месяц зарплаты'
     },
     greeting: {
       es: 'Hola,', en: 'Hi,', de: 'Hallo,', fr: 'Salut,', ru: 'Привет,'
     },
     body: {
-      es: `Quería avisarte de algo antes de que sea tarde.
+      es: `Quería ponerte las cosas en perspectiva.
 
-Estamos ofreciendo precios de lanzamiento en nuestros paquetes de homologación. El paquete Digital, que normalmente cuesta €79, está disponible ahora por €39 — un ahorro del 51%.
+Un médico en {{TARGET_COUNTRY}} gana entre €5.000 y €7.000 al mes. Cada mes que esperas para iniciar tu homologación es un mes de ese salario que pierdes.
 
-Esto incluye tu hoja de ruta completa paso a paso, análisis de documentos con IA, plantillas, instrucciones de apostilla y traducciones, y soporte por email en 72h.
+Tenemos tres opciones según lo que necesites:
 
-Para ponerlo en perspectiva: un médico en {{TARGET_COUNTRY}} gana entre €5.000 y €7.000 al mes. Cada mes que esperas es un mes de ese salario que pierdes. Los €39 son literalmente menos del 1% de tu primer sueldo.
+• Guided Homologation (€299) — Guía experta paso a paso, revisión de documentos y soporte prioritario
+• Homologación + Idioma (€899) — Todo lo anterior más curso de idioma médico de 12 meses y case manager dedicado
+• Full All-Inclusive (€3.800) — Nos encargamos de todo: traducciones, tasas, comunicación con autoridades
 
-Puedes empezar aquí:
+Para comparar: agencias similares cobran entre €8.000 y €20.000.
+
+Puedes ver las opciones aquí:
 {{PAYMENT_LINK}}
 
-Este precio no estará disponible por mucho más tiempo.`,
-      en: `I wanted to give you a heads up before it's too late.
+Si quieres que te ayude a elegir la mejor opción para tu caso, simplemente responde a este email.`,
+      en: `I wanted to put things in perspective for you.
 
-We're offering introductory pricing on our homologation packages. The Digital package, normally €79, is available now for €39 — that's a 51% saving.
+A doctor in {{TARGET_COUNTRY}} earns between €5,000 and €7,000 per month. Every month you wait to start your homologation is a month of that salary you're missing out on.
 
-This includes your complete step-by-step roadmap, AI document analysis, templates, apostille & translation instructions, and 72h email support.
+We have three options depending on what you need:
 
-To put it in perspective: a doctor in {{TARGET_COUNTRY}} earns between €5,000 and €7,000 per month. Every month you wait is a month of that salary you're missing. The €39 is literally less than 1% of your first paycheck.
+• Guided Homologation (€299) — Step-by-step expert guidance, document review, and priority support
+• Homologation + Language (€899) — Everything above plus 12-month medical language course and dedicated case manager
+• Full All-Inclusive (€3,800) — We handle everything: translations, fees, authority communication
 
-You can get started here:
+For comparison: similar agencies charge €8,000–€20,000.
+
+You can see the options here:
 {{PAYMENT_LINK}}
 
-This pricing won't be available for much longer.`,
-      de: `Ich wollte dich rechtzeitig informieren.
+If you'd like help choosing the best option for your situation, just reply to this email.`,
+      de: `Ich wollte dir die Dinge in Perspektive setzen.
 
-Wir bieten gerade Einführungspreise auf unsere Anerkennungspakete. Das Digital-Paket, normalerweise €79, ist jetzt für €39 verfügbar — eine Ersparnis von 51%.
+Ein Arzt in {{TARGET_COUNTRY}} verdient zwischen €5.000 und €7.000 pro Monat. Jeder Monat, den du wartest, ist ein Monat dieses Gehalts, den du verlierst.
 
-Das beinhaltet deinen vollständigen Schritt-für-Schritt-Fahrplan, KI-Dokumentenanalyse, Vorlagen, Apostille- & Übersetzungsanweisungen und E-Mail-Support innerhalb von 72h.
+Wir haben drei Optionen je nach Bedarf:
 
-Um es in Perspektive zu setzen: Ein Arzt in {{TARGET_COUNTRY}} verdient zwischen €5.000 und €7.000 pro Monat. Jeder Monat, den du wartest, ist ein Monat dieses Gehalts, den du verlierst. Die €39 sind buchstäblich weniger als 1% deines ersten Gehalts.
+• Guided Homologation (€299) — Schritt-für-Schritt Expertenbegleitung, Dokumentenprüfung und Priority-Support
+• Anerkennung + Sprache (€899) — Alles oben plus 12-monatiger medizinischer Sprachkurs und dedizierter Case Manager
+• Full All-Inclusive (€3.800) — Wir kümmern uns um alles: Übersetzungen, Gebühren, Behördenkommunikation
 
-Du kannst hier starten:
+Zum Vergleich: Ähnliche Agenturen verlangen €8.000–€20.000.
+
+Du kannst die Optionen hier sehen:
 {{PAYMENT_LINK}}
 
-Dieser Preis wird nicht mehr lange verfügbar sein.`,
-      fr: `Je voulais te prévenir avant qu'il ne soit trop tard.
+Wenn du Hilfe bei der Auswahl brauchst, antworte einfach auf diese E-Mail.`,
+      fr: `Je voulais mettre les choses en perspective pour toi.
 
-Nous proposons des prix de lancement sur nos forfaits d'homologation. Le forfait Digital, normalement €79, est disponible maintenant pour €39 — soit 51% d'économie.
+Un médecin en {{TARGET_COUNTRY}} gagne entre 5 000 et 7 000 € par mois. Chaque mois que tu attends, c'est un mois de ce salaire que tu perds.
 
-Cela inclut ta feuille de route complète étape par étape, l'analyse de documents par IA, des modèles, les instructions pour l'apostille et les traductions, et un support par email sous 72h.
+Nous avons trois options selon tes besoins :
 
-Pour mettre les choses en perspective : un médecin en {{TARGET_COUNTRY}} gagne entre 5 000 et 7 000 € par mois. Chaque mois que tu attends, c'est un mois de ce salaire que tu perds. Les 39 € représentent littéralement moins de 1% de ton premier salaire.
+• Guided Homologation (299 €) — Accompagnement expert étape par étape, révision de documents et support prioritaire
+• Homologation + Langue (899 €) — Tout ci-dessus plus cours de langue médicale 12 mois et case manager dédié
+• Full All-Inclusive (3 800 €) — On s'occupe de tout : traductions, frais, communication avec les autorités
 
-Tu peux commencer ici :
+Pour comparer : des agences similaires facturent 8 000 à 20 000 €.
+
+Tu peux voir les options ici :
 {{PAYMENT_LINK}}
 
-Ce prix ne sera pas disponible encore longtemps.`,
-      ru: `Хотел предупредить тебя, пока не поздно.
+Si tu veux de l'aide pour choisir, réponds simplement à cet email.`,
+      ru: `Хотел поставить вещи в перспективу.
 
-Мы предлагаем вводные цены на наши пакеты гомологации. Пакет Digital, обычно €79, сейчас доступен за €39 — экономия 51%.
+Врач в {{TARGET_COUNTRY}} зарабатывает от €5.000 до €7.000 в месяц. Каждый месяц ожидания — это месяц этой зарплаты, который ты теряешь.
 
-Это включает полный пошаговый план, анализ документов ИИ, шаблоны, инструкции по апостилю и переводам, и поддержку по email в течение 72 часов.
+У нас три варианта в зависимости от потребностей:
 
-Для перспективы: врач в {{TARGET_COUNTRY}} зарабатывает от €5.000 до €7.000 в месяц. Каждый месяц ожидания — это месяц этой зарплаты, который ты теряешь. €39 — это буквально меньше 1% твоей первой зарплаты.
+• Guided Homologation (€299) — Пошаговое экспертное сопровождение, проверка документов и приоритетная поддержка
+• Гомологация + Язык (€899) — Всё вышеперечисленное плюс 12-месячный курс медицинского языка и персональный менеджер
+• Full All-Inclusive (€3.800) — Мы берём всё на себя: переводы, пошлины, общение с властями
 
-Ты можешь начать здесь:
+Для сравнения: похожие агентства берут €8.000–€20.000.
+
+Варианты можно посмотреть здесь:
 {{PAYMENT_LINK}}
 
-Эта цена будет доступна недолго.`
+Если нужна помощь с выбором, просто ответь на это письмо.`
     },
     signature: {
       es: 'Saludos,\n\nDavid', en: 'Best,\n\nDavid', de: 'Beste Grüße,\n\nDavid', fr: 'Cordialement,\n\nDavid', ru: 'С уважением,\n\nDavid'
@@ -434,7 +449,6 @@ const germanCountries = ['germany', 'deutschland', 'austria', 'österreich', 'sw
 const frenchCountries = ['france', 'belgium', 'belgique', 'switzerland', 'suisse', 'canada', 'morocco', 'algeria', 'tunisia'];
 const russianCountries = ['russia', 'ukraine', 'belarus', 'kazakhstan', 'uzbekistan', 'kyrgyzstan'];
 
-// Email TLD to language mapping
 const spanishTLDs = ['.es', '.ar', '.mx', '.co', '.cl', '.pe', '.ve', '.ec', '.uy', '.py', '.bo', '.cr', '.gt', '.hn', '.sv', '.ni', '.pa', '.do', '.cu'];
 const germanTLDs = ['.de', '.at', '.ch'];
 const frenchTLDs = ['.fr', '.be'];
@@ -450,34 +464,29 @@ const detectLanguageFromEmailTLD = (email: string): Language | null => {
 };
 
 const detectLanguage = (recipient: EmailRecipient): Language => {
-  // 1. Explicit preferred_language
   if (recipient.preferred_language) {
     const pref = recipient.preferred_language.toLowerCase();
-    if (['es', 'de', 'en', 'fr', 'ru'].includes(pref)) {
-      return pref as Language;
-    }
+    if (['es', 'de', 'en', 'fr', 'ru'].includes(pref)) return pref as Language;
   }
-  
-  // 2. Study country detection
   const study = (recipient.study_country || '').toLowerCase();
   if (spanishCountries.some(c => study.includes(c))) return 'es';
   if (germanCountries.some(c => study.includes(c))) return 'de';
   if (frenchCountries.some(c => study.includes(c))) return 'fr';
   if (russianCountries.some(c => study.includes(c))) return 'ru';
-  
-  // 3. Email TLD as fallback signal
   const tldLang = detectLanguageFromEmailTLD(recipient.email);
   if (tldLang) return tldLang;
-  
   return 'en';
 };
 
 // =============================================================================
-// EMAIL HTML GENERATION
+// EMAIL HTML GENERATION (with booking CTA injected automatically)
 // =============================================================================
 
-const generatePlainEmail = (greeting: string, body: string, signature: string): string => {
-  const bodyHtml = body
+const generatePlainEmail = (greeting: string, body: string, signature: string, lang: Language): string => {
+  // Append booking CTA before signature
+  const bodyWithCTA = body + '\n\n' + bookingCTA[lang];
+  
+  const bodyHtml = bodyWithCTA
     .split('\n\n')
     .map(paragraph => `<p style="margin: 0 0 16px 0;">${paragraph.replace(/\n/g, '<br>')}</p>`)
     .join('');
@@ -509,7 +518,7 @@ const generatePlainEmail = (greeting: string, body: string, signature: string): 
 };
 
 // =============================================================================
-// DEDUPLICATION: Check if email+template already sent
+// DEDUPLICATION & SEQUENCE VALIDATION
 // =============================================================================
 
 const checkAlreadySent = async (
@@ -523,8 +532,30 @@ const checkAlreadySent = async (
     .eq('template_id', templateId)
     .ilike('email', email)
     .limit(1);
-  
   return (data && data.length > 0);
+};
+
+// Sequence validation: ensure previous step was sent before allowing current step
+const validateSequenceOrder = async (
+  supabase: ReturnType<typeof createClient>,
+  email: string,
+  templateId: TemplateId
+): Promise<{ valid: boolean; reason?: string }> => {
+  const currentIndex = SEQUENCE_ORDER.indexOf(templateId);
+  if (currentIndex <= 0) return { valid: true }; // feedbackAsk is always valid
+  
+  const previousTemplate = SEQUENCE_ORDER[currentIndex - 1];
+  const { data } = await supabase
+    .from('email_sends')
+    .select('id')
+    .eq('template_id', previousTemplate)
+    .ilike('email', email)
+    .limit(1);
+  
+  if (!data || data.length === 0) {
+    return { valid: false, reason: `Previous step '${previousTemplate}' not sent yet` };
+  }
+  return { valid: true };
 };
 
 // =============================================================================
@@ -575,10 +606,11 @@ const handler = async (req: Request): Promise<Response> => {
       testMode = false, 
       testEmail, 
       language,
-      includeAllSources = false 
+      includeAllSources = false,
+      leadId
     } = body;
 
-    console.log(`[send-nurture-campaign] Starting. Test: ${testMode}, Template: ${templateId}, AllSources: ${includeAllSources}`);
+    console.log(`[send-nurture-campaign] Starting. Test: ${testMode}, Template: ${templateId}, LeadId: ${leadId || 'batch'}`);
 
     if (!['feedbackAsk', 'valueInsight', 'personalDiagnosis', 'socialProof', 'urgencyOffer'].includes(templateId)) {
       return new Response(
@@ -602,9 +634,23 @@ const handler = async (req: Request): Promise<Response> => {
         language_level: 'B1',
         source_table: 'test'
       }];
-      console.log(`[send-nurture-campaign] Test mode - sending to ${testEmail}`);
+    } else if (leadId) {
+      // Per-lead mode: fetch single lead by ID (used by auto-nurture-sequence)
+      const { data: leadData, error: leadError } = await supabase
+        .from('leads')
+        .select('id, email, first_name, last_name, study_country, target_country, doctor_type, language_level, preferred_language')
+        .eq('id', leadId)
+        .single();
+
+      if (leadError || !leadData) {
+        return new Response(
+          JSON.stringify({ error: `Lead not found: ${leadId}` }),
+          { status: 404, headers: { "Content-Type": "application/json", ...corsHeaders } }
+        );
+      }
+      recipients = [{ ...leadData, source_table: 'leads' }];
     } else {
-      // Get recipients from leads table (primary source)
+      // Batch mode
       const { data: leadsData, error: leadsError } = await supabase
         .from('leads')
         .select('id, email, first_name, last_name, study_country, target_country, doctor_type, language_level, preferred_language')
@@ -614,14 +660,9 @@ const handler = async (req: Request): Promise<Response> => {
 
       if (leadsError) throw leadsError;
 
-      recipients = (leadsData || []).map(l => ({
-        ...l,
-        source_table: 'leads'
-      }));
+      recipients = (leadsData || []).map(l => ({ ...l, source_table: 'leads' }));
 
-      // If includeAllSources, also get from other tables (deduplicated by email_sends)
       if (includeAllSources) {
-        // Get from learning_form_submissions not already in email_sends
         const { data: learningData } = await supabase
           .from('learning_form_submissions')
           .select('id, email, full_name, country, preferred_language')
@@ -662,11 +703,19 @@ const handler = async (req: Request): Promise<Response> => {
 
     for (const recipient of recipients) {
       try {
-        // DEDUPLICATION CHECK: Skip if already sent this template to this email
         if (!testMode) {
+          // Dedup check
           const alreadySent = await checkAlreadySent(supabase, recipient.email, templateId);
           if (alreadySent) {
             console.log(`[send-nurture-campaign] Skipping ${recipient.email} - already received ${templateId}`);
+            results.skipped++;
+            continue;
+          }
+
+          // Sequence validation: ensure previous step was sent (skip in test mode or for feedbackAsk)
+          const seqCheck = await validateSequenceOrder(supabase, recipient.email, templateId);
+          if (!seqCheck.valid) {
+            console.log(`[send-nurture-campaign] Skipping ${recipient.email} - ${seqCheck.reason}`);
             results.skipped++;
             continue;
           }
@@ -674,7 +723,6 @@ const handler = async (req: Request): Promise<Response> => {
 
         const lang = language || detectLanguage(recipient);
         
-        // Replace dynamic links in sales templates
         const baseUrl = 'https://solvia-flexkapg.lovable.app';
         const targetCountry = recipient.target_country || 'germany';
         const translatedCountry = getCountryName(targetCountry, lang);
@@ -684,16 +732,16 @@ const handler = async (req: Request): Promise<Response> => {
           .replace(/\{\{RESULTS_LINK\}\}/g, `${baseUrl}/homologation-result?country=${encodeURIComponent(targetCountry)}&utm_source=${utmSource}`)
           .replace(/\{\{PAYMENT_LINK\}\}/g, `${baseUrl}/payment?country=${encodeURIComponent(targetCountry)}&utm_source=${utmSource}`);
 
-        // Also replace country in subject line
         const emailSubject = template.subject[lang].replace(/\{\{TARGET_COUNTRY\}\}/g, translatedCountry);
 
         const html = generatePlainEmail(
           template.greeting[lang],
           emailBody,
-          template.signature[lang]
+          template.signature[lang],
+          lang
         );
 
-        console.log(`[send-nurture-campaign] Sending ${templateId} to ${recipient.email} in ${lang} for country ${translatedCountry}`);
+        console.log(`[send-nurture-campaign] Sending ${templateId} to ${recipient.email} in ${lang}`);
 
         const emailResponse = await resend.emails.send({
           from: "David from Solvia <david@thesolvia.com>",
@@ -705,11 +753,9 @@ const handler = async (req: Request): Promise<Response> => {
 
         const resendEmailId = emailResponse?.data?.id || null;
 
-        // Log the send to email_sends table
         if (!testMode) {
           await logEmailSend(supabase, recipient, templateId, lang, resendEmailId, 'sent');
 
-          // Also update leads table if from leads
           if (recipient.source_table === 'leads') {
             await supabase
               .from('leads')
@@ -728,7 +774,6 @@ const handler = async (req: Request): Promise<Response> => {
         results.failed++;
         results.errors.push(`${recipient.email}: ${emailError.message}`);
         
-        // Log failed send
         if (!testMode) {
           await logEmailSend(supabase, recipient, templateId, 'en', null, 'failed');
         }
