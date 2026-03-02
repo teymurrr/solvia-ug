@@ -1,98 +1,69 @@
 
 
-# Payment Page Restructure: New 3-Tier Package Model
+# Email System Fixes: Add Booking CTA + Fix Sequence Issues
 
-## Strategy
+## Problems Found
 
-Replace the current low-value tiers (39/189/449) with a premium-positioned structure that captures real value while remaining 50-80% cheaper than competitors (8,000-20,000).
+1. **No booking/call option in any email** -- None of the 5 email templates include a Calendly link or WhatsApp contact for booking a call
+2. **Sequence skipping** -- Steps 2-4 (personalDiagnosis, socialProof, urgencyOffer) were never sent; the system jumped from feedbackAsk to valueInsight
+3. **Outdated pricing** -- Templates reference old pricing (from 39, normally 79) instead of the new structure (from 299)
+4. **Auto-nurture bug** -- The scheduler breaks after first lead, only processing one batch per run
 
-## New Package Structure
+## Changes
 
-### Tier 1: Guided Homologation (~€299)
-- Step-by-step expert guidance through the entire process
-- Personal document review before every submission
-- Priority email support (24h response)
-- Progress tracking dashboard
-- Country-specific checklists and templates
+### 1. Add booking CTA to all email templates
+**File: `supabase/functions/send-nurture-campaign/index.ts`**
 
-### Tier 2: Homologation + Language (€899) -- "Most Popular"
-- Everything in Guided Homologation
-- 12-month medical language course access
-- 4x live 1:1 sessions (60 min)
-- Dedicated case manager
-- Direct WhatsApp and phone support
+Add a consistent booking/call block at the end of every email template (all 5 templates, all 5 languages), before the signature:
 
-### Tier 3: Full All-Inclusive Homologation (€3,800)
-- Everything handled for you, start to finish
-- All translation costs included
-- All official fees and charges covered
-- Authority communication and submissions done for you
-- In-person support for key appointments
-- Dedicated case manager with WhatsApp/phone access
-- Language course included
+```
+---
+Want to talk to someone? Book a free 15-min call:
+https://calendly.com/[your-link]
 
-## UI Simplification
+Or message us directly on WhatsApp:
+https://wa.me/[your-number]
+```
 
-Remove or consolidate the following clutter:
+This block will be appended automatically in the `generatePlainEmail` function so it appears in every nurture email without duplicating it across all template bodies.
 
-1. **Remove** the countdown timer and urgency banner (the intro pricing deadline has passed -- Feb 28, 2026 -- and aligns with no-fake-urgency policy)
-2. **Remove** the duplicate consultation CTAs (currently appears 3 times: above cards, below cards, and in payment summary). Keep ONE below the cards.
-3. **Remove** the social proof rotating strip from the payment page (it's already on the landing page)
-4. **Remove** the "What happens next" section from the payment summary (adds friction before checkout)
-5. **Simplify feature lists** to 4-5 bullet points max per card, with clear differentiators rather than repetitive "Everything in X" lists
-6. **Keep**: trust badges (secure payment, 24h support, trusted by 500+), email input, discount code, payment summary with CTA
+Also add the same block to:
+- `supabase/functions/win-back-campaign/index.ts`
+- `supabase/functions/send-reengagement-email/index.ts`
+- `supabase/functions/send-homologation-plan/index.ts`
 
-## Technical Changes
+### 2. Update pricing references in email templates
+**File: `supabase/functions/send-nurture-campaign/index.ts`**
 
-### Files to modify:
+- socialProof template: Change "from 39 with our Digital package" to "from 299 with our Guided Homologation package" (all 5 languages)
+- urgencyOffer template: Remove fake urgency about "introductory pricing ends soon", replace with value-focused messaging referencing the new 299/899/3800 tiers (all 5 languages)
 
-1. **`src/components/payments/PaymentFlow.tsx`**
-   - Update `getPricingByCountry()` with new price points (29900, 89900, 380000 in cents)
-   - Simplify the packages array to 4-5 features each
-   - Remove `CountdownTimer` component
-   - Remove `SocialProofStrip` component
-   - Remove the pre-selection consultation CTA (lines 454-468)
-   - Remove the prominent call CTA card (lines 570-627)
-   - Remove the "what happens next" section from the payment summary (lines 654-670)
-   - Remove the alternative CTA at the bottom of payment summary (lines 749-765)
-   - Keep one simple consultation link below the package grid
-   - Update `getPackageTitle()` and `getPackageDescription()` for new tier names
+**File: `supabase/functions/win-back-campaign/index.ts`**
+- Same pricing update: 39 to 299
 
-2. **`src/utils/i18n/languages/en/payments.ts`** -- Update all package names, descriptions, features, and remove unused keys
+**File: `supabase/functions/send-reengagement-email/index.ts`**
+- Same pricing update: 39 to 299
 
-3. **`src/utils/i18n/languages/es/payments.ts`** -- Spanish translations for new packages
+### 3. Fix auto-nurture-sequence logic
+**File: `supabase/functions/auto-nurture-sequence/index.ts`**
 
-4. **`src/utils/i18n/languages/de/payments.ts`** -- German translations
+Current bug: The function processes leads one by one but then calls `send-nurture-campaign` for the entire batch and immediately `break`s, so it only ever triggers one template per execution.
 
-5. **`src/utils/i18n/languages/fr/payments.ts`** -- French translations
+Fix: Instead of delegating to `send-nurture-campaign`, process each lead individually:
+- For each lead, determine the correct next step based on their `email_sequence_day` and `last_email_sent` timestamp
+- Call `send-nurture-campaign` with the specific templateId for that lead, OR refactor to send directly per-lead
+- Remove the `break` statement so all eligible leads are processed in one run
+- Add proper per-lead delay checking (3 days after feedbackAsk, 2 days after personalDiagnosis, etc.)
 
-6. **`src/utils/i18n/languages/ru/payments.ts`** -- Russian translations
+### 4. Prevent manual template skipping
+**File: `supabase/functions/send-nurture-campaign/index.ts`**
 
-### New i18n package content (English example):
+Add a sequence validation check: when not in test mode, verify that a lead has received the previous step before sending the current one. For example, don't send `socialProof` unless `personalDiagnosis` was already sent to that email. This prevents accidentally skipping steps when manually triggering campaigns.
 
-- **Tier 1 "Guided Homologation"**: "Expert guidance through every step of your homologation"
-  - Personal document review before submission
-  - Direct communication with authorities on your behalf
-  - Application submission handled for you
-  - Priority support (24h response)
+## Technical Details
 
-- **Tier 2 "Homologation + [Language]"**: "Complete homologation support with medical language training"
-  - Everything in Guided Homologation
-  - 12-month medical language course
-  - 4x live 1:1 coaching sessions
-  - Dedicated case manager
-  - WhatsApp and phone support
-
-- **Tier 3 "Full All-Inclusive"**: "We handle everything -- translations, fees, paperwork, all included"
-  - All translation and apostille costs included
-  - All official fees and charges covered
-  - Complete authority communication and submissions
-  - Language course + dedicated case manager
-  - In-person support for appointments
-
-### Pricing display changes:
-- Remove the strikethrough "regular price" pattern (no more intro pricing gimmick)
-- Show clean, confident pricing: €299 / €899 / €3,800
-- Add a subtle "Competitors charge €8,000-20,000" anchor text near the top or on Tier 3
-- Keep the "Save X%" badge only on Tier 3 to emphasize the competitor comparison
+- The booking CTA will use a shared constant for the Calendly URL and WhatsApp number, making it easy to update in one place
+- All 4 edge functions will be redeployed after changes
+- The pricing update affects template text in approximately 20 language/template combinations
+- No database schema changes needed
 
