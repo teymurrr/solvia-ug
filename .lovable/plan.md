@@ -1,69 +1,53 @@
 
 
-# Email System Fixes: Add Booking CTA + Fix Sequence Issues
+# Add GA4 Funnel Event Tracking
 
-## Problems Found
+## Overview
+The analytics utility (`analyticsTracking.ts`) exists and works, but several critical funnel steps are **not firing events**. Here's what needs to be added:
 
-1. **No booking/call option in any email** -- None of the 5 email templates include a Calendly link or WhatsApp contact for booking a call
-2. **Sequence skipping** -- Steps 2-4 (personalDiagnosis, socialProof, urgencyOffer) were never sent; the system jumped from feedbackAsk to valueInsight
-3. **Outdated pricing** -- Templates reference old pricing (from 39, normally 79) instead of the new structure (from 299)
-4. **Auto-nurture bug** -- The scheduler breaks after first lead, only processing one batch per run
+## Current State
+
+| Funnel Step | Event | Status |
+|---|---|---|
+| Wizard start | -- | **Missing** |
+| Country selected | `country_selected` | Already works |
+| Wizard complete | -- | **Missing** |
+| Payment page view | -- | **Missing** |
+| Payment initiated | `payment_started` | Already works |
+| Payment success | -- | **Missing** |
+| Call booked (Calendly click) | -- | **Missing** |
 
 ## Changes
 
-### 1. Add booking CTA to all email templates
-**File: `supabase/functions/send-nurture-campaign/index.ts`**
+### 1. Add new event types to `analyticsTracking.ts`
+Add 4 new event names to the `GA4EventName` type and corresponding helper methods to the `Analytics` object:
+- `wizard_started` -- fires when the homologation wizard mounts
+- `wizard_completed` -- fires when the wizard reaches the summary/result step
+- `payment_page_viewed` -- fires when the payment page loads
+- `call_booked` -- fires when a user clicks the Calendly booking link
 
-Add a consistent booking/call block at the end of every email template (all 5 templates, all 5 languages), before the signature:
+Also wire `payment_completed` (already defined but never called).
 
-```
----
-Want to talk to someone? Book a free 15-min call:
-https://calendly.com/[your-link]
+### 2. Fire `wizard_started` in `HomologationWizard.tsx`
+Add a `useEffect` on mount that calls `Analytics.assessmentStarted('homologation')` (already defined) or the new `wizard_started` event.
 
-Or message us directly on WhatsApp:
-https://wa.me/[your-number]
-```
+### 3. Fire `wizard_completed` in `HomologationWizard.tsx`
+When the wizard reaches the summary step (after all fields collected), fire the completion event.
 
-This block will be appended automatically in the `generatePlainEmail` function so it appears in every nurture email without duplicating it across all template bodies.
+### 4. Fire `payment_page_viewed` in `HomologationPayment.tsx`
+Add a `useEffect` on mount to track the page view.
 
-Also add the same block to:
-- `supabase/functions/win-back-campaign/index.ts`
-- `supabase/functions/send-reengagement-email/index.ts`
-- `supabase/functions/send-homologation-plan/index.ts`
+### 5. Fire `payment_completed` in `PaymentSuccess.tsx`
+When payment verification succeeds (`verificationStatus === 'success'`), fire `payment_completed` with the product type and amount from `paymentData`.
 
-### 2. Update pricing references in email templates
-**File: `supabase/functions/send-nurture-campaign/index.ts`**
+### 6. Fire `call_booked` on all Calendly link clicks
+Update `handleBookConsultation` in `HomologationResult.tsx` and `HomologationWizard.tsx`, and the WhatsApp button component to track when users click the booking link.
 
-- socialProof template: Change "from 39 with our Digital package" to "from 299 with our Guided Homologation package" (all 5 languages)
-- urgencyOffer template: Remove fake urgency about "introductory pricing ends soon", replace with value-focused messaging referencing the new 299/899/3800 tiers (all 5 languages)
-
-**File: `supabase/functions/win-back-campaign/index.ts`**
-- Same pricing update: 39 to 299
-
-**File: `supabase/functions/send-reengagement-email/index.ts`**
-- Same pricing update: 39 to 299
-
-### 3. Fix auto-nurture-sequence logic
-**File: `supabase/functions/auto-nurture-sequence/index.ts`**
-
-Current bug: The function processes leads one by one but then calls `send-nurture-campaign` for the entire batch and immediately `break`s, so it only ever triggers one template per execution.
-
-Fix: Instead of delegating to `send-nurture-campaign`, process each lead individually:
-- For each lead, determine the correct next step based on their `email_sequence_day` and `last_email_sent` timestamp
-- Call `send-nurture-campaign` with the specific templateId for that lead, OR refactor to send directly per-lead
-- Remove the `break` statement so all eligible leads are processed in one run
-- Add proper per-lead delay checking (3 days after feedbackAsk, 2 days after personalDiagnosis, etc.)
-
-### 4. Prevent manual template skipping
-**File: `supabase/functions/send-nurture-campaign/index.ts`**
-
-Add a sequence validation check: when not in test mode, verify that a lead has received the previous step before sending the current one. For example, don't send `socialProof` unless `personalDiagnosis` was already sent to that email. This prevents accidentally skipping steps when manually triggering campaigns.
-
-## Technical Details
-
-- The booking CTA will use a shared constant for the Calendly URL and WhatsApp number, making it easy to update in one place
-- All 4 edge functions will be redeployed after changes
-- The pricing update affects template text in approximately 20 language/template combinations
-- No database schema changes needed
+### Files Modified
+- `src/utils/analyticsTracking.ts` -- add new event types + helpers
+- `src/pages/HomologationWizard.tsx` -- wizard_started (mount) + wizard_completed (summary step)
+- `src/pages/HomologationPayment.tsx` -- payment_page_viewed (mount)
+- `src/pages/PaymentSuccess.tsx` -- payment_completed (on verification success)
+- `src/pages/HomologationResult.tsx` -- call_booked (Calendly click)
+- `src/components/WhatsAppButton.tsx` -- call_booked (Calendly click if applicable)
 
