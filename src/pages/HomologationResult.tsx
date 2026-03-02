@@ -174,41 +174,43 @@ const HomologationResult = () => {
         <motion.section
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="pt-8 pb-2 md:pt-12 md:pb-4">
+          className="pt-10 pb-2 md:pt-14 md:pb-4">
 
           <div className="container mx-auto px-4 max-w-2xl text-center">
-            <h1 className="text-3xl md:text-4xl font-bold tracking-tight mb-1">
+            <h1 className="text-3xl md:text-5xl font-extrabold tracking-tight mb-1">
               {getCountryFlag(wizardData.targetCountry)} {t.homologationResult.pathTo} {translatedCountryName}
             </h1>
 
             {(wizardData.doctorType || wizardData.studyCountry) &&
-              <p className="text-muted-foreground text-sm mb-4">
+              <p className="text-muted-foreground text-sm mb-5">
                 {[getDoctorTypeLabel(wizardData.doctorType), wizardData.studyCountry ? `${t.homologationResult.from} ${wizardData.studyCountry}` : ''].filter(Boolean).join(' · ')}
               </p>
             }
 
             {/* Big savings number — the primary hook */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
+              initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.15 }}
-              className="space-y-1 mb-3"
+              transition={{ delay: 0.15, type: 'spring', stiffness: 200 }}
+              className="mb-4"
             >
-              <p className="text-4xl md:text-5xl font-extrabold text-foreground tracking-tight">
-                {threeMonthSavings} {currency}
-              </p>
-              <p className="text-sm text-muted-foreground max-w-sm mx-auto">
-                {t.homologationResult.cta?.savingsMessage
-                  || 'That\'s what you save by not losing 3 months doing it alone'}
-              </p>
+              <div className="inline-block bg-gradient-to-br from-primary to-primary/80 text-primary-foreground rounded-2xl px-8 py-5 shadow-lg shadow-primary/25">
+                <p className="text-5xl md:text-6xl font-black tracking-tight leading-none">
+                  {threeMonthSavings} {currency}
+                </p>
+                <p className="text-sm opacity-90 mt-1.5 font-medium">
+                  {t.homologationResult.cta?.savingsMessage
+                    || 'That\'s what you save by not losing 3 months doing it alone'}
+                </p>
+              </div>
             </motion.div>
 
             {/* Summary badges */}
-            <div className="flex items-center justify-center gap-2 flex-wrap mt-2">
+            <div className="flex items-center justify-center gap-2 flex-wrap mt-3">
               {summaryParts.map((part, i) => (
                 <span
                   key={i}
-                  className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary"
+                  className="inline-flex items-center px-4 py-1.5 rounded-full text-xs font-semibold border border-primary/20 bg-primary/5 text-primary"
                 >
                   {part}
                 </span>
@@ -256,22 +258,32 @@ const HomologationResult = () => {
             </div>
 
             {/* CTA section */}
-            <div className="px-5 pb-6 pt-2 space-y-3">
+            <div className="px-5 pb-6 pt-3 space-y-3">
               {/* Social proof */}
               <div className="flex items-center justify-center gap-1.5 text-xs text-muted-foreground pb-1">
                 <Users className="h-3.5 w-3.5" />
                 <span>{t.homologationResult.cta?.socialProof || '500+ doctors have already started their journey with us'}</span>
               </div>
 
-              <Button size="lg" onClick={handleStartProcess} className="gap-2 w-full text-base">
-                {t.homologationResult.cta.startProcess} <ArrowRight className="h-4 w-4" />
-              </Button>
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.25 }}
+              >
+                <Button
+                  size="lg"
+                  onClick={handleStartProcess}
+                  className="gap-2 w-full text-lg h-14 font-bold shadow-lg shadow-primary/30 hover:shadow-xl hover:shadow-primary/40 transition-all"
+                >
+                  {t.homologationResult.cta.startProcess} <ArrowRight className="h-5 w-5" />
+                </Button>
+              </motion.div>
 
               <Button
                 size="lg"
-                variant="secondary"
+                variant="outline"
                 onClick={handleBookConsultation}
-                className="gap-2 w-full"
+                className="gap-2 w-full h-12 border-2 border-primary/30 text-primary hover:bg-primary/5 font-semibold"
               >
                 <Calendar className="h-4 w-4" />
                 {t.homologationResult.cta.bookConsultation}
