@@ -31,11 +31,10 @@ export const payments = {
       title: 'Homologación Guiada',
       description: 'Guía experta en cada paso de tu homologación',
       features: [
-        'Revisión personal de documentos antes del envío',
-        'Comunicación directa con autoridades en tu nombre',
-        'Presentación de solicitud gestionada por nosotros',
-        'Soporte prioritario (respuesta en 24h)',
-        'Panel de seguimiento de progreso'
+        'Preparación y revisión profesional de todos los documentos requeridos',
+        'Representación completa y comunicación con autoridades locales',
+        'Guía paso a paso desde la preparación de documentos hasta la presentación',
+        'Soporte prioritario por WhatsApp y email'
       ]
     },
     complete: {
@@ -43,11 +42,11 @@ export const payments = {
       descriptionBase: 'Homologación completa con formación en',
       descriptionEnd: 'idioma médico',
       features: [
-        'Todo lo de Homologación Guiada',
-        'Curso de idioma médico por 12 meses',
-        '4 sesiones en vivo 1:1 de coaching (60 min)',
-        'Gestor de caso dedicado',
-        'Soporte por WhatsApp y teléfono'
+        'Todo lo de Homologación Guiada, más:',
+        'Curso de Alemán Médico por 12 meses',
+        'Plan de estudio de alemán personalizado',
+        '4 sesiones en vivo 1:1 con asesores / profesores de idiomas',
+        'Gestor de Caso Dedicado'
       ]
     },
     personalMentorship: {
@@ -55,11 +54,11 @@ export const payments = {
       descriptionBase: 'Nos encargamos de todo — traducciones, tasas, trámites,',
       descriptionEnd: 'todo incluido',
       features: [
-        'Todos los costes de traducción y apostilla incluidos',
-        'Todas las tasas y cargos oficiales cubiertos',
-        'Comunicación y presentaciones ante autoridades completas',
-        'Curso de idioma + gestor de caso dedicado',
-        'Soporte presencial para citas'
+        'Todos los costes de traducción y apostilla',
+        'Todas las tasas y cargos administrativos oficiales',
+        'Costes de examen de idioma',
+        'Curso de Alemán Médico por 12 meses',
+        '8 sesiones en vivo 1:1 con asesores / profesores de idiomas'
       ]
     }
   },

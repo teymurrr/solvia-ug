@@ -31,11 +31,10 @@ export const payments = {
       title: 'Guided Homologation',
       description: 'Expert guidance through every step of your homologation',
       features: [
-        'Personal document review before submission',
-        'Direct communication with authorities on your behalf',
-        'Application submission handled for you',
-        'Priority support (24h response)',
-        'Progress tracking dashboard'
+        'Preparation and professional review of all required documents',
+        'Full representation and communication with local authorities',
+        'Step-by-step guidance from document preparation to submission',
+        'Priority support via WhatsApp & email'
       ]
     },
     complete: {
@@ -43,11 +42,11 @@ export const payments = {
       descriptionBase: 'Complete homologation support with medical',
       descriptionEnd: 'language training',
       features: [
-        'Everything in Guided Homologation',
-        '12-month medical language course',
-        '4× live 1:1 coaching sessions (60 min)',
-        'Dedicated case manager',
-        'WhatsApp and phone support'
+        'Everything in Guided Homologation, plus:',
+        '12-month Medical German course',
+        'Personalized German study plan',
+        '4 live 1:1 sessions with case advisors / language teachers',
+        'Dedicated Case Manager'
       ]
     },
     personalMentorship: {
@@ -55,11 +54,11 @@ export const payments = {
       descriptionBase: 'We handle everything — translations, fees, paperwork,',
       descriptionEnd: 'all included',
       features: [
-        'All translation and apostille costs included',
-        'All official fees and charges covered',
-        'Complete authority communication and submissions',
-        'Language course + dedicated case manager',
-        'In-person support for appointments'
+        'All translation and apostille costs',
+        'All official fees and administrative charges',
+        'Language exam costs',
+        '12-month Medical German course',
+        '8 live 1:1 sessions with case advisors / language teachers'
       ]
     }
   },
