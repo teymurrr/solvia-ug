@@ -38,7 +38,7 @@ interface PackageConfig {
 const getPricingByCountry = (country: string | null): Record<ProductType, number> => {
   // All countries use the same pricing for now
   return {
-    digital_starter: 29900,
+    digital_starter: 37900,
     complete: 89900,
     personal_mentorship: 380000,
   };

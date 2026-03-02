@@ -31,11 +31,10 @@ export const payments = {
       title: 'Begleitete Homologation',
       description: 'Expertenbegleitung bei jedem Schritt Ihrer Approbation',
       features: [
-        'Persönliche Dokumentenprüfung vor jeder Einreichung',
-        'Direkte Kommunikation mit Behörden in Ihrem Namen',
-        'Antragstellung wird für Sie übernommen',
-        'Prioritäts-Support (Antwort in 24h)',
-        'Fortschritts-Dashboard'
+        'Vorbereitung und professionelle Prüfung aller erforderlichen Dokumente',
+        'Vollständige Vertretung und Kommunikation mit lokalen Behörden',
+        'Schritt-für-Schritt-Begleitung von der Dokumentenvorbereitung bis zur Einreichung',
+        'Prioritäts-Support per WhatsApp & E-Mail'
       ]
     },
     complete: {
@@ -43,11 +42,11 @@ export const payments = {
       descriptionBase: 'Komplette Homologationsunterstützung mit medizinischem',
       descriptionEnd: 'Sprachtraining',
       features: [
-        'Alles aus Begleitete Homologation',
-        '12 Monate medizinischer Sprachkurs',
-        '4× Live-1:1-Coaching-Sitzungen (60 Min)',
-        'Persönlicher Fallmanager',
-        'WhatsApp- und Telefon-Support'
+        'Alles aus Begleitete Homologation, plus:',
+        '12 Monate Medizinischer Deutschkurs',
+        'Personalisierter Deutsch-Lernplan',
+        '4 Live-1:1-Sitzungen mit Fallberatern / Sprachlehrern',
+        'Persönlicher Fallmanager'
       ]
     },
     personalMentorship: {
@@ -55,11 +54,11 @@ export const payments = {
       descriptionBase: 'Wir kümmern uns um alles — Übersetzungen, Gebühren, Papierkram,',
       descriptionEnd: 'alles inklusive',
       features: [
-        'Alle Übersetzungs- und Apostillekosten inklusive',
-        'Alle offiziellen Gebühren und Abgaben abgedeckt',
-        'Komplette Behördenkommunikation und Anträge',
-        'Sprachkurs + persönlicher Fallmanager',
-        'Vor-Ort-Unterstützung bei Terminen'
+        'Alle Übersetzungs- und Apostillekosten',
+        'Alle offiziellen Gebühren und Verwaltungskosten',
+        'Sprachprüfungskosten',
+        '12 Monate Medizinischer Deutschkurs',
+        '8 Live-1:1-Sitzungen mit Fallberatern / Sprachlehrern'
       ]
     }
   },
