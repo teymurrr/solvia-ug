@@ -211,7 +211,7 @@ export const landing = {
     badge: "Starten Sie heute",
     title: "Starten Sie heute Ihre Reise nach Europa",
     subtitle: "Schließen Sie sich 230+ Gesundheitsfachkräften an, die bereits ihren Weg begonnen haben.",
-    primaryCta: "Meine kostenlose Bewertung starten",
+    primaryCta: "Meine Eignung prüfen",
     secondaryCta: "Offene Stellen ansehen"
   },
   learningMiniBanner: {

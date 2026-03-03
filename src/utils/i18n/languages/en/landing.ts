@@ -211,7 +211,7 @@ export const landing = {
     badge: "Start Today",
     title: "Start Your Journey to Europe Today",
     subtitle: "Join 230+ healthcare professionals who already started their journey.",
-    primaryCta: "Start my free assessment",
+    primaryCta: "Check my eligibility",
     secondaryCta: "Explore open positions"
   },
   learningMiniBanner: {

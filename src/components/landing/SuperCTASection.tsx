@@ -47,7 +47,7 @@ const SuperCTASection = () => {
               className="group text-base px-8 py-6"
             >
               <Link to="/homologation-wizard" className="flex items-center gap-2">
-                {superCta?.primaryCta || "Start my free assessment"}
+                {superCta?.primaryCta || "Check my eligibility"}
                 <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
               </Link>
             </Button>

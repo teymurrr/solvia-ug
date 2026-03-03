@@ -2,7 +2,7 @@
 export const hero = {
   title: 'Your medical career in Europe starts here.',
   subtitle: 'We handle your license recognition, find you a job, and guide you every step of the way.',
-  cta: 'Start my free assessment',
+  cta: 'Check my eligibility',
   secondaryCta: 'Find a job',
   learnMore: 'Learn More',
   searchPlaceholder: 'Job title, specialty, or keyword...',

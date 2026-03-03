@@ -2,8 +2,8 @@ export const pathToSuccess = {
   title: 'So funktioniert es',
   subtitle: 'Von der ersten Beratung bis zu Ihrem ersten Arbeitstag — wir kümmern uns um alles.',
   stepLabel: 'Schritt',
-  cta: 'Meine kostenlose Bewertung starten',
-  ctaLabel: 'Meine kostenlose Bewertung mit Solvia starten',
+  cta: 'Meine Eignung prüfen',
+  ctaLabel: 'Meine Eignung mit Solvia prüfen',
   steps: {
     'step1.title': 'Wählen Sie Ihr Land',
     'step1.description': 'Entscheiden Sie, wo Sie in Europa arbeiten möchten.',
