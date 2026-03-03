@@ -14,7 +14,7 @@ export const dashboard = {
   openToRelocation: 'Offen für Umzug',
   
   // Professional Dashboard
-  welcome: 'Willkommen zurück',
+  // welcome string moved to welcome object below
   findYourNextRole: 'Finden Sie Ihre nächste Stelle',
   suggestedVacancies: 'Vorgeschlagene Stellen',
   savedVacancies: 'Gespeicherte Stellen',
@@ -356,6 +356,64 @@ export const dashboard = {
       inProgress: "In Bearbeitung",
       approved: "Genehmigt"
     }
+  },
+  saved: {
+    title: "Gespeichert & Beworben",
+    description: "Stellen, die Sie gespeichert oder sich beworben haben",
+    savedVacancies: "Gespeicherte Stellen",
+    appliedVacancies: "Beworbene Stellen",
+    noSaved: "Keine gespeicherten Stellen",
+    noSavedDesc: "Sie haben noch keine Stellen gespeichert. Speichern Sie Stellen, um sie im Blick zu behalten.",
+    noApplied: "Noch keine Bewerbungen",
+    noAppliedDesc: "Sie haben sich noch bei keiner Stelle beworben. Bewerben Sie sich, um Ihre nächste Stelle zu finden.",
+    browseVacancies: "Stellen durchsuchen",
+    vacancyRemoved: "Stelle entfernt",
+    vacancyRemovedDesc: "Die Stelle wurde aus Ihrer gespeicherten Liste entfernt."
+  },
+  welcome: {
+    goodMorning: "Guten Morgen",
+    goodAfternoon: "Guten Tag",
+    goodEvening: "Guten Abend",
+    subtitle: "Folgende Schritte helfen Ihnen beim Einstieg",
+    readiness: "Ihre Bereitschaft",
+    stepsCompleted: "Schritte abgeschlossen",
+    gettingStarted: "Erste Schritte",
+    allComplete: "Alles erledigt! Entdecken Sie weiter Möglichkeiten.",
+    checklistProfile: "Profil vervollständigen",
+    checklistExperience: "Berufserfahrung & Ausbildung hinzufügen",
+    checklistLanguages: "Sprachkenntnisse hinzufügen",
+    checklistHomologation: "Homologationsprozess starten",
+    checklistUploadDocs: "Homologation fortsetzen",
+    checklistCountry: "Zielland festlegen",
+    checklistVacancies: "Stellenangebote erkunden",
+  },
+  recommended: {
+    title: "Für Sie empfohlen",
+    description: "Stellen passend zu Ihrem Profil und Ihren Präferenzen",
+    badge: "Empfohlen",
+  },
+  notifications: {
+    title: "Benachrichtigungen",
+    markAllRead: "Alle als gelesen markieren",
+    empty: "Noch keine Benachrichtigungen",
+  },
+  homologationPreview: {
+    title: "Ihr Homologationsfahrplan",
+    subtitle: "Geschätzter Prozessüberblick",
+    free: "Kostenlose Vorschau",
+    salaryLossTitle: "Opportunitätskosten",
+    perMonth: "Monat",
+    salaryLossDesc: "Jeder Monat ohne anerkanntes Diplom ist ein Monat verlorener potenzieller Einnahmen.",
+    fastest: "Schnellster",
+    average: "Durchschnitt",
+    longest: "Längster",
+    requiredDocs: "Erforderliche Dokumente",
+    moreDocuments: "weitere Dokumente",
+    unlockAccess: "Vollen Zugang mit einem Plan freischalten",
+    testimonial: "Ich habe meine Homologation in 6 Monaten mit Solvias Komplett-Paket abgeschlossen. Die Schritt-für-Schritt-Anleitung hat mir Monate an Recherche erspart.",
+    testimonialAuthor: "Maria, Ärztin aus Kolumbien",
+    ctaUnlock: "Ihren vollständigen Fahrplan freischalten",
+    viewPlans: "Pläne ansehen",
   },
   myJourney: {
     tabTitle: "Mein Weg",
