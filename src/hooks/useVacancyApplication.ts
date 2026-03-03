@@ -10,17 +10,39 @@ export const useVacancyApplication = () => {
   const { toast } = useToast();
   const { t } = useLanguage();
 
-  const submitApplication = async (vacancyId: string, message?: string) => {
+  const submitApplication = async (vacancyId: string, message?: string, cvFile?: File) => {
     if (!user) return false;
 
     setIsSubmitting(true);
     try {
+      let cvPath: string | null = null;
+      let cvFileName: string | null = null;
+
+      // Upload CV if provided
+      if (cvFile) {
+        const fileExt = cvFile.name.split('.').pop();
+        const filePath = `${user.id}/${vacancyId}_${Date.now()}.${fileExt}`;
+        const { error: uploadError } = await supabase.storage
+          .from('application-cvs')
+          .upload(filePath, cvFile);
+        if (uploadError) throw uploadError;
+        cvPath = filePath;
+        cvFileName = cvFile.name;
+      }
+
+      const applicationData: Record<string, any> = {};
+      if (message) applicationData.message = message;
+      if (cvPath) {
+        applicationData.cv_path = cvPath;
+        applicationData.cv_file_name = cvFileName;
+      }
+
       const { error } = await supabase
         .from('applied_vacancies')
         .insert({
           user_id: user.id,
           vacancy_id: vacancyId,
-          application_data: message ? { message } : null,
+          application_data: Object.keys(applicationData).length > 0 ? applicationData : null,
           status: 'pending',
         });
 
@@ -61,7 +83,6 @@ export const useVacancyApplication = () => {
 
 async function sendNotificationEmail(user: any, vacancyId: string, message?: string) {
   try {
-    // Fetch vacancy + profile info for the email
     const [vacancyRes, profileRes] = await Promise.all([
       supabase.from('vacancies').select('title, institution').eq('id', vacancyId).single(),
       supabase.from('professional_profiles').select('first_name, last_name, email').eq('id', user.id).single(),

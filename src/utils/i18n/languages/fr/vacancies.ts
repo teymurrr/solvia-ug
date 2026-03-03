@@ -94,5 +94,10 @@ export const vacancies = {
     alreadyApplied: 'Déjà postulé',
     alreadyAppliedDesc: 'Vous avez déjà exprimé votre intérêt pour ce poste.',
     errorDesc: 'Une erreur est survenue. Veuillez réessayer.',
+    uploadCV: 'Télécharger CV (Optionnel)',
+    uploadCVDesc: 'PDF, DOC ou DOCX – max. 5 Mo',
+    cvUploaded: 'CV téléchargé',
+    removeCV: 'Supprimer',
+    downloadCV: 'Télécharger le CV',
   }
 };

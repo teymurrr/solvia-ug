@@ -31,10 +31,12 @@ import {
   CheckCircle2, 
   XCircle,
   AlertCircle,
-  UserCircle
+  UserCircle,
+  Download
 } from 'lucide-react';
 import { Application, ApplicationStatus } from '@/hooks/applications/types';
 import { useLanguage } from '@/hooks/useLanguage';
+import { supabase } from '@/integrations/supabase/client';
 
 interface ApplicationCardProps {
   application: Application;
@@ -50,6 +52,20 @@ const ApplicationCard: React.FC<ApplicationCardProps> = ({ application, onUpdate
     setIsUpdating(true);
     await onUpdateStatus(application.id, newStatus);
     setIsUpdating(false);
+  };
+
+  const handleDownloadCV = async () => {
+    const appData = application.application_data as any;
+    const cvPath = appData?.cv_path;
+    if (!cvPath) return;
+
+    const { data, error } = await supabase.storage
+      .from('application-cvs')
+      .createSignedUrl(cvPath, 60);
+
+    if (data?.signedUrl) {
+      window.open(data.signedUrl, '_blank');
+    }
   };
   
   const getStatusBadge = () => {
@@ -99,6 +115,9 @@ const ApplicationCard: React.FC<ApplicationCardProps> = ({ application, onUpdate
   const photoUrl = application.professional?.profile_image || application.applicantPhoto;
   const vacancyTitle = application.vacancy?.title || application.vacancyTitle || 'Unknown Position';
   const appliedDate = application.application_date || application.appliedDate || 'Unknown Date';
+  const appData = application.application_data as any;
+  const hasCv = !!appData?.cv_path;
+  const cvFileName = appData?.cv_file_name;
 
   return (
     <Card className="overflow-hidden transition-all hover:shadow-md">
@@ -112,9 +131,15 @@ const ApplicationCard: React.FC<ApplicationCardProps> = ({ application, onUpdate
           <div className="flex-1 min-w-0">
             <h3 className="font-semibold text-lg truncate">{fullName}</h3>
             <p className="text-muted-foreground text-sm">{vacancyTitle}</p>
-            <div className="flex items-center gap-4 mt-1">
+            <div className="flex items-center gap-4 mt-1 flex-wrap">
               <span className="text-xs text-muted-foreground">{t?.dashboard?.applications?.appliedOn || "Applied"}: {appliedDate}</span>
               {getStatusBadge()}
+              {hasCv && (
+                <Badge variant="secondary" className="gap-1 text-xs">
+                  <FileText className="h-3 w-3" />
+                  CV
+                </Badge>
+              )}
             </div>
           </div>
           
@@ -171,6 +196,22 @@ const ApplicationCard: React.FC<ApplicationCardProps> = ({ application, onUpdate
                     <h4 className="font-medium mb-2">{t?.dashboard?.applications?.appliedFor || "Applied for"}:</h4>
                     <p className="text-sm bg-muted p-2 rounded">{vacancyTitle}</p>
                   </div>
+
+                  {/* CV Download */}
+                  {hasCv && (
+                    <div>
+                      <h4 className="font-medium mb-2">CV:</h4>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="gap-2"
+                        onClick={handleDownloadCV}
+                      >
+                        <Download className="h-4 w-4" />
+                        {cvFileName || (t?.vacancies?.applyDialog?.downloadCV || 'Download CV')}
+                      </Button>
+                    </div>
+                  )}
                   
                   {application.coverLetter && (
                     <div>
@@ -183,7 +224,7 @@ const ApplicationCard: React.FC<ApplicationCardProps> = ({ application, onUpdate
                     </div>
                   )}
                   
-                  {application.cvFileName && (
+                  {application.cvFileName && !hasCv && (
                     <div className="flex items-center gap-2">
                       <FileText className="h-4 w-4 text-muted-foreground" />
                       <span className="text-sm">{application.cvFileName}</span>

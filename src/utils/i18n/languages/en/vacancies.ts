@@ -94,5 +94,10 @@ export const vacancies = {
     alreadyApplied: 'Already applied',
     alreadyAppliedDesc: 'You have already expressed interest in this position.',
     errorDesc: 'Something went wrong. Please try again.',
+    uploadCV: 'Upload CV (Optional)',
+    uploadCVDesc: 'PDF, DOC or DOCX – max 5 MB',
+    cvUploaded: 'CV uploaded',
+    removeCV: 'Remove',
+    downloadCV: 'Download CV',
   }
 };
