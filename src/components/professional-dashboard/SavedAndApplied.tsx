@@ -200,13 +200,8 @@ const SavedAndApplied: React.FC<SavedAndAppliedProps> = ({ userId }) => {
               {savedVacancies.map((vacancy) => (
                 <VacancyCard
                   key={vacancy.id}
-                  id={vacancy.id}
-                  title={vacancy.title}
-                  institution={vacancy.institution}
-                  department={vacancy.department}
-                  specialty={vacancy.specialty || 'Various'}
+                  {...vacancy}
                   jobType={vacancy.job_type}
-                  location={vacancy.location}
                   createdAt={vacancy.posted_date ? new Date(vacancy.posted_date).toLocaleDateString() : undefined}
                   isDashboardCard={true}
                   isSaved={true}
@@ -238,13 +233,8 @@ const SavedAndApplied: React.FC<SavedAndAppliedProps> = ({ userId }) => {
               {appliedVacancies.map((vacancy) => (
                 <VacancyCard
                   key={vacancy.id}
-                  id={vacancy.id}
-                  title={vacancy.title}
-                  institution={vacancy.institution}
-                  department={vacancy.department}
-                  specialty={vacancy.specialty || 'Various'}
+                  {...vacancy}
                   jobType={vacancy.job_type}
-                  location={vacancy.location}
                   createdAt={vacancy.posted_date ? new Date(vacancy.posted_date).toLocaleDateString() : undefined}
                   isDashboardCard={true}
                   isApplied={true}

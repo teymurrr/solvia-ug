@@ -6,6 +6,8 @@ import { Badge } from '@/components/ui/badge';
 import { getJobTypeBadgeVariant } from '@/components/vacancy/utils';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useLanguage } from '@/hooks/useLanguage';
+import { getLocalizedVacancyField } from '@/utils/getLocalizedVacancyField';
+import type { Language } from '@/utils/i18n/translations';
 
 export interface VacanciesTabProps {
   vacancies: any[];
@@ -28,7 +30,7 @@ const VacanciesTab: React.FC<VacanciesTabProps> = ({
   description,
   showAddButton = true
 }) => {
-  const { t } = useLanguage();
+  const { t, currentLanguage } = useLanguage();
   
   const displayTitle = title || t?.dashboard?.institution?.vacancies?.title || 'Your Vacancies';
   const displayDescription = description || t?.dashboard?.institution?.vacancies?.description || 'Manage your job postings';
@@ -55,7 +57,7 @@ const VacanciesTab: React.FC<VacanciesTabProps> = ({
                 <div className="flex justify-between items-start">
                   <div className="space-y-2">
                     <div className="flex items-center justify-between">
-                      <h3 className="font-medium">{vacancy.title}</h3>
+                      <h3 className="font-medium">{getLocalizedVacancyField(vacancy, 'title', currentLanguage as Language)}</h3>
                       <Badge variant={getJobTypeBadgeVariant(vacancy.job_type)} className="ml-2">
                         {vacancy.job_type || vacancy.contract_type}
                       </Badge>
@@ -75,7 +77,7 @@ const VacanciesTab: React.FC<VacanciesTabProps> = ({
                     )}
                     
                     <p className="text-sm text-muted-foreground line-clamp-2 mt-2">
-                      {vacancy.description}
+                      {getLocalizedVacancyField(vacancy, 'description', currentLanguage as Language)}
                     </p>
                   </div>
                   <div className="flex space-x-2 ml-4">

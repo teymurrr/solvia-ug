@@ -7,6 +7,11 @@ import { useAuth } from '@/contexts/AuthContext';
 export interface Vacancy {
   id: string;
   title: string;
+  title_en?: string;
+  title_de?: string;
+  title_es?: string;
+  title_fr?: string;
+  title_ru?: string;
   institution: string;
   department: string;
   specialty?: string;
@@ -17,6 +22,11 @@ export interface Vacancy {
   city?: string;
   location: string;
   description: string;
+  description_en?: string;
+  description_de?: string;
+  description_es?: string;
+  description_fr?: string;
+  description_ru?: string;
   requirements: string[] | null;
   posted_date: string;
   salary?: string;

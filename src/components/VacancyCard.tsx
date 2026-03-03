@@ -12,6 +12,8 @@ import { useLanguage } from '@/hooks/useLanguage';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
 import Analytics from '@/utils/analyticsTracking';
+import { getLocalizedVacancyField } from '@/utils/getLocalizedVacancyField';
+import type { Language } from '@/utils/i18n/translations';
 
 const getRandomDaysAgo = () => {
   const days = [2, 3, 4, 5, 6, 7, 10];
@@ -21,6 +23,11 @@ const getRandomDaysAgo = () => {
 export interface VacancyCardProps {
   id: string;
   title: string;
+  title_en?: string;
+  title_de?: string;
+  title_es?: string;
+  title_fr?: string;
+  title_ru?: string;
   institution: string;
   location: string;
   jobType: string;
@@ -33,6 +40,11 @@ export interface VacancyCardProps {
   expiresAt?: string;
   applicationCount?: number;
   description?: string;
+  description_en?: string;
+  description_de?: string;
+  description_es?: string;
+  description_fr?: string;
+  description_ru?: string;
   requirements?: string[];
   status?: 'active' | 'draft' | 'expired' | 'closed';
   isDashboardCard?: boolean;
@@ -53,11 +65,17 @@ export interface VacancyCardProps {
     country: string;
     city: string;
   };
+  [key: string]: any; // Allow extra props from spread
 }
 
 const VacancyCard: React.FC<VacancyCardProps> = ({
   id,
   title,
+  title_en,
+  title_de,
+  title_es,
+  title_fr,
+  title_ru,
   institution,
   location,
   jobType,
@@ -77,19 +95,28 @@ const VacancyCard: React.FC<VacancyCardProps> = ({
   isLandingPageCard = false,
   fromLandingPage = false,
   fromDashboard = false,
-  showDescription = true, // Make description visible by default
-  showRequirements = true, // Make requirements visible by default
+  showDescription = true,
+  showRequirements = true,
   description,
+  description_en,
+  description_de,
+  description_es,
+  description_fr,
+  description_ru,
   requirements,
   searchQuery,
   currentPage,
   selectedFilters,
 }) => {
-  const { t } = useLanguage();
+  const { t, currentLanguage } = useLanguage();
   const { toast } = useToast();
   const { isLoggedIn } = useAuth();
   const daysAgo = getRandomDaysAgo();
   
+  // Resolve localized title and description
+  const vacancyData = { title, title_en, title_de, title_es, title_fr, title_ru, description, description_en, description_de, description_es, description_fr, description_ru };
+  const localizedTitle = getLocalizedVacancyField(vacancyData, 'title', currentLanguage as Language);
+  const localizedDescription = getLocalizedVacancyField(vacancyData, 'description', currentLanguage as Language);
   const handleSaveClick = (e: React.MouseEvent<HTMLButtonElement>) => {
      e.preventDefault();
      e.stopPropagation();
@@ -110,7 +137,7 @@ const VacancyCard: React.FC<VacancyCardProps> = ({
         <div className="p-5">
           <div className="flex justify-between items-start">
             <div>
-              <h3 className="text-lg font-semibold line-clamp-2">{title}</h3>
+              <h3 className="text-lg font-semibold line-clamp-2">{localizedTitle}</h3>
               <div className="flex items-center mt-1 text-sm text-gray-600">
                 <Building2 className="mr-1 h-4 w-4" />
                 <span>{institution}</span>
@@ -163,10 +190,10 @@ const VacancyCard: React.FC<VacancyCardProps> = ({
           </div>
 
           {/* Display description only if showDescription is true */}
-          {showDescription && description && (
+          {showDescription && localizedDescription && (
             <div className="mt-4">
               <h4 className="text-sm font-medium mb-1">{t?.vacancies?.description || "Description"}</h4>
-              <p className="text-sm text-gray-600 line-clamp-4">{description}</p>
+              <p className="text-sm text-gray-600 line-clamp-4">{localizedDescription}</p>
             </div>
           )}
 
@@ -203,7 +230,7 @@ const VacancyCard: React.FC<VacancyCardProps> = ({
         <div className="px-5 pb-5 pt-2">
           <VacancyFooter 
             id={id}
-            title={title}
+            title={localizedTitle}
             isLandingPageCard={isLandingPageCard}
             fromLandingPage={fromLandingPage}
             isLoggedIn={isLoggedIn}

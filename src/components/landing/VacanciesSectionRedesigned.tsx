@@ -6,13 +6,15 @@ import { Card, CardContent } from "@/components/ui/card";
 import { ArrowRight, MapPin, Building2, Clock, Euro, Star, Briefcase } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
 import { useProtectedAction } from '@/hooks/useProtectedAction';
+import { getLocalizedVacancyField } from '@/utils/getLocalizedVacancyField';
+import type { Language } from '@/utils/i18n/translations';
 
 interface VacanciesSectionRedesignedProps {
   vacancies: any[];
 }
 
 const VacanciesSectionRedesigned: React.FC<VacanciesSectionRedesignedProps> = ({ vacancies }) => {
-  const { t } = useLanguage();
+  const { t, currentLanguage } = useLanguage();
   const navigate = useNavigate();
   const { handleProtectedAction } = useProtectedAction();
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
@@ -58,7 +60,7 @@ const VacanciesSectionRedesigned: React.FC<VacanciesSectionRedesignedProps> = ({
                     </div>
                     <div>
                       <h3 className="font-bold text-lg mb-1">
-                        {t?.vacancies?.jobTitles?.[vacancy.titleKey] || vacancy.title}
+                        {t?.vacancies?.jobTitles?.[vacancy.titleKey] || getLocalizedVacancyField(vacancy, 'title', currentLanguage as Language)}
                       </h3>
                       <p className="text-primary font-semibold">{vacancy.institution}</p>
                     </div>
