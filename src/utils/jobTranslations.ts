@@ -36,11 +36,23 @@ const perYearTranslations: Record<Language, string> = {
   en: '/year', de: '/Jahr', es: '/año', fr: '/an', ru: '/год'
 };
 
+const onRequestTranslations: Record<Language, string> = {
+  en: 'On request', de: 'Auf Anfrage', es: 'A consultar', fr: 'Sur demande', ru: 'По запросу'
+};
+
 /**
  * Replaces hardcoded salary suffixes like /Jahr, /año, /year with the localized version.
  */
 export const localizeSalary = (salary: string, language: Language): string => {
   if (!salary) return salary;
+
+  // Translate "Auf Anfrage" / "On request" etc.
+  if (/auf anfrage/i.test(salary)) return onRequestTranslations[language];
+  if (/on request/i.test(salary)) return onRequestTranslations[language];
+  if (/a consultar/i.test(salary)) return onRequestTranslations[language];
+  if (/sur demande/i.test(salary)) return onRequestTranslations[language];
+  if (/по запросу/i.test(salary)) return onRequestTranslations[language];
+
   return salary
     .replace(/\/Jahr/gi, perYearTranslations[language])
     .replace(/\/año/gi, perYearTranslations[language])
