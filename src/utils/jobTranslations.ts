@@ -31,3 +31,20 @@ export const getLocalizedProfession = (profession: string, language: Language): 
   const key = profession?.toLowerCase();
   return professionTranslations[key]?.[language] || profession;
 };
+
+const perYearTranslations: Record<Language, string> = {
+  en: '/year', de: '/Jahr', es: '/año', fr: '/an', ru: '/год'
+};
+
+/**
+ * Replaces hardcoded salary suffixes like /Jahr, /año, /year with the localized version.
+ */
+export const localizeSalary = (salary: string, language: Language): string => {
+  if (!salary) return salary;
+  return salary
+    .replace(/\/Jahr/gi, perYearTranslations[language])
+    .replace(/\/año/gi, perYearTranslations[language])
+    .replace(/\/year/gi, perYearTranslations[language])
+    .replace(/\/an\b/gi, perYearTranslations[language])
+    .replace(/\/год/gi, perYearTranslations[language]);
+};
