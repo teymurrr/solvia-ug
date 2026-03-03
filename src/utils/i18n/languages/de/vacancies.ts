@@ -108,5 +108,10 @@ export const vacancies = {
     alreadyApplied: 'Bereits beworben',
     alreadyAppliedDesc: 'Sie haben bereits Interesse an dieser Position bekundet.',
     errorDesc: 'Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut.',
+    uploadCV: 'Lebenslauf hochladen (Optional)',
+    uploadCVDesc: 'PDF, DOC oder DOCX – max. 5 MB',
+    cvUploaded: 'Lebenslauf hochgeladen',
+    removeCV: 'Entfernen',
+    downloadCV: 'Lebenslauf herunterladen',
   }
 };

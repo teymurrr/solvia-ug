@@ -96,5 +96,10 @@ export const vacancies = {
     alreadyApplied: 'Уже подали заявку',
     alreadyAppliedDesc: 'Вы уже выразили интерес к этой позиции.',
     errorDesc: 'Что-то пошло не так. Пожалуйста, попробуйте снова.',
+    uploadCV: 'Загрузить резюме (Необязательно)',
+    uploadCVDesc: 'PDF, DOC или DOCX – макс. 5 МБ',
+    cvUploaded: 'Резюме загружено',
+    removeCV: 'Удалить',
+    downloadCV: 'Скачать резюме',
   }
 };
