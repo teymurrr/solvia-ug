@@ -1,53 +1,57 @@
 
 
-# Add GA4 Funnel Event Tracking
+# Redesign Payment Cards for Higher Conversion
 
-## Overview
-The analytics utility (`analyticsTracking.ts`) exists and works, but several critical funnel steps are **not firing events**. Here's what needs to be added:
+## Problems with Current Layout
+1. Abstract icon circles waste vertical space and add no value
+2. No "who is this for" framing -- doctors can't quickly self-select
+3. Middle tier (the conversion target) doesn't visually dominate enough
+4. Feature lists are flat -- no hierarchy between basic and premium features
+5. Passive CTA text ("Choose This Plan") doesn't reinforce outcomes
+6. Price jump from 899 to 3,800 feels abrupt without value framing
 
-## Current State
+## Proposed Changes
 
-| Funnel Step | Event | Status |
-|---|---|---|
-| Wizard start | -- | **Missing** |
-| Country selected | `country_selected` | Already works |
-| Wizard complete | -- | **Missing** |
-| Payment page view | -- | **Missing** |
-| Payment initiated | `payment_started` | Already works |
-| Payment success | -- | **Missing** |
-| Call booked (Calendly click) | -- | **Missing** |
+### 1. Remove icon circles, add "Ideal for" tagline per tier
+Replace the icon + circle pattern with a short persona line:
+- Tier 1: "I already speak the language, I just need paperwork help"
+- Tier 2: "I need both homologation support and language training"  
+- Tier 3: "Handle everything for me -- I just want to arrive and work"
 
-## Changes
+These go right below the package title in italics/muted text, replacing the current generic descriptions.
 
-### 1. Add new event types to `analyticsTracking.ts`
-Add 4 new event names to the `GA4EventName` type and corresponding helper methods to the `Analytics` object:
-- `wizard_started` -- fires when the homologation wizard mounts
-- `wizard_completed` -- fires when the wizard reaches the summary/result step
-- `payment_page_viewed` -- fires when the payment page loads
-- `call_booked` -- fires when a user clicks the Calendly booking link
+### 2. Make middle tier visually dominant
+- Give it a colored border/background (e.g., light primary tint)
+- Slightly larger scale bump (1.05 instead of 1.03)
+- "Most Popular" badge stays but becomes more prominent
+- Add a subtle "Best Value" or savings indicator: "Save vs. buying separately"
 
-Also wire `payment_completed` (already defined but never called).
+### 3. Restructure feature lists with visual hierarchy
+- Tier 2 and 3: Bold the differentiating features (the ones not in Tier 1)
+- Use a divider line after "Everything in previous tier" instead of wasting a bullet on it
+- Tier 3: Add a subtle summary line like "Zero out-of-pocket extras" to hammer the all-inclusive message
 
-### 2. Fire `wizard_started` in `HomologationWizard.tsx`
-Add a `useEffect` on mount that calls `Analytics.assessmentStarted('homologation')` (already defined) or the new `wizard_started` event.
+### 4. Stronger CTA copy
+Replace "Choose This Plan" / "Elegir Este Plan" with outcome-oriented text:
+- EN: "Start Now" / "Get Started"
+- ES: "Empezar Ahora"
+- DE: "Jetzt Starten"
+Update all language files.
 
-### 3. Fire `wizard_completed` in `HomologationWizard.tsx`
-When the wizard reaches the summary step (after all fields collected), fire the completion event.
+### 5. Add per-tier value anchoring on Tier 3
+Move the competitor anchor badge to be more visually prominent -- styled as a crossed-out price or comparison line rather than a small green badge.
 
-### 4. Fire `payment_page_viewed` in `HomologationPayment.tsx`
-Add a `useEffect` on mount to track the page view.
+## Files to Modify
+- `src/components/payments/PaymentFlow.tsx` -- restructure card layout, remove icons, add "ideal for" lines, enhance middle tier styling, improve CTAs
+- `src/utils/i18n/languages/en/payments.ts` -- add `idealFor` strings per package, update CTA text
+- `src/utils/i18n/languages/es/payments.ts` -- same
+- `src/utils/i18n/languages/de/payments.ts` -- same
+- `src/utils/i18n/languages/fr/payments.ts` -- same (if exists)
+- `src/utils/i18n/languages/ru/payments.ts` -- same (if exists)
 
-### 5. Fire `payment_completed` in `PaymentSuccess.tsx`
-When payment verification succeeds (`verificationStatus === 'success'`), fire `payment_completed` with the product type and amount from `paymentData`.
-
-### 6. Fire `call_booked` on all Calendly link clicks
-Update `handleBookConsultation` in `HomologationResult.tsx` and `HomologationWizard.tsx`, and the WhatsApp button component to track when users click the booking link.
-
-### Files Modified
-- `src/utils/analyticsTracking.ts` -- add new event types + helpers
-- `src/pages/HomologationWizard.tsx` -- wizard_started (mount) + wizard_completed (summary step)
-- `src/pages/HomologationPayment.tsx` -- payment_page_viewed (mount)
-- `src/pages/PaymentSuccess.tsx` -- payment_completed (on verification success)
-- `src/pages/HomologationResult.tsx` -- call_booked (Calendly click)
-- `src/components/WhatsAppButton.tsx` -- call_booked (Calendly click if applicable)
-
+## What Stays the Same
+- 3-tier structure and pricing (379/899/3800)
+- Discount code functionality
+- Payment summary scroll behavior
+- Consultation CTA below cards
+- Stripe checkout flow
