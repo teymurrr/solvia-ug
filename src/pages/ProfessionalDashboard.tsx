@@ -242,14 +242,6 @@ const ProfessionalDashboard: React.FC = () => {
               </TabsContent>
 
               <TabsContent value="vacancies" className="space-y-6">
-                {/* Recommended Vacancies at the top */}
-                <RecommendedVacancies
-                  vacancies={vacancyResults}
-                  profileData={profileData}
-                  savedVacancies={savedVacancies}
-                  appliedVacancies={appliedVacancies}
-                  onSaveToggle={toggleSaveVacancy}
-                />
 
                 <Card>
                   <CardHeader>
