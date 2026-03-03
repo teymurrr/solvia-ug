@@ -7,7 +7,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { useLanguage } from '@/hooks/useLanguage';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import { Check, Shield, Clock, BookOpen, Users, Star, ExternalLink, Calendar } from 'lucide-react';
+import { Check, ExternalLink, Calendar, Star } from 'lucide-react';
 import { preOpenPaymentWindow, redirectPaymentWindow, isSafari } from '@/utils/browserDetection';
 import Analytics from '@/utils/analyticsTracking';
 
@@ -29,7 +29,6 @@ interface DiscountInfo {
 
 interface PackageConfig {
   id: ProductType;
-  icon: React.ReactNode;
   price: number;
   popular?: boolean;
   features: string[];
@@ -133,39 +132,34 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
   const packages: PackageConfig[] = [
     {
       id: 'digital_starter',
-      icon: <Shield className="w-8 h-8" />,
       price: pricing.digital_starter,
       features: t?.payments?.packages?.digitalStarter?.features || [
-        'Personal document review before submission',
-        'Direct communication with authorities on your behalf',
-        'Application submission handled for you',
-        'Priority support (24h response)',
-        'Progress tracking dashboard'
+        'Preparation and professional review of all required documents',
+        'Full representation and communication with local authorities',
+        'Step-by-step guidance from document preparation to submission',
+        'Priority support via WhatsApp & email'
       ]
     },
     {
       id: 'complete',
-      icon: <BookOpen className="w-8 h-8" />,
       price: pricing.complete,
       popular: true,
       features: t?.payments?.packages?.complete?.features || [
-        'Everything in Guided Homologation',
-        '12-month medical language course',
-        '4× live 1:1 coaching sessions (60 min)',
-        'Dedicated case manager',
-        'WhatsApp and phone support'
+        '12-month Medical German course',
+        'Personalized German study plan',
+        '4 live 1:1 sessions with case advisors / language teachers',
+        'Dedicated Case Manager'
       ]
     },
     {
       id: 'personal_mentorship',
-      icon: <Users className="w-8 h-8" />,
       price: pricing.personal_mentorship,
       features: t?.payments?.packages?.personalMentorship?.features || [
-        'All translation and apostille costs included',
-        'All official fees and charges covered',
-        'Complete authority communication and submissions',
-        'Language course + dedicated case manager',
-        'In-person support for appointments'
+        'All translation and apostille costs',
+        'All official fees and administrative charges',
+        'Language exam costs',
+        '12-month Medical German course',
+        '8 live 1:1 sessions with case advisors / language teachers'
       ]
     }
   ];
@@ -183,19 +177,25 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
     }
   };
 
-  const getPackageDescription = (id: ProductType) => {
-    const languageName = getLanguageForCountry(targetCountry, t);
+  const getPackageIdealFor = (id: ProductType) => {
     switch (id) {
       case 'digital_starter':
-        return t?.payments?.packages?.digitalStarter?.description || 'Expert guidance through every step of your homologation';
+        return t?.payments?.packages?.digitalStarter?.idealFor || 'I already speak the language — I just need paperwork help';
       case 'complete':
-        const descBase = t?.payments?.packages?.complete?.descriptionBase || 'Complete homologation support with medical';
-        const descEnd = t?.payments?.packages?.complete?.descriptionEnd || 'language training';
-        return `${descBase} ${languageName} ${descEnd}`;
+        return t?.payments?.packages?.complete?.idealFor || 'I need both homologation support and language training';
       case 'personal_mentorship':
-        const premiumBase = t?.payments?.packages?.personalMentorship?.descriptionBase || 'We handle everything — translations, fees, paperwork,';
-        const premiumEnd = t?.payments?.packages?.personalMentorship?.descriptionEnd || 'all included';
-        return `${premiumBase} ${premiumEnd}`;
+        return t?.payments?.packages?.personalMentorship?.idealFor || 'Handle everything for me — I just want to arrive and work';
+    }
+  };
+
+  const getIncludesPrefix = (id: ProductType) => {
+    switch (id) {
+      case 'complete':
+        return t?.payments?.packages?.complete?.includesPrefix || 'Everything in Guided Homologation, plus:';
+      case 'personal_mentorship':
+        return t?.payments?.packages?.personalMentorship?.includesPrefix || 'Everything in Homologation+, plus:';
+      default:
+        return null;
     }
   };
 
@@ -309,14 +309,22 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
 
       {/* Package Selection */}
       <div className="grid md:grid-cols-3 gap-6 items-stretch">
-        {packages.map((pkg) => (
+        {packages.map((pkg) => {
+          const includesPrefix = getIncludesPrefix(pkg.id);
+          const zeroExtras = pkg.id === 'personal_mentorship' 
+            ? (t?.payments?.packages?.personalMentorship?.zeroExtras || 'Zero out-of-pocket extras') 
+            : null;
+          
+          return (
           <Card
             key={pkg.id}
             className={`relative cursor-pointer transition-all duration-300 hover:shadow-lg flex flex-col ${
               selectedPackage === pkg.id
                 ? 'border-primary ring-2 ring-primary/20 shadow-lg'
-                : 'border-border hover:border-primary/50'
-            } ${pkg.popular ? 'md:scale-[1.03] z-10' : ''}`}
+                : pkg.popular 
+                  ? 'border-primary/40 shadow-md'
+                  : 'border-border hover:border-primary/50'
+            } ${pkg.popular ? 'md:scale-[1.05] z-10' : ''}`}
             onClick={() => {
               setSelectedPackage(pkg.id);
               setAppliedDiscount(null);
@@ -324,55 +332,67 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
           >
             {pkg.popular && (
               <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                <Badge className="bg-primary text-primary-foreground px-3 py-1">
-                  <Star className="w-3 h-3 mr-1 fill-current" />
+                <Badge className="bg-primary text-primary-foreground px-4 py-1.5 text-sm font-semibold shadow-lg">
+                  <Star className="w-3.5 h-3.5 mr-1.5 fill-current" />
                   {t?.payments?.popular || 'Most Popular'}
                 </Badge>
               </div>
             )}
             
-            <CardHeader className="text-center pt-8 pb-4">
-              <div className={`mx-auto p-3 rounded-full mb-4 ${
-                selectedPackage === pkg.id 
-                  ? 'bg-primary text-primary-foreground' 
-                  : 'bg-muted text-muted-foreground'
-              }`}>
-                {pkg.icon}
-              </div>
+            <CardHeader className="text-center pt-8 pb-2">
               <CardTitle className="text-xl">{getPackageTitle(pkg.id)}</CardTitle>
-              <p className="text-sm text-muted-foreground mt-1">
-                {getPackageDescription(pkg.id)}
+              <p className="text-sm italic text-muted-foreground mt-2 leading-relaxed">
+                "{getPackageIdealFor(pkg.id)}"
               </p>
             </CardHeader>
             
             <CardContent className="text-center pb-6 flex-1 flex flex-col">
               <div className="mb-6">
                 <span className="text-4xl font-bold text-primary">{formatPrice(pkg.price)}</span>
-                {/* Competitor anchor on Tier 3 */}
+                {/* Competitor anchor on Tier 3 — prominent crossed-out style */}
                 {pkg.id === 'personal_mentorship' && (
-                  <div className="mt-2">
-                    <Badge variant="secondary" className="bg-green-100 text-green-700 hover:bg-green-100 border-none dark:bg-green-900/40 dark:text-green-400 text-xs">
+                  <div className="mt-3 flex flex-col items-center gap-1">
+                    <span className="text-sm text-muted-foreground line-through">€8.000–20.000</span>
+                    <span className="text-xs font-medium text-primary">
                       {t?.payments?.competitorAnchor || 'Competitors charge €8,000–20,000'}
-                    </Badge>
+                    </span>
                   </div>
                 )}
               </div>
               
               <div className="space-y-3 text-left">
+                {/* "Includes everything from..." divider for Tier 2 & 3 */}
+                {includesPrefix && (
+                  <div className="pb-2 mb-1 border-b border-border">
+                    <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
+                      {includesPrefix}
+                    </span>
+                  </div>
+                )}
+                
                 {pkg.features.map((feature, index) => (
                   <div key={index} className="flex items-start gap-2">
                     <Check className={`w-4 h-4 mt-0.5 flex-shrink-0 ${
                       selectedPackage === pkg.id ? 'text-primary' : 'text-muted-foreground'
                     }`} />
-                    <span className="text-sm">{feature}</span>
+                    <span className={`text-sm ${pkg.id !== 'digital_starter' ? 'font-medium' : ''}`}>
+                      {feature}
+                    </span>
                   </div>
                 ))}
+                
+                {/* Zero extras callout for Tier 3 */}
+                {zeroExtras && (
+                  <div className="mt-2 pt-2 border-t border-border">
+                    <p className="text-xs font-semibold text-primary text-center">{zeroExtras}</p>
+                  </div>
+                )}
               </div>
               
               <div className="mt-auto pt-8">
                 <Button
                   variant={selectedPackage === pkg.id ? 'default' : 'outline'}
-                  className="w-full"
+                  className={`w-full ${pkg.popular && selectedPackage !== pkg.id ? 'border-primary text-primary hover:bg-primary hover:text-primary-foreground' : ''}`}
                   onClick={(e) => {
                     e.stopPropagation();
                     setSelectedPackage(pkg.id);
@@ -380,13 +400,14 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
                 >
                   {selectedPackage === pkg.id 
                     ? (t?.payments?.selected || 'Selected')
-                    : (t?.payments?.select || 'Select Package')
+                    : (t?.payments?.select || 'Start Now')
                   }
                 </Button>
               </div>
             </CardContent>
           </Card>
-        ))}
+          );
+        })}
       </div>
 
       {/* Single consultation CTA below cards */}

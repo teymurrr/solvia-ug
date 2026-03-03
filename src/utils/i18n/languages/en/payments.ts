@@ -11,7 +11,7 @@ export const payments = {
   popular: 'Most Popular',
   oneTime: 'one-time',
   selected: 'Selected',
-  select: 'Choose This Plan',
+  select: 'Start Now',
   secure: 'Secure Payment',
   support: '24h Support',
   trusted: 'Trusted by 500+',
@@ -29,7 +29,7 @@ export const payments = {
   packages: {
     digitalStarter: {
       title: 'Guided Homologation',
-      description: 'Expert guidance through every step of your homologation',
+      idealFor: 'I already speak the language — I just need paperwork help',
       features: [
         'Preparation and professional review of all required documents',
         'Full representation and communication with local authorities',
@@ -39,10 +39,9 @@ export const payments = {
     },
     complete: {
       titleBase: 'Homologation +',
-      descriptionBase: 'Complete homologation support with medical',
-      descriptionEnd: 'language training',
+      idealFor: 'I need both homologation support and language training',
+      includesPrefix: 'Everything in Guided Homologation, plus:',
       features: [
-        'Everything in Guided Homologation, plus:',
         '12-month Medical German course',
         'Personalized German study plan',
         '4 live 1:1 sessions with case advisors / language teachers',
@@ -51,8 +50,9 @@ export const payments = {
     },
     personalMentorship: {
       titleBase: 'Full All-Inclusive',
-      descriptionBase: 'We handle everything — translations, fees, paperwork,',
-      descriptionEnd: 'all included',
+      idealFor: 'Handle everything for me — I just want to arrive and work',
+      includesPrefix: 'Everything in Homologation+, plus:',
+      zeroExtras: 'Zero out-of-pocket extras',
       features: [
         'All translation and apostille costs',
         'All official fees and administrative charges',
