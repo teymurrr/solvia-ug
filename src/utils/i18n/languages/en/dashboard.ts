@@ -226,7 +226,13 @@ export const dashboard = {
     },
     featuredVacancies: "Featured Vacancies",
     sampleVacancies: "Sample Vacancies",
-    sampleVacanciesDesc: "Examples of vacancy listings from leading healthcare institutions"
+    sampleVacanciesDesc: "Examples of vacancy listings from leading healthcare institutions",
+    applicationsTitle: "Application Management",
+    totalApplications: "total applications",
+    noApplicationsDesc: "Applications will appear here when candidates apply",
+    internalNotes: "Internal Notes",
+    notesPlaceholder: "Add internal notes about this applicant...",
+    notesSaved: "Notes saved successfully",
   },
   // Workforce Analytics
   workforce: {

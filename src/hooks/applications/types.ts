@@ -8,6 +8,7 @@ export interface Application {
   application_date: string;
   status: ApplicationStatus;
   application_data: any;
+  institution_notes?: string;
   vacancy?: {
     title: string;
     institution: string;
@@ -18,7 +19,8 @@ export interface Application {
     last_name: string;
     specialty?: string;
     profile_image?: string;
-    phone?: string;  // Added phone property
+    phone?: string;
+    email?: string;
   };
   // Additional properties used in ApplicationCard
   applicantName?: string;
@@ -33,7 +35,7 @@ export interface Application {
 
 export interface ApplicationFilter {
   status: string;
-  date: string; // Make date required to match usage in InstitutionDashboard.tsx
+  date: string;
 }
 
 export interface ApplicationFilters {
