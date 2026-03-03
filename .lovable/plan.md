@@ -1,57 +1,65 @@
 
 
-# Redesign Payment Cards for Higher Conversion
+# Two-Track Pricing Based on Language Proficiency
 
-## Problems with Current Layout
-1. Abstract icon circles waste vertical space and add no value
-2. No "who is this for" framing -- doctors can't quickly self-select
-3. Middle tier (the conversion target) doesn't visually dominate enough
-4. Feature lists are flat -- no hierarchy between basic and premium features
-5. Passive CTA text ("Choose This Plan") doesn't reinforce outcomes
-6. Price jump from 899 to 3,800 feels abrupt without value framing
+## Pricing Summary
 
-## Proposed Changes
+**Track A — User speaks the country's language (B2+ / C1 / Native)**
 
-### 1. Remove icon circles, add "Ideal for" tagline per tier
-Replace the icon + circle pattern with a short persona line:
-- Tier 1: "I already speak the language, I just need paperwork help"
-- Tier 2: "I need both homologation support and language training"  
-- Tier 3: "Handle everything for me -- I just want to arrive and work"
+| Tier | Spain | DE / AT / FR / IT |
+|------|-------|-------------------|
+| Digital Homologation | €150 | €150 |
+| Personal Assistance | €250 | €289 |
+| All-Inclusive | €350 | €1,900 |
 
-These go right below the package title in italics/muted text, replacing the current generic descriptions.
+**Track B — User does NOT speak the language (A1 / A2 / B1 / Don't know / not set)**
 
-### 2. Make middle tier visually dominant
-- Give it a colored border/background (e.g., light primary tint)
-- Slightly larger scale bump (1.05 instead of 1.03)
-- "Most Popular" badge stays but becomes more prominent
-- Add a subtle "Best Value" or savings indicator: "Save vs. buying separately"
+All countries identical (including Spain): €379 / €899 / €3,800 (current pricing, unchanged)
 
-### 3. Restructure feature lists with visual hierarchy
-- Tier 2 and 3: Bold the differentiating features (the ones not in Tier 1)
-- Use a divider line after "Everything in previous tier" instead of wasting a bullet on it
-- Tier 3: Add a subtle summary line like "Zero out-of-pocket extras" to hammer the all-inclusive message
+## Detection Logic
 
-### 4. Stronger CTA copy
-Replace "Choose This Plan" / "Elegir Este Plan" with outcome-oriented text:
-- EN: "Start Now" / "Get Started"
-- ES: "Empezar Ahora"
-- DE: "Jetzt Starten"
-Update all language files.
+Read `wizardData.languageLevel` from localStorage. User "speaks the language" if value is `B2`, `C1`, or `native_speaker`. Everything else falls into Track B.
 
-### 5. Add per-tier value anchoring on Tier 3
-Move the competitor anchor badge to be more visually prominent -- styled as a crossed-out price or comparison line rather than a small green badge.
+## Package Content — Track A (Speakers)
+
+### Tier 1: Digital Homologation (€150)
+- Document preparation templates and checklists
+- Step-by-step digital guide for the homologation process
+- Email support
+
+*"Ideal for": "I know what I need — I just want the right tools and guidance"*
+
+### Tier 2: Personal Assistance (€250 Spain / €289 others)
+*Everything in Digital, plus:*
+- Personal case manager assigned to you
+- Full representation and communication with authorities
+- Priority support via WhatsApp & email
+
+*"Ideal for": "I want someone to handle the paperwork and talk to the authorities for me"*
+
+### Tier 3: All-Inclusive (€350 Spain / €1,900 others)
+*Everything in Personal, plus:*
+- All translation and apostille costs covered
+- All official fees and administrative charges
+- Zero out-of-pocket extras
+
+*"Ideal for": "Take care of everything — I just want to arrive and work"*
+
+## Package Content — Track B (Non-Speakers)
+
+Unchanged from current implementation. Titles reference the country's language (e.g., "Homologation + German").
 
 ## Files to Modify
-- `src/components/payments/PaymentFlow.tsx` -- restructure card layout, remove icons, add "ideal for" lines, enhance middle tier styling, improve CTAs
-- `src/utils/i18n/languages/en/payments.ts` -- add `idealFor` strings per package, update CTA text
-- `src/utils/i18n/languages/es/payments.ts` -- same
-- `src/utils/i18n/languages/de/payments.ts` -- same
-- `src/utils/i18n/languages/fr/payments.ts` -- same (if exists)
-- `src/utils/i18n/languages/ru/payments.ts` -- same (if exists)
+
+1. **`src/components/payments/PaymentFlow.tsx`** — read `languageLevel`, branch `getPricingByCountry` into two tracks, swap package configs (titles, features, idealFor) based on track, fix equal-height cards
+2. **`src/utils/i18n/languages/en/payments.ts`** — add `speakerPackages` object with titles, idealFor, features for all 3 tiers
+3. **`src/utils/i18n/languages/es/payments.ts`** — same
+4. **`src/utils/i18n/languages/de/payments.ts`** — same
+5. **`src/utils/i18n/languages/fr/payments.ts`** — same
+6. **`src/utils/i18n/languages/ru/payments.ts`** — same
 
 ## What Stays the Same
-- 3-tier structure and pricing (379/899/3800)
-- Discount code functionality
-- Payment summary scroll behavior
-- Consultation CTA below cards
-- Stripe checkout flow
+- 3-card layout, middle tier "Most Popular" styling
+- Discount code flow, payment summary, Stripe checkout
+- Consultation CTA, competitor anchor on Tier 3
+
