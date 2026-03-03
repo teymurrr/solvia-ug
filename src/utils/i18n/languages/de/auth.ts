@@ -22,6 +22,10 @@ export const auth = {
   loginAs: 'Als {{userType}} anmelden',
   loggingIn: 'Anmeldung...',
   needConfirmEmail: 'E-Mail-Bestätigung benötigt?',
+  loginFailed: 'Anmeldung fehlgeschlagen',
+  wrongPassword: 'Bitte überprüfen Sie Ihr Passwort und versuchen Sie es erneut.',
+  noAccount: 'Kein Konto gefunden',
+  noAccountDescription: 'Kein Konto mit dieser E-Mail gefunden. Weiterleitung zur Registrierung.',
   
   // SignUp
   createAccount: 'Konto erstellen',

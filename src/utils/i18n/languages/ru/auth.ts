@@ -22,6 +22,10 @@ export const auth = {
   loginAs: 'Войти как {{userType}}',
   loggingIn: 'Выполняется вход...',
   needConfirmEmail: 'Нужно подтвердить электронную почту?',
+  loginFailed: 'Ошибка входа',
+  wrongPassword: 'Пожалуйста, проверьте пароль и попробуйте снова.',
+  noAccount: 'Аккаунт не найден',
+  noAccountDescription: 'Аккаунт с этим email не найден. Перенаправление на регистрацию.',
   
   // SignUp
   createAccount: 'Создать аккаунт',

@@ -14,6 +14,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { useToast } from '@/hooks/use-toast';
 import { useAuth, UserType } from '@/contexts/AuthContext';
 import { useLanguage } from '@/hooks/useLanguage';
+import { supabase } from '@/integrations/supabase/client';
 
 const loginSchema = z.object({
   email: z.string().email('Please enter a valid email address'),
@@ -69,7 +70,6 @@ const Login = () => {
       console.error('Login error:', error);
       
       if (error.message && error.message.includes('Email not confirmed')) {
-        // Store email for confirmation page
         localStorage.setItem('pendingConfirmationEmail', data.email);
         
         toast({
@@ -79,9 +79,40 @@ const Login = () => {
         });
         
         navigate('/confirm-email');
+      } else if (error.message && error.message.includes('Invalid login credentials')) {
+        // Check if user exists using signInWithOtp with shouldCreateUser: false
+        const { error: otpError } = await supabase.auth.signInWithOtp({ 
+          email: data.email,
+          options: { shouldCreateUser: false }
+        });
+        
+        // When shouldCreateUser is false and user doesn't exist, Supabase returns an error
+        // If no error or error is about OTP being disabled, user exists (wrong password)
+        const userExists = !otpError || 
+                          otpError.message?.toLowerCase().includes('otp_disabled') ||
+                          otpError.message?.toLowerCase().includes('email sending') ||
+                          otpError.status === 429;
+        
+        if (!userExists) {
+          // User doesn't exist - redirect to signup
+          toast({
+            title: t.auth.noAccount || "No Account Found",
+            description: t.auth.noAccountDescription || "No account found with this email. Redirecting to registration.",
+          });
+          
+          const signupPath = userType === 'professional' ? '/signup/professional' : '/signup/institution';
+          navigate(signupPath, { state: { email: data.email } });
+        } else {
+          // User exists but wrong password
+          toast({
+            title: t.auth.loginFailed || "Login Failed",
+            description: t.auth.wrongPassword || "Please check your password and try again.",
+            variant: "destructive",
+          });
+        }
       } else {
         toast({
-          title: "Login Failed",
+          title: t.auth.loginFailed || "Login Failed",
           description: "Please check your email and password and try again.",
           variant: "destructive",
         });
