@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Bookmark, BookmarkCheck } from 'lucide-react';
+import { Bookmark, BookmarkCheck, ChevronDown, ChevronUp, CheckCircle2 } from 'lucide-react';
 import { Building2, MapPin } from 'lucide-react'; 
 import { cn } from '@/lib/utils';
 import { Button } from './ui/button';
@@ -14,6 +14,8 @@ import { useAuth } from '@/contexts/AuthContext';
 import Analytics from '@/utils/analyticsTracking';
 import { getLocalizedVacancyField } from '@/utils/getLocalizedVacancyField';
 import type { Language } from '@/utils/i18n/translations';
+import { getLocalizedJobType, getLocalizedProfession } from '@/utils/jobTranslations';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 
 const getRandomDaysAgo = () => {
   const days = [2, 3, 4, 5, 6, 7, 10];
@@ -112,6 +114,8 @@ const VacancyCard: React.FC<VacancyCardProps> = ({
   const { toast } = useToast();
   const { isLoggedIn } = useAuth();
   const daysAgo = getRandomDaysAgo();
+  const [descOpen, setDescOpen] = useState(false);
+  const [reqOpen, setReqOpen] = useState(false);
   
   // Resolve localized title and description
   const vacancyData = { title, title_en, title_de, title_es, title_fr, title_ru, description, description_en, description_de, description_es, description_fr, description_ru };
@@ -166,20 +170,22 @@ const VacancyCard: React.FC<VacancyCardProps> = ({
           </div>
 
           <div className="flex flex-wrap gap-2 mt-3">
-            <Badge variant="outline" className="bg-gray-50">
-              {specialty}
-            </Badge>
-            <Badge variant="outline" className="bg-gray-50">
-              {t?.vacancies?.jobTypes?.[jobType?.toLowerCase()?.replace(/[-\s]/g, '')] || jobType}
+            {specialty && (
+              <Badge variant="outline" className="bg-muted/50">
+                {specialty}
+              </Badge>
+            )}
+            <Badge variant="outline" className="bg-muted/50">
+              {getLocalizedJobType(jobType, currentLanguage as Language)}
             </Badge>
             {salary && (
-              <Badge variant="outline" className="bg-gray-50">
+              <Badge variant="outline" className="bg-muted/50">
                 {salary}
               </Badge>
             )}
             {profession && (
-              <Badge variant="outline" className="bg-gray-50">
-                {profession}
+              <Badge variant="outline" className="bg-muted/50">
+                {getLocalizedProfession(profession, currentLanguage as Language)}
               </Badge>
             )}
             {isApplied && (
@@ -189,26 +195,37 @@ const VacancyCard: React.FC<VacancyCardProps> = ({
             )}
           </div>
 
-          {/* Display description only if showDescription is true */}
+          {/* Collapsible description */}
           {showDescription && localizedDescription && (
-            <div className="mt-4">
-              <h4 className="text-sm font-medium mb-1">{t?.vacancies?.description || "Description"}</h4>
-              <p className="text-sm text-gray-600 line-clamp-4">{localizedDescription}</p>
-            </div>
+            <Collapsible open={descOpen} onOpenChange={setDescOpen} className="mt-4">
+              <CollapsibleTrigger className="flex items-center justify-between w-full text-sm font-medium py-1.5 hover:text-primary transition-colors">
+                <span>{t?.vacancies?.description || "Description"}</span>
+                {descOpen ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+              </CollapsibleTrigger>
+              <CollapsibleContent>
+                <p className="text-sm text-muted-foreground mt-1 leading-relaxed">{localizedDescription}</p>
+              </CollapsibleContent>
+            </Collapsible>
           )}
 
-          {/* Display requirements only if showRequirements is true */}
+          {/* Collapsible requirements with better styling */}
           {showRequirements && requirements && requirements.length > 0 && (
-            <div className="mt-4">
-              <h4 className="text-sm font-medium mb-1">{t?.vacancies?.keyRequirements || "Key Requirements"}</h4>
-              <ul className="text-sm text-gray-600 pl-5">
-                {requirements.map((requirement, index) => (
-                  <li key={index} className="list-disc">
-                    <span className="line-clamp-1">{requirement}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
+            <Collapsible open={reqOpen} onOpenChange={setReqOpen} className="mt-3">
+              <CollapsibleTrigger className="flex items-center justify-between w-full text-sm font-medium py-1.5 hover:text-primary transition-colors">
+                <span>{t?.vacancies?.keyRequirements || "Key Requirements"}</span>
+                {reqOpen ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+              </CollapsibleTrigger>
+              <CollapsibleContent>
+                <ul className="mt-2 space-y-1.5">
+                  {requirements.map((requirement, index) => (
+                    <li key={index} className="flex items-start gap-2 text-sm text-muted-foreground">
+                      <CheckCircle2 className="h-4 w-4 mt-0.5 text-primary/70 shrink-0" />
+                      <span>{requirement}</span>
+                    </li>
+                  ))}
+                </ul>
+              </CollapsibleContent>
+            </Collapsible>
           )}
 
           {createdAt && !isDashboardCard && (

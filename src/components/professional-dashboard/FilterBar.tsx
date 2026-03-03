@@ -19,6 +19,8 @@ import {
 import { Briefcase, MapPin, Building } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
 import { getLocalizedCountryName } from '@/utils/countryTranslations';
+import { getLocalizedJobType } from '@/utils/jobTranslations';
+import type { Language } from '@/utils/i18n/translations';
 
 interface FilterBarProps {
   jobTypes: string[];
@@ -86,7 +88,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
                       onCheckedChange={() => toggleJobType(jobType)}
                     >
                       {getJobTypeIcon(jobType)}
-                      {jobType}
+                      {getLocalizedJobType(jobType, currentLanguage as Language)}
                     </DropdownMenuCheckboxItem>
                   ))}
                 </DropdownMenuContent>

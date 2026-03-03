@@ -25,7 +25,10 @@ export const dashboard: DashboardTranslations = {
     location: "Emplacement",
     institution: "Institution",
     department: "Département",
-    requirements: "Exigences"
+    requirements: "Exigences",
+    jobType: "Type d'emploi",
+    country: "Pays",
+    city: "Ville"
   },
   profile: {
     title: "Votre Profil",
