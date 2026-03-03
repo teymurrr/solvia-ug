@@ -378,7 +378,7 @@ export const dashboard = {
     readiness: "Ihre Bereitschaft",
     stepsCompleted: "Schritte abgeschlossen",
     gettingStarted: "Erste Schritte",
-    allComplete: "Alles erledigt! Entdecken Sie weiter Möglichkeiten.",
+    allComplete: "Alles erledigt! Entdecken Sie weitere Möglichkeiten.",
     checklistProfile: "Profil vervollständigen",
     checklistExperience: "Berufserfahrung & Ausbildung hinzufügen",
     checklistLanguages: "Sprachkenntnisse hinzufügen",
