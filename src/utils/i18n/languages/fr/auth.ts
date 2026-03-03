@@ -22,6 +22,10 @@ export const auth = {
   loginAs: 'Se connecter en tant que {{userType}}',
   loggingIn: 'Connexion en cours...',
   needConfirmEmail: 'Besoin de confirmer votre email ?',
+  loginFailed: 'Échec de la connexion',
+  wrongPassword: 'Veuillez vérifier votre mot de passe et réessayer.',
+  noAccount: 'Aucun compte trouvé',
+  noAccountDescription: 'Aucun compte trouvé avec cet email. Redirection vers l\'inscription.',
   
   // SignUp
   createAccount: 'Créer un compte',

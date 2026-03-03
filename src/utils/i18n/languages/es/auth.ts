@@ -22,6 +22,10 @@ export const auth = {
   loginAs: 'Iniciar sesión como {{userType}}',
   loggingIn: 'Iniciando sesión...',
   needConfirmEmail: '¿Necesita confirmar su correo electrónico?',
+  loginFailed: 'Error de inicio de sesión',
+  wrongPassword: 'Por favor, verifique su contraseña e inténtelo de nuevo.',
+  noAccount: 'Cuenta no encontrada',
+  noAccountDescription: 'No se encontró una cuenta con este correo. Redirigiendo al registro.',
   
   // SignUp
   createAccount: 'Crear una cuenta',
