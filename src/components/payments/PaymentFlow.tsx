@@ -306,11 +306,11 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
         </p>
       </div>
 
-
       {/* Package Selection */}
-      <div className="grid md:grid-cols-3 gap-6 items-stretch">
+      <div className="grid md:grid-cols-3 gap-6 items-start">
         {packages.map((pkg) => {
           const includesPrefix = getIncludesPrefix(pkg.id);
+          const isSelected = selectedPackage === pkg.id;
           const zeroExtras = pkg.id === 'personal_mentorship' 
             ? (t?.payments?.packages?.personalMentorship?.zeroExtras || 'Zero out-of-pocket extras') 
             : null;
@@ -319,12 +319,12 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
           <Card
             key={pkg.id}
             className={`relative cursor-pointer transition-all duration-300 hover:shadow-lg flex flex-col ${
-              selectedPackage === pkg.id
+              isSelected
                 ? 'border-primary ring-2 ring-primary/20 shadow-lg'
                 : pkg.popular 
                   ? 'border-primary/40 shadow-md'
                   : 'border-border hover:border-primary/50'
-            } ${pkg.popular ? 'md:scale-[1.05] z-10' : ''}`}
+            } ${pkg.popular ? 'md:scale-[1.03] z-10' : ''}`}
             onClick={() => {
               setSelectedPackage(pkg.id);
               setAppliedDiscount(null);
@@ -339,43 +339,49 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
               </div>
             )}
             
-            <CardHeader className="text-center pt-8 pb-2">
-              <CardTitle className="text-xl">{getPackageTitle(pkg.id)}</CardTitle>
-              <p className="text-sm italic text-muted-foreground mt-2 leading-relaxed">
+            {/* Fixed-height header zone */}
+            <CardHeader className="text-center pt-8 pb-0 space-y-3">
+              <CardTitle className="text-xl leading-tight min-h-[28px]">{getPackageTitle(pkg.id)}</CardTitle>
+              <p className="text-sm italic text-muted-foreground leading-relaxed min-h-[40px]">
                 "{getPackageIdealFor(pkg.id)}"
               </p>
-            </CardHeader>
-            
-            <CardContent className="text-center pb-6 flex-1 flex flex-col">
-              <div className="mb-6">
+              
+              {/* Price — always same position */}
+              <div className="pt-2 pb-1">
                 <span className="text-4xl font-bold text-primary">{formatPrice(pkg.price)}</span>
-                {/* Competitor anchor on Tier 3 — prominent crossed-out style */}
-                {pkg.id === 'personal_mentorship' && (
-                  <div className="mt-3 flex flex-col items-center gap-1">
+              </div>
+
+              {/* Competitor anchor or spacer to keep alignment */}
+              <div className="min-h-[36px] flex flex-col items-center justify-center">
+                {pkg.id === 'personal_mentorship' ? (
+                  <>
                     <span className="text-sm text-muted-foreground line-through">€8.000–20.000</span>
                     <span className="text-xs font-medium text-primary">
                       {t?.payments?.competitorAnchor || 'Competitors charge €8,000–20,000'}
                     </span>
-                  </div>
-                )}
+                  </>
+                ) : null}
               </div>
+            </CardHeader>
+            
+            <CardContent className="pt-0 pb-6 flex-1 flex flex-col">
+              {/* Divider */}
+              <div className="border-t border-border my-4" />
               
-              <div className="space-y-3 text-left">
-                {/* "Includes everything from..." divider for Tier 2 & 3 */}
+              <div className="space-y-3 text-left flex-1">
+                {/* "Includes everything from..." label */}
                 {includesPrefix && (
-                  <div className="pb-2 mb-1 border-b border-border">
-                    <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
-                      {includesPrefix}
-                    </span>
-                  </div>
+                  <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide pb-1">
+                    {includesPrefix}
+                  </p>
                 )}
                 
                 {pkg.features.map((feature, index) => (
-                  <div key={index} className="flex items-start gap-2">
+                  <div key={index} className="flex items-start gap-2.5">
                     <Check className={`w-4 h-4 mt-0.5 flex-shrink-0 ${
-                      selectedPackage === pkg.id ? 'text-primary' : 'text-muted-foreground'
+                      isSelected ? 'text-primary' : 'text-primary/60'
                     }`} />
-                    <span className={`text-sm ${pkg.id !== 'digital_starter' ? 'font-medium' : ''}`}>
+                    <span className={`text-sm leading-snug ${pkg.id !== 'digital_starter' ? 'font-medium' : ''}`}>
                       {feature}
                     </span>
                   </div>
@@ -383,22 +389,23 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
                 
                 {/* Zero extras callout for Tier 3 */}
                 {zeroExtras && (
-                  <div className="mt-2 pt-2 border-t border-border">
+                  <div className="mt-2 pt-3 border-t border-border">
                     <p className="text-xs font-semibold text-primary text-center">{zeroExtras}</p>
                   </div>
                 )}
               </div>
               
-              <div className="mt-auto pt-8">
+              {/* CTA — always pinned to bottom */}
+              <div className="pt-6 mt-auto">
                 <Button
-                  variant={selectedPackage === pkg.id ? 'default' : 'outline'}
-                  className={`w-full ${pkg.popular && selectedPackage !== pkg.id ? 'border-primary text-primary hover:bg-primary hover:text-primary-foreground' : ''}`}
+                  variant={isSelected ? 'default' : 'outline'}
+                  className={`w-full h-12 text-base ${pkg.popular && !isSelected ? 'border-primary text-primary hover:bg-primary hover:text-primary-foreground' : ''}`}
                   onClick={(e) => {
                     e.stopPropagation();
                     setSelectedPackage(pkg.id);
                   }}
                 >
-                  {selectedPackage === pkg.id 
+                  {isSelected 
                     ? (t?.payments?.selected || 'Selected')
                     : (t?.payments?.select || 'Start Now')
                   }
@@ -410,7 +417,7 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
         })}
       </div>
 
-      {/* Single consultation CTA below cards */}
+      {/* Consultation CTA */}
       <div className="text-center py-2">
         <span className="text-muted-foreground text-sm">
           {t?.payments?.notSure || 'Not sure yet?'}{' '}
