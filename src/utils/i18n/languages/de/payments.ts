@@ -11,7 +11,7 @@ export const payments = {
   popular: 'Beliebteste',
   oneTime: 'einmalig',
   selected: 'Ausgewählt',
-  select: 'Diesen Plan Wählen',
+  select: 'Jetzt Starten',
   secure: 'Sichere Zahlung',
   support: '24h Support',
   trusted: 'Vertraut von 500+',
@@ -29,7 +29,7 @@ export const payments = {
   packages: {
     digitalStarter: {
       title: 'Begleitete Homologation',
-      description: 'Expertenbegleitung bei jedem Schritt Ihrer Approbation',
+      idealFor: 'Ich spreche die Sprache — ich brauche nur Hilfe beim Papierkram',
       features: [
         'Vorbereitung und professionelle Prüfung aller erforderlichen Dokumente',
         'Vollständige Vertretung und Kommunikation mit lokalen Behörden',
@@ -39,10 +39,9 @@ export const payments = {
     },
     complete: {
       titleBase: 'Homologation +',
-      descriptionBase: 'Komplette Homologationsunterstützung mit medizinischem',
-      descriptionEnd: 'Sprachtraining',
+      idealFor: 'Ich brauche Homologation und Sprachtraining',
+      includesPrefix: 'Alles aus Begleitete Homologation, plus:',
       features: [
-        'Alles aus Begleitete Homologation, plus:',
         '12 Monate Medizinischer Deutschkurs',
         'Personalisierter Deutsch-Lernplan',
         '4 Live-1:1-Sitzungen mit Fallberatern / Sprachlehrern',
@@ -51,8 +50,9 @@ export const payments = {
     },
     personalMentorship: {
       titleBase: 'Komplett All-Inclusive',
-      descriptionBase: 'Wir kümmern uns um alles — Übersetzungen, Gebühren, Papierkram,',
-      descriptionEnd: 'alles inklusive',
+      idealFor: 'Kümmert euch um alles — ich will einfach ankommen und arbeiten',
+      includesPrefix: 'Alles aus Homologation+, plus:',
+      zeroExtras: 'Keine zusätzlichen Kosten',
       features: [
         'Alle Übersetzungs- und Apostillekosten',
         'Alle offiziellen Gebühren und Verwaltungskosten',

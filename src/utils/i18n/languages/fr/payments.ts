@@ -11,7 +11,7 @@ export const payments = {
   popular: 'Plus Populaire',
   oneTime: 'paiement unique',
   selected: 'Sélectionné',
-  select: 'Choisir Ce Plan',
+  select: 'Commencer Maintenant',
   secure: 'Paiement Sécurisé',
   support: 'Support 24h',
   trusted: 'Approuvé par 500+',
@@ -29,7 +29,7 @@ export const payments = {
   packages: {
     digitalStarter: {
       title: 'Homologation Guidée',
-      description: 'Accompagnement expert à chaque étape de votre homologation',
+      idealFor: 'Je parle déjà la langue — j\'ai juste besoin d\'aide pour les démarches',
       features: [
         'Révision personnelle des documents avant soumission',
         'Communication directe avec les autorités en votre nom',
@@ -40,10 +40,9 @@ export const payments = {
     },
     complete: {
       titleBase: 'Homologation +',
-      descriptionBase: 'Accompagnement complet d\'homologation avec formation en',
-      descriptionEnd: 'langue médicale',
+      idealFor: 'J\'ai besoin du soutien à l\'homologation et de la formation linguistique',
+      includesPrefix: 'Tout de l\'Homologation Guidée, plus :',
       features: [
-        'Tout de l\'Homologation Guidée',
         'Cours de langue médicale pendant 12 mois',
         '4 sessions de coaching en direct 1:1 (60 min)',
         'Gestionnaire de cas dédié',
@@ -52,8 +51,9 @@ export const payments = {
     },
     personalMentorship: {
       titleBase: 'Tout Inclus',
-      descriptionBase: 'Nous gérons tout — traductions, frais, paperasse,',
-      descriptionEnd: 'tout compris',
+      idealFor: 'Occupez-vous de tout — je veux juste arriver et travailler',
+      includesPrefix: 'Tout de Homologation+, plus :',
+      zeroExtras: 'Zéro frais supplémentaires',
       features: [
         'Tous les frais de traduction et d\'apostille inclus',
         'Tous les frais et charges officiels couverts',
