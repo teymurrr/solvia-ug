@@ -75,7 +75,6 @@ export default function useDashboard(userId?: string) {
         throw error;
       }
       
-      // Extract just the vacancy IDs
       const savedIds = data.map(item => item.vacancy_id);
       setSavedVacancies(savedIds);
       return savedIds;
@@ -101,7 +100,6 @@ export default function useDashboard(userId?: string) {
         throw error;
       }
       
-      // Extract just the vacancy IDs
       const appliedIds = data.map(item => item.vacancy_id);
       setAppliedVacancies(appliedIds);
       return appliedIds;
@@ -200,7 +198,6 @@ export default function useDashboard(userId?: string) {
     
     try {
       if (isSaved) {
-        // Delete from saved vacancies
         const { error } = await supabase
           .from('saved_vacancies')
           .delete()
@@ -216,7 +213,6 @@ export default function useDashboard(userId?: string) {
           description: "The vacancy has been removed from your saved list.",
         });
       } else {
-        // Add to saved vacancies
         const { error } = await supabase
           .from('saved_vacancies')
           .insert({
@@ -264,7 +260,6 @@ export default function useDashboard(userId?: string) {
 
   const handleProfileSave = useCallback(async (data: ProfileFormValues) => {
     setProfileData(data);
-    // After profile save, ensure we refresh the data from the database
     await refreshProfileData();
   }, [refreshProfileData]);
 
@@ -285,21 +280,24 @@ export default function useDashboard(userId?: string) {
     
     if (selectedCountry) {
       filtered = filtered.filter(vacancy => 
-        vacancy.country?.includes(selectedCountry) || 
-        vacancy.location.includes(selectedCountry)
+        vacancy.country?.toLowerCase() === selectedCountry.toLowerCase()
       );
     }
     
     if (selectedCity) {
       filtered = filtered.filter(vacancy => 
-        vacancy.city?.includes(selectedCity) || 
-        vacancy.location.includes(selectedCity)
+        vacancy.city?.toLowerCase() === selectedCity.toLowerCase()
       );
     }
     
     setVacancyResults(filtered);
     setCurrentPage(1);
   }, [searchQuery, selectedJobTypes, selectedCountry, selectedCity, institutionVacancies]);
+
+  // Auto-trigger filtering when filters change
+  useEffect(() => {
+    handleSearch();
+  }, [selectedJobTypes, selectedCountry, selectedCity, handleSearch]);
 
   // Mark a vacancy as applied
   const applyToVacancy = useCallback(async (vacancyId: string) => {
@@ -313,7 +311,6 @@ export default function useDashboard(userId?: string) {
     }
     
     try {
-      // Check if already applied
       if (appliedVacancies.includes(vacancyId)) {
         toast({
           title: "Already Applied",
@@ -322,7 +319,6 @@ export default function useDashboard(userId?: string) {
         return false;
       }
       
-      // Add to applied vacancies
       const { error } = await supabase
         .from('applied_vacancies')
         .insert({
@@ -333,7 +329,6 @@ export default function useDashboard(userId?: string) {
         
       if (error) throw error;
       
-      // Update local state
       setAppliedVacancies(prev => [...prev, vacancyId]);
       
       toast({
@@ -386,6 +381,6 @@ export default function useDashboard(userId?: string) {
     applyToVacancy,
     refreshSavedVacancies: fetchSavedVacancies,
     refreshAppliedVacancies: fetchAppliedVacancies,
-    removeSavedVacancy // Added this function
+    removeSavedVacancy
   };
 }

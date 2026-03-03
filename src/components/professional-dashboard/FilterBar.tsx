@@ -18,6 +18,7 @@ import {
 } from '@/components/ui/tooltip';
 import { Briefcase, MapPin, Building } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
+import { getLocalizedCountryName } from '@/utils/countryTranslations';
 
 interface FilterBarProps {
   jobTypes: string[];
@@ -48,9 +49,8 @@ const FilterBar: React.FC<FilterBarProps> = ({
   resetFilters,
   getJobTypeIcon
 }) => {
-  const { t } = useLanguage();
+  const { t, currentLanguage } = useLanguage();
   
-  // Ensure that t.dashboard.vacancies has the needed properties
   const vacancyText = t?.dashboard?.vacancies || {
     jobType: "Job Type",
     country: "Country",
@@ -93,7 +93,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
               </DropdownMenu>
             </div>
           </TooltipTrigger>
-          <TooltipContent>Filter by job type</TooltipContent>
+          <TooltipContent>{vacancyText.jobType || "Filter by job type"}</TooltipContent>
         </Tooltip>
       </TooltipProvider>
 
@@ -127,14 +127,14 @@ const FilterBar: React.FC<FilterBarProps> = ({
                       }}
                     >
                       <MapPin className="h-4 w-4 mr-2" />
-                      {country}
+                      {getLocalizedCountryName(country, currentLanguage)}
                     </DropdownMenuCheckboxItem>
                   ))}
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
           </TooltipTrigger>
-          <TooltipContent>Filter by country</TooltipContent>
+          <TooltipContent>{vacancyText.country || "Filter by country"}</TooltipContent>
         </Tooltip>
       </TooltipProvider>
 
@@ -175,7 +175,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
               </DropdownMenu>
             </div>
           </TooltipTrigger>
-          <TooltipContent>Filter by city</TooltipContent>
+          <TooltipContent>{vacancyText.city || "Filter by city"}</TooltipContent>
         </Tooltip>
       </TooltipProvider>
 
