@@ -294,7 +294,13 @@ export const dashboard = {
     },
     featuredVacancies: "Ausgewählte Stellen",
     sampleVacancies: "Beispielstellen",
-    sampleVacanciesDesc: "Beispiele für Stellenanzeigen führender Gesundheitseinrichtungen"
+    sampleVacanciesDesc: "Beispiele für Stellenanzeigen führender Gesundheitseinrichtungen",
+    applicationsTitle: "Bewerbungsverwaltung",
+    totalApplications: "Bewerbungen insgesamt",
+    noApplicationsDesc: "Bewerbungen erscheinen hier, sobald sich Kandidaten bewerben",
+    internalNotes: "Interne Notizen",
+    notesPlaceholder: "Notizen zu diesem Bewerber hinzufügen...",
+    notesSaved: "Notizen gespeichert",
   },
   // Workforce Analytics
   workforce: {

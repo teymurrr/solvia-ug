@@ -20,6 +20,7 @@ export type Database = {
           application_date: string
           created_at: string
           id: string
+          institution_notes: string | null
           status: string
           updated_at: string
           user_id: string
@@ -30,6 +31,7 @@ export type Database = {
           application_date?: string
           created_at?: string
           id?: string
+          institution_notes?: string | null
           status?: string
           updated_at?: string
           user_id: string
@@ -40,6 +42,7 @@ export type Database = {
           application_date?: string
           created_at?: string
           id?: string
+          institution_notes?: string | null
           status?: string
           updated_at?: string
           user_id?: string

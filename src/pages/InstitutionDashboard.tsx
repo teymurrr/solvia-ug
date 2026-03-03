@@ -4,7 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import VacancyForm from '@/components/VacancyForm';
 import { VacanciesTab, TalentsTab, DashboardHeader } from '@/components/institution-dashboard';
 import AnalyticsTab from '@/components/institution-dashboard/ProfileTab';
-import ApplicationsTab from '@/components/institution-dashboard/ApplicationsTab';
+import KanbanApplications from '@/components/institution-dashboard/KanbanApplications';
 import { useProfessionals } from '@/hooks/useProfessionals';
 import { useVacancies, VacancyInput } from '@/hooks/useVacancies';
 import { useApplications } from '@/hooks/applications';
@@ -13,6 +13,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useLocation } from 'react-router-dom';
 import { featuredVacancies } from '@/data/landingPageData';
 import { useLanguage } from '@/hooks/useLanguage';
+import { Badge } from '@/components/ui/badge';
 
 const InstitutionDashboard = () => {
   const { t } = useLanguage();
@@ -30,19 +31,13 @@ const InstitutionDashboard = () => {
     refreshProfessionals
   } = useProfessionals();
   
-  // Use the enhanced applications hook
   const {
     applications,
     filteredApplications,
     loading: applicationsLoading,
     error: applicationsError,
-    searchQuery: applicationsSearchQuery,
-    filters: applicationsFilters,
-    handleSearchQueryChange: handleApplicationsSearchQueryChange,
-    handleFilterChange: handleApplicationsFilterChange,
     updateApplicationStatus,
     refreshApplications,
-    updateApplicationFilters
   } = useApplications();
   
   const { 
@@ -65,32 +60,25 @@ const InstitutionDashboard = () => {
   const [activeTab, setActiveTab] = useState('analytics');
   const { toast } = useToast();
   
-  // Get active tab from location state if available
   useEffect(() => {
     if (location.state?.activeTab) {
       setActiveTab(location.state.activeTab);
     }
   }, [location.state]);
   
-  // Filter vacancies to show only those created by the current institution
   const institutionVacancies = user?.id ? 
     vacancies.filter(vacancy => vacancy.institution_id === user.id) : 
     [];
 
-  useEffect(() => {
-    // Log information about current authentication state
-    console.log("Current user ID:", user?.id);
-    console.log("All vacancies:", vacancies);
-    console.log("Filtered institution vacancies:", institutionVacancies);
-  }, [user, vacancies, institutionVacancies]);
-
-  // If authentication state changes, refresh data
   useEffect(() => {
     if (user?.id) {
       refreshVacancies();
       refreshApplications();
     }
   }, [user]);
+
+  // Count new (pending) applications for badge
+  const pendingCount = applications.filter(a => a.status === 'pending').length;
 
   const handleSearch = () => {
     if (!professionals) return;
@@ -147,8 +135,6 @@ const InstitutionDashboard = () => {
   };
 
   const handleAddVacancySubmit = async (data: VacancyInput) => {
-    console.log("Handling vacancy submission with data:", data);
-    
     if (!user?.id) {
       toast({
         title: "Authentication required",
@@ -158,32 +144,25 @@ const InstitutionDashboard = () => {
       return;
     }
     
-    // Make sure institution_id is set
     const vacancyWithInstitutionId = {
       ...data,
       institution_id: user.id,
     };
     
-    console.log("Submitting vacancy with institution ID:", vacancyWithInstitutionId);
-    
     let result;
     if (vacancyFormMode === 'edit' && currentVacancy) {
-      // Update existing vacancy
       result = await handleUpdateVacancy({
         ...vacancyWithInstitutionId,
         id: currentVacancy.id
       });
     } else {
-      // Create new vacancy
       result = await handleAddVacancy(vacancyWithInstitutionId);
     }
     
     if (result) {
       setVacancyFormOpen(false);
-      // Reset form state
       setVacancyFormMode('create');
       setCurrentVacancy(null);
-      // Force refresh vacancies to ensure we see the new one
       setTimeout(() => {
         refreshVacancies();
       }, 500);
@@ -202,13 +181,7 @@ const InstitutionDashboard = () => {
     setVacancyFormOpen(true);
   };
 
-  const handleApplicationSearch = () => {
-    // Handled by the useApplications hook
-    console.log("Application search triggered");
-  };
-
   const handleEmptyAction = () => {
-    // Empty function - no action needed for display-only vacancies
     console.log("This action is not available for sample vacancies");
   };
 
@@ -234,7 +207,14 @@ const InstitutionDashboard = () => {
             <TabsList className="grid w-full md:w-auto grid-cols-4">
               <TabsTrigger value="analytics">{t?.dashboard?.institution?.tabs?.analytics || 'Analytics'}</TabsTrigger>
               <TabsTrigger value="vacancies">{t?.dashboard?.institution?.tabs?.vacancies || 'Your Vacancies'}</TabsTrigger>
-              <TabsTrigger value="applications">{t?.dashboard?.institution?.tabs?.applications || 'Applications'}</TabsTrigger>
+              <TabsTrigger value="applications" className="relative">
+                {t?.dashboard?.institution?.tabs?.applications || 'Applications'}
+                {pendingCount > 0 && (
+                  <Badge className="ml-1.5 h-5 min-w-[20px] px-1.5 text-xs bg-red-500 text-white">
+                    {pendingCount}
+                  </Badge>
+                )}
+              </TabsTrigger>
               <TabsTrigger value="talents">{t?.dashboard?.institution?.tabs?.talents || 'Talent Search'}</TabsTrigger>
             </TabsList>
             
@@ -253,18 +233,12 @@ const InstitutionDashboard = () => {
             </TabsContent>
             
             <TabsContent value="applications" className="space-y-6">
-              <ApplicationsTab 
+              <KanbanApplications
                 applications={applications}
-                filteredApplications={filteredApplications}
                 loading={applicationsLoading}
                 error={applicationsError}
-                searchQuery={applicationsSearchQuery}
-                onSearchQueryChange={handleApplicationsSearchQueryChange}
-                onSearch={handleApplicationSearch}
-                filters={applicationsFilters}
-                onFilterChange={handleApplicationsFilterChange}
-                refreshApplications={refreshApplications}
                 onUpdateStatus={updateApplicationStatus}
+                refreshApplications={refreshApplications}
               />
             </TabsContent>
             
@@ -282,7 +256,6 @@ const InstitutionDashboard = () => {
                 refreshProfessionals={refreshProfessionals}
               />
               
-              {/* Add the sample vacancies section to the talents tab */}
               {!professionalsLoading && (
                 <div className="mt-8">
                   <h2 className="text-xl font-semibold mb-4">Featured Vacancies</h2>
