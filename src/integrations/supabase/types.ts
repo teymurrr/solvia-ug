@@ -1512,6 +1512,11 @@ export type Database = {
           created_at: string
           department: string
           description: string
+          description_de: string | null
+          description_en: string | null
+          description_es: string | null
+          description_fr: string | null
+          description_ru: string | null
           id: string
           institution: string
           institution_id: string | null
@@ -1523,6 +1528,11 @@ export type Database = {
           salary: string | null
           specialty: string | null
           title: string
+          title_de: string | null
+          title_en: string | null
+          title_es: string | null
+          title_fr: string | null
+          title_ru: string | null
           updated_at: string
         }
         Insert: {
@@ -1533,6 +1543,11 @@ export type Database = {
           created_at?: string
           department: string
           description: string
+          description_de?: string | null
+          description_en?: string | null
+          description_es?: string | null
+          description_fr?: string | null
+          description_ru?: string | null
           id?: string
           institution: string
           institution_id?: string | null
@@ -1544,6 +1559,11 @@ export type Database = {
           salary?: string | null
           specialty?: string | null
           title: string
+          title_de?: string | null
+          title_en?: string | null
+          title_es?: string | null
+          title_fr?: string | null
+          title_ru?: string | null
           updated_at?: string
         }
         Update: {
@@ -1554,6 +1574,11 @@ export type Database = {
           created_at?: string
           department?: string
           description?: string
+          description_de?: string | null
+          description_en?: string | null
+          description_es?: string | null
+          description_fr?: string | null
+          description_ru?: string | null
           id?: string
           institution?: string
           institution_id?: string | null
@@ -1565,6 +1590,11 @@ export type Database = {
           salary?: string | null
           specialty?: string | null
           title?: string
+          title_de?: string | null
+          title_en?: string | null
+          title_es?: string | null
+          title_fr?: string | null
+          title_ru?: string | null
           updated_at?: string
         }
         Relationships: []
