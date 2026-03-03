@@ -62,6 +62,38 @@ export const payments = {
       ]
     }
   },
+  speakerPackages: {
+    digitalStarter: {
+      title: 'Digitale Homologation',
+      idealFor: 'Ich weiß, was ich brauche — ich möchte nur die richtigen Werkzeuge und Anleitung',
+      features: [
+        'Dokumentenvorlagen und Checklisten',
+        'Schritt-für-Schritt digitaler Leitfaden für den Homologationsprozess',
+        'E-Mail-Support'
+      ]
+    },
+    complete: {
+      title: 'Persönliche Assistenz',
+      idealFor: 'Ich möchte, dass jemand den Papierkram erledigt und mit den Behörden spricht',
+      includesPrefix: 'Alles aus Digitale Homologation, plus:',
+      features: [
+        'Persönlicher Fallmanager',
+        'Vollständige Vertretung und Kommunikation mit Behörden',
+        'Prioritäts-Support per WhatsApp & E-Mail'
+      ]
+    },
+    personalMentorship: {
+      title: 'All-Inclusive',
+      idealFor: 'Kümmert euch um alles — ich will einfach ankommen und arbeiten',
+      includesPrefix: 'Alles aus Persönliche Assistenz, plus:',
+      zeroExtras: 'Keine zusätzlichen Kosten',
+      features: [
+        'Alle Übersetzungs- und Apostillekosten inklusive',
+        'Alle offiziellen Gebühren und Verwaltungskosten',
+        'Keine zusätzlichen Kosten'
+      ]
+    }
+  },
   discountCode: {
     label: 'Rabattcode',
     placeholder: 'Rabattcode eingeben',

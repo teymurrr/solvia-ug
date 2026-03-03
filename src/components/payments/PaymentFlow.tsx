@@ -34,13 +34,23 @@ interface PackageConfig {
   features: string[];
 }
 
-const getPricingByCountry = (country: string | null): Record<ProductType, number> => {
-  // All countries use the same pricing for now
-  return {
-    digital_starter: 37900,
-    complete: 89900,
-    personal_mentorship: 380000,
-  };
+const SPEAKER_LEVELS = ['B2', 'C1', 'native_speaker'];
+
+const isSpeaker = (languageLevel: string | null): boolean => {
+  if (!languageLevel) return false;
+  return SPEAKER_LEVELS.includes(languageLevel);
+};
+
+const getPricingByCountry = (country: string | null, speaksLanguage: boolean): Record<ProductType, number> => {
+  if (speaksLanguage) {
+    if (country === 'spain') {
+      return { digital_starter: 15000, complete: 25000, personal_mentorship: 35000 };
+    }
+    // DE / AT / FR / IT
+    return { digital_starter: 15000, complete: 28900, personal_mentorship: 190000 };
+  }
+  // Track B: non-speakers — all countries same
+  return { digital_starter: 37900, complete: 89900, personal_mentorship: 380000 };
 };
 
 interface CountryNames {
@@ -89,6 +99,7 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
   const [isValidatingDiscount, setIsValidatingDiscount] = useState(false);
   const [isProcessingPayment, setIsProcessingPayment] = useState(false);
   const [targetCountry, setTargetCountry] = useState<string | null>(null);
+  const [languageLevel, setLanguageLevel] = useState<string | null>(null);
   const [guestEmail, setGuestEmail] = useState('');
   const [fallbackUrl, setFallbackUrl] = useState<string | null>(null);
   const [showFallbackDialog, setShowFallbackDialog] = useState(false);
@@ -110,6 +121,7 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
       try {
         const wizardData = JSON.parse(wizardDataStr);
         setTargetCountry(wizardData.targetCountry || null);
+        setLanguageLevel(wizardData.languageLevel || null);
         if (wizardData.email) {
           setGuestEmail(wizardData.email);
         }
@@ -127,73 +139,120 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
     }
   }, [selectedPackage]);
 
-  const pricing = getPricingByCountry(targetCountry);
+  const speaksLanguage = isSpeaker(languageLevel);
+  const pricing = getPricingByCountry(targetCountry, speaksLanguage);
 
-  const packages: PackageConfig[] = [
-    {
-      id: 'digital_starter',
-      price: pricing.digital_starter,
-      features: t?.payments?.packages?.digitalStarter?.features || [
-        'Preparation and professional review of all required documents',
-        'Full representation and communication with local authorities',
-        'Step-by-step guidance from document preparation to submission',
-        'Priority support via WhatsApp & email'
+  const speakerPkgs = t?.payments?.speakerPackages;
+  const nonSpeakerPkgs = t?.payments?.packages;
+
+  const packages: PackageConfig[] = speaksLanguage
+    ? [
+        {
+          id: 'digital_starter',
+          price: pricing.digital_starter,
+          features: speakerPkgs?.digitalStarter?.features || [
+            'Document preparation templates and checklists',
+            'Step-by-step digital guide for the homologation process',
+            'Email support'
+          ]
+        },
+        {
+          id: 'complete',
+          price: pricing.complete,
+          popular: true,
+          features: speakerPkgs?.complete?.features || [
+            'Personal case manager assigned to you',
+            'Full representation and communication with authorities',
+            'Priority support via WhatsApp & email'
+          ]
+        },
+        {
+          id: 'personal_mentorship',
+          price: pricing.personal_mentorship,
+          features: speakerPkgs?.personalMentorship?.features || [
+            'All translation and apostille costs covered',
+            'All official fees and administrative charges',
+            'Zero out-of-pocket extras'
+          ]
+        }
       ]
-    },
-    {
-      id: 'complete',
-      price: pricing.complete,
-      popular: true,
-      features: t?.payments?.packages?.complete?.features || [
-        '12-month Medical German course',
-        'Personalized German study plan',
-        '4 live 1:1 sessions with case advisors / language teachers',
-        'Dedicated Case Manager'
-      ]
-    },
-    {
-      id: 'personal_mentorship',
-      price: pricing.personal_mentorship,
-      features: t?.payments?.packages?.personalMentorship?.features || [
-        'All translation and apostille costs',
-        'All official fees and administrative charges',
-        'Language exam costs',
-        '12-month Medical German course',
-        '8 live 1:1 sessions with case advisors / language teachers'
-      ]
-    }
-  ];
+    : [
+        {
+          id: 'digital_starter',
+          price: pricing.digital_starter,
+          features: nonSpeakerPkgs?.digitalStarter?.features || [
+            'Preparation and professional review of all required documents',
+            'Full representation and communication with local authorities',
+            'Step-by-step guidance from document preparation to submission',
+            'Priority support via WhatsApp & email'
+          ]
+        },
+        {
+          id: 'complete',
+          price: pricing.complete,
+          popular: true,
+          features: nonSpeakerPkgs?.complete?.features || [
+            '12-month Medical German course',
+            'Personalized German study plan',
+            '4 live 1:1 sessions with case advisors / language teachers',
+            'Dedicated Case Manager'
+          ]
+        },
+        {
+          id: 'personal_mentorship',
+          price: pricing.personal_mentorship,
+          features: nonSpeakerPkgs?.personalMentorship?.features || [
+            'All translation and apostille costs',
+            'All official fees and administrative charges',
+            'Language exam costs',
+            '12-month Medical German course',
+            '8 live 1:1 sessions with case advisors / language teachers'
+          ]
+        }
+      ];
 
   const getPackageTitle = (id: ProductType) => {
+    if (speaksLanguage) {
+      switch (id) {
+        case 'digital_starter':
+          return speakerPkgs?.digitalStarter?.title || 'Digital Homologation';
+        case 'complete':
+          return speakerPkgs?.complete?.title || 'Personal Assistance';
+        case 'personal_mentorship':
+          return speakerPkgs?.personalMentorship?.title || 'All-Inclusive';
+      }
+    }
     const languageName = getLanguageForCountry(targetCountry, t);
     switch (id) {
       case 'digital_starter':
-        return t?.payments?.packages?.digitalStarter?.title || 'Guided Homologation';
+        return nonSpeakerPkgs?.digitalStarter?.title || 'Guided Homologation';
       case 'complete':
-        const completeBase = t?.payments?.packages?.complete?.titleBase || 'Homologation +';
+        const completeBase = nonSpeakerPkgs?.complete?.titleBase || 'Homologation +';
         return `${completeBase} ${languageName}`;
       case 'personal_mentorship':
-        return t?.payments?.packages?.personalMentorship?.titleBase || 'Full All-Inclusive';
+        return nonSpeakerPkgs?.personalMentorship?.titleBase || 'Full All-Inclusive';
     }
   };
 
   const getPackageIdealFor = (id: ProductType) => {
+    const pkgs = speaksLanguage ? speakerPkgs : nonSpeakerPkgs;
     switch (id) {
       case 'digital_starter':
-        return t?.payments?.packages?.digitalStarter?.idealFor || 'I already speak the language — I just need paperwork help';
+        return pkgs?.digitalStarter?.idealFor || 'I know what I need';
       case 'complete':
-        return t?.payments?.packages?.complete?.idealFor || 'I need both homologation support and language training';
+        return pkgs?.complete?.idealFor || 'I want someone to handle the paperwork';
       case 'personal_mentorship':
-        return t?.payments?.packages?.personalMentorship?.idealFor || 'Handle everything for me — I just want to arrive and work';
+        return pkgs?.personalMentorship?.idealFor || 'Handle everything for me';
     }
   };
 
   const getIncludesPrefix = (id: ProductType) => {
+    const pkgs = speaksLanguage ? speakerPkgs : nonSpeakerPkgs;
     switch (id) {
       case 'complete':
-        return t?.payments?.packages?.complete?.includesPrefix || 'Everything in Guided Homologation, plus:';
+        return pkgs?.complete?.includesPrefix || 'Everything in previous tier, plus:';
       case 'personal_mentorship':
-        return t?.payments?.packages?.personalMentorship?.includesPrefix || 'Everything in Homologation+, plus:';
+        return pkgs?.personalMentorship?.includesPrefix || 'Everything in previous tier, plus:';
       default:
         return null;
     }
@@ -311,8 +370,9 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
         {packages.map((pkg) => {
           const includesPrefix = getIncludesPrefix(pkg.id);
           const isSelected = selectedPackage === pkg.id;
+          const zeroExtrasSource = speaksLanguage ? speakerPkgs : nonSpeakerPkgs;
           const zeroExtras = pkg.id === 'personal_mentorship' 
-            ? (t?.payments?.packages?.personalMentorship?.zeroExtras || 'Zero out-of-pocket extras') 
+            ? (zeroExtrasSource?.personalMentorship?.zeroExtras || 'Zero out-of-pocket extras') 
             : null;
           
           return (
