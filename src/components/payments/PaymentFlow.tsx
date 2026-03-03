@@ -367,7 +367,7 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
       </div>
 
       {/* Package Selection */}
-      <div className="grid md:grid-cols-3 gap-6 items-start">
+      <div className="grid md:grid-cols-3 gap-6 items-stretch">
         {packages.map((pkg) => {
           const includesPrefix = getIncludesPrefix(pkg.id);
           const isSelected = selectedPackage === pkg.id;
