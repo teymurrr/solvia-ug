@@ -6,9 +6,12 @@ import { MapPin, Building2, ArrowRight, Banknote } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
+import { getLocalizedVacancyField } from '@/utils/getLocalizedVacancyField';
+import { localizeSalary } from '@/utils/jobTranslations';
+import type { Language } from '@/utils/i18n/translations';
 
 const JobExplorerSection = () => {
-  const { t } = useLanguage();
+  const { t, currentLanguage } = useLanguage();
   const landing = t?.landing;
   const jobExplorer = landing?.jobExplorer;
 
@@ -17,7 +20,7 @@ const JobExplorerSection = () => {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('vacancies')
-        .select('id, title, institution, location, country, salary')
+        .select('id, title, title_en, title_de, title_es, title_fr, title_ru, institution, location, country, salary, profession')
         .order('posted_date', { ascending: false })
         .limit(4);
       if (error) throw error;
@@ -55,7 +58,7 @@ const JobExplorerSection = () => {
                 className="group p-6 border border-border/60 bg-card hover:shadow-lg hover:border-primary/20 transition-all duration-300"
               >
                 <h3 className="text-lg font-bold text-foreground leading-snug mb-3">
-                  {job.title}
+                  {getLocalizedVacancyField(job, 'title', currentLanguage as Language)}
                 </h3>
 
                 <div className="space-y-1.5 mb-4">
@@ -72,7 +75,7 @@ const JobExplorerSection = () => {
                 {job.salary && (
                   <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-semibold">
                     <Banknote className="h-3.5 w-3.5" />
-                    {job.salary}
+                    {localizeSalary(job.salary, currentLanguage as Language)}
                   </div>
                 )}
               </Card>
