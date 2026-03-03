@@ -52,27 +52,27 @@ const profileTemplates: Record<Language, { subject: (name: string) => string; bo
   },
 };
 
-// Templates for wizard-incomplete users (pricing updated to €379)
+// Templates for wizard-incomplete users
 const wizardTemplates: Record<Language, { subject: (name: string) => string; body: (name: string, wizardLink: string, paymentLink: string) => string }> = {
   en: {
     subject: (name) => `${name}, your homologation plan is waiting`,
-    body: (name, wizardLink, paymentLink) => `Hi ${name},\n\nYou signed up on Solvia but haven't completed the homologation assessment yet.\n\nThe assessment takes just 2 minutes and gives you a personalized roadmap for your medical career abroad — including what documents you need, language requirements, and estimated timeline.\n\nComplete your assessment: ${wizardLink}\n\nAlready know what you need? Start your Guided Homologation from €379: ${paymentLink}\n\nIf you have questions, just reply to this email.\n\nBest,\nDavid`,
+    body: (name, wizardLink, paymentLink) => `Hi ${name},\n\nYou signed up on Solvia but haven't completed the homologation assessment yet.\n\nThe assessment takes just 2 minutes and gives you a personalized roadmap for your medical career abroad — including what documents you need, language requirements, and estimated timeline.\n\nComplete your assessment: ${wizardLink}\n\nAlready know what you need? Start your Homologation from €150: ${paymentLink}\n\nIf you have questions, just reply to this email.\n\nBest,\nDavid`,
   },
   es: {
     subject: (name) => `${name}, tu plan de homologación te espera`,
-    body: (name, wizardLink, paymentLink) => `Hola ${name},\n\nTe registraste en Solvia pero aún no has completado el análisis de homologación.\n\nEl análisis toma solo 2 minutos y te da una hoja de ruta personalizada para tu carrera médica en el extranjero — incluyendo documentos necesarios, requisitos de idioma y tiempo estimado.\n\nCompleta tu análisis: ${wizardLink}\n\n¿Ya sabes lo que necesitas? Empieza tu Homologación Guiada desde €379: ${paymentLink}\n\nSi tienes preguntas, solo responde a este correo.\n\nSaludos,\nDavid`,
+    body: (name, wizardLink, paymentLink) => `Hola ${name},\n\nTe registraste en Solvia pero aún no has completado el análisis de homologación.\n\nEl análisis toma solo 2 minutos y te da una hoja de ruta personalizada para tu carrera médica en el extranjero — incluyendo documentos necesarios, requisitos de idioma y tiempo estimado.\n\nCompleta tu análisis: ${wizardLink}\n\n¿Ya sabes lo que necesitas? Empieza tu Homologación desde €150: ${paymentLink}\n\nSi tienes preguntas, solo responde a este correo.\n\nSaludos,\nDavid`,
   },
   de: {
     subject: (name) => `${name}, dein Anerkennungsplan wartet`,
-    body: (name, wizardLink, paymentLink) => `Hallo ${name},\n\nDu hast dich bei Solvia angemeldet, aber die Anerkennungsanalyse noch nicht abgeschlossen.\n\nDie Analyse dauert nur 2 Minuten und gibt dir einen personalisierten Fahrplan für deine Karriere — einschließlich Dokumente, Sprachanforderungen und geschätzter Zeitrahmen.\n\nAnalyse abschließen: ${wizardLink}\n\nWeißt du schon, was du brauchst? Starte deine Begleitete Homologation ab €379: ${paymentLink}\n\nBei Fragen antworte einfach auf diese E-Mail.\n\nBeste Grüße,\nDavid`,
+    body: (name, wizardLink, paymentLink) => `Hallo ${name},\n\nDu hast dich bei Solvia angemeldet, aber die Anerkennungsanalyse noch nicht abgeschlossen.\n\nDie Analyse dauert nur 2 Minuten und gibt dir einen personalisierten Fahrplan für deine Karriere — einschließlich Dokumente, Sprachanforderungen und geschätzter Zeitrahmen.\n\nAnalyse abschließen: ${wizardLink}\n\nWeißt du schon, was du brauchst? Starte deine Homologation ab €150: ${paymentLink}\n\nBei Fragen antworte einfach auf diese E-Mail.\n\nBeste Grüße,\nDavid`,
   },
   fr: {
     subject: (name) => `${name}, ton plan d'homologation t'attend`,
-    body: (name, wizardLink, paymentLink) => `Salut ${name},\n\nTu t'es inscrit(e) sur Solvia mais tu n'as pas encore complété l'analyse d'homologation.\n\nL'analyse prend seulement 2 minutes et te donne une feuille de route personnalisée — documents nécessaires, exigences linguistiques et délai estimé.\n\nComplète ton analyse : ${wizardLink}\n\nTu sais déjà ce qu'il te faut ? Commence ton Homologation Guidée à partir de 379 € : ${paymentLink}\n\nSi tu as des questions, réponds simplement à cet email.\n\nCordialement,\nDavid`,
+    body: (name, wizardLink, paymentLink) => `Salut ${name},\n\nTu t'es inscrit(e) sur Solvia mais tu n'as pas encore complété l'analyse d'homologation.\n\nL'analyse prend seulement 2 minutes et te donne une feuille de route personnalisée — documents nécessaires, exigences linguistiques et délai estimé.\n\nComplète ton analyse : ${wizardLink}\n\nTu sais déjà ce qu'il te faut ? Commence ton Homologation à partir de 150 € : ${paymentLink}\n\nSi tu as des questions, réponds simplement à cet email.\n\nCordialement,\nDavid`,
   },
   ru: {
     subject: (name) => `${name}, твой план гомологации ждёт`,
-    body: (name, wizardLink, paymentLink) => `Привет ${name},\n\nТы зарегистрировался на Solvia, но ещё не прошёл анализ гомологации.\n\nАнализ занимает всего 2 минуты и даёт персонализированный план — необходимые документы, языковые требования и примерные сроки.\n\nПройди анализ: ${wizardLink}\n\nУже знаешь, что нужно? Начни Сопровождаемую Гомологацию от €379: ${paymentLink}\n\nЕсли есть вопросы, просто ответь на это письмо.\n\nС уважением,\nDavid`,
+    body: (name, wizardLink, paymentLink) => `Привет ${name},\n\nТы зарегистрировался на Solvia, но ещё не прошёл анализ гомологации.\n\nАнализ занимает всего 2 минуты и даёт персонализированный план — необходимые документы, языковые требования и примерные сроки.\n\nПройди анализ: ${wizardLink}\n\nУже знаешь, что нужно? Начни Гомологацию от €150: ${paymentLink}\n\nЕсли есть вопросы, просто ответь на это письмо.\n\nС уважением,\nDavid`,
   },
 };
 
