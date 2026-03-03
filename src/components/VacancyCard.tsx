@@ -14,7 +14,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import Analytics from '@/utils/analyticsTracking';
 import { getLocalizedVacancyField } from '@/utils/getLocalizedVacancyField';
 import type { Language } from '@/utils/i18n/translations';
-import { getLocalizedJobType, getLocalizedProfession } from '@/utils/jobTranslations';
+import { getLocalizedJobType, getLocalizedProfession, localizeSalary } from '@/utils/jobTranslations';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 
 const getRandomDaysAgo = () => {
@@ -180,7 +180,7 @@ const VacancyCard: React.FC<VacancyCardProps> = ({
             </Badge>
             {salary && (
               <Badge variant="outline" className="bg-muted/50">
-                {salary}
+                {localizeSalary(salary, currentLanguage as Language)}
               </Badge>
             )}
             {profession && (
