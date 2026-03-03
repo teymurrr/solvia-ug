@@ -17,11 +17,11 @@ const ConversionBanner: React.FC<ConversionBannerProps> = ({ targetCountry }) =>
   if (dismissed) return null;
 
   const messages: Record<string, { title: string; cta: string }> = {
-    en: { title: 'Your homologation roadmap is ready — unlock it now', cta: 'Start for €39' },
-    es: { title: 'Tu hoja de ruta de homologación está lista — desbloquéala ahora', cta: 'Empieza por €39' },
-    de: { title: 'Dein Anerkennungs-Fahrplan ist fertig — jetzt freischalten', cta: 'Starte für €39' },
-    fr: { title: 'Ta feuille de route d\'homologation est prête — débloque-la maintenant', cta: 'Commence pour €39' },
-    ru: { title: 'Твой план гомологации готов — разблокируй его сейчас', cta: 'Начни за €39' },
+    en: { title: 'Your homologation roadmap is ready — unlock it now', cta: 'Start for €150' },
+    es: { title: 'Tu hoja de ruta de homologación está lista — desbloquéala ahora', cta: 'Empieza por €150' },
+    de: { title: 'Dein Anerkennungs-Fahrplan ist fertig — jetzt freischalten', cta: 'Starte für €150' },
+    fr: { title: 'Ta feuille de route d\'homologation est prête — débloque-la maintenant', cta: 'Commence pour €150' },
+    ru: { title: 'Твой план гомологации готов — разблокируй его сейчас', cta: 'Начни за €150' },
   };
 
   const lang = currentLanguage in messages ? currentLanguage : 'en';

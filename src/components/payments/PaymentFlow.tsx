@@ -272,7 +272,7 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
     setIsValidatingDiscount(true);
     try {
       const { data, error } = await supabase.functions.invoke('validate-discount', {
-        body: { code: discountCode.trim(), productType: selectedPackage, targetCountry }
+        body: { code: discountCode.trim(), productType: selectedPackage, targetCountry, languageLevel }
       });
       if (error) throw error;
       if (data.valid) {
@@ -320,7 +320,8 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
           targetCountry: targetCountry,
           customerEmail: guestEmail,
           discountCode: appliedDiscount?.code,
-          locale: currentLanguage as 'en' | 'es' | 'de' | 'fr' | 'ru'
+          locale: currentLanguage as 'en' | 'es' | 'de' | 'fr' | 'ru',
+          languageLevel: languageLevel
         }
       });
       if (error) throw error;

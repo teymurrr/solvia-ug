@@ -6,13 +6,21 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
-// Pricing configuration (amounts in cents) - must match frontend and create-payment
-const getPricingByCountry = (country: string | null): Record<string, number> => {
-  return {
-    digital_starter: 3900,       // €39 introductory price
-    complete: 18900,              // €189 introductory price
-    personal_mentorship: 49900,   // €499 introductory price
-  };
+// Two-track pricing (amounts in cents) - must match frontend and create-payment
+const SPEAKER_LEVELS = ['B2', 'C1', 'native_speaker'];
+
+const getPricingByCountry = (country: string | null, languageLevel: string | null): Record<string, number> => {
+  const isSpeaker = languageLevel && SPEAKER_LEVELS.includes(languageLevel);
+  const isSpain = country?.toLowerCase() === 'spain';
+
+  if (isSpeaker) {
+    if (isSpain) {
+      return { digital_starter: 15000, complete: 25000, personal_mentorship: 35000 };
+    }
+    return { digital_starter: 15000, complete: 28900, personal_mentorship: 190000 };
+  }
+  // Track B: non-speakers — all countries same
+  return { digital_starter: 37900, complete: 89900, personal_mentorship: 380000 };
 };
 
 serve(async (req) => {
@@ -28,7 +36,7 @@ serve(async (req) => {
   try {
     console.log("🔍 [VALIDATE-DISCOUNT] Function started");
 
-    const { code, productType, targetCountry } = await req.json();
+    const { code, productType, targetCountry, languageLevel } = await req.json();
     
     if (!code) {
       throw new Error("Discount code is required");
@@ -107,8 +115,8 @@ serve(async (req) => {
     }
 
     // Get the correct base amount based on country and product type
-    const pricing = getPricingByCountry(targetCountry);
-    const baseAmount = pricing[productType] || 75000; // Default to €750 if product type unknown
+    const pricing = getPricingByCountry(targetCountry, languageLevel || null);
+    const baseAmount = pricing[productType] || 37900;
     
     // Calculate discount amount
     let discountAmount = 0;

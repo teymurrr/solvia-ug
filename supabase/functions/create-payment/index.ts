@@ -13,28 +13,53 @@ interface PaymentRequest {
   customerEmail?: string;
   discountCode?: string;
   locale?: 'en' | 'es' | 'de' | 'fr' | 'ru';
+  languageLevel?: string;
 }
 
-// Pricing configuration - Introductory pricing (amounts in cents)
-const getProductConfig = (productType: string, targetCountry: string | undefined) => {
+// Two-track pricing based on language proficiency (amounts in cents)
+const SPEAKER_LEVELS = ['B2', 'C1', 'native_speaker'];
+
+const getProductConfig = (productType: string, targetCountry: string | undefined, languageLevel: string | undefined) => {
+  const isSpeaker = languageLevel && SPEAKER_LEVELS.includes(languageLevel);
+  const isSpain = targetCountry?.toLowerCase() === 'spain';
+
+  if (isSpeaker) {
+    // Track A: user speaks the language
+    const speakerConfigs: Record<string, Record<string, { name: string; description: string; amount: number; regularPrice: number }>> = {
+      spain: {
+        digital_starter: { name: 'Digital Homologation', description: 'Document templates, checklists, and step-by-step digital guide', amount: 15000, regularPrice: 15000 },
+        complete: { name: 'Personal Assistance', description: 'Personal case manager, authority communication, and priority support', amount: 25000, regularPrice: 25000 },
+        personal_mentorship: { name: 'All-Inclusive', description: 'Everything handled: translations, fees, zero out-of-pocket extras', amount: 35000, regularPrice: 35000 },
+      },
+      other: {
+        digital_starter: { name: 'Digital Homologation', description: 'Document templates, checklists, and step-by-step digital guide', amount: 15000, regularPrice: 15000 },
+        complete: { name: 'Personal Assistance', description: 'Personal case manager, authority communication, and priority support', amount: 28900, regularPrice: 28900 },
+        personal_mentorship: { name: 'All-Inclusive', description: 'Everything handled: translations, fees, zero out-of-pocket extras', amount: 190000, regularPrice: 190000 },
+      },
+    };
+    const region = isSpain ? 'spain' : 'other';
+    return speakerConfigs[region][productType];
+  }
+
+  // Track B: non-speakers — all countries same
   const configs: Record<string, { name: string; description: string; amount: number; regularPrice: number }> = {
     digital_starter: {
-      name: 'Digital Guide',
-      description: 'AI-powered document analysis, checklists, templates & explanation videos',
-      amount: 3900, // €39 introductory price
-      regularPrice: 7900, // Regular €79
+      name: 'Guided Homologation',
+      description: 'Document preparation, authority communication, step-by-step guidance',
+      amount: 37900,
+      regularPrice: 37900,
     },
     complete: {
-      name: 'Full Support',
-      description: 'Expert-guided homologation with personal document review & authority communication',
-      amount: 18900, // €189 introductory price
-      regularPrice: 37900, // Regular €379
+      name: 'Homologation + Language',
+      description: 'Expert-guided homologation with 12-month medical language course',
+      amount: 89900,
+      regularPrice: 89900,
     },
     personal_mentorship: {
-      name: 'Full Support + Language',
-      description: 'Complete homologation + language training with dedicated case manager & in-person support',
-      amount: 49900, // €499 introductory price
-      regularPrice: 89900, // Regular €899
+      name: 'Full All-Inclusive',
+      description: 'Complete homologation + language + all fees covered',
+      amount: 380000,
+      regularPrice: 380000,
     }
   };
   
@@ -54,7 +79,7 @@ serve(async (req) => {
   try {
     console.log("🔍 [CREATE-PAYMENT] Function started");
 
-    const { productType, targetCountry, customerEmail, discountCode, locale = 'en' }: PaymentRequest = await req.json();
+    const { productType, targetCountry, customerEmail, discountCode, locale = 'en', languageLevel }: PaymentRequest = await req.json();
 
     // Validate required fields
     if (!customerEmail) {
@@ -84,7 +109,7 @@ serve(async (req) => {
     });
 
     // Get product configuration based on country
-    const config = getProductConfig(productType, targetCountry);
+    const config = getProductConfig(productType, targetCountry, languageLevel);
     if (!config) {
       throw new Error(`Invalid product type: ${productType}`);
     }
