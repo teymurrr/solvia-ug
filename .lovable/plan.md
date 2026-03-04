@@ -1,65 +1,47 @@
 
 
-# Two-Track Pricing Based on Language Proficiency
+# Plan: Create a "Spain Opportunity" Broadcast Campaign Edge Function
 
-## Pricing Summary
+## What This Does
+A new one-time broadcast edge function that emails **all contacts** (leads + professional_profiles + learning_form_submissions) with a localized message about new job opportunities in Spain as a stepping stone while waiting for German homologation.
 
-**Track A — User speaks the country's language (B2+ / C1 / Native)**
+## Message Translations
 
-| Tier | Spain | DE / AT / FR / IT |
-|------|-------|-------------------|
-| Digital Homologation | €150 | €150 |
-| Personal Assistance | €250 | €289 |
-| All-Inclusive | €350 | €1,900 |
+The Spanish version is provided. The function will include equivalent translations for all 5 languages:
+- **ES**: As provided by you
+- **EN**: English equivalent
+- **DE**: German equivalent  
+- **FR**: French equivalent
+- **RU**: Russian equivalent
 
-**Track B — User does NOT speak the language (A1 / A2 / B1 / Don't know / not set)**
+## Technical Implementation
 
-All countries identical (including Spain): €379 / €899 / €3,800 (current pricing, unchanged)
+### 1. New Edge Function: `supabase/functions/spain-opportunity-blast/index.ts`
 
-## Detection Logic
+Modeled after `win-back-campaign` with the following changes:
 
-Read `wizardData.languageLevel` from localStorage. User "speaks the language" if value is `B2`, `C1`, or `native_speaker`. Everything else falls into Track B.
+- **Recipients**: Query from **three sources**:
+  - `leads` table (all with email, regardless of status)
+  - `professional_profiles` (via join to auth users for email)
+  - `learning_form_submissions` (all with email)
+  - Deduplicate by email address (lowercase)
+- **Language detection**: Reuse the existing `detectLanguage()` logic (preferred_language > study_country > email TLD > English)
+- **Deduplication**: Check `email_sends` table with `template_id = 'spainOpportunity'` to avoid double-sends
+- **Logging**: Insert into `email_sends` for tracking opens/clicks via existing Resend webhook infrastructure
+- **Booking CTA**: Appended automatically (Calendly + WhatsApp) as in all other campaigns
+- **Sender**: "David from Solvia" with reply-to David.rehrl@thesolvia.com
 
-## Package Content — Track A (Speakers)
+### 2. Subject Lines
+- ES: "Nueva oportunidad: trabaja en España mientras esperas tu homologación"
+- EN: "New opportunity: work in Spain while waiting for your homologation"
+- DE: "Neue Möglichkeit: Arbeite in Spanien während du auf deine Anerkennung wartest"
+- FR: "Nouvelle opportunité : travaille en Espagne en attendant ton homologation"
+- RU: "Новая возможность: работай в Испании, пока ждёшь гомологацию"
 
-### Tier 1: Digital Homologation (€150)
-- Document preparation templates and checklists
-- Step-by-step digital guide for the homologation process
-- Email support
+### 3. Supports Test Mode
+- `testMode: true` + `testEmail` to send only to a specific address for review before blasting
 
-*"Ideal for": "I know what I need — I just want the right tools and guidance"*
-
-### Tier 2: Personal Assistance (€250 Spain / €289 others)
-*Everything in Digital, plus:*
-- Personal case manager assigned to you
-- Full representation and communication with authorities
-- Priority support via WhatsApp & email
-
-*"Ideal for": "I want someone to handle the paperwork and talk to the authorities for me"*
-
-### Tier 3: All-Inclusive (€350 Spain / €1,900 others)
-*Everything in Personal, plus:*
-- All translation and apostille costs covered
-- All official fees and administrative charges
-- Zero out-of-pocket extras
-
-*"Ideal for": "Take care of everything — I just want to arrive and work"*
-
-## Package Content — Track B (Non-Speakers)
-
-Unchanged from current implementation. Titles reference the country's language (e.g., "Homologation + German").
-
-## Files to Modify
-
-1. **`src/components/payments/PaymentFlow.tsx`** — read `languageLevel`, branch `getPricingByCountry` into two tracks, swap package configs (titles, features, idealFor) based on track, fix equal-height cards
-2. **`src/utils/i18n/languages/en/payments.ts`** — add `speakerPackages` object with titles, idealFor, features for all 3 tiers
-3. **`src/utils/i18n/languages/es/payments.ts`** — same
-4. **`src/utils/i18n/languages/de/payments.ts`** — same
-5. **`src/utils/i18n/languages/fr/payments.ts`** — same
-6. **`src/utils/i18n/languages/ru/payments.ts`** — same
-
-## What Stays the Same
-- 3-card layout, middle tier "Most Popular" styling
-- Discount code flow, payment summary, Stripe checkout
-- Consultation CTA, competitor anchor on Tier 3
+### 4. Config & Deployment
+- Add JWT bypass in `supabase/config.toml`
+- Deploy and test via edge function invocation
 
