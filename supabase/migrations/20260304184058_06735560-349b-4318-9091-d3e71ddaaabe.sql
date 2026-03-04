@@ -1,0 +1,1 @@
+DELETE FROM public.email_sends WHERE email = 'david.rehrl@me.com' AND template_id = 'spainOpportunity';
