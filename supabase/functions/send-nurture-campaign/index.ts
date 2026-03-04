@@ -1,6 +1,8 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { Resend } from "npm:resend@2.0.0";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.57.2";
+import { generateEmail } from "../_shared/email-template.ts";
+import type { Language } from "../_shared/email-template.ts";
 
 const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
 
@@ -13,20 +15,7 @@ const corsHeaders = {
 // EMAIL SYSTEM: Personal, Reply-Focused Approach
 // =============================================================================
 
-type Language = 'es' | 'en' | 'de' | 'fr' | 'ru';
 type TemplateId = 'feedbackAsk' | 'valueInsight' | 'personalDiagnosis' | 'socialProof' | 'urgencyOffer';
-
-// Shared booking CTA constants
-const CALENDLY_URL = 'https://calendly.com/david-rehrl-thesolvia/30min';
-const WHATSAPP_URL = 'https://wa.me/4915259018297';
-
-const bookingCTA: Record<Language, string> = {
-  es: `---\n¿Quieres hablar con alguien? Reserva una llamada gratuita de 15 minutos:\n${CALENDLY_URL}\n\nO escríbenos directamente por WhatsApp:\n${WHATSAPP_URL}`,
-  en: `---\nWant to talk to someone? Book a free 15-min call:\n${CALENDLY_URL}\n\nOr message us directly on WhatsApp:\n${WHATSAPP_URL}`,
-  de: `---\nMöchtest du mit jemandem sprechen? Buche ein kostenloses 15-Min-Gespräch:\n${CALENDLY_URL}\n\nOder schreib uns direkt auf WhatsApp:\n${WHATSAPP_URL}`,
-  fr: `---\nTu veux parler à quelqu'un ? Réserve un appel gratuit de 15 min :\n${CALENDLY_URL}\n\nOu écris-nous directement sur WhatsApp :\n${WHATSAPP_URL}`,
-  ru: `---\nХочешь поговорить? Запиши на бесплатный 15-мин звонок:\n${CALENDLY_URL}\n\nИли напиши нам в WhatsApp:\n${WHATSAPP_URL}`,
-};
 
 // Sequence order for validation
 const SEQUENCE_ORDER: TemplateId[] = ['feedbackAsk', 'personalDiagnosis', 'socialProof', 'urgencyOffer', 'valueInsight'];
@@ -483,39 +472,8 @@ const detectLanguage = (recipient: EmailRecipient): Language => {
 // EMAIL HTML GENERATION (with booking CTA injected automatically)
 // =============================================================================
 
-const generatePlainEmail = (greeting: string, body: string, signature: string, lang: Language): string => {
-  // Append booking CTA before signature
-  const bodyWithCTA = body + '\n\n' + bookingCTA[lang];
-  
-  const bodyHtml = bodyWithCTA
-    .split('\n\n')
-    .map(paragraph => `<p style="margin: 0 0 16px 0;">${paragraph.replace(/\n/g, '<br>')}</p>`)
-    .join('');
-
-  return `<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-      line-height: 1.6;
-      color: #1a1a1a;
-      max-width: 600px;
-      margin: 0 auto;
-      padding: 24px;
-      background-color: #ffffff;
-    }
-    p { margin: 0 0 16px 0; }
-  </style>
-</head>
-<body>
-  <p style="margin: 0 0 16px 0;">${greeting}</p>
-  ${bodyHtml}
-  <p style="margin: 24px 0 0 0; white-space: pre-line;">${signature}</p>
-</body>
-</html>`;
+const generateNurtureEmail = (greeting: string, body: string, lang: Language): string => {
+  return generateEmail(greeting, body, lang);
 };
 
 // =============================================================================
@@ -735,10 +693,9 @@ const handler = async (req: Request): Promise<Response> => {
 
         const emailSubject = template.subject[lang].replace(/\{\{TARGET_COUNTRY\}\}/g, translatedCountry);
 
-        const html = generatePlainEmail(
+        const html = generateNurtureEmail(
           template.greeting[lang],
           emailBody,
-          template.signature[lang],
           lang
         );
 
