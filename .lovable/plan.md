@@ -1,47 +1,49 @@
 
 
-# Plan: Create a "Spain Opportunity" Broadcast Campaign Edge Function
+# Redesign Email Template for Higher Conversion
 
-## What This Does
-A new one-time broadcast edge function that emails **all contacts** (leads + professional_profiles + learning_form_submissions) with a localized message about new job opportunities in Spain as a stepping stone while waiting for German homologation.
+## Problems Identified
 
-## Message Translations
+1. **Layout**: Email body sits in the middle with no visual structure — just raw paragraphs
+2. **CTA links**: Calendly and WhatsApp appear as raw URLs — ugly and low-click
+3. **Signature**: Generic "Saludos, David" — no title, no trust signal
+4. **Shared across 3 edge functions**: `generatePlainEmail` is duplicated in `spain-opportunity-blast`, `win-back-campaign`, and `send-nurture-campaign`
 
-The Spanish version is provided. The function will include equivalent translations for all 5 languages:
-- **ES**: As provided by you
-- **EN**: English equivalent
-- **DE**: German equivalent  
-- **FR**: French equivalent
-- **RU**: Russian equivalent
+## Design: High-Conversion Email Template
 
-## Technical Implementation
+The new template will follow best practices from high-performing outreach emails (personal feel, clear CTAs, trust signals):
 
-### 1. New Edge Function: `supabase/functions/spain-opportunity-blast/index.ts`
+- **Left-aligned**, max-width 600px, clean white background with subtle padding
+- **Body text**: Clean, readable paragraphs (16px, #1a1a1a, 1.7 line-height)
+- **CTA section**: Replace raw URLs with two styled **buttons** side by side:
+  - **Primary button** (green, branded): "📞 Book a Free Call" → Calendly
+  - **Secondary button** (green outline): "💬 WhatsApp Us" → wa.me link
+- **Signature block**: Professional with title to build trust:
+  - "David Rehrl"
+  - "Head of Talent Partnerships — Solvia"
+  - Subtle divider line above signature
+- **No `---` separator** — replace with proper styled divider or spacing
 
-Modeled after `win-back-campaign` with the following changes:
+## Technical Approach
 
-- **Recipients**: Query from **three sources**:
-  - `leads` table (all with email, regardless of status)
-  - `professional_profiles` (via join to auth users for email)
-  - `learning_form_submissions` (all with email)
-  - Deduplicate by email address (lowercase)
-- **Language detection**: Reuse the existing `detectLanguage()` logic (preferred_language > study_country > email TLD > English)
-- **Deduplication**: Check `email_sends` table with `template_id = 'spainOpportunity'` to avoid double-sends
-- **Logging**: Insert into `email_sends` for tracking opens/clicks via existing Resend webhook infrastructure
-- **Booking CTA**: Appended automatically (Calendly + WhatsApp) as in all other campaigns
-- **Sender**: "David from Solvia" with reply-to David.rehrl@thesolvia.com
+1. **Create a shared email template utility** at `supabase/functions/_shared/email-template.ts` with the new `generateEmail()` function
+2. **Update all 3 edge functions** to import from the shared module instead of their local `generatePlainEmail`
+3. The shared function receives: `greeting`, `body`, `signature`, `lang`, and generates the full HTML
 
-### 2. Subject Lines
-- ES: "Nueva oportunidad: trabaja en España mientras esperas tu homologación"
-- EN: "New opportunity: work in Spain while waiting for your homologation"
-- DE: "Neue Möglichkeit: Arbeite in Spanien während du auf deine Anerkennung wartest"
-- FR: "Nouvelle opportunité : travaille en Espagne en attendant ton homologation"
-- RU: "Новая возможность: работай в Испании, пока ждёшь гомологацию"
+### Signature (localized)
+- ES: "David Rehrl\nDirector de Alianzas de Talento — Solvia"
+- EN: "David Rehrl\nHead of Talent Partnerships — Solvia"
+- DE: "David Rehrl\nLeiter Talent-Partnerschaften — Solvia"
+- FR: "David Rehrl\nResponsable Partenariats Talents — Solvia"
+- RU: "David Rehrl\nРуководитель партнёрских программ — Solvia"
 
-### 3. Supports Test Mode
-- `testMode: true` + `testEmail` to send only to a specific address for review before blasting
+### CTA Button Labels (localized)
+- Book a Call: ES "Reservar llamada gratuita" / EN "Book a Free Call" / DE "Kostenloses Gespräch buchen" / FR "Réserver un appel gratuit" / RU "Записаться на звонок"
+- WhatsApp: ES "Escríbenos por WhatsApp" / EN "Message us on WhatsApp" / DE "Schreib uns auf WhatsApp" / FR "Écris-nous sur WhatsApp" / RU "Написать в WhatsApp"
 
-### 4. Config & Deployment
-- Add JWT bypass in `supabase/config.toml`
-- Deploy and test via edge function invocation
+### Files Changed
+- **Create**: `supabase/functions/_shared/email-template.ts`
+- **Edit**: `supabase/functions/spain-opportunity-blast/index.ts` — remove local `generatePlainEmail`, `bookingCTA`, `signature`; import shared
+- **Edit**: `supabase/functions/win-back-campaign/index.ts` — same
+- **Edit**: `supabase/functions/send-nurture-campaign/index.ts` — same
 
