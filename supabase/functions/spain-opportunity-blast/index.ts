@@ -55,9 +55,9 @@ const template = {
   body: {
     es: `¿Cómo va tu homologación y tienes dificultades con el alemán?
 
-Ahora, además de Alemania, también tenemos oportunidades de empleo en España para profesionales sanitarios. Si estás esperando homologación en Alemania, España puede ser un primer paso, trabajas, ganas experiencia europea y tienes tiempo para aprender alemán.
+Ahora, además de Alemania, también tenemos <b>oportunidades de empleo en España</b> para profesionales sanitarios. Si estás esperando homologación en Alemania, España puede ser un primer paso, trabajas, ganas experiencia europea y tienes tiempo para aprender alemán.
 
-¿Te interesa o conoces a alguien que lo puede ser? Simplemente responde a este email o escríbenos.`,
+¿Te interesa o conoces a alguien que lo puede ser? Simplemente <b>responde a este email o escríbenos.</b>`,
     en: `How is your homologation going — are you having difficulties with German?
 
 Now, in addition to Germany, we also have job opportunities in Spain for healthcare professionals. If you're waiting for your homologation in Germany, Spain can be a first step — you work, gain European experience, and have time to learn German.
