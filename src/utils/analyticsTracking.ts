@@ -28,7 +28,8 @@ export type GA4EventName =
   | 'wizard_started'
   | 'wizard_completed'
   | 'payment_page_viewed'
-  | 'call_booked';
+  | 'call_booked'
+  | 'whatsapp_click';
 
 interface GA4EventParams {
   [key: string]: string | number | boolean | undefined;
@@ -161,6 +162,9 @@ export const Analytics = {
 
   callBooked: (source?: string) =>
     trackEvent('call_booked', { source }),
+
+  whatsappClick: (source?: string) =>
+    trackEvent('whatsapp_click', { source }),
 };
 
 export default Analytics;

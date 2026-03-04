@@ -50,7 +50,10 @@ const WhatsAppButton: React.FC = () => {
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-3 bg-card border shadow-lg rounded-full pl-4 pr-5 py-3 hover:shadow-xl hover:scale-[1.02] transition-all duration-200 group"
-            onClick={() => setIsOpen(false)}
+            onClick={() => {
+              Analytics.whatsappClick('whatsapp_fab');
+              setIsOpen(false);
+            }}
           >
             <div className="h-10 w-10 rounded-full bg-[#25D366] flex items-center justify-center shrink-0">
               <MessageCircle className="h-5 w-5 text-white" />

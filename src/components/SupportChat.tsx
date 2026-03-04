@@ -6,6 +6,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/co
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useLanguage } from '@/hooks/useLanguage';
 import { toast } from 'sonner';
+import Analytics from '@/utils/analyticsTracking';
 
 interface Message {
   role: 'user' | 'assistant';
@@ -164,6 +165,7 @@ const SupportChat = () => {
   };
 
   const handleWhatsAppClick = () => {
+    Analytics.whatsappClick('support_chat');
     window.open('https://wa.me/4915259018297', '_blank');
   };
 
