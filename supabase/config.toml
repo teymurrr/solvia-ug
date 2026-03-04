@@ -53,3 +53,6 @@ verify_jwt = false
 
 [functions.win-back-campaign]
 verify_jwt = false
+
+[functions.spain-opportunity-blast]
+verify_jwt = false
