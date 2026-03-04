@@ -28,7 +28,7 @@ const HeroSectionWithSearch = React.memo(() => {
       <section className="relative overflow-hidden min-h-[70vh] flex items-center -mt-16 pt-16">
         {/* Background Image */}
         <div 
-          className="absolute inset-0 bg-cover bg-right-bottom bg-no-repeat"
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{ backgroundImage: `url(${heroBackground})` }}
         />
         {/* Overlay for text readability - subtle background */}
