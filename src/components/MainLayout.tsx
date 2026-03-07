@@ -14,7 +14,7 @@ interface MainLayoutProps {
 
 const MainLayout: React.FC<MainLayoutProps> = ({ children, hideEditProfile }) => {
   return (
-    <div className="min-h-screen flex flex-col overflow-x-hidden max-w-full">
+    <div className="min-h-screen flex flex-col overflow-x-hidden max-w-full relative">
       <Navbar />
       <main className="flex-grow pt-16 overflow-x-hidden max-w-full">
         {children}

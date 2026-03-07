@@ -1,59 +1,49 @@
 
 
-# Black Dot on Mobile Safari — Deeper Analysis
+# Redesign Email Template for Higher Conversion
 
-## The Problem
-The black dot persists in the **top-left corner** on **mobile Safari** despite adding `overflow-x: clip` to `html` and `overflow-x: hidden` to `body`.
+## Problems Identified
 
-## Root Cause (Revised)
+1. **Layout**: Email body sits in the middle with no visual structure — just raw paragraphs
+2. **CTA links**: Calendly and WhatsApp appear as raw URLs — ugly and low-click
+3. **Signature**: Generic "Saludos, David" — no title, no trust signal
+4. **Shared across 3 edge functions**: `generatePlainEmail` is duplicated in `spain-opportunity-blast`, `win-back-campaign`, and `send-nurture-campaign`
 
-Two compounding issues specific to Safari:
+## Design: High-Conversion Email Template
 
-1. **`overflow-x: clip` is broken in Safari** — Apple's own developer forums confirm this bug is still present in Safari 18.3 (March 2025). It either doesn't work or incorrectly clips the Y-axis too. This means our primary fix is completely ineffective on the user's browser.
+The new template will follow best practices from high-performing outreach emails (personal feel, clear CTAs, trust signals):
 
-2. **iOS Safari ignores `overflow: hidden` on `html` and `body`** — This is a long-standing Safari behavior. The `overflow-x: hidden` on `body` (line 100 of index.css) is silently ignored. Overflow must be controlled on a **wrapper div**, not on `html`/`body`.
+- **Left-aligned**, max-width 600px, clean white background with subtle padding
+- **Body text**: Clean, readable paragraphs (16px, #1a1a1a, 1.7 line-height)
+- **CTA section**: Replace raw URLs with two styled **buttons** side by side:
+  - **Primary button** (green, branded): "📞 Book a Free Call" → Calendly
+  - **Secondary button** (green outline): "💬 WhatsApp Us" → wa.me link
+- **Signature block**: Professional with title to build trust:
+  - "David Rehrl"
+  - "Head of Talent Partnerships — Solvia"
+  - Subtle divider line above signature
+- **No `---` separator** — replace with proper styled divider or spacing
 
-3. **The hero image dark corner** — The `hero-medical-team.jpg` likely has a dark area in its top-left corner. With `-mt-16` pulling the hero section up behind the navbar, and Safari not clipping the overflow, a sliver of this dark corner becomes visible through the navbar's semi-transparent background (`bg-white/80`) or at the very edge of the viewport.
+## Technical Approach
 
-## Fix Plan
+1. **Create a shared email template utility** at `supabase/functions/_shared/email-template.ts` with the new `generateEmail()` function
+2. **Update all 3 edge functions** to import from the shared module instead of their local `generatePlainEmail`
+3. The shared function receives: `greeting`, `body`, `signature`, `lang`, and generates the full HTML
 
-### 1. Move overflow containment from html/body to the `#root` wrapper
-In `src/index.css`, replace the html/body overflow rules with a `#root` selector:
-```css
-html {
-  /* remove overflow-x: clip — broken in Safari */
-  max-width: 100vw;
-}
+### Signature (localized)
+- ES: "David Rehrl\nDirector de Alianzas de Talento — Solvia"
+- EN: "David Rehrl\nHead of Talent Partnerships — Solvia"
+- DE: "David Rehrl\nLeiter Talent-Partnerschaften — Solvia"
+- FR: "David Rehrl\nResponsable Partenariats Talents — Solvia"
+- RU: "David Rehrl\nРуководитель партнёрских программ — Solvia"
 
-body {
-  max-width: 100vw;
-  position: relative;
-}
+### CTA Button Labels (localized)
+- Book a Call: ES "Reservar llamada gratuita" / EN "Book a Free Call" / DE "Kostenloses Gespräch buchen" / FR "Réserver un appel gratuit" / RU "Записаться на звонок"
+- WhatsApp: ES "Escríbenos por WhatsApp" / EN "Message us on WhatsApp" / DE "Schreib uns auf WhatsApp" / FR "Écris-nous sur WhatsApp" / RU "Написать в WhatsApp"
 
-#root {
-  overflow-x: hidden;
-  max-width: 100vw;
-  position: relative;
-}
-```
-iOS Safari respects `overflow: hidden` on regular divs, just not on `html`/`body`.
-
-### 2. Ensure MainLayout wrapper clips overflow
-The MainLayout div already has `overflow-x-hidden max-w-full`. Add `position: relative` to ensure it creates a proper containing block for Safari:
-```tsx
-<div className="min-h-screen flex flex-col overflow-x-hidden max-w-full relative">
-```
-
-### 3. Fix the hero background to hide the dark corner on mobile
-Add a mobile-specific background position to shift away from the problematic corner. Use a gradient overlay that fully covers the top-left on small screens:
-```tsx
-{/* Add an extra top-left corner cover for Safari */}
-<div className="absolute top-0 left-0 w-16 h-16 bg-gradient-to-br from-background/80 to-transparent sm:hidden z-[1]" />
-```
-This adds a small fade in the exact top-left corner on mobile only, covering any image artifact.
-
-### Files to Change
-- `src/index.css` — replace overflow rules (target `#root` instead of `html`/`body`)
-- `src/components/MainLayout.tsx` — add `relative` class
-- `src/components/landing/HeroSectionWithSearch.tsx` — add corner gradient cover for mobile
+### Files Changed
+- **Create**: `supabase/functions/_shared/email-template.ts`
+- **Edit**: `supabase/functions/spain-opportunity-blast/index.ts` — remove local `generatePlainEmail`, `bookingCTA`, `signature`; import shared
+- **Edit**: `supabase/functions/win-back-campaign/index.ts` — same
+- **Edit**: `supabase/functions/send-nurture-campaign/index.ts` — same
 
