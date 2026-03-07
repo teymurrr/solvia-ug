@@ -101,7 +101,7 @@ const Navbar = () => {
             )}
           </div>
 
-          <div className="flex items-center gap-1 sm:hidden">
+          <div className="-mr-2 flex items-center gap-1 sm:hidden">
             <LanguageSelector />
             <Button variant="ghost" size="icon" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
               <span className="sr-only">Open main menu</span>
