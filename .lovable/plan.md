@@ -1,49 +1,49 @@
 
 
-# Redesign Email Template for Higher Conversion
+# Investigating the Persistent Black Dot on Mobile
 
-## Problems Identified
+## What We Know
+- The black dot was **not there before** — it appeared after a recent change
+- Changing the background image position (`bg-center` → `bg-right-bottom`) did **not** fix it
+- It only shows on **mobile**, not desktop
+- The browser automation identified it as a **scrollbar arrow/triangle** at the viewport edge
 
-1. **Layout**: Email body sits in the middle with no visual structure — just raw paragraphs
-2. **CTA links**: Calendly and WhatsApp appear as raw URLs — ugly and low-click
-3. **Signature**: Generic "Saludos, David" — no title, no trust signal
-4. **Shared across 3 edge functions**: `generatePlainEmail` is duplicated in `spain-opportunity-blast`, `win-back-campaign`, and `send-nurture-campaign`
+## Root Cause: Horizontal Overflow Triggering a Native Scrollbar
 
-## Design: High-Conversion Email Template
+On certain mobile browsers (especially older iOS Safari or non-overlay scrollbar modes), a small horizontal overflow creates a visible scrollbar that manifests as a tiny black rectangle/triangle at the edge of the viewport.
 
-The new template will follow best practices from high-performing outreach emails (personal feel, clear CTAs, trust signals):
+The most likely overflow sources:
 
-- **Left-aligned**, max-width 600px, clean white background with subtle padding
-- **Body text**: Clean, readable paragraphs (16px, #1a1a1a, 1.7 line-height)
-- **CTA section**: Replace raw URLs with two styled **buttons** side by side:
-  - **Primary button** (green, branded): "📞 Book a Free Call" → Calendly
-  - **Secondary button** (green outline): "💬 WhatsApp Us" → wa.me link
-- **Signature block**: Professional with title to build trust:
-  - "David Rehrl"
-  - "Head of Talent Partnerships — Solvia"
-  - Subtle divider line above signature
-- **No `---` separator** — replace with proper styled divider or spacing
+1. **Navbar right-side elements**: Line 104 in `Navbar.tsx` uses `-mr-2` (negative margin) on the mobile button group, which can push content slightly beyond the viewport edge
+2. **Hero section**: The `-mt-16` negative margin on the hero section (line 28 of `HeroSectionWithSearch.tsx`) combined with `pt-16` on the `<main>` element can create subpixel overflow on certain screen sizes
+3. **WhatsApp FAB**: Positioned `fixed bottom-6 right-6` — at exactly the viewport edge on small screens, the button (56px + 24px right = 80px from edge) could extend slightly past the viewport
 
-## Technical Approach
+## Fix Plan
 
-1. **Create a shared email template utility** at `supabase/functions/_shared/email-template.ts` with the new `generateEmail()` function
-2. **Update all 3 edge functions** to import from the shared module instead of their local `generatePlainEmail`
-3. The shared function receives: `greeting`, `body`, `signature`, `lang`, and generates the full HTML
+### 1. Add overflow containment at the root level
+In `index.css`, ensure the `html` element clips any stray overflow:
+```css
+html {
+  overflow-x: clip; /* stronger than hidden, prevents scroll behavior entirely */
+}
+```
 
-### Signature (localized)
-- ES: "David Rehrl\nDirector de Alianzas de Talento — Solvia"
-- EN: "David Rehrl\nHead of Talent Partnerships — Solvia"
-- DE: "David Rehrl\nLeiter Talent-Partnerschaften — Solvia"
-- FR: "David Rehrl\nResponsable Partenariats Talents — Solvia"
-- RU: "David Rehrl\nРуководитель партнёрских программ — Solvia"
+### 2. Remove the `-mr-2` negative margin from Navbar mobile section
+In `Navbar.tsx` line 104, change:
+```
+className="-mr-2 flex items-center gap-1 sm:hidden"
+```
+to:
+```
+className="flex items-center gap-1 sm:hidden"
+```
+The `-mr-2` pulls the hamburger button outside the padding boundary, which on tight mobile viewports causes 2px of horizontal overflow.
 
-### CTA Button Labels (localized)
-- Book a Call: ES "Reservar llamada gratuita" / EN "Book a Free Call" / DE "Kostenloses Gespräch buchen" / FR "Réserver un appel gratuit" / RU "Записаться на звонок"
-- WhatsApp: ES "Escríbenos por WhatsApp" / EN "Message us on WhatsApp" / DE "Schreib uns auf WhatsApp" / FR "Écris-nous sur WhatsApp" / RU "Написать в WhatsApp"
+### 3. Revert hero background to `bg-center` (since that wasn't the cause)
+In `HeroSectionWithSearch.tsx` line 31, restore `bg-center` since changing it didn't fix the dot and the centered position looks better.
 
 ### Files Changed
-- **Create**: `supabase/functions/_shared/email-template.ts`
-- **Edit**: `supabase/functions/spain-opportunity-blast/index.ts` — remove local `generatePlainEmail`, `bookingCTA`, `signature`; import shared
-- **Edit**: `supabase/functions/win-back-campaign/index.ts` — same
-- **Edit**: `supabase/functions/send-nurture-campaign/index.ts` — same
+- `src/index.css` — add `overflow-x: clip` to `html`
+- `src/components/Navbar.tsx` — remove `-mr-2` from mobile nav container
+- `src/components/landing/HeroSectionWithSearch.tsx` — revert to `bg-center`
 
