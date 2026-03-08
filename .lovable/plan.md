@@ -1,49 +1,58 @@
 
 
-# Redesign Email Template for Higher Conversion
+# Post-Payment Automation — Implementation Complete
 
-## Problems Identified
+## Automations Implemented (March 2026)
 
-1. **Layout**: Email body sits in the middle with no visual structure — just raw paragraphs
-2. **CTA links**: Calendly and WhatsApp appear as raw URLs — ugly and low-click
-3. **Signature**: Generic "Saludos, David" — no title, no trust signal
-4. **Shared across 3 edge functions**: `generatePlainEmail` is duplicated in `spain-opportunity-blast`, `win-back-campaign`, and `send-nurture-campaign`
+### 1. ✅ Post-Payment Welcome Email
+- Edge Function: `send-payment-confirmation`
+- Triggered from `stripe-webhook` on `checkout.session.completed` for homologation products
+- Includes: payment receipt, onboarding CTA, document checklist, Calendly + WhatsApp buttons
+- Localized in 5 languages (en/es/de/fr/ru)
+- Tracked in `email_sends` table
 
-## Design: High-Conversion Email Template
+### 2. ✅ Auto-Create Client Record
+- On payment completion, `stripe-webhook` inserts a `clients` row with user_id, email, target_country
+- Prevents drop-off: client record exists even if they never complete onboarding wizard
+- Onboarding wizard updates existing record instead of creating new
 
-The new template will follow best practices from high-performing outreach emails (personal feel, clear CTAs, trust signals):
+### 3. ✅ Auto-Generate Document Checklist
+- After client creation, `stripe-webhook` queries `document_requirements` for the target country
+- Creates `client_documents` rows (status: `not_submitted`) for each requirement
+- Skips duplicates if checklist already exists
 
-- **Left-aligned**, max-width 600px, clean white background with subtle padding
-- **Body text**: Clean, readable paragraphs (16px, #1a1a1a, 1.7 line-height)
-- **CTA section**: Replace raw URLs with two styled **buttons** side by side:
-  - **Primary button** (green, branded): "📞 Book a Free Call" → Calendly
-  - **Secondary button** (green outline): "💬 WhatsApp Us" → wa.me link
-- **Signature block**: Professional with title to build trust:
-  - "David Rehrl"
-  - "Head of Talent Partnerships — Solvia"
-  - Subtle divider line above signature
-- **No `---` separator** — replace with proper styled divider or spacing
+### 4. ✅ Admin/Team Notification
+- On every homologation payment, sends email to david@thesolvia.com via Resend
+- Includes: email, package, country, amount, discount, Stripe session ID, user ID
+- Links to admin dashboard
 
-## Technical Approach
+### 5. ✅ Document Upload Reminders
+- Edge Function: `send-document-reminder`
+- Cron scheduled daily at 9:00 AM UTC via pg_cron
+- Sends 48-hour reminder for clients without uploaded documents
+- Escalates to 7-day reminder if still no uploads
+- Deduplication via `email_sends` table
+- Uses shared email template for consistent branding
 
-1. **Create a shared email template utility** at `supabase/functions/_shared/email-template.ts` with the new `generateEmail()` function
-2. **Update all 3 edge functions** to import from the shared module instead of their local `generatePlainEmail`
-3. The shared function receives: `greeting`, `body`, `signature`, `lang`, and generates the full HTML
+### 6. ✅ Calendar Booking Notification
+- For `complete` and `personal_mentorship` tiers only
+- Creates in-app notification with Calendly link
+- Prompts user to book first consultation
 
-### Signature (localized)
-- ES: "David Rehrl\nDirector de Alianzas de Talento — Solvia"
-- EN: "David Rehrl\nHead of Talent Partnerships — Solvia"
-- DE: "David Rehrl\nLeiter Talent-Partnerschaften — Solvia"
-- FR: "David Rehrl\nResponsable Partenariats Talents — Solvia"
-- RU: "David Rehrl\nРуководитель партнёрских программ — Solvia"
+## Architecture
 
-### CTA Button Labels (localized)
-- Book a Call: ES "Reservar llamada gratuita" / EN "Book a Free Call" / DE "Kostenloses Gespräch buchen" / FR "Réserver un appel gratuit" / RU "Записаться на звонок"
-- WhatsApp: ES "Escríbenos por WhatsApp" / EN "Message us on WhatsApp" / DE "Schreib uns auf WhatsApp" / FR "Écris-nous sur WhatsApp" / RU "Написать в WhatsApp"
+```
+Stripe → stripe-webhook
+  ├── Update payment status (existing)
+  ├── Deliver starter kit (existing, for starter_kit product)
+  ├── Auto-create client record (NEW)
+  ├── Auto-generate document checklist (NEW)
+  ├── Send payment confirmation email (NEW → send-payment-confirmation)
+  ├── Send admin notification (NEW → direct Resend)
+  ├── Create booking notification (NEW → notifications table)
+  └── Increment discount usage (existing)
 
-### Files Changed
-- **Create**: `supabase/functions/_shared/email-template.ts`
-- **Edit**: `supabase/functions/spain-opportunity-blast/index.ts` — remove local `generatePlainEmail`, `bookingCTA`, `signature`; import shared
-- **Edit**: `supabase/functions/win-back-campaign/index.ts` — same
-- **Edit**: `supabase/functions/send-nurture-campaign/index.ts` — same
-
+pg_cron (daily 9AM UTC) → send-document-reminder
+  ├── 48h reminder for no-upload clients
+  └── 7-day escalation reminder
+```
