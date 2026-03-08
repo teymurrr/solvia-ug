@@ -56,3 +56,9 @@ verify_jwt = false
 
 [functions.spain-opportunity-blast]
 verify_jwt = false
+
+[functions.send-payment-confirmation]
+verify_jwt = false
+
+[functions.send-document-reminder]
+verify_jwt = false
