@@ -53,9 +53,7 @@ const Messages = lazy(() => import("@/pages/Messages"));
 // Insights page
 const Insights = lazy(() => import("@/pages/Insights"));
 
-// Community pages
-const Community = lazy(() => import("@/pages/Community"));
-const CommunityPost = lazy(() => import("@/pages/CommunityPost"));
+// Community pages (deactivated — redirects to blog)
 
 // Payment pages
 const PaymentSuccess = lazy(() => import("@/pages/PaymentSuccess"));
@@ -116,16 +114,9 @@ const AppRoutes = () => {
         <Route path="/employers" element={<EmployersLanding />} />
         <Route path="/blog" element={<Blog />} />
         <Route path="/blog/:slug" element={<BlogPost />} />
-        <Route path="/community" element={
-          <ProtectedRoute>
-            <Community />
-          </ProtectedRoute>
-        } />
-        <Route path="/community/:id" element={
-          <ProtectedRoute>
-            <CommunityPost />
-          </ProtectedRoute>
-        } />
+        {/* Community redirects to blog */}
+        <Route path="/community" element={<Navigate to="/blog" replace />} />
+        <Route path="/community/:id" element={<Navigate to="/blog" replace />} />
         
         {/* Auth routes */}
         <Route path="/signup" element={<Signup />} />
