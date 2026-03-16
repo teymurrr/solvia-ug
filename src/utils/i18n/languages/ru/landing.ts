@@ -142,9 +142,9 @@ export const landing = {
       spain: {
         name: "Испания",
         flag: "🇪🇸",
-        processDuration: "2–6 месяцев",
-        price: "€290",
-        highlight: "Быстрая нострификация",
+        processDuration: "8–12 месяцев",
+        price: "€250",
+        highlight: "Самая низкая цена",
         salary: "3 000–8 000",
         includes: ["Подготовка документов", "Поддержка MIR", "Трудоустройство"]
       },

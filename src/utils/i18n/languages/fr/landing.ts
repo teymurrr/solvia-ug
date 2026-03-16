@@ -142,9 +142,9 @@ export const landing = {
       spain: {
         name: "Espagne",
         flag: "🇪🇸",
-        processDuration: "2–6 mois",
-        price: "€290",
-        highlight: "Homologation rapide",
+        processDuration: "8–12 mois",
+        price: "€250",
+        highlight: "Coût le plus bas",
         salary: "3 000–8 000",
         includes: ["Préparation des documents", "Support MIR", "Placement professionnel"]
       },
