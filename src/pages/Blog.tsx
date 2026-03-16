@@ -35,7 +35,7 @@ const Blog = React.memo(() => {
       />
       <div className="container mx-auto px-4 py-12">
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold mb-4"><span className="text-primary">Solvia</span> Blog</h1>
+          <h1 className="text-4xl font-bold mb-4"><span className="text-primary">Solvia</span> {t.blog.title}</h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
             {t.blog.subtitle}
           </p>
