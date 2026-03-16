@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Languages } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { BlogPost } from '@/types/landing';
+import { useLanguage } from '@/hooks/useLanguage';
 
 interface BlogTranslationsProps {
   translations: BlogPost[];
