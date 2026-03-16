@@ -9,9 +9,7 @@ export const landing = {
     countries: {
       germany: "Германия",
       austria: "Австрия",
-      spain: "Испания",
-      italy: "Италия",
-      france: "Франция"
+      spain: "Испания"
     },
     positionsAvailable: "доступных позиций",
     jobs: {
