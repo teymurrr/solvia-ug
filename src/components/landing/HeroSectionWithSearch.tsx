@@ -16,9 +16,9 @@ const HeroSectionWithSearch = React.memo(() => {
   ];
 
   const stats = [
-    { number: "5", label: t.hero.stats?.countries || "Countries available" },
+    { number: "3", label: t.hero.stats?.countries || "Countries available" },
     { number: "200+", label: t.hero.stats?.homologations || "Open positions" },
-    { number: "2", label: t.hero.stats?.accelerators || "Accelerator partners" },
+    { number: "98%", label: t.hero.stats?.satisfaction || "User satisfaction" },
     { number: "100%", label: t.hero.stats?.digital || "Digital process" }
   ];
   
