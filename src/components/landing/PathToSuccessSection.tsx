@@ -107,7 +107,7 @@ const PathToSuccessSection = () => {
             <div className="grid grid-cols-4 border-b border-border/30 hover:bg-muted/30 transition-colors">
               <div className="p-4 flex items-center gap-2.5 text-sm font-medium text-muted-foreground">
                 <TrendingUp className="h-4 w-4 shrink-0" />
-                {comparison?.salaryRange || 'Monthly salary'}
+                {comparison?.expectedSalary || 'Monthly salary'}
               </div>
               {countries.map((c) => (
                 <div key={c.key} className="p-4 text-center border-l border-border/30 font-semibold text-foreground text-sm">
