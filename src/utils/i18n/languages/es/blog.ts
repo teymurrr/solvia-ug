@@ -14,5 +14,9 @@ export const blog = {
   commentPosted: 'Comentario publicado',
   commentSuccess: 'Tu comentario ha sido publicado exitosamente',
   loading: 'Cargando...',
-  backToBlog: 'Volver al Blog'
+  backToBlog: 'Volver al Blog',
+  noPosts: 'No se encontraron publicaciones',
+  noPostsInLanguage: 'No hay publicaciones disponibles en el idioma seleccionado.',
+  checkBackSoon: 'Vuelve pronto para nuevo contenido.',
+  manageBlog: 'Gestionar Blog',
 };

@@ -97,11 +97,11 @@ const Blog = React.memo(() => {
           </div>
         ) : (
           <div className="text-center py-16">
-            <h3 className="text-lg font-medium mb-2">No blog posts found</h3>
+            <h3 className="text-lg font-medium mb-2">{t.blog.noPosts}</h3>
             <p className="text-muted-foreground">
               {currentLanguage !== 'en' 
-                ? `No posts available in the selected language.` 
-                : 'Check back soon for new content.'}
+                ? t.blog.noPostsInLanguage 
+                : t.blog.checkBackSoon}
             </p>
           </div>
         )}
