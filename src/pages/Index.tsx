@@ -10,6 +10,7 @@ import { useLanguage } from '@/hooks/useLanguage';
 const JobExplorerSection = React.lazy(() => import('@/components/landing/JobExplorerSection'));
 const SuccessStoriesSection = React.lazy(() => import('@/components/landing/SuccessStoriesSection'));
 const ConversionFAQSection = React.lazy(() => import('@/components/landing/ConversionFAQSection'));
+const BlogSection = React.lazy(() => import('@/components/landing/BlogSection'));
 const SuperCTASection = React.lazy(() => import('@/components/landing/SuperCTASection'));
 
 // Simple loading fallback
