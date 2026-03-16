@@ -73,6 +73,7 @@ const DocumentStatus = lazy(() => import("@/pages/DocumentStatus"));
 // Admin pages
 const AdminUserManagement = lazy(() => import("@/pages/admin/UserManagement"));
 const AdminApplications = lazy(() => import("@/pages/admin/Applications"));
+const AdminBlogManagement = lazy(() => import("@/pages/admin/BlogManagement"));
 
 const AppRoutes = () => {
   const { isLoggedIn, userType } = useAuth();
