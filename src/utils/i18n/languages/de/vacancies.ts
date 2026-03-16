@@ -51,8 +51,7 @@ export const vacancies = {
   countryBadges: {
     germany: 'Beste Gehälter',
     austria: 'Einfachster Prozess',
-    spain: 'Schnelle Anerkennung',
-    france: 'Hohe Lebensqualität'
+    spain: 'Schnelle Anerkennung'
   },
   homologationTime: {
     germany: '6–12 Monate',
