@@ -53,9 +53,7 @@ const Messages = lazy(() => import("@/pages/Messages"));
 // Insights page
 const Insights = lazy(() => import("@/pages/Insights"));
 
-// Community pages
-const Community = lazy(() => import("@/pages/Community"));
-const CommunityPost = lazy(() => import("@/pages/CommunityPost"));
+// Community pages (deactivated — redirects to blog)
 
 // Payment pages
 const PaymentSuccess = lazy(() => import("@/pages/PaymentSuccess"));
