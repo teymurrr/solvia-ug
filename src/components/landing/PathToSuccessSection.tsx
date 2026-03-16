@@ -173,7 +173,7 @@ const PathToSuccessSection = () => {
                     <p className="text-sm font-semibold text-foreground">{c.duration}</p>
                   </div>
                   <div>
-                    <p className="text-[11px] text-muted-foreground">{comparison?.salaryRange || 'Salary'}</p>
+                    <p className="text-[11px] text-muted-foreground">{comparison?.expectedSalary || 'Salary'}</p>
                     <p className="text-sm font-semibold text-foreground">{c.salary}</p>
                   </div>
                   <div>
