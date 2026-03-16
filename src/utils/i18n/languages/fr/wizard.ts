@@ -91,8 +91,6 @@ export const wizard = {
   countries: {
     germany: 'Allemagne',
     austria: 'Autriche',
-    spain: 'Espagne',
-    italy: 'Italie',
-    france: 'France'
+    spain: 'Espagne'
   }
 };
