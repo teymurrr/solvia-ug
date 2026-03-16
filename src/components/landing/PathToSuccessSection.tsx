@@ -18,7 +18,7 @@ const PathToSuccessSection = () => {
 
   const countries = [
     { key: 'germany', name: comparison?.countries?.germany?.name || 'Germany', flag: '🇩🇪', duration: comparison?.countries?.germany?.processDuration || '6–12 months', highlight: comparison?.countries?.germany?.highlight || 'Best salaries', price: 789, salary: '€5,500 – €12,000', tagBg: 'bg-primary/10 text-primary' },
-    { key: 'spain', name: comparison?.countries?.spain?.name || 'Spain', flag: '🇪🇸', duration: comparison?.countries?.spain?.processDuration || '2–6 months', highlight: comparison?.countries?.spain?.highlight || 'Fast homologation', price: 250, salary: '€3,000 – €8,000', tagBg: 'bg-accent/10 text-accent' },
+    { key: 'spain', name: comparison?.countries?.spain?.name || 'Spain', flag: '🇪🇸', duration: comparison?.countries?.spain?.processDuration || '8–12 months', highlight: comparison?.countries?.spain?.highlight || 'Lowest cost', price: 250, salary: '€3,000 – €8,000', tagBg: 'bg-accent/10 text-accent' },
     { key: 'austria', name: comparison?.countries?.austria?.name || 'Austria', flag: '🇦🇹', duration: comparison?.countries?.austria?.processDuration || '4–8 months', highlight: comparison?.countries?.austria?.highlight || 'Simplest process', price: 789, salary: '€5,000 – €13,000', tagBg: 'bg-secondary/10 text-secondary-foreground' },
   ];
 

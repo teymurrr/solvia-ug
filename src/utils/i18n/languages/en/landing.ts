@@ -142,9 +142,9 @@ export const landing = {
       spain: {
         name: "Spain",
         flag: "🇪🇸",
-        processDuration: "2–6 months",
-        price: "€290",
-        highlight: "Fast homologation",
+        processDuration: "8–12 months",
+        price: "€250",
+        highlight: "Lowest cost",
         salary: "3,000–8,000",
         includes: ["Document preparation", "MIR support", "Job placement"]
       },

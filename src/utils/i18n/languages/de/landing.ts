@@ -142,9 +142,9 @@ export const landing = {
       spain: {
         name: "Spanien",
         flag: "🇪🇸",
-        processDuration: "2–6 Monate",
-        price: "€290",
-        highlight: "Schnelle Anerkennung",
+        processDuration: "8–12 Monate",
+        price: "€250",
+        highlight: "Günstigster Preis",
         salary: "3.000–8.000",
         includes: ["Dokumentenvorbereitung", "MIR-Unterstützung", "Jobvermittlung"]
       },
