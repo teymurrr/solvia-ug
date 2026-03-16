@@ -12,10 +12,11 @@ interface SEOProps {
   ogImage?: string;
   ogType?: string;
   noindex?: boolean;
+  hreflangOverrides?: Record<string, string>;
   children?: React.ReactNode;
 }
 
-const SEO = ({ title, description, path = '/', ogImage, ogType = 'website', noindex = false, children }: SEOProps) => {
+const SEO = ({ title, description, path = '/', ogImage, ogType = 'website', noindex = false, hreflangOverrides, children }: SEOProps) => {
   const { currentLanguage } = useLanguage();
   
   const canonical = `${BASE_URL}${path}`;
