@@ -136,3 +136,14 @@ export const createCourseSchema = (course: {
     name: course.provider || 'Solvia',
   },
 });
+
+export const createBreadcrumbSchema = (items: { name: string; url?: string }[]) => ({
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: items.map((item, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    name: item.name,
+    ...(item.url && { item: item.url }),
+  })),
+});
