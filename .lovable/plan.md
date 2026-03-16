@@ -1,58 +1,31 @@
 
 
-# Post-Payment Automation — Implementation Complete
+## Analysis: SEO Issues in Blog Across Languages
 
-## Automations Implemented (March 2026)
+The last change (translating UI strings) was **partially good but missed critical SEO issues**:
 
-### 1. ✅ Post-Payment Welcome Email
-- Edge Function: `send-payment-confirmation`
-- Triggered from `stripe-webhook` on `checkout.session.completed` for homologation products
-- Includes: payment receipt, onboarding CTA, document checklist, Calendly + WhatsApp buttons
-- Localized in 5 languages (en/es/de/fr/ru)
-- Tracked in `email_sends` table
+### Problems Found
 
-### 2. ✅ Auto-Create Client Record
-- On payment completion, `stripe-webhook` inserts a `clients` row with user_id, email, target_country
-- Prevents drop-off: client record exists even if they never complete onboarding wizard
-- Onboarding wizard updates existing record instead of creating new
+1. **Incorrect hreflang on blog posts (HIGH IMPACT)**
+   The `SEO` component blindly appends `?lang=XX` to the current path for hreflang tags. For blog posts, this produces invalid URLs like `/blog/medical-license-germany?lang=es` — but the Spanish version is a completely different post at `/blog/homologacion-titulo-medico-alemania`. Since translations are linked via `post_group_id`, the hreflang tags should point to the actual translated post URLs instead.
 
-### 3. ✅ Auto-Generate Document Checklist
-- After client creation, `stripe-webhook` queries `document_requirements` for the target country
-- Creates `client_documents` rows (status: `not_submitted`) for each requirement
-- Skips duplicates if checklist already exists
+2. **Hardcoded English H1 on blog listing page**
+   Line 38: `<span className="text-primary">Solvia</span> Blog` — the H1 tag is always English regardless of language. Search engines weight H1 heavily for language relevance.
 
-### 4. ✅ Admin/Team Notification
-- On every homologation payment, sends email to david@thesolvia.com via Resend
-- Includes: email, package, country, amount, discount, Stripe session ID, user ID
-- Links to admin dashboard
+3. **Hardcoded English in BlogTranslations component**
+   Line 29: `"Available in other languages:"` is not translated. Minor but contributes to mixed-language signals.
 
-### 5. ✅ Document Upload Reminders
-- Edge Function: `send-document-reminder`
-- Cron scheduled daily at 9:00 AM UTC via pg_cron
-- Sends 48-hour reminder for clients without uploaded documents
-- Escalates to 7-day reminder if still no uploads
-- Deduplication via `email_sends` table
-- Uses shared email template for consistent branding
+### Plan
 
-### 6. ✅ Calendar Booking Notification
-- For `complete` and `personal_mentorship` tiers only
-- Creates in-app notification with Calendly link
-- Prompts user to book first consultation
+**A. Fix hreflang for blog posts** (`BlogPost.tsx`, `SEO.tsx`)
+- Add an optional `hreflangOverrides` prop to the `SEO` component that accepts a map of `{ lang: url }`.
+- In `BlogPost.tsx`, build hreflang overrides from the `translations` array (which already contains slug and language data) and pass them to `SEO`.
+- When overrides are provided, use them instead of the auto-generated `?lang=` pattern.
 
-## Architecture
+**B. Translate blog listing H1** (`Blog.tsx`)
+- Replace hardcoded `"Solvia Blog"` with `{t.blog.title}` (already available: "Блог", "Blog", etc.).
 
-```
-Stripe → stripe-webhook
-  ├── Update payment status (existing)
-  ├── Deliver starter kit (existing, for starter_kit product)
-  ├── Auto-create client record (NEW)
-  ├── Auto-generate document checklist (NEW)
-  ├── Send payment confirmation email (NEW → send-payment-confirmation)
-  ├── Send admin notification (NEW → direct Resend)
-  ├── Create booking notification (NEW → notifications table)
-  └── Increment discount usage (existing)
+**C. Translate BlogTranslations component** (`BlogTranslations.tsx`, all blog.ts i18n files)
+- Add `availableInOtherLanguages` key to each language's `blog.ts`.
+- Use the translation in the component.
 
-pg_cron (daily 9AM UTC) → send-document-reminder
-  ├── 48h reminder for no-upload clients
-  └── 7-day escalation reminder
-```
