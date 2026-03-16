@@ -56,8 +56,7 @@ export const vacancies = {
   homologationTime: {
     germany: '6–12 Monate',
     austria: '4–8 Monate',
-    spain: '2–6 Monate',
-    france: '4–10 Monate'
+    spain: '2–6 Monate'
   },
   specialties: {
     pediatrics: 'Pädiatrie',
