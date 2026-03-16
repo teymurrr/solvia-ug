@@ -49,9 +49,7 @@ export const onboarding = {
   countries: {
     germany: 'Deutschland',
     austria: 'Österreich',
-    spain: 'Spanien',
-    italy: 'Italien',
-    france: 'Frankreich'
+    spain: 'Spanien'
   },
   step: 'Schritt',
   of: 'von',

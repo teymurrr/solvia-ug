@@ -16,13 +16,5 @@ export const countrySelection = {
       name: 'Spain',
       description: 'Centralized homologación. Popular entry point for Spanish-speaking doctors.',
     },
-    it: {
-      name: 'Italy',
-      description: 'Ministry-based recognition. Attractive for doctors and dentists.',
-    },
-    fr: {
-      name: 'France',
-      description: 'High demand for specialists. ARS + EVC pathway for foreign doctors.',
-    },
   },
 };

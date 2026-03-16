@@ -16,13 +16,5 @@ export const countrySelection = {
       name: 'Spanien',
       description: 'Zentralisierte Homologación. Beliebter Einstiegspunkt für spanischsprachige Ärzte.',
     },
-    it: {
-      name: 'Italien',
-      description: 'Ministerielle Anerkennung. Attraktiv für Ärzte und Zahnärzte.',
-    },
-    fr: {
-      name: 'Frankreich',
-      description: 'Hoher Bedarf an Fachärzten. ARS + EVC-Weg für ausländische Ärzte.',
-    },
   },
 };
