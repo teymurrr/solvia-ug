@@ -31,12 +31,6 @@ export const landing = {
         location: "Wien, Österreich",
         type: "Vollzeit"
       },
-      job4: {
-        title: "Notarzt",
-        institution: "Universitätsklinikum Lyon",
-        location: "Lyon, Frankreich",
-        type: "Vollzeit"
-      }
     }
   },
   homologationIncluded: {
