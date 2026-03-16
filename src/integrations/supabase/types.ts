@@ -1602,6 +1602,44 @@ export type Database = {
         }
         Relationships: []
       }
+      whatsapp_conversations: {
+        Row: {
+          created_at: string
+          current_step: string
+          id: string
+          lead_id: string | null
+          phone_number: string
+          responses: Json
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          current_step?: string
+          id?: string
+          lead_id?: string | null
+          phone_number: string
+          responses?: Json
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          current_step?: string
+          id?: string
+          lead_id?: string | null
+          phone_number?: string
+          responses?: Json
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "whatsapp_conversations_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "leads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
