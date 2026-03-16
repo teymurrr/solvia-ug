@@ -115,6 +115,7 @@ const AppRoutes = () => {
         <Route path="/impressum" element={<Impressum />} />
         <Route path="/employers" element={<EmployersLanding />} />
         <Route path="/blog" element={<Blog />} />
+        <Route path="/blog/:slug" element={<BlogPost />} />
         <Route path="/community" element={
           <ProtectedRoute>
             <Community />
