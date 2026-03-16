@@ -2,7 +2,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Badge } from '@/components/ui/badge';
-import { Briefcase, FileText, LayoutDashboard, BookOpen, BarChart, Stethoscope, MessageSquare } from 'lucide-react';
+import { Briefcase, FileText, LayoutDashboard, BookOpen, BarChart, Stethoscope } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
 
 interface MobileMenuProps {
