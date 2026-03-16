@@ -47,7 +47,7 @@ const Blog = React.memo(() => {
             <Button variant="outline" asChild>
               <Link to="/admin/blog" className="flex items-center">
                 <Settings className="mr-2 h-4 w-4" />
-                Manage Blog
+                {t.blog.manageBlog}
               </Link>
             </Button>
           )}
