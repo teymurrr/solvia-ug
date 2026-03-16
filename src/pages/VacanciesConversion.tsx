@@ -19,7 +19,7 @@ const mockBlurredJobs = [
   { hospital: 'Klinikum München', specialtyKey: 'generalSurgery', city: 'Múnich', country: 'germany', profession: 'doctor', salaryMin: '72.000', salaryMax: '88.000' },
   { hospital: 'AKH Wien', specialtyKey: 'neurology', city: 'Viena', country: 'austria', profession: 'doctor', salaryMin: '78.000', salaryMax: '98.000' },
   { hospital: 'Hospital Clínic Barcelona', specialtyKey: 'generalNursing', city: 'Barcelona', country: 'spain', profession: 'nurse', salaryMin: '42.000', salaryMax: '55.000' },
-  { hospital: 'Hôpital Universitaire Lyon', specialtyKey: 'anesthesiology', city: 'Lyon', country: 'france', profession: 'doctor', salaryMin: '70.000', salaryMax: '85.000' },
+  
 ];
 
 const perYearLabels: Record<string, string> = {
