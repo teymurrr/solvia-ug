@@ -1,0 +1,40 @@
+# Solvia
+
+> Solvia helps doctors, nurses, and healthcare professionals get their medical license recognized in Germany, Austria, and Spain. We provide step-by-step homologation guidance, verified job listings, visa support, and language learning resources.
+
+## About
+
+Solvia is a platform based in Salzburg, Austria, that guides international medical professionals through the complex process of getting their qualifications recognized in Europe. Our services include personalized document checklists, AI-powered document review, verified hospital job listings, and mentorship from doctors who have successfully completed the process.
+
+## Core Services
+
+- [Homologation Guide](https://solvia-flexkapg.lovable.app/homologation): Step-by-step medical license recognition process for Germany, Austria, and Spain
+- [Medical Jobs](https://solvia-flexkapg.lovable.app/vacancies): Verified doctor and nurse positions in European hospitals
+- [Visa Information](https://solvia-flexkapg.lovable.app/visa-info): Visa requirements and application guidance for healthcare workers
+- [Learning Center](https://solvia-flexkapg.lovable.app/learning): German language courses and FSP exam preparation
+- [Blog](https://solvia-flexkapg.lovable.app/blog): Expert articles on medical career migration to Europe
+
+## Key Topics
+
+- Medical license recognition (Approbation) in Germany
+- Homologación de título médico in Spain
+- Nostrifizierung in Austria
+- Kenntnisprüfung and FSP exam preparation
+- Healthcare worker visa processes
+- German language learning for doctors (B2/C1 medical German)
+- Document apostille and translation requirements
+- Working as a doctor or nurse in Europe
+
+## Languages
+
+Content is available in English, German, French, Spanish, and Russian.
+
+## Contact
+
+- Website: https://solvia-flexkapg.lovable.app
+- Email: David.rehrl@thesolvia.com
+- Address: Schmiedingerstraße 16, 5020 Salzburg, Austria
+
+## Extended Content
+
+For detailed content, see [llms-full.txt](https://solvia-flexkapg.lovable.app/llms-full.txt)

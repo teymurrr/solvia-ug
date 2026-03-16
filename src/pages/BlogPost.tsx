@@ -123,7 +123,15 @@ const BlogPost = () => {
         ogImage={post.imageUrl}
         ogType="article"
         hreflangOverrides={hreflangOverrides}
-      />
+      >
+        <meta property="article:published_time" content={post.created_at} />
+        <meta property="article:modified_time" content={post.updated_at || post.created_at} />
+        <meta property="article:author" content="Solvia" />
+        {post.category && <meta property="article:section" content={post.category} />}
+        {post.tags && post.tags.split(',').map((tag: string) => (
+          <meta key={tag.trim()} property="article:tag" content={tag.trim()} />
+        ))}
+      </SEO>
       <StructuredData data={[articleSchema, breadcrumbSchema]} />
 
       {/* Full-width hero image */}

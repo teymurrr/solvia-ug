@@ -39,7 +39,7 @@ const SEO = ({ title, description, path = '/', ogImage, ogType = 'website', noin
       <meta property="og:type" content={ogType} />
       <meta property="og:image" content={image} />
       <meta property="og:site_name" content="Solvia" />
-      <meta property="og:locale" content={currentLanguage} />
+      <meta property="og:locale" content={`${currentLanguage}_${currentLanguage === 'en' ? 'US' : currentLanguage.toUpperCase()}`} />
 
       {/* Twitter */}
       <meta name="twitter:card" content="summary_large_image" />
