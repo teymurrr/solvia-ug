@@ -33,18 +33,6 @@ const countries: CountryOption[] = [
     name: 'Spain',
     description: 'Centralized homologación. Popular entry point for Spanish-speaking doctors.',
   },
-  {
-    code: 'it',
-    flag: '🇮🇹',
-    name: 'Italy',
-    description: 'Ministry-based recognition. Attractive for doctors and dentists.',
-  },
-  {
-    code: 'fr',
-    flag: '🇫🇷',
-    name: 'France',
-    description: 'High demand for specialists. ARS + EVC pathway for foreign doctors.',
-  },
 ];
 
 const CountrySelection = () => {
