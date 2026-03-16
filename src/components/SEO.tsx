@@ -48,15 +48,15 @@ const SEO = ({ title, description, path = '/', ogImage, ogType = 'website', noin
       <meta name="twitter:image" content={image} />
 
       {/* Hreflang */}
-      {SUPPORTED_LANGS.map(lang => (
-        <link
-          key={lang}
-          rel="alternate"
-          hrefLang={lang}
-          href={`${BASE_URL}${path}${path.includes('?') ? '&' : '?'}lang=${lang}`}
-        />
-      ))}
-      <link rel="alternate" hrefLang="x-default" href={canonical} />
+      {hreflangOverrides
+        ? Object.entries(hreflangOverrides).map(([lang, url]) => (
+            <link key={lang} rel="alternate" hrefLang={lang} href={url.startsWith('http') ? url : `${BASE_URL}${url}`} />
+          ))
+        : SUPPORTED_LANGS.map(lang => (
+            <link key={lang} rel="alternate" hrefLang={lang} href={`${BASE_URL}${path}${path.includes('?') ? '&' : '?'}lang=${lang}`} />
+          ))
+      }
+      <link rel="alternate" hrefLang="x-default" href={hreflangOverrides?.en ? (hreflangOverrides.en.startsWith('http') ? hreflangOverrides.en : `${BASE_URL}${hreflangOverrides.en}`) : canonical} />
 
       {children}
     </Helmet>
