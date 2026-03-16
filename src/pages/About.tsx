@@ -9,6 +9,7 @@ import ValuesSection from '@/components/about/ValuesSection';
 import CTASection from '@/components/about/CTASection';
 import { useLanguage } from '@/hooks/useLanguage';
 import SEO from '@/components/SEO';
+import StructuredData, { createBreadcrumbSchema } from '@/components/StructuredData';
 
 // List of critical images to preload
 const criticalImages = [
