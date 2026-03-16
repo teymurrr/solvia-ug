@@ -7,6 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { CheckCircle2, Globe, GraduationCap, Briefcase, BookOpen, Users, ArrowRight, Sparkles } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import SEO from '@/components/SEO';
+import StructuredData, { createBreadcrumbSchema } from '@/components/StructuredData';
 
 const VisaInfo = () => {
   const { t } = useLanguage();

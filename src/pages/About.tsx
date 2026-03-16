@@ -37,6 +37,10 @@ const About = () => {
         description={seo?.description || 'Solvia connects international healthcare professionals with European employers.'}
         path="/about"
       />
+      <StructuredData data={createBreadcrumbSchema([
+        { name: 'Home', url: 'https://solvia-flexkapg.lovable.app/' },
+        { name: 'About' },
+      ])} />
       {/* Add preload links for critical images */}
       {criticalImages.map((src, index) => (
         <link key={index} rel="preload" href={src} as="image" />

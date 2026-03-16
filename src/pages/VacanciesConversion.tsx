@@ -89,6 +89,10 @@ const VacanciesConversion = () => {
         description={seoData?.description || 'Browse verified medical job openings across Germany, Austria and Spain.'}
         path="/vacancies"
       />
+      <StructuredData data={createBreadcrumbSchema([
+        { name: 'Home', url: 'https://solvia-flexkapg.lovable.app/' },
+        { name: 'Medical Jobs' },
+      ])} />
       <section className="bg-gradient-to-b from-primary/10 to-background py-12">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center space-y-4">

@@ -20,6 +20,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { useLanguage } from '@/hooks/useLanguage';
 import SEO from '@/components/SEO';
+import StructuredData, { createBreadcrumbSchema } from '@/components/StructuredData';
 
 const Contact = () => {
   const { toast } = useToast();
