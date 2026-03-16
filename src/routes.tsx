@@ -234,6 +234,11 @@ const AppRoutes = () => {
             <AdminApplications />
           </AdminRoute>
         } />
+        <Route path="/admin/blog" element={
+          <AdminRoute>
+            <AdminBlogManagement />
+          </AdminRoute>
+        } />
         
         {/* Fallback route */}
         <Route path="*" element={<NotFound />} />
