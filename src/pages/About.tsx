@@ -9,6 +9,7 @@ import ValuesSection from '@/components/about/ValuesSection';
 import CTASection from '@/components/about/CTASection';
 import { useLanguage } from '@/hooks/useLanguage';
 import SEO from '@/components/SEO';
+import StructuredData, { createBreadcrumbSchema } from '@/components/StructuredData';
 
 // List of critical images to preload
 const criticalImages = [
@@ -36,6 +37,10 @@ const About = () => {
         description={seo?.description || 'Solvia connects international healthcare professionals with European employers.'}
         path="/about"
       />
+      <StructuredData data={createBreadcrumbSchema([
+        { name: 'Home', url: 'https://solvia-flexkapg.lovable.app/' },
+        { name: 'About' },
+      ])} />
       {/* Add preload links for critical images */}
       {criticalImages.map((src, index) => (
         <link key={index} rel="preload" href={src} as="image" />

@@ -11,6 +11,7 @@ import { Badge } from '@/components/ui/badge';
 import { Briefcase, Lock, Sparkles, Filter } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
 import SEO from '@/components/SEO';
+import StructuredData, { createBreadcrumbSchema } from '@/components/StructuredData';
 
 // Mock blurred job data — specialty keys reference translations
 const mockBlurredJobs = [
@@ -88,6 +89,10 @@ const VacanciesConversion = () => {
         description={seoData?.description || 'Browse verified medical job openings across Germany, Austria and Spain.'}
         path="/vacancies"
       />
+      <StructuredData data={createBreadcrumbSchema([
+        { name: 'Home', url: 'https://solvia-flexkapg.lovable.app/' },
+        { name: 'Medical Jobs' },
+      ])} />
       <section className="bg-gradient-to-b from-primary/10 to-background py-12">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center space-y-4">

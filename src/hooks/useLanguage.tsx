@@ -34,16 +34,29 @@ export const LanguageProvider: React.FC<LanguageProviderProps> = ({ children }) 
   const [translations, setTranslations] = useState<any>(en);
   const { setCookie, getCookie } = useCookies();
 
-  // Effect to load language from cookies on component mount, or auto-detect on first visit
+  // Effect to load language from URL params, cookies, or auto-detect on first visit
   useEffect(() => {
+    const supportedLanguages = ['en', 'es', 'de', 'fr', 'ru'];
+    
+    // Priority 1: URL query param ?lang=xx (critical for hreflang SEO)
+    const urlParams = new URLSearchParams(window.location.search);
+    const urlLang = urlParams.get('lang')?.toLowerCase();
+    if (urlLang && supportedLanguages.includes(urlLang)) {
+      setCurrentLanguage(urlLang);
+      switchLanguage(urlLang);
+      setCookie('language', urlLang, 'essential', { expires: 365 });
+      localStorage.setItem('language', urlLang);
+      return;
+    }
+
+    // Priority 2: Stored preference
     const storedLanguage = getCookie('language') || localStorage.getItem('language');
-    if (storedLanguage) {
+    if (storedLanguage && supportedLanguages.includes(storedLanguage)) {
       setCurrentLanguage(storedLanguage);
       switchLanguage(storedLanguage);
     } else {
-      // Auto-detect from browser on first visit
+      // Priority 3: Auto-detect from browser on first visit
       const browserLang = navigator.language?.toLowerCase().split('-')[0];
-      const supportedLanguages = ['en', 'es', 'de', 'fr', 'ru'];
       if (browserLang && supportedLanguages.includes(browserLang) && browserLang !== 'en') {
         setCurrentLanguage(browserLang);
         switchLanguage(browserLang);
