@@ -61,6 +61,10 @@ const VisaInfo = () => {
         description={seoData?.description || 'Complete guide to work visas for medical professionals in Germany and Europe.'}
         path="/visa-info"
       />
+      <StructuredData data={createBreadcrumbSchema([
+        { name: 'Home', url: 'https://solvia-flexkapg.lovable.app/' },
+        { name: 'Visa Information' },
+      ])} />
       <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20">
         {/* Hero Section */}
         <section className="relative py-16 px-4 sm:px-6 lg:px-8 overflow-hidden">
