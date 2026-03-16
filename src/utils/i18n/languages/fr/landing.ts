@@ -31,12 +31,6 @@ export const landing = {
         location: "Vienne, Autriche",
         type: "Temps plein"
       },
-      job4: {
-        title: "Médecin Urgentiste",
-        institution: "Hôpital Universitaire de Lyon",
-        location: "Lyon, France",
-        type: "Temps plein"
-      }
     }
   },
   homologationIncluded: {
