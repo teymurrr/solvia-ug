@@ -58,7 +58,7 @@ const Blog = React.memo(() => {
         ) : filteredPosts.length > 0 ? (
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
             {filteredPosts.map((post) => (
-              <Link key={post.id} to={`/blog/${post.id}`} className="block">
+              <Link key={post.id} to={`/blog/${post.slug || post.id}`} className="block">
                 <Card className="group hover:shadow-lg transition-shadow duration-300 overflow-hidden cursor-pointer h-full">
                   {post.image_url && (
                     <div className="aspect-[16/9] overflow-hidden">

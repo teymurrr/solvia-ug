@@ -40,7 +40,7 @@ const BlogTranslations: React.FC<BlogTranslationsProps> = ({ translations, curre
               size="sm"
               asChild
             >
-              <Link to={`/blog/${translation.id}`} className="flex items-center gap-2">
+              <Link to={`/blog/${translation.slug || translation.id}`} className="flex items-center gap-2">
                 <span>{langInfo.flag}</span>
                 <span>{langInfo.name}</span>
                 {translation.status === 'draft' && (

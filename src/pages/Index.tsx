@@ -55,8 +55,13 @@ const Index = () => {
       <Suspense fallback={<LoadingFallback height="h-96" />}>
         <ConversionFAQSection />
       </Suspense>
+
+      {/* 7. CONTENT — Blog for SEO + authority */}
+      <Suspense fallback={<LoadingFallback height="h-96" />}>
+        <BlogSection />
+      </Suspense>
       
-      {/* 7. ACTION — Final CTA */}
+      {/* 8. ACTION — Final CTA */}
       <Suspense fallback={<LoadingFallback height="h-64" />}>
         <SuperCTASection />
       </Suspense>
