@@ -31,12 +31,6 @@ export const landing = {
         location: "Viena, Austria",
         type: "Tiempo completo"
       },
-      job4: {
-        title: "Médico de Urgencias",
-        institution: "Hospital Universitario de Lyon",
-        location: "Lyon, Francia",
-        type: "Tiempo completo"
-      }
     }
   },
   homologationIncluded: {
