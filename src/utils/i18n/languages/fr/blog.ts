@@ -1,7 +1,22 @@
 
 export const blog = {
-  title: 'Dernières Nouvelles de Notre Blog',
+  title: 'Blog',
   subtitle: 'Idées, histoires et conseils pour les professionnels de la santé et les recruteurs',
   viewMore: 'Voir Plus',
-  readMore: 'Lire Plus'
+  readMore: 'Lire Plus',
+  comments: 'Commentaires',
+  noComments: 'Aucun commentaire pour le moment. Soyez le premier à commenter !',
+  leaveComment: 'Laisser un commentaire',
+  postComment: 'Publier le commentaire',
+  writeComment: 'Écrivez votre commentaire ici...',
+  loginToComment: 'Veuillez vous connecter pour commenter',
+  submitting: 'Envoi en cours...',
+  commentPosted: 'Commentaire ajouté',
+  commentSuccess: 'Votre commentaire a été publié avec succès',
+  loading: 'Chargement de l\'article...',
+  backToBlog: 'Retour au Blog',
+  noPosts: 'Aucun article trouvé',
+  noPostsInLanguage: 'Aucun article disponible dans la langue sélectionnée.',
+  checkBackSoon: 'Revenez bientôt pour du nouveau contenu.',
+  manageBlog: 'Gérer le Blog',
 };
