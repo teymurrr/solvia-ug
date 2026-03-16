@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { BarChart, LayoutDashboard, Briefcase, Users, MessageSquare } from 'lucide-react';
+import { BarChart, LayoutDashboard, Briefcase, BookOpen } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
 
 interface NavLinksProps {
@@ -26,13 +26,13 @@ const NavLinks: React.FC<NavLinksProps> = ({ isLoggedIn, userType }) => {
           <span className="text-sm text-muted-foreground group-hover:text-foreground">{t?.common?.vacancies || "Vacancies"}</span>
         </Link>
         <Link
-          to="/community"
+          to="/blog"
           className="flex flex-col items-center group"
         >
           <div className="p-2 rounded-full group-hover:bg-muted transition-colors">
-            <MessageSquare className="h-5 w-5 text-muted-foreground group-hover:text-foreground" />
+            <BookOpen className="h-5 w-5 text-muted-foreground group-hover:text-foreground" />
           </div>
-          <span className="text-sm text-muted-foreground group-hover:text-foreground">{(t as any)?.community?.title || "Community"}</span>
+          <span className="text-sm text-muted-foreground group-hover:text-foreground">{t?.blog?.title || "Blog"}</span>
         </Link>
       </div>
     );
@@ -51,13 +51,13 @@ const NavLinks: React.FC<NavLinksProps> = ({ isLoggedIn, userType }) => {
           <span className="text-sm text-muted-foreground group-hover:text-foreground">{t?.common?.dashboard || "Dashboard"}</span>
         </Link>
         <Link
-          to="/community"
+          to="/blog"
           className="flex flex-col items-center group"
         >
           <div className="p-2 rounded-full group-hover:bg-muted transition-colors">
-            <MessageSquare className="h-5 w-5 text-muted-foreground group-hover:text-foreground" />
+            <BookOpen className="h-5 w-5 text-muted-foreground group-hover:text-foreground" />
           </div>
-          <span className="text-sm text-muted-foreground group-hover:text-foreground">{(t as any)?.community?.title || "Community"}</span>
+          <span className="text-sm text-muted-foreground group-hover:text-foreground">{t?.blog?.title || "Blog"}</span>
         </Link>
       </div>
     );

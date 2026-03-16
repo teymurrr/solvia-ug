@@ -30,14 +30,14 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
   return (
     <div className="sm:hidden bg-white">
       <div className="pt-2 pb-3 space-y-1">
-        {/* Community link for everyone */}
+        {/* Blog link for everyone */}
         <Link
-          to="/community"
+          to="/blog"
           className="flex items-center space-x-3 px-4 py-2 hover:bg-gray-50"
           onClick={onClose}
         >
-          <MessageSquare className="h-5 w-5 text-gray-600" />
-          <span>{(t as any)?.community?.title || "Community"}</span>
+          <BookOpen className="h-5 w-5 text-gray-600" />
+          <span>{t?.blog?.title || "Blog"}</span>
         </Link>
 
         {!isLoggedIn && (
