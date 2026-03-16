@@ -31,12 +31,6 @@ export const landing = {
         location: "Вена, Австрия",
         type: "Полная занятость"
       },
-      job4: {
-        title: "Врач скорой помощи",
-        institution: "Университетская клиника Лиона",
-        location: "Лион, Франция",
-        type: "Полная занятость"
-      }
     }
   },
   homologationIncluded: {
