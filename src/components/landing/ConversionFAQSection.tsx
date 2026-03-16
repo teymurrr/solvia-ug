@@ -47,7 +47,7 @@ const ConversionFAQSection = () => {
     { name: 'Germany', id: 'germany' },
     { name: 'Austria', id: 'austria' },
     { name: 'Spain', id: 'spain' },
-    { name: 'France', id: 'france' }
+    
   ];
 
   return (

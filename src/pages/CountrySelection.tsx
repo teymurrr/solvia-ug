@@ -33,18 +33,6 @@ const countries: CountryOption[] = [
     name: 'Spain',
     description: 'Centralized homologación. Popular entry point for Spanish-speaking doctors.',
   },
-  {
-    code: 'it',
-    flag: '🇮🇹',
-    name: 'Italy',
-    description: 'Ministry-based recognition. Attractive for doctors and dentists.',
-  },
-  {
-    code: 'fr',
-    flag: '🇫🇷',
-    name: 'France',
-    description: 'High demand for specialists. ARS + EVC pathway for foreign doctors.',
-  },
 ];
 
 const CountrySelection = () => {
@@ -65,7 +53,7 @@ const CountrySelection = () => {
     <MainLayout>
       <SEO
         title={seoData?.title || 'Choose Your Destination Country – Medical Career in Europe'}
-        description={seoData?.description || 'Select Germany, Austria, Spain, France or Italy to start your medical license recognition process.'}
+        description={seoData?.description || 'Select Germany, Austria or Spain to start your medical license recognition process.'}
         path="/homologation-payment"
       />
       <div className="min-h-screen bg-gradient-to-br from-primary/5 via-background to-background">

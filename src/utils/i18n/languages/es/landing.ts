@@ -10,8 +10,6 @@ export const landing = {
       germany: "Alemania",
       austria: "Austria",
       spain: "España",
-      italy: "Italia",
-      france: "Francia"
     },
     positionsAvailable: "posiciones disponibles",
     jobs: {
@@ -33,12 +31,6 @@ export const landing = {
         location: "Viena, Austria",
         type: "Tiempo completo"
       },
-      job4: {
-        title: "Médico de Urgencias",
-        institution: "Hospital Universitario de Lyon",
-        location: "Lyon, Francia",
-        type: "Tiempo completo"
-      }
     }
   },
   homologationIncluded: {
@@ -156,24 +148,6 @@ export const landing = {
         salary: "3.000–8.000",
         includes: ["Preparación de documentos", "Soporte MIR", "Colocación laboral"]
       },
-      france: {
-        name: "Francia",
-        flag: "🇫🇷",
-        processDuration: "4–10 meses",
-        price: "€750",
-        highlight: "Gran calidad de vida",
-        salary: "4.000–10.000",
-        includes: ["Preparación de documentos", "Soporte PAE", "Colocación laboral"]
-      },
-      italy: {
-        name: "Italia",
-        flag: "🇮🇹",
-        processDuration: "3–8 meses",
-        price: "€750",
-        highlight: "Demanda creciente",
-        salary: "3.500–9.000",
-        includes: ["Preparación de documentos", "Soporte de reconocimiento", "Colocación laboral"]
-      }
     }
   },
   conversionFaq: {

@@ -19,7 +19,7 @@ const mockBlurredJobs = [
   { hospital: 'Klinikum München', specialtyKey: 'generalSurgery', city: 'Múnich', country: 'germany', profession: 'doctor', salaryMin: '72.000', salaryMax: '88.000' },
   { hospital: 'AKH Wien', specialtyKey: 'neurology', city: 'Viena', country: 'austria', profession: 'doctor', salaryMin: '78.000', salaryMax: '98.000' },
   { hospital: 'Hospital Clínic Barcelona', specialtyKey: 'generalNursing', city: 'Barcelona', country: 'spain', profession: 'nurse', salaryMin: '42.000', salaryMax: '55.000' },
-  { hospital: 'Hôpital Universitaire Lyon', specialtyKey: 'anesthesiology', city: 'Lyon', country: 'france', profession: 'doctor', salaryMin: '70.000', salaryMax: '85.000' },
+  
 ];
 
 const perYearLabels: Record<string, string> = {
@@ -85,7 +85,7 @@ const VacanciesConversion = () => {
     <MainLayout>
       <SEO
         title={seoData?.title || 'Medical Jobs in Europe – Doctor & Nurse Positions'}
-        description={seoData?.description || 'Browse verified medical job openings across Germany, Austria, Spain, France and Italy.'}
+        description={seoData?.description || 'Browse verified medical job openings across Germany, Austria and Spain.'}
         path="/vacancies"
       />
       <section className="bg-gradient-to-b from-primary/10 to-background py-12">

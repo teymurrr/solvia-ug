@@ -16,13 +16,5 @@ export const countrySelection = {
       name: 'España',
       description: 'Homologación centralizada. Punto de entrada popular para médicos hispanohablantes.',
     },
-    it: {
-      name: 'Italia',
-      description: 'Reconocimiento ministerial. Atractivo para médicos y dentistas.',
-    },
-    fr: {
-      name: 'Francia',
-      description: 'Alta demanda de especialistas. Vía ARS + EVC para médicos extranjeros.',
-    },
   },
 };

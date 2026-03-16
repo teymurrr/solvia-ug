@@ -9,9 +9,7 @@ export const landing = {
     countries: {
       germany: "Германия",
       austria: "Австрия",
-      spain: "Испания",
-      italy: "Италия",
-      france: "Франция"
+      spain: "Испания"
     },
     positionsAvailable: "доступных позиций",
     jobs: {
@@ -33,12 +31,6 @@ export const landing = {
         location: "Вена, Австрия",
         type: "Полная занятость"
       },
-      job4: {
-        title: "Врач скорой помощи",
-        institution: "Университетская клиника Лиона",
-        location: "Лион, Франция",
-        type: "Полная занятость"
-      }
     }
   },
   homologationIncluded: {
@@ -156,24 +148,6 @@ export const landing = {
         salary: "3 000–8 000",
         includes: ["Подготовка документов", "Поддержка MIR", "Трудоустройство"]
       },
-      france: {
-        name: "Франция",
-        flag: "🇫🇷",
-        processDuration: "4–10 месяцев",
-        price: "€750",
-        highlight: "Высокое качество жизни",
-        salary: "4 000–10 000",
-        includes: ["Подготовка документов", "Поддержка PAE", "Трудоустройство"]
-      },
-      italy: {
-        name: "Италия",
-        flag: "🇮🇹",
-        processDuration: "3–8 месяцев",
-        price: "€750",
-        highlight: "Растущий спрос",
-        salary: "3 500–9 000",
-        includes: ["Подготовка документов", "Поддержка признания", "Трудоустройство"]
-      }
     }
   },
   conversionFaq: {

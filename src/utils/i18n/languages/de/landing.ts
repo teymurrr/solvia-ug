@@ -9,9 +9,7 @@ export const landing = {
     countries: {
       germany: "Deutschland",
       austria: "Österreich",
-      spain: "Spanien",
-      italy: "Italien",
-      france: "Frankreich"
+      spain: "Spanien"
     },
     positionsAvailable: "Stellen verfügbar",
     jobs: {
@@ -33,12 +31,6 @@ export const landing = {
         location: "Wien, Österreich",
         type: "Vollzeit"
       },
-      job4: {
-        title: "Notarzt",
-        institution: "Universitätsklinikum Lyon",
-        location: "Lyon, Frankreich",
-        type: "Vollzeit"
-      }
     }
   },
   homologationIncluded: {
@@ -156,24 +148,6 @@ export const landing = {
         salary: "3.000–8.000",
         includes: ["Dokumentenvorbereitung", "MIR-Unterstützung", "Jobvermittlung"]
       },
-      france: {
-        name: "Frankreich",
-        flag: "🇫🇷",
-        processDuration: "4–10 Monate",
-        price: "€750",
-        highlight: "Hohe Lebensqualität",
-        salary: "4.000–10.000",
-        includes: ["Dokumentenvorbereitung", "PAE-Unterstützung", "Jobvermittlung"]
-      },
-      italy: {
-        name: "Italien",
-        flag: "🇮🇹",
-        processDuration: "3–8 Monate",
-        price: "€750",
-        highlight: "Wachsende Nachfrage",
-        salary: "3.500–9.000",
-        includes: ["Dokumentenvorbereitung", "Anerkennungsunterstützung", "Jobvermittlung"]
-      }
     }
   },
   conversionFaq: {

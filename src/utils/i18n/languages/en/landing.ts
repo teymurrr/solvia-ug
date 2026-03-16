@@ -10,8 +10,6 @@ export const landing = {
       germany: "Germany",
       austria: "Austria", 
       spain: "Spain",
-      italy: "Italy",
-      france: "France"
     },
     positionsAvailable: "positions available",
     jobs: {
@@ -33,12 +31,6 @@ export const landing = {
         location: "Vienna, Austria",
         type: "Full-time"
       },
-      job4: {
-        title: "Emergency Room Physician",
-        institution: "Lyon University Hospital",
-        location: "Lyon, France",
-        type: "Full-time"
-      }
     }
   },
   homologationIncluded: {
@@ -156,24 +148,6 @@ export const landing = {
         salary: "3,000–8,000",
         includes: ["Document preparation", "MIR support", "Job placement"]
       },
-      france: {
-        name: "France",
-        flag: "🇫🇷",
-        processDuration: "4–10 months",
-        price: "€750",
-        highlight: "Great quality of life",
-        salary: "4,000–10,000",
-        includes: ["Document preparation", "PAE support", "Job placement"]
-      },
-      italy: {
-        name: "Italy",
-        flag: "🇮🇹",
-        processDuration: "3–8 months",
-        price: "€750",
-        highlight: "Growing demand",
-        salary: "3,500–9,000",
-        includes: ["Document preparation", "Recognition support", "Job placement"]
-      }
     }
   },
   conversionFaq: {

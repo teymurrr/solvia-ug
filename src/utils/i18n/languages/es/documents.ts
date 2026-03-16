@@ -71,7 +71,5 @@ export const documents = {
     germany: 'Alemania',
     austria: 'Austria',
     spain: 'España',
-    italy: 'Italia',
-    france: 'Francia',
   },
 };

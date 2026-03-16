@@ -80,8 +80,6 @@ export const documents = {
     germany: 'Germany',
     austria: 'Austria',
     spain: 'Spain',
-    italy: 'Italy',
-    france: 'France',
   },
   accessRequired: {
     title: 'Payment Required',

@@ -48,20 +48,17 @@ export const vacancies = {
   countries: {
     germany: 'Германия',
     austria: 'Австрия',
-    spain: 'Испания',
-    france: 'Франция'
+    spain: 'Испания'
   },
   countryBadges: {
     germany: 'Лучшие зарплаты',
     austria: 'Простейший процесс',
-    spain: 'Быстрая гомологация',
-    france: 'Высокое качество жизни'
+    spain: 'Быстрая гомологация'
   },
   homologationTime: {
     germany: '6–12 месяцев',
     austria: '4–8 месяцев',
-    spain: '2–6 месяцев',
-    france: '4–10 месяцев'
+    spain: '2–6 месяцев'
   },
   specialties: {
     pediatrics: 'Педиатрия',

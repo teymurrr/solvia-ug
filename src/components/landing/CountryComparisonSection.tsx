@@ -34,16 +34,9 @@ const CountryComparisonSection = () => {
       highlight: "Fast homologation",
       badgeColor: "bg-amber-500"
     },
-    france: {
-      name: "France",
-      flag: "🇫🇷",
-      processDuration: "4–10 months",
-      highlight: "Great quality of life",
-      badgeColor: "bg-violet-500"
-    }
   };
 
-  const countryKeys = ['germany', 'austria', 'spain', 'france'] as const;
+  const countryKeys = ['germany', 'austria', 'spain'] as const;
   const countries = comparison?.countries || defaultCountries;
 
   return (
@@ -67,7 +60,7 @@ const CountryComparisonSection = () => {
           </div>
 
           {/* Country Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-10">
             {countryKeys.map((key) => {
               const country = countries[key] || defaultCountries[key];
               const defaultData = defaultCountries[key];

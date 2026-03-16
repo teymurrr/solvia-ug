@@ -27,7 +27,7 @@ const Index = () => {
     <MainLayout>
       <SEO
         title={seo?.title || 'Medical License Recognition in Europe – Work as a Doctor Abroad'}
-        description={seo?.description || 'Solvia helps doctors, nurses and healthcare professionals get their medical license recognized in Germany, Austria, Spain, France and Italy.'}
+        description={seo?.description || 'Solvia helps doctors, nurses and healthcare professionals get their medical license recognized in Germany, Austria and Spain.'}
         path="/"
       />
       <StructuredData data={[organizationSchema, websiteSchema]} />

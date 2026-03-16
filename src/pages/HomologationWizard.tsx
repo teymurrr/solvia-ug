@@ -82,7 +82,7 @@ const HomologationWizard = () => {
     if (targetCountry === 'spain') {
       return 250;
     }
-    // Germany, Italy, France, Austria
+    // Germany, Austria
     return 750;
   };
 
