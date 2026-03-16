@@ -19,4 +19,5 @@ export const blog = {
   noPostsInLanguage: "Нет записей на выбранном языке.",
   checkBackSoon: "Загляните позже — скоро появится новый контент.",
   manageBlog: "Управление блогом",
+  availableInOtherLanguages: "Доступно на других языках:",
 };

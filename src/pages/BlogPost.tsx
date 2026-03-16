@@ -105,6 +105,15 @@ const BlogPost = () => {
 
   const readingTime = post.readTime || `${Math.max(1, Math.ceil((post.content?.length || 0) / 1500))} min read`;
 
+  const hreflangOverrides: Record<string, string> = {
+    [post.language || 'en']: `/blog/${post.slug}`,
+    ...Object.fromEntries(
+      translations
+        .filter(t => t.slug && t.language)
+        .map(t => [t.language, `/blog/${t.slug}`])
+    ),
+  };
+
   return (
     <MainLayout>
       <SEO
@@ -113,6 +122,7 @@ const BlogPost = () => {
         path={`/blog/${post.slug}`}
         ogImage={post.imageUrl}
         ogType="article"
+        hreflangOverrides={hreflangOverrides}
       />
       <StructuredData data={[articleSchema, breadcrumbSchema]} />
 
