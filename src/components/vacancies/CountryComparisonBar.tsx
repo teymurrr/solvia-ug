@@ -12,7 +12,7 @@ interface CountryComparisonBarProps {
   specialty?: string;
 }
 
-const countryKeys = ['germany', 'austria', 'spain', 'france'] as const;
+const countryKeys = ['germany', 'austria', 'spain'] as const;
 const countryFlags: Record<string, string> = {
   germany: '🇩🇪',
   austria: '🇦🇹',
