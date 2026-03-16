@@ -11,6 +11,7 @@ import { Badge } from '@/components/ui/badge';
 import { Briefcase, Lock, Sparkles, Filter } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
 import SEO from '@/components/SEO';
+import StructuredData, { createBreadcrumbSchema } from '@/components/StructuredData';
 
 // Mock blurred job data — specialty keys reference translations
 const mockBlurredJobs = [
