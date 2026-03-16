@@ -31,12 +31,6 @@ export const landing = {
         location: "Vienna, Austria",
         type: "Full-time"
       },
-      job4: {
-        title: "Emergency Room Physician",
-        institution: "Lyon University Hospital",
-        location: "Lyon, France",
-        type: "Full-time"
-      }
     }
   },
   homologationIncluded: {
