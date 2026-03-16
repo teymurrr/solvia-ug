@@ -48,7 +48,7 @@ const CountryComparisonBar = ({ profession, specialty }: CountryComparisonBarPro
         <h3 className="font-semibold text-lg">{t?.vacancies?.compareDestinations || 'Compare destinations'}</h3>
       </div>
       
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {countryKeys.map((key) => (
           <Card 
             key={key} 

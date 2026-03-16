@@ -85,7 +85,7 @@ const VacanciesConversion = () => {
     <MainLayout>
       <SEO
         title={seoData?.title || 'Medical Jobs in Europe – Doctor & Nurse Positions'}
-        description={seoData?.description || 'Browse verified medical job openings across Germany, Austria, Spain, France and Italy.'}
+        description={seoData?.description || 'Browse verified medical job openings across Germany, Austria and Spain.'}
         path="/vacancies"
       />
       <section className="bg-gradient-to-b from-primary/10 to-background py-12">

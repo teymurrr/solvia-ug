@@ -10,7 +10,7 @@ const HeroSection = React.memo(() => {
   // Memoize translations to prevent unnecessary recalculations
   const heroData = useMemo(() => ({
     title: t?.hero?.title || "Find work in Europe as a doctor or nurse. We guide you through the homologation.",
-    subtitle: t?.hero?.subtitle || "See job offers by country and get a clear plan to work in Germany, Austria, Spain, Italy or France.",
+    subtitle: t?.hero?.subtitle || "See job offers by country and get a clear plan to work in Germany, Austria or Spain.",
     cta: t?.hero?.cta || "See offers for my profile",
     secondaryCta: t?.hero?.secondaryCta || "Get my free homologation plan"
   }), [t]);

@@ -47,8 +47,6 @@ const TARGET_COUNTRIES = [
   { value: 'germany', flag: '🇩🇪' },
   { value: 'austria', flag: '🇦🇹' },
   { value: 'spain', flag: '🇪🇸' },
-  { value: 'italy', flag: '🇮🇹' },
-  { value: 'france', flag: '🇫🇷' }
 ];
 
 const OnboardingWizard = () => {

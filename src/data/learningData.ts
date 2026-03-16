@@ -74,48 +74,6 @@ export const countries: CountryLanguageData[] = [
     currency: '€'
   },
   {
-    id: 'france',
-    name: {
-      es: 'Francia',
-      en: 'France',
-      de: 'Frankreich',
-      fr: 'France',
-      ru: 'Франция'
-    },
-    flag: '🇫🇷',
-    language: {
-      es: 'Francés',
-      en: 'French',
-      de: 'Französisch',
-      fr: 'Français',
-      ru: 'Французский'
-    },
-    exams: ['TCF/TEF', 'Épreuves professionnelles'],
-    averageSalary: 5500,
-    currency: '€'
-  },
-  {
-    id: 'italy',
-    name: {
-      es: 'Italia',
-      en: 'Italy',
-      de: 'Italien',
-      fr: 'Italie',
-      ru: 'Италия'
-    },
-    flag: '🇮🇹',
-    language: {
-      es: 'Italiano',
-      en: 'Italian',
-      de: 'Italienisch',
-      fr: 'Italien',
-      ru: 'Итальянский'
-    },
-    exams: ['CILS Medico', 'Prove cliniche'],
-    averageSalary: 4500,
-    currency: '€'
-  },
-  {
     id: 'spain',
     name: {
       es: 'España',

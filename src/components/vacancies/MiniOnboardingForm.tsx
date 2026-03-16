@@ -29,7 +29,7 @@ export interface FilterData {
 }
 
 const professionKeys = ['doctor', 'nurse', 'dentist', 'pharmacist', 'physiotherapist'] as const;
-const countryKeys = ['germany', 'austria', 'spain', 'france'] as const;
+const countryKeys = ['germany', 'austria', 'spain'] as const;
 const countryFlags: Record<string, string> = {
   germany: '🇩🇪',
   austria: '🇦🇹',
