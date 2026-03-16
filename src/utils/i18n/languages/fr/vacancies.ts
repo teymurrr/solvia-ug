@@ -46,8 +46,7 @@ export const vacancies = {
   countries: {
     germany: 'Allemagne',
     austria: 'Autriche',
-    spain: 'Espagne',
-    france: 'France'
+    spain: 'Espagne'
   },
   countryBadges: {
     germany: 'Meilleurs salaires',
