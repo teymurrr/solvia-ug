@@ -22,6 +22,7 @@ const Terms = lazy(() => import("@/pages/Terms"));
 const Impressum = lazy(() => import("@/pages/Impressum"));
 const EmployersLanding = lazy(() => import("@/pages/EmployersLanding"));
 const Blog = lazy(() => import("@/pages/Blog"));
+const BlogPost = lazy(() => import("@/pages/BlogPost"));
 const VisaInfo = lazy(() => import("@/pages/VisaInfo"));
 
 // Auth pages - import individually instead of bundling
@@ -72,6 +73,7 @@ const DocumentStatus = lazy(() => import("@/pages/DocumentStatus"));
 // Admin pages
 const AdminUserManagement = lazy(() => import("@/pages/admin/UserManagement"));
 const AdminApplications = lazy(() => import("@/pages/admin/Applications"));
+const AdminBlogManagement = lazy(() => import("@/pages/admin/BlogManagement"));
 
 const AppRoutes = () => {
   const { isLoggedIn, userType } = useAuth();
@@ -113,6 +115,7 @@ const AppRoutes = () => {
         <Route path="/impressum" element={<Impressum />} />
         <Route path="/employers" element={<EmployersLanding />} />
         <Route path="/blog" element={<Blog />} />
+        <Route path="/blog/:slug" element={<BlogPost />} />
         <Route path="/community" element={
           <ProtectedRoute>
             <Community />
@@ -229,6 +232,11 @@ const AppRoutes = () => {
         <Route path="/admin/applications" element={
           <AdminRoute>
             <AdminApplications />
+          </AdminRoute>
+        } />
+        <Route path="/admin/blog" element={
+          <AdminRoute>
+            <AdminBlogManagement />
           </AdminRoute>
         } />
         

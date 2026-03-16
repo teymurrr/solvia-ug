@@ -10,6 +10,7 @@ import { useLanguage } from '@/hooks/useLanguage';
 const JobExplorerSection = React.lazy(() => import('@/components/landing/JobExplorerSection'));
 const SuccessStoriesSection = React.lazy(() => import('@/components/landing/SuccessStoriesSection'));
 const ConversionFAQSection = React.lazy(() => import('@/components/landing/ConversionFAQSection'));
+const BlogSection = React.lazy(() => import('@/components/landing/BlogSection'));
 const SuperCTASection = React.lazy(() => import('@/components/landing/SuperCTASection'));
 
 // Simple loading fallback
@@ -54,8 +55,13 @@ const Index = () => {
       <Suspense fallback={<LoadingFallback height="h-96" />}>
         <ConversionFAQSection />
       </Suspense>
+
+      {/* 7. CONTENT — Blog for SEO + authority */}
+      <Suspense fallback={<LoadingFallback height="h-96" />}>
+        <BlogSection />
+      </Suspense>
       
-      {/* 7. ACTION — Final CTA */}
+      {/* 8. ACTION — Final CTA */}
       <Suspense fallback={<LoadingFallback height="h-64" />}>
         <SuperCTASection />
       </Suspense>
