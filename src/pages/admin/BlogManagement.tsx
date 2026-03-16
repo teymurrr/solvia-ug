@@ -189,7 +189,7 @@ const BlogManagement = () => {
             </div>
             <div>
               <label className="text-sm font-medium mb-1 block">Content * (HTML)</label>
-              <WysiwygEditor content={content} onChange={setContent} />
+              <WysiwygEditor value={content} onChange={setContent} />
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div>

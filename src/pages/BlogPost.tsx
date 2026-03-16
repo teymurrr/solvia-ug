@@ -26,7 +26,7 @@ const BlogPost = () => {
   // Track page view
   useEffect(() => {
     if (post?.id) {
-      supabase.rpc('increment_blog_view_count', { post_id: post.id }).catch(() => {});
+      supabase.rpc('increment_blog_view_count', { post_id: post.id }).then(() => {});
     }
   }, [post?.id]);
 
