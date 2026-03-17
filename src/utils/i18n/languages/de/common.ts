@@ -28,5 +28,6 @@ export const common = {
   apply: "Bewerben",
   save: "Speichern",
   remove: "Entfernen",
-  countries: "Länder weltweit"
+  countries: "Länder weltweit",
+  whyUs: "Warum wir"
 };

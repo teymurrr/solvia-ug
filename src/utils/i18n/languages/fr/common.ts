@@ -25,5 +25,6 @@ export const common = {
   remove: "Supprimer",
   countries: "Pays",
   viewMore: "Voir plus",
-  forEmployers: "Pour les employeurs"
+  forEmployers: "Pour les employeurs",
+  whyUs: "Pourquoi nous"
 };
