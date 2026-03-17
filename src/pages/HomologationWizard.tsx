@@ -63,7 +63,7 @@ const HomologationWizard = () => {
     'United Kingdom', 'United States', 'Venezuela', 'Vietnam'
   ];
 
-  const getLanguageLevels = () => [t?.wizard?.language?.nativeSpeaker || t?.wizard?.language?.motherTongue || 'Native speaker', 'A1', 'A2', 'B1', 'B2', 'C1', t.wizard.language.dontKnow];
+  const getLanguageLevels = () => [t?.wizard?.language?.nativeSpeaker || t?.wizard?.language?.motherTongue || 'Native speaker', 'A1', 'A2', 'B1', 'B2', 'C1', t.wizard.language.noLanguage || 'No language skills', t.wizard.language.dontKnow];
 
   const getTargetLanguageName = (): string => {
     const countryToLanguage: Record<string, Record<string, string>> = {
