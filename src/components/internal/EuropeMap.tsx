@@ -46,11 +46,11 @@ const EuropeMap: React.FC<EuropeMapProps> = ({ selectedCountry, onCountryClick }
         projectionConfig={{
           rotate: [-10, -52, 0],
           center: [0, 0],
-          scale: 900,
+          scale: 1000,
         }}
         width={800}
-        height={520}
-        style={{ width: '100%', height: 'auto', maxHeight: '60vh' }}
+        height={580}
+        style={{ width: '100%', height: 'auto' }}
       >
         <Geographies geography={GEO_URL}>
           {({ geographies }) =>
