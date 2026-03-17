@@ -29,7 +29,7 @@ const HomologationMap: React.FC = () => {
 
   return (
     <MainLayout>
-      <div className="min-h-screen bg-background">
+      <div className="bg-background">
         {/* Header */}
         <div className="bg-card border-b border-border px-6 py-4">
           <div className="max-w-[1600px] mx-auto flex items-center gap-3">
