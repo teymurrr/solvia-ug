@@ -73,6 +73,9 @@ const AdminUserManagement = lazy(() => import("@/pages/admin/UserManagement"));
 const AdminApplications = lazy(() => import("@/pages/admin/Applications"));
 const AdminBlogManagement = lazy(() => import("@/pages/admin/BlogManagement"));
 
+// Internal tools
+const HomologationMap = lazy(() => import("@/pages/internal/HomologationMap"));
+
 const AppRoutes = () => {
   const { isLoggedIn, userType } = useAuth();
   const [isInitialized, setIsInitialized] = useState(false);
