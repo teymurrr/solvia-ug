@@ -16,6 +16,15 @@ const NavLinks: React.FC<NavLinksProps> = ({ isLoggedIn, userType }) => {
   if (!isLoggedIn) {
     return (
       <div className="flex justify-center space-x-8 flex-1">
+        <a
+          href="/#why-us"
+          className="flex flex-col items-center group"
+        >
+          <div className="p-2 rounded-full group-hover:bg-muted transition-colors">
+            <Shield className="h-5 w-5 text-muted-foreground group-hover:text-foreground" />
+          </div>
+          <span className="text-sm text-muted-foreground group-hover:text-foreground">{t?.common?.whyUs || "Why Us"}</span>
+        </a>
         <Link
           to="/vacancies"
           className="flex flex-col items-center group"
