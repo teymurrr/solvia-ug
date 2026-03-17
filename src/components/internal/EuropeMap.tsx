@@ -55,7 +55,7 @@ const EuropeMap: React.FC<EuropeMapProps> = ({ selectedCountry, onCountryClick }
         <Geographies geography={GEO_URL}>
           {({ geographies }) =>
             geographies.map((geo) => {
-              const iso = geo.properties?.ISO_A3 || geo.id;
+              const iso = String(geo.id);
               const countryKey = COUNTRY_MAP[iso];
               const isActive = ACTIVE_ISO.has(iso);
               const isSelected = countryKey === selectedCountry;
