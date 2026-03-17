@@ -26,5 +26,6 @@ export const common = {
   countries: "Страны",
   viewMore: "Подробнее",
   forEmployers: "Работодателям",
-  myAccount: "Мой аккаунт"
+  myAccount: "Мой аккаунт",
+  whyUs: "Почему мы"
 };

@@ -7,6 +7,7 @@ import StructuredData, { organizationSchema, websiteSchema } from '@/components/
 import { useLanguage } from '@/hooks/useLanguage';
 
 // Lazy load sections below the fold
+const WhySolviaSectionOptimized = React.lazy(() => import('@/components/landing/WhySolviaSectionOptimized'));
 const JobExplorerSection = React.lazy(() => import('@/components/landing/JobExplorerSection'));
 const SuccessStoriesSection = React.lazy(() => import('@/components/landing/SuccessStoriesSection'));
 const ConversionFAQSection = React.lazy(() => import('@/components/landing/ConversionFAQSection'));
@@ -39,6 +40,13 @@ const Index = () => {
       {/* 2. HOW — Path to Success (4 steps, horizontal) */}
       <div id="path-to-success">
         <PathToSuccessSection />
+      </div>
+
+      {/* 3. WHY US — Differentiators */}
+      <div id="why-us">
+        <Suspense fallback={<LoadingFallback height="h-96" />}>
+          <WhySolviaSectionOptimized />
+        </Suspense>
       </div>
 
       {/* 4. PROOF — Real jobs waiting */}
