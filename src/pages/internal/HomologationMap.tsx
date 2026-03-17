@@ -29,7 +29,7 @@ const HomologationMap: React.FC = () => {
 
   return (
     <MainLayout>
-      <div className="min-h-screen bg-background">
+      <div className="bg-background">
         {/* Header */}
         <div className="bg-card border-b border-border px-6 py-4">
           <div className="max-w-[1600px] mx-auto flex items-center gap-3">
@@ -47,7 +47,7 @@ const HomologationMap: React.FC = () => {
         </div>
 
         {/* Main Content */}
-        <div className="max-w-[1600px] mx-auto p-6">
+        <div className="max-w-[1600px] mx-auto px-4 py-3">
           <div className={`grid gap-6 ${selectedCountry ? 'grid-cols-1 lg:grid-cols-[1fr_420px]' : 'grid-cols-1'}`}>
             {/* Map */}
             <div className="bg-card border border-border rounded-lg p-4">

@@ -14,12 +14,12 @@ interface EuropeMapProps {
 const GEO_URL = 'https://cdn.jsdelivr.net/npm/world-atlas@2/countries-50m.json';
 
 const COUNTRY_MAP: Record<string, string> = {
-  DEU: 'germany',
-  AUT: 'austria',
-  ESP: 'spain',
+  '276': 'germany',
+  '40': 'austria',
+  '724': 'spain',
 };
 
-const ACTIVE_ISO = new Set(['DEU', 'AUT', 'ESP']);
+const ACTIVE_ISO = new Set(['276', '40', '724']);
 
 const MARKERS: { country: string; coordinates: [number, number]; label: string; flag: string }[] = [
   { country: 'germany', coordinates: [10.4, 51.1], label: 'Germany', flag: '🇩🇪' },
@@ -46,16 +46,16 @@ const EuropeMap: React.FC<EuropeMapProps> = ({ selectedCountry, onCountryClick }
         projectionConfig={{
           rotate: [-10, -52, 0],
           center: [0, 0],
-          scale: 900,
+          scale: 1000,
         }}
         width={800}
-        height={520}
-        style={{ width: '100%', height: 'auto', maxHeight: '60vh' }}
+        height={580}
+        style={{ width: '100%', height: 'auto' }}
       >
         <Geographies geography={GEO_URL}>
           {({ geographies }) =>
             geographies.map((geo) => {
-              const iso = geo.properties?.ISO_A3 || geo.id;
+              const iso = String(geo.id);
               const countryKey = COUNTRY_MAP[iso];
               const isActive = ACTIVE_ISO.has(iso);
               const isSelected = countryKey === selectedCountry;
