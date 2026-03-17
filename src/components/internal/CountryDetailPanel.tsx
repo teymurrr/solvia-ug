@@ -19,12 +19,13 @@ const CountryDetailPanel: React.FC<CountryDetailPanelProps> = ({
   onStateClick,
   onClose,
 }) => {
-  const data = homologationDataByCountry[country];
   const [docRefreshKey, setDocRefreshKey] = useState(0);
+  const refreshDocs = useCallback(() => setDocRefreshKey(k => k + 1), []);
+
+  const data = homologationDataByCountry[country];
   if (!data) return null;
 
   const stateData = selectedState ? germanRegionalData[selectedState] : null;
-  const refreshDocs = useCallback(() => setDocRefreshKey(k => k + 1), []);
 
   return (
     <div className="bg-card border border-border rounded-lg shadow-lg overflow-y-auto max-h-[85vh] animate-fade-in">
