@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { BarChart, LayoutDashboard, Briefcase, BookOpen } from 'lucide-react';
+import { BarChart, LayoutDashboard, Briefcase, BookOpen, Shield } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
 
 interface NavLinksProps {

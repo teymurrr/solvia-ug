@@ -42,6 +42,14 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
 
         {!isLoggedIn && (
           <>
+            <a
+              href="/#why-us"
+              className="flex items-center space-x-3 px-4 py-2 hover:bg-gray-50"
+              onClick={onClose}
+            >
+              <Stethoscope className="h-5 w-5 text-gray-600" />
+              <span>{t?.common?.whyUs || "Why Us"}</span>
+            </a>
             <Link
               to="/employers"
               className="flex items-center space-x-3 px-4 py-2 hover:bg-gray-50"
