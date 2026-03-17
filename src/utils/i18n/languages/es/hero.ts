@@ -1,6 +1,6 @@
 
 export const hero = {
-  title: 'Tu carrera médica en Europa empieza aquí.',
+  title: 'Trabaja como médico en Europa. Te apoyamos en todo el proceso para que puedas ejercer tu profesión!',
   subtitle: 'Nos encargamos del reconocimiento de tu título, te encontramos trabajo y te guiamos en cada paso.',
   cta: 'Verificar mi elegibilidad',
   secondaryCta: 'Encontrar un trabajo',
