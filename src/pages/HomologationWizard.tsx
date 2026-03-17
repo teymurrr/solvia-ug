@@ -452,7 +452,7 @@ const HomologationWizard = () => {
                       variant="outline"
                       size="lg"
                       className={`text-lg h-auto py-6 hover:bg-primary/5 hover:border-primary transition-all ${
-                        level === t.wizard.language.dontKnow ? 'col-span-2 md:col-span-3' : ''
+                        (level === t.wizard.language.dontKnow || level === (t.wizard.language.noLanguage || 'No language skills')) ? 'col-span-1' : ''
                       }`}
                       onClick={() => handleLanguageSelect(level)}
                     >

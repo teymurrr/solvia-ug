@@ -37,6 +37,7 @@ export const wizard = {
     subtitle: 'Wählen Sie Ihre aktuellen Kenntnisse in der Sprache Ihres Ziellandes',
     nativeSpeaker: 'Muttersprachler',
     motherTongue: 'Muttersprachler',
+    noLanguage: 'Keine Sprachkenntnisse',
     dontKnow: 'Ich weiß es nicht'
   },
   email: {

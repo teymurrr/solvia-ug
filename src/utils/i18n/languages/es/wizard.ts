@@ -37,6 +37,7 @@ export const wizard = {
     subtitle: 'Selecciona tu dominio actual del idioma del país donde quieres trabajar',
     nativeSpeaker: 'Hablante nativo',
     motherTongue: 'Hablante nativo',
+    noLanguage: 'Sin conocimientos del idioma',
     dontKnow: 'No lo sé'
   },
   email: {
