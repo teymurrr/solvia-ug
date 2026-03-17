@@ -14,12 +14,12 @@ interface EuropeMapProps {
 const GEO_URL = 'https://cdn.jsdelivr.net/npm/world-atlas@2/countries-50m.json';
 
 const COUNTRY_MAP: Record<string, string> = {
-  DEU: 'germany',
-  AUT: 'austria',
-  ESP: 'spain',
+  '276': 'germany',
+  '40': 'austria',
+  '724': 'spain',
 };
 
-const ACTIVE_ISO = new Set(['DEU', 'AUT', 'ESP']);
+const ACTIVE_ISO = new Set(['276', '40', '724']);
 
 const MARKERS: { country: string; coordinates: [number, number]; label: string; flag: string }[] = [
   { country: 'germany', coordinates: [10.4, 51.1], label: 'Germany', flag: '🇩🇪' },
