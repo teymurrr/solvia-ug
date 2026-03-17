@@ -7,6 +7,7 @@ import StructuredData, { organizationSchema, websiteSchema } from '@/components/
 import { useLanguage } from '@/hooks/useLanguage';
 
 // Lazy load sections below the fold
+const WhySolviaSectionOptimized = React.lazy(() => import('@/components/landing/WhySolviaSectionOptimized'));
 const JobExplorerSection = React.lazy(() => import('@/components/landing/JobExplorerSection'));
 const SuccessStoriesSection = React.lazy(() => import('@/components/landing/SuccessStoriesSection'));
 const ConversionFAQSection = React.lazy(() => import('@/components/landing/ConversionFAQSection'));
