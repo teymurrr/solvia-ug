@@ -881,6 +881,42 @@ export type Database = {
           },
         ]
       }
+      homologation_documents: {
+        Row: {
+          country: string
+          created_at: string
+          file_name: string
+          file_path: string
+          file_size: number | null
+          id: string
+          region: string | null
+          title: string
+          uploaded_by: string | null
+        }
+        Insert: {
+          country: string
+          created_at?: string
+          file_name: string
+          file_path: string
+          file_size?: number | null
+          id?: string
+          region?: string | null
+          title: string
+          uploaded_by?: string | null
+        }
+        Update: {
+          country?: string
+          created_at?: string
+          file_name?: string
+          file_path?: string
+          file_size?: number | null
+          id?: string
+          region?: string | null
+          title?: string
+          uploaded_by?: string | null
+        }
+        Relationships: []
+      }
       institution_profiles: {
         Row: {
           about: string | null
