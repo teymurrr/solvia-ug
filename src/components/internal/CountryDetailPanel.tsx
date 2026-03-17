@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 import { homologationDataByCountry } from '@/data/homologationData';
 import { germanRegionalData, getDifficultyLabel, getDifficultyColor } from '@/data/germanRegionalData';
 import GermanyRegionMap from './GermanyRegionMap';
-import { Clock, DollarSign, Languages, FileText, GraduationCap, MapPin, Building, Gauge } from 'lucide-react';
+import DocumentList from './DocumentList';
+import DocumentUpload from './DocumentUpload';
+import { Clock, DollarSign, Languages, FileText, GraduationCap, MapPin, Building, Gauge, FileDown } from 'lucide-react';
 
 interface CountryDetailPanelProps {
   country: string;
@@ -18,9 +20,11 @@ const CountryDetailPanel: React.FC<CountryDetailPanelProps> = ({
   onClose,
 }) => {
   const data = homologationDataByCountry[country];
+  const [docRefreshKey, setDocRefreshKey] = useState(0);
   if (!data) return null;
 
   const stateData = selectedState ? germanRegionalData[selectedState] : null;
+  const refreshDocs = useCallback(() => setDocRefreshKey(k => k + 1), []);
 
   return (
     <div className="bg-card border border-border rounded-lg shadow-lg overflow-y-auto max-h-[85vh] animate-fade-in">
@@ -104,6 +108,18 @@ const CountryDetailPanel: React.FC<CountryDetailPanelProps> = ({
           </div>
         </div>
 
+        {/* Official Documents (from Supabase) */}
+        <div>
+          <div className="flex items-center justify-between mb-2">
+            <h3 className="text-sm font-semibold text-foreground flex items-center gap-1.5">
+              <FileDown className="w-4 h-4 text-primary" />
+              Official Documents
+            </h3>
+            <DocumentUpload country={country} onUploaded={refreshDocs} />
+          </div>
+          <DocumentList key={`country-${docRefreshKey}`} country={country} />
+        </div>
+
         {/* Professional Exam */}
         {data.professionalExam && (
           <div className="bg-accent/30 rounded-lg p-3 border border-accent">
@@ -183,6 +199,18 @@ const CountryDetailPanel: React.FC<CountryDetailPanelProps> = ({
                       <span className="text-muted-foreground">{stateData.berufserlaubnisSpeed}</span>
                     </div>
                   </div>
+                </div>
+
+                {/* Region-specific official documents */}
+                <div>
+                  <div className="flex items-center justify-between mb-1.5">
+                    <span className="text-xs font-medium text-foreground flex items-center gap-1">
+                      <FileDown className="w-3 h-3 text-primary" />
+                      Regional Documents
+                    </span>
+                    <DocumentUpload country={country} region={selectedState} onUploaded={refreshDocs} />
+                  </div>
+                  <DocumentList key={`region-${selectedState}-${docRefreshKey}`} country={country} region={selectedState} />
                 </div>
 
                 <p className="text-xs text-muted-foreground border-t border-border pt-2">{stateData.notes}</p>
