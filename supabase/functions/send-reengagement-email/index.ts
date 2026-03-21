@@ -82,7 +82,6 @@ serve(async (req: Request) => {
 
   try {
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
-    const resend = new Resend(resendApiKey);
 
     const threeDaysAgo = new Date();
     threeDaysAgo.setDate(threeDaysAgo.getDate() - 3);
