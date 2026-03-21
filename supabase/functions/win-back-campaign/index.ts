@@ -189,12 +189,12 @@ serve(async (req: Request) => {
       );
 
       try {
-        const emailResponse = await resend.emails.send({
-          from: "David from Solvia <david@thesolvia.com>",
+        const emailResponse = await sendBrevoEmail({
+          from: { name: "David from Solvia", email: "david@thesolvia.com" },
           to: [lead.email],
           subject: winBackTemplate.subject[lang],
           html,
-          reply_to: "David.rehrl@thesolvia.com",
+          replyTo: "David.rehrl@thesolvia.com",
         });
 
         await supabase.from('email_sends').insert({
