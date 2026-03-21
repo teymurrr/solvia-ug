@@ -1,8 +1,6 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
-import { Resend } from "npm:resend@2.0.0";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.57.2";
-
-const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
+import { sendBrevoEmail } from "../_shared/brevo-client.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -428,12 +426,12 @@ const handler = async (req: Request): Promise<Response> => {
           unsubscribeUrl
         );
 
-        await resend.emails.send({
-          from: "Solvia Community <community@thesolvia.com>",
+        await sendBrevoEmail({
+          from: { name: "Solvia Community", email: "community@thesolvia.com" },
           to: [recipient.email],
           subject: i18n[recipient.language].subject,
           html,
-          reply_to: "David.rehrl@thesolvia.com",
+          replyTo: "David.rehrl@thesolvia.com",
         });
 
         if (!testMode) {

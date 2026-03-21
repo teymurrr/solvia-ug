@@ -1,8 +1,8 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.57.2";
-import { Resend } from "npm:resend@2.0.0";
 import { generateEmail } from "../_shared/email-template.ts";
 import type { Language } from "../_shared/email-template.ts";
+import { sendBrevoEmail } from "../_shared/brevo-client.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -134,7 +134,7 @@ serve(async (req: Request) => {
       Deno.env.get("SUPABASE_URL") ?? "",
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
     );
-    const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
+    
 
     const body = await req.json().catch(() => ({}));
     const testMode = body.testMode === true;
@@ -189,12 +189,12 @@ serve(async (req: Request) => {
       );
 
       try {
-        const emailResponse = await resend.emails.send({
-          from: "David from Solvia <david@thesolvia.com>",
+        const emailResponse = await sendBrevoEmail({
+          from: { name: "David from Solvia", email: "david@thesolvia.com" },
           to: [lead.email],
           subject: winBackTemplate.subject[lang],
           html,
-          reply_to: "David.rehrl@thesolvia.com",
+          replyTo: "David.rehrl@thesolvia.com",
         });
 
         await supabase.from('email_sends').insert({
@@ -203,7 +203,7 @@ serve(async (req: Request) => {
           language: lang,
           lead_id: lead.id,
           source_table: 'leads',
-          resend_email_id: emailResponse?.data?.id || null,
+          resend_email_id: emailResponse?.messageId || null,
           status: 'sent',
         });
 

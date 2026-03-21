@@ -1,6 +1,6 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
-import { Resend } from "npm:resend@2.0.0";
+import { sendBrevoEmail } from "../_shared/brevo-client.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -10,7 +10,6 @@ const corsHeaders = {
 
 const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
 const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-const resendApiKey = Deno.env.get("RESEND_API_KEY")!;
 
 type Language = 'en' | 'es' | 'de' | 'fr' | 'ru';
 
@@ -83,7 +82,6 @@ serve(async (req: Request) => {
 
   try {
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
-    const resend = new Resend(resendApiKey);
 
     const threeDaysAgo = new Date();
     threeDaysAgo.setDate(threeDaysAgo.getDate() - 3);
@@ -160,9 +158,9 @@ serve(async (req: Request) => {
       bodyText += bookingCTAText[lang];
 
       try {
-        const emailResult = await resend.emails.send({
-          from: "David <david.rehrl@thesolvia.com>",
-          reply_to: "David.rehrl@thesolvia.com",
+        const emailResult = await sendBrevoEmail({
+          from: { name: "David", email: "david.rehrl@thesolvia.com" },
+          replyTo: "David.rehrl@thesolvia.com",
           to: [profile.email],
           subject,
           text: bodyText,
@@ -175,7 +173,7 @@ serve(async (req: Request) => {
           status: "sent",
           lead_id: null,
           source_table: "professional_profiles",
-          resend_email_id: emailResult?.data?.id || null,
+          resend_email_id: emailResult?.messageId || null,
         });
 
         const notifMessages: Record<Language, { title: string; message: string }> = {
