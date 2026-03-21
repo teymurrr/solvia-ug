@@ -158,9 +158,9 @@ serve(async (req: Request) => {
       bodyText += bookingCTAText[lang];
 
       try {
-        const emailResult = await resend.emails.send({
-          from: "David <david.rehrl@thesolvia.com>",
-          reply_to: "David.rehrl@thesolvia.com",
+        const emailResult = await sendBrevoEmail({
+          from: { name: "David", email: "david.rehrl@thesolvia.com" },
+          replyTo: "David.rehrl@thesolvia.com",
           to: [profile.email],
           subject,
           text: bodyText,
