@@ -103,7 +103,7 @@ serve(async (req: Request) => {
       Deno.env.get("SUPABASE_URL") ?? "",
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
     );
-    const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
+    
 
     const body = await req.json().catch(() => ({}));
     const testMode = body.testMode === true;
