@@ -699,12 +699,12 @@ const handler = async (req: Request): Promise<Response> => {
 
         console.log(`[send-nurture-campaign] Sending ${templateId} to ${recipient.email} in ${lang}`);
 
-        const emailResponse = await resend.emails.send({
-          from: "David from Solvia <david@thesolvia.com>",
+        const emailResponse = await sendBrevoEmail({
+          from: { name: "David from Solvia", email: "david@thesolvia.com" },
           to: [recipient.email],
           subject: emailSubject,
           html,
-          reply_to: "David.rehrl@thesolvia.com"
+          replyTo: "David.rehrl@thesolvia.com",
         });
 
         const resendEmailId = emailResponse?.data?.id || null;
