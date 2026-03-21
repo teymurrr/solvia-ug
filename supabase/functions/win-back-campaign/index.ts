@@ -203,7 +203,7 @@ serve(async (req: Request) => {
           language: lang,
           lead_id: lead.id,
           source_table: 'leads',
-          resend_email_id: emailResponse?.data?.id || null,
+          resend_email_id: emailResponse?.messageId || null,
           status: 'sent',
         });
 

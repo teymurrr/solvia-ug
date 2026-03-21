@@ -426,12 +426,12 @@ const handler = async (req: Request): Promise<Response> => {
           unsubscribeUrl
         );
 
-        await resend.emails.send({
-          from: "Solvia Community <community@thesolvia.com>",
+        await sendBrevoEmail({
+          from: { name: "Solvia Community", email: "community@thesolvia.com" },
           to: [recipient.email],
           subject: i18n[recipient.language].subject,
           html,
-          reply_to: "David.rehrl@thesolvia.com",
+          replyTo: "David.rehrl@thesolvia.com",
         });
 
         if (!testMode) {

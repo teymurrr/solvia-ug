@@ -173,7 +173,7 @@ serve(async (req: Request) => {
           status: "sent",
           lead_id: null,
           source_table: "professional_profiles",
-          resend_email_id: emailResult?.data?.id || null,
+          resend_email_id: emailResult?.messageId || null,
         });
 
         const notifMessages: Record<Language, { title: string; message: string }> = {

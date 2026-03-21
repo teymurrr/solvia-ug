@@ -707,7 +707,7 @@ const handler = async (req: Request): Promise<Response> => {
           replyTo: "David.rehrl@thesolvia.com",
         });
 
-        const resendEmailId = emailResponse?.data?.id || null;
+        const resendEmailId = emailResponse?.messageId || null;
 
         if (!testMode) {
           await logEmailSend(supabase, recipient, templateId, lang, resendEmailId, 'sent');

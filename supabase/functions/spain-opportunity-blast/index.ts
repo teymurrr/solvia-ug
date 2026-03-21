@@ -200,7 +200,7 @@ serve(async (req: Request) => {
           language: lang,
           lead_id: contact.source_table === 'leads' ? contact.source_id : null,
           source_table: contact.source_table,
-          resend_email_id: emailResponse?.data?.id || null,
+          resend_email_id: emailResponse?.messageId || null,
           status: 'sent',
         });
 
