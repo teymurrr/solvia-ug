@@ -128,115 +128,68 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
     }
   }, [selectedPackage]);
 
-  const speaksLanguage = isSpeaker(languageLevel);
-  const pricing = getPricingByCountry(targetCountry, speaksLanguage);
+  const pricing = getPricingByCountry(targetCountry);
+  const isSpain = targetCountry === 'spain';
 
-  const speakerPkgs = t?.payments?.speakerPackages;
-  const nonSpeakerPkgs = t?.payments?.packages;
+  const pkgs = t?.payments?.packages;
 
-  const packages: PackageConfig[] = speaksLanguage
-    ? [
-        {
-          id: 'digital_starter',
-          price: pricing.digital_starter,
-          features: speakerPkgs?.digitalStarter?.features || [
-            'Document preparation templates and checklists',
-            'Step-by-step digital guide for the homologation process',
-            'Email support'
-          ]
-        },
-        {
-          id: 'complete',
-          price: pricing.complete,
-          popular: true,
-          features: speakerPkgs?.complete?.features || [
-            'Personal case manager assigned to you',
-            'Full representation and communication with authorities',
-            'Priority support via WhatsApp & email'
-          ]
-        },
-        {
-          id: 'personal_mentorship',
-          price: pricing.personal_mentorship,
-          features: speakerPkgs?.personalMentorship?.features || [
-            'All translation and apostille costs covered',
-            'All official fees and administrative charges',
-            'Zero out-of-pocket extras'
-          ]
-        }
+  const packages: PackageConfig[] = [
+    {
+      id: 'digital_starter',
+      price: pricing.digital_starter,
+      features: pkgs?.digitalStarter?.features || [
+        'Fully digital self-service platform',
+        'Document preparation templates and checklists',
+        'Step-by-step digital guide for the homologation process',
+        'Email support'
       ]
-    : [
-        {
-          id: 'digital_starter',
-          price: pricing.digital_starter,
-          features: nonSpeakerPkgs?.digitalStarter?.features || [
-            'Preparation and professional review of all required documents',
-            'Full representation and communication with local authorities',
-            'Step-by-step guidance from document preparation to submission',
-            'Priority support via WhatsApp & email'
-          ]
-        },
-        {
-          id: 'complete',
-          price: pricing.complete,
-          popular: true,
-          features: nonSpeakerPkgs?.complete?.features || [
-            '12-month Medical German course',
-            'Personalized German study plan',
-            '4 live 1:1 sessions with case advisors / language teachers',
-            'Dedicated Case Manager'
-          ]
-        },
-        {
-          id: 'personal_mentorship',
-          price: pricing.personal_mentorship,
-          features: nonSpeakerPkgs?.personalMentorship?.features || [
-            'All translation and apostille costs',
-            'All official fees and administrative charges',
-            'Language exam costs',
-            '12-month Medical German course',
-            '8 live 1:1 sessions with case advisors / language teachers'
-          ]
-        }
-      ];
+    },
+    {
+      id: 'complete',
+      price: pricing.complete,
+      popular: true,
+      features: pkgs?.complete?.features || [
+        'Personal case manager assigned to you',
+        'Full representation and communication with authorities',
+        'Priority support via WhatsApp & email'
+      ]
+    },
+    {
+      id: 'personal_mentorship',
+      price: pricing.personal_mentorship,
+      features: pkgs?.personalMentorship?.features || [
+        'All translation and apostille costs covered',
+        'All official fees and administrative charges',
+        isSpain ? 'Complete visa package included' : '12-month Medical German course included',
+        'Zero out-of-pocket extras'
+      ]
+    }
+  ];
 
   const getPackageTitle = (id: ProductType) => {
-    if (speaksLanguage) {
-      switch (id) {
-        case 'digital_starter':
-          return speakerPkgs?.digitalStarter?.title || 'Digital Homologation';
-        case 'complete':
-          return speakerPkgs?.complete?.title || 'Personal Assistance';
-        case 'personal_mentorship':
-          return speakerPkgs?.personalMentorship?.title || 'All-Inclusive';
-      }
-    }
     const languageName = getLanguageForCountry(targetCountry, t);
     switch (id) {
       case 'digital_starter':
-        return nonSpeakerPkgs?.digitalStarter?.title || 'Guided Homologation';
+        return pkgs?.digitalStarter?.title || (isSpain ? 'Digital' : 'DIY');
       case 'complete':
-        const completeBase = nonSpeakerPkgs?.complete?.titleBase || 'Homologation +';
-        return `${completeBase} ${languageName}`;
+        return pkgs?.complete?.title || 'Assisted';
       case 'personal_mentorship':
-        return nonSpeakerPkgs?.personalMentorship?.titleBase || 'Full All-Inclusive';
+        return pkgs?.personalMentorship?.titleBase || (isSpain ? 'Full + Visa' : 'Full + German');
     }
   };
 
   const getPackageIdealFor = (id: ProductType) => {
-    const pkgs = speaksLanguage ? speakerPkgs : nonSpeakerPkgs;
     switch (id) {
       case 'digital_starter':
-        return pkgs?.digitalStarter?.idealFor || 'I know what I need';
+        return pkgs?.digitalStarter?.idealFor || 'I know what I need — I just want the right tools';
       case 'complete':
-        return pkgs?.complete?.idealFor || 'I want someone to handle the paperwork';
+        return pkgs?.complete?.idealFor || 'I want someone to handle the paperwork for me';
       case 'personal_mentorship':
-        return pkgs?.personalMentorship?.idealFor || 'Handle everything for me';
+        return pkgs?.personalMentorship?.idealFor || 'Handle everything for me — I just want to arrive and work';
     }
   };
 
   const getIncludesPrefix = (id: ProductType) => {
-    const pkgs = speaksLanguage ? speakerPkgs : nonSpeakerPkgs;
     switch (id) {
       case 'complete':
         return pkgs?.complete?.includesPrefix || 'Everything in previous tier, plus:';
