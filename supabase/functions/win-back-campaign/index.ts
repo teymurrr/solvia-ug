@@ -86,7 +86,7 @@ Deine Situation hat sich nicht geändert — aber jeder Monat, der vergeht, ist 
 Ich habe einen personalisierten Plan basierend auf deinem Profil erstellt. Du kannst ihn hier sehen:
 {{RESULTS_LINK}}
 
-Wenn du bereit bist, den ersten Schritt zu machen, kannst du ab €379 mit unserem Paket Begleitete Homologation starten:
+Wenn du bereit bist, den ersten Schritt zu machen, kannst du ab €789 mit unserem DIY-Paket starten:
 {{PAYMENT_LINK}}
 
 Es enthält Schritt-für-Schritt Expertenbegleitung, persönliche Dokumentenprüfung und Priority-Support.
