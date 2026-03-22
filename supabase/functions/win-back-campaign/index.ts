@@ -99,7 +99,7 @@ Ta situation n'a pas changé — mais chaque mois qui passe est un mois de salai
 J'ai préparé un plan personnalisé basé sur ton profil. Tu peux le voir ici :
 {{RESULTS_LINK}}
 
-Si tu es prêt(e) à faire le premier pas, tu peux commencer à partir de 379 € avec notre forfait Homologation Guidée :
+Si tu es prêt(e) à faire le premier pas, tu peux commencer à partir de 250 € avec notre forfait Digital :
 {{PAYMENT_LINK}}
 
 Il inclut un accompagnement expert étape par étape, une révision personnelle des documents et un support prioritaire.
