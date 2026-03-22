@@ -28,68 +28,36 @@ export const payments = {
   },
   packages: {
     digitalStarter: {
-      title: 'Homologación Guiada',
-      idealFor: 'Ya hablo el idioma — solo necesito ayuda con los trámites',
-      features: [
-        'Preparación y revisión profesional de todos los documentos requeridos',
-        'Representación completa y comunicación con autoridades locales',
-        'Guía paso a paso desde la preparación de documentos hasta la presentación',
-        'Soporte prioritario por WhatsApp y email'
-      ]
-    },
-    complete: {
-      titleBase: 'Homologación +',
-      idealFor: 'Necesito apoyo en homologación y formación en idioma',
-      includesPrefix: 'Todo lo de Homologación Guiada, más:',
-      features: [
-        'Curso de Alemán Médico por 12 meses',
-        'Plan de estudio de alemán personalizado',
-        '4 sesiones en vivo 1:1 con asesores / profesores de idiomas',
-        'Gestor de Caso Dedicado'
-      ]
-    },
-    personalMentorship: {
-      titleBase: 'Todo Incluido',
-      idealFor: 'Que se encarguen de todo — yo solo quiero llegar y trabajar',
-      includesPrefix: 'Todo lo de Homologación+, más:',
-      zeroExtras: 'Cero gastos adicionales',
-      features: [
-        'Todos los costes de traducción y apostilla',
-        'Todas las tasas y cargos administrativos oficiales',
-        'Costes de examen de idioma',
-        'Curso de Alemán Médico por 12 meses',
-        '8 sesiones en vivo 1:1 con asesores / profesores de idiomas'
-      ]
-    }
-  },
-  speakerPackages: {
-    digitalStarter: {
-      title: 'Homologación Digital',
+      title: 'Digital',
       idealFor: 'Sé lo que necesito — solo quiero las herramientas y la guía correcta',
       features: [
+        'Plataforma digital de homologación autoservicio',
         'Plantillas y listas de verificación para preparación de documentos',
-        'Guía digital paso a paso del proceso de homologación',
+        'Guía digital paso a paso de todo el proceso',
         'Soporte por email'
       ]
     },
     complete: {
-      title: 'Asistencia Personal',
+      title: 'Asistido',
+      titleBase: 'Asistido',
       idealFor: 'Quiero que alguien se encargue del papeleo y hable con las autoridades por mí',
-      includesPrefix: 'Todo lo de Homologación Digital, más:',
+      includesPrefix: 'Todo lo de Digital, más:',
       features: [
         'Gestor de caso personal asignado',
         'Representación completa y comunicación con autoridades',
-        'Soporte prioritario por WhatsApp y email'
+        'Soporte prioritario por WhatsApp y email',
+        'Gestor de Caso Dedicado'
       ]
     },
     personalMentorship: {
-      title: 'Todo Incluido',
+      titleBase: 'Completo + Visa',
       idealFor: 'Que se encarguen de todo — yo solo quiero llegar y trabajar',
-      includesPrefix: 'Todo lo de Asistencia Personal, más:',
+      includesPrefix: 'Todo lo de Asistido, más:',
       zeroExtras: 'Cero gastos adicionales',
       features: [
         'Todos los costes de traducción y apostilla incluidos',
         'Todas las tasas y cargos administrativos oficiales',
+        'Paquete de visa completo incluido',
         'Cero gastos adicionales'
       ]
     }

@@ -28,68 +28,36 @@ export const payments = {
   },
   packages: {
     digitalStarter: {
-      title: 'Guided Homologation',
-      idealFor: 'I already speak the language — I just need paperwork help',
-      features: [
-        'Preparation and professional review of all required documents',
-        'Full representation and communication with local authorities',
-        'Step-by-step guidance from document preparation to submission',
-        'Priority support via WhatsApp & email'
-      ]
-    },
-    complete: {
-      titleBase: 'Homologation +',
-      idealFor: 'I need both homologation support and language training',
-      includesPrefix: 'Everything in Guided Homologation, plus:',
-      features: [
-        '12-month Medical German course',
-        'Personalized German study plan',
-        '4 live 1:1 sessions with case advisors / language teachers',
-        'Dedicated Case Manager'
-      ]
-    },
-    personalMentorship: {
-      titleBase: 'Full All-Inclusive',
-      idealFor: 'Handle everything for me — I just want to arrive and work',
-      includesPrefix: 'Everything in Homologation+, plus:',
-      zeroExtras: 'Zero out-of-pocket extras',
-      features: [
-        'All translation and apostille costs',
-        'All official fees and administrative charges',
-        'Language exam costs',
-        '12-month Medical German course',
-        '8 live 1:1 sessions with case advisors / language teachers'
-      ]
-    }
-  },
-  speakerPackages: {
-    digitalStarter: {
-      title: 'Digital Homologation',
+      title: 'DIY',
       idealFor: 'I know what I need — I just want the right tools and guidance',
       features: [
+        'Fully digital self-service homologation platform',
         'Document preparation templates and checklists',
-        'Step-by-step digital guide for the homologation process',
+        'Step-by-step digital guide for the entire process',
         'Email support'
       ]
     },
     complete: {
-      title: 'Personal Assistance',
+      title: 'Assisted',
+      titleBase: 'Assisted',
       idealFor: 'I want someone to handle the paperwork and talk to the authorities for me',
-      includesPrefix: 'Everything in Digital Homologation, plus:',
+      includesPrefix: 'Everything in DIY, plus:',
       features: [
         'Personal case manager assigned to you',
         'Full representation and communication with authorities',
-        'Priority support via WhatsApp & email'
+        'Priority support via WhatsApp & email',
+        'Dedicated Case Manager'
       ]
     },
     personalMentorship: {
-      title: 'All-Inclusive',
-      idealFor: 'Take care of everything — I just want to arrive and work',
-      includesPrefix: 'Everything in Personal Assistance, plus:',
+      titleBase: 'Full + German Classes',
+      idealFor: 'Handle everything for me — I just want to arrive and work',
+      includesPrefix: 'Everything in Assisted, plus:',
       zeroExtras: 'Zero out-of-pocket extras',
       features: [
         'All translation and apostille costs covered',
         'All official fees and administrative charges',
+        '12-month Medical German course included',
         'Zero out-of-pocket extras'
       ]
     }

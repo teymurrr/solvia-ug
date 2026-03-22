@@ -28,68 +28,36 @@ export const payments = {
   },
   packages: {
     digitalStarter: {
-      title: 'Begleitete Homologation',
-      idealFor: 'Ich spreche die Sprache — ich brauche nur Hilfe beim Papierkram',
-      features: [
-        'Vorbereitung und professionelle Prüfung aller erforderlichen Dokumente',
-        'Vollständige Vertretung und Kommunikation mit lokalen Behörden',
-        'Schritt-für-Schritt-Begleitung von der Dokumentenvorbereitung bis zur Einreichung',
-        'Prioritäts-Support per WhatsApp & E-Mail'
-      ]
-    },
-    complete: {
-      titleBase: 'Homologation +',
-      idealFor: 'Ich brauche Homologation und Sprachtraining',
-      includesPrefix: 'Alles aus Begleitete Homologation, plus:',
-      features: [
-        '12 Monate Medizinischer Deutschkurs',
-        'Personalisierter Deutsch-Lernplan',
-        '4 Live-1:1-Sitzungen mit Fallberatern / Sprachlehrern',
-        'Persönlicher Fallmanager'
-      ]
-    },
-    personalMentorship: {
-      titleBase: 'Komplett All-Inclusive',
-      idealFor: 'Kümmert euch um alles — ich will einfach ankommen und arbeiten',
-      includesPrefix: 'Alles aus Homologation+, plus:',
-      zeroExtras: 'Keine zusätzlichen Kosten',
-      features: [
-        'Alle Übersetzungs- und Apostillekosten',
-        'Alle offiziellen Gebühren und Verwaltungskosten',
-        'Sprachprüfungskosten',
-        '12 Monate Medizinischer Deutschkurs',
-        '8 Live-1:1-Sitzungen mit Fallberatern / Sprachlehrern'
-      ]
-    }
-  },
-  speakerPackages: {
-    digitalStarter: {
-      title: 'Digitale Homologation',
+      title: 'DIY',
       idealFor: 'Ich weiß, was ich brauche — ich möchte nur die richtigen Werkzeuge und Anleitung',
       features: [
+        'Vollständig digitale Self-Service-Homologationsplattform',
         'Dokumentenvorlagen und Checklisten',
-        'Schritt-für-Schritt digitaler Leitfaden für den Homologationsprozess',
+        'Schritt-für-Schritt digitaler Leitfaden für den gesamten Prozess',
         'E-Mail-Support'
       ]
     },
     complete: {
-      title: 'Persönliche Assistenz',
+      title: 'Begleitet',
+      titleBase: 'Begleitet',
       idealFor: 'Ich möchte, dass jemand den Papierkram erledigt und mit den Behörden spricht',
-      includesPrefix: 'Alles aus Digitale Homologation, plus:',
+      includesPrefix: 'Alles aus DIY, plus:',
       features: [
         'Persönlicher Fallmanager',
         'Vollständige Vertretung und Kommunikation mit Behörden',
-        'Prioritäts-Support per WhatsApp & E-Mail'
+        'Prioritäts-Support per WhatsApp & E-Mail',
+        'Persönlicher Fallmanager'
       ]
     },
     personalMentorship: {
-      title: 'All-Inclusive',
+      titleBase: 'Komplett + Deutschkurse',
       idealFor: 'Kümmert euch um alles — ich will einfach ankommen und arbeiten',
-      includesPrefix: 'Alles aus Persönliche Assistenz, plus:',
+      includesPrefix: 'Alles aus Begleitet, plus:',
       zeroExtras: 'Keine zusätzlichen Kosten',
       features: [
         'Alle Übersetzungs- und Apostillekosten inklusive',
         'Alle offiziellen Gebühren und Verwaltungskosten',
+        '12 Monate Medizinischer Deutschkurs inklusive',
         'Keine zusätzlichen Kosten'
       ]
     }
