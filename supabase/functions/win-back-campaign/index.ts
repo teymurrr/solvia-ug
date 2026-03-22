@@ -73,7 +73,7 @@ Your situation hasn't changed — but every month that passes is a month of doct
 I've prepared a personalized plan based on your profile. You can see it here:
 {{RESULTS_LINK}}
 
-If you're ready to take the first step, you can start from €379 with our Guided Homologation package:
+If you're ready to take the first step, you can start from €250 with our Digital package:
 {{PAYMENT_LINK}}
 
 It includes step-by-step expert guidance, personal document review, and priority support.
