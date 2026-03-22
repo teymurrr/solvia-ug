@@ -34,23 +34,12 @@ interface PackageConfig {
   features: string[];
 }
 
-const SPEAKER_LEVELS = ['B2', 'C1', 'native_speaker'];
-
-const isSpeaker = (languageLevel: string | null): boolean => {
-  if (!languageLevel) return false;
-  return SPEAKER_LEVELS.includes(languageLevel);
-};
-
-const getPricingByCountry = (country: string | null, speaksLanguage: boolean): Record<ProductType, number> => {
-  if (speaksLanguage) {
-    if (country === 'spain') {
-      return { digital_starter: 15000, complete: 25000, personal_mentorship: 35000 };
-    }
-    // DE / AT / FR / IT
-    return { digital_starter: 15000, complete: 28900, personal_mentorship: 190000 };
+const getPricingByCountry = (country: string | null): Record<ProductType, number> => {
+  if (country === 'spain') {
+    return { digital_starter: 25000, complete: 37900, personal_mentorship: 78900 };
   }
-  // Track B: non-speakers — all countries same
-  return { digital_starter: 37900, complete: 89900, personal_mentorship: 380000 };
+  // Germany, Austria, and others
+  return { digital_starter: 78900, complete: 149000, personal_mentorship: 299000 };
 };
 
 interface CountryNames {
