@@ -6,21 +6,15 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
-// Two-track pricing (amounts in cents) - must match frontend and create-payment
-const SPEAKER_LEVELS = ['B2', 'C1', 'native_speaker'];
-
-const getPricingByCountry = (country: string | null, languageLevel: string | null): Record<string, number> => {
-  const isSpeaker = languageLevel && SPEAKER_LEVELS.includes(languageLevel);
+// Single-track pricing by country (amounts in cents)
+const getPricingByCountry = (country: string | null): Record<string, number> => {
   const isSpain = country?.toLowerCase() === 'spain';
 
-  if (isSpeaker) {
-    if (isSpain) {
-      return { digital_starter: 15000, complete: 25000, personal_mentorship: 35000 };
-    }
-    return { digital_starter: 15000, complete: 28900, personal_mentorship: 190000 };
+  if (isSpain) {
+    return { digital_starter: 25000, complete: 37900, personal_mentorship: 78900 };
   }
-  // Track B: non-speakers — all countries same
-  return { digital_starter: 37900, complete: 89900, personal_mentorship: 380000 };
+  // Germany, Austria, and others
+  return { digital_starter: 78900, complete: 149000, personal_mentorship: 299000 };
 };
 
 serve(async (req) => {
@@ -115,8 +109,8 @@ serve(async (req) => {
     }
 
     // Get the correct base amount based on country and product type
-    const pricing = getPricingByCountry(targetCountry, languageLevel || null);
-    const baseAmount = pricing[productType] || 37900;
+    const pricing = getPricingByCountry(targetCountry);
+    const baseAmount = pricing[productType] || 78900;
     
     // Calculate discount amount
     let discountAmount = 0;

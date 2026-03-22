@@ -83,7 +83,7 @@ const HomologationWizard = () => {
       return 250;
     }
     // Germany, Austria
-    return 750;
+    return 789;
   };
 
   const getDoctorTypeLabel = (type?: string) => {

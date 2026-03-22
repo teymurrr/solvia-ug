@@ -28,68 +28,36 @@ export const payments = {
   },
   packages: {
     digitalStarter: {
-      title: 'Homologation Guidée',
-      idealFor: 'Je parle déjà la langue — j\'ai juste besoin d\'aide pour les démarches',
-      features: [
-        'Préparation et révision professionnelle de tous les documents requis',
-        'Représentation complète et communication avec les autorités locales',
-        'Accompagnement étape par étape de la préparation à la soumission',
-        'Support prioritaire via WhatsApp & email'
-      ]
-    },
-    complete: {
-      titleBase: 'Homologation +',
-      idealFor: 'J\'ai besoin du soutien à l\'homologation et de la formation linguistique',
-      includesPrefix: 'Tout de l\'Homologation Guidée, plus :',
-      features: [
-        'Cours de langue médicale pendant 12 mois',
-        'Plan d\'études personnalisé',
-        '4 sessions en direct 1:1 avec conseillers / professeurs',
-        'Gestionnaire de cas dédié'
-      ]
-    },
-    personalMentorship: {
-      titleBase: 'Tout Inclus',
-      idealFor: 'Occupez-vous de tout — je veux juste arriver et travailler',
-      includesPrefix: 'Tout de Homologation+, plus :',
-      zeroExtras: 'Zéro frais supplémentaires',
-      features: [
-        'Tous les frais de traduction et d\'apostille inclus',
-        'Tous les frais et charges officiels couverts',
-        'Frais d\'examen de langue',
-        'Cours de langue médicale pendant 12 mois',
-        '8 sessions en direct 1:1 avec conseillers / professeurs'
-      ]
-    }
-  },
-  speakerPackages: {
-    digitalStarter: {
-      title: 'Homologation Digitale',
+      title: 'Digital',
       idealFor: 'Je sais ce qu\'il me faut — je veux juste les bons outils et conseils',
       features: [
+        'Plateforme d\'homologation digitale en libre-service',
         'Modèles et listes de contrôle pour la préparation des documents',
-        'Guide digital étape par étape du processus d\'homologation',
+        'Guide digital étape par étape pour tout le processus',
         'Support par email'
       ]
     },
     complete: {
-      title: 'Assistance Personnelle',
+      title: 'Assisté',
+      titleBase: 'Assisté',
       idealFor: 'Je veux que quelqu\'un gère les démarches et parle aux autorités pour moi',
-      includesPrefix: 'Tout de l\'Homologation Digitale, plus :',
+      includesPrefix: 'Tout de Digital, plus :',
       features: [
         'Gestionnaire de cas personnel dédié',
         'Représentation complète et communication avec les autorités',
-        'Support prioritaire via WhatsApp & email'
+        'Support prioritaire via WhatsApp & email',
+        'Gestionnaire de cas dédié'
       ]
     },
     personalMentorship: {
-      title: 'Tout Inclus',
+      titleBase: 'Complet + Cours d\'Allemand',
       idealFor: 'Occupez-vous de tout — je veux juste arriver et travailler',
-      includesPrefix: 'Tout de l\'Assistance Personnelle, plus :',
+      includesPrefix: 'Tout de Assisté, plus :',
       zeroExtras: 'Zéro frais supplémentaires',
       features: [
-        'Tous les frais de traduction et d\'apostille couverts',
-        'Tous les frais et charges administratifs officiels',
+        'Tous les frais de traduction et d\'apostille inclus',
+        'Tous les frais et charges officiels couverts',
+        'Cours d\'allemand médical de 12 mois inclus',
         'Zéro frais supplémentaires'
       ]
     }

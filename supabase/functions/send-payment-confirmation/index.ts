@@ -132,9 +132,9 @@ const templates: Record<Lang, {
 };
 
 const productNames: Record<string, Record<Lang, string>> = {
-  digital_starter: { en: 'Guided Homologation', es: 'Homologación Guiada', de: 'Geführte Homologation', fr: 'Homologation Guidée', ru: 'Гидируемая гомологация' },
-  complete: { en: 'Homologation + Language', es: 'Homologación + Idioma', de: 'Homologation + Sprache', fr: 'Homologation + Langue', ru: 'Гомологация + Язык' },
-  personal_mentorship: { en: 'Full All-Inclusive', es: 'Todo Incluido', de: 'All-Inclusive', fr: 'Tout Inclus', ru: 'Всё включено' },
+  digital_starter: { en: 'DIY / Digital', es: 'Digital', de: 'DIY', fr: 'Digital', ru: 'Цифровой' },
+  complete: { en: 'Assisted', es: 'Asistido', de: 'Begleitet', fr: 'Assisté', ru: 'С сопровождением' },
+  personal_mentorship: { en: 'Full + German Classes', es: 'Completo + Visa', de: 'Komplett + Deutschkurse', fr: 'Complet + Cours d\'Allemand', ru: 'Полный + Курсы немецкого' },
 };
 
 const countryNames: Record<string, Record<Lang, string>> = {
