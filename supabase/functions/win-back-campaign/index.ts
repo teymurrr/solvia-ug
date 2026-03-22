@@ -60,7 +60,7 @@ Tu situación no ha cambiado — pero cada mes que pasa es un mes de salario com
 He preparado un plan personalizado basado en tu perfil. Puedes verlo aquí:
 {{RESULTS_LINK}}
 
-Si estás listo para dar el primer paso, puedes empezar desde €379 con nuestro paquete de Homologación Guiada:
+Si estás listo para dar el primer paso, puedes empezar desde €250 con nuestro paquete Digital:
 {{PAYMENT_LINK}}
 
 Incluye guía experta paso a paso, revisión personal de documentos y soporte prioritario.
