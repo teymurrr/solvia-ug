@@ -34,5 +34,4 @@ Allow: /
 User-agent: *
 Allow: /
 
-Sitemap: https://solvia-flexkapg.lovable.app/sitemap.xml
-Sitemap: https://ehrxpaxvyuwiwqclqkyh.supabase.co/functions/v1/generate-sitemap
+Sitemap: https://thesolvia.com/sitemap.xml
