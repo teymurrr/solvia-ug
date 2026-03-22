@@ -20,7 +20,7 @@ const STATIC_PAGES = [
   { path: '/about', priority: '0.7', changefreq: 'monthly' },
   { path: '/contact', priority: '0.7', changefreq: 'monthly' },
   { path: '/professionals', priority: '0.7', changefreq: 'weekly' },
-  { path: '/community', priority: '0.7', changefreq: 'daily' },
+  { path: '/learning/starter-kit', priority: '0.7', changefreq: 'monthly' },
   { path: '/signup', priority: '0.6', changefreq: 'monthly' },
   { path: '/login', priority: '0.5', changefreq: 'monthly' },
   { path: '/privacy', priority: '0.3', changefreq: 'yearly' },
