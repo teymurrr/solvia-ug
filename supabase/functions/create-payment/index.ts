@@ -97,7 +97,7 @@ serve(async (req) => {
     });
 
     // Get product configuration based on country
-    const config = getProductConfig(productType, targetCountry, languageLevel);
+    const config = getProductConfig(productType, targetCountry);
     if (!config) {
       throw new Error(`Invalid product type: ${productType}`);
     }
