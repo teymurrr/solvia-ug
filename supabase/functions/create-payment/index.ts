@@ -16,50 +16,38 @@ interface PaymentRequest {
   languageLevel?: string;
 }
 
-// Two-track pricing based on language proficiency (amounts in cents)
-const SPEAKER_LEVELS = ['B2', 'C1', 'native_speaker'];
-
-const getProductConfig = (productType: string, targetCountry: string | undefined, languageLevel: string | undefined) => {
-  const isSpeaker = languageLevel && SPEAKER_LEVELS.includes(languageLevel);
+// Single-track pricing by country (amounts in cents)
+const getProductConfig = (productType: string, targetCountry: string | undefined) => {
   const isSpain = targetCountry?.toLowerCase() === 'spain';
 
-  if (isSpeaker) {
-    // Track A: user speaks the language
-    const speakerConfigs: Record<string, Record<string, { name: string; description: string; amount: number; regularPrice: number }>> = {
-      spain: {
-        digital_starter: { name: 'Digital Homologation', description: 'Document templates, checklists, and step-by-step digital guide', amount: 15000, regularPrice: 15000 },
-        complete: { name: 'Personal Assistance', description: 'Personal case manager, authority communication, and priority support', amount: 25000, regularPrice: 25000 },
-        personal_mentorship: { name: 'All-Inclusive', description: 'Everything handled: translations, fees, zero out-of-pocket extras', amount: 35000, regularPrice: 35000 },
-      },
-      other: {
-        digital_starter: { name: 'Digital Homologation', description: 'Document templates, checklists, and step-by-step digital guide', amount: 15000, regularPrice: 15000 },
-        complete: { name: 'Personal Assistance', description: 'Personal case manager, authority communication, and priority support', amount: 28900, regularPrice: 28900 },
-        personal_mentorship: { name: 'All-Inclusive', description: 'Everything handled: translations, fees, zero out-of-pocket extras', amount: 190000, regularPrice: 190000 },
-      },
+  if (isSpain) {
+    const configs: Record<string, { name: string; description: string; amount: number; regularPrice: number }> = {
+      digital_starter: { name: 'Digital', description: 'Fully digital self-service homologation platform', amount: 25000, regularPrice: 25000 },
+      complete: { name: 'Assisted', description: 'Personal case manager, authority communication, and priority support', amount: 37900, regularPrice: 37900 },
+      personal_mentorship: { name: 'Full + Visa Package', description: 'Everything handled: homologation, visa, translations, fees, zero extras', amount: 78900, regularPrice: 78900 },
     };
-    const region = isSpain ? 'spain' : 'other';
-    return speakerConfigs[region][productType];
+    return configs[productType];
   }
 
-  // Track B: non-speakers — all countries same
+  // Germany, Austria, and others
   const configs: Record<string, { name: string; description: string; amount: number; regularPrice: number }> = {
     digital_starter: {
-      name: 'Guided Homologation',
-      description: 'Document preparation, authority communication, step-by-step guidance',
-      amount: 37900,
-      regularPrice: 37900,
+      name: 'DIY',
+      description: 'Fully digital self-service homologation platform',
+      amount: 78900,
+      regularPrice: 78900,
     },
     complete: {
-      name: 'Homologation + Language',
-      description: 'Expert-guided homologation with 12-month medical language course',
-      amount: 89900,
-      regularPrice: 89900,
+      name: 'Assisted',
+      description: 'Personal case manager, authority communication, step-by-step guidance',
+      amount: 149000,
+      regularPrice: 149000,
     },
     personal_mentorship: {
-      name: 'Full All-Inclusive',
-      description: 'Complete homologation + language + all fees covered',
-      amount: 380000,
-      regularPrice: 380000,
+      name: 'Full + German Classes',
+      description: 'Complete homologation + German language course + all fees covered',
+      amount: 299000,
+      regularPrice: 299000,
     }
   };
   

@@ -109,8 +109,8 @@ serve(async (req) => {
     }
 
     // Get the correct base amount based on country and product type
-    const pricing = getPricingByCountry(targetCountry, languageLevel || null);
-    const baseAmount = pricing[productType] || 37900;
+    const pricing = getPricingByCountry(targetCountry);
+    const baseAmount = pricing[productType] || 78900;
     
     // Calculate discount amount
     let discountAmount = 0;
