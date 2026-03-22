@@ -313,9 +313,8 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
         {packages.map((pkg) => {
           const includesPrefix = getIncludesPrefix(pkg.id);
           const isSelected = selectedPackage === pkg.id;
-          const zeroExtrasSource = speaksLanguage ? speakerPkgs : nonSpeakerPkgs;
           const zeroExtras = pkg.id === 'personal_mentorship' 
-            ? (zeroExtrasSource?.personalMentorship?.zeroExtras || 'Zero out-of-pocket extras') 
+            ? (pkgs?.personalMentorship?.zeroExtras || 'Zero out-of-pocket extras')
             : null;
           
           return (
