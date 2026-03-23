@@ -16,6 +16,11 @@ const LoadingFallback = () => (
 // Landing page components - import individually for better error handling
 const Index = lazy(() => import("@/pages/Index"));
 const About = lazy(() => import("@/pages/About"));
+
+// Country-specific landing pages
+const ARLanding = lazy(() => import("@/pages/ARLanding"));
+const COLanding = lazy(() => import("@/pages/COLanding"));
+const INLanding = lazy(() => import("@/pages/INLanding"));
 const Contact = lazy(() => import("@/pages/Contact"));
 const Privacy = lazy(() => import("@/pages/Privacy"));
 const Terms = lazy(() => import("@/pages/Terms"));
@@ -115,6 +120,10 @@ const AppRoutes = () => {
         <Route path="/terms" element={<Terms />} />
         <Route path="/impressum" element={<Impressum />} />
         <Route path="/employers" element={<EmployersLanding />} />
+        {/* Country landing pages */}
+        <Route path="/ar" element={<ARLanding />} />
+        <Route path="/co" element={<COLanding />} />
+        <Route path="/in" element={<INLanding />} />
         <Route path="/blog" element={<Blog />} />
         <Route path="/blog/:slug" element={<BlogPost />} />
         {/* Community redirects to blog */}
