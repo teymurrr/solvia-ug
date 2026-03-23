@@ -1,0 +1,20 @@
+name = "solvia-bot-router"
+main = "worker.js"
+compatibility_date = "2024-12-01"
+
+# R2 bucket binding — stores pre-rendered static HTML pages
+[[r2_buckets]]
+binding = "STATIC_PAGES"
+bucket_name = "solvia-static-pages"
+
+# Route configuration — add these in the Cloudflare dashboard under
+# Workers → Routes, or use the [routes] config below if using
+# Cloudflare for DNS (zone_id required).
+#
+# [routes]
+# pattern = "thesolvia.com/*"
+# zone_name = "thesolvia.com"
+#
+# Also add:
+# pattern = "www.thesolvia.com/*"
+# zone_name = "thesolvia.com"
