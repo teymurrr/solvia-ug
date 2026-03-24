@@ -42,12 +42,6 @@ const Index = () => {
         <PathToSuccessSection />
       </div>
 
-      {/* 3. WHY US — Differentiators */}
-      <div id="why-us">
-        <Suspense fallback={<LoadingFallback height="h-96" />}>
-          <WhySolviaSectionOptimized />
-        </Suspense>
-      </div>
 
       {/* 4. PROOF — Real jobs waiting */}
       <Suspense fallback={<LoadingFallback height="h-96" />}>
