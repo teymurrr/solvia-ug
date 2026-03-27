@@ -23,10 +23,10 @@ const Signup = () => {
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 py-6">
-              <div className="flex flex-col items-center text-center space-y-4 p-6 border rounded-lg hover:border-medical-600 transition-colors cursor-pointer"
+              <div className="flex flex-col items-center text-center space-y-4 p-6 border rounded-lg hover:border-primary transition-colors cursor-pointer"
                   onClick={() => navigate('/signup/professional')}>
-                <div className="h-16 w-16 rounded-full bg-medical-100 flex items-center justify-center">
-                  <User className="h-8 w-8 text-medical-700" />
+                <div className="h-16 w-16 rounded-full bg-primary/10 flex items-center justify-center">
+                  <User className="h-8 w-8 text-primary/80" />
                 </div>
                 <h3 className="text-xl font-semibold">{t.auth.healthcareProfessional}</h3>
                 <p className="text-muted-foreground">{t.auth.professionalCardDescription}</p>
@@ -35,10 +35,10 @@ const Signup = () => {
                 </Button>
               </div>
 
-              <div className="flex flex-col items-center text-center space-y-4 p-6 border rounded-lg hover:border-medical-600 transition-colors cursor-pointer"
+              <div className="flex flex-col items-center text-center space-y-4 p-6 border rounded-lg hover:border-primary transition-colors cursor-pointer"
                   onClick={() => navigate('/signup/institution')}>
-                <div className="h-16 w-16 rounded-full bg-medical-100 flex items-center justify-center">
-                  <Building2 className="h-8 w-8 text-medical-700" />
+                <div className="h-16 w-16 rounded-full bg-primary/10 flex items-center justify-center">
+                  <Building2 className="h-8 w-8 text-primary/80" />
                 </div>
                 <h3 className="text-xl font-semibold">{t.auth.healthcareInstitution}</h3>
                 <p className="text-muted-foreground">{t.auth.institutionCardDescription}</p>
@@ -51,7 +51,7 @@ const Signup = () => {
           <CardFooter className="flex flex-col space-y-4">
             <div className="text-sm text-center text-muted-foreground">
               {t.auth.alreadyHaveAccount}{" "}
-              <Link to="/login" className="text-medical-700 hover:text-medical-800 font-medium">
+              <Link to="/login" className="text-primary/80 hover:text-primary/90 font-medium">
                 {t.auth.login}
               </Link>
             </div>

@@ -18,8 +18,8 @@ const ValuesSection = () => {
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div className="flex gap-4">
-            <div className="bg-medical-100 p-2 h-fit rounded">
-              <Users className="h-6 w-6 text-medical-600" />
+            <div className="bg-primary/10 p-2 h-fit rounded">
+              <Users className="h-6 w-6 text-primary" />
             </div>
             <div>
               <h3 className="text-xl font-semibold mb-2">{t?.about?.values?.peopleFirst || "People First"}</h3>
@@ -30,8 +30,8 @@ const ValuesSection = () => {
           </div>
           
           <div className="flex gap-4">
-            <div className="bg-medical-100 p-2 h-fit rounded">
-              <Building2 className="h-6 w-6 text-medical-600" />
+            <div className="bg-primary/10 p-2 h-fit rounded">
+              <Building2 className="h-6 w-6 text-primary" />
             </div>
             <div>
               <h3 className="text-xl font-semibold mb-2">{t?.about?.values?.institution || "Institution Success"}</h3>
@@ -42,8 +42,8 @@ const ValuesSection = () => {
           </div>
           
           <div className="flex gap-4">
-            <div className="bg-medical-100 p-2 h-fit rounded">
-              <Globe className="h-6 w-6 text-medical-600" />
+            <div className="bg-primary/10 p-2 h-fit rounded">
+              <Globe className="h-6 w-6 text-primary" />
             </div>
             <div>
               <h3 className="text-xl font-semibold mb-2">{t?.about?.values?.global || "Global Perspective"}</h3>
@@ -54,8 +54,8 @@ const ValuesSection = () => {
           </div>
           
           <div className="flex gap-4">
-            <div className="bg-medical-100 p-2 h-fit rounded">
-              <GraduationCap className="h-6 w-6 text-medical-600" />
+            <div className="bg-primary/10 p-2 h-fit rounded">
+              <GraduationCap className="h-6 w-6 text-primary" />
             </div>
             <div>
               <h3 className="text-xl font-semibold mb-2">{t?.about?.values?.learning || "Continuous Learning"}</h3>

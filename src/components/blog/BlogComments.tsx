@@ -41,7 +41,7 @@ const BlogComments: React.FC<BlogCommentsProps> = ({ blogPostId }) => {
       
       {loading ? (
         <div className="flex justify-center py-8">
-          <Loader2 className="animate-spin h-8 w-8 text-medical-600" />
+          <Loader2 className="animate-spin h-8 w-8 text-primary" />
         </div>
       ) : (
         <>

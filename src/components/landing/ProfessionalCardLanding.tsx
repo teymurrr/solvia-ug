@@ -67,11 +67,11 @@ const ProfessionalCardLanding: React.FC<ProfessionalCardLandingProps> = ({ profe
       <CardContent className="p-6 relative">
         {/* Header section with profile image and name */}
         <div className="flex items-start gap-4">
-          <div className="relative h-16 w-16 rounded-full overflow-hidden bg-medical-100 flex items-center justify-center flex-shrink-0">
+          <div className="relative h-16 w-16 rounded-full overflow-hidden bg-primary/10 flex items-center justify-center flex-shrink-0">
             {profileImage ? (
               <img src={profileImage} alt={fullName} className="h-full w-full object-cover" />
             ) : (
-              <div className="text-2xl font-bold text-medical-500">{firstName.charAt(0)}</div>
+              <div className="text-2xl font-bold text-primary/50">{firstName.charAt(0)}</div>
             )}
           </div>
           <div className="flex-1 min-w-0">
@@ -84,14 +84,14 @@ const ProfessionalCardLanding: React.FC<ProfessionalCardLandingProps> = ({ profe
                 </Badge>
               )}
               {isOpenToRelocation && (
-                <Badge variant="outline" className="text-xs flex-shrink-0 border-medical-300 text-medical-700 flex items-center gap-1">
+                <Badge variant="outline" className="text-xs flex-shrink-0 border-primary/30 text-primary/80 flex items-center gap-1">
                   <MapPin className="h-3 w-3" />
                   <span>Open to relocation</span>
                 </Badge>
               )}
             </div>
             <div className="flex items-center gap-2">
-              <p className="text-sm text-medical-600">
+              <p className="text-sm text-primary">
                 {specialty.includes('Doctor') || specialty.includes('Nurse') ? specialty : `Doctor, ${specialty}`}
               </p>
               {fspCertificate && (

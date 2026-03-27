@@ -40,11 +40,11 @@ const InstitutionCard: React.FC<InstitutionCardProps> = ({
       <CardContent className="p-0">
         <div className="p-6 space-y-4">
           <div className="flex gap-4 items-start">
-            <div className="h-16 w-16 rounded overflow-hidden bg-healing-100 flex items-center justify-center">
+            <div className="h-16 w-16 rounded overflow-hidden bg-brand-success/10 flex items-center justify-center">
               {imageSrc ? (
                 <img src={imageSrc} alt={name} className="h-full w-full object-cover" />
               ) : (
-                <div className="text-2xl font-bold text-healing-500">{name.charAt(0)}</div>
+                <div className="text-2xl font-bold text-brand-success/50">{name.charAt(0)}</div>
               )}
             </div>
             

@@ -29,11 +29,11 @@ export const TermsAgreement: React.FC<TermsAgreementProps> = ({ form }) => {
               {t.auth.termsAgree}
             </FormLabel>
             <div className="text-xs">
-              <Link to="/terms" className="text-medical-700 hover:text-medical-800">
+              <Link to="/terms" className="text-primary/80 hover:text-primary/90">
                 {t.footer.termsOfService}
               </Link>
               {' · '}
-              <Link to="/privacy" className="text-medical-700 hover:text-medical-800">
+              <Link to="/privacy" className="text-primary/80 hover:text-primary/90">
                 {t.footer.privacyPolicy}
               </Link>
             </div>

@@ -118,7 +118,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
               )}
             </div>
           </h2>
-          <p className="text-medical-600">{profileData.specialty}</p>
+          <p className="text-primary">{profileData.specialty}</p>
         </div>
 
         <div className="flex flex-col space-y-2">
