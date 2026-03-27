@@ -56,7 +56,7 @@ const HomologationIncludedSection = () => {
               <CheckCircle2 className="h-5 w-5 text-primary" />
               <span className="text-sm font-medium text-primary">All-Inclusive</span>
             </div>
-            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold font-heading text-foreground mb-4">
               {homologation?.title || "Everything you need to homologate your degree without errors, delays, or stress"}
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-4">

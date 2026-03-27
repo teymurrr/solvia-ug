@@ -20,7 +20,7 @@ const HeroSection = React.memo(() => {
       <div className="hero-gradient absolute inset-0 opacity-20" />
       <div className="container mx-auto px-4 py-12 md:py-16 relative z-10">
         <div className="max-w-3xl mx-auto text-center space-y-4">
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight">
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold font-heading tracking-tight">
             {heroData.title}
           </h1>
           <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto">

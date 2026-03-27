@@ -67,7 +67,7 @@ const ConversionFAQSection = () => {
               <HelpCircle className="h-5 w-5 text-primary" />
               <span className="text-sm font-medium text-primary">FAQ</span>
             </div>
-            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold font-heading text-foreground mb-4">
               {faq?.title || "Frequently Asked Questions"}
             </h2>
             <p className="text-lg text-muted-foreground">

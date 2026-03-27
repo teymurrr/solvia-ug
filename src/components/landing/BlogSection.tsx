@@ -28,7 +28,7 @@ const BlogSection: React.FC<BlogSectionProps> = ({ posts: propsPosts }) => {
     <section className="py-16 bg-gray-50">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-black mb-3">{t?.blog?.title || "Latest from Our Blog"}</h2>
+          <h2 className="text-3xl md:text-4xl font-bold font-heading text-black mb-3">{t?.blog?.title || "Latest from Our Blog"}</h2>
           <p className="text-lg text-muted-foreground mb-6 max-w-2xl mx-auto">
             {t?.blog?.subtitle || "Insights, stories, and tips for healthcare professionals and recruiters"}
           </p>
