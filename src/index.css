@@ -5,83 +5,83 @@
 
 @layer base {
   :root {
-    --background: 210 50% 98%;
-    --foreground: 222.2 84% 4.9%;
+    --background: 210 14% 98%;
+    --foreground: 200 30% 16%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 200 30% 16%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 200 30% 16%;
 
-    --primary: 213 97% 47%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 201 67% 32%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 210 85% 80%;
-    --secondary-foreground: 213 97% 47%;
+    --secondary: 37 79% 56%;
+    --secondary-foreground: 200 30% 16%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 200 24% 94%;
+    --muted-foreground: 201 15% 49%;
 
-    --accent: 210 85% 80%;
-    --accent-foreground: 213 97% 47%;
+    --accent: 37 79% 56%;
+    --accent-foreground: 200 30% 16%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 50% 53%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 213 97% 47%;
+    --border: 200 17% 75%;
+    --input: 200 17% 85%;
+    --ring: 201 67% 32%;
 
     --radius: 0.5rem;
 
     --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-foreground: 200 30% 16%;
+    --sidebar-primary: 201 67% 32%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 200 24% 94%;
+    --sidebar-accent-foreground: 200 30% 16%;
+    --sidebar-border: 200 17% 75%;
+    --sidebar-ring: 201 67% 32%;
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+    --background: 200 30% 8%;
+    --foreground: 200 15% 92%;
 
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
+    --card: 200 28% 12%;
+    --card-foreground: 200 15% 92%;
 
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 200 28% 12%;
+    --popover-foreground: 200 15% 92%;
 
-    --primary: 213 97% 47%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 201 67% 38%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 210 85% 80%;
-    --secondary-foreground: 213 97% 47%;
+    --secondary: 37 79% 56%;
+    --secondary-foreground: 200 30% 16%;
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted: 200 20% 18%;
+    --muted-foreground: 200 12% 60%;
 
-    --accent: 210 85% 80%;
-    --accent-foreground: 213 97% 47%;
+    --accent: 37 79% 56%;
+    --accent-foreground: 200 30% 16%;
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 50% 40%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 213 97% 47%;
+    --border: 200 20% 22%;
+    --input: 200 20% 22%;
+    --ring: 201 67% 38%;
     
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-background: 200 30% 8%;
+    --sidebar-foreground: 200 15% 92%;
+    --sidebar-primary: 201 67% 38%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-accent: 200 20% 18%;
+    --sidebar-accent-foreground: 200 15% 92%;
+    --sidebar-border: 200 20% 22%;
+    --sidebar-ring: 201 67% 38%;
   }
 }
 
@@ -98,6 +98,7 @@
 
   body {
     @apply bg-background text-foreground;
+    font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     font-display: swap;
@@ -111,11 +112,11 @@
 
 @layer components {
   .hero-gradient {
-    background: linear-gradient(135deg, #0974f1 0%, #9fccfa 100%);
+    background: linear-gradient(135deg, #0F3D5C 0%, #1A5F8A 60%, #2B7DB5 100%);
   }
   
   .text-gradient {
-    background: linear-gradient(to right, #0974f1, #9fccfa);
+    background: linear-gradient(to right, #1A5F8A, #2B7DB5);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
@@ -123,11 +124,11 @@
   .shimmer-gradient {
     background: linear-gradient(
       65deg,
-      #0974f1 20%,
-      #4c9cf5 35%,
-      #7cb5f8 50%,
-      #4c9cf5 65%,
-      #0974f1 80%
+      #0F3D5C 20%,
+      #1A5F8A 35%,
+      #2B7DB5 50%,
+      #1A5F8A 65%,
+      #0F3D5C 80%
     );
     background-size: 200% auto;
     color: transparent;
@@ -138,7 +139,7 @@
 
   .phrase-rotate {
     display: inline-block;
-    color: #0974f1;
+    color: #1A5F8A;
     position: relative;
     transform-origin: center;
   }
@@ -204,7 +205,7 @@
   }
 
   .card-gradient {
-    background: linear-gradient(to bottom right, #0974f1120, #9fccfa40);
+    background: linear-gradient(to bottom right, #1A5F8A120, #2B7DB540);
     backdrop-filter: blur(8px);
   }
 
@@ -234,8 +235,8 @@
   
   .landing-vacancy-card:hover {
     transform: translateY(-5px) scale(1.02);
-    box-shadow: 0 15px 30px rgba(9, 116, 241, 0.1);
-    border-color: rgba(9, 116, 241, 0.2);
+    box-shadow: 0 15px 30px rgba(26, 95, 138, 0.1);
+    border-color: rgba(26, 95, 138, 0.2);
   }
 
   /* Safari-compatible line clamp utilities */
@@ -449,14 +450,14 @@
   }
 
   .blog-content a {
-    color: #0974f1;
+    color: #1A5F8A;
     text-decoration: underline;
     text-underline-offset: 2px;
     transition: color 0.2s ease;
   }
 
   .blog-content a:hover {
-    color: #0560d1;
+    color: #0F3D5C;
     text-decoration: underline;
   }
 
@@ -532,7 +533,7 @@
 
   /* Blockquote styling */
   .blog-content blockquote {
-    border-left: 4px solid #0974f1;
+    border-left: 4px solid #1A5F8A;
     margin: 1.5rem 0;
     padding: 1rem 1.5rem;
     background-color: #f8fafc;
@@ -581,30 +582,33 @@
 
   /* Heading styles for blog content */
   .blog-content h1 {
+    font-family: 'Fraunces', serif;
     font-size: 2.25rem;
     font-weight: 700;
     line-height: 1.2;
     margin-top: 2rem;
     margin-bottom: 1rem;
-    color: #1a1a1a;
+    color: #1C2B36;
   }
 
   .blog-content h2 {
+    font-family: 'Fraunces', serif;
     font-size: 1.875rem;
     font-weight: 600;
     line-height: 1.3;
     margin-top: 1.75rem;
     margin-bottom: 0.875rem;
-    color: #1a1a1a;
+    color: #1C2B36;
   }
 
   .blog-content h3 {
+    font-family: 'Fraunces', serif;
     font-size: 1.5rem;
     font-weight: 600;
     line-height: 1.4;
     margin-top: 1.5rem;
     margin-bottom: 0.75rem;
-    color: #1a1a1a;
+    color: #1C2B36;
   }
 
   .blog-content h4 {
@@ -674,14 +678,14 @@
   }
 
   .prose a {
-    color: #0974f1;
+    color: #1A5F8A;
     text-decoration: underline;
     text-underline-offset: 2px;
     font-weight: 500;
   }
 
   .prose a:hover {
-    color: #0560d1;
+    color: #0F3D5C;
   }
 }
 

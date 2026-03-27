@@ -236,7 +236,7 @@ const Login = () => {
                   
                   <Link 
                     to="/forgot-password" 
-                    className="text-sm text-medical-700 hover:text-medical-800"
+                    className="text-sm text-primary/80 hover:text-primary/90"
                   >
                     {t.auth.forgotPassword}
                   </Link>
@@ -257,7 +257,7 @@ const Login = () => {
               {t.auth.dontHaveAccount}{" "}
               <Link 
                 to={userType === 'professional' ? '/signup/professional' : '/signup/institution'} 
-                className="text-medical-700 hover:text-medical-800 font-medium"
+                className="text-primary/80 hover:text-primary/90 font-medium"
               >
                 {t.auth.createOne}
               </Link>
@@ -265,7 +265,7 @@ const Login = () => {
             <div className="text-sm text-center text-muted-foreground">
               <Link 
                 to="/confirm-email" 
-                className="text-medical-700 hover:text-medical-800 font-medium"
+                className="text-primary/80 hover:text-primary/90 font-medium"
               >
                 {t.auth.needConfirmEmail}
               </Link>

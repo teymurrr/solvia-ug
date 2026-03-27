@@ -62,7 +62,7 @@ const VacanciesTab: React.FC<VacanciesTabProps> = ({
                         {vacancy.job_type || vacancy.contract_type}
                       </Badge>
                     </div>
-                    <p className="text-sm text-medical-600">{vacancy.department}</p>
+                    <p className="text-sm text-primary">{vacancy.department}</p>
                     <p className="text-xs text-muted-foreground">{vacancy.location}</p>
                     
                     {vacancy.specialty && (

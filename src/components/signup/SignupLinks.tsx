@@ -9,13 +9,13 @@ export const SignupLinks: React.FC = () => {
     <>
       <div className="text-sm text-center text-muted-foreground">
         {t.auth.wantInstitutionSignup}{" "}
-        <Link to="/signup/institution" className="text-medical-700 hover:text-medical-800 font-medium">
+        <Link to="/signup/institution" className="text-primary/80 hover:text-primary/90 font-medium">
           {t.auth.institutionSignup}
         </Link>
       </div>
       <div className="text-sm text-center text-muted-foreground">
         {t.auth.alreadyHaveAccountSignup}{" "}
-        <Link to="/login" className="text-medical-700 hover:text-medical-800 font-medium">
+        <Link to="/login" className="text-primary/80 hover:text-primary/90 font-medium">
           {t.auth.loginSignup}
         </Link>
       </div>

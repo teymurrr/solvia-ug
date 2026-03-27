@@ -45,11 +45,11 @@ const ProfessionalCard: React.FC<ProfessionalCardProps> = ({
       <CardContent className="p-0">
         <div className="p-6 space-y-4">
           <div className="flex gap-4 items-start">
-            <div className="h-16 w-16 rounded-full overflow-hidden bg-medical-100 flex items-center justify-center">
+            <div className="h-16 w-16 rounded-full overflow-hidden bg-primary/10 flex items-center justify-center">
               {imageSrc ? (
                 <img src={imageSrc} alt={name} className="h-full w-full object-cover" />
               ) : (
-                <div className="text-2xl font-bold text-medical-500">{name.charAt(0)}</div>
+                <div className="text-2xl font-bold text-primary/50">{name.charAt(0)}</div>
               )}
             </div>
             
@@ -69,7 +69,7 @@ const ProfessionalCard: React.FC<ProfessionalCardProps> = ({
             </Button>
           </div>
           
-          <Badge variant="secondary" className="bg-medical-50 text-medical-700 hover:bg-medical-100">
+          <Badge variant="secondary" className="bg-primary/5 text-primary/80 hover:bg-primary/10">
             {specialty}
           </Badge>
           

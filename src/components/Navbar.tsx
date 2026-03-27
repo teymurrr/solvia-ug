@@ -94,7 +94,7 @@ const Navbar = () => {
                 <Button variant="ghost" asChild>
                   <Link to="/login">{t?.common?.login || "Log in"}</Link>
                 </Button>
-                <Button asChild>
+                <Button variant="cta" asChild>
                   <Link to="/signup">{t?.common?.freeSignup || "Free Sign Up"}</Link>
                 </Button>
               </>

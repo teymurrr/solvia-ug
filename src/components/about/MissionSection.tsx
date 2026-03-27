@@ -11,7 +11,7 @@ const MissionSection = () => {
     <section className="py-16">
       <div className="container mx-auto px-4">
         <div className="max-w-3xl mx-auto mb-12 text-center">
-          <h2 className="text-3xl font-bold mb-4">{t?.about?.mission?.title}</h2>
+          <h2 className="text-3xl font-bold font-heading mb-4">{t?.about?.mission?.title}</h2>
           <p className="text-lg text-muted-foreground">
             {t?.about?.mission?.description}
           </p>
@@ -20,8 +20,8 @@ const MissionSection = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
           <Card>
             <CardContent className="p-6 flex flex-col items-center text-center">
-              <div className="bg-medical-100 w-16 h-16 rounded-full flex items-center justify-center mb-6">
-                <Globe className="h-8 w-8 text-medical-600" />
+              <div className="bg-primary/10 w-16 h-16 rounded-full flex items-center justify-center mb-6">
+                <Globe className="h-8 w-8 text-primary" />
               </div>
               <h3 className="text-xl font-semibold mb-2">{t?.about?.mission?.global || "Global Connections"}</h3>
               <p className="text-muted-foreground">
@@ -32,8 +32,8 @@ const MissionSection = () => {
           
           <Card>
             <CardContent className="p-6 flex flex-col items-center text-center">
-              <div className="bg-medical-100 w-16 h-16 rounded-full flex items-center justify-center mb-6">
-                <FileCheck className="h-8 w-8 text-medical-600" />
+              <div className="bg-primary/10 w-16 h-16 rounded-full flex items-center justify-center mb-6">
+                <FileCheck className="h-8 w-8 text-primary" />
               </div>
               <h3 className="text-xl font-semibold mb-2">{t?.about?.mission?.process || "Simplified Process"}</h3>
               <p className="text-muted-foreground">
@@ -44,8 +44,8 @@ const MissionSection = () => {
           
           <Card>
             <CardContent className="p-6 flex flex-col items-center text-center">
-              <div className="bg-medical-100 w-16 h-16 rounded-full flex items-center justify-center mb-6">
-                <HeartPulse className="h-8 w-8 text-medical-600" />
+              <div className="bg-primary/10 w-16 h-16 rounded-full flex items-center justify-center mb-6">
+                <HeartPulse className="h-8 w-8 text-primary" />
               </div>
               <h3 className="text-xl font-semibold mb-2">{t?.about?.mission?.healthcare || "Better Healthcare"}</h3>
               <p className="text-muted-foreground">

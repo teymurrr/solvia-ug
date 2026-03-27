@@ -19,7 +19,7 @@ const NotFound = () => {
     <MainLayout>
       <div className="container mx-auto px-4 py-16 md:py-24">
         <div className="max-w-md mx-auto text-center">
-          <h1 className="text-7xl font-bold text-medical-600 mb-4">404</h1>
+          <h1 className="text-7xl font-bold text-primary mb-4">404</h1>
           <p className="text-2xl font-semibold mb-4">Page Not Found</p>
           <p className="text-muted-foreground mb-8">
             The page you're looking for doesn't exist or has been moved.

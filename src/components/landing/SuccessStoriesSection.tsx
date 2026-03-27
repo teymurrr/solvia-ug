@@ -67,7 +67,7 @@ const SuccessStoriesSection = () => {
                 {successStories?.badge || "Success Stories"}
               </span>
             </div>
-            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4 max-w-3xl mx-auto">
+            <h2 className="text-3xl md:text-4xl font-bold font-heading text-foreground mb-4 max-w-3xl mx-auto">
               {successStories?.title || "Professionals who trusted Solvia"}
             </h2>
             <p className="text-lg text-muted-foreground mb-6">

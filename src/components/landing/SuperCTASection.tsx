@@ -29,7 +29,7 @@ const SuperCTASection = () => {
           </div>
           
           {/* Title */}
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 leading-tight">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 leading-tight font-heading">
             {superCta?.title || "Start Your Journey to Europe Today"}
           </h2>
           
@@ -43,7 +43,7 @@ const SuperCTASection = () => {
             <Button 
               asChild 
               size="lg" 
-              variant="secondary"
+              variant="cta"
               className="group text-base px-8 py-6"
             >
               <Link to="/homologation-wizard" className="flex items-center gap-2">

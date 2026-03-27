@@ -111,7 +111,7 @@ const UserSelector: React.FC<UserSelectorProps> = ({ onSelectUser, selectedEmail
 
             {loading ? (
               <div className="text-center py-4">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-medical-600 mx-auto"></div>
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
                 <p className="mt-2 text-sm text-muted-foreground">Loading users...</p>
               </div>
             ) : (

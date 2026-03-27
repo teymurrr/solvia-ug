@@ -10,7 +10,7 @@ const Footer: React.FC = () => {
 
 
   return (
-    <footer className="bg-white border-t">
+    <footer className="bg-muted border-t">
       <div className="container mx-auto px-4 py-12 md:py-16">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="space-y-4">
@@ -95,7 +95,7 @@ const Footer: React.FC = () => {
                 href="https://opxon.com/en/" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="text-medical-600 hover:text-medical-700 transition-colors font-medium"
+                className="text-primary hover:text-primary/80 transition-colors font-medium"
               >
                 Opxon
               </a>
@@ -106,7 +106,7 @@ const Footer: React.FC = () => {
               href="https://www.instagram.com/thesolvia/" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="text-sm text-muted-foreground hover:text-medical-600 transition-colors"
+              className="text-sm text-muted-foreground hover:text-primary transition-colors"
             >
               <span className="sr-only">Instagram</span>
               <Instagram className="h-5 w-5" />
@@ -115,7 +115,7 @@ const Footer: React.FC = () => {
               href="https://www.linkedin.com/company/thesolvia/?viewAsMember=true" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="text-sm text-muted-foreground hover:text-medical-600 transition-colors"
+              className="text-sm text-muted-foreground hover:text-primary transition-colors"
             >
               <span className="sr-only">LinkedIn</span>
               <Linkedin className="h-5 w-5" />

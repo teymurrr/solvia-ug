@@ -27,7 +27,7 @@ const PathToSuccessSection = () => {
       <div className="container mx-auto px-4">
         {/* Header */}
         <header className="max-w-2xl mx-auto text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
+          <h2 className="text-3xl md:text-4xl font-bold tracking-tight font-heading">
             {t?.pathToSuccess?.title || 'How It Works'}
           </h2>
           <p className="mt-3 text-muted-foreground">
@@ -65,7 +65,7 @@ const PathToSuccessSection = () => {
 
         {/* Divider + Country sub-heading */}
         <div className="max-w-5xl mx-auto mt-14 mb-8 text-center">
-          <h3 className="text-2xl md:text-3xl font-bold text-foreground">
+          <h3 className="text-2xl md:text-3xl font-bold text-foreground font-heading">
             {comparison?.title || 'Compare Your Options'}
           </h3>
           <p className="mt-2 text-muted-foreground">
@@ -188,7 +188,7 @@ const PathToSuccessSection = () => {
 
         {/* Single CTA */}
         <div className="flex flex-col items-center gap-3">
-          <Button asChild size="lg" className="group h-12 px-8 text-base shadow-lg shadow-primary/20">
+          <Button asChild size="lg" variant="cta" className="group h-12 px-8 text-base">
             <Link to="/homologation-wizard" onClick={() => window.scrollTo(0, 0)} className="flex items-center gap-2">
               {comparison?.cta || t?.hero?.cta || 'Check my eligibility'}
               <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
