@@ -36,7 +36,7 @@ const HeroSectionWithSearch = React.memo(() => {
         <div className="container mx-auto px-4 py-24 md:py-32 lg:py-40 relative z-10">
           <div className="max-w-3xl mx-auto text-center space-y-6">
             {/* Main Headline */}
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-foreground leading-tight">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-foreground leading-tight font-heading">
               {t.hero.title}
             </h1>
             
@@ -49,7 +49,8 @@ const HeroSectionWithSearch = React.memo(() => {
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
               <Button 
                 size="lg" 
-                className="h-14 px-10 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
+                variant="cta"
+                className="h-14 px-10 text-lg transition-all duration-300 hover:scale-105"
                 onClick={() => navigate('/homologation-wizard')}
               >
                 {t.hero.cta} →
