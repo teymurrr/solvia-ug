@@ -109,8 +109,8 @@ export const landing = {
   },
   countryComparison: {
     badge: "Anerkennungsdienste",
-    title: "Vergleichen Sie Ihre Optionen",
-    subtitle: "Ihr Pass zur ärztlichen Tätigkeit in Europa",
+    title: "Ihr Pass zur ärztlichen Tätigkeit in Europa",
+    subtitle: "Vergleichen Sie Ihre Optionen",
     oneTimePayment: "Einmalzahlung",
     cta: "Meinen personalisierten Plan erhalten",
     ctaSubtext: "Kostenlose Bewertung • Keine Verpflichtung",

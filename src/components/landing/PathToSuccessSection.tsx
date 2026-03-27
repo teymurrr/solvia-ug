@@ -66,10 +66,10 @@ const PathToSuccessSection = () => {
         {/* Divider + Country sub-heading */}
         <div className="max-w-5xl mx-auto mt-14 mb-8 text-center">
           <h3 className="text-2xl md:text-3xl font-bold text-foreground font-heading">
-            {comparison?.title || 'Compare Your Options'}
+            {comparison?.title || 'Your passport to practicing medicine across Europe'}
           </h3>
           <p className="mt-2 text-muted-foreground">
-            {comparison?.subtitle || 'Compare timelines, salaries, and pricing across Europe\'s top destinations'}
+            {comparison?.subtitle || 'Compare your options'}
           </p>
         </div>
 

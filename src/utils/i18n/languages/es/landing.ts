@@ -109,8 +109,8 @@ export const landing = {
   },
   countryComparison: {
     badge: "Servicios de Homologación",
-    title: "Compara tus opciones",
-    subtitle: "Tu pasaporte para ejercer medicina en Europa",
+    title: "Tu pasaporte para ejercer medicina en Europa",
+    subtitle: "Compara tus opciones",
     oneTimePayment: "Pago único",
     cta: "Obtener mi plan personalizado",
     ctaSubtext: "Evaluación gratuita • Sin compromiso",
