@@ -109,8 +109,8 @@ export const landing = {
   },
   countryComparison: {
     badge: "Homologation Services",
-    title: "Compare your options",
-    subtitle: "Your passport to practicing medicine across Europe",
+    title: "Your passport to practicing medicine across Europe",
+    subtitle: "Compare your options",
     oneTimePayment: "One-time payment",
     cta: "Get my personalized plan",
     ctaSubtext: "Free assessment • No commitment required",
