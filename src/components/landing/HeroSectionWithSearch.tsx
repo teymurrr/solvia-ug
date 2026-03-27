@@ -19,7 +19,6 @@ const HeroSectionWithSearch = React.memo(() => {
     { number: "3", label: t.hero.stats?.countries || "Countries available" },
     { number: "200+", label: t.hero.stats?.homologations || "Open positions" },
     { number: "98%", label: t.hero.stats?.satisfaction || "User satisfaction" },
-    { number: "100%", label: t.hero.stats?.digital || "Digital process" }
   ];
   
   return (
@@ -72,7 +71,7 @@ const HeroSectionWithSearch = React.memo(() => {
       {/* Stats Strip */}
       <section className="bg-muted/50 border-y border-border/50">
         <div className="container mx-auto px-4 py-10 md:py-14">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-4">
+          <div className="grid grid-cols-3 gap-8 md:gap-4">
             {stats.map((stat, index) => (
               <div key={index} className="text-center">
                 <div className="text-3xl md:text-4xl lg:text-5xl font-bold text-primary mb-2">
