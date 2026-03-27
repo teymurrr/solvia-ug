@@ -19,6 +19,10 @@ export default {
 			}
 		},
 		extend: {
+			fontFamily: {
+				heading: ['Fraunces', 'serif'],
+				body: ['DM Sans', 'sans-serif'],
+			},
 			colors: {
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
@@ -63,30 +67,17 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-				medical: {
-					50: '#f0f9ff',
-					100: '#e0f2fe',
-					200: '#bae6fd',
-					300: '#7dd3fc',
-					400: '#38bdf8',
-					500: '#0ea5e9',
-					600: '#0284c7',
-					700: '#0369a1',
-					800: '#075985',
-					900: '#0c4a6e',
+				brand: {
+					primary: '#1A5F8A',
+					'primary-dark': '#0F3D5C',
+					'primary-light': '#2B7DB5',
+					'primary-tint': '#9DD6F1',
+					amber: '#E8A838',
+					'amber-dark': '#C78820',
+					'amber-light': '#F5C66A',
+					success: '#2D8F5E',
+					error: '#C94444',
 				},
-				healing: {
-					50: '#f0fdfa',
-					100: '#ccfbf1',
-					200: '#99f6e4',
-					300: '#5eead4',
-					400: '#2dd4bf',
-					500: '#14b8a6',
-					600: '#0d9488',
-					700: '#0f766e',
-					800: '#115e59',
-					900: '#134e4a',
-				}
 			},
 			borderRadius: {
 				lg: 'var(--radius)',

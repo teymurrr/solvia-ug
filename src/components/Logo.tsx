@@ -32,8 +32,8 @@ const Logo: React.FC<LogoProps> = ({ size = 'md' }) => {
 
   return (
     <Link to="/" onClick={handleLogoClick} className="flex items-center">
-      <span className={`font-bold ${textSizeMap[size]} tracking-tight text-gray-500`}>
-        solvia
+      <span className={`font-bold ${textSizeMap[size]} tracking-tight text-primary`}>
+        sol<span className="text-accent">v</span>ia
       </span>
     </Link>
   );
