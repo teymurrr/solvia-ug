@@ -11,7 +11,7 @@ const MissionSection = () => {
     <section className="py-16">
       <div className="container mx-auto px-4">
         <div className="max-w-3xl mx-auto mb-12 text-center">
-          <h2 className="text-3xl font-bold mb-4">{t?.about?.mission?.title}</h2>
+          <h2 className="text-3xl font-bold font-heading mb-4">{t?.about?.mission?.title}</h2>
           <p className="text-lg text-muted-foreground">
             {t?.about?.mission?.description}
           </p>

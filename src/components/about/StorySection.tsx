@@ -25,7 +25,7 @@ const StorySection = () => {
             </div>
             
             <div className="md:w-1/2 space-y-4">
-              <h2 className="text-3xl font-bold">{t?.about?.story?.title}</h2>
+              <h2 className="text-3xl font-bold font-heading">{t?.about?.story?.title}</h2>
               <p className="text-muted-foreground">
                 {t?.about?.story?.founded || "Solvia was born from a simple observation: healthcare recruitment, especially across borders, is unnecessarily complex, slow, and expensive."}
               </p>

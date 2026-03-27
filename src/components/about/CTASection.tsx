@@ -16,7 +16,7 @@ const CTASection = () => {
   return (
     <section className="py-16 bg-gradient-to-r from-primary via-primary/95 to-primary text-white">
       <div className="container mx-auto px-4 text-center">
-        <h2 className="text-3xl font-bold mb-4 text-white">{title}</h2>
+        <h2 className="text-3xl font-bold font-heading mb-4 text-white">{title}</h2>
         <p className="text-xl mb-8 max-w-2xl mx-auto">
           {subtitle}
         </p>
