@@ -234,8 +234,8 @@
   
   .landing-vacancy-card:hover {
     transform: translateY(-5px) scale(1.02);
-    box-shadow: 0 15px 30px rgba(9, 116, 241, 0.1);
-    border-color: rgba(9, 116, 241, 0.2);
+    box-shadow: 0 15px 30px rgba(26, 95, 138, 0.1);
+    border-color: rgba(26, 95, 138, 0.2);
   }
 
   /* Safari-compatible line clamp utilities */
