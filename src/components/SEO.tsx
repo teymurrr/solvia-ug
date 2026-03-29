@@ -1,7 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 import { useLanguage } from '@/hooks/useLanguage';
 
-const BASE_URL = 'https://solvia-flexkapg.lovable.app';
+const BASE_URL = 'https://thesolvia.com';
 const SUPPORTED_LANGS = ['en', 'de', 'fr', 'es', 'ru'] as const;
 const DEFAULT_OG_IMAGE = '/lovable-uploads/eb689b9e-7e70-4fb2-8ffb-50d9ef2c373a.png';
 
