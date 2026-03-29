@@ -29,6 +29,7 @@ const EmployersLanding = lazy(() => import("@/pages/EmployersLanding"));
 const Blog = lazy(() => import("@/pages/Blog"));
 const BlogPost = lazy(() => import("@/pages/BlogPost"));
 const VisaInfo = lazy(() => import("@/pages/VisaInfo"));
+const BrochureEn = lazy(() => import("@/pages/BrochureEn"));
 
 // Auth pages - import individually instead of bundling
 const Signup = lazy(() => import("@/pages/Signup"));
