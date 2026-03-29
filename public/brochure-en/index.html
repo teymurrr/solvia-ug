@@ -404,5 +404,13 @@
 
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
+<script>
+  var qr = qrcode(0, 'M');
+  qr.addData('https://thesolvia.com/homologation');
+  qr.make();
+  document.getElementById('qr-code').innerHTML = qr.createSvgTag(4, 0);
+</script>
+
 </body>
 </html>
