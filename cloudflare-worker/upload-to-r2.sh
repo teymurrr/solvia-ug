@@ -49,7 +49,7 @@ for file in public/blog/*/index.html; do
 done
 
 # --- 4. Upload main section pages ---
-for dir in about contact employers homologation learning vacancies visa-info; do
+for dir in about contact employers homologation learning vacancies visa-info brochure-en; do
   file="public/$dir/index.html"
   if [ -f "$file" ]; then
     r2key="$dir/index.html"

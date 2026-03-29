@@ -23,6 +23,7 @@ on:
       - 'public/learning/**'
       - 'public/vacancies/**'
       - 'public/visa-info/**'
+      - 'public/brochure-en/**'
       - 'public/home/**'
       - 'public/sitemap.xml'
       - 'public/robots.txt'

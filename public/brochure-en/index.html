@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Solvia — Medical Degree Homologation in Germany</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap');
+ 
+  :root {
+    --primary: #1A5F8A;
+    --primary-dark: #0F3D5C;
+    --accent: #E8A838;
+    --text-dark: #1C2B36;
+    --text-body: #3A4F5E;
+    --surface: #EDF2F5;
+    --white: #ffffff;
+  }
+ 
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+ 
+  body {
+    font-family: 'Source Sans 3', Helvetica, Arial, sans-serif;
+    color: var(--text-body);
+    background: var(--white);
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.5;
+  }
+ 
+  a { color: inherit; }
+ 
+  .page { max-width: 720px; margin: 0 auto; }
+ 
+  /* HEADER */
+  .header {
+    background: var(--primary-dark);
+    padding: 24px 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+ 
+  .logo { font-size: 28px; font-weight: 700; letter-spacing: -0.5px; text-decoration: none; }
+  .logo .sol { color: var(--white); }
+  .logo .v { color: var(--accent); }
+  .logo .ia { color: var(--white); }
+  .header-url { color: rgba(255,255,255,0.7); font-size: 13px; text-decoration: none; }
+ 
+  /* HERO */
+  .hero { padding: 40px 32px 28px; }
+ 
+  .hero h1 {
+    font-size: 32px; font-weight: 700; color: var(--text-dark);
+    line-height: 1.2; margin-bottom: 16px;
+  }
+ 
+  .hero h1 em { font-style: normal; color: var(--primary); }
+  .hero .subtitle { font-size: 16px; line-height: 1.55; margin-bottom: 18px; max-width: 560px; }
+  .accent-line { width: 56px; height: 3px; background: var(--accent); border-radius: 2px; }
+ 
+  /* SOCIAL PROOF */
+  .social-proof {
+    margin: 0 32px; background: var(--surface); border-left: 3px solid var(--accent);
+    padding: 16px 24px; display: flex; gap: 24px; align-items: center;
+    border-radius: 0 8px 8px 0; flex-wrap: wrap;
+  }
+ 
+  .stat { display: flex; flex-direction: column; }
+  .stat-number { font-size: 22px; font-weight: 700; color: var(--primary); }
+  .stat-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .proof-divider { width: 1px; height: 30px; background: #c8d5dd; }
+ 
+  /* PATHWAY BADGE */
+  .pathway-badge {
+    margin: 20px 32px 0; display: inline-flex; align-items: center; gap: 8px;
+    background: #FFF8ED; border: 1px solid #f0d9a8; border-radius: 20px;
+    padding: 7px 18px; font-size: 13px; font-weight: 600; color: var(--text-dark);
+  }
+  .pathway-badge .flag { font-size: 18px; }
+ 
+  /* SECTION */
+  .section { padding: 24px 32px 0; }
+  .section-heading {
+    font-size: 18px; font-weight: 700; color: var(--text-dark);
+    padding-left: 14px; border-left: 3px solid var(--accent); margin-bottom: 12px;
+  }
+  .section p { font-size: 15px; line-height: 1.6; }
+ 
+  /* STEPS */
+  .steps-area {
+    margin: 28px 32px 0; background: var(--surface);
+    border-radius: 10px; padding: 28px;
+  }
+ 
+  .steps-heading {
+    font-size: 18px; font-weight: 700; color: var(--text-dark);
+    padding-left: 14px; border-left: 3px solid var(--accent); margin-bottom: 22px;
+  }
+ 
+  .steps-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px 28px; }
+  .step { display: flex; gap: 12px; align-items: flex-start; }
+ 
+  .step-num {
+    width: 34px; height: 34px; min-width: 34px; background: var(--accent);
+    color: var(--white); border-radius: 50%; display: flex;
+    align-items: center; justify-content: center; font-size: 16px; font-weight: 700;
+  }
+ 
+  .step-content h3 { font-size: 14px; font-weight: 700; color: var(--text-dark); margin-bottom: 3px; }
+  .step-content p { font-size: 13px; line-height: 1.5; }
+ 
+  /* WIZARD CALLOUT */
+  .wizard-callout {
+    margin: 28px 32px 0;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    border-radius: 10px; padding: 24px 28px;
+    display: flex; align-items: center; gap: 18px;
+    text-decoration: none; transition: transform 0.15s;
+  }
+  .wizard-callout:hover { transform: scale(1.01); }
+  .wizard-icon { font-size: 36px; min-width: 44px; text-align: center; }
+  .wizard-callout h3 { font-size: 16px; font-weight: 700; color: var(--white); margin-bottom: 4px; }
+  .wizard-callout p { font-size: 13px; color: rgba(255,255,255,0.8); line-height: 1.45; }
+  .wizard-callout .link-text { color: var(--accent); font-weight: 600; }
+ 
+  /* DIVIDER */
+  .section-divider { margin: 36px 32px 0; border: none; border-top: 1px solid #dce4e9; }
+ 
+  /* TESTIMONIALS */
+  .testimonials { padding: 32px 32px 0; }
+  .testimonial-grid { display: flex; flex-direction: column; gap: 16px; margin-top: 20px; }
+ 
+  .testimonial-card {
+    background: var(--surface); border-radius: 10px;
+    padding: 22px 24px; position: relative;
+  }
+ 
+  .testimonial-card::before {
+    content: "\201C"; position: absolute; top: 8px; left: 14px;
+    font-size: 44px; color: var(--accent); font-family: Georgia, serif;
+    line-height: 1; opacity: 0.45;
+  }
+ 
+  .testimonial-card blockquote {
+    font-size: 14px; font-style: italic; line-height: 1.55;
+    margin-bottom: 10px; padding-left: 22px;
+  }
+ 
+  .testimonial-card .attribution { padding-left: 22px; font-size: 13px; }
+  .testimonial-card .attribution strong { color: var(--text-dark); }
+  .testimonial-card .attribution span { color: var(--primary); font-size: 12px; }
+ 
+  .origin-tag {
+    display: inline-block; background: var(--accent); color: var(--primary-dark);
+    font-size: 10px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.4px; padding: 2px 7px; border-radius: 3px;
+    margin-left: 6px; vertical-align: middle;
+  }
+ 
+  /* SCARCITY */
+  .intake-note {
+    margin: 28px 32px 0; padding: 14px 20px; background: #FFF8ED;
+    border: 1px solid #f0d9a8; border-radius: 8px;
+    text-align: center; font-size: 14px; color: var(--text-dark); font-weight: 600;
+  }
+  .intake-note em { color: var(--accent); font-style: normal; }
+ 
+  /* CTA SECTION */
+  .cta-section {
+    margin: 28px 32px 0; background: var(--primary-dark);
+    border-radius: 12px; padding: 32px 28px 28px;
+  }
+ 
+  .cta-section h2 {
+    font-size: 24px; font-weight: 700; color: var(--white);
+    text-align: center; margin-bottom: 28px;
+  }
+ 
+  .cta-item {
+    display: flex; align-items: center; gap: 14px;
+    padding: 16px 0; border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+  .cta-item:last-of-type { border-bottom: none; }
+ 
+  .cta-emoji { font-size: 24px; min-width: 32px; text-align: center; }
+  .cta-content { flex: 1; }
+  .cta-label { font-size: 15px; font-weight: 700; color: var(--white); margin-bottom: 2px; }
+  .cta-content a { font-size: 13px; color: var(--accent); text-decoration: none; }
+  .cta-content a:hover { text-decoration: underline; }
+ 
+  .badge-free {
+    display: inline-block; background: var(--accent); color: var(--primary-dark);
+    font-size: 10px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.5px; padding: 2px 8px; border-radius: 3px;
+    margin-left: 6px; vertical-align: middle;
+  }
+ 
+  .qr-area {
+    text-align: center; margin-top: 24px; padding-top: 20px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+  }
+  .qr-area p { font-size: 12px; color: rgba(255,255,255,0.6); margin-bottom: 10px; }
+ 
+  #qr-code {
+    display: inline-block; background: var(--white);
+    padding: 8px; border-radius: 8px;
+  }
+ 
+  /* WHATSAPP STRIP */
+  .whatsapp-strip {
+    margin: 24px 32px 0; display: block; text-decoration: none;
+    background: #25D366; border-radius: 12px; padding: 18px 24px;
+    text-align: center; color: var(--white); font-size: 16px; font-weight: 700;
+    transition: transform 0.15s, box-shadow 0.15s;
+    box-shadow: 0 4px 16px rgba(37,211,102,0.3);
+  }
+  .whatsapp-strip:hover { transform: scale(1.02); box-shadow: 0 6px 24px rgba(37,211,102,0.4); }
+  .whatsapp-strip .wa-sub { display: block; font-size: 13px; font-weight: 400; margin-top: 4px; opacity: 0.9; }
+ 
+  /* FOOTER */
+  .footer { padding: 28px 32px 36px; text-align: center; }
+  .footer .org { font-size: 14px; font-weight: 600; color: var(--text-dark); margin-bottom: 2px; }
+  .footer a { font-size: 12px; color: var(--primary); text-decoration: none; }
+  .footer a:hover { text-decoration: underline; }
+ 
+  /* RESPONSIVE */
+  @media (max-width: 600px) {
+    .header { padding: 20px 20px; }
+    .logo { font-size: 24px; }
+    .hero { padding: 28px 20px 20px; }
+    .hero h1 { font-size: 24px; }
+    .hero .subtitle { font-size: 14px; }
+    .social-proof { margin: 0 20px; padding: 14px 16px; gap: 16px; }
+    .stat-number { font-size: 18px; }
+    .proof-divider { height: 24px; }
+    .pathway-badge { margin: 16px 20px 0; }
+    .section { padding: 24px 20px 0; }
+    .section p { font-size: 14px; }
+    .steps-area { margin: 24px 20px 0; padding: 20px; }
+    .steps-grid { grid-template-columns: 1fr; gap: 16px; }
+    .wizard-callout { margin: 24px 20px 0; padding: 20px; flex-direction: column; text-align: center; }
+    .section-divider { margin: 28px 20px 0; }
+    .testimonials { padding: 28px 20px 0; }
+    .intake-note { margin: 24px 20px 0; }
+    .cta-section { margin: 24px 20px 0; padding: 24px 20px; }
+    .cta-section h2 { font-size: 20px; }
+    .whatsapp-strip { margin: 20px 20px 0; }
+    .footer { padding: 24px 20px 32px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <div class="header">
+    <a href="https://thesolvia.com" class="logo"><span class="sol">Sol</span><span class="v">v</span><span class="ia">ia</span></a>
+    <a href="https://thesolvia.com" class="header-url">thesolvia.com</a>
+  </div>
+
+  <div class="hero">
+    <h1>Stop navigating German bureaucracy alone.<br>Get a clear plan to your <em>Approbation</em>.</h1>
+    <p class="subtitle">Solvia guides you through every step of your medical degree homologation in Germany — from initial assessment to Approbation.</p>
+    <div class="accent-line"></div>
+  </div>
+
+  <div class="social-proof">
+    <div class="stat">
+      <div class="stat-number">50+</div>
+      <div class="stat-label">Doctors guided</div>
+    </div>
+    <div class="proof-divider"></div>
+    <div class="stat">
+      <div class="stat-number">Frankfurt</div>
+      <div class="stat-label">Headquarters</div>
+    </div>
+    <div class="proof-divider"></div>
+    <div class="stat">
+      <div class="stat-number">100%</div>
+      <div class="stat-label">Personalized plan</div>
+    </div>
+  </div>
+
+  <div class="pathway-badge">
+    <span class="flag">🇮🇳</span> Dedicated India → Germany medical pathway
+  </div>
+
+  <div class="section">
+    <h2 class="section-heading">What we do</h2>
+    <p>You get a personalized step-by-step plan, direct guidance, and the peace of mind of knowing exactly what to do at every stage. Solvia, based in Frankfurt, guides international medical professionals through the complete homologation process — you're not alone in this.</p>
+  </div>
+
+  <div class="steps-area">
+    <h2 class="steps-heading">Your path in 4 steps</h2>
+    <div class="steps-grid">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <h3>Initial Assessment</h3>
+          <p>We analyze your profile, degree, and experience to define your optimal route.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <h3>Document Preparation</h3>
+          <p>We guide you through collecting, translating, and apostilling all your documents.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <h3>Language Requirements</h3>
+          <p>Personalized plan to reach B2/C1 level and pass the Fachsprachprüfung.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <h3>Exam &amp; Approbation</h3>
+          <p>We prepare you for the Kenntnisprüfung or Gleichwertigkeitsprüfung based on your case.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <a href="https://thesolvia.com/homologation" class="wizard-callout">
+    <div class="wizard-icon">🧭</div>
+    <div>
+      <h3>Complete the free Wizard in 3 minutes</h3>
+      <p>Answer a few simple questions and receive your personalized homologation route. No cost, no commitment. <span class="link-text">→ thesolvia.com</span></p>
+    </div>
+  </a>
+
+  <hr class="section-divider">
+
+  <div class="testimonials">
+    <h2 class="section-heading">What our doctors say</h2>
+    <div class="testimonial-grid">
+      <div class="testimonial-card">
+        <blockquote>"I was overwhelmed by the bureaucracy until I found Solvia. Within 9 months I had my Approbation in Frankfurt."</blockquote>
+        <div class="attribution">
+          <strong>Dr. Priya Sharma</strong> <span class="origin-tag">India → Germany</span><br>
+          <span>Internal Medicine · Mumbai</span>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <blockquote>"What I value most is that they give you a real plan, not empty promises. Every step was clear."</blockquote>
+        <div class="attribution">
+          <strong>Dr. Arjun Patel</strong> <span class="origin-tag">India → Germany</span><br>
+          <span>General Practitioner · Delhi</span>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <blockquote>"I thought it would take years. With Solvia I achieved it faster than I ever expected."</blockquote>
+        <div class="attribution">
+          <strong>Dr. Meera Krishnan</strong> <span class="origin-tag">India → Germany</span><br>
+          <span>Pediatrician · Bangalore</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="intake-note">⏳ Limited intake per quarter — <em>secure your place now</em></div>
+
+  <div class="cta-section">
+    <h2>Ready to take the first step?</h2>
+    <div class="cta-item">
+      <div class="cta-emoji">🧭</div>
+      <div class="cta-content">
+        <div class="cta-label">Discover your route with the Wizard <span class="badge-free">Free</span></div>
+        <a href="https://thesolvia.com/homologation">thesolvia.com</a>
+      </div>
+    </div>
+    <div class="cta-item">
+      <div class="cta-emoji">💬</div>
+      <div class="cta-content">
+        <div class="cta-label">Message us on WhatsApp</div>
+        <a href="https://wa.me/4915259018297">+49 152 59018297</a>
+      </div>
+    </div>
+    <div class="cta-item">
+      <div class="cta-emoji">📅</div>
+      <div class="cta-content">
+        <div class="cta-label">Schedule your free consultation</div>
+        <a href="https://calendly.com/david-rehrl-thesolvia/30min">calendly.com/david-rehrl-thesolvia/30min</a>
+      </div>
+    </div>
+    <div class="qr-area">
+      <p>Scan to start the Wizard ↓</p>
+      <div id="qr-code"></div>
+    </div>
+  </div>
+
+  <a href="https://wa.me/4915259018297" class="whatsapp-strip">
+    💬 Have questions? Message us on WhatsApp
+    <span class="wa-sub">We respond within 24 hours · +49 152 59018297</span>
+  </a>
+
+  <div class="footer">
+    <div class="org">Solvia — Frankfurt, Deutschland</div>
+    <a href="https://thesolvia.com">thesolvia.com</a>
+  </div>
+
+</div>
+
+</body>
+</html>
