@@ -112,6 +112,7 @@ const BlogManagement = () => {
       meta_title: metaTitle || null,
       meta_description: metaDescription || null,
       tags: tags || null,
+      country_tag: countryTag || null,
       author_id: user!.id,
     };
 
