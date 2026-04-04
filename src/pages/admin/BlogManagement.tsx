@@ -57,7 +57,7 @@ const BlogManagement = () => {
   const [metaTitle, setMetaTitle] = useState('');
   const [metaDescription, setMetaDescription] = useState('');
   const [tags, setTags] = useState('');
-
+  const [countryTag, setCountryTag] = useState('');
   const fetchPosts = useCallback(async () => {
     const { data, error } = await supabase
       .from('blog_posts')
