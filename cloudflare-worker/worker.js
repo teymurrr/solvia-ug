@@ -6,8 +6,9 @@
  * Redirects www.thesolvia.com → thesolvia.com.
  */
 
-const ORIGIN = 'https://thesolvia.com';
-const ORIGIN_IP = '185.158.133.1';
+// The Lovable SPA origin — fetch human traffic here to avoid Cloudflare O2O routing
+// that would otherwise bypass this Worker when the DNS A record points to Lovable's CF IP.
+const LOVABLE_ORIGIN = 'https://solvia-flexkapg.lovable.app';
 const CANONICAL_HOST = 'thesolvia.com';
 
 // Bot user-agent patterns (case-insensitive match)
@@ -71,7 +72,7 @@ function isBot(userAgent) {
  */
 function pathnameToR2Key(pathname) {
   // Direct file requests (sitemap.xml, robots.txt, llms.txt, etc.)
-  const directFiles = ['sitemap.xml', 'robots.txt', 'llms.txt', 'llms-full.txt'];
+  const directFiles = ['sitemap.xml', 'robots.txt', 'llms.txt', 'llms-full.txt', '.well-known/llms.txt'];
   const cleanPath = pathname.replace(/^\//, '');
   if (directFiles.includes(cleanPath)) {
     return cleanPath;
@@ -102,8 +103,26 @@ export default {
     const userAgent = request.headers.get('user-agent') || '';
     
     if (!isBot(userAgent)) {
-      // Human user → pass through to Lovable origin
-      return fetch(request);
+      // Human user → proxy to Lovable origin explicitly.
+      // Using LOVABLE_ORIGIN instead of fetch(request) avoids Cloudflare's O2O
+      // fast-path which would route around this Worker when the zone's A record
+      // points to another Cloudflare-hosted zone.
+      const originUrl = new URL(LOVABLE_ORIGIN);
+      originUrl.pathname = url.pathname;
+      originUrl.search = url.search;
+      // Fetch from Lovable origin with minimal headers to avoid redirect loop.
+      // Lovable redirects to thesolvia.com if it sees the custom domain Host header.
+      const proxyResponse = await fetch(originUrl.toString(), {
+        method: request.method,
+        headers: {
+          'Accept': request.headers.get('Accept') || '*/*',
+          'Accept-Language': request.headers.get('Accept-Language') || 'en',
+          'User-Agent': userAgent,
+        },
+        redirect: 'follow',
+      });
+      // Return response with original headers but rewrite any Location headers
+      return new Response(proxyResponse.body, proxyResponse);
     }
 
     // --- Step 3: Bot detected — try to serve from R2 ---
@@ -136,10 +155,21 @@ export default {
       console.error('R2 fetch error:', err);
     }
 
-    // --- Step 4: No R2 match — fall through to origin ---
+    // --- Step 4: No R2 match — fall through to Lovable origin ---
     // This handles routes without static mirrors (e.g., /auth, /dashboard)
-    const originResponse = await fetch(request);
-    
+    const fallbackUrl = new URL(LOVABLE_ORIGIN);
+    fallbackUrl.pathname = url.pathname;
+    fallbackUrl.search = url.search;
+    const originResponse = await fetch(fallbackUrl.toString(), {
+      method: request.method,
+      headers: {
+        'Accept': request.headers.get('Accept') || '*/*',
+        'Accept-Language': request.headers.get('Accept-Language') || 'en',
+        'User-Agent': request.headers.get('User-Agent') || '',
+      },
+      redirect: 'follow',
+    });
+
     // Add header so we can debug which path was taken
     const response = new Response(originResponse.body, originResponse);
     response.headers.set('X-Served-By', 'cloudflare-worker-origin-fallback');
