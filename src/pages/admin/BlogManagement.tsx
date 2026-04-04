@@ -93,6 +93,7 @@ const BlogManagement = () => {
     setCategory(post.category || ''); setLanguage(post.language);
     setStatus(post.status); setMetaTitle(post.meta_title || '');
     setMetaDescription(post.meta_description || ''); setTags(post.tags || '');
+    setCountryTag(post.country_tag || '');
     setEditing(post); setIsCreating(false);
   };
 
