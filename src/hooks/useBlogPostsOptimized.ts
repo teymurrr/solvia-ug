@@ -53,7 +53,8 @@ export const useBlogPostsOptimized = (fetchDrafts = false, language?: string) =>
             meta_title,
             meta_description,
             tags,
-            publish_date
+            publish_date,
+            country_tag
           `)
           .eq('language', queryLanguage)
           .order('created_at', { ascending: false });
