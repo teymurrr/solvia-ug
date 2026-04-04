@@ -28,6 +28,7 @@ interface BlogPost {
   meta_title: string | null;
   meta_description: string | null;
   tags: string | null;
+  country_tag: string | null;
 }
 
 const CATEGORIES = ['homologation', 'language-learning', 'visa', 'life-abroad', 'career', 'salaries', 'specialties'];
