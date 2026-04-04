@@ -26,7 +26,7 @@ if [ -f "public/home/index.html" ]; then
   echo "Uploading: home/index.html"
   wrangler r2 object put "$BUCKET/home/index.html" \
     --file "public/home/index.html" \
-    --content-type "text/html; charset=utf-8" && UPLOADED=$((UPLOADED + 1)) || FAILED=$((FAILED + 1))
+    --content-type "text/html; charset=utf-8" --remote && UPLOADED=$((UPLOADED + 1)) || FAILED=$((FAILED + 1))
 fi
 
 # --- 2. Upload blog index ---
@@ -34,7 +34,7 @@ if [ -f "public/blog/index.html" ]; then
   echo "Uploading: blog/index.html"
   wrangler r2 object put "$BUCKET/blog/index.html" \
     --file "public/blog/index.html" \
-    --content-type "text/html; charset=utf-8" && UPLOADED=$((UPLOADED + 1)) || FAILED=$((FAILED + 1))
+    --content-type "text/html; charset=utf-8" --remote && UPLOADED=$((UPLOADED + 1)) || FAILED=$((FAILED + 1))
 fi
 
 # --- 3. Upload all blog articles ---
@@ -45,7 +45,7 @@ for file in public/blog/*/index.html; do
   echo "Uploading: $r2key"
   wrangler r2 object put "$BUCKET/$r2key" \
     --file "$file" \
-    --content-type "text/html; charset=utf-8" && UPLOADED=$((UPLOADED + 1)) || FAILED=$((FAILED + 1))
+    --content-type "text/html; charset=utf-8" --remote && UPLOADED=$((UPLOADED + 1)) || FAILED=$((FAILED + 1))
 done
 
 # --- 4. Upload main section pages ---
@@ -56,7 +56,7 @@ for dir in about contact employers homologation learning vacancies visa-info bro
     echo "Uploading: $r2key"
     wrangler r2 object put "$BUCKET/$r2key" \
       --file "$file" \
-      --content-type "text/html; charset=utf-8" && UPLOADED=$((UPLOADED + 1)) || FAILED=$((FAILED + 1))
+      --content-type "text/html; charset=utf-8" --remote && UPLOADED=$((UPLOADED + 1)) || FAILED=$((FAILED + 1))
   fi
 done
 
@@ -72,7 +72,7 @@ for file in sitemap.xml robots.txt llms.txt llms-full.txt; do
     echo "Uploading: $file"
     wrangler r2 object put "$BUCKET/$file" \
       --file "public/$file" \
-      --content-type "$ct" && UPLOADED=$((UPLOADED + 1)) || FAILED=$((FAILED + 1))
+      --content-type "$ct" --remote && UPLOADED=$((UPLOADED + 1)) || FAILED=$((FAILED + 1))
   fi
 done
 
