@@ -207,9 +207,22 @@ const BlogManagement = () => {
                 <p className="text-xs text-muted-foreground mt-1">{metaDescription.length}/160 chars</p>
               </div>
             </div>
-            <div>
-              <label className="text-sm font-medium mb-1 block">Tags (comma-separated)</label>
-              <Input value={tags} onChange={e => setTags(e.target.value)} placeholder="homologation, germany, doctors" />
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="text-sm font-medium mb-1 block">Tags (comma-separated)</label>
+                <Input value={tags} onChange={e => setTags(e.target.value)} placeholder="homologation, germany, doctors" />
+              </div>
+              <div>
+                <label className="text-sm font-medium mb-1 block">Origin Country (for filtering)</label>
+                <Select value={countryTag} onValueChange={setCountryTag}>
+                  <SelectTrigger><SelectValue placeholder="General (no country)" /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="none">General (no country)</SelectItem>
+                    {ORIGIN_COUNTRIES.map(c => <SelectItem key={c} value={c}>{c.charAt(0).toUpperCase() + c.slice(1)}</SelectItem>)}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
             </div>
             <div className="flex gap-3 pt-4">
               <Button onClick={handleSave} disabled={saving}>
