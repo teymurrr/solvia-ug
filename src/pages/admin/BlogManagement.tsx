@@ -83,7 +83,7 @@ const BlogManagement = () => {
   const resetForm = () => {
     setTitle(''); setSlug(''); setExcerpt(''); setContent(''); setImageUrl('');
     setCategory(''); setLanguage('en'); setStatus('draft');
-    setMetaTitle(''); setMetaDescription(''); setTags('');
+    setMetaTitle(''); setMetaDescription(''); setTags(''); setCountryTag('');
     setEditing(null); setIsCreating(false);
   };
 
