@@ -223,7 +223,6 @@ const BlogManagement = () => {
                 </Select>
               </div>
             </div>
-            </div>
             <div className="flex gap-3 pt-4">
               <Button onClick={handleSave} disabled={saving}>
                 {saving ? 'Saving...' : editing ? 'Update Post' : 'Create Post'}
