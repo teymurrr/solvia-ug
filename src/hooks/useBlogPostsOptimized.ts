@@ -19,6 +19,7 @@ interface OptimizedBlogPost {
   meta_description: string | null;
   tags: string | null;
   publish_date: string | null;
+  country_tag: string | null;
 }
 
 export const useBlogPostsOptimized = (fetchDrafts = false, language?: string) => {
