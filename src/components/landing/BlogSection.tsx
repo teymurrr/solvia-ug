@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Calendar } from 'lucide-react';
 import { Button } from "@/components/ui/button";
@@ -11,18 +11,33 @@ import { useBlogPosts } from '@/hooks/useBlogPosts';
 import { OptimizedImage } from "@/components/ui/optimized-image";
 
 interface BlogSectionProps {
-  posts?: BlogPost[]; // Make posts optional since we'll fetch if not provided
+  posts?: BlogPost[];
 }
+
+const STORAGE_KEY = 'solvia_blog_country';
 
 const BlogSection: React.FC<BlogSectionProps> = ({ posts: propsPosts }) => {
   const { t } = useLanguage();
   const { posts: fetchedPosts, loading } = useBlogPosts();
   
-  // Use posts from props if provided, otherwise use fetched posts
   const posts = propsPosts || fetchedPosts;
 
-  // Show up to 3 posts in the landing page section
-  const displayPosts = posts.slice(0, 3);
+  // Prioritize country-relevant posts for returning users
+  const displayPosts = useMemo(() => {
+    const savedCountry = localStorage.getItem(STORAGE_KEY);
+    if (!savedCountry || posts.length <= 3) {
+      return posts.slice(0, 3);
+    }
+
+    // Sort: country-specific posts first, then general
+    const sorted = [...posts].sort((a, b) => {
+      const aMatch = (a as any).country_tag === savedCountry ? -1 : 0;
+      const bMatch = (b as any).country_tag === savedCountry ? -1 : 0;
+      return aMatch - bMatch;
+    });
+
+    return sorted.slice(0, 3);
+  }, [posts]);
 
   return (
     <section className="py-16 bg-gray-50">

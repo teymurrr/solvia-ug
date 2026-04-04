@@ -26,6 +26,7 @@ export interface BlogPost {
   tags?: string | null;
   publish_date?: string | null;
   post_group_id?: string | null;
+  country_tag?: string | null;
 }
 
 export const useBlogPosts = (fetchDrafts = false, language?: string) => {
