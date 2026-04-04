@@ -81,7 +81,9 @@ ${hreflangBlock(page.path)}
 
       for (const post of posts) {
         const lastmod = post.updated_at ? post.updated_at.split('T')[0] : today;
-        const postPath = `/blog/${post.slug}`;
+        // Use /index.html suffix so Lovable serves the static pre-rendered HTML
+        // instead of the SPA shell (workaround for Cloudflare Worker route bypass)
+        const postPath = `/blog/${post.slug}/index.html`;
 
         xml += `  <url>
     <loc>${BASE_URL}${postPath}</loc>
@@ -93,7 +95,7 @@ ${hreflangBlock(page.path)}
         if (post.post_group_id && groupMap.has(post.post_group_id)) {
           const siblings = groupMap.get(post.post_group_id)!;
           for (const sibling of siblings) {
-            xml += `    <xhtml:link rel="alternate" hreflang="${sibling.language}" href="${BASE_URL}/blog/${sibling.slug}"/>\n`;
+            xml += `    <xhtml:link rel="alternate" hreflang="${sibling.language}" href="${BASE_URL}/blog/${sibling.slug}/index.html"/>\n`;
           }
         }
 
