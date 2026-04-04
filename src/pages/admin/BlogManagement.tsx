@@ -33,6 +33,7 @@ interface BlogPost {
 
 const CATEGORIES = ['homologation', 'language-learning', 'visa', 'life-abroad', 'career', 'salaries', 'specialties'];
 const LANGUAGES = ['en', 'de', 'es', 'fr', 'ru'];
+const ORIGIN_COUNTRIES = ['india', 'argentina', 'colombia', 'egypt', 'philippines', 'syria', 'pakistan', 'brazil', 'mexico', 'turkey', 'iran'];
 
 const BlogManagement = () => {
   const { user } = useAuth();
