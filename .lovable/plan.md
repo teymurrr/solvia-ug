@@ -1,45 +1,77 @@
 
 
-# Blog Post Fixes: Images, Duplicates & Missing Translations
+# Blog Country Filtering: Personalized Content by Origin Country
 
-## Problems Identified
+## Problem
 
-1. **Broken images**: Some Unsplash URLs return "Image not available" (visible in your first screenshot)
-2. **Duplicate images within same language**: Multiple posts in the same language share identical hero images (e.g., two Argentine homologation posts both use the same gavel photo)
-3. **Inappropriate images**: Salary comparison posts use a stock trading chart (`photo-1611974789855`) which doesn't match medical salary content
-4. **10 English-only articles** missing from DE, ES, FR, RU — these are the original pillar articles:
-   - Blue Card for Doctors in Germany
-   - Doctor Salary in Germany 2026
-   - Documents Needed for Approbation
-   - FSP Preparation Guide
-   - Germany vs Spain vs Austria for Doctors
-   - Life as a Foreign Doctor in Germany
-   - Medical License Recognition in Germany (Complete Guide)
-   - Medical License Recognition in Spain
-   - Medical Specialties / Facharzt in Germany
-   - Nostrifizierung Austria Medical License
+The blog currently shows all posts mixed together -- an Indian doctor sees articles about Argentine homologation, and vice versa. With plans to add many more origin countries, the blog will become increasingly cluttered and irrelevant per visitor.
 
-## Plan
+## Current State
 
-### Step 1: Fix images via SQL migration
-- Replace broken/inappropriate Unsplash URLs with working, relevant alternatives
-- Assign unique images per topic cluster so no two posts in the same language share the same hero image
-- Replace the stock chart image on salary posts with a medical/financial hybrid image (e.g., doctor with calculator, hospital corridor)
-- Use verified Unsplash photo IDs that are known to work
+- Posts already have country-specific tags (e.g., `india`, `argentina`, `colombia`) and some have country in their slugs
+- ~10 "general" posts apply to all doctors (FSP guide, salary overview, Blue Card, etc.)
+- ~18 country-specific posts (7 India, 5 Argentina, 5 Colombia, 1 timeline comparison)
+- The wizard and professional profiles already capture `study_country`
+- Blog only filters by language today, not by origin country
 
-### Step 2: Create 40 translated blog posts
-- Translate each of the 10 EN-only articles into DE, ES, FR, RU (40 new posts)
-- Match the existing structure: ~1,500-2,000 words, Key Takeaway boxes, FAQ sections, HTML comparison tables
-- Generate proper SEO slugs in each language
-- Assign unique hero images per topic
-- Use an edge function or SQL migration to insert the content
+## Proposed Solution: Tag-Based Country Filter Chips
 
-### Step 3: Verify image accessibility
-- Test a sample of Unsplash URLs to confirm they load correctly
+Add a horizontal row of filter chips/pills on the blog page (below the language selector) that lets users filter by origin country. Posts tagged with a country only show when that country is selected. General posts always show.
+
+```text
+┌─────────────────────────────────────────────────┐
+│  [🌍 All]  [🇮🇳 India]  [🇦🇷 Argentina]        │
+│  [🇨🇴 Colombia]  [🇪🇬 Egypt]  ...               │
+│                                                   │
+│  ┌─────────┐  ┌─────────┐  ┌─────────┐          │
+│  │ Post 1  │  │ Post 2  │  │ Post 3  │          │
+│  └─────────┘  └─────────┘  └─────────┘          │
+└─────────────────────────────────────────────────┘
+```
+
+### Why This Approach
+
+1. **No schema changes needed** -- uses the existing `tags` column to detect country
+2. **Scales to many countries** -- just add more country-tagged posts; the filter chips auto-populate from what's in the database
+3. **Auto-personalization** -- if the user is logged in and has `study_country` in their profile, pre-select that filter automatically
+4. **SEO-friendly** -- all posts remain in the DOM/indexable; the filter is client-side state (or optional URL param like `?country=india`)
+5. **Works with the landing page** -- the BlogSection on the landing page can also show country-relevant posts if a returning user has a stored preference
+
+### Future-Proofing
+
+As you add more countries (Egypt, Philippines, Syria, etc.), simply tag new posts with the country name. The filter chips will auto-generate from the distinct countries found in post tags. No code changes needed per country.
+
+## Implementation Steps
+
+### Step 1: Add a `country_tag` column to `blog_posts`
+Rather than parsing free-text tags at runtime, add a nullable `country_tag` column (e.g., `india`, `argentina`, `colombia`, or `null` for general posts). Populate it from existing tag data via a migration. This is cleaner than regex-parsing tags every render.
+
+### Step 2: Create `BlogCountryFilter` component
+A horizontal scrollable row of pill buttons. "All" is the default. Chips are dynamically built from the distinct `country_tag` values in the current language's posts. Each chip shows a flag emoji and country name.
+
+### Step 3: Update Blog page
+- Add the filter below `BlogLanguageSelector`
+- Filter `filteredPosts` by selected country (or show all if "All" selected)
+- Auto-select country from user's `study_country` profile field if logged in
+- Persist selection in `localStorage` for returning visitors
+
+### Step 4: Update `useBlogPostsOptimized` hook
+Fetch `country_tag` alongside existing fields so the client can filter without extra queries.
+
+### Step 5: Populate `country_tag` for existing posts
+SQL migration to set `country_tag` based on slug/tag keywords:
+- Slugs containing `india`, `mbbs`, `indian` → `india`
+- Slugs containing `argentin` → `argentina`
+- Slugs containing `colombia` → `colombia`
+- All others → `NULL` (general/universal posts)
+
+### Step 6: Update BlogSection on landing page
+If a logged-in user has `study_country`, prioritize showing country-relevant posts first in the 3-post preview on the homepage.
 
 ## Technical Details
 
-- All changes via Supabase SQL migration(s)
-- Blog post content stored in `blog_posts` table with `title`, `slug`, `content`, `language`, `image_url`, `category`, `status`, `meta_title`, `meta_description`, `tags`
-- New posts will follow the same HTML content format as existing pillar articles (h2 headings, Key Takeaway boxes with green styling, FAQ sections with proper schema)
+- New column: `blog_posts.country_tag TEXT NULL` (simple string, not enum -- easier to extend)
+- No RLS changes needed
+- Client-side filtering only -- no extra API calls per filter change
+- The `BlogManagement` admin page gets a new dropdown field for `country_tag` when creating/editing posts
 
