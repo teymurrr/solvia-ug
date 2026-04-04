@@ -222,6 +222,7 @@ export type Database = {
           author_id: string
           category: string | null
           content: string
+          country_tag: string | null
           created_at: string
           excerpt: string
           id: string
@@ -244,6 +245,7 @@ export type Database = {
           author_id: string
           category?: string | null
           content: string
+          country_tag?: string | null
           created_at?: string
           excerpt: string
           id?: string
@@ -266,6 +268,7 @@ export type Database = {
           author_id?: string
           category?: string | null
           content?: string
+          country_tag?: string | null
           created_at?: string
           excerpt?: string
           id?: string

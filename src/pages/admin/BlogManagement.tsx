@@ -28,10 +28,12 @@ interface BlogPost {
   meta_title: string | null;
   meta_description: string | null;
   tags: string | null;
+  country_tag: string | null;
 }
 
 const CATEGORIES = ['homologation', 'language-learning', 'visa', 'life-abroad', 'career', 'salaries', 'specialties'];
 const LANGUAGES = ['en', 'de', 'es', 'fr', 'ru'];
+const ORIGIN_COUNTRIES = ['india', 'argentina', 'colombia', 'egypt', 'philippines', 'syria', 'pakistan', 'brazil', 'mexico', 'turkey', 'iran'];
 
 const BlogManagement = () => {
   const { user } = useAuth();
@@ -55,7 +57,7 @@ const BlogManagement = () => {
   const [metaTitle, setMetaTitle] = useState('');
   const [metaDescription, setMetaDescription] = useState('');
   const [tags, setTags] = useState('');
-
+  const [countryTag, setCountryTag] = useState('');
   const fetchPosts = useCallback(async () => {
     const { data, error } = await supabase
       .from('blog_posts')
@@ -81,7 +83,7 @@ const BlogManagement = () => {
   const resetForm = () => {
     setTitle(''); setSlug(''); setExcerpt(''); setContent(''); setImageUrl('');
     setCategory(''); setLanguage('en'); setStatus('draft');
-    setMetaTitle(''); setMetaDescription(''); setTags('');
+    setMetaTitle(''); setMetaDescription(''); setTags(''); setCountryTag('');
     setEditing(null); setIsCreating(false);
   };
 
@@ -91,6 +93,7 @@ const BlogManagement = () => {
     setCategory(post.category || ''); setLanguage(post.language);
     setStatus(post.status); setMetaTitle(post.meta_title || '');
     setMetaDescription(post.meta_description || ''); setTags(post.tags || '');
+    setCountryTag(post.country_tag || '');
     setEditing(post); setIsCreating(false);
   };
 
@@ -109,6 +112,7 @@ const BlogManagement = () => {
       meta_title: metaTitle || null,
       meta_description: metaDescription || null,
       tags: tags || null,
+      country_tag: (countryTag && countryTag !== 'none') ? countryTag : null,
       author_id: user!.id,
     };
 
@@ -203,9 +207,21 @@ const BlogManagement = () => {
                 <p className="text-xs text-muted-foreground mt-1">{metaDescription.length}/160 chars</p>
               </div>
             </div>
-            <div>
-              <label className="text-sm font-medium mb-1 block">Tags (comma-separated)</label>
-              <Input value={tags} onChange={e => setTags(e.target.value)} placeholder="homologation, germany, doctors" />
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="text-sm font-medium mb-1 block">Tags (comma-separated)</label>
+                <Input value={tags} onChange={e => setTags(e.target.value)} placeholder="homologation, germany, doctors" />
+              </div>
+              <div>
+                <label className="text-sm font-medium mb-1 block">Origin Country (for filtering)</label>
+                <Select value={countryTag} onValueChange={setCountryTag}>
+                  <SelectTrigger><SelectValue placeholder="General (no country)" /></SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="none">General (no country)</SelectItem>
+                    {ORIGIN_COUNTRIES.map(c => <SelectItem key={c} value={c}>{c.charAt(0).toUpperCase() + c.slice(1)}</SelectItem>)}
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
             <div className="flex gap-3 pt-4">
               <Button onClick={handleSave} disabled={saving}>

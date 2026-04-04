@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import MainLayout from '@/components/MainLayout';
 import { Link } from 'react-router-dom';
 import { useBlogPostsOptimized } from '@/hooks/useBlogPostsOptimized';
@@ -9,22 +9,82 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Calendar, Settings } from 'lucide-react';
 import BlogLanguageSelector from '@/components/blog/BlogLanguageSelector';
+import BlogCountryFilter from '@/components/blog/BlogCountryFilter';
 import { useLanguage } from '@/hooks/useLanguage';
 import BlogListSkeleton from '@/components/ui/blog-list-skeleton';
 import { OptimizedImage } from '@/components/ui/optimized-image';
 import SEO from '@/components/SEO';
+import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/contexts/AuthContext';
+
+const STORAGE_KEY = 'solvia_blog_country';
 
 const Blog = React.memo(() => {
   const { currentLanguage, t } = useLanguage();
   const { isAdmin } = useAuthOptimized();
+  const { user } = useAuth();
   const { posts, loading } = useBlogPostsOptimized(isAdmin, currentLanguage);
   const seo = (t as any)?.seo?.blog;
 
-  const filteredPosts = posts.filter(post => {
-    const languageMatch = post.language === currentLanguage;
-    if (isAdmin) return languageMatch;
-    return languageMatch && post.status === 'published';
+  const [selectedCountry, setSelectedCountry] = useState<string | null>(() => {
+    return localStorage.getItem(STORAGE_KEY) || null;
   });
+  const [profileLoaded, setProfileLoaded] = useState(false);
+
+  // Auto-select from user profile on first load
+  useEffect(() => {
+    if (profileLoaded) return;
+    if (!user?.id) {
+      setProfileLoaded(true);
+      return;
+    }
+    supabase
+      .from('professional_profiles')
+      .select('study_country')
+      .eq('id', user.id)
+      .maybeSingle()
+      .then(({ data }) => {
+        if (data?.study_country && !localStorage.getItem(STORAGE_KEY)) {
+          const country = data.study_country.toLowerCase().trim();
+          setSelectedCountry(country);
+          localStorage.setItem(STORAGE_KEY, country);
+        }
+        setProfileLoaded(true);
+      });
+  }, [user?.id, profileLoaded]);
+
+  const handleCountrySelect = (country: string | null) => {
+    setSelectedCountry(country);
+    if (country) {
+      localStorage.setItem(STORAGE_KEY, country);
+    } else {
+      localStorage.removeItem(STORAGE_KEY);
+    }
+  };
+
+  // Get distinct countries from posts
+  const availableCountries = useMemo(() => {
+    const countries = new Set<string>();
+    posts.forEach(p => {
+      if (p.country_tag) countries.add(p.country_tag);
+    });
+    return Array.from(countries).sort();
+  }, [posts]);
+
+  const filteredPosts = useMemo(() => {
+    let result = posts.filter(post => {
+      const languageMatch = post.language === currentLanguage;
+      if (isAdmin) return languageMatch;
+      return languageMatch && post.status === 'published';
+    });
+
+    if (selectedCountry) {
+      // Show country-specific posts + general posts (no country_tag)
+      result = result.filter(p => p.country_tag === selectedCountry || !p.country_tag);
+    }
+
+    return result;
+  }, [posts, currentLanguage, isAdmin, selectedCountry]);
 
   return (
     <MainLayout>
@@ -41,7 +101,7 @@ const Blog = React.memo(() => {
           </p>
         </div>
 
-        <div className="flex justify-between items-center mb-8">
+        <div className="flex justify-between items-center mb-4">
           <BlogLanguageSelector />
           {isAdmin && (
             <Button variant="outline" asChild>
@@ -52,6 +112,16 @@ const Blog = React.memo(() => {
             </Button>
           )}
         </div>
+
+        {availableCountries.length > 0 && (
+          <div className="mb-8">
+            <BlogCountryFilter
+              countries={availableCountries}
+              selected={selectedCountry}
+              onSelect={handleCountrySelect}
+            />
+          </div>
+        )}
 
         {loading ? (
           <BlogListSkeleton />
