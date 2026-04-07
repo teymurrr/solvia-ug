@@ -1,77 +1,55 @@
 
 
-# Blog Country Filtering: Personalized Content by Origin Country
+# Fix 40 Blog Posts with Untranslated Content
 
 ## Problem
 
-The blog currently shows all posts mixed together -- an Indian doctor sees articles about Argentine homologation, and vice versa. With plans to add many more origin countries, the blog will become increasingly cluttered and irrelevant per visitor.
+40 non-English blog posts have translated titles but **English body content**. These are the 10 "general topic" posts (Approbation guide, FSP, salary, Blue Card, etc.) duplicated across DE, ES, FR, RU — all still containing the original English HTML content.
 
-## Current State
+The 18 pillar articles (with `post_group_id`) are fine — properly translated across all 5 languages.
 
-- Posts already have country-specific tags (e.g., `india`, `argentina`, `colombia`) and some have country in their slugs
-- ~10 "general" posts apply to all doctors (FSP guide, salary overview, Blue Card, etc.)
-- ~18 country-specific posts (7 India, 5 Argentina, 5 Colombia, 1 timeline comparison)
-- The wizard and professional profiles already capture `study_country`
-- Blog only filters by language today, not by origin country
+## Affected Posts
 
-## Proposed Solution: Tag-Based Country Filter Chips
+| Language | Posts affected | Example |
+|----------|--------------|---------|
+| DE | 10 | "Arztgehalt in Deutschland 2026" — content says "Key Takeaways" in English |
+| ES | 10 (of 11) | "Salario Médico en Alemania 2026" — content in English |
+| FR | 10 | "Salaire Médecin en Allemagne 2026" — content in English |
+| RU | 10 | "Зарплата врача в Германии 2026" — content in English |
 
-Add a horizontal row of filter chips/pills on the blog page (below the language selector) that lets users filter by origin country. Posts tagged with a country only show when that country is selected. General posts always show.
+**1 Spanish post is correctly translated** ("Cómo homologar tu título médico argentino en Alemania").
 
-```text
-┌─────────────────────────────────────────────────┐
-│  [🌍 All]  [🇮🇳 India]  [🇦🇷 Argentina]        │
-│  [🇨🇴 Colombia]  [🇪🇬 Egypt]  ...               │
-│                                                   │
-│  ┌─────────┐  ┌─────────┐  ┌─────────┐          │
-│  │ Post 1  │  │ Post 2  │  │ Post 3  │          │
-│  └─────────┘  └─────────┘  └─────────┘          │
-└─────────────────────────────────────────────────┘
-```
+## Solution
 
-### Why This Approach
-
-1. **No schema changes needed** -- uses the existing `tags` column to detect country
-2. **Scales to many countries** -- just add more country-tagged posts; the filter chips auto-populate from what's in the database
-3. **Auto-personalization** -- if the user is logged in and has `study_country` in their profile, pre-select that filter automatically
-4. **SEO-friendly** -- all posts remain in the DOM/indexable; the filter is client-side state (or optional URL param like `?country=india`)
-5. **Works with the landing page** -- the BlogSection on the landing page can also show country-relevant posts if a returning user has a stored preference
-
-### Future-Proofing
-
-As you add more countries (Egypt, Philippines, Syria, etc.), simply tag new posts with the country name. The filter chips will auto-generate from the distinct countries found in post tags. No code changes needed per country.
+Create an Edge Function that:
+1. Fetches all 40 affected posts (non-English, `post_group_id IS NULL`, content contains English markers)
+2. For each post, sends the English content to the AI translation API (same pattern as `translate-community`)
+3. Translates the full HTML body content to the post's target language, preserving all HTML structure (tables, styled divs, headings, links)
+4. Updates each post's `content` column with the translated version
+5. Also translates the `excerpt`, `meta_title`, and `meta_description` fields
 
 ## Implementation Steps
 
-### Step 1: Add a `country_tag` column to `blog_posts`
-Rather than parsing free-text tags at runtime, add a nullable `country_tag` column (e.g., `india`, `argentina`, `colombia`, or `null` for general posts). Populate it from existing tag data via a migration. This is cleaner than regex-parsing tags every render.
+### Step 1: Create `translate-blog-posts` Edge Function
+- Accepts a batch of post IDs or a language filter
+- For each post, fetches its content and calls the Lovable AI gateway to translate
+- Preserves all HTML formatting, inline styles, class names, and structure
+- Updates the post in-place via Supabase service role
+- Processes posts sequentially to avoid rate limits (with small delays)
 
-### Step 2: Create `BlogCountryFilter` component
-A horizontal scrollable row of pill buttons. "All" is the default. Chips are dynamically built from the distinct `country_tag` values in the current language's posts. Each chip shows a flag emoji and country name.
+### Step 2: Run the function for each language
+- Call it 4 times: DE, ES (10 posts only — skip the already-translated one), FR, RU
+- Each call translates ~10 posts
 
-### Step 3: Update Blog page
-- Add the filter below `BlogLanguageSelector`
-- Filter `filteredPosts` by selected country (or show all if "All" selected)
-- Auto-select country from user's `study_country` profile field if logged in
-- Persist selection in `localStorage` for returning visitors
-
-### Step 4: Update `useBlogPostsOptimized` hook
-Fetch `country_tag` alongside existing fields so the client can filter without extra queries.
-
-### Step 5: Populate `country_tag` for existing posts
-SQL migration to set `country_tag` based on slug/tag keywords:
-- Slugs containing `india`, `mbbs`, `indian` → `india`
-- Slugs containing `argentin` → `argentina`
-- Slugs containing `colombia` → `colombia`
-- All others → `NULL` (general/universal posts)
-
-### Step 6: Update BlogSection on landing page
-If a logged-in user has `study_country`, prioritize showing country-relevant posts first in the 3-post preview on the homepage.
+### Step 3: Verify results
+- Spot-check a few posts per language to confirm content is properly translated
+- Ensure HTML structure (tables, Key Takeaway boxes, FAQ sections) is preserved
 
 ## Technical Details
 
-- New column: `blog_posts.country_tag TEXT NULL` (simple string, not enum -- easier to extend)
-- No RLS changes needed
-- Client-side filtering only -- no extra API calls per filter change
-- The `BlogManagement` admin page gets a new dropdown field for `country_tag` when creating/editing posts
+- Uses the same AI gateway pattern as `translate-community` (`https://ai.gateway.lovable.dev/v1/chat/completions`)
+- Model: `google/gemini-2.5-flash` (handles long HTML content well)
+- Posts are ~2,000 words each, so content will be sent in full per post (not batched)
+- The function will be a one-time migration tool — can be deleted afterward
+- No frontend changes needed
 
