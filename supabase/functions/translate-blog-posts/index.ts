@@ -176,7 +176,7 @@ meta_description: ${JSON.stringify(post.meta_description || "")}`;
         }
 
         // Small delay between posts to avoid rate limits
-        await new Promise((r) => setTimeout(r, 2000));
+        await new Promise((r) => setTimeout(r, 500));
       } catch (err) {
         results.push({ id: post.id, title: post.title, status: `exception: ${err.message}` });
       }
