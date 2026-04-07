@@ -19,7 +19,7 @@ Deno.serve(async (req) => {
   }
 
   try {
-    const { language, dry_run } = await req.json();
+    const { language, dry_run, limit } = await req.json();
 
     if (!language || !LANGUAGE_NAMES[language]) {
       return new Response(
