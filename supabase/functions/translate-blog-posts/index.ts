@@ -45,11 +45,15 @@ Deno.serve(async (req) => {
 
     if (fetchError) throw new Error(`Fetch error: ${fetchError.message}`);
 
-    // Filter to posts with English content (check for common English markers)
+    // Filter to posts with English content
     const englishMarkers = ["Key Takeaways", "Table of Contents", "What is", "How to", "Why ", "FAQ", "Conclusion", "Introduction"];
-    const affectedPosts = (posts || []).filter((p) =>
+    let affectedPosts = (posts || []).filter((p) =>
       englishMarkers.some((marker) => p.content.includes(marker))
     );
+
+    // Apply limit if specified
+    const maxPosts = limit ? Math.min(limit, affectedPosts.length) : affectedPosts.length;
+    affectedPosts = affectedPosts.slice(0, maxPosts);
 
     if (dry_run) {
       return new Response(
