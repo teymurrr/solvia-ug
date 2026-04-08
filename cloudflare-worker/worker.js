@@ -101,7 +101,7 @@ export default {
 
     // --- Step 2: Check if this is a bot ---
     const userAgent = request.headers.get('user-agent') || '';
-    
+
     if (!isBot(userAgent)) {
       // Human user → proxy to Lovable origin explicitly.
       // Using LOVABLE_ORIGIN instead of fetch(request) avoids Cloudflare's O2O
@@ -123,6 +123,17 @@ export default {
       });
       // Return response with original headers but rewrite any Location headers
       return new Response(proxyResponse.body, proxyResponse);
+    }
+
+    // --- Step 2.5: Noindex for ?lang= duplicates on non-blog pages ---
+    // Blog posts have proper language-specific slugs. Main pages use ?lang= which
+    // creates duplicate content. Tell bots not to index these.
+    if (url.searchParams.has('lang') && !url.pathname.startsWith('/blog/')) {
+      const originResponse = await fetch(request);
+      const response = new Response(originResponse.body, originResponse);
+      response.headers.set('X-Robots-Tag', 'noindex, follow');
+      response.headers.set('X-Served-By', 'cloudflare-worker-noindex');
+      return response;
     }
 
     // --- Step 3: Bot detected — try to serve from R2 ---
