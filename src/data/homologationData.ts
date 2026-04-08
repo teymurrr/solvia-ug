@@ -47,15 +47,12 @@ export const homologationDataByCountry: Record<string, CountryHomologationData> 
       max: '18',
     },
     costEstimate: {
-      min: 3000,
-      max: 8000,
+      min: 200,
+      max: 800,
       currency: 'EUR',
       breakdown: [
-        { item: 'Document translations', cost: '500-1,500€' },
-        { item: 'Apostille & certifications', cost: '200-500€' },
-        { item: 'Application fees', cost: '400-1,000€' },
-        { item: 'Language courses (B2/C1)', cost: '1,500-3,500€' },
-        { item: 'FSP preparation', cost: '500-1,500€' },
+        { item: 'Application fees', cost: '200-800€' },
+        { item: 'Document translations (optional)', cost: '500-1,500€' },
       ],
     },
     languageRequirement: {
@@ -95,14 +92,12 @@ export const homologationDataByCountry: Record<string, CountryHomologationData> 
       max: '12',
     },
     costEstimate: {
-      min: 2500,
-      max: 6000,
+      min: 400,
+      max: 800,
       currency: 'EUR',
       breakdown: [
-        { item: 'Document translations', cost: '400-1,200€' },
-        { item: 'Nostification process', cost: '500-1,000€' },
-        { item: 'Application fees', cost: '300-600€' },
-        { item: 'Language courses', cost: '1,000-3,000€' },
+        { item: 'Nostrification process', cost: '400-800€' },
+        { item: 'Document translations (optional)', cost: '400-1,200€' },
       ],
     },
     languageRequirement: {
@@ -140,14 +135,12 @@ export const homologationDataByCountry: Record<string, CountryHomologationData> 
       max: '24',
     },
     costEstimate: {
-      min: 1500,
-      max: 4000,
+      min: 200,
+      max: 200,
       currency: 'EUR',
       breakdown: [
-        { item: 'Document translations', cost: '300-800€' },
-        { item: 'Apostille & legalizations', cost: '150-400€' },
-        { item: 'Ministry application fees', cost: '200-400€' },
-        { item: 'Spanish language courses', cost: '500-1,500€' },
+        { item: 'Ministry application fees', cost: '200€' },
+        { item: 'Document translations (optional)', cost: '300-800€' },
       ],
     },
     languageRequirement: {
