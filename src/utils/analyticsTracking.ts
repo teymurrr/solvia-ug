@@ -61,9 +61,20 @@ function getAnalyticsConsent(): boolean {
  * @returns boolean indicating if event was tracked
  */
 export function trackEvent(eventName: GA4EventName, params?: GA4EventParams): boolean {
-  // Only fire events if user has consented to analytics
+  // Always mirror to PostHog (respects PostHog's own consent / opt-out).
+  // PostHog has its own consent model; we don't gate it on the GA4 cookie.
+  try {
+    // Lazy import to avoid SSR issues
+    import('@/lib/posthog').then(({ posthog }) => {
+      posthog.capture(eventName, params || {});
+    }).catch(() => {});
+  } catch {
+    // ignore
+  }
+
+  // Only fire GA4 events if user has consented to analytics
   if (!getAnalyticsConsent()) {
-    console.debug(`[Analytics] Event "${eventName}" not tracked - analytics consent not given`);
+    console.debug(`[Analytics] GA4 event "${eventName}" not tracked - analytics consent not given`);
     return false;
   }
 

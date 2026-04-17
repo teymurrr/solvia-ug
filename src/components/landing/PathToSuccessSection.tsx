@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { MapPin, GraduationCap, Mail, Plane, ArrowRight, Clock, TrendingUp, Euro } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useLanguage } from '@/hooks/useLanguage';
+import { trackEligibilityClick } from '@/lib/posthogEvents';
 
 const PathToSuccessSection = () => {
   const { t } = useLanguage();
@@ -189,7 +190,7 @@ const PathToSuccessSection = () => {
         {/* Single CTA */}
         <div className="flex flex-col items-center gap-3">
           <Button asChild size="lg" variant="cta" className="group h-12 px-8 text-base">
-            <Link to="/homologation-wizard" onClick={() => window.scrollTo(0, 0)} className="flex items-center gap-2">
+            <Link to="/homologation-wizard" onClick={() => { window.scrollTo(0, 0); trackEligibilityClick('path_to_success'); }} className="flex items-center gap-2">
               {comparison?.cta || t?.hero?.cta || 'Check my eligibility'}
               <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
             </Link>

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Clock, ArrowRight, Globe, TrendingUp, Zap, Shield, Euro, MapPin } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
+import { trackEligibilityClick } from '@/lib/posthogEvents';
 
 const CountryComparisonSection = () => {
   const { t } = useLanguage();
@@ -182,7 +183,7 @@ const CountryComparisonSection = () => {
           {/* CTA */}
           <div className="flex flex-col items-center gap-3">
             <Button asChild size="lg" className="group h-12 px-8 text-base shadow-lg shadow-primary/20">
-              <Link to="/homologation-wizard" onClick={() => window.scrollTo(0, 0)} className="flex items-center gap-2">
+              <Link to="/homologation-wizard" onClick={() => { window.scrollTo(0, 0); trackEligibilityClick('country_comparison'); }} className="flex items-center gap-2">
                 {comparison?.cta || "Check my eligibility"}
                 <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </Link>
