@@ -12,6 +12,7 @@ import { saveWizardDataToProfile } from '@/services/wizardProfileService';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import Analytics from '@/utils/analyticsTracking';
+import { trackHomologationWizardCompleted, trackSignupCompleted, trackLeadSubmitted } from '@/lib/posthogEvents';
 
 type WizardStep = 'country' | 'study-country' | 'doctor-type' | 'language' | 'firstName' | 'lastName' | 'email' | 'summary' | 'password';
 
@@ -185,6 +186,13 @@ const HomologationWizard = () => {
     
     // Track wizard completion
     Analytics.wizardCompleted(updatedData.targetCountry, updatedData.doctorType);
+    trackHomologationWizardCompleted({
+      target_country: updatedData.targetCountry,
+      doctor_type: updatedData.doctorType,
+      study_country: updatedData.studyCountry,
+      language_level: updatedData.languageLevel,
+    });
+    trackLeadSubmitted({ source: 'homologation_wizard', email });
 
     // Store data and redirect to result page
     localStorage.setItem('wizardData', JSON.stringify(updatedData));
@@ -238,7 +246,9 @@ const HomologationWizard = () => {
         title: t.common.success,
         description: t.wizard.email.complete,
       });
-      
+
+      trackSignupCompleted({ user_type: 'professional', source: 'homologation_wizard' });
+
       navigate('/confirm-email');
     } catch (error: any) {
       console.error('Signup error:', error);
