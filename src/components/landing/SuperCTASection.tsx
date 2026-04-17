@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Sparkles, Calendar } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
+import { trackEligibilityClick } from '@/lib/posthogEvents';
 
 const CALENDLY_URL = 'https://calendly.com/david-rehrl-thesolvia/30min';
 
@@ -46,7 +47,7 @@ const SuperCTASection = () => {
               variant="cta"
               className="group text-base px-8 py-6"
             >
-              <Link to="/homologation-wizard" className="flex items-center gap-2">
+              <Link to="/homologation-wizard" onClick={() => trackEligibilityClick('super_cta')} className="flex items-center gap-2">
                 {superCta?.primaryCta || "Check my eligibility"}
                 <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
               </Link>
