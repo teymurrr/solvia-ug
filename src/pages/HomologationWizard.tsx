@@ -46,11 +46,11 @@ const HomologationWizard = () => {
   const [selectedTargetCountry, setSelectedTargetCountry] = useState<string | null>(null);
 
   const countries = [
-    { id: 'germany', name: 'Germany', flag: '🇩🇪' },
-    { id: 'austria', name: 'Austria', flag: '🇦🇹' },
-    { id: 'spain', name: 'Spain', flag: '🇪🇸' },
-    { id: 'italy', name: 'Italy', flag: '🇮🇹' },
-    { id: 'france', name: 'France', flag: '🇫🇷' },
+    { id: 'germany', name: 'Germany', flag: '🇩🇪', comingSoon: false },
+    { id: 'austria', name: 'Austria', flag: '🇦🇹', comingSoon: false },
+    { id: 'spain', name: 'Spain', flag: '🇪🇸', comingSoon: false },
+    { id: 'italy', name: 'Italy', flag: '🇮🇹', comingSoon: true },
+    { id: 'france', name: 'France', flag: '🇫🇷', comingSoon: true },
   ];
 
   const studyCountries = [
@@ -321,11 +321,17 @@ const HomologationWizard = () => {
                         key={country.id}
                         variant="outline"
                         size="lg"
-                        className="flex flex-col items-center justify-center h-auto py-4 px-3 transition-all hover:bg-primary/5 hover:border-primary"
-                        onClick={() => handleCountrySelect(country.id)}
+                        disabled={country.comingSoon}
+                        className="relative flex flex-col items-center justify-center h-auto py-4 px-3 transition-all hover:bg-primary/5 hover:border-primary disabled:opacity-60 disabled:cursor-not-allowed"
+                        onClick={() => !country.comingSoon && handleCountrySelect(country.id)}
                       >
                         <span className="text-3xl mb-2">{country.flag}</span>
-                        <span className="font-medium text-sm">{t.wizard.countries[country.id as keyof typeof t.wizard.countries]}</span>
+                        <span className="font-medium text-sm">{country.comingSoon ? country.name : t.wizard.countries[country.id as keyof typeof t.wizard.countries]}</span>
+                        {country.comingSoon && (
+                          <span className="mt-1 text-[10px] uppercase tracking-wide font-semibold text-muted-foreground">
+                            Coming soon
+                          </span>
+                        )}
                       </Button>
                     ))}
                   </div>
