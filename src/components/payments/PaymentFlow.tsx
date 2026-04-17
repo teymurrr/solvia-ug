@@ -10,6 +10,7 @@ import { toast } from 'sonner';
 import { Check, ExternalLink, Calendar, Star } from 'lucide-react';
 import { preOpenPaymentWindow, redirectPaymentWindow, isSafari } from '@/utils/browserDetection';
 import Analytics from '@/utils/analyticsTracking';
+import { trackStripeRedirect } from '@/lib/posthogEvents';
 
 type ProductType = 'digital_starter' | 'complete' | 'personal_mentorship';
 
@@ -268,6 +269,12 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
       });
       if (error) throw error;
       if (data.url) {
+        trackStripeRedirect({
+          product_type: selectedPackage,
+          target_country: targetCountry,
+          amount: finalAmount,
+          source: 'payment_flow',
+        });
         if (preOpenedWindow) {
           const success = redirectPaymentWindow(preOpenedWindow, data.url);
           if (success) { onClose?.(); return; }

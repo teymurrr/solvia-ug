@@ -11,6 +11,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { toast } from 'sonner';
 import SEO from '@/components/SEO';
+import { trackStripeRedirect } from '@/lib/posthogEvents';
 
 // Country-specific Stripe price IDs — one per country kit
 const PRICE_IDS: Record<string, string> = {
@@ -59,6 +60,7 @@ const StarterKit = () => {
 
       if (error) throw new Error(error.message);
       if (data?.url) {
+        trackStripeRedirect({ product_type: 'starter_kit', target_country: country, source: 'starter_kit_page' });
         window.location.href = data.url;
       }
     } catch (err: any) {
