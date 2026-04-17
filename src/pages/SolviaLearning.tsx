@@ -12,6 +12,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import SEO from '@/components/SEO';
 import StructuredData, { createCourseSchema } from '@/components/StructuredData';
+import { trackLeadSubmitted } from '@/lib/posthogEvents';
 import {
   LearningWizard,
   LearningPlanResult,
@@ -77,7 +78,8 @@ const SolviaLearning = () => {
       });
 
       if (error) throw new Error(error.message || 'Failed to submit form');
-      
+
+      trackLeadSubmitted({ source: 'learning_form', email: formData.email });
       setIsSubmitted(true);
       toast.success(t?.learning?.form?.success || 'Thank you! Your form has been submitted successfully.');
     } catch (error: any) {
