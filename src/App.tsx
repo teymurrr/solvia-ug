@@ -8,6 +8,7 @@ import { AuthProvider } from '@/contexts/AuthContext';
 import AppRoutes from '@/routes';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import ScrollToTop from '@/components/ScrollToTop';
+import PostHogTracker from '@/components/PostHogTracker';
 
 const queryClient = new QueryClient();
 
@@ -21,6 +22,7 @@ function App() {
               <TooltipProvider>
                 <BrowserRouter>
                   <ScrollToTop />
+                  <PostHogTracker />
                   <AppRoutes />
                   <Toaster />
                 </BrowserRouter>
