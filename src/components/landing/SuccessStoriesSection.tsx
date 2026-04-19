@@ -127,7 +127,8 @@ const SuccessStoriesSection = () => {
                 
                 {/* CTA Link */}
                 <Link 
-                  to="/homologation-wizard" 
+                  to="/homologation-wizard"
+                  onClick={() => trackEligibilityClick('success_stories')}
                   className="mt-4 pt-4 border-t border-border/50 flex items-center gap-2 text-primary hover:text-primary/80 font-medium text-sm group"
                 >
                   {successStories?.ctaText || "View my homologation plan"}

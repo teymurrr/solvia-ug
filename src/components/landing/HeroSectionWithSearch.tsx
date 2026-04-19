@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { Check } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
+import { trackEligibilityClick } from '@/lib/posthogEvents';
 import heroBackground from '@/assets/hero-medical-team.jpg';
 
 const HeroSectionWithSearch = React.memo(() => {
@@ -50,7 +51,7 @@ const HeroSectionWithSearch = React.memo(() => {
                 size="lg" 
                 variant="cta"
                 className="h-14 px-10 text-lg transition-all duration-300 hover:scale-105"
-                onClick={() => navigate('/homologation-wizard')}
+                onClick={() => { trackEligibilityClick('hero'); navigate('/homologation-wizard'); }}
               >
                 {t.hero.cta} →
               </Button>

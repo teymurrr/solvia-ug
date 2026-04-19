@@ -137,7 +137,7 @@ const PathToSuccessSection = () => {
                 <div key={c.key} className="p-4 text-center border-l border-border/30">
                   <Link
                     to={`/homologation-wizard?country=${c.key}`}
-                    onClick={() => window.scrollTo(0, 0)}
+                    onClick={() => { window.scrollTo(0, 0); trackEligibilityClick('path_to_success_country'); }}
                     className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary hover:text-primary/80 transition-colors group"
                   >
                     {comparison?.learnMore || 'Start here'}
@@ -155,7 +155,7 @@ const PathToSuccessSection = () => {
             <Link
               key={c.key}
               to={`/homologation-wizard?country=${c.key}`}
-              onClick={() => window.scrollTo(0, 0)}
+              onClick={() => { window.scrollTo(0, 0); trackEligibilityClick('path_to_success_country'); }}
               className="block"
             >
               <div className="rounded-xl border border-border/60 bg-card p-5 hover:shadow-md transition-all">

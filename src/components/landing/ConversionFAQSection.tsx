@@ -94,6 +94,7 @@ const ConversionFAQSection = () => {
                       <Link
                         key={country.id}
                         to={`/homologation-wizard?country=${country.id}`}
+                        onClick={() => trackEligibilityClick('faq')}
                         className="inline-flex items-center gap-1 text-sm text-primary hover:text-primary/80 font-medium group"
                       >
                         {faq?.viewPlanFor || "View my plan for"} {country.name}
