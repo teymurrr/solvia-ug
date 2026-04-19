@@ -27,8 +27,6 @@ const baseProps = () => ({
 });
 
 export const trackEligibilityClick = (source: string) => {
-  // TEMP: verify invocation in production — remove after confirming events arrive
-  console.log('eligibility_cta_clicked fired:', source);
   posthog.capture('eligibility_cta_clicked', { source });
 };
 
