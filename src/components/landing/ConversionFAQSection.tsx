@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/accordion";
 import { ArrowRight, HelpCircle } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
+import { trackEligibilityClick } from '@/lib/posthogEvents';
 import StructuredData, { createFAQSchema } from '@/components/StructuredData';
 
 export const defaultFAQItems = [
@@ -94,6 +95,7 @@ const ConversionFAQSection = () => {
                       <Link
                         key={country.id}
                         to={`/homologation-wizard?country=${country.id}`}
+                        onClick={() => trackEligibilityClick('faq')}
                         className="inline-flex items-center gap-1 text-sm text-primary hover:text-primary/80 font-medium group"
                       >
                         {faq?.viewPlanFor || "View my plan for"} {country.name}
