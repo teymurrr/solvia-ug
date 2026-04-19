@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/accordion";
 import { ArrowRight, HelpCircle } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
+import { trackEligibilityClick } from '@/lib/posthogEvents';
 import StructuredData, { createFAQSchema } from '@/components/StructuredData';
 
 export const defaultFAQItems = [
