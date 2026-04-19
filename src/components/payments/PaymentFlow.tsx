@@ -338,6 +338,9 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
                   : 'border-border hover:border-primary/50'
             } ${pkg.popular ? 'md:scale-[1.03] z-10' : ''}`}
             onClick={() => {
+              if (selectedPackage !== pkg.id) {
+                trackPricingTierSelected({ tier: pkg.id, target_country: targetCountry });
+              }
               setSelectedPackage(pkg.id);
               setAppliedDiscount(null);
             }}
@@ -414,6 +417,9 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
                   className={`w-full h-12 text-base ${pkg.popular && !isSelected ? 'border-primary text-primary hover:bg-primary hover:text-primary-foreground' : ''}`}
                   onClick={(e) => {
                     e.stopPropagation();
+                    if (selectedPackage !== pkg.id) {
+                      trackPricingTierSelected({ tier: pkg.id, target_country: targetCountry });
+                    }
                     setSelectedPackage(pkg.id);
                   }}
                 >
@@ -438,6 +444,7 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
           href="https://calendly.com/david-rehrl-thesolvia/30min"
           target="_blank"
           rel="noopener noreferrer"
+          onClick={() => trackConsultationBooked('payment_flow')}
           className="inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:text-primary/80 underline underline-offset-2 transition-colors"
         >
           <Calendar className="w-4 h-4" />
