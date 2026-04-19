@@ -14,6 +14,7 @@ import { useToast } from '@/hooks/use-toast';
 import LanguageSelector from './LanguageSelector';
 import { useLanguage } from '@/hooks/useLanguage';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { trackEligibilityClick } from '@/lib/posthogEvents';
 
 const hasUnreadMessages = false;
 
@@ -95,7 +96,9 @@ const Navbar = () => {
                   <Link to="/login">{t?.common?.login || "Log in"}</Link>
                 </Button>
                 <Button variant="cta" asChild>
-                  <Link to="/signup">{t?.common?.freeSignup || "Free Sign Up"}</Link>
+                  <Link to="/signup" onClick={() => trackEligibilityClick('header')}>
+                    {t?.common?.freeSignup || "Free Sign Up"}
+                  </Link>
                 </Button>
               </>
             )}

@@ -60,16 +60,25 @@ function getAnalyticsConsent(): boolean {
  * @param params - Optional event parameters
  * @returns boolean indicating if event was tracked
  */
+// Events that already have dedicated PostHog helpers in src/lib/posthogEvents.ts.
+// Skip the GA4->PostHog mirror for these to avoid duplicate event names in PostHog.
+const POSTHOG_MIRROR_BLOCKLIST: ReadonlySet<GA4EventName> = new Set([
+  'wizard_started',         // duplicate of homologation_wizard_started
+  'wizard_completed',       // duplicate of homologation_wizard_completed
+  'payment_page_viewed',    // duplicate of pricing_viewed
+  'country_selected',       // covered by homologation_wizard_step_completed (step_name: "country")
+]);
+
 export function trackEvent(eventName: GA4EventName, params?: GA4EventParams): boolean {
-  // Always mirror to PostHog (respects PostHog's own consent / opt-out).
-  // PostHog has its own consent model; we don't gate it on the GA4 cookie.
-  try {
-    // Lazy import to avoid SSR issues
-    import('@/lib/posthog').then(({ posthog }) => {
-      posthog.capture(eventName, params || {});
-    }).catch(() => {});
-  } catch {
-    // ignore
+  // Mirror to PostHog unless this event already has a dedicated PostHog helper.
+  if (!POSTHOG_MIRROR_BLOCKLIST.has(eventName)) {
+    try {
+      import('@/lib/posthog').then(({ posthog }) => {
+        posthog.capture(eventName, params || {});
+      }).catch(() => {});
+    } catch {
+      // ignore
+    }
   }
 
   // Only fire GA4 events if user has consented to analytics

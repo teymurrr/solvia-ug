@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import Logo from './Logo';
 import { useLanguage } from '@/hooks/useLanguage';
 import { Instagram, Linkedin } from 'lucide-react';
+import { trackEligibilityClick } from '@/lib/posthogEvents';
 
 const Footer: React.FC = () => {
   const { t } = useLanguage();
@@ -24,7 +25,11 @@ const Footer: React.FC = () => {
             <h4 className="font-medium text-base">{t?.footer?.forProfessionals || "For Professionals"}</h4>
             <ul className="space-y-2">
               <li>
-                <Link to="/signup/professional" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                <Link
+                  to="/signup/professional"
+                  onClick={() => trackEligibilityClick('footer')}
+                  className="text-sm text-muted-foreground hover:text-primary transition-colors"
+                >
                   {t?.footer?.createProfile || "Create Profile"}
                 </Link>
               </li>

@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { Badge } from '@/components/ui/badge';
 import { Briefcase, FileText, LayoutDashboard, BookOpen, BarChart, Stethoscope } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
+import { trackEligibilityClick } from '@/lib/posthogEvents';
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -132,7 +133,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({
             <Link
               to="/signup"
               className="block pl-3 pr-4 py-2 border-l-4 border-primary text-base font-medium text-primary hover:bg-gray-50"
-              onClick={onClose}
+              onClick={() => { trackEligibilityClick('header'); onClose(); }}
             >
               {t?.common?.freeSignup || "Free Sign Up"}
             </Link>
