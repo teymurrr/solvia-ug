@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { MessageCircle, Phone, X, Calendar } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
 import Analytics from '@/utils/analyticsTracking';
+import { trackConsultationBooked } from '@/lib/posthogEvents';
 
 const WHATSAPP_NUMBER = '4915259018297';
 const WHATSAPP_MESSAGE = encodeURIComponent('Hola! Me interesa el servicio de homologación de Solvia.');
@@ -35,6 +36,7 @@ const WhatsAppButton: React.FC = () => {
             className="flex items-center gap-3 bg-card border shadow-lg rounded-full pl-4 pr-5 py-3 hover:shadow-xl hover:scale-[1.02] transition-all duration-200 group"
             onClick={() => {
               Analytics.callBooked('whatsapp_fab');
+              trackConsultationBooked('whatsapp_fab');
               setIsOpen(false);
             }}
           >

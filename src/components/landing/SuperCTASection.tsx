@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Sparkles, Calendar } from 'lucide-react';
 import { useLanguage } from '@/hooks/useLanguage';
-import { trackEligibilityClick } from '@/lib/posthogEvents';
+import { trackEligibilityClick, trackConsultationBooked } from '@/lib/posthogEvents';
 
 const CALENDLY_URL = 'https://calendly.com/david-rehrl-thesolvia/30min';
 
@@ -58,7 +58,7 @@ const SuperCTASection = () => {
               variant="outline"
               className="group text-base px-8 py-6 border-white/50 bg-white/20 text-white hover:bg-white/30 hover:text-white backdrop-blur-sm"
             >
-              <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
+              <a href={CALENDLY_URL} target="_blank" rel="noopener noreferrer" onClick={() => trackConsultationBooked('super_cta')} className="flex items-center gap-2">
                 <Calendar className="h-5 w-5" />
                 {t?.cta?.talkToTeam || "Book a Call"}
               </a>
