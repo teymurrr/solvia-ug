@@ -10,7 +10,7 @@ import { toast } from 'sonner';
 import { Check, ExternalLink, Calendar, Star } from 'lucide-react';
 import { preOpenPaymentWindow, redirectPaymentWindow, isSafari } from '@/utils/browserDetection';
 import Analytics from '@/utils/analyticsTracking';
-import { trackStripeRedirect } from '@/lib/posthogEvents';
+import { trackStripeRedirect, trackPricingViewed, trackPricingTierSelected, trackConsultationBooked } from '@/lib/posthogEvents';
 
 type ProductType = 'digital_starter' | 'complete' | 'personal_mentorship';
 
@@ -107,10 +107,12 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
 
   useEffect(() => {
     const wizardDataStr = localStorage.getItem('wizardData');
+    let parsedCountry: string | null = null;
     if (wizardDataStr) {
       try {
         const wizardData = JSON.parse(wizardDataStr);
-        setTargetCountry(wizardData.targetCountry || null);
+        parsedCountry = wizardData.targetCountry || null;
+        setTargetCountry(parsedCountry);
         setLanguageLevel(wizardData.languageLevel || null);
         if (wizardData.email) {
           setGuestEmail(wizardData.email);
@@ -119,6 +121,7 @@ const PaymentFlow: React.FC<PaymentFlowProps> = ({ onClose }) => {
         console.error('Error parsing wizard data:', e);
       }
     }
+    trackPricingViewed({ target_country: parsedCountry });
   }, []);
 
   useEffect(() => {

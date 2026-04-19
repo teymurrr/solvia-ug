@@ -37,6 +37,8 @@ const HomologationResult = () => {
   const lang = currentLanguage as HomologationLanguage || 'en';
   const dataTranslations = homologationTranslations[lang] || homologationTranslations.en;
 
+  const planRevealedFiredRef = useRef(false);
+
   useEffect(() => {
     const country = searchParams.get('country');
     const doctorType = searchParams.get('doctorType');
@@ -59,6 +61,18 @@ const HomologationResult = () => {
       }
     }
   }, [searchParams]);
+
+  // Fire plan_revealed once per render of a valid plan
+  useEffect(() => {
+    if (planRevealedFiredRef.current) return;
+    if (!wizardData?.targetCountry) return;
+    planRevealedFiredRef.current = true;
+    trackPlanRevealed({
+      target_country: wizardData.targetCountry,
+      study_country: wizardData.studyCountry,
+      doctor_type: wizardData.doctorType,
+    });
+  }, [wizardData]);
 
   if (!wizardData || !wizardData.targetCountry) {
     return (
