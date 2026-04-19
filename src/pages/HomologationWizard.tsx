@@ -12,7 +12,8 @@ import { saveWizardDataToProfile } from '@/services/wizardProfileService';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import Analytics from '@/utils/analyticsTracking';
-import { trackHomologationWizardCompleted, trackSignupCompleted, trackLeadSubmitted } from '@/lib/posthogEvents';
+import { trackHomologationWizardCompleted, trackSignupCompleted, trackLeadSubmitted, trackConsultationBooked } from '@/lib/posthogEvents';
+import { useWizardTracking } from '@/hooks/useWizardTracking';
 
 type WizardStep = 'country' | 'study-country' | 'doctor-type' | 'language' | 'firstName' | 'lastName' | 'email' | 'summary' | 'password';
 
@@ -38,10 +39,14 @@ const HomologationWizard = () => {
   const [isSaving, setIsSaving] = useState(false);
   const [isSubmittingEmail, setIsSubmittingEmail] = useState(false);
   const [privacyConsent, setPrivacyConsent] = useState(false);
+  const [wizardCompleted, setWizardCompleted] = useState(false);
 
   useEffect(() => {
     Analytics.wizardStarted();
   }, []);
+
+  // PostHog per-step funnel tracking (skips firstName/lastName/password/summary)
+  useWizardTracking(currentStep, wizardCompleted);
 
   const [selectedTargetCountry, setSelectedTargetCountry] = useState<string | null>(null);
 
@@ -193,6 +198,7 @@ const HomologationWizard = () => {
       language_level: updatedData.languageLevel,
     });
     trackLeadSubmitted({ source: 'homologation_wizard', email });
+    setWizardCompleted(true);
 
     // Store data and redirect to result page
     localStorage.setItem('wizardData', JSON.stringify(updatedData));
@@ -206,6 +212,7 @@ const HomologationWizard = () => {
 
   const handleBookConsultation = () => {
     Analytics.callBooked('wizard');
+    trackConsultationBooked('wizard');
     window.open('https://calendly.com/david-rehrl-thesolvia/30min', '_blank');
   };
 

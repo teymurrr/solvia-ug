@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { trackPlanRevealed } from '@/lib/posthogEvents';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import MainLayout from '@/components/MainLayout';
 import Analytics from '@/utils/analyticsTracking';
