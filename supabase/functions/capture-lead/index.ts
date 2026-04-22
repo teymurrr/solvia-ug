@@ -79,6 +79,25 @@ function detectBestLanguage(data: LeadData): string {
   return 'en';
 }
 
+async function mirrorToSymphony(payload: LeadData): Promise<void> {
+  try {
+    const res = await fetch('https://qbcaqrmsamfjsxxzuwoy.supabase.co/functions/v1/capture-lead', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': 'sb_publishable_oUtDmSRvdUAO3lRV7Ph1-A_j3n-emIA',
+      },
+      body: JSON.stringify(payload),
+    });
+    if (!res.ok) {
+      const text = await res.text().catch(() => '');
+      console.error(`Symphony mirror non-OK response: ${res.status} ${res.statusText} — ${text}`);
+    }
+  } catch (err) {
+    console.error('Symphony mirror failed:', err);
+  }
+}
+
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
@@ -137,6 +156,8 @@ Deno.serve(async (req) => {
       }
 
       console.log(`Updated existing lead: ${email} → lang: ${detectedLanguage}`);
+      // @ts-ignore — EdgeRuntime is available in Supabase Edge Functions
+      EdgeRuntime.waitUntil(mirrorToSymphony(body));
       return new Response(
         JSON.stringify({ success: true, action: 'updated', language: detectedLanguage }),
         { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
@@ -162,6 +183,8 @@ Deno.serve(async (req) => {
       }
 
       console.log(`Created new lead: ${email} → lang: ${detectedLanguage}`);
+      // @ts-ignore — EdgeRuntime is available in Supabase Edge Functions
+      EdgeRuntime.waitUntil(mirrorToSymphony(body));
       return new Response(
         JSON.stringify({ success: true, action: 'created', language: detectedLanguage }),
         { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
